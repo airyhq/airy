@@ -1,19 +1,10 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
+import {withRouter} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
-import {withRouter} from 'react-router-dom';
 import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {
-  getOutboundMapper,
-  getAttachmentType,
-  isSupportedByInstagramMessenger,
-  imageExtensions,
-  fileExtensions,
-  videoExtensions,
-  audioExtensions,
-  instagramImageExtensions,
-} from 'render';
+import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
@@ -26,15 +17,14 @@ import {listTemplates} from '../../../actions/templates';
 import {getConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
-
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
-
-import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
-import {FacebookMapper} from 'render/outbound/facebook';
 import {InputSelector} from './InputSelector';
+import {getAttachmentType} from 'render';
 import {usePrevious} from '../../../services/hooks/usePrevious';
+import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -61,14 +51,11 @@ interface SelectedTemplate {
   source: Source;
 }
 
-export interface FileInfo {
-  size: number;
-  type: string;
-}
-
 export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
+
+const contentResizedHeight = 100;
 
 const MessageInput = (props: Props) => {
   const {
@@ -84,10 +71,7 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
-  const contentResizedHeight = 200;
-
-  const outboundMapper = getOutboundMapper(source);
-  const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
+  const outboundMapper: any = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
@@ -97,31 +81,12 @@ const MessageInput = (props: Props) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
-  const [fileInfo, setFileInfo] = useState<null | {size: number; type: string}>(null);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
-
-  useEffect(() => {
-    if (draggedAndDroppedFile && !loadingSelector) {
-      uploadFile(draggedAndDroppedFile);
-    }
-  }, [draggedAndDroppedFile]);
-
-  useEffect(() => {
-    if (prevConversationId !== conversation.id) {
-      setInput('');
-      removeElementFromInput();
-      focusInput();
-      setFileToUpload(null);
-      setUploadedFileUrl(null);
-      setFileUploadErrorPopUp('');
-      setLoadingSelector(false);
-    }
-  }, [conversation.id]);
 
   useEffect(() => {
     if (loadingSelector && fileToUpload) {
@@ -153,19 +118,50 @@ const MessageInput = (props: Props) => {
   }, [loadingSelector, fileToUpload]);
 
   useEffect(() => {
+    if (draggedAndDroppedFile && !loadingSelector) {
+      uploadFile(draggedAndDroppedFile);
+    }
+  }, [draggedAndDroppedFile]);
+
+  useEffect(() => {
     if (fileToUpload) {
       setLoadingSelector(true);
       setDragAndDropDisabled(true);
+      setInput('');
     }
   }, [fileToUpload]);
 
   useEffect(() => {
     if (isElementSelected()) {
-      setDragAndDropDisabled(true);
-    } else if (config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram')) {
-      setDragAndDropDisabled(false);
+      setInput('');
     }
   }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
+
+  useEffect(() => {
+    if (prevConversationId !== conversation.id) {
+      setInput('');
+      removeElementFromInput();
+      focusInput();
+      setFileToUpload(null);
+      setSelectedTemplate(null);
+      setSelectedSuggestedReply(null);
+      setUploadedFileUrl(null);
+      setDraggedAndDroppedFile(null);
+      setFileUploadErrorPopUp('');
+      setLoadingSelector(false);
+    }
+  }, [conversation.id]);
+
+  useEffect(() => {
+    const sendingAttachmentEnabled =
+      config.components['media-resolver'].enabled &&
+      (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp');
+    if (isElementSelected()) {
+      setDragAndDropDisabled(true);
+    } else if (sendingAttachmentEnabled) {
+      setDragAndDropDisabled(false);
+    }
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl, config]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -187,38 +183,27 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed = 15;
+    const maxFileSizeAllowed =
+      source === 'instagram' ? 8 : source === 'twilio.whatsapp' || source === 'google' ? 5 : 15;
 
-    //instagram upload errors
-    if (source === 'instagram') {
-      if (fileSizeInMB >= 8) {
-        return setFileUploadErrorPopUp(
-          'Failed to upload the file. Instagram Direct Messenger only supports files that are less than 8 MB.'
-        );
-      }
-
-      if (!isSupportedByInstagramMessenger(file.name)) {
-        return setFileUploadErrorPopUp(`This file type is not supported by Instagram Direct Messenger. Supported files: 
-         ${instagramImageExtensions.join(', ')}`);
-      }
-    }
-
-    //facebook upload errors
+    //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
       return setFileUploadErrorPopUp(
-        `Failed to upload the file. The maximum file size allowed is ${maxFileSizeAllowed}MB.`
+        `Failed to upload the file.
+        The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
       );
     }
 
-    if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: 
-      ${audioExtensions.join(', ')}, ${imageExtensions.join(', ')}, ${videoExtensions.join(
-        ', '
-      )}, ${fileExtensions.join(', ')}`;
-      return setFileUploadErrorPopUp(message);
+    //unsupported file error
+    if (!getAttachmentType(file.name, source)) {
+      const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
+
+      const errorMessage = `This file type is not supported by this source. 
+      Supported files: ${supportedFilesForSource}`;
+
+      return setFileUploadErrorPopUp(errorMessage);
     }
 
-    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name)});
     setFileToUpload(file);
   };
 
@@ -254,7 +239,7 @@ const MessageInput = (props: Props) => {
           : uploadedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(uploadedFileUrl),
+              message: outboundMapper.getAttachmentPayload(uploadedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -435,13 +420,12 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(uploadedFileUrl)
+                    outboundMapper?.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
                   removeElementFromInput={removeElementFromInput}
                   contentResizedHeight={contentResizedHeight}
-                  fileInfo={fileInfo}
                 />
               </>
             )}

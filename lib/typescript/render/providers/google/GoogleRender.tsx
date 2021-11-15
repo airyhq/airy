@@ -148,10 +148,10 @@ function googleInbound(message): ContentUnion {
 }
 
 function googleOutbound(message): ContentUnion {
-  const messageJson = message.content.message ?? message.content;
+  const messageJson = message?.content?.message ?? message?.content ?? message;
   const maxNumberOfSuggestions = 13;
 
-  if (messageJson.richCard?.standaloneCard) {
+  if (messageJson?.richCard?.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},

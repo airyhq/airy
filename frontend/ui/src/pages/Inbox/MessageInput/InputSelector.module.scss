@@ -3,7 +3,17 @@
 .container {
   max-width: 550px;
   position: relative;
-  margin: 0px 5px 0px 5px;
+  margin: 0px 0px 5px 10px;
+  animation: fadeIn 3s linear forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .removeButton {

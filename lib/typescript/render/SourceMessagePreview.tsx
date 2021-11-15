@@ -5,6 +5,7 @@ import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentV
 import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.svg';
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
+import {decodeURIComponentMessage, getAttachmentType} from './services';
 import {Conversation, Message} from 'model';
 import {Emoji} from 'components';
 
@@ -17,7 +18,7 @@ interface FormattedMessageProps {
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
-    return <>{message.content.message?.text || message.content.text}</>;
+    return <>{message.content.message?.text || message.content.text || message?.content?.Body}</>;
   }
   return <div />;
 };
@@ -57,75 +58,114 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
 
     if (typeof lastMessageContent === 'string') {
+      let text;
+
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&FromCountry=');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
-        return text;
+        const contentStart = '&Body=';
+        const contentEnd = '&FromCountry=';
+        text = decodeURIComponentMessage(lastMessageContent, contentStart, contentEnd);
       } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&To=whatsapp');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
-        return text;
+        const contentStart = '&Body=';
+        const contentEnd = '&To=whatsapp';
+        text = decodeURIComponentMessage(lastMessageContent, contentStart, contentEnd);
       }
+
+      return text;
     }
 
     if (
-      (lastMessageContent.text || lastMessageContent.message?.text) &&
+      (lastMessageContent.text ||
+        lastMessageContent.message?.text ||
+        (lastMessageContent?.Body && typeof lastMessageContent?.Body === 'string')) &&
       !isImageFromGoogleSource(lastMessageContent.message?.text)
     ) {
       return <FormattedMessage message={conversation.lastMessage} />;
-    } else if (lastMessageContent.suggestionResponse) {
+    }
+
+    if (lastMessageContent.suggestionResponse) {
       return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
     }
   };
 
   const lastMessageIsIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
+    const source = conversation.channel.source;
+
+    const twilioWhatsAppOutboundMediaUrl = lastMessageContent?.MediaUrl;
+
+    const twilioWhatsAppInboundImage =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=image');
+    const twilioWhatsAppInboundFile =
+      typeof lastMessageContent === 'string' &&
+      (lastMessageContent.includes('MediaContentType0=application%2Fpdf') ||
+        lastMessageContent.includes('MediaContentType0=text%2Fvcard'));
+    const twilioWhatsAppInboundAudio =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=audio');
+    const twilioWhatsAppInboundVideo =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=video');
+
+    if (twilioWhatsAppOutboundMediaUrl) {
+      const attachmentType = getAttachmentType(twilioWhatsAppOutboundMediaUrl, source);
+
+      if (attachmentType === 'image') {
+        return <AttachmentImage />;
+      }
+
+      if (attachmentType === 'video') {
+        return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+
+      if (attachmentType === 'audio') {
+        return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+
+      if (attachmentType === 'file') {
+        return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+    }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'image' ||
-      isImageFromGoogleSource(lastMessageContent.message?.text)
+      lastMessageContent?.attachment?.type === 'image' ||
+      isImageFromGoogleSource(lastMessageContent.message?.text) ||
+      twilioWhatsAppInboundImage
     ) {
       return <AttachmentImage />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'video' ||
-      lastMessageContent.attachment?.type === 'video'
+      lastMessageContent?.attachment?.type === 'video' ||
+      twilioWhatsAppInboundVideo
     ) {
       return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'audio' ||
-      lastMessageContent.attachment?.type === 'audio'
+      lastMessageContent?.attachment?.type === 'audio' ||
+      twilioWhatsAppInboundAudio
     ) {
       return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'file' ||
-      lastMessageContent.attachment?.type === 'file'
+      lastMessageContent?.attachment?.type === 'file' ||
+      twilioWhatsAppInboundFile
     ) {
       return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
-    if (lastMessageContent.suggestionResponse) {
+    if (lastMessageContent?.suggestionResponse) {
       return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
     }
 
-    if (lastMessageContent.image) {
+    if (lastMessageContent?.image) {
       return <AttachmentImage />;
     }
 
-    if (lastMessageContent.richCard) {
+    if (lastMessageContent?.richCard) {
       return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 

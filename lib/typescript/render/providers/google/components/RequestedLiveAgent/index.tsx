@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styles from './index.module.scss';
 import {Emoji} from 'components';
 

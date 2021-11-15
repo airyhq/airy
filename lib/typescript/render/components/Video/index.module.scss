@@ -7,6 +7,10 @@
   margin-top: 5px;
 }
 
+.wrapper a {
+  display: flex;
+}
+
 .item {
   display: flex;
   align-self: flex-end;
@@ -49,6 +53,10 @@
 }
 
 .video {
-  max-width: 100%;
-  max-height: 210px;
+  width: auto;
+  max-width: 300px;
+  max-height: 200px;
+  margin-bottom: 0;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
 }

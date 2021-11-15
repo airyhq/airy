@@ -46,7 +46,7 @@ const MessengerContainer = ({
     if (source && config) {
       if (
         config?.components['media-resolver']?.enabled &&
-        (source === 'instagram' || source === 'facebook') &&
+        (source === 'instagram' || source === 'facebook' || source === 'google' || source === 'twilio.whatsapp') &&
         !draggedAndDroppedFile
       ) {
         setDragAndDropDisabled(false);
@@ -90,17 +90,17 @@ const MessengerContainer = ({
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
 
     if (dragAndDropDisabled) return;
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
-    if (dragAndDropDisabled) return;
-
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
+
+    if (dragAndDropDisabled) return;
 
     dragCounter++;
 
@@ -108,10 +108,10 @@ const MessengerContainer = ({
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    if (dragAndDropDisabled) return;
-
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
+
+    if (dragAndDropDisabled) return;
 
     dragCounter++;
     const file = event.dataTransfer.files[0];
@@ -120,9 +120,10 @@ const MessengerContainer = ({
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    if (dragAndDropDisabled) return;
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
+
+    if (dragAndDropDisabled) return;
 
     dragCounter--;
     if (dragCounter === 0) {

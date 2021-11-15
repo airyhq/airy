@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import {Picker} from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
@@ -6,9 +7,9 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
-import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
+import {getInputAcceptedFilesForSource} from '../../../services/types/attachmentsTypes';
 import styles from './InputOptions.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -52,6 +53,12 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
+
+  useEffect(() => {
+    const inputAcceptValue = getInputAcceptedFilesForSource(source);
+    setInputAcceptedFiles(inputAcceptValue);
+  }, [source]);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -129,7 +136,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled || loadingSelector}
+        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
         onClick={toggleEmojiDrawer}
       >
         <div className={styles.actionToolTip}>Emojis</div>
@@ -138,7 +145,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled || loadingSelector}
+        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
         onClick={toggleTemplateModal}
       >
         <div className={styles.actionToolTip}>Templates</div>
@@ -147,28 +154,33 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaResolverComponentsConfig.enabled && (source === 'facebook' || source === 'instagram') && (
-        <button
-          className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
-          type="button"
-          disabled={inputDisabled || loadingSelector}
-        >
-          <div className={styles.actionToolTip}>Files</div>
+      {mediaResolverComponentsConfig.enabled &&
+        (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp') && (
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            type="button"
+            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+          >
+            <div className={styles.actionToolTip}>Files</div>
 
-          <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>
-            <Paperclip aria-hidden className={styles.paperclipIcon} />
-          </label>
+            <label
+              htmlFor="file"
+              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
+            >
+              <Paperclip aria-hidden className={styles.paperclipIcon} />
+            </label>
 
-          <input
-            type="file"
-            id="file"
-            name="file"
-            onChange={selectFile}
-            className={styles.fileInput}
-            disabled={inputDisabled || loadingSelector}
-          />
-        </button>
-      )}
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onChange={selectFile}
+              className={styles.fileInput}
+              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+              accept={inputAcceptedFiles}
+            />
+          </button>
+        )}
     </div>
   );
 };

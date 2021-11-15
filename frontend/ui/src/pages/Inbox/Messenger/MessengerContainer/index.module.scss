@@ -70,6 +70,7 @@
 .dragOverlay {
   background-color: var(--color-template-highlight);
   opacity: 0.9;
+  border: 2px dashed var(--color-airy-blue);
 }
 
 .dragContainer h1 {

@@ -29,4 +29,8 @@ export const config: Config = {
     },
   },
   showMode: false,
+  inboundMessageColor: '#B8E986',
+  inboundMessageTextColor: '#BD10E0',
+  outboundMessageColor: '#7ED321',
+  outboundMessageTextColor: '#F8E71C',
 };

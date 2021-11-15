@@ -4,11 +4,16 @@ export enum MediaHeight {
   tall = 'TALL',
 }
 export interface Content {
-  type: 'text' | 'image' | 'suggestions' | 'richCard' | 'richCardCarousel' | 'requestedLiveAgent';
+  type: 'text' | 'image' | 'suggestions' | 'richCard' | 'richCardCarousel' | 'requestedLiveAgent' | 'surveyResponse';
 }
 
 export interface RequestedLiveAgent extends Content {
   type: 'requestedLiveAgent';
+}
+
+export interface SurveyResponse extends Content {
+  type: 'surveyResponse';
+  rating: string;
 }
 
 export interface Text extends Content {
@@ -111,4 +116,11 @@ export interface Suggestions extends Content {
   suggestions: SuggestionsUnion[];
 }
 
-export type ContentUnion = Text | Image | Suggestions | RichCard | RichCardCarousel | RequestedLiveAgent;
+export type ContentUnion =
+  | Text
+  | Image
+  | Suggestions
+  | RichCard
+  | RichCardCarousel
+  | RequestedLiveAgent
+  | SurveyResponse;

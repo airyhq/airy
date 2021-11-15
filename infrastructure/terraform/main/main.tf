@@ -1,3 +1,13 @@
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig_output_path
+  }
+}
+
+provider "kubernetes" {
+  config_path = var.kubeconfig_output_path
+}
+
 module "my-airy-core" {
   source  = "../modules/core"
   values_yaml = data.template_file.airy_yaml.rendered

@@ -22,21 +22,29 @@ data "http" "core_version" {
   }
 }
 
+locals {
+  core_version = var.core_version != "" ? var.core_version : trimspace(data.http.core_version.body)
+}
+
 resource "helm_release" "airy_core" {
   name  = "airy-release"
-  chart = "https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${trimspace(data.http.core_version.body)}.tgz"
+  chart = "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${local.core_version}.tgz"
 
   timeout = "600"
   values = [
     var.values_yaml
   ]
 
-
-  namespace = var.namespaced ? var.core_id : "default"
+  namespace = var.namespace
 
   set {
-    name = "global.appImageTag"
-    value = trimspace(data.http.core_version.body)
+    name  = "global.appImageTag"
+    value = local.core_version
+  }
+
+  set {
+    name  = "ingress-controller.enabled"
+    value = var.ingress_controller_enabled
   }
 
   depends_on = [

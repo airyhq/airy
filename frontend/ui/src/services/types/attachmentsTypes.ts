@@ -32,14 +32,11 @@ export const getInputAcceptedFilesForSource = (source: string) => {
   }
 
   const supportedDocsFiles = docsFiles ? '.' + docsFiles.join(', .') : '';
-  const supportedAudioFiles =
-    audioFiles && docsFiles ? '.' + audioFiles.join(', .') + ',' : audioFiles ? audioFiles.join(', .') : '';
-  const supportedVideoFiles =
-    videoFiles && audioFiles ? '.' + videoFiles.join(', .') + ',' : videoFiles ? videoFiles.join(', .') : '';
-  const supportedImageFiles =
-    imageFiles && videoFiles ? imageFiles.join(', .') + ',' : imageFiles ? imageFiles.join(', .') : '';
+  const supportedAudioFiles = audioFiles ? '.' + audioFiles.join(', .') + ',' : '';
+  const supportedVideoFiles = videoFiles ? '.' + videoFiles.join(', .') + ',' : '';
+  const supportedImageFiles = imageFiles ? '.' + imageFiles.join(', .') + ',' : '';
 
-  const inputAcceptValue = `.${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+  const inputAcceptValue = `${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
 
   return inputAcceptValue;
 };

@@ -1,4 +1,11 @@
-import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {
+  FileContent,
+  QuickReplyCommand,
+  SuggestionResponse,
+  TextContent,
+  VideoContent,
+} from 'render/providers/chatplugin/chatPluginModel';
+import {ImageContent} from 'render/providers/twilio/twilioModel';
 import {resetStorage, setResumeTokenInStorage} from '../storage';
 
 let host;
@@ -6,7 +13,10 @@ export const setApiHost = apiHost => {
   host = apiHost;
 };
 
-export const sendMessage = (message: TextContent | SuggestionResponse | QuickReplyCommand, token: string) => {
+export const sendMessage = (
+  message: TextContent | ImageContent | VideoContent | FileContent | SuggestionResponse | QuickReplyCommand,
+  token: string
+) => {
   return fetch(`${host}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
@@ -17,12 +27,36 @@ export const sendMessage = (message: TextContent | SuggestionResponse | QuickRep
   });
 };
 
-const convertToBody = (message: TextContent | SuggestionResponse | QuickReplyCommand) => {
+const convertToBody = (
+  message: TextContent | ImageContent | VideoContent | FileContent | SuggestionResponse | QuickReplyCommand
+) => {
   if (message.type == ('suggestionResponse' || 'quickReplies')) {
     return {
       message: {
         text: message.text,
         postbackData: message.postbackData,
+      },
+    };
+  }
+
+  if (message.type == 'image') {
+    return {
+      message: {
+        imageUrl: message.imageUrl,
+      },
+    };
+  }
+  if (message.type == 'video') {
+    return {
+      message: {
+        videoUrl: message.videoUrl,
+      },
+    };
+  }
+  if (message.type == 'file') {
+    return {
+      message: {
+        fileUrl: message.fileUrl,
       },
     };
   }

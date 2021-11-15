@@ -8,13 +8,13 @@ export const getAllSupportedAttachmentsForSource = (source: string) => {
   const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
   const docsFiles = attachmentsExtensions[source + 'FileExtensions'];
 
-  const supportedDocsFiles = docsFiles ? docsFiles.join(', ') : null;
+  const supportedDocsFiles = docsFiles ? docsFiles.join(', ') : '';
   const supportedAudioFiles =
-    audioFiles && docsFiles ? audioFiles.join(', ') + ',' : audioFiles ? audioFiles.join(',') : '';
+    audioFiles && docsFiles ? audioFiles.join(', ') + ',' : audioFiles ? audioFiles.join(', ') : '';
   const supportedVideoFiles =
-    videoFiles && audioFiles ? videoFiles.join(', ') + ',' : videoFiles ? videoFiles.join(',') : '';
+    videoFiles && audioFiles ? videoFiles.join(', ') + ',' : videoFiles ? videoFiles.join(', ') : '';
   const supportedImageFiles =
-    imageFiles && videoFiles ? imageFiles.join(', ') + ',' : imageFiles ? imageFiles.join(',') : '';
+    imageFiles && videoFiles ? imageFiles.join(', ') + ',' : imageFiles ? imageFiles.join(', ') : '';
 
   return `${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
 };

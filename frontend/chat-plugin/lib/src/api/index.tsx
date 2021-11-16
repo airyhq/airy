@@ -110,3 +110,20 @@ export const authenticate = async (channelId: string, resumeToken?: string) =>
         new Error(`Airy Chat Plugin authentication failed. Please check your installation. ${error}`)
       );
     });
+
+export const uploadMedia = (fileToUpload: File) => {
+  const formData = new FormData();
+  formData.append('file', fileToUpload);
+
+  return fetch(`${host}/media.upload`, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Content-Type': 'application/json',
+      // Authorization: `Bearer ${token}`,
+    },
+  }).then(response => {
+    console.log('response: ', response);
+    
+  });
+};

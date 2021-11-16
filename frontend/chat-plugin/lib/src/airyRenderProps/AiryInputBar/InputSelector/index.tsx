@@ -4,7 +4,7 @@ import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {SourceMessage} from 'render';
 import {Message} from 'model';
 
-type AttachmentSelectorProps = {
+type InputSelectorProps = {
   message: Message;
   removeElementFromInput?: () => void;
   contentResizedHeight?: number;
@@ -13,7 +13,7 @@ type AttachmentSelectorProps = {
 const textareaHeight = 40;
 const minImageHeight = 50;
 
-export const AttachmentSelector = (props: AttachmentSelectorProps) => {
+export const InputSelector = (props: InputSelectorProps) => {
   const {message, removeElementFromInput, contentResizedHeight} = props;
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');

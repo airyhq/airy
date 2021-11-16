@@ -9,7 +9,8 @@ import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as PaperClip} from 'assets/images/icons/paperclip.svg';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {getAttachmentType, getOutboundMapper} from 'render';
-import {AttachmentSelector} from './AttachmentSelector';
+import {InputSelector} from './InputSelector';
+import { uploadMedia } from '../../api';
 
 type AiryInputBarProps = {
   sendMessage: (input: any) => void;
@@ -133,9 +134,10 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     const selectedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (uploadedFileUrl) setUploadedFileUrl(null);
       const file = event.target.files[0];
-      console.log('file name: ', file.name);
+      console.log('file name: ', file);
       const fileType = getAttachmentType(file.name, 'chatplugin');
       console.log('fileType: ', fileType);
+      uploadMedia(file)
     };
 
     return (
@@ -190,16 +192,16 @@ const AiryInputBar = (props: AiryInputBarProps) => {
               {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
             </button>
           </div>
-
           {uploadedFileUrl && (
             <>
-              <AttachmentSelector
+              <InputSelector
                 message={outboundMapper?.getAttachmentPayload(uploadedFileUrl)}
                 // removeElementFromInput={removeElementFromInput}
                 // contentResizedHeight={contentResizedHeight}
               />
             </>
           )}
+          )
         </form>
       )}
       <div className={style.poweredByContainer}>

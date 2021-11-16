@@ -3,6 +3,54 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.35.0
+
+#### Changes
+
+- [[#2503](https://github.com/airyhq/airy/issues/2503)] Add capability for resource limits for components [[#2541](https://github.com/airyhq/airy/pull/2541)]
+
+#### 🚀 Features
+
+- Custom message colors chatplugin + Documentation [[#2585](https://github.com/airyhq/airy/pull/2585)]
+- [[#2108](https://github.com/airyhq/airy/issues/2108)] render attachments via whatsapp [[#2574](https://github.com/airyhq/airy/pull/2574)]
+- [[#2518](https://github.com/airyhq/airy/issues/2518)] Add terraform code for core deployment [[#2555](https://github.com/airyhq/airy/pull/2555)]
+- [[#2563](https://github.com/airyhq/airy/issues/2563)] Allow for disabling emojis in the chatplugin [[#2564](https://github.com/airyhq/airy/pull/2564)]
+- [[#2560](https://github.com/airyhq/airy/issues/2560)] Dev\_cli.sh fails to apply the config  [[#2561](https://github.com/airyhq/airy/pull/2561)]
+- Print airy core version with version command [[#2537](https://github.com/airyhq/airy/pull/2537)]
+
+#### 🐛 Bug Fixes
+
+- fixed input accept formatting [[#2584](https://github.com/airyhq/airy/pull/2584)]
+- [[#2576](https://github.com/airyhq/airy/issues/2576)] Render Survey response Google Business Messages  [[#2578](https://github.com/airyhq/airy/pull/2578)]
+- [[#2544](https://github.com/airyhq/airy/issues/2544)] Include the analytics demo files in the jupyter hub [[#2545](https://github.com/airyhq/airy/pull/2545)]
+- [[#2557](https://github.com/airyhq/airy/issues/2557)] Fix jumping conversationlist [[#2558](https://github.com/airyhq/airy/pull/2558)]
+- [[#2548](https://github.com/airyhq/airy/issues/2548)] Use the cli with helm [[#2551](https://github.com/airyhq/airy/pull/2551)]
+- [[#2511](https://github.com/airyhq/airy/issues/2511)] Fix Airy status command [[#2542](https://github.com/airyhq/airy/pull/2542)]
+
+#### 📚 Documentation
+
+- [[#2511](https://github.com/airyhq/airy/issues/2511)] Fix docs for helm upgrade [[#2547](https://github.com/airyhq/airy/pull/2547)]
+
+#### 🧰 Maintenance
+
+- Bump @types/react-dom from 17.0.10 to 17.0.11 [[#2572](https://github.com/airyhq/airy/pull/2572)]
+- Bump style-loader from 3.3.0 to 3.3.1 [[#2573](https://github.com/airyhq/airy/pull/2573)]
+- Bump cypress from 8.6.0 to 8.7.0 [[#2567](https://github.com/airyhq/airy/pull/2567)]
+- Bump babel-loader from 8.2.2 to 8.2.3 [[#2568](https://github.com/airyhq/airy/pull/2568)]
+- Bump @types/react from 17.0.20 to 17.0.34 [[#2553](https://github.com/airyhq/airy/pull/2553)]
+- Bump sass from 1.43.2 to 1.43.4 [[#2565](https://github.com/airyhq/airy/pull/2565)]
+- Bump node-fetch from 2.6.2 to 3.0.0 [[#2450](https://github.com/airyhq/airy/pull/2450)]
+- Bump html-webpack-plugin from 5.3.2 to 5.5.0 [[#2552](https://github.com/airyhq/airy/pull/2552)]
+- Bump prettier from 2.3.2 to 2.4.1 [[#2532](https://github.com/airyhq/airy/pull/2532)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.34.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.34.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.34.1/windows/amd64/airy.exe)
+
 ## 0.34.0
 
 #### Changes
@@ -10,12 +58,12 @@ sidebar_label: 📝 Changelog
 #### 🚀 Features
 
 - [[#2518](https://github.com/airyhq/airy/issues/2518)] Add fargate annotation [[#2540](https://github.com/airyhq/airy/pull/2540)]
-- Add CLI outdated version warning [[#2529](https://github.com/airyhq/airy/pull/2529)]
+- [[#2305](https://github.com/airyhq/airy/issues/2305)] Add CLI outdated version warning [[#2529](https://github.com/airyhq/airy/pull/2529)]
 
 #### 🐛 Bug Fixes
 
 - [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix broken instagram Facebook inbox ingestion [[#2535](https://github.com/airyhq/airy/pull/2535)]
-- [2457] Fix upgrade to same version [[#2538](https://github.com/airyhq/airy/pull/2538)]
+- [[#2457](https://github.com/airyhq/airy/issues/2457)] Fix upgrade to same version [[#2538](https://github.com/airyhq/airy/pull/2538)]
 - [[#2510](https://github.com/airyhq/airy/issues/2510)] Improve error logging for helm install [[#2522](https://github.com/airyhq/airy/pull/2522)]
 - [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix helm chart url [[#2525](https://github.com/airyhq/airy/pull/2525)]
 - [[#2523](https://github.com/airyhq/airy/issues/2523)] Fix VERSION and add changelog [[#2524](https://github.com/airyhq/airy/pull/2524)]
@@ -34,9 +82,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.34.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.34.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.34.0/windows/amd64/airy.exe)
 
 ## 0.33.0
 
@@ -1193,70 +1241,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.13.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.13.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.13.0/windows/amd64/airy.exe)
-
-## 0.12.0
-
-#### Changes
-
-- [[#1132](https://github.com/airyhq/airy/issues/1132)] Fix missing , in nginx [[#1133](https://github.com/airyhq/airy/pull/1133)]
-- [[#1014](https://github.com/airyhq/airy/issues/1014)] Deploy the helm charts [[#1084](https://github.com/airyhq/airy/pull/1084)]
-- [[#1124](https://github.com/airyhq/airy/issues/1124)] Template endpoints return 404 [[#1125](https://github.com/airyhq/airy/pull/1125)]
-
-#### 🚀 Features
-
-- [[#1113](https://github.com/airyhq/airy/issues/1113)] Chat Plugin: keep text in input bar if… [[#1143](https://github.com/airyhq/airy/pull/1143)]
-- [[#1000](https://github.com/airyhq/airy/issues/1000)] ConversationList scrolls over TopBar [[#1129](https://github.com/airyhq/airy/pull/1129)]
-- [[#983](https://github.com/airyhq/airy/issues/983)] The login call should not send the auth… [[#1127](https://github.com/airyhq/airy/pull/1127)]
-- [[#1126](https://github.com/airyhq/airy/issues/1126)] /templates.info And /templates.update are returning 404 [[#1128](https://github.com/airyhq/airy/pull/1128)]
-- [[#660](https://github.com/airyhq/airy/issues/660)] Enable users to connect via Airy Live Chat [[#1078](https://github.com/airyhq/airy/pull/1078)]
-- [[#1117](https://github.com/airyhq/airy/issues/1117)] Template docs are not accessible [[#1118](https://github.com/airyhq/airy/pull/1118)]
-
-#### 🐛 Bug Fixes
-
-- [[#1174](https://github.com/airyhq/airy/issues/1174)] Build the right cli version on develop [[#1177](https://github.com/airyhq/airy/pull/1177)]
-- [[#1165](https://github.com/airyhq/airy/issues/1165)] Fix template endpoint content field [[#1166](https://github.com/airyhq/airy/pull/1166)]
-- [[#1161](https://github.com/airyhq/airy/issues/1161)] Fix metadata 404 [[#1162](https://github.com/airyhq/airy/pull/1162)]
-- [[#1152](https://github.com/airyhq/airy/issues/1152)] Fix conditional config apply [[#1153](https://github.com/airyhq/airy/pull/1153)]
-- [[#1142](https://github.com/airyhq/airy/issues/1142)] Backbutton \& search aligned [[#1149](https://github.com/airyhq/airy/pull/1149)]
-- [[#1034](https://github.com/airyhq/airy/issues/1034)] Tag empty state has strange scrolling… [[#1141](https://github.com/airyhq/airy/pull/1141)]
-- [[#1112](https://github.com/airyhq/airy/issues/1112)] fixed highlight in inbox [[#1119](https://github.com/airyhq/airy/pull/1119)]
-- [[#1120](https://github.com/airyhq/airy/issues/1120)] Fix Shellcheck [[#1121](https://github.com/airyhq/airy/pull/1121)]
-
-#### 📚 Documentation
-
-- [[#1094](https://github.com/airyhq/airy/issues/1094)] Minor UI improvements to the docs [[#1131](https://github.com/airyhq/airy/pull/1131)]
-
-#### 🧰 Maintenance
-
-- Revert "Bump webpack-dev-middleware from 3.7.2 to 4.1.0" [[#1172](https://github.com/airyhq/airy/pull/1172)]
-- Bump elliptic from 6.5.3 to 6.5.4 in /docs [[#1170](https://github.com/airyhq/airy/pull/1170)]
-- Bump elliptic from 6.5.3 to 6.5.4 [[#1171](https://github.com/airyhq/airy/pull/1171)]
-- Bump terser-webpack-plugin from 2.3.6 to 4.2.3 [[#1169](https://github.com/airyhq/airy/pull/1169)]
-- Bump html-webpack-plugin from 4.2.0 to 4.5.2 [[#1168](https://github.com/airyhq/airy/pull/1168)]
-- Bump webpack-dev-middleware from 3.7.2 to 4.1.0 [[#1154](https://github.com/airyhq/airy/pull/1154)]
-- Bump react from 16.12.0 to 16.14.0 [[#1167](https://github.com/airyhq/airy/pull/1167)]
-- Restructure cli for building providers [[#1159](https://github.com/airyhq/airy/pull/1159)]
-- Bump react-router-dom from 5.1.2 to 5.2.0 [[#1155](https://github.com/airyhq/airy/pull/1155)]
-- Bump prettier from 1.19.1 to 2.2.1 [[#1147](https://github.com/airyhq/airy/pull/1147)]
-- Bump lodash-es from 4.17.15 to 4.17.21 [[#1156](https://github.com/airyhq/airy/pull/1156)]
-- Bump @types/react-router-dom from 5.1.3 to 5.1.7 [[#1157](https://github.com/airyhq/airy/pull/1157)]
-- Restructure cli to prepare for providers [[#1151](https://github.com/airyhq/airy/pull/1151)]
-- Bump eslint-plugin-react from 7.21.5 to 7.22.0 [[#1148](https://github.com/airyhq/airy/pull/1148)]
-- Bump eslint from 7.16.0 to 7.21.0 [[#1144](https://github.com/airyhq/airy/pull/1144)]
-- Bump file-loader from 6.0.0 to 6.2.0 [[#1145](https://github.com/airyhq/airy/pull/1145)]
-- Bump @bazel/typescript from 3.2.0 to 3.2.1 [[#1146](https://github.com/airyhq/airy/pull/1146)]
-- Bump react-hot-loader from 4.12.20 to 4.13.0 [[#1138](https://github.com/airyhq/airy/pull/1138)]
-- Bump @types/react-redux from 7.1.3 to 7.1.16 [[#1136](https://github.com/airyhq/airy/pull/1136)]
-- Bump @types/lodash-es from 4.17.3 to 4.17.4 [[#1137](https://github.com/airyhq/airy/pull/1137)]
-- Bump preact from 10.5.7 to 10.5.12 [[#1139](https://github.com/airyhq/airy/pull/1139)]
-- Bump react-redux from 7.1.3 to 7.2.2 [[#1140](https://github.com/airyhq/airy/pull/1140)]
-- Add dependabot config [[#1135](https://github.com/airyhq/airy/pull/1135)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.12.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.12.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.12.0/windows/amd64/airy.exe)
 

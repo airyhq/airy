@@ -54,7 +54,8 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
                 className={styles.suggestionButton}
                 onClick={() => {
                   clickSuggestion(suggestion);
-                }}>
+                }}
+              >
                 {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
               </button>
             ))}

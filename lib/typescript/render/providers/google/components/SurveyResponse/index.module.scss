@@ -1,0 +1,10 @@
+.text {
+  display: inline-block;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+  background: var(--color-template-gray);
+  color: var(--color-text-contrast);
+}

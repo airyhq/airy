@@ -7,6 +7,7 @@ import (
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"fmt"
+	"os"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
 
@@ -38,7 +39,11 @@ func upgrade(cmd *cobra.Command, args []string) {
 	if err != nil {
 		console.Exit("Unable to find suitable workspace :", err)
 	}
-	dir := workspace.Init(workspacePath)
+	dir, err := workspace.Init(workspacePath)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
 	kubeCtx := kube.Load()
 	clientset, err := kubeCtx.GetClientSet()
 	namespace := viper.GetString("namespace")

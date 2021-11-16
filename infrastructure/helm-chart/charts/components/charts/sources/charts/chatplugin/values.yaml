@@ -3,5 +3,7 @@ mandatory: false
 enabled: true
 backend:
   image: sources/chat-plugin
+  resources: {}
 frontend:
   image: frontend/chat-plugin
+  resources: {}

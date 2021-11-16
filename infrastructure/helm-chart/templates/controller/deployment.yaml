@@ -18,6 +18,7 @@ spec:
     metadata:
       labels:
         app: airy-controller
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
       annotations:
         releaseTime: {{ (now) | toString | trunc 28 | quote }}
     spec:
@@ -32,3 +33,10 @@ spec:
           value: "core.airy.co/managed=true"
         - name: NAMESPACE
           value: {{ .Release.Namespace }}
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "32Mi"
+          limits:
+            cpu: "50m"
+            memory: "128Mi"

@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: media-resolver
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
         - name: app
@@ -55,12 +56,15 @@ spec:
               httpHeaders:
                 - name: Health-Check
                   value: health-check
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 10
             failureThreshold: 3
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS

@@ -23,7 +23,8 @@ const NewConversation = (props: newConversationProps) => {
             href=""
             onClick={props.reAuthenticate}
             data-cy={cyChatPluginStartNewConversation}
-            className={style.newConversationLink}>
+            className={style.newConversationLink}
+          >
             {props.startNewConversationText || 'Start a new Conversation'}
           </a>
         </button>

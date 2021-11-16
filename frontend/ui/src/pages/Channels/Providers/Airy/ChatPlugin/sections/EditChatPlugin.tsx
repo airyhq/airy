@@ -45,7 +45,8 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
                 onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                   event.preventDefault();
                   updateConnection(displayName, imageUrl);
-                }}>
+                }}
+              >
                 <div className={styles.formRow}>
                   <Input
                     type="text"

@@ -15,6 +15,10 @@ export type Config = {
   primaryColor?: string;
   accentColor?: string;
   bubbleIcon?: string;
+  outboundMessageColor?: string;
+  inboundMessageColor?: string;
+  outboundMessageTextColor?: string;
+  inboundMessageTextColor?: string;
   sendMessageIcon?: string;
   showMode?: boolean;
   height?: number;

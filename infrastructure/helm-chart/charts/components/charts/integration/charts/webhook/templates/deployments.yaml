@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: webhook-consumer
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
@@ -65,7 +66,9 @@ spec:
             httpHeaders:
               - name: Health-Check
                 value: health-check
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
+        resources:
+{{ toYaml .Values.consumer.resources | indent 10 }}
       initContainers:
       - name: wait
         image: busybox
@@ -114,6 +117,7 @@ spec:
     metadata:
       labels:
         app: webhook-publisher
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
@@ -159,7 +163,9 @@ spec:
             httpHeaders:
               - name: Health-Check
                 value: health-check
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
+        resources:
+{{ toYaml .Values.publisher.resources | indent 10 }}
       initContainers:
       - name: wait
         image: busybox

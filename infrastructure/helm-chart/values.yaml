@@ -19,3 +19,4 @@ tools:
     enabled: true
 serviceAccount: airy-admin
 apiHost: http://airy.core
+limitRange: false

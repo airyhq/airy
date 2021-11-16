@@ -16,7 +16,7 @@ ts_web_library(
     deps = module_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",
-        "@npm//node-fetch",
+        "@npm//isomorphic-fetch",
         "@npm//form-data",
     ],
 )
@@ -40,7 +40,7 @@ web_library(
     entry = "lib/typescript/httpclient/src/index.js",
     externals = {
         "camelcase-keys": "camelcase-keys",
-        "node-fetch": "node-fetch",
+        "isomorphic-fetch": "isomorphic-fetch",
         "form-data": "form-data",
     },
     module_deps = module_deps,

@@ -130,7 +130,8 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
         <SettingsModal
           style={{maxWidth: '480px'}}
           title="Are you sure you want to permanently delete this tag?"
-          close={this.closeModal}>
+          close={this.closeModal}
+        >
           <div className={styles.confirmDelete}>
             <p>
               You&#39;re about to permanently delete <strong>&#34;{this.state.modal.tagName}&#34;</strong> from your
@@ -158,7 +159,8 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
               <Button
                 styleVariant="warning"
                 onClick={this.confirmDelete}
-                dataCy={cyTagsTableRowDisplayDeleteModalButton}>
+                dataCy={cyTagsTableRowDisplayDeleteModalButton}
+              >
                 Delete
               </Button>
             </div>

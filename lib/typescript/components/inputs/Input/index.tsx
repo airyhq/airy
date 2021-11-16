@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import {Picker} from 'emoji-mart';
 
 import styles from './style.module.scss';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
@@ -238,18 +237,15 @@ class InputComponent extends Component<InputProps, IState> {
   };
 
   emojiDrawer = () => {
+    const Picker = () => this.props.renderEmojiPicker(this.addEmoji);
     return (
       <div
         ref={node => {
           this.node = node;
         }}
-        className={styles.emojiDrawer}>
-        <Picker
-          showPreview={false}
-          onSelect={this.addEmoji}
-          title="Emoji"
-          style={{right: '28px', position: 'absolute', bottom: '-84px'}}
-        />
+        className={styles.emojiDrawer}
+      >
+        <Picker />
       </div>
     );
   };
@@ -362,14 +358,15 @@ class InputComponent extends Component<InputProps, IState> {
               inputMode={inputmode}
               data-cy={dataCy}
             />
-            {this.props.emoji ? (
+            {this.props.renderEmojiPicker ? (
               <div className={styles.emojiWrapper}>
                 {this.state.isShowingEmojiDrawer && this.emojiDrawer()}
                 <button
                   type="button"
                   onClick={this.handleEmojiDrawer}
                   disabled={this.props.maxLength - value.length <= 0}
-                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
+                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}
+                >
                   <SmileyIcon title="Emoji" className={styles.smileyIcon} />
                 </button>
               </div>
@@ -385,6 +382,9 @@ class InputComponent extends Component<InputProps, IState> {
 }
 
 export interface InputProps {
+  /** Pass an emoji picker component to render have it rendered and work with the input */
+  renderEmojiPicker?: (onSelect: (emoji: string) => void) => JSX.Element;
+
   id?: string;
   /** The label above the input field */
   label?: string;
@@ -445,9 +445,6 @@ export interface InputProps {
 
   // If you want to enable browser suggestions on the input
   autoComplete?: string;
-
-  // set this to true if you want to have an emoji button
-  emoji?: boolean;
 
   // set this to true if you want to display the length counter
   showCounter?: boolean;

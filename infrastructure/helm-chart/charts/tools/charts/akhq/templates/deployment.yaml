@@ -21,6 +21,7 @@ spec:
     metadata:
       labels:
         app: akhq
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
         - name: app

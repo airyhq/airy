@@ -72,7 +72,8 @@ const GoogleConnect = (props: GoogleProps) => {
         <InfoButton
           link="https://airy.co/docs/core/sources/google"
           text="more information about this source"
-          color="grey"></InfoButton>
+          color="grey"
+        ></InfoButton>
 
         <LinkButton onClick={props.history.goBack} type="button">
           <ArrowLeftIcon className={styles.backIcon} />

@@ -15,14 +15,14 @@
 
 .contactContent {
   @extend .textMessage;
-  background: var(--color-background-blue);
-  color: var(--color-text-contrast);
+  background: var(--color-airy-message-inbound);
+  color: var(--color-airy-message-text-inbound);
 }
 
 .memberContent {
   @extend .textMessage;
-  background: var(--color-airy-blue);
-  color: white;
+  background: var(--color-airy-message-outbound);
+  color: var(--color-airy-message-text-outbound);
 }
 
 .messageLink {

@@ -57,17 +57,20 @@ const QuickFilter = (props: ConversationsFilterProps) => {
           <div className={styles.quickFilterButtonsBackground}>
             <button
               className={filterState === 'all' ? styles.quickFilterButtonActive : styles.quickFilterButton}
-              onClick={() => setCurrentState('all')}>
+              onClick={() => setCurrentState('all')}
+            >
               All
             </button>
             <button
               className={filterState === 'open' ? styles.quickFilterButtonActive : styles.quickFilterButton}
-              onClick={() => setCurrentState('open')}>
+              onClick={() => setCurrentState('open')}
+            >
               Open
             </button>
             <button
               className={filterState === 'closed' ? styles.quickFilterButtonActive : styles.quickFilterButton}
-              onClick={() => setCurrentState('closed')}>
+              onClick={() => setCurrentState('closed')}
+            >
               Closed
             </button>
           </div>

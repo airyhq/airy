@@ -31,11 +31,24 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
     height: Math.min(config.config?.height ?? defaultHeight, windowHeight),
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
+      '--color-airy-message-outbound': config.config?.primaryColor,
     }),
     ...(config.config?.accentColor && {
       '--color-airy-accent': config.config?.accentColor,
       '--color-airy-blue-hover': config.config?.accentColor,
       '--color-airy-blue-pressed': config.config?.accentColor,
+    }),
+    ...(config.config?.outboundMessageColor && {
+      '--color-airy-message-outbound': config.config?.outboundMessageColor,
+    }),
+    ...(config.config?.inboundMessageColor && {
+      '--color-airy-message-inbound': config.config?.inboundMessageColor,
+    }),
+    ...(config.config?.outboundMessageTextColor && {
+      '--color-airy-message-text-outbound': config.config?.outboundMessageTextColor,
+    }),
+    ...(config.config?.inboundMessageTextColor && {
+      '--color-airy-message-text-inbound': config.config?.inboundMessageTextColor,
     }),
   };
 

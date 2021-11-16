@@ -17,7 +17,6 @@ func GetMiddleware(f func(string) string) StdWriter {
 func (s StdWriter) Write(p []byte) (int, error) {
 	_, err := fmt.Print(s.f(string(p)))
 	if err != nil {
-		fmt.Print("HNA")
 		Exit(err)
 	}
 	return len(p), err

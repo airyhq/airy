@@ -62,9 +62,11 @@ spec:
             httpHeaders:
               - name: Health-Check
                 value: health-check
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           periodSeconds: 10
           failureThreshold: 3
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
       initContainers:
       - name: wait
         image: busybox

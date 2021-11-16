@@ -20,7 +20,8 @@ export const UnknownSourceText = ({text, fromContact, sourceName}: TextRenderPro
         options={{
           defaultProtocol: 'https',
           className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,
-        }}>
+        }}
+      >
         {text}
       </Linkify>
     </div>

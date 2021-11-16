@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {Text} from '../../components/Text';
 import styles from './index.module.scss';
 
 type VideoRenderProps = {
   videoUrl: string;
+  text?: string;
+  fromContact?: boolean;
 };
 
 /**
@@ -13,7 +16,7 @@ type VideoRenderProps = {
  */
 const failedUrls = [];
 
-export const Video = ({videoUrl}: VideoRenderProps) => {
+export const Video = ({videoUrl, text, fromContact}: VideoRenderProps) => {
   const [isVideoFailed, setVideoFailed] = useState(failedUrls.includes(videoUrl));
 
   useEffect(() => {
@@ -26,19 +29,23 @@ export const Video = ({videoUrl}: VideoRenderProps) => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.item}>
-        {isVideoFailed ? (
-          <div>Loading of video failed</div>
-        ) : (
-          <a href={videoUrl} target="_blank" rel="noopener noreferrer">
-            <video className={styles.video} controls preload="metadata" onError={loadingFailed}>
-              <source src={videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </a>
-        )}
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.item}>
+          {isVideoFailed ? (
+            <div>Loading of video failed</div>
+          ) : (
+            <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+              <video className={styles.video} controls preload="metadata" onError={loadingFailed}>
+                <source src={videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </a>
+          )}
+        </div>
       </div>
-    </div>
+
+      {text && <Text text={text} fromContact={fromContact} />}
+    </>
   );
 };

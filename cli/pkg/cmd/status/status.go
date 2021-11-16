@@ -31,7 +31,7 @@ func status(cmd *cobra.Command, args []string) {
 	if err != nil {
 		console.Exit("Could not get kubernetes client", err)
 	}
-	cm, _ := clientset.CoreV1().ConfigMaps(viper.GetString("namespace")).Get(context.TODO(), "api-config", v1.GetOptions{})
+	cm, _ := clientset.CoreV1().ConfigMaps(viper.GetString("namespace")).Get(context.TODO(), "security", v1.GetOptions{})
 
 	c.Token = cm.Data["systemToken"]
 
@@ -42,13 +42,19 @@ func status(cmd *cobra.Command, args []string) {
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+	fmt.Fprintf(w, "service\tenabled\thealthy\n")
 
-	for k, v := range res.Components {
-		if v["enabled"].(bool) {
-			fmt.Fprintf(w, "%s\t\u2713\n", k)
-		} else {
-			fmt.Fprintf(w, "%s\t\u2717\n", k)
+	for serviceName, service := range res.Services {
+		enabledStr := "❌"
+		if service.Enabled {
+			enabledStr = "✅"
 		}
+		healthyStr := "❌"
+		if service.Healthy {
+			healthyStr = "✅"
+		}
+
+		fmt.Fprintf(w, "%s\t%s\t%s\n", serviceName, enabledStr, healthyStr)
 	}
 
 	w.Flush()

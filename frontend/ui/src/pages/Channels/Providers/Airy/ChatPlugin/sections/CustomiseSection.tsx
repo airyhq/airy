@@ -40,8 +40,40 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useLocalState('showPrimaryColorPicker', false);
   const [accentColor, setAccentColor] = useLocalState('accentColor', '');
   const [showAccentColorPicker, setShowAccentColorPicker] = useLocalState('showAccentColorPicker', false);
+
   const [backgroundColor, setBackgroundColor] = useLocalState('backgroundColor', '');
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useLocalState('showBackgroundColorPicker', false);
+
+  const [inboundMessageBackgroundColor, setInboundMessageBackgroundColor] = useLocalState(
+    'inboundMessageBackgroundColor',
+    ''
+  );
+  const [showInboundMessageColorPicker, setShowInboundMessageColorPicker] = useLocalState(
+    'showInboundMessageColorPicker',
+    false
+  );
+
+  const [inboundMessageTextColor, setInboundMessageTextColor] = useLocalState('inboundMessageTextColor', '');
+  const [showInboundMessageTextColorPicker, setShowInboundMessageTextColorPicker] = useLocalState(
+    'showInboundMessageTextColorPicker',
+    false
+  );
+
+  const [outboundMessageBackgroundColor, setOutboundMessageBackgroundColor] = useLocalState(
+    'outboundMessageBackgroundColor',
+    ''
+  );
+  const [showOutboundMessageColorPicker, setShowOutboundMessageColorPicker] = useLocalState(
+    'showOutboundMessageColorPicker',
+    false
+  );
+
+  const [outboundMessageTextColor, setOutboundMessageTextColor] = useLocalState('outboundMessageTextColor', '');
+  const [showOutboundMessageTextColorPicker, setShowOutboundMessageTextColorPicker] = useLocalState(
+    'showOutboundMessageTextColorPicker',
+    false
+  );
+
   const [height, setHeight] = useLocalState('height', '700');
   const [width, setWidth] = useLocalState('width', '350');
   const [disableMobile, setDisableMobile] = useLocalState('disableMobile', false);
@@ -72,6 +104,22 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
+  const toggleShowInboundMessageColorPicker = () => {
+    setShowInboundMessageColorPicker(!showInboundMessageColorPicker);
+  };
+
+  const toggleShowInboundMessageTextColorPicker = () => {
+    setShowInboundMessageTextColorPicker(!showInboundMessageTextColorPicker);
+  };
+
+  const toggleShowOutboundMessageColorPicker = () => {
+    setShowOutboundMessageColorPicker(!showOutboundMessageColorPicker);
+  };
+
+  const toggleShowOutboundMessageTextColorPicker = () => {
+    setShowOutboundMessageTextColorPicker(!showOutboundMessageTextColorPicker);
+  };
+
   const getTemplateConfig = () => {
     const config = [
       headerText && `headerText: '${headerText}'`,
@@ -84,6 +132,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       primaryColor && `primaryColor: '${primaryColor}'`,
       accentColor && `accentColor: '${accentColor}'`,
       backgroundColor && `backgroundColor: '${backgroundColor}'`,
+      inboundMessageBackgroundColor && `inboundMessageColor: '${inboundMessageBackgroundColor}'`,
+      inboundMessageTextColor && `inboundMessageTextColor: '${inboundMessageTextColor}'`,
+      outboundMessageBackgroundColor && `outboundMessageColor: '${outboundMessageBackgroundColor}'`,
+      outboundMessageTextColor && `outboundMessageTextColor: '${outboundMessageTextColor}'`,
       height && `height: '${height}'`,
       width && `width: '${width}'`,
       `closeMode: '${closingOption}'`,
@@ -109,6 +161,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(primaryColor && {primaryColor}),
       ...(accentColor && {accentColor}),
       ...(backgroundColor && {backgroundColor}),
+      ...(outboundMessageBackgroundColor && {outboundMessageColor: outboundMessageBackgroundColor}),
+      ...(outboundMessageTextColor && {outboundMessageTextColor}),
+      ...(inboundMessageBackgroundColor && {inboundMessageColor: inboundMessageBackgroundColor}),
+      ...(inboundMessageTextColor && {inboundMessageTextColor}),
       ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
       ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
       ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
@@ -344,6 +400,170 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
+        <p>Inbound Background Color</p>
+        <div className={styles.colorPicker}>
+          {showInboundMessageColorPicker && (
+            <ListenOutsideClick
+              className={styles.colorPickerWrapper}
+              onOuterClick={toggleShowInboundMessageColorPicker}
+            >
+              <SketchPicker
+                color={inboundMessageBackgroundColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setInboundMessageBackgroundColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: inboundMessageBackgroundColor}}
+            onClick={toggleShowInboundMessageColorPicker}
+          />
+          <Input
+            type="text"
+            name="backgroundColor"
+            value={inboundMessageBackgroundColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setInboundMessageBackgroundColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newBackgroundColor = value.startsWith('#') ? value : '#' + value;
+                setInboundMessageBackgroundColor(newBackgroundColor.toUpperCase());
+              } else {
+                setInboundMessageBackgroundColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
+        <p>Inbound Text Color</p>
+        <div className={styles.colorPicker}>
+          {showInboundMessageTextColorPicker && (
+            <ListenOutsideClick
+              className={styles.colorPickerWrapper}
+              onOuterClick={toggleShowInboundMessageTextColorPicker}
+            >
+              <SketchPicker
+                color={inboundMessageTextColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setInboundMessageTextColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: inboundMessageTextColor}}
+            onClick={toggleShowInboundMessageTextColorPicker}
+          />
+          <Input
+            type="text"
+            name="backgroundColor"
+            value={inboundMessageTextColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setInboundMessageTextColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newBackgroundColor = value.startsWith('#') ? value : '#' + value;
+                setInboundMessageTextColor(newBackgroundColor.toUpperCase());
+              } else {
+                setInboundMessageTextColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
+        <p>Outbound Background Color</p>
+        <div className={styles.colorPicker}>
+          {showOutboundMessageColorPicker && (
+            <ListenOutsideClick
+              className={styles.colorPickerWrapper}
+              onOuterClick={toggleShowOutboundMessageColorPicker}
+            >
+              <SketchPicker
+                color={outboundMessageBackgroundColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setOutboundMessageBackgroundColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: outboundMessageBackgroundColor}}
+            onClick={toggleShowOutboundMessageColorPicker}
+          />
+          <Input
+            type="text"
+            name="backgroundColor"
+            value={outboundMessageBackgroundColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setOutboundMessageBackgroundColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newBackgroundColor = value.startsWith('#') ? value : '#' + value;
+                setOutboundMessageBackgroundColor(newBackgroundColor.toUpperCase());
+              } else {
+                setOutboundMessageBackgroundColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
+        <p>Outbound Text Color</p>
+        <div className={styles.colorPicker}>
+          {showOutboundMessageTextColorPicker && (
+            <ListenOutsideClick
+              className={styles.colorPickerWrapper}
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}
+            >
+              <SketchPicker
+                color={outboundMessageTextColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setOutboundMessageTextColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: outboundMessageTextColor}}
+            onClick={toggleShowOutboundMessageTextColorPicker}
+          />
+          <Input
+            type="text"
+            name="backgroundColor"
+            value={outboundMessageTextColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setOutboundMessageTextColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newBackgroundColor = value.startsWith('#') ? value : '#' + value;
+                setOutboundMessageTextColor(newBackgroundColor.toUpperCase());
+              } else {
+                setOutboundMessageTextColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
         <div className={styles.extraOptions}>
           <Dropdown
             text={`Closing Options: ${closingOption}`}
@@ -363,19 +583,6 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
               setBubbleState(option);
             }}
           />
-        </div>
-        <div className={styles.extraOptions}>
-          <Toggle
-            value={disableMobile}
-            text="Disabled for Mobile"
-            updateValue={(value: boolean) => setDisableMobile(value)}
-          />
-        </div>
-        <div className={styles.extraOptions}>
-          <Toggle value={hideInputBar} text="Hide Input Bar" updateValue={(value: boolean) => setHideInputBar(value)} />
-        </div>
-        <div className={styles.extraOptions}>
-          <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
         </div>
       </div>
       <div className={styles.customiseContainer}>
@@ -491,13 +698,27 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           fontClass="font-base"
           showErrors={false}
         />
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={disableMobile}
+            text="Disabled for Mobile"
+            updateValue={(value: boolean) => setDisableMobile(value)}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Toggle value={hideInputBar} text="Hide Input Bar" updateValue={(value: boolean) => setHideInputBar(value)} />
+        </div>
+        <div className={styles.extraOptions}>
+          <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
+        </div>
       </div>
       <div
         className={styles.pluginWrapper}
         style={{
           ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
           ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}>
+        }}
+      >
         <div className={styles.pluginContainer}>
           <AiryChatPlugin config={demoConfig} />
         </div>

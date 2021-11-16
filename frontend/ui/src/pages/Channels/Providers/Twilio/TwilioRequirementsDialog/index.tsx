@@ -23,7 +23,8 @@ export const TwilioRequirementsDialog = (props: TwilioRequirementsDialogProps) =
             <a
               href="https://support.twilio.com/hc/en-us/articles/223136027-Auth-Tokens-and-How-to-Change-Them"
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               Twilio Auth Token
             </a>{' '}
             to the{' '}
@@ -31,7 +32,8 @@ export const TwilioRequirementsDialog = (props: TwilioRequirementsDialogProps) =
               className={styles.configMessage}
               href="https://airy.co/docs/core/getting-started/installation/configuration"
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               airy.yaml
             </a>{' '}
             file.

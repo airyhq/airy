@@ -173,7 +173,8 @@ const MessageList = (props: MessageListProps) => {
               sentAt={sentAt}
               lastInGroup={lastInGroup}
               isChatPlugin={false}
-              decoration={messageDecoration}>
+              decoration={messageDecoration}
+            >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />
             </MessageInfoWrapper>

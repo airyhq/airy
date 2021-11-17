@@ -18,7 +18,7 @@ import {AiryChatPluginConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 
-import {SourceMessage, CommandUnion} from 'render';
+import {SourceMessage, CommandUnion, getOutboundMapper} from 'render';
 import {MessageInfoWrapper} from 'components';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -66,6 +66,7 @@ const Chat = ({config, ...props}: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(chatHiddenInitialState());
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
+  const [mediaUrl, setMediaUrl] = useState('');
   const [connectionState, setConnectionState] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newConversation, setNewConversation] = useState(false);
@@ -121,11 +122,25 @@ const Chat = ({config, ...props}: Props) => {
         text,
       });
     },
+    sendFile: (type: 'image' | 'video' | 'file', mediaUrl: string) => {
+      ws.onSend({
+        type: type,
+        url: mediaUrl,
+      });
+    },
   };
 
-  const sendMessage = (input: any) => {
+  const sendMessage = (text: string) => {
     if (config.showMode) return;
-    ctrl.sendMessage(input);
+    ctrl.sendMessage(text);
+  };
+
+  const sendMedia = (fileType: 'image' | 'video' | 'file', mediaUrl: string) => {
+    console.log('MEDIAURL FROM PARENT: ', mediaUrl);
+    console.log('FILETYPE FROM PARENT: ', fileType);
+
+    if (config.showMode) return;
+    ctrl.sendFile(fileType, mediaUrl);
   };
 
   const onReceive = (data: IMessage) => {
@@ -178,6 +193,7 @@ const Chat = ({config, ...props}: Props) => {
         newConversation ? (
           <AiryInputBar
             sendMessage={sendMessage}
+            sendMedia={sendMedia}
             messageString={messageString}
             setMessageString={setMessageString}
             config={config}

@@ -1,6 +1,8 @@
 import {
   FileContent,
   QuickReplyCommand,
+  SimpleAttachment,
+  SimpleAttachmentPayload,
   SuggestionResponse,
   TextContent,
   VideoContent,
@@ -14,9 +16,11 @@ export const setApiHost = apiHost => {
 };
 
 export const sendMessage = (
-  message: TextContent | ImageContent | VideoContent | FileContent | SuggestionResponse | QuickReplyCommand,
+  message: TextContent | SimpleAttachmentPayload | SuggestionResponse | QuickReplyCommand,
   token: string
 ) => {
+  console.log('message: ', message);
+
   return fetch(`${host}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
@@ -27,10 +31,8 @@ export const sendMessage = (
   });
 };
 
-const convertToBody = (
-  message: TextContent | ImageContent | VideoContent | FileContent | SuggestionResponse | QuickReplyCommand
-) => {
-  if (message.type == ('suggestionResponse' || 'quickReplies')) {
+const convertToBody = (message: TextContent | SimpleAttachmentPayload | SuggestionResponse | QuickReplyCommand) => {
+  if (message.type == ('suggestionResponse' || 'quickReplies') && 'text' in message) {
     return {
       message: {
         text: message.text,
@@ -39,33 +41,28 @@ const convertToBody = (
     };
   }
 
-  if (message.type == 'image') {
+  console.log('MESSAGE: ', message);
+
+  if (message.type == 'image' || message.type == 'video' || (message.type == 'file' && 'url' in message)) {
     return {
       message: {
-        imageUrl: message.imageUrl,
-      },
-    };
-  }
-  if (message.type == 'video') {
-    return {
-      message: {
-        videoUrl: message.videoUrl,
-      },
-    };
-  }
-  if (message.type == 'file') {
-    return {
-      message: {
-        fileUrl: message.fileUrl,
+        attachment: {
+          type: message.type,
+          payload: {
+            url: message.url,
+          },
+        },
       },
     };
   }
 
-  return {
-    message: {
-      text: message.text,
-    },
-  };
+  if ('text' in message) {
+    return {
+      message: {
+        text: message.text,
+      },
+    };
+  }
 };
 
 export const getResumeToken = async (channelId: string, authToken: string) => {
@@ -111,19 +108,18 @@ export const authenticate = async (channelId: string, resumeToken?: string) =>
       );
     });
 
-export const uploadMedia = (fileToUpload: File) => {
+export const uploadMedia = (file: File) => {
   const formData = new FormData();
-  formData.append('file', fileToUpload);
-
+  formData.append('file', file);
   return fetch(`${host}/media.upload`, {
     method: 'POST',
     body: formData,
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: `Bearer ${token}`,
-    },
-  }).then(response => {
-    console.log('response: ', response);
-    
-  });
+  })
+    .then(res => res.json())
+    .then(response => {
+      return response.media_url;
+    })
+    .catch((err: Error) => {
+      console.error(err);
+    });
 };

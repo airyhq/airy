@@ -41,13 +41,13 @@ export const InputSelector = (props: InputSelectorProps) => {
 
   const scaleDownInputSelector = (fileSelectorHeight: number) => {
     const scaleRatio = Number(Math.min(contentResizedHeight / fileSelectorHeight).toFixed(2));
-    let iconSize;
-    let buttonSize;
+    let iconSize = '24px';
+    let buttonSize = '48px';
 
     if (scaleRatio <= 0.9) {
       if (scaleRatio < 0.5) {
-        iconSize = scaleRatio > 0.3 ? '36px' : '60px';
-        buttonSize = scaleRatio > 0.3 ? '72px' : '120px';
+        iconSize = scaleRatio > 0.3 ? '24px' : '60px';
+        buttonSize = scaleRatio > 0.3 ? '48px' : '120px';
       } else {
         iconSize = '18px';
         buttonSize = '36px';
@@ -63,7 +63,6 @@ export const InputSelector = (props: InputSelectorProps) => {
     }
 
     fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
-    fileSelectorDiv.current.style.transformOrigin = 'left';
     setSelectorPreviewCloseButton(true);
   };
 

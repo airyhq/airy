@@ -1,4 +1,46 @@
+@import 'assets/scss/colors.scss';
+
 .container {
-  display: flex;
-  background-color: red;
+  max-width: 550px;
+  position: relative;
+  margin: 0px 0px 5px 10px;
+  animation: fadeIn 3s linear forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.removeButton {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+  padding: 8px;
+  margin: 0;
+  line-height: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-light-gray);
+  background-color: var(--color-template-highlight);
+  cursor: pointer;
+  outline: none;
+  z-index: 1;
+
+  svg {
+    height: 10px;
+    width: 10px;
+  }
+}
+
+.removeButton:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

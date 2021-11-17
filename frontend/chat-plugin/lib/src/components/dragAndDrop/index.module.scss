@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-grow: 1;
+}
+
+.dragOverlay {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: 74px;
+  left: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  background-color: var(--color-template-highlight);
+  opacity: 0.9;
+  border: 2px dashed var(--color-airy-blue);
+  border-radius: 8px;
+
+  h1 {
+    font-family: 'Lato';
+  }
+}

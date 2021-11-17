@@ -32,7 +32,7 @@
     "react-router-dom": "5.3.0",
     "redux": "^4.1.2",
     "regenerator-runtime": "^0.13.9",
-    "reselect": "4.1.1",
+    "reselect": "4.1.4",
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {

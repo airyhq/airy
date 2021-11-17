@@ -11,6 +11,7 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
+import {setFilter} from '../../../actions/conversationsFilter';
 
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
@@ -29,10 +30,12 @@ type StateButtonsProps = {
 const mapDispatchToProps = {
   readConversations,
   conversationState,
+  setFilter,
 };
 
 const mapStateToProps = (state: StateModel) => ({
   filteredConversations: newestFilteredConversationFirst(state),
+  currentFilter: state.data.conversations.filtered.currentFilter,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -62,9 +65,10 @@ const ClosedStateButton = ({eventHandler}: StateButtonsProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, readConversations, conversationState} = props;
+  const {conversation, active, readConversations, conversationState, currentFilter, setFilter} = props;
 
   const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
+  const [filteredItemChangedStateAnimation, setFilteredItemChangedStateAnimation] = useState(false);
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
@@ -75,10 +79,23 @@ const ConversationListItem = (props: ConversationListItemProps) => {
       setButtonStateEnabled(false);
       const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
       conversationState(conversation.id, newState);
+
       event.preventDefault();
       event.stopPropagation();
+
+      if (Object.entries(currentFilter).length !== 0) {
+        setFilteredItemChangedStateAnimation(true);
+      }
+
       setTimeout(() => {
+        if (Object.entries(currentFilter).length !== 0) {
+          setFilter(currentFilter);
+        }
         setButtonStateEnabled(true);
+
+        if (filteredItemChangedStateAnimation) {
+          setFilteredItemChangedStateAnimation(false);
+        }
       }, 2000);
     }
   };
@@ -94,12 +111,16 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={styles.clickableListItem} onClick={markAsRead} data-cy={cyClickableListItem}>
+    <div
+      className={`${styles.clickableListItem} ${filteredItemChangedStateAnimation ? styles.fadeOff : ''}`}
+      onClick={markAsRead}
+      data-cy={cyClickableListItem}
+    >
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''
-          }`}
+          } ${filteredItemChangedStateAnimation ? styles.fadeOff : ''}`}
         >
           <div className={styles.profileImage}>
             <Avatar contact={participant} />

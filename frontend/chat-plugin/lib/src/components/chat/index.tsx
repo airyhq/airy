@@ -29,6 +29,7 @@ import NewConversation from '../../components/newConversation';
 import {setApiHost, authenticate} from '../../api';
 
 import style from './index.module.scss';
+import {DragAndDropWrapper} from '../dragAndDrop';
 
 let ws: WebSocket;
 
@@ -66,7 +67,7 @@ const Chat = ({config, ...props}: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(chatHiddenInitialState());
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
-  const [mediaUrl, setMediaUrl] = useState('');
+  const [dragAndDropFile, setDragAndDropFile] = useState<File | undefined>(null);
   const [connectionState, setConnectionState] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newConversation, setNewConversation] = useState(false);
@@ -136,9 +137,6 @@ const Chat = ({config, ...props}: Props) => {
   };
 
   const sendMedia = (fileType: 'image' | 'video' | 'file', mediaUrl: string) => {
-    console.log('MEDIAURL FROM PARENT: ', mediaUrl);
-    console.log('FILETYPE FROM PARENT: ', fileType);
-
     if (config.showMode) return;
     ctrl.sendFile(fileType, mediaUrl);
   };
@@ -194,6 +192,7 @@ const Chat = ({config, ...props}: Props) => {
           <AiryInputBar
             sendMessage={sendMessage}
             sendMedia={sendMedia}
+            dragDropFile={dragAndDropFile}
             messageString={messageString}
             setMessageString={setMessageString}
             config={config}
@@ -234,6 +233,10 @@ const Chat = ({config, ...props}: Props) => {
     }
   };
 
+  const handleDragDrop = (file: File) => {
+    setDragAndDropFile(file);
+  };
+
   return (
     <div className={`${config.disableMobile === true ? style.mainFlex : style.main}`}>
       {!isChatHidden && (
@@ -241,64 +244,66 @@ const Chat = ({config, ...props}: Props) => {
           className={`${style.wrapper} ${styleFor(animation)}`}
           style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
           <HeaderBarProp render={headerBar} />
-          <div className={style.connectedContainer}>
-            <div className={style.chat}>
-              <div id="messages" className={style.messages} data-cy={cyChatPluginMessageList}>
-                {messages.map((message: Message, index: number) => {
-                  const nextMessage = messages[index + 1];
-                  const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
+          <DragAndDropWrapper setDragDropFile={handleDragDrop}>
+            <div className={style.connectedContainer}>
+              <div className={style.chat}>
+                <div id="messages" className={style.messages} data-cy={cyChatPluginMessageList}>
+                  {messages.map((message: Message, index: number) => {
+                    const nextMessage = messages[index + 1];
+                    const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
 
-                  return (
-                    <MessageProp
-                      key={message.id}
-                      render={
-                        props.airyMessageProp
-                          ? () => props.airyMessageProp(ctrl)
-                          : () => (
-                              <MessageInfoWrapper
-                                fromContact={message.fromContact}
-                                isChatPlugin={true}
-                                lastInGroup={lastInGroup}>
-                                <SourceMessage
-                                  contentType="message"
-                                  message={message}
-                                  source="chatplugin"
-                                  invertSides={true}
-                                  commandCallback={commandCallback}
-                                />
-                              </MessageInfoWrapper>
-                            )
-                      }
-                    />
-                  );
-                })}
-              </div>
-              <InputBarProp render={inputBar} />
-              {connectionState === ConnectionState.Disconnected && (
-                <div className={style.modalOverlay}>Reconnecting...</div>
-              )}
-              {showModal && (
-                <div className={style.modalOverlay}>
-                  <div className={style.modalCloseChat}>
-                    <p>Are you sure you want to end this chat?</p>
-                    <div className={style.buttonWrapper}>
-                      <button className={style.cancelButton} onClick={closeModalOnClick}>
-                        {' '}
-                        {t('cancel')}
-                      </button>
-                      <button
-                        className={style.endChatButton}
-                        onClick={cancelChatSession}
-                        data-cy={cyChatPluginEndChatModalButton}>
-                        {' '}
-                        {t('endChat')}
-                      </button>
+                    return (
+                      <MessageProp
+                        key={message.id}
+                        render={
+                          props.airyMessageProp
+                            ? () => props.airyMessageProp(ctrl)
+                            : () => (
+                                <MessageInfoWrapper
+                                  fromContact={message.fromContact}
+                                  isChatPlugin={true}
+                                  lastInGroup={lastInGroup}>
+                                  <SourceMessage
+                                    contentType="message"
+                                    message={message}
+                                    source="chatplugin"
+                                    invertSides={true}
+                                    commandCallback={commandCallback}
+                                  />
+                                </MessageInfoWrapper>
+                              )
+                        }
+                      />
+                    );
+                  })}
+                </div>
+                <InputBarProp render={inputBar} />
+                {connectionState === ConnectionState.Disconnected && (
+                  <div className={style.modalOverlay}>Reconnecting...</div>
+                )}
+                {showModal && (
+                  <div className={style.modalOverlay}>
+                    <div className={style.modalCloseChat}>
+                      <p>Are you sure you want to end this chat?</p>
+                      <div className={style.buttonWrapper}>
+                        <button className={style.cancelButton} onClick={closeModalOnClick}>
+                          {' '}
+                          {t('cancel')}
+                        </button>
+                        <button
+                          className={style.endChatButton}
+                          onClick={cancelChatSession}
+                          data-cy={cyChatPluginEndChatModalButton}>
+                          {' '}
+                          {t('endChat')}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          </DragAndDropWrapper>
         </div>
       )}
       <BubbleProp render={bubble} />

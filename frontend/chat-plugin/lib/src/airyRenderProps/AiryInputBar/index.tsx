@@ -20,6 +20,7 @@ type AiryInputBarProps = {
   setMessageString: (text: string) => void;
   config?: Config;
   setNewConversation: React.Dispatch<React.SetStateAction<boolean>>;
+  dragDropFile: File;
 };
 
 const AiryInputBar = (props: AiryInputBarProps) => {
@@ -44,6 +45,12 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     textInputRef.current.selectionStart = props.messageString.length;
     textInputRef.current.selectionEnd = props.messageString.length;
   }, []);
+
+  useEffect(() => {
+    if (props.dragDropFile) {
+      uploadFile(props.dragDropFile);
+    }
+  }, [props.dragDropFile]);
 
   const resizeTextarea = () => {
     const textArea = textInputRef.current;
@@ -88,6 +95,17 @@ const AiryInputBar = (props: AiryInputBarProps) => {
 
   const removeElementFromInput = () => {
     setUploadedFileUrl(null);
+  };
+
+  const uploadFile = (file: File) => {
+    const fileType = getAttachmentType(file.name, 'chatplugin');
+    setMediaType(fileType);
+    setLoadingFile(true);
+    uploadMedia(file).then((mediaUrl: string) => {
+      setUploadedFileUrl(mediaUrl);
+      props.setMessageString('');
+      setLoadingFile(false);
+    });
   };
 
   const InputOptions = () => {
@@ -142,14 +160,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     const selectedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (uploadedFileUrl) setUploadedFileUrl(null);
       const file = event.target.files[0];
-      const fileType = getAttachmentType(file.name, 'chatplugin');
-      setMediaType(fileType);
-      setLoadingFile(true);
-      uploadMedia(file).then((mediaUrl: string) => {
-        setUploadedFileUrl(mediaUrl);
-        props.setMessageString('');
-        setLoadingFile(false);
-      });
+      uploadFile(file);
     };
 
     return (

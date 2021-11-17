@@ -1,13 +1,9 @@
 import {
-  FileContent,
   QuickReplyCommand,
-  SimpleAttachment,
   SimpleAttachmentPayload,
   SuggestionResponse,
   TextContent,
-  VideoContent,
 } from 'render/providers/chatplugin/chatPluginModel';
-import {ImageContent} from 'render/providers/twilio/twilioModel';
 import {resetStorage, setResumeTokenInStorage} from '../storage';
 
 let host;
@@ -19,8 +15,6 @@ export const sendMessage = (
   message: TextContent | SimpleAttachmentPayload | SuggestionResponse | QuickReplyCommand,
   token: string
 ) => {
-  console.log('message: ', message);
-
   return fetch(`${host}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
@@ -40,8 +34,6 @@ const convertToBody = (message: TextContent | SimpleAttachmentPayload | Suggesti
       },
     };
   }
-
-  console.log('MESSAGE: ', message);
 
   if (message.type == 'image' || message.type == 'video' || (message.type == 'file' && 'url' in message)) {
     return {

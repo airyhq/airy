@@ -175,8 +175,6 @@ const inboundContent = (message): ContentUnion => {
 const outboundContent = (message): ContentUnion => {
   const messageContent = message?.content?.message ?? message?.content ?? message;
 
-  console.log('OUTBOUND', messageContent);
-
   //media
   if (messageContent?.MediaUrl) {
     const mediaUrl = messageContent.MediaUrl;

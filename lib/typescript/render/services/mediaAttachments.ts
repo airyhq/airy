@@ -43,14 +43,40 @@ export const attachmentsExtensions = {
   googleImageExtensions: ['jpeg', 'jpg', 'png'],
 
   //chatplugin
-  chatpluginImageExtensions: ['jpeg', 'jpg', 'png'],
-  chatpluginVideoExtensions: ['mp4'],
-  chatpluginFileExtensions: ['pdf', 'vcf'],
+  chatpluginImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'webp', 'heic'],
+  chatpluginVideoExtensions: ['mp4', 'mov', 'wmv'],
+  chatpluginAudioExtensions: ['mp3', 'ogg', 'wav'],
+  chatpluginFileExtensions: [
+    'pdf',
+    'cvc',
+    'doc',
+    'docx',
+    'rtf',
+    'tex',
+    'txt',
+    'wpd',
+    'psd',
+    'svg',
+    'ico',
+    'json',
+    'md',
+    'mdx',
+    'tsx',
+    'jsx',
+    'js',
+    'ts',
+    'css',
+    'scss',
+    'html',
+    'bmp',
+    'tiff',
+    'tif',
+  ],
 };
 
 export const getAttachmentType = (fileName: string, source: string) => {
   const fileNameArr = fileName.split('.');
-  const fileNameExtension = fileNameArr[fileNameArr.length - 1];
+  const fileNameExtension = fileNameArr[fileNameArr.length - 1].toLowerCase();
 
   if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
 

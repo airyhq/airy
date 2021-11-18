@@ -47,9 +47,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   }, []);
 
   useEffect(() => {
-    if (props.dragDropFile) {
-      uploadFile(props.dragDropFile);
-    }
+    props.dragDropFile && uploadFile(props.dragDropFile);
   }, [props.dragDropFile]);
 
   const resizeTextarea = () => {
@@ -170,26 +168,29 @@ const AiryInputBar = (props: AiryInputBarProps) => {
             <EmojiPickerWrapper addEmoji={addEmoji} />
           </div>
         )}
-        <div className={style.iconContainer}>
-          <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
-            <div className={style.actionToolTip}>Emojis</div>
-            <Smiley aria-hidden className={style.smileyIcon} />
-          </button>
-          <button className={style.iconButton} type="button" onClick={openFileSelector}>
-            <div className={style.actionToolTip}>Files</div>
-            <PaperClip aria-hidden className={style.paperclipIcon} />
-          </button>
+        {!uploadedFileUrl && (
+          <div className={style.iconContainer}>
+            <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
+              <div className={style.actionToolTip}>Emojis</div>
+              <Smiley aria-hidden className={style.smileyIcon} />
+            </button>
+            <button className={style.iconButton} type="button" onClick={openFileSelector}>
+              <div className={style.actionToolTip}>Files</div>
+              <PaperClip aria-hidden className={style.paperclipIcon} />
+            </button>
 
-          <input
-            ref={fileRef}
-            type="file"
-            id="file"
-            name="file"
-            onChange={selectedFile}
-            className={style.fileInput}
-            accept=".png, .jpg, .jpeg, .mp4, .pdf, .vcf"
-          />
-        </div>
+            <input
+              ref={fileRef}
+              type="file"
+              id="file"
+              name="file"
+              onChange={selectedFile}
+              className={style.fileInput}
+              // accept=".png, .jpg, .jpeg, .mp4, .pdf, .vcf"
+              accept=".jpeg, .jpg, .gif, .png, .webp, .heic, .svg, .pdf"
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -197,7 +198,10 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   return (
     <>
       {!(config.hideInputBar === true) && (
-        <form className={style.inputBar} onSubmit={onSubmit}>
+        <form
+          className={style.inputBar}
+          style={uploadedFileUrl ? {justifyContent: 'space-between'} : {justifyContent: 'flex-end'}}
+          onSubmit={onSubmit}>
           {loadingFile ? (
             <div className={style.selectorLoader}>
               <SimpleLoader />

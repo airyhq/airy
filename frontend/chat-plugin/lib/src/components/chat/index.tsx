@@ -18,7 +18,7 @@ import {AiryChatPluginConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 
-import {SourceMessage, CommandUnion, getOutboundMapper} from 'render';
+import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'components';
 
 /* eslint-disable @typescript-eslint/no-var-requires */

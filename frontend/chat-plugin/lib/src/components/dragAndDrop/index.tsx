@@ -1,4 +1,4 @@
-import React, {ReactChild, ReactChildren, useEffect, useState} from 'react';
+import React, {ReactChild, ReactChildren, useState} from 'react';
 import style from './index.module.scss';
 
 type DragAndDropWrapperProps = {

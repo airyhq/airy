@@ -371,7 +371,8 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}>
+            dataCy={cySuggestionsButton}
+          >
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -453,7 +454,8 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={input.trim().length == 0 && !canSendMessage()}
-            data-cy={cyMessageSendButton}>
+            data-cy={cyMessageSendButton}
+          >
             <div className={styles.sendButtonText}>
               <Paperplane />
             </div>
@@ -462,7 +464,8 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
+      >
         {'Shift + Enter to add line'}
       </div>
     </div>

@@ -43,7 +43,8 @@ export const DragAndDropWrapper = (props: DragAndDropWrapperProps) => {
       onDragEnter={e => handleDragEnter(e)}
       onDragOver={e => handleDragOver(e)}
       onDrop={e => handleFileDrop(e)}
-      onDragLeave={e => handleDragLeave(e)}>
+      onDragLeave={e => handleDragLeave(e)}
+    >
       {isFileDragged && (
         <div className={style.dragOverlay}>
           <h1>Drop Files Here</h1>

@@ -9,6 +9,7 @@ import {StateModel} from '../../reducers';
 
 import Messenger from './Messenger';
 import {setPageTitle} from '../../services/pageTitle';
+import {formatConversationCount} from '../../services/format/numbers';
 
 export type ConversationRouteProps = RouteComponentProps<{conversationId: string}>;
 
@@ -19,6 +20,7 @@ interface InboxProps {
 const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
   totalConversations: state.data.conversations.all.paginationData.total || 0,
+  filteredPaginationData: state.data.conversations.filtered.paginationData,
 });
 
 const mapDispatchToProps = {
@@ -29,7 +31,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
-  const {totalConversations, listChannels, listConversations} = props;
+  const {totalConversations, filteredPaginationData, listChannels, listConversations} = props;
 
   useEffect(() => {
     listConversations();
@@ -37,8 +39,14 @@ const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connect
   }, []);
 
   useEffect(() => {
-    setPageTitle(`Inbox (${totalConversations})`);
-  }, [totalConversations]);
+    setPageTitle(
+      `Inbox (${
+        filteredPaginationData.total === null
+          ? formatConversationCount(totalConversations)
+          : formatConversationCount(filteredPaginationData.total)
+      })`
+    );
+  }, [totalConversations, filteredPaginationData.total]);
 
   return <Messenger />;
 };

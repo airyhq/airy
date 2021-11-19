@@ -1,4 +1,9 @@
-import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {
+  QuickReplyCommand,
+  SimpleAttachmentPayload,
+  SuggestionResponse,
+  TextContent,
+} from 'render/providers/chatplugin/chatPluginModel';
 import {resetStorage, setResumeTokenInStorage} from '../storage';
 
 let host;
@@ -6,7 +11,10 @@ export const setApiHost = apiHost => {
   host = apiHost;
 };
 
-export const sendMessage = (message: TextContent | SuggestionResponse | QuickReplyCommand, token: string) => {
+export const sendMessage = (
+  message: TextContent | SimpleAttachmentPayload | SuggestionResponse | QuickReplyCommand,
+  token: string
+) => {
   return fetch(`${host}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
@@ -17,8 +25,8 @@ export const sendMessage = (message: TextContent | SuggestionResponse | QuickRep
   });
 };
 
-const convertToBody = (message: TextContent | SuggestionResponse | QuickReplyCommand) => {
-  if (message.type == ('suggestionResponse' || 'quickReplies')) {
+const convertToBody = (message: TextContent | SimpleAttachmentPayload | SuggestionResponse | QuickReplyCommand) => {
+  if (message.type == ('suggestionResponse' || 'quickReplies') && 'text' in message) {
     return {
       message: {
         text: message.text,
@@ -27,11 +35,26 @@ const convertToBody = (message: TextContent | SuggestionResponse | QuickReplyCom
     };
   }
 
-  return {
-    message: {
-      text: message.text,
-    },
-  };
+  if (message.type == 'image' || message.type == 'video' || (message.type == 'file' && 'url' in message)) {
+    return {
+      message: {
+        attachment: {
+          type: message.type,
+          payload: {
+            url: message.url,
+          },
+        },
+      },
+    };
+  }
+
+  if ('text' in message) {
+    return {
+      message: {
+        text: message.text,
+      },
+    };
+  }
 };
 
 export const getResumeToken = async (channelId: string, authToken: string) => {
@@ -76,3 +99,19 @@ export const authenticate = async (channelId: string, resumeToken?: string) =>
         new Error(`Airy Chat Plugin authentication failed. Please check your installation. ${error}`)
       );
     });
+
+export const uploadMedia = (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return fetch(`${host}/media.upload`, {
+    method: 'POST',
+    body: formData,
+  })
+    .then(res => res.json())
+    .then(response => {
+      return response.media_url;
+    })
+    .catch((err: Error) => {
+      console.error(err);
+    });
+};

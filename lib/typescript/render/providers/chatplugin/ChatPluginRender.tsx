@@ -7,6 +7,7 @@ import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
+import {Image, Video, File} from 'render/components';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.message), props);
@@ -55,6 +56,18 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           quickReplies={content.quickReplies}
         />
       );
+
+    case 'image':
+      return <Image imageUrl={content.imageUrl} />;
+
+    case 'images':
+      return <Image images={content.images} />;
+
+    case 'video':
+      return <Video videoUrl={content.videoUrl} />;
+
+    case 'file':
+      return <File fileUrl={content.fileUrl} />;
   }
 }
 
@@ -129,6 +142,10 @@ function mapContent(message): ContentUnion {
     };
   }
 
+  if (messageContent.attachment) {
+    return parseAttachment(messageContent.attachment);
+  }
+
   return {
     type: 'text',
     text: 'Unsupported message type',
@@ -147,6 +164,13 @@ const parseAttachment = (attachment: SimpleAttachment): AttachmentUnion => {
     return {
       type: 'video',
       videoUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'file') {
+    return {
+      type: 'file',
+      fileUrl: attachment.payload.url,
     };
   }
 

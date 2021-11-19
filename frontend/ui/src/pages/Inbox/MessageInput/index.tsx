@@ -155,7 +155,11 @@ const MessageInput = (props: Props) => {
   useEffect(() => {
     const sendingAttachmentEnabled =
       config.components['media-resolver'].enabled &&
-      (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp');
+      (source === 'facebook' ||
+        source === 'instagram' ||
+        source === 'google' ||
+        source === 'twilio.whatsapp' ||
+        source === 'chatplugin');
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
     } else if (sendingAttachmentEnabled) {
@@ -184,7 +188,11 @@ const MessageInput = (props: Props) => {
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
     const maxFileSizeAllowed =
-      source === 'instagram' ? 8 : source === 'twilio.whatsapp' || source === 'google' ? 5 : 15;
+      source === 'instagram'
+        ? 8
+        : source === 'twilio.whatsapp' || source === 'google'
+        ? 5
+        : 15 || (source === 'chatplugin' ? 5 : 15);
 
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {

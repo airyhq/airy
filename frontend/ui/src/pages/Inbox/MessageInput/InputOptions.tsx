@@ -57,6 +57,7 @@ export const InputOptions = (props: Props) => {
 
   useEffect(() => {
     const inputAcceptValue = getInputAcceptedFilesForSource(source);
+
     setInputAcceptedFiles(inputAcceptValue);
   }, [source]);
 
@@ -155,7 +156,11 @@ export const InputOptions = (props: Props) => {
       </button>
 
       {mediaResolverComponentsConfig.enabled &&
-        (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp') && (
+        (source === 'facebook' ||
+          source === 'instagram' ||
+          source === 'google' ||
+          source === 'twilio.whatsapp' ||
+          source === 'chatplugin') && (
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
             type="button"

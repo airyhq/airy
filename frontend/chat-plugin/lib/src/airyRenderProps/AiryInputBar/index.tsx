@@ -6,14 +6,21 @@ import {useTranslation} from 'react-i18next';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import style from './index.module.scss';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
+import {ReactComponent as PaperClip} from 'assets/images/icons/paperclipChatplugin.svg';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
+import {getAttachmentType, getOutboundMapper} from 'render';
+import {InputSelector} from './InputSelector';
+import {uploadMedia} from '../../api';
+import {SimpleLoader} from 'components';
 
 type AiryInputBarProps = {
   sendMessage: (text: string) => void;
+  sendMedia: (fileType: string, mediaUrl: string) => void;
   messageString: string;
   setMessageString: (text: string) => void;
   config?: Config;
   setNewConversation: React.Dispatch<React.SetStateAction<boolean>>;
+  dragDropFile: File;
 };
 
 const AiryInputBar = (props: AiryInputBarProps) => {
@@ -21,7 +28,13 @@ const AiryInputBar = (props: AiryInputBarProps) => {
 
   const {t} = useTranslation();
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [loadingFile, setLoadingFile] = useState<boolean>(false);
+  const [mediaType, setMediaType] = useState<string | null>(null);
   const emojiDiv = useRef(null);
+  const fileRef = useRef(null);
+  const outboundMapper: any = getOutboundMapper('chatplugin');
+  const contentResizedHeight = 100;
 
   const textInputRef = createRef<HTMLTextAreaElement>();
   const dataCyButtonId = cyInputbarButton;
@@ -32,6 +45,10 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     textInputRef.current.selectionStart = props.messageString?.length ?? 0;
     textInputRef.current.selectionEnd = props.messageString?.length ?? 0;
   }, []);
+
+  useEffect(() => {
+    props.dragDropFile && uploadFile(props.dragDropFile);
+  }, [props.dragDropFile]);
 
   const resizeTextarea = () => {
     const textArea = textInputRef.current;
@@ -50,6 +67,11 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       props.setMessageString('');
       props.sendMessage(props.messageString);
     }
+
+    if (uploadedFileUrl) {
+      props.sendMedia(mediaType, uploadedFileUrl);
+      setUploadedFileUrl(null);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -67,6 +89,21 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         props.sendMessage(localValue);
       }
     }
+  };
+
+  const removeElementFromInput = () => {
+    setUploadedFileUrl(null);
+  };
+
+  const uploadFile = (file: File) => {
+    const fileType = getAttachmentType(file.name, 'chatplugin');
+    setMediaType(fileType);
+    setLoadingFile(true);
+    uploadMedia(file).then((mediaUrl: string) => {
+      setUploadedFileUrl(mediaUrl);
+      props.setMessageString('');
+      setLoadingFile(false);
+    });
   };
 
   const InputOptions = () => {
@@ -114,19 +151,46 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       handleEmojiDrawer();
     };
 
+    const openFileSelector = () => {
+      fileRef.current.click();
+    };
+
+    const selectedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (uploadedFileUrl) setUploadedFileUrl(null);
+      const file = event.target.files[0];
+      uploadFile(file);
+    };
+
     return (
-      <div className={style.messageActionsContainer}>
-        <>
-          {isShowingEmojiDrawer && (
-            <div ref={emojiDiv} className={style.emojiDrawer}>
-              <EmojiPickerWrapper addEmoji={addEmoji} />
-            </div>
-          )}
-          <button className={style.iconButton} type="button" onClick={() => handleEmojiDrawer()}>
-            <div className={style.actionToolTip}>Emojis</div>
-            <Smiley aria-hidden className={style.smileyIcon} />
-          </button>
-        </>
+      <div>
+        {isShowingEmojiDrawer && (
+          <div ref={emojiDiv} className={style.emojiDrawer}>
+            <EmojiPickerWrapper addEmoji={addEmoji} />
+          </div>
+        )}
+        {!uploadedFileUrl && (
+          <div className={style.iconContainer}>
+            <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
+              <div className={style.actionToolTip}>Emojis</div>
+              <Smiley aria-hidden className={style.smileyIcon} />
+            </button>
+            <button className={style.iconButton} type="button" onClick={openFileSelector}>
+              <div className={style.actionToolTip}>Files</div>
+              <PaperClip aria-hidden className={style.paperclipIcon} />
+            </button>
+
+            <input
+              ref={fileRef}
+              type="file"
+              id="file"
+              name="file"
+              onChange={selectedFile}
+              className={style.fileInput}
+              // accept=".png, .jpg, .jpeg, .mp4, .pdf, .vcf"
+              accept=".jpeg, .jpg, .gif, .png, .webp, .heic, .svg, .pdf"
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -134,17 +198,39 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   return (
     <>
       {!(config.hideInputBar === true) && (
-        <form className={style.inputBar} onSubmit={onSubmit}>
-          <textarea
-            ref={textInputRef}
-            className={style.textArea}
-            placeholder={t('sendMessageInputPlaceholder')}
-            autoFocus={isMobileDevice ? false : !config.showMode}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            value={props.messageString}
-            data-cy={dataCyTextareaId}
-          />
+        <form
+          className={style.inputBar}
+          style={uploadedFileUrl ? {justifyContent: 'space-between'} : {justifyContent: 'flex-end'}}
+          onSubmit={onSubmit}
+        >
+          {loadingFile ? (
+            <div className={style.selectorLoader}>
+              <SimpleLoader />
+              <span>loading file... </span>
+            </div>
+          ) : (
+            <>
+              {uploadedFileUrl ? (
+                <InputSelector
+                  message={outboundMapper?.getAttachmentPayload(uploadedFileUrl)}
+                  removeElementFromInput={removeElementFromInput}
+                  contentResizedHeight={contentResizedHeight}
+                />
+              ) : (
+                <textarea
+                  ref={textInputRef}
+                  className={style.textArea}
+                  placeholder={t('sendMessageInputPlaceholder')}
+                  autoFocus={isMobileDevice ? false : !config.showMode}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  value={props.messageString}
+                  data-cy={dataCyTextareaId}
+                />
+              )}
+            </>
+          )}
+
           <div className={style.buttonContainer}>
             {!(config.hideEmojis === true) && <InputOptions />}
             <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>

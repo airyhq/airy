@@ -1,8 +1,18 @@
 export interface Content {
-  type: 'text' | 'image' | 'video' | 'richText' | 'richCard' | 'richCardCarousel' | 'quickReplies';
+  type:
+    | 'text'
+    | 'image'
+    | 'images'
+    | 'video'
+    | 'file'
+    | 'richText'
+    | 'richCard'
+    | 'richCardCarousel'
+    | 'quickReplies'
+    | 'suggestionResponse';
 }
 
-export interface Command {
+export interface Command extends Content {
   type: 'quickReplies';
 }
 export interface TextContent extends Content {
@@ -14,9 +24,19 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface ImagesContent extends Content {
+  type: 'images';
+  images: ImageContent[];
+}
+
 export interface VideoContent extends Content {
   type: 'video';
   videoUrl: string;
+}
+
+export interface FileContent extends Content {
+  type: 'file';
+  fileUrl: string;
 }
 
 export interface RichTextContent extends Content {
@@ -69,9 +89,9 @@ export interface RichCardCarouselContent extends Content {
   cardContents: [RichCardContent];
 }
 
-export interface SuggestionResponse {
+export interface SuggestionResponse extends Content {
   type: 'suggestionResponse';
-  text: string;
+  text?: string;
   postbackData: string;
 }
 
@@ -84,7 +104,7 @@ export interface QuickReply extends Content {
 
 export interface QuickReplyCommand extends Command {
   type: 'quickReplies';
-  text: string;
+  text?: string;
   postbackData: string;
 }
 
@@ -103,12 +123,20 @@ export interface SimpleAttachment {
   };
 }
 
+export interface SimpleAttachmentPayload extends Content {
+  url: string;
+}
+
 export type ContentUnion =
   | TextContent
+  | ImageContent
+  | ImagesContent
+  | VideoContent
+  | FileContent
   | RichTextContent
   | RichCardContent
   | RichCardCarouselContent
   | SuggestionResponse
   | QuickRepliesContent;
 
-export type AttachmentUnion = TextContent | ImageContent | VideoContent;
+export type AttachmentUnion = TextContent | ImageContent | ImagesContent | VideoContent | FileContent;

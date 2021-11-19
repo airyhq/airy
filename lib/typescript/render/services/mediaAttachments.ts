@@ -1,6 +1,6 @@
 export const attachmentsExtensions = {
   //facebook
-  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'webp', 'heic'],
+  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'webp'],
   facebookVideoExtensions: ['mp4', 'mov', 'wmv'],
   facebookAudioExtensions: ['mp3', 'ogg', 'wav'],
   facebookFileExtensions: [

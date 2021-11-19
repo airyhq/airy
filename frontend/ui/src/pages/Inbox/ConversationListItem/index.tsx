@@ -103,7 +103,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={`${styles.clickableListItem}`} onClick={markAsRead} data-cy={cyClickableListItem}>
+    <div className={styles.clickableListItem} onClick={markAsRead} data-cy={cyClickableListItem}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

@@ -120,9 +120,9 @@ export const readConversations = (conversationId: string) => (dispatch: Dispatch
 };
 
 export const conversationState = (conversationId: string, state: string) => (dispatch: Dispatch<any>) => {
-  HttpClientInstance.setStateConversation({conversationId, state}).then(() =>
-    dispatch(setStateConversationAction(conversationId, state))
-  );
+  HttpClientInstance.setStateConversation({conversationId, state}).then(() => {
+    dispatch(setStateConversationAction(conversationId, state));
+  });
 };
 
 export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {

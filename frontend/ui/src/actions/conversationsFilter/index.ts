@@ -69,7 +69,6 @@ const fetchFilteredConversations = (dispatch: Dispatch<any>, state: () => StateM
           cursor,
           filters: filterToLuceneSyntax(filter),
         }).then((response: PaginatedResponse<Conversation>) => {
-          console.log('fetchFiltered response', response);
           if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
             if (cursor) {
               dispatch(mergeFilteredConversationsAction(response.data, filter, response.paginationData));

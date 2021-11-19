@@ -18,19 +18,6 @@
   transition: background 400ms, border 400ms;
 }
 
-.fadeOff {
-  animation: fadeOff 2s linear forwards;
-}
-
-@keyframes fadeOff {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 .containerListItem.unread {
   &:before {
     content: '•';

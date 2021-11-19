@@ -68,7 +68,6 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, readConversations, conversationState, currentFilter, setFilter} = props;
 
   const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
-  const [filteredItemChangedStateAnimation, setFilteredItemChangedStateAnimation] = useState(false);
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
@@ -83,19 +82,12 @@ const ConversationListItem = (props: ConversationListItemProps) => {
       event.preventDefault();
       event.stopPropagation();
 
-      if (Object.entries(currentFilter).length !== 0) {
-        setFilteredItemChangedStateAnimation(true);
-      }
-
       setTimeout(() => {
         if (Object.entries(currentFilter).length !== 0) {
           setFilter(currentFilter);
         }
-        setButtonStateEnabled(true);
 
-        if (filteredItemChangedStateAnimation) {
-          setFilteredItemChangedStateAnimation(false);
-        }
+        setButtonStateEnabled(true);
       }, 2000);
     }
   };
@@ -111,16 +103,12 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div
-      className={`${styles.clickableListItem} ${filteredItemChangedStateAnimation ? styles.fadeOff : ''}`}
-      onClick={markAsRead}
-      data-cy={cyClickableListItem}
-    >
+    <div className={`${styles.clickableListItem}`} onClick={markAsRead} data-cy={cyClickableListItem}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''
-          } ${filteredItemChangedStateAnimation ? styles.fadeOff : ''}`}
+          }`}
         >
           <div className={styles.profileImage}>
             <Avatar contact={participant} />

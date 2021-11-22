@@ -20,6 +20,7 @@ variable "values_yaml" {
 variable "core_version" {
   description = "Version of the Airy Core instance"
   type        = string
+  default     = ""
 }
 
 variable "ingress_controller_enabled" {

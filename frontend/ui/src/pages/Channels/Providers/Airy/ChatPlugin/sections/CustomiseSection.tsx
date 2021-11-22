@@ -408,7 +408,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageColorPicker}>
+              onOuterClick={toggleShowInboundMessageColorPicker}
+            >
               <SketchPicker
                 color={inboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -448,7 +449,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageTextColorPicker}>
+              onOuterClick={toggleShowInboundMessageTextColorPicker}
+            >
               <SketchPicker
                 color={inboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -488,7 +490,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageColorPicker}>
+              onOuterClick={toggleShowOutboundMessageColorPicker}
+            >
               <SketchPicker
                 color={outboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -528,7 +531,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageTextColorPicker}>
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}
+            >
               <SketchPicker
                 color={outboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -723,7 +727,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         style={{
           ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
           ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}>
+        }}
+      >
         <div className={styles.pluginContainer}>
           <AiryChatPlugin config={demoConfig} />
         </div>

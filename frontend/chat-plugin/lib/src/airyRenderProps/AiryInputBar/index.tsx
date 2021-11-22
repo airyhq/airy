@@ -209,7 +209,8 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <form
           className={style.inputBar}
           style={uploadedFileUrl ? {justifyContent: 'space-between'} : {justifyContent: 'flex-end'}}
-          onSubmit={onSubmit}>
+          onSubmit={onSubmit}
+        >
           {loadingFile ? (
             <div className={style.selectorLoader}>
               <SimpleLoader />
@@ -251,7 +252,8 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <a
           href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
           target="_blank"
-          rel="noreferrer">
+          rel="noreferrer"
+        >
           Powered by Airy <AiryIcon />
         </a>
       </div>

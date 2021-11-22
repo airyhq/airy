@@ -106,7 +106,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     });
   };
 
-  const InputOptions = () => {
+  const EmojiInput = () => {
     const handleEmojiDrawer = () => {
       if (isShowingEmojiDrawer) {
         textInputRef.current && textInputRef.current.focus();
@@ -151,6 +151,24 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       handleEmojiDrawer();
     };
 
+    return (
+      <div>
+        {isShowingEmojiDrawer && (
+          <div ref={emojiDiv} className={style.emojiDrawer}>
+            <EmojiPickerWrapper addEmoji={addEmoji} />
+          </div>
+        )}
+        {!uploadedFileUrl && (
+          <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
+            <div className={style.actionToolTip}>Emojis</div>
+            <Smiley aria-hidden className={style.smileyIcon} />
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const AttachmentInput = () => {
     const openFileSelector = () => {
       fileRef.current.click();
     };
@@ -162,18 +180,9 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     };
 
     return (
-      <div>
-        {isShowingEmojiDrawer && (
-          <div ref={emojiDiv} className={style.emojiDrawer}>
-            <EmojiPickerWrapper addEmoji={addEmoji} />
-          </div>
-        )}
+      <>
         {!uploadedFileUrl && (
-          <div className={style.iconContainer}>
-            <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
-              <div className={style.actionToolTip}>Emojis</div>
-              <Smiley aria-hidden className={style.smileyIcon} />
-            </button>
+          <>
             <button className={style.iconButton} type="button" onClick={openFileSelector}>
               <div className={style.actionToolTip}>Files</div>
               <PaperClip aria-hidden className={style.paperclipIcon} />
@@ -186,12 +195,11 @@ const AiryInputBar = (props: AiryInputBarProps) => {
               name="file"
               onChange={selectedFile}
               className={style.fileInput}
-              // accept=".png, .jpg, .jpeg, .mp4, .pdf, .vcf"
               accept=".jpeg, .jpg, .gif, .png, .webp, .heic, .svg, .pdf"
             />
-          </div>
+          </>
         )}
-      </div>
+      </>
     );
   };
 
@@ -201,8 +209,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <form
           className={style.inputBar}
           style={uploadedFileUrl ? {justifyContent: 'space-between'} : {justifyContent: 'flex-end'}}
-          onSubmit={onSubmit}
-        >
+          onSubmit={onSubmit}>
           {loadingFile ? (
             <div className={style.selectorLoader}>
               <SimpleLoader />
@@ -232,7 +239,8 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           )}
 
           <div className={style.buttonContainer}>
-            {!(config.hideEmojis === true) && <InputOptions />}
+            {!(config.hideEmojis === true) && <EmojiInput />}
+            {!(config.hideAttachments === true) && <AttachmentInput />}
             <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
               {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
             </button>
@@ -243,8 +251,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <a
           href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Powered by Airy <AiryIcon />
         </a>
       </div>

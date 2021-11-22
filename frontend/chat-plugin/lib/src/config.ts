@@ -28,6 +28,7 @@ export type Config = {
   closeMode?: 'basic' | 'medium' | 'full';
   hideInputBar?: boolean;
   hideEmojis?: boolean;
+  hideAttachments?: boolean;
 };
 
 export type AuthConfiguration = {

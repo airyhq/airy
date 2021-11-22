@@ -96,10 +96,10 @@ module "eks" {
 resource "aws_eks_fargate_profile" "example" {
 
 
-  cluster_name           = module.eks.cluster_name
-  fargate_profile_name   = "example"
-  pod_execution_role_arn = module.eks.cluster_iam_role_arn
-  subnet_ids             = module.eks.subnet_ids
+  cluster_name           = var.core_id
+  fargate_profile_name   = "stateless"
+  pod_execution_role_arn = module.eks.fargate_iam_role_arn
+  subnet_ids             = module.vpc.private_subnets
 
   dynamic "selector" {
     for_each = var.fargate_profiles

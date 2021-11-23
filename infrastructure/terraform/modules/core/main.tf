@@ -1,13 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig_output_path
-  }
-}
-
-provider "kubernetes" {
-  config_path = var.kubeconfig_output_path
-}
-
 resource "kubernetes_namespace" "core" {
   metadata {
     name = var.core_id
@@ -32,7 +22,8 @@ resource "helm_release" "airy_core" {
 
   timeout = "600"
   values = [
-    var.values_yaml
+    var.values_yaml,
+    var.resources_yaml
   ]
 
   namespace = var.namespace

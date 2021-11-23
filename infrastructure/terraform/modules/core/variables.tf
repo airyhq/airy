@@ -17,6 +17,10 @@ variable "values_yaml" {
   description = "The helm values overrides"
 }
 
+variable "resources_yaml" {
+  description = "Resource requests and limits for the components"
+}
+
 variable "core_version" {
   description = "Version of the Airy Core instance"
   type        = string

@@ -11,6 +11,7 @@ provider "kubernetes" {
 module "my-airy-core" {
   source  = "../modules/core"
   values_yaml = data.template_file.airy_yaml.rendered
+  resources_yaml = file("${path.module}/files/defaultResourceLimits.yaml")
 }
 
 data "template_file" "airy_yaml" {

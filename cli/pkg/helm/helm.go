@@ -79,7 +79,7 @@ func (h *Helm) Setup() error {
 }
 
 func (h *Helm) InstallCharts() error {
-	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-0.33.0.tgz"
+	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
 	return h.runHelm(append([]string{"install",
 		"--values", "/apps/config/airy-config-map.yaml",
 		"--namespace", h.namespace,

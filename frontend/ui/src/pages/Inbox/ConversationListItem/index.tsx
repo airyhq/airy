@@ -11,6 +11,7 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
+import {setFilter} from '../../../actions/conversationsFilter';
 
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
@@ -29,10 +30,12 @@ type StateButtonsProps = {
 const mapDispatchToProps = {
   readConversations,
   conversationState,
+  setFilter,
 };
 
 const mapStateToProps = (state: StateModel) => ({
   filteredConversations: newestFilteredConversationFirst(state),
+  currentFilter: state.data.conversations.filtered.currentFilter,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -62,7 +65,7 @@ const ClosedStateButton = ({eventHandler}: StateButtonsProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, readConversations, conversationState} = props;
+  const {conversation, active, readConversations, conversationState, currentFilter, setFilter} = props;
 
   const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
 
@@ -75,9 +78,15 @@ const ConversationListItem = (props: ConversationListItemProps) => {
       setButtonStateEnabled(false);
       const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
       conversationState(conversation.id, newState);
+
       event.preventDefault();
       event.stopPropagation();
+
       setTimeout(() => {
+        if (Object.entries(currentFilter).length !== 0) {
+          setFilter(currentFilter);
+        }
+
         setButtonStateEnabled(true);
       }, 2000);
     }

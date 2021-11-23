@@ -208,4 +208,7 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
+    {{- if .Values.global.host }}
+      host: {{ .Values.global.host }}
+    {{- end }}
   ingressClassName: nginx

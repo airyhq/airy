@@ -15,6 +15,7 @@ import styles from './index.module.scss';
 
 import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
 import Popup from '../QuickFilter/Popup';
+import {formatConversationCount} from '../../../services/format/numbers';
 
 const mapDispatchToProps = {
   setSearch,
@@ -69,7 +70,9 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
 
     return (
       <div className={styles.headline}>{`Inbox (${
-        filteredPaginationData.total === null ? totalConversations : filteredPaginationData.total
+        filteredPaginationData.total === null
+          ? formatConversationCount(totalConversations)
+          : formatConversationCount(filteredPaginationData.total)
       })`}</div>
     );
   };

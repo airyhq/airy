@@ -46,7 +46,11 @@ const MessengerContainer = ({
     if (source && config) {
       if (
         config?.components['media-resolver']?.enabled &&
-        (source === 'instagram' || source === 'facebook' || source === 'google' || source === 'twilio.whatsapp') &&
+        (source === 'instagram' ||
+          source === 'facebook' ||
+          source === 'google' ||
+          source === 'twilio.whatsapp' ||
+          source === 'chatplugin') &&
         !draggedAndDroppedFile
       ) {
         setDragAndDropDisabled(false);

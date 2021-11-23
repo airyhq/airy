@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
 import {conversationState} from '../../../../actions/conversations';
+import {setFilter} from '../../../../actions/conversationsFilter';
 import {StateModel} from '../../../../reducers';
 import {cyConversationStatus} from 'handles';
 import {SimpleLoader} from 'components';
@@ -11,11 +12,13 @@ const mapStateToProps = (state: StateModel, ownProps) => {
   return {
     currentConversationState:
       state.data.conversations.all.items[ownProps.match.params.conversationId]?.metadata?.state || 'OPEN',
+    currentFilter: state.data.conversations.filtered.currentFilter,
   };
 };
 
 const mapDispatchToProps = {
   conversationState,
+  setFilter,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -23,7 +26,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
 
 function ConversationStatus(props: Props) {
-  const {currentConversationState, conversationState} = props;
+  const {currentConversationState, conversationState, currentFilter, setFilter} = props;
 
   const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -33,7 +36,11 @@ function ConversationStatus(props: Props) {
       setLoading(true);
       setButtonStateEnabled(false);
       conversationState(id, state);
+
       setTimeout(() => {
+        if (Object.entries(currentFilter).length !== 0) {
+          setFilter(currentFilter);
+        }
         setButtonStateEnabled(true);
         setLoading(false);
       }, 1000);

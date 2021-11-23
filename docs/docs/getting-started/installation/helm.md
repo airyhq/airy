@@ -218,7 +218,7 @@ By default `Airy Core` creates only a HTTP listener and when running in cloud en
 Get the address of your LoadBalancer:
 
 ```sh
-kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}{"\n"}'
 ```
 
 Configure your DNS so that your desired hostname points to the IP address of LoadBalancer. In this example we will be using the hostname `awesomechat.airy.co`.

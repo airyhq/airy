@@ -115,7 +115,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
     if (filteredTags.length === 1) {
       addTag(filteredTags[0]);
-      console.log('HERE');
     } else if (filteredTags.length == 0 && tagName.trim().length > 0) {
       createTag({name: tagName.trim(), color}).then((tag: TagModel) => {
         if (tag) {
@@ -234,8 +233,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                         className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                         onClick={saveEditDisplayName}
                         disabled={displayName.length === 0}
-                        data-cy={cyEditDisplayNameCheckmark}
-                      >
+                        data-cy={cyEditDisplayNameCheckmark}>
                         <CheckmarkCircleIcon />
                       </button>
                     </div>

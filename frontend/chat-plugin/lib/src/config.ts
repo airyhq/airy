@@ -29,6 +29,9 @@ export type Config = {
   hideInputBar?: boolean;
   hideEmojis?: boolean;
   hideAttachments?: boolean;
+  hideImages?: boolean;
+  hideVideos?: boolean;
+  hideFiles?: boolean;
 };
 
 export type AuthConfiguration = {

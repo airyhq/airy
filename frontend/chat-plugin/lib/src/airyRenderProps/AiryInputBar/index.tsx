@@ -179,6 +179,18 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       uploadFile(file);
     };
 
+    const acceptedFileTypes = (): string => {
+      const supportedTypes = [''];
+      const supportedImageTypes = '.jpg, .jpeg, .png, .webp, .heic, ';
+      const supportedVideoTypes = '.mp4, .MOV, ';
+      const supportedFileTypes = '.pdf, .svg, ';
+      !config.hideImages && supportedTypes.push(supportedImageTypes);
+      !config.hideVideos && supportedTypes.push(supportedVideoTypes);
+      !config.hideFiles && supportedTypes.push(supportedFileTypes);
+
+      return supportedTypes.join();
+    };
+
     return (
       <>
         {!uploadedFileUrl && (
@@ -195,7 +207,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
               name="file"
               onChange={selectedFile}
               className={style.fileInput}
-              accept=".jpeg, .jpg, .gif, .png, .webp, .heic, .svg, .pdf"
+              accept={acceptedFileTypes()}
             />
           </>
         )}

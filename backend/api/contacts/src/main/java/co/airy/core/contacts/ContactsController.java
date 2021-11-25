@@ -1,6 +1,7 @@
 package co.airy.core.contacts;
 
 import co.airy.core.contacts.dto.Contact;
+import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
@@ -8,6 +9,7 @@ import co.airy.core.contacts.payload.ListContactsResponsePayload;
 import co.airy.core.contacts.payload.PaginationData;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.HttpStatus;
@@ -85,9 +87,21 @@ public class ContactsController implements HealthIndicator {
     }
 
     @PostMapping("/contacts.info")
-    public ResponseEntity<?> contactInfo() {
-        // TODO get a contact by id
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> contactInfo(@RequestBody @Valid ContactInfoRequestPayload payload) {
+        Contact contact;
+        if (payload.getId() != null) {
+            contact = stores.getContact(payload.getId());
+        } else if (payload.getConversationId() != null) {
+            contact = stores.getContactByConversationId(payload.getConversationId());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestErrorResponsePayload("Either contact or conversation id must be provided"));
+        }
+
+        if (contact == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
+        }
+
+        return ResponseEntity.ok(ContactResponsePayload.fromContact(contact));
     }
 
     @PostMapping("/contacts.update")

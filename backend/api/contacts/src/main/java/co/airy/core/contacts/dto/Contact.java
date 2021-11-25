@@ -19,10 +19,12 @@ import java.util.UUID;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.AVATAR_URL;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TITLE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.VIA;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static java.util.stream.Collectors.toMap;
 
 @Data
 @Builder
@@ -90,6 +92,9 @@ public class Contact implements Serializable {
         if (via != null && !via.isEmpty()) {
             via.forEach((key, value) -> metadata.add(newContactMetadata(id, VIA + "." + key, value)));
         }
+        if (conversations != null && !conversations.isEmpty()) {
+            conversations.forEach((key, value) -> metadata.add(newContactMetadata(id, CONVERSATIONS + "." + key, value)));
+        }
         // TODO
         return metadata;
     }
@@ -104,7 +109,11 @@ public class Contact implements Serializable {
         if (anyRecord.isEmpty()) {
             return null;
         }
+
         final String id = getSubject(anyRecord.get()).getIdentifier();
+
+        final Map<UUID, String> conversations = values.stream().filter(metadata -> metadata.getKey().startsWith(CONVERSATIONS))
+                .collect(toMap(metadata -> UUID.fromString(metadata.getKey().substring(metadata.getKey().lastIndexOf('.') + 1)), Metadata::getValue));
 
         return Contact.builder()
                 .id(id)
@@ -112,6 +121,7 @@ public class Contact implements Serializable {
                 .displayName(map.getMetadataValue(DISPLAY_NAME))
                 .avatarUrl(map.getMetadataValue(AVATAR_URL))
                 .title(map.getMetadataValue(TITLE))
+                .conversations(conversations.size() > 0 ? conversations : null)
                 .build();
     }
 }

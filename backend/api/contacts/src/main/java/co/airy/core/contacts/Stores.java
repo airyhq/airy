@@ -148,6 +148,11 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         return contacts;
     }
 
+    public Contact getContact(String contactId) {
+        final ReadOnlyKeyValueStore<String, MetadataMap> store = getContactStore();
+        return Contact.fromMetadataMap(store.get(contactId));
+    }
+
     public Contact getContactByConversationId(String conversationId) {
         final ReadOnlyKeyValueStore<String, MetadataMap> store = getConversationToContactStore();
         final MetadataMap metadataMap = store.get(conversationId);

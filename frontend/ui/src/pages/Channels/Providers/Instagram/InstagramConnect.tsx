@@ -8,6 +8,7 @@ import {StateModel} from '../../../../reducers';
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {FacebookLogin} from '../../FacebookLogin';
 
 import styles from './InstagramConnect.module.scss';
 
@@ -76,6 +77,7 @@ const InstagramConnect = (props: InstagramProps) => {
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Instagram</h1>
       <div>
+        <FacebookLogin />
         <InfoButton
           link="https://airy.co/docs/core/sources/instagram"
           text="more information about this source"

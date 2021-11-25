@@ -31,8 +31,7 @@ See the [create contact response payload](#create-contact) for an example of wha
 
 **Sample request**
 
-All request fields are optional, but an empty payload will not be accepted. Returns `409` if the linked conversation
-is already connected to another contact.
+All request fields are optional, but an empty payload will not be accepted.
 
 ```json5
 {
@@ -58,12 +57,12 @@ is already connected to another contact.
     "country": "USA"
   },
   "conversations": {
-    // Automatically created contacts will always have a single conversation that is linked here 
+    // Automatically created contacts will always have a single conversation that is linked here
     "ea1cba21-2bd6-477c-9a40-59cd9bb96bef": "facebook",
-    "8904adee-38b4-493b-a4d8-272e2e5a6815": "twilio.sms",
+    "8904adee-38b4-493b-a4d8-272e2e5a6815": "twilio.sms"
   },
   "metadata": {
-    "facebook": { 
+    "facebook": {
       "psid": "1234567890",
       "page_id": "9876543210"
     },
@@ -71,16 +70,6 @@ is already connected to another contact.
     "zendesk_id": "XYZ789",
     "key": "value" // allows for any additional key and value (arrays are prohibited)
   }
-}
-```
-
-
-**(409) If the linked conversation is already connected to another contact**
-
-```json5
-{
-  "message": "The linked conversation with id ea1cba21-2bd6-477c-9a40-59cd9bb96bef is already connected to contact d57e22b9-b8c8-478d-8ae5-758c6aa14c19.",
-  "conflict_contact_id": "d57e22b9-b8c8-478d-8ae5-758c6aa14c19"
 }
 ```
 
@@ -94,8 +83,7 @@ import ContactResponsePayload from './applyVariables-note.mdx'
 
 `POST /contacts.list`
 
-This is a [paginated](api/endpoints/introduction.md#pagination) endpoint. 
-
+This is a [paginated](api/endpoints/introduction.md#pagination) endpoint.
 
 **Sample request**
 
@@ -157,7 +145,6 @@ Get a single contact by contact or conversation id.
 
 <ContactResponsePayload />
 
-
 ### Update contact
 
 `POST /contacts.update`
@@ -181,36 +168,35 @@ All fields set on the [creation request](#create-contact) can be updated. To rem
   "display_name": "Barabara Liskov",
   "title": "Professor",
   "created_at": "2021-11-16T13:21:03.580Z", // ISO 8601
-  "updated_at": "2021-11-16T13:45:52.433Z", // ISO 8601
+  "updated_at": "2021-11-16T13:45:52.433Z" // ISO 8601
 }
 ```
-
 
 ### Re-fetch contact
 
 `POST /contacts.refetch`
 
-If there are conversations associated with this contact the sources will try to re-fetch the contact data that was ingested. This only works for messaging sources that allow you to pull contact data such as [Facebook Messenger](https://developers.facebook.com/docs/messenger-platform/identity/user-profile/). Others like Google Business Messages will push new contact information, which will cause it to show up automatically. 
+If there are conversations associated with this contact the sources will try to re-fetch the contact data that was ingested. This only works for messaging sources that allow you to pull contact data such as [Facebook Messenger](https://developers.facebook.com/docs/messenger-platform/identity/user-profile/). Others like Google Business Messages will push new contact information, which will cause it to show up automatically.
 
 **Sample request**
 
 ```json5
 {
-  "contacts": ["6b80b10c-ae6e-4995-844d-c56c4da11623", "c564cea4-a96f-4ebb-a220-3fb81b6ad522"],
+  "contacts": ["6b80b10c-ae6e-4995-844d-c56c4da11623", "c564cea4-a96f-4ebb-a220-3fb81b6ad522"]
 }
 ```
 
 **(202) Sample response**
 
-
 ### Merge contacts
 
 If you are sure two conversations belong to the same contact you can either:
+
 1. Call this endpoint if there are already contacts for both
 2. Update the either contact if the other does not exist
 3. Create a fresh contact if neither exist.
 
-Calling this endpoint will cause the source contact to be deleted. However, calls to `/contacts.info` and `/contacts.update` will continue to be forwarded to the target contact. 
+Calling this endpoint will cause the source contact to be deleted. However, calls to `/contacts.info` and `/contacts.update` will continue to be forwarded to the target contact.
 
 **Sample request**
 
@@ -225,7 +211,6 @@ Calling this endpoint will cause the source contact to be deleted. However, call
 
 <ContactResponsePayload />
 
-
 ### Delete contact
 
 **Sample request**
@@ -237,4 +222,3 @@ Calling this endpoint will cause the source contact to be deleted. However, call
 ```
 
 **(202) Sample response**
-

@@ -1,45 +1,86 @@
 import React, {useState, useEffect} from 'react';
 
-export const FacebookLogin = () => {
+declare global {
+  interface Window {
+    FB: {init: any; getLoginStatus: any; login: any; api: any; logout: any};
+    fbAsyncInit: any;
+  }
+}
+
+export const FacebookLogin = ({fetchDataFromFbLoginSDK}) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
+  const [name, setName] = useState('');
+  const [accessToken, setAccessToken] = useState('');
+  const [pageId, setPageId] = useState('');
+  const [instagramAccountId, setInstagramAccountId] = useState('');
 
-  const onLoginClick = () => {
-    window.fbAsyncInit = () => {
-      window.FB.init({
-        appId: '1117544754977108',
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: 'v12.0',
-      });
+  useEffect(() => {
 
-      window.FB.getLoginStatus(response => {
-        console.log('login status response', response);
-        window.FB.login(function (response) {
-          if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            window.FB.api('/me/accounts/?fields=name,id,access_token,instagram_business_account', function (response) {
-              console.log('response /me/accounts', response)
-              //console.log('Good to see you, ' + response.name + '.');
-            });
-          } else {
-            console.log('User cancelled login or did not fully authorize.');
-          }
-          // if (response.status === 'connected' || response.status === 'unknown') {
-          // } else {
-          //   window.FB.login(function (response) {
-          //     console.log('login response', response);
-          //   });
-          // }
-        });
-      });
-    };
+    if(isLoggedin && !name && !accessToken && !pageId && instagramAccountId){
+      fetchData()
+    } else {
+      setIsLoggedin(false)
+    }
+
+  }, [isLoggedin])
+
+  const login = () => {
+    window.FB.login(function (response) {
+      console.log('FB LOGIN response', response);
+      if (response.authResponse) {
+        setIsLoggedin(true);
+        fetchData();
+      } else {
+        console.log('User cancelled login or did not fully authorize.');
+        setIsLoggedin(false);
+      }
+      // if (response.status === 'connected' || response.status === 'unknown') {
+      // } else {
+      //   window.FB.login(function (response) {
+      //     console.log('login response', response);
+      //   });
+      // }
+    });
   };
 
   const logout = () => {
     window.FB.logout(function (response) {
       console.log('logout response', response);
+      setIsLoggedin(false);
+      //document.location.reload();
     });
   };
+
+  const fetchData = () => {
+    window.FB.api('/me/accounts/?fields=name,id,access_token,instagram_business_account', function (response) {
+      console.log('fetch data', response);
+      const name = response.data[0].name;
+      const accessToken = response.data[0].access_token;
+      const pageId = response.data[0].id;
+      const instagramAccountId = response.data[0].instagram_business_account.id;
+      setName(name);
+      setAccessToken(accessToken);
+      setInstagramAccountId(instagramAccountId);
+      setPageId(pageId);
+
+      fetchDataFromFbLoginSDK(name, accessToken, pageId, instagramAccountId)
+
+      setIsLoggedin(true);
+
+      // window.FB.getLoginStatus(function(response) {
+      //   statusChangeCallback(response);
+      // });
+    });
+  };
+
+  // function statusChangeCallback(response) {
+  //   console.log('statusChangeCallback', response);
+  //   if (response.status === 'connected') {
+  //     fetchData();
+  //   } else {
+  //     console.log('statusChangeCallback - not connected');
+  //   }
+  // }
 
   useEffect(() => {
     window.fbAsyncInit = () => {
@@ -50,31 +91,14 @@ export const FacebookLogin = () => {
         version: 'v12.0',
       });
 
-      window.FB.getLoginStatus(response => {
-        console.log('login status response', response);
-        window.FB.login(function (response) {
-          if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            window.FB.api('/me/accounts/?fields=name,id,access_token,instagram_business_account', function (response) {
-              console.log('response /me/accounts', response)
-              //console.log('Good to see you, ' + response.name + '.');
-            });
-          } else {
-            console.log('User cancelled login or did not fully authorize.');
-          }
-          // if (response.status === 'connected' || response.status === 'unknown') {
-          // } else {
-          //   window.FB.login(function (response) {
-          //     console.log('login response', response);
-          //   });
-          // }
-        });
-      });
+      // window.FB.getLoginStatus(response => {
+      //   statusChangeCallback(response);
+      // });
     };
-    
+
     (function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
+      let js;
+      let fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {
         return;
       }
@@ -88,18 +112,7 @@ export const FacebookLogin = () => {
 
   return (
     <>
-      <div
-        className="fb-login-button"
-        data-width=""
-        data-size="large"
-        data-button-type="login_with"
-        data-layout="default"
-        data-auto-logout-link="false"
-        data-use-continue-as="false"
-        onClick={onLoginClick}
-        ></div>
-
-      <button onClick={logout}>LOGOUT</button>
+     <button onClick={login}>{isLoggedin ? 'LOG IN' : 'LOGGED IN'} WITH FB</button>
     </>
   );
 };

@@ -8,6 +8,7 @@ import {StateModel} from '../../../../../reducers';
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {FacebookLogin} from '../../../FacebookLogin';
 
 import styles from './FacebookConnect.module.scss';
 
@@ -70,10 +71,17 @@ const FacebookConnect = (props: FacebookProps) => {
       });
   };
 
+  const fetchFbChannelDataFromFbLoginSDK = (name: string, accessToken: string, pageId: string) => {
+    setName(name);
+    setToken(accessToken);
+    setId(pageId);
+  };
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Facebook Messenger</h1>
       <div>
+        <FacebookLogin fetchFbChannelDataFromFbLoginSDK={fetchFbChannelDataFromFbLoginSDK} />
         <InfoButton
           link="https://airy.co/docs/core/sources/facebook"
           text="more information about this source"

@@ -5,11 +5,13 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
+  width: max-content;
 
   border: 2px solid #d51548;
   padding: 8px 18px;
   color: var(--color-text-contrast);
-  margin-bottom: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border-radius: 8px;
 
   @include font-base;

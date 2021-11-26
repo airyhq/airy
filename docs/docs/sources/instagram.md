@@ -36,9 +36,11 @@ Core Platform instance.
 
 Make sure you have:
 
-- An instagram account fulfilling Facebook's [rollout criteria](https://developers.facebook.com/docs/messenger-platform/instagram/rollout)
-- A Facebook Page connected to that account
-- A registered [Facebook app](https://developers.facebook.com/docs/apps#register)
+- An instagram account fulfilling Facebook's [rollout criteria](https://developers.facebook.com/docs/messenger-platform/instagram/rollout).
+- A Facebook Page connected to that account (linking can only be done via the Instagram mobile app).
+- A registered [Facebook app](https://developers.facebook.com/docs/apps#register).
+
+You also need to allow API Access in Settings > Privacy > Messages in the Instagram mobile app.
 
 :::
 

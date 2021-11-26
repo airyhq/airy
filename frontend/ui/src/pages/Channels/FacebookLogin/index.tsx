@@ -1,118 +1,92 @@
 import React, {useState, useEffect} from 'react';
+import {env} from '../../../env';
+import {ErrorNotice} from 'components/alerts/ErrorNotice';
+import {ReactComponent as FbLoginIcon} from 'assets/images/icons/fb-login.svg';
+import styles from './index.module.scss';
 
-declare global {
-  interface Window {
-    FB: {init: any; getLoginStatus: any; login: any; api: any; logout: any};
-    fbAsyncInit: any;
-  }
+interface FacebookLoginProps {
+  fetchIgChannelDataFromFbLoginSDK?: (
+    name: string,
+    accessToken: string,
+    pageId: string,
+    instagramAccountId: string
+  ) => void;
+  fetchFbChannelDataFromFbLoginSDK?: (name: string, accessToken: string, pageId: string) => void;
 }
 
-export const FacebookLogin = ({fetchDataFromFbLoginSDK}) => {
+export const FacebookLogin = ({
+  fetchIgChannelDataFromFbLoginSDK,
+  fetchFbChannelDataFromFbLoginSDK,
+}: FacebookLoginProps) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
-  const [name, setName] = useState('');
-  const [accessToken, setAccessToken] = useState('');
-  const [pageId, setPageId] = useState('');
-  const [instagramAccountId, setInstagramAccountId] = useState('');
-
-  useEffect(() => {
-
-    if(isLoggedin && !name && !accessToken && !pageId && instagramAccountId){
-      fetchData()
-    } else {
-      setIsLoggedin(false)
-    }
-
-  }, [isLoggedin])
+  const [authError, setAuthError] = useState<boolean | string>(false);
 
   const login = () => {
-    window.FB.login(function (response) {
-      console.log('FB LOGIN response', response);
+    if (isLoggedin) return;
+
+    if (authError) setAuthError(false);
+
+    window.FB.login(response => {
       if (response.authResponse) {
         setIsLoggedin(true);
         fetchData();
       } else {
-        console.log('User cancelled login or did not fully authorize.');
-        setIsLoggedin(false);
+        if (isLoggedin) setIsLoggedin(false);
+        setAuthError('Login via Facebook failed because you cancelled the login process or did not fully authorize.');
       }
-      // if (response.status === 'connected' || response.status === 'unknown') {
-      // } else {
-      //   window.FB.login(function (response) {
-      //     console.log('login response', response);
-      //   });
-      // }
-    });
-  };
-
-  const logout = () => {
-    window.FB.logout(function (response) {
-      console.log('logout response', response);
-      setIsLoggedin(false);
-      //document.location.reload();
     });
   };
 
   const fetchData = () => {
-    window.FB.api('/me/accounts/?fields=name,id,access_token,instagram_business_account', function (response) {
-      console.log('fetch data', response);
-      const name = response.data[0].name;
-      const accessToken = response.data[0].access_token;
-      const pageId = response.data[0].id;
-      const instagramAccountId = response.data[0].instagram_business_account.id;
-      setName(name);
-      setAccessToken(accessToken);
-      setInstagramAccountId(instagramAccountId);
-      setPageId(pageId);
+    window.FB.api(
+      '/me/accounts/?fields=name,id,access_token,pageinstagram_business_account',
+      ({data: [{name, access_token, id, instagram_business_account}]}) => {
+        const instagramAccountId = instagram_business_account?.id;
 
-      fetchDataFromFbLoginSDK(name, accessToken, pageId, instagramAccountId)
+        if (!access_token || !id || (fetchIgChannelDataFromFbLoginSDK && !instagramAccountId)) {
+          setAuthError('Something went wrong: please make sure you have granted the necessary permissions.');
+          return;
+        }
 
-      setIsLoggedin(true);
+        if (fetchIgChannelDataFromFbLoginSDK && instagramAccountId)
+          fetchIgChannelDataFromFbLoginSDK(name, access_token, id, instagramAccountId);
 
-      // window.FB.getLoginStatus(function(response) {
-      //   statusChangeCallback(response);
-      // });
-    });
+        if (fetchFbChannelDataFromFbLoginSDK) fetchFbChannelDataFromFbLoginSDK(name, access_token, id);
+      }
+    );
   };
-
-  // function statusChangeCallback(response) {
-  //   console.log('statusChangeCallback', response);
-  //   if (response.status === 'connected') {
-  //     fetchData();
-  //   } else {
-  //     console.log('statusChangeCallback - not connected');
-  //   }
-  // }
 
   useEffect(() => {
     window.fbAsyncInit = () => {
       window.FB.init({
-        appId: '1117544754977108',
-        autoLogAppEvents: true,
-        xfbml: true,
+        appId: env.APP_ID,
+        cookie: true,
+        xfbml: false,
+        status: true,
         version: 'v12.0',
       });
-
-      // window.FB.getLoginStatus(response => {
-      //   statusChangeCallback(response);
-      // });
     };
 
     (function (d, s, id) {
-      let js;
-      let fjs = d.getElementsByTagName(s)[0];
+      const fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {
         return;
       }
-      js = d.createElement(s);
+      const js = d.createElement(s) as HTMLScriptElement;
       js.id = id;
-      js.src =
-        'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=1117544754977108&autoLogAppEvents=1';
+      js.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=${env.APP_ID}&autoLogAppEvents=1`;
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
   }, []);
 
   return (
     <>
-     <button onClick={login}>{isLoggedin ? 'LOG IN' : 'LOGGED IN'} WITH FB</button>
+      <button className={styles.facebookLogin} style={{cursor: isLoggedin ? 'not-allowed' : 'pointer'}} onClick={login}>
+        <FbLoginIcon />
+        <span>{isLoggedin ? 'Logged In' : 'Log In'} With Facebook</span>
+      </button>
+
+      {authError && <ErrorNotice theme="warning"> {authError} </ErrorNotice>}
     </>
   );
 };

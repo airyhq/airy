@@ -73,21 +73,23 @@ const InstagramConnect = (props: InstagramProps) => {
       });
   };
 
-  const fetchDataFromFbLoginSDK = (name, accessToken, pageId, instagramAccountId) => {
+  const fetchIgChannelDataFromFbLoginSDK = (
+    name: string,
+    accessToken: string,
+    pageId: string,
+    instagramAccountId: string
+  ) => {
     setId(pageId);
     setToken(accessToken);
-    setAccountId(instagramAccountId)
-    setName(name)
-
-
-
-  }
+    setAccountId(instagramAccountId);
+    setName(name);
+  };
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Instagram</h1>
       <div>
-        <FacebookLogin fetchDataFromFbLoginSDK={fetchDataFromFbLoginSDK}/>
+        <FacebookLogin fetchIgChannelDataFromFbLoginSDK={fetchIgChannelDataFromFbLoginSDK} />
         <InfoButton
           link="https://airy.co/docs/core/sources/instagram"
           text="more information about this source"

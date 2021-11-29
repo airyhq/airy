@@ -72,8 +72,13 @@ export const Dropdown = ({text, options, variant, onClick}) => {
         <div className={styles.dropDownWrapper}>
           <div className={styles.dropDown}>
             {options.map(option => (
-              <button type="button" key={option} className={styles.item} onClick={() => itemSelected(option)}>
-                {option}
+              <button
+                type="button"
+                key={option?.id ?? option}
+                className={styles.item}
+                onClick={() => itemSelected(option)}
+              >
+                {option?.name ?? option}
               </button>
             ))}
           </div>

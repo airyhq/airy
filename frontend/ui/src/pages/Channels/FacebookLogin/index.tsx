@@ -39,7 +39,7 @@ export const FacebookLogin = ({
 
   const fetchData = () => {
     window.FB.api(
-      '/me/accounts/?fields=name,id,access_token,pageinstagram_business_account',
+      '/me/accounts/?fields=name,id,access_token,page,instagram_business_account',
       ({data: [{name, access_token, id, instagram_business_account}]}) => {
         const instagramAccountId = instagram_business_account?.id;
 

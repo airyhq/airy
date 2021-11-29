@@ -1,6 +1,5 @@
 export interface Env {
   API_HOST?: string;
-  APP_ID?: string;
 }
 
 declare global {
@@ -19,7 +18,6 @@ const templatedState: Env = window.AIRY_TEMPLATED_STATE || {};
 
 export const env: Env = {
   API_HOST: templatedState.API_HOST || process.env.API_HOST,
-  APP_ID: '',
 };
 
 interface FacebookLoginInitParams {

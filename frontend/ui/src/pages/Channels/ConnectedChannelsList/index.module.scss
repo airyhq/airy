@@ -19,12 +19,15 @@
   margin-bottom: 8px;
 }
 
-.backButton {
+.backButton,
+.backButton:active,
+.backButton:visited {
   display: block;
   margin-bottom: 16px;
   cursor: pointer;
   text-decoration: none;
   max-width: 200px;
+  color: var(--color-airy-blue);
   &:hover {
     text-decoration: underline;
   }

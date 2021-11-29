@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ErrorNotice} from 'components/alerts/ErrorNotice';
+import {Notice} from 'components/alerts/Notice';
 import {Dropdown} from 'components/inputs/Dropdown';
 import {ReactComponent as FbLoginIcon} from 'assets/images/icons/fb-login.svg';
 import {AiryConfig} from '../../../AiryConfig';
@@ -116,8 +116,6 @@ export const FacebookLogin = ({
     }
 
     if (fetchFbChannelDataFromFbLoginSDK) fetchFbChannelDataFromFbLoginSDK(name, access_token, id);
-
-    setMultiplePagesData(null);
   };
 
   return (
@@ -127,14 +125,14 @@ export const FacebookLogin = ({
         <span>{isLoggedin ? 'Logged In' : 'Log In'} With Facebook</span>
       </button>
 
-      {authError && <ErrorNotice theme="error"> {authError} </ErrorNotice>}
+      {authError && <Notice theme="warning"> {authError} </Notice>}
 
       {multiplePagesData && multiplePagesData.length > 0 && (
-        <ErrorNotice theme="warning">
+        <Notice theme="info" icon={false}>
           {'Please select the Facebook Page you would like to connect:'}
 
           <Dropdown options={multiplePagesData} variant="borderless" onClick={selectPageToConnect} text=""></Dropdown>
-        </ErrorNotice>
+        </Notice>
       )}
     </>
   );

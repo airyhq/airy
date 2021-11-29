@@ -28,6 +28,12 @@
     border: 1px solid #ffc600;
     align-items: center;
   }
+
+  &.info {
+    background-color: var(--color-background-blue);
+    border: 1px solid #4bb3fd;
+    align-items: center;
+  }
 }
 
 .iconWrapper {

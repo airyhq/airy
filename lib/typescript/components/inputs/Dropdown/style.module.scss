@@ -92,7 +92,8 @@
   padding: 8px 8px;
   cursor: pointer;
   align-self: flex-start;
-  width: 100%;
+  width: max-content;
+  max-width: 250px;
   justify-content: flex-start;
   background: transparent;
   &:first-child {
@@ -106,6 +107,7 @@
   }
   &:hover {
     background: var(--color-background-gray);
+    width: 100%;
     outline: none !important;
   }
 }

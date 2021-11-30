@@ -107,7 +107,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                                         .payload(messaging.toString()).build()
                                         );
                                     } catch (Exception e) {
-                                        log.warn("Skipping facebook error for record " + entry.toString(), e);
+                                        log.warn("Skipping facebook error for record " + entry, e);
                                         return null;
                                     }
                                 });

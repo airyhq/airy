@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
-import {SearchField, ErrorNotice} from 'components';
+import {SearchField, Notice} from 'components';
 import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
@@ -91,7 +91,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     <ListenOutsideClick onOuterClick={onClose}>
       <div className={styles.container} ref={componentRef}>
         {listTemplatesError ? (
-          <ErrorNotice theme="error">Oops! Your templates could not be loaded. Please try again later.</ErrorNotice>
+          <Notice theme="error">Oops! Your templates could not be loaded. Please try again later.</Notice>
         ) : templates.length === 0 && source === templatesSource ? (
           renderEmpty()
         ) : (

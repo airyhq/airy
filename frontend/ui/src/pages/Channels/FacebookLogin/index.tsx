@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Notice} from 'components/alerts/Notice';
-import {Dropdown} from 'components/inputs/Dropdown';
+import {Notice, Dropdown} from 'components';
 import {ReactComponent as FbLoginIcon} from 'assets/images/icons/fb-login.svg';
 import {AiryConfig} from '../../../AiryConfig';
 import styles from './index.module.scss';

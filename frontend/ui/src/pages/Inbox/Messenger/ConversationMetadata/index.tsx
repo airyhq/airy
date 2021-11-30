@@ -75,7 +75,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const addTag = (tag: TagModel) => {
     addTagToConversation(conversation.id, tag.id);
-    setShowTagsDialog(false);
   };
 
   const removeTag = (tag: TagModel) => {
@@ -120,6 +119,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
       createTag({name: tagName.trim(), color}).then((tag: TagModel) => {
         if (tag) {
           addTag(tag);
+          setShowTagsDialog(false);
         }
       });
     }

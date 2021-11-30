@@ -106,7 +106,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
     });
   };
 
-  const InputOptions = () => {
+  const EmojiInput = () => {
     const handleEmojiDrawer = () => {
       if (isShowingEmojiDrawer) {
         textInputRef.current && textInputRef.current.focus();
@@ -151,6 +151,24 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       handleEmojiDrawer();
     };
 
+    return (
+      <div>
+        {isShowingEmojiDrawer && (
+          <div ref={emojiDiv} className={style.emojiDrawer}>
+            <EmojiPickerWrapper addEmoji={addEmoji} />
+          </div>
+        )}
+        {!uploadedFileUrl && (
+          <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
+            <div className={style.actionToolTip}>Emojis</div>
+            <Smiley aria-hidden className={style.smileyIcon} />
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const AttachmentInput = () => {
     const openFileSelector = () => {
       fileRef.current.click();
     };
@@ -161,19 +179,22 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       uploadFile(file);
     };
 
+    const acceptedFileTypes = (): string => {
+      const supportedTypes = [''];
+      const supportedImageTypes = '.jpg, .jpeg, .png, .webp, .heic, ';
+      const supportedVideoTypes = '.mp4, .MOV, ';
+      const supportedFileTypes = '.pdf, .svg, ';
+      !config.hideImages && supportedTypes.push(supportedImageTypes);
+      !config.hideVideos && supportedTypes.push(supportedVideoTypes);
+      !config.hideFiles && supportedTypes.push(supportedFileTypes);
+
+      return supportedTypes.join();
+    };
+
     return (
-      <div>
-        {isShowingEmojiDrawer && (
-          <div ref={emojiDiv} className={style.emojiDrawer}>
-            <EmojiPickerWrapper addEmoji={addEmoji} />
-          </div>
-        )}
+      <>
         {!uploadedFileUrl && (
-          <div className={style.iconContainer}>
-            <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
-              <div className={style.actionToolTip}>Emojis</div>
-              <Smiley aria-hidden className={style.smileyIcon} />
-            </button>
+          <>
             <button className={style.iconButton} type="button" onClick={openFileSelector}>
               <div className={style.actionToolTip}>Files</div>
               <PaperClip aria-hidden className={style.paperclipIcon} />
@@ -186,12 +207,11 @@ const AiryInputBar = (props: AiryInputBarProps) => {
               name="file"
               onChange={selectedFile}
               className={style.fileInput}
-              // accept=".png, .jpg, .jpeg, .mp4, .pdf, .vcf"
-              accept=".jpeg, .jpg, .gif, .png, .webp, .heic, .svg, .pdf"
+              accept={acceptedFileTypes()}
             />
-          </div>
+          </>
         )}
-      </div>
+      </>
     );
   };
 
@@ -232,7 +252,8 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           )}
 
           <div className={style.buttonContainer}>
-            {!(config.hideEmojis === true) && <InputOptions />}
+            {!(config.hideEmojis === true) && <EmojiInput />}
+            {!(config.hideAttachments === true) && <AttachmentInput />}
             <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
               {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
             </button>

@@ -10,7 +10,7 @@
     "@types/react-dom": "17.0.11",
     "@types/react-redux": "7.1.20",
     "@types/react-router-dom": "^5.3.1",
-    "camelcase-keys": "^7.0.0",
+    "camelcase-keys": "^7.0.1",
     "core-js": "3.18.3",
     "emoji-mart": "3.0.1",
     "form-data": "^4.0.0",

@@ -3,9 +3,21 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.36.0
+## 0.36.1
 
-#### Changes
+#### 🐛 Bug Fixes
+
+- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix instagram ingestion race condition [[#2625](https://github.com/airyhq/airy/pull/2625)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.36.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.36.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.36.1/windows/amd64/airy.exe)
+
+## 0.36.0
 
 #### 🚀 Features
 
@@ -13,15 +25,20 @@ sidebar_label: 📝 Changelog
 
 #### 🐛 Bug Fixes
 
-- [[#2154](https://github.com/airyhq/airy/issues/2154)] Fixed add tag behaviour [[#2613](https://github.com/airyhq/airy/pull/2613)]
+- [[#2154](https://github.com/airyhq/airy/issues/2154)] Fixed add tag behavior [[#2613](https://github.com/airyhq/airy/pull/2613)]
+
+#### 🧰 Maintenance
+
+- Bump camelcase-keys from 7.0.0 to 7.0.1 [[#2624](https://github.com/airyhq/airy/pull/2624)]
+- Bump @babel/plugin-transform-spread from 7.15.8 to 7.16.0 [[#2593](https://github.com/airyhq/airy/pull/2593)]
 
 #### Airy CLI
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.35.2/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.35.2/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.35.2/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.36.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.36.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.36.0/windows/amd64/airy.exe)
 
 ## 0.35.1
 

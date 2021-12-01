@@ -70,7 +70,14 @@ class WebSocket {
     this.client.onStompError = (frame: IFrame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
       console.error('Additional details: ' + frame.body);
-      authenticate(this.channelId);
+      console.error('errorrr: ' + frame.headers.keys);
+      if (frame.headers['message'].includes('401')) {
+        resetStorage(this.channelId);        
+        this.client.deactivate();
+        this.start();
+      } else {
+        authenticate(this.channelId);
+      }      
     };
 
     this.client.activate();
@@ -111,7 +118,7 @@ class WebSocket {
   };
 
   reconnect = () => {
-    if (!this.isConnected) {
+    if (!this.isConnected) {      
       this.connect(this.token);
     }
   };

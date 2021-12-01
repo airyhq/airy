@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -53,7 +54,7 @@ public class MessageMapper {
                 : webhookMessaging.get("sender").get("id").asText();
     }
 
-    public List<ProducerRecord<String, SpecificRecordBase>> getRecords(Event event, Function<String, Optional<String>> getMessageId) throws Exception {
+    public List<ProducerRecord<String, SpecificRecordBase>> getRecords(Event event, Function<String, Optional<String>> getMessageIdFn) throws Exception {
         final String payload = event.getPayload();
         final JsonNode rootNode = objectMapper.readTree(payload);
 
@@ -74,12 +75,15 @@ public class MessageMapper {
             // Third party app
             senderId = appId;
         } else if (appId == null) {
-            // Sent by Facebook moderator via Facebook inbox
+            // Sent by moderator via Facebook inbox
             senderId = getSourceConversationId(rootNode);
         } else {
             // Filter out echoes coming from this app
             return List.of();
         }
+
+
+        final Function<String, Optional<String>> getMessageId = getMessageIdFunctor(getMessageIdFn, channel.getSource().equals("instagram") && isEcho);
 
         if (rootNode.has("reaction")) {
             // In case that this is an existing message, try retrieving its id
@@ -128,6 +132,32 @@ public class MessageMapper {
                 .setHeaders(headers)
                 .setSentAt(rootNode.get("timestamp").asLong())
                 .build()));
+    }
+
+    // Instagram does not send an app id in its echoes. Therefore, we use the metadata Facebook mid for de-duplication
+    // The Facebook echo however can arrive before the metadata record is even written to the metadata topic
+    // Therefore we implement a retry mechanism only for Instagram echoes
+    // See: https://github.com/airyhq/airy/issues/2434
+    private Function<String, Optional<String>> getMessageIdFunctor(Function<String, Optional<String>> getMessageId, boolean isInstagramEcho) {
+        if (!isInstagramEcho) {
+            return getMessageId;
+        }
+
+        return (String facebookMessagId) -> {
+            for (int i = 3; i > 0; i--) {
+                final Optional<String> maybeMessagId = getMessageId.apply(facebookMessagId);
+                if (maybeMessagId.isPresent()) {
+                    return maybeMessagId;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep((4 - i) * 500L); // wait 0.5, 1.0, 1.5, 2.0 seconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return getMessageId.apply(facebookMessagId);
+        };
     }
 
     private List<ProducerRecord<String, SpecificRecordBase>> getReaction(String messageId, JsonNode rootNode) throws Exception {

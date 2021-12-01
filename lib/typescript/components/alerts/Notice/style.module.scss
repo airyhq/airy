@@ -7,7 +7,8 @@
   align-items: flex-start;
   width: max-content;
 
-  border: 2px solid #d51548;
+  border: 2px solid;
+  border-color: var(--color-red-alert);
   padding: 8px 18px;
   color: var(--color-text-contrast);
   margin-top: 10px;
@@ -19,19 +20,22 @@
   // Themes
   &.error {
     background-color: var(--color-background-red);
-    border: 2px solid #d51548;
+    border: 2px solid;
+    border-color: var(--color-red-alert);
     align-items: center;
   }
 
   &.warning {
     background-color: var(--color-background-yellow);
-    border: 1px solid #ffc600;
+    border: 1px solid;
+    border-color: var(--color-warning-yellow);
     align-items: center;
   }
 
   &.info {
     background-color: var(--color-background-blue);
-    border: 1px solid #4bb3fd;
+    border: 1px solid;
+    border-color: var(--color-fb-cta-border);
     align-items: center;
   }
 }

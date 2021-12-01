@@ -93,6 +93,36 @@ airy create [workspace directory] [flags]
 
 ***
 
+## Deploy
+
+Deploys a local image on a deployment of Airy Core
+
+#### Synopsis
+
+Deploys an image from the local docker registry to a deployment on a minikube Airy Core instance.
+
+```
+airy deploy [flags]
+```
+
+#### Options
+
+```
+      --deployment string   Name of the deployment in the Airy Core cluster that is to be replaced.
+  -h, --help                help for deploy
+      --image string        Name and tag of the local image.
+```
+
+#### Options inherited from parent commands
+
+```
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
+```
+
+
+***
+
 ## Status
 
 Reports the status of an Airy Core instance

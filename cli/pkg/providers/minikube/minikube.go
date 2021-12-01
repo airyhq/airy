@@ -139,3 +139,31 @@ func (p *provider) PostInstallation(providerConfig map[string]string, namespace 
 
 	return AddHostRecord()
 }
+
+func (p *provider) UpdateDeployment(img string, depl string) (string, error) {
+	err := p.loadImage(img)
+	out := ""
+	if err != nil {
+		out, err = p.setImage(img, depl)
+	}
+	return out, err
+}
+
+func (p *provider) loadImage(img string) error {
+	fmt.Printf(img)
+	args := []string{"image", "load", img}
+	cmd := getCmd(args...)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("running minikube on image load failed with err: %v\n%v", err, string(out))
+	}
+	return nil
+}
+
+func (p *provider) setImage(img string, depl string) (string, error) {
+	out, err := runGetOutput("kubectl", "set", "image", "deployment/"+depl, "app="+img)
+	if err != nil {
+		return "", err
+	}
+	return out, nil
+}

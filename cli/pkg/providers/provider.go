@@ -22,6 +22,7 @@ type Provider interface {
 	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
 	GetOverrides() template.Variables
 	PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error
+	UpdateDeployment(img string, depl string) (string, error)
 }
 
 func MustGet(providerName ProviderName, w io.Writer, analytics *console.AiryAnalytics) Provider {

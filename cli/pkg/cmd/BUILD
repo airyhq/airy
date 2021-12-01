@@ -14,6 +14,7 @@ go_library(
         "//cli/pkg/cmd/api",
         "//cli/pkg/cmd/config",
         "//cli/pkg/cmd/create",
+        "//cli/pkg/cmd/deploy",
         "//cli/pkg/cmd/status",
         "//cli/pkg/cmd/ui",
         "//cli/pkg/cmd/upgrade",

@@ -7,6 +7,7 @@ Available Commands:
   api         Interacts with the Airy Core HTTP API
   config      Manages an Airy Core instance via airy.yaml
   create      Creates an instance of Airy Core
+  deploy      Deploys a local image on a deployment of Airy Core
   help        Help about any command
   status      Reports the status of an Airy Core instance
   ui          Opens the Airy Core UI in your local browser

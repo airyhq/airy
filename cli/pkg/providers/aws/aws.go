@@ -520,3 +520,7 @@ func RandString(n int) string {
 	}
 	return string(b)
 }
+
+func (p *provider) UpdateDeployment(img string, depl string) (string, error) {
+	return "", fmt.Errorf("update deployment is not implemented for Airy Core instances with aws provider")
+}

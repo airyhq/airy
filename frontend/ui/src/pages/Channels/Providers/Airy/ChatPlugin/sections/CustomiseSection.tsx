@@ -1,4 +1,4 @@
-import React, {createRef} from 'react';
+import React, {createRef, useEffect} from 'react';
 import {Button, Dropdown, Input, ListenOutsideClick, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
@@ -79,10 +79,18 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [disableMobile, setDisableMobile] = useLocalState('disableMobile', false);
   const [hideInputBar, setHideInputBar] = useLocalState('hideInputBar', false);
   const [hideEmojis, setHideEmojis] = useLocalState('hideEmojis', false);
+  const [hideAttachments, setHideAttachments] = useLocalState('hideAttachments', false);
+  const [hideImages, setHideImages] = useLocalState('hideImages', false);
+  const [hideVideos, setHideVideos] = useLocalState('hideVideos', false);
+  const [hideFiles, setHideFiles] = useLocalState('hideFiles', false);
   const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
   const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
+
+  useEffect(() => {
+    hideImages && hideVideos && hideFiles ? setHideAttachments(true) : setHideAttachments(false);
+  }, [hideImages, hideVideos, hideFiles]);
 
   const toggleShowHeaderTextColorPicker = () => {
     setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
@@ -143,6 +151,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       `disableMobile: '${disableMobile}'`,
       `hideInputBar: '${hideInputBar}'`,
       `hideEmojis: '${hideEmojis}'`,
+      `hideAttachments: '${hideAttachments}'`,
+      `hideImages: '${hideImages}'`,
+      `hideVideos: '${hideVideos}'`,
+      `hideFiles: '${hideFiles}'`,
     ];
 
     return `w[n].config = {${'\n           '}${config.filter(it => it !== '').join(',\n           ')}\n        };`;
@@ -174,6 +186,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(disableMobile && {disableMobile: disableMobile}),
       ...(hideInputBar && {hideInputBar: hideInputBar}),
       ...(hideEmojis && {hideEmojis: hideEmojis}),
+      ...(hideAttachments && {hideAttachments: hideAttachments}),
+      ...(hideImages && {hideImages: hideImages}),
+      ...(hideVideos && {hideVideos: hideVideos}),
+      ...(hideFiles && {hideFiles: hideFiles}),
     },
   };
 
@@ -710,6 +726,18 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         </div>
         <div className={styles.extraOptions}>
           <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
+        </div>
+        <div>
+          <p>Supported file types:</p>
+          <div className={styles.extraOptions}>
+            <Toggle value={hideImages} text="Disable Images" updateValue={(value: boolean) => setHideImages(value)} />
+          </div>
+          <div className={styles.extraOptions}>
+            <Toggle value={hideVideos} text="Disable Videos" updateValue={(value: boolean) => setHideVideos(value)} />
+          </div>
+          <div className={styles.extraOptions}>
+            <Toggle value={hideFiles} text="Disable Files" updateValue={(value: boolean) => setHideFiles(value)} />
+          </div>
         </div>
       </div>
       <div

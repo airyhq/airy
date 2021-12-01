@@ -106,6 +106,7 @@
   align-self: flex-end;
   cursor: pointer;
   margin-bottom: 1px;
+  margin-left: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,12 +175,6 @@
     bottom: 33px;
     z-index: 2;
   }
-}
-
-.iconContainer {
-  display: flex;
-  flex-direction: row;
-  margin-right: 8px;
 }
 
 .smileyIcon {

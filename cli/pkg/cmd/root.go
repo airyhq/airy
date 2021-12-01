@@ -4,6 +4,7 @@ import (
 	"cli/pkg/cmd/api"
 	"cli/pkg/cmd/config"
 	"cli/pkg/cmd/create"
+	"cli/pkg/cmd/deploy"
 	"cli/pkg/cmd/status"
 	"cli/pkg/cmd/ui"
 	"cli/pkg/cmd/upgrade"
@@ -35,7 +36,7 @@ var RootCmd = &cobra.Command{
 	Long:             ``,
 	TraverseChildren: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if cmd.Name() != "create" && cmd.Name() != "version" {
+		if cmd.Name() != "create" && cmd.Name() != "version" && cmd.Name() != "deploy" {
 			_, err := workspace.Init(cliConfigDir)
 			if err != nil {
 				fmt.Println(err.Error())
@@ -126,4 +127,5 @@ func init() {
 	RootCmd.AddCommand(versionCmd)
 	RootCmd.AddCommand(create.CreateCmd)
 	RootCmd.AddCommand(upgrade.UpgradeCmd)
+	RootCmd.AddCommand(deploy.DeployCmd)
 }

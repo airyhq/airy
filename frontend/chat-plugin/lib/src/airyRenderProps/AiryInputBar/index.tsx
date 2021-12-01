@@ -44,8 +44,8 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   useEffect(() => {
     if (textInputRef.current) {
       textInputRef.current.selectionStart = props.messageString?.length ?? 0;
-      textInputRef.current.selectionEnd = props.messageString?.length ?? 0; 
-    }    
+      textInputRef.current.selectionEnd = props.messageString?.length ?? 0;
+    }
   }, []);
 
   useEffect(() => {

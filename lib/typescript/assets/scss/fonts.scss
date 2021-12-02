@@ -54,6 +54,12 @@
   line-height: 4.5rem;
 }
 
+@mixin font-fb-cta {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
 .font-s {
   @include font-s;
 }
@@ -92,4 +98,8 @@
 
 .font-5l {
   @include font-5l;
+}
+
+.font-fb-cta {
+  @include font-fb-cta;
 }

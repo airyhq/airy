@@ -11,9 +11,7 @@ type NoticeProps = {
   icon?: boolean;
 };
 
-const NoticeComponent = ({children, theme, icon}: NoticeProps) => {
-  if (typeof icon === 'undefined') icon = true;
-
+const NoticeComponent = ({children, theme, icon = true}: NoticeProps) => {
   return (
     <div className={`${styles.container} ${styles[theme]}`}>
       {icon && (

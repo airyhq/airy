@@ -113,13 +113,13 @@ to install it locally.
 
 ### Publishing and running images locally
 
-You can test your images locally at runtime if you have a local instance of Airy 
+You can test your images locally at runtime if you have a local instance of Airy
 Core running in Minikube.
 
 #### Publish image to minikube's registry
 
 In order for the Airy Core cluster to have access to a newly built image, you need
-to publish the image to Minikube's (built-in) docker registry. Do this by pointing 
+to publish the image to Minikube's (built-in) docker registry. Do this by pointing
 your shell's docker environment to the docker instance in minikube:
 
 ```sh
@@ -139,7 +139,7 @@ environment to point to your local docker instance with
 
 #### Run image on Airy Core
 
-Next, you will want to run this image in the Airy Core cluster. For this example 
+Next, you will want to run this image in the Airy Core cluster. For this example
 that means you need to:
 
 ```sh

@@ -27,6 +27,11 @@ avro_java_library(
 )
 
 avro_java_library(
+    name = "note-avro",
+    srcs = ["note.avsc"],
+)
+
+avro_java_library(
     name = "source",
 )
 

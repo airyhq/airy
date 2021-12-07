@@ -38,6 +38,10 @@ public class DocumentMapper {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));
         }
 
+        for (String noteId : conversation.getNoteIds()) {
+            document.add(new TextField("note_ids", noteId, Field.Store.YES));
+        }
+
         for (MetadataNode node : conversation.getMetadata()) {
             final String key = String.format("metadata.%s", node.getKey());
             // Index but don't store metadata
@@ -56,11 +60,17 @@ public class DocumentMapper {
                 .map(IndexableField::stringValue)
                 .collect(toList());
 
+        final List<String> noteIds = document.getFields().stream()
+                .filter((field) -> field.name().equals("note_ids"))
+                .map(IndexableField::stringValue)
+                .collect(toList());
+
         return ConversationIndex.builder()
                 .id(document.get("id"))
                 .unreadMessageCount(unreadCount)
                 .createdAt(createdAt)
                 .tagIds(tagIds)
+                .noteIds(noteIds)
                 .displayName(document.get("display_name"))
                 .build();
     }

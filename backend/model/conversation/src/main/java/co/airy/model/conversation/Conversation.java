@@ -69,6 +69,15 @@ public class Conversation implements Serializable {
                 .collect(toList());
     }
 
+    @JsonIgnore
+    public List<String> getNoteIds() {
+        return metadataMap.keySet()
+                .stream()
+                .filter((entry) -> entry.startsWith(MetadataKeys.ConversationKeys.NOTES))
+                .map(s -> s.split("\\.")[1])
+                .collect(toList());
+    }
+
     /**
      * - Remove the source provider (see docs/getting-started/glossary.md#source-provider)
      * - Capitalize first letter

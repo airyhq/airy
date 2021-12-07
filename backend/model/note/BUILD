@@ -2,18 +2,17 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 
 custom_java_library(
-    name = "event",
-    srcs = glob(["src/main/java/co/airy/model/event/**/*.java"]),
+    name = "note",
+    srcs = glob(["src/main/java/co/airy/model/note/**/*.java"]),
     visibility = ["//visibility:public"],
+    exports = [
+        "//backend/avro:note-avro",
+        "//lib/java/kafka/schema:application-communication-notes",
+    ],
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/model/channel",
-        "//backend/model/conversation",
-        "//backend/model/message",
-        "//backend/model/metadata",
-        "//backend/model/note",
-        "//backend/model/tag",
+        "//backend/avro:note-avro",
     ],
 )
 

@@ -59,6 +59,15 @@ public class MetadataRepository {
                 .build();
     }
 
+    public static Metadata newConversationNote(String conversationId, String noteId) {
+        return Metadata.newBuilder()
+                .setSubject(new Subject("conversation", conversationId).toString())
+                .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId))
+                .setValue("")
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+    }
+
     public static Subject getSubject(Metadata metadata) {
         final String subjectString = metadata.getSubject();
         int lastIndexOf = subjectString.lastIndexOf(":");

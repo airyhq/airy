@@ -6,14 +6,7 @@ import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
 import co.airy.core.api.communication.lucene.ExtendedQueryParser;
 import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
-import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
-import co.airy.core.api.communication.payload.ConversationListRequestPayload;
-import co.airy.core.api.communication.payload.ConversationListResponsePayload;
-import co.airy.core.api.communication.payload.ConversationResponsePayload;
-import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload;
-import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
-import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
-import co.airy.core.api.communication.payload.PaginationData;
+import co.airy.core.api.communication.payload.*;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
@@ -39,8 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
-import static co.airy.model.metadata.MetadataRepository.newConversationTag;
+import static co.airy.model.metadata.MetadataRepository.*;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -161,6 +153,50 @@ public class ConversationsController {
 
         try {
             stores.storeReadReceipt(readReceipt);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.addNote")
+    ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final Metadata metadata = newConversationNote(conversationId, noteId);
+
+        try {
+            stores.storeMetadata(metadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.deleteNote")
+    ResponseEntity<?> conversationDeleteNote(@RequestBody @Valid ConversationNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            final Subject subject = new Subject("conversation", conversationId);
+            final String metadataKey = String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId);
+            stores.deleteMetadata(subject, metadataKey);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

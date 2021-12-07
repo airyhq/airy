@@ -11,6 +11,7 @@ app_deps = [
     "//backend/model/event",
     "//backend/model/message",
     "//backend/model/metadata",
+    "//backend/model/note",
     "//backend/model/tag",
     "//lib/java/date",
     "//lib/java/spring/auth:spring-auth",

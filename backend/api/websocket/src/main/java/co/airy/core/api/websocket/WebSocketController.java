@@ -2,12 +2,10 @@ package co.airy.core.api.websocket;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Note;
 import co.airy.avro.communication.Tag;
 import co.airy.model.channel.ChannelPayload;
-import co.airy.model.event.payload.ChannelUpdated;
-import co.airy.model.event.payload.MessageCreated;
-import co.airy.model.event.payload.MetadataUpdated;
-import co.airy.model.event.payload.TagEvent;
+import co.airy.model.event.payload.*;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -41,6 +39,10 @@ public class WebSocketController {
         }
 
         messagingTemplate.convertAndSend(QUEUE_EVENTS, MetadataUpdated.fromMetadataMap(metadataMap));
+    }
+
+    public void onNote(Note note) {
+        messagingTemplate.convertAndSend(QUEUE_EVENTS, NoteEvent.fromNote(note));
     }
 
     public void onTag(Tag tag) {

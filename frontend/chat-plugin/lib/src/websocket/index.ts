@@ -69,7 +69,7 @@ class WebSocket {
 
     this.client.onStompError = (frame: IFrame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
-      console.error('Additional details: ' + frame.body);      
+      console.error('Additional details: ' + frame.body);
       if (frame.headers['message'].includes('401')) {
         this.client.deactivate();
         this.start();

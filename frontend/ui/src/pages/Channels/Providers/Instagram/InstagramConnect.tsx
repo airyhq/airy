@@ -30,9 +30,9 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const InstagramConnect = (props: InstagramProps) => {
   const {connectInstagramChannel, channel} = props;
-  const [id, setId] = useState(channel?.sourceChannelId || '');
+  const [id, setId] = useState('');
   const [token, setToken] = useState('');
-  const [accountId, setAccountId] = useState('');
+  const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');

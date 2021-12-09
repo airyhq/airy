@@ -65,6 +65,8 @@ module "eks" {
   node_groups = {
     default = {
       desired_capacity = var.node_group_size
+      min_capacity     = var.node_group_size
+      max_capacity     = (var.node_group_size + 1)
 
       instance_types = [var.instance_type]
       update_config = {

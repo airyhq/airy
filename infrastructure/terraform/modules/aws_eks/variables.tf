@@ -72,3 +72,12 @@ variable "fargate_namespaces" {
 variable "fargate_profiles" {
   
 }
+
+variable "kubernetes_users" {
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+  default = []
+}

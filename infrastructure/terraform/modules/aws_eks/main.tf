@@ -21,8 +21,12 @@ module "vpc" {
   private_subnets = var.private_subnets
   public_subnets  = var.public_subnets
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = true
+  enable_nat_gateway   = true
+  enable_vpn_gateway   = true
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  single_nat_gateway = true
 
   tags = {
     Terraform = "true"
@@ -56,6 +60,7 @@ module "eks" {
   fargate_subnets        = [local.vpc.private_subnets[0]]
   kubeconfig_output_path = var.kubeconfig_output_path
   write_kubeconfig       = true
+  map_users              = var.kubernetes_users
 
   node_groups = {
     default = {

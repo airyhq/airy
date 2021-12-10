@@ -37,7 +37,9 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const {conversation} = props;
 
   const lastMessageIsText = (conversation: Conversation) => {
-    const lastMessageContent = conversation.lastMessage.content;
+    const lastMessageContent = conversation?.lastMessage?.content?.message || conversation?.lastMessage?.content;
+
+    //google
     const googleLiveAgentRequest = lastMessageContent?.userStatus?.requestedLiveAgent;
     const googleSurveyResponse = lastMessageContent?.surveyResponse;
 
@@ -55,6 +57,31 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
           <Emoji symbol={'📝'} /> Survey response
         </>
       );
+    }
+
+    //instagram
+    const instagramStoryMention =
+      lastMessageContent?.attachment?.type === 'story_mention' ||
+      lastMessageContent?.attachments?.[0]?.type === 'story_mention';
+    const instagramStoryReplies = lastMessageContent?.reply_to;
+    const instagramDeletedMessage = lastMessageContent?.is_deleted;
+    const instagramShare =
+      lastMessageContent?.attachment?.type === 'share' || lastMessageContent?.attachments?.[0]?.type === 'share';
+
+    if (instagramStoryMention) {
+      return <>story mention</>;
+    }
+
+    if (instagramStoryReplies) {
+      return <>story reply</>;
+    }
+
+    if (instagramDeletedMessage) {
+      return <>deleted message</>;
+    }
+
+    if (instagramShare) {
+      return <>shared post</>;
     }
 
     if (typeof lastMessageContent === 'string') {

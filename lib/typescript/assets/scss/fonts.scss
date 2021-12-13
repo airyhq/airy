@@ -2,56 +2,56 @@
 
 @mixin font-s {
   font-family: 'Lato', sans-serif;
-  font-size: 0.8rem; // 13px
-  line-height: 1rem;
+  font-size: 13px;
+  line-height: 16px;
 }
 
 @mixin font-base {
   font-family: 'Lato', sans-serif;
-  font-size: 1rem; // 16 px
-  line-height: 1.5rem;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 @mixin font-m {
   font-family: 'Lato', sans-serif;
-  font-size: 1.25rem; // 20px
-  line-height: 2rem;
+  font-size: 20px;
+  line-height: 32px;
 }
 
 @mixin font-l {
   font-family: 'Lato', sans-serif;
-  font-size: 1.563rem; // 25px
-  line-height: 2rem;
+  font-size: 25px;
+  line-height: 32px;
 }
 
 @mixin font-xl {
   font-family: 'Lato', sans-serif;
-  font-size: 1.953rem; // 31px
-  line-height: 2.5rem;
+  font-size: 31px;
+  line-height: 42px;
 }
 
 @mixin font-xxl {
   font-family: 'Lato', sans-serif;
-  font-size: 2.441rem; // 39px
-  line-height: 3rem;
+  font-size: 39px;
+  line-height: 48px;
 }
 
 @mixin font-xxxl {
   font-family: 'Lato', sans-serif;
-  font-size: 3.052rem; // 48px
-  line-height: 3.5rem;
+  font-size: 48px;
+  line-height: 56px;
 }
 
 @mixin font-4l {
   font-family: 'Lato', sans-serif;
-  font-size: 3.815rem; // 61px
-  line-height: 4rem;
+  font-size: 61px;
+  line-height: 72px;
 }
 
 @mixin font-5l {
   font-family: 'Lato', sans-serif;
-  font-size: 4.815rem; // 76px
-  line-height: 4.5rem;
+  font-size: 76px;
+  line-height: 82px;
 }
 
 .font-s {

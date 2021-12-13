@@ -24,6 +24,7 @@ airy_jvm_deps = [
     "javax.xml.bind:jaxb-api:2.3.1",
     "org.apache.logging.log4j:log4j-core:2.15.0",
     "org.apache.logging.log4j:log4j-slf4j-impl:2.15.0",
+    "org.slf4j:slf4j-nop:1.7.32",
     "org.slf4j:slf4j-api:1.7.32",
     "org.apache.avro:avro-tools:1.10.0",
     "org.apache.avro:avro:1.10.0",
@@ -63,6 +64,8 @@ airy_jvm_deps = [
     "org.springframework:spring-websocket:5.3.6",
     "org.springframework.security:spring-security-core:5.4.6",
     "org.rocksdb:rocksdbjni:5.18.3",
+    "com.segment.analytics.java:analytics-core:3.1.3",
+    "com.segment.analytics.java:analytics:3.1.3"
 ]
 
 excluded_artifacts = [

@@ -65,7 +65,7 @@ airy_jvm_deps = [
     "org.springframework.security:spring-security-core:5.4.6",
     "org.rocksdb:rocksdbjni:5.18.3",
     "com.segment.analytics.java:analytics-core:3.1.3",
-    "com.segment.analytics.java:analytics:3.1.3"
+    "com.segment.analytics.java:analytics:3.1.3",
 ]
 
 excluded_artifacts = [

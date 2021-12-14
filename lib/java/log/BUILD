@@ -8,15 +8,15 @@ custom_java_library(
     exports = [
         "@maven//:org_apache_logging_log4j_log4j_api",
         "@maven//:org_apache_logging_log4j_log4j_slf4j_impl",
-        "@maven//:org_slf4j_slf4j_nop",
         "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_nop",
     ],
     deps = [
-        "@maven//:org_slf4j_slf4j_nop",
         "@maven//:org_apache_logging_log4j_log4j_api",
         "@maven//:org_apache_logging_log4j_log4j_core",
         "@maven//:org_apache_logging_log4j_log4j_slf4j_impl",
         "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_nop",
     ],
 )
 

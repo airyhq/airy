@@ -14,7 +14,6 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -37,6 +36,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     private final String channelsStore = "channels-store";
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private static final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private static final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
 
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
@@ -70,11 +70,17 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
 
         messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
-                .map((conversationId, sendMessageRequest) -> {
-                    final Message message = connector.sendMessage(sendMessageRequest);
-                    return KeyValue.pair(message.getId(), message);
-                })
-                .to(new ApplicationCommunicationMessages().name());
+                .flatMap((conversationId, sendMessageRequest) -> connector.sendMessage(sendMessageRequest))
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
 
         streams.start(builder.build(), appId);
     }

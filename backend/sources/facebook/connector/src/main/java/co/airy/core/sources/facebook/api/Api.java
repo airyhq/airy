@@ -8,7 +8,12 @@ import co.airy.core.sources.facebook.api.model.Participants;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.model.SendMessageResponse;
 import co.airy.core.sources.facebook.api.model.UserProfile;
+import co.airy.log.AiryLoggerFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -39,6 +44,7 @@ import java.util.Optional;
  */
 @Service
 public class Api implements ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger log = AiryLoggerFactory.getLogger(Api.class);
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper objectMapper;
     private RestTemplate restTemplate;
@@ -51,16 +57,15 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final String appId;
     private final String apiSecret;
-    private static final String errorMessageTemplate =
-            "Exception while sending a message to Facebook: \n" +
-                    "Http Status Code: %s \n" +
-                    "Error Message: %s \n";
 
-    public Api(ObjectMapper objectMapper, RestTemplateBuilder restTemplateBuilder,
+    public Api(RestTemplateBuilder restTemplateBuilder,
                @Value("${facebook.app-id}") String appId,
                @Value("${facebook.app-secret}") String apiSecret) {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        this.objectMapper = objectMapper;
+        this.objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         this.restTemplateBuilder = restTemplateBuilder;
         this.appId = appId;
         this.apiSecret = apiSecret;
@@ -111,11 +116,8 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     public UserProfile getProfileFromContact(String sourceConversationId, String token) {
         String reqUrl = String.format(baseUrl + "/%s?fields=first_name,last_name,profile_pic&access_token=%s",
                 sourceConversationId, token);
-        ResponseEntity<UserProfile> responseEntity = restTemplate.getForEntity(reqUrl, UserProfile.class);
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new ApiException("Call unsuccessful, received HTTP status " + responseEntity.getStatusCodeValue());
-        }
-        return responseEntity.getBody();
+        ResponseEntity<UserProfile> response = restTemplate.getForEntity(reqUrl, UserProfile.class);
+        return response.getBody();
     }
 
     // See https://developers.facebook.com/docs/graph-api/reference/v9.0/conversation#edges
@@ -123,12 +125,12 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         String reqUrl = String.format(baseUrl + "/me/conversations?user_id=%s&fields=participants&access_token=%s",
                 sourceConversationId, token);
 
-        ResponseEntity<Participants> responseEntity = restTemplate.getForEntity(reqUrl, Participants.class);
-        if (responseEntity.getBody() == null || responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new ApiException("Call unsuccessful");
+        ResponseEntity<Participants> response = restTemplate.getForEntity(reqUrl, Participants.class);
+        if (response.getBody() == null) {
+            throw new ApiException(String.format("Response body was null, status code %s", response.getStatusCode()));
         }
 
-        return fromParticipants(responseEntity.getBody(), sourceConversationId);
+        return fromParticipants(response.getBody(), sourceConversationId);
     }
 
     public PageWithConnectInfo getPageForUser(final String pageId, final String accessToken) throws Exception {
@@ -180,7 +182,16 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
                     @Override
                     public void handleError(ClientHttpResponse response) throws IOException {
-                        throw new ApiException(String.format(errorMessageTemplate, response.getRawStatusCode(), new String(response.getBody().readAllBytes())));
+                        final String errorPayload = new String(response.getBody().readAllBytes());
+                        final JsonNode jsonNode = objectMapper.readTree(errorPayload);
+                        final String errorMessage = Optional.of(jsonNode.get("error"))
+                                .map((node) -> node.get("message"))
+                                .map(JsonNode::textValue)
+                                .orElseGet(() -> {
+                                    log.warn("Could not parse error message from response: {}", errorPayload);
+                                    return errorPayload;
+                                });
+                        throw new ApiException(errorMessage, errorPayload);
                     }
                 })
                 .additionalMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))

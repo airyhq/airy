@@ -1,0 +1,101 @@
+---
+# Source: kafka-connect/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-connect
+  labels:
+    app: connect
+    chart: kafka-connect-2.7.0
+    release: airy
+    heritage: Helm
+spec:
+  ports:
+    - name: kafka-connect
+      port: 8083
+  selector:
+    app: connect
+    release: airy
+---
+# Source: kafka-connect/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connect
+  labels:
+    app: connect
+    chart: kafka-connect-2.7.0
+    release: airy
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connect
+      release: airy
+  template:
+    metadata:
+      labels:
+        app: connect
+        release: airy
+        WorkerType: "NodeGroup"
+    spec:
+      containers:
+        - name: connect-server
+          image: "ghcr.io/airyhq/infrastructure/kafka-connect:pascal"
+          imagePullPolicy: "Always"
+          ports:
+            - name: kafka-connect
+              containerPort: 8083
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 200m
+              memory: 1024Mi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+          env:
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: PLAINTEXT://kafka-headless:9092
+            - name: CONNECT_GROUP_ID
+              value: kafka-connect
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: kafka-connect-config
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: kafka-connect-offset
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: kafka-connect-status
+            - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+            - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xms512M -Xmx512M"
+            - name: "CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR"
+              value: "1"
+            - name: "CONNECT_INTERNAL_KEY_CONVERTER"
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: "CONNECT_INTERNAL_VALUE_CONVERTER"
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: "CONNECT_KEY_CONVERTER"
+              value: "io.confluent.connect.avro.AvroConverter"
+            - name: "CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE"
+              value: "false"
+            - name: "CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR"
+              value: "1"
+            - name: "CONNECT_PLUGIN_PATH"
+              value: "/usr/share/java,/usr/share/confluent-hub-components"
+            - name: "CONNECT_STATUS_STORAGE_REPLICATION_FACTOR"
+              value: "1"
+            - name: "CONNECT_VALUE_CONVERTER"
+              value: "io.confluent.connect.avro.AvroConverter"
+            - name: "CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE"
+              value: "false"
+            - name: KAFKA_JMX_PORT
+              value: "5555"
+      volumes:

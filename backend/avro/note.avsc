@@ -3,7 +3,8 @@
   "name": "Note",
   "type": "record",
   "fields": [
-    {"name": "id", "type": "string"},
-    {"name": "text", "type": "string"}
+    {"name": "noteId", "type": "string"},
+    {"name": "text", "type": "string"},
+    {"name": "conversationId", "type": "string"}
   ]
 }

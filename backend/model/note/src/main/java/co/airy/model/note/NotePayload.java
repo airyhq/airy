@@ -11,13 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotePayload {
-    private String id;
+    private String noteId;
     private String text;
+    private String conversationId;
 
     public static NotePayload fromNote(Note note) {
         return NotePayload.builder()
-                .id(note.getId())
+                .noteId(note.getNoteId())
                 .text(note.getText())
+                .conversationId(note.getConversationId())
                 .build();
     }
 }

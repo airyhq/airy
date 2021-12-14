@@ -1,7 +1,6 @@
-package co.airy.core.api.admin.payload;
+package co.airy.core.api.communication.payload;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +8,11 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class DeleteNoteRequestPayload {
+@NoArgsConstructor
+public class ConversationAddNoteRequestPayload {
     @NotNull
-    private UUID id;
+    private UUID conversationId;
+    @NotNull
+    private String text;
 }

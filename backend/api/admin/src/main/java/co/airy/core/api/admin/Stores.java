@@ -36,13 +36,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaProducer<String, SpecificRecordBase> producer;
 
     private final String connectedChannelsStore = "connected-channels-store";
-    private final String notesStore = "notes-store";
     private final String tagsStore = "tags-store";
     private final String webhooksStore = "webhooks-store";
     private final String templatesStore = "templates-store";
 
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
-    private final String applicationCommunicationNotes = new ApplicationCommunicationNotes().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
@@ -70,8 +68,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(tagsStore));
 
-        builder.<String, Tag>table(applicationCommunicationNotes, Materialized.as(notesStore));
-
         builder.<String, Template>table(applicationCommunicationTemplates, Materialized.as(templatesStore));
 
         streams.start(builder.build(), appId);
@@ -79,10 +75,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
         return streams.acquireLocalStore(webhooksStore);
-    }
-
-    public ReadOnlyKeyValueStore<String, Note> getNotesStore() {
-        return streams.acquireLocalStore(notesStore);
     }
 
     public ReadOnlyKeyValueStore<String, Tag> getTagsStore() {
@@ -106,14 +98,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
-    }
-
-    public void storeNote(Note note) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationNotes, note.getId(), note)).get();
-    }
-
-    public void deleteNote(Note note) {
-        producer.send(new ProducerRecord<>(applicationCommunicationNotes, note.getId(), null));
     }
 
     public void storeTag(Tag tag) throws ExecutionException, InterruptedException {

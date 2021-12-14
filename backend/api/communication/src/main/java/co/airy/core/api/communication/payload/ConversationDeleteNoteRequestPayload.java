@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConversationNoteRequestPayload {
+public class ConversationDeleteNoteRequestPayload {
     @NotNull
     private UUID conversationId;
     @NotNull

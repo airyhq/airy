@@ -1,9 +1,6 @@
 package co.airy.core.api.communication;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.ReadReceipt;
+import co.airy.avro.communication.*;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
@@ -14,6 +11,7 @@ import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationNotes;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
@@ -67,11 +65,13 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String messagesStore = "messages-store";
     private final String messagesByIdStore = "messages-by-id-store";
     private final String metadataStore = "metadata-store";
+    private final String notesStore = "notes-store";
     private final String conversationsStore = "conversations-store";
     private final String channelsStore = "channels-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
+    private final String applicationCommunicationNotes = new ApplicationCommunicationNotes().name();
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, SpecificRecordBase> producer,
@@ -90,6 +90,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name(), Materialized.as(channelsStore));
+
+        final KTable<String, Note> noteTable = builder.table(applicationCommunicationNotes, Materialized.as(notesStore));
 
         // conversation/message/channel metadata keyed by conversation/message/channel id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
@@ -212,6 +214,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return luceneProvider;
     }
 
+    public ReadOnlyKeyValueStore<String, Note> getNotesStore() {
+        return streams.acquireLocalStore(notesStore);
+    }
+
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
     }
@@ -222,6 +228,14 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public void deleteMetadata(Subject subject, String key) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
+    }
+
+    public void deleteNote(String noteId) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationNotes, noteId, null));
+    }
+
+    public void storeNote(Note note) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationNotes, note.getNoteId(), note)).get();
     }
 
     public MetadataMap getMetadata(String subjectId) {
@@ -282,6 +296,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         getMessagesStore();
         getMessagesByIdStore();
         getMetadataStore();
+        getNotesStore();
 
         return Health.status(Status.UP).build();
     }

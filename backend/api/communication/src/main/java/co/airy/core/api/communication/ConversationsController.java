@@ -1,6 +1,7 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Note;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
@@ -26,10 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static co.airy.model.metadata.MetadataRepository.*;
@@ -161,9 +159,14 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.addNote")
-    ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationNoteRequestPayload payload) {
+    ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationAddNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
-        final String noteId = payload.getNoteId().toString();
+        final String text = payload.getText();
+        if (text != null && (text.length() == 0 || text.length() >50000)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RequestErrorResponsePayload("Text length must be >0 and <50000"));
+        }
+
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 
@@ -171,7 +174,19 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        final Metadata metadata = newConversationNote(conversationId, noteId);
+        final Note note = Note.newBuilder()
+                .setNoteId(UUID.randomUUID().toString())
+                .setText(text)
+                .setConversationId(conversationId)
+                .build();
+
+        try {
+            stores.storeNote(note);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        final Metadata metadata = newConversationNote(conversationId, note.getNoteId());
 
         try {
             stores.storeMetadata(metadata);
@@ -183,7 +198,7 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.deleteNote")
-    ResponseEntity<?> conversationDeleteNote(@RequestBody @Valid ConversationNoteRequestPayload payload) {
+    ResponseEntity<?> conversationDeleteNote(@RequestBody @Valid ConversationDeleteNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String noteId = payload.getNoteId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
@@ -197,6 +212,36 @@ public class ConversationsController {
             final Subject subject = new Subject("conversation", conversationId);
             final String metadataKey = String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId);
             stores.deleteMetadata(subject, metadataKey);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        try {
+            stores.deleteNote(noteId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.updateNote")
+    ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
+        final Note note = stores.getNotesStore().get(payload.getNoteId().toString());
+        if (note == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final String text = payload.getText();
+        if (text != null && (text.length() == 0 || text.length() > 50000)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RequestErrorResponsePayload("Text length must be >0 and <50000"));
+        }
+
+        note.setText(Optional.ofNullable(payload.getText()).orElse(note.getText()));
+
+        try {
+            stores.storeNote(note);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

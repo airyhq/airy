@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
+import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.kafka.schema.Topic;
@@ -31,6 +32,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,7 +86,8 @@ class ChannelsControllerTest {
     }
 
     @Test
-    void canConnect() throws Exception {
+    void canFacebookConnect() throws Exception {
+        // Connect to facebook channel
         final ConnectPageRequestPayload connectPayload = this.mockConnectPageRequestPayload();
         final PageWithConnectInfo pageWithConnectInfo = this.mockPageWithConnectInfo();
 
@@ -93,7 +96,7 @@ class ChannelsControllerTest {
         doNothing().when(api).connectPageToApp(pageWithConnectInfo.getAccessToken());
 
 
-        final String content = webTestHelper.post(
+        String content = webTestHelper.post(
                 "/channels.facebook.connect",
                 objectMapper.writeValueAsString(connectPayload))
             .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
@@ -111,6 +114,24 @@ class ChannelsControllerTest {
         assertThat(MetadataKeys.ChannelKeys.IMAGE_URL, equalTo(metadata.getKey()));
         assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
 
+
+        // Explore facebook connected channels
+
+        // FIXME: I don't know why store raises an exception. I am guessing is not ready but it should return an
+        //        empty List instead of raising an exception
+        Thread.sleep(5000);
+        final ExploreRequestPayload explorePayload = new ExploreRequestPayload("explore-token-string");
+
+        doReturn(Arrays.asList(pageWithConnectInfo)).when(api).getPagesInfo(explorePayload.getAuthToken());
+        content = webTestHelper.post(
+                "/channels.facebook.explore",
+                objectMapper.writeValueAsString(explorePayload))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        assertThat(content, equalTo("{\"data\":[{\"page_id\":\"7562107744668308\",\"name\":\"facebook app\",\"image_url\":\"facebook app image\",\"connected\":true}]}"));
+
+
+        // Disconnect to facebook channel
         final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
                 UUID.fromString(jsonNode.get("id").textValue()));
         webTestHelper.post(

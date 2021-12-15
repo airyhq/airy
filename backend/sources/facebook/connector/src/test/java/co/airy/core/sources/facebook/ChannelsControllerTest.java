@@ -100,12 +100,14 @@ class ChannelsControllerTest {
         List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
         final Channel channel = channels.get(0);
 
+        assertThat(pageWithConnectInfo.getId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
         final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
         final Metadata metadata = metadataList.get(0);
 
         assertThat(MetadataKeys.ChannelKeys.IMAGE_URL, equalTo(metadata.getKey()));
+        assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
     }
 
     private ConnectPageRequestPayload mockConnectPageRequestPayload() {

@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
+import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -31,6 +32,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -108,6 +110,16 @@ class ChannelsControllerTest {
 
         assertThat(MetadataKeys.ChannelKeys.IMAGE_URL, equalTo(metadata.getKey()));
         assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
+
+        final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
+                UUID.fromString(jsonNode.get("id").textValue()));
+        webTestHelper.post(
+                "/channels.facebook.disconnect",
+                objectMapper.writeValueAsString(disconnectRequestPayload))
+            .andExpect(status().isNoContent());
+
+        channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
+        assertThat(ChannelConnectionState.DISCONNECTED, equalTo(channels.get(0).getConnectionState()));
     }
 
     private ConnectPageRequestPayload mockConnectPageRequestPayload() {

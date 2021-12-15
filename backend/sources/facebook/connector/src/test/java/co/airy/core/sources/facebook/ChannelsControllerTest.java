@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
+import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
@@ -86,7 +87,12 @@ class ChannelsControllerTest {
     }
 
     @Test
-    void canFacebookConnect() throws Exception {
+    void canConnect() throws Exception {
+        canFacebookConnect();
+        canInstagramConnect();
+    }
+
+    private void canFacebookConnect() throws Exception {
         // Connect to facebook channel
         final ConnectPageRequestPayload connectPayload = this.mockConnectPageRequestPayload();
         final PageWithConnectInfo pageWithConnectInfo = this.mockPageWithConnectInfo();
@@ -105,6 +111,7 @@ class ChannelsControllerTest {
         List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
         final Channel channel = channels.get(0);
 
+        assertThat("facebook", equalTo(channel.getSource()));
         assertThat(pageWithConnectInfo.getId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
@@ -131,11 +138,53 @@ class ChannelsControllerTest {
         assertThat(content, equalTo("{\"data\":[{\"page_id\":\"7562107744668308\",\"name\":\"facebook app\",\"image_url\":\"facebook app image\",\"connected\":true}]}"));
 
 
-        // Disconnect to facebook channel
+        // Disconnect from facebook channel
         final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
                 UUID.fromString(jsonNode.get("id").textValue()));
         webTestHelper.post(
                 "/channels.facebook.disconnect",
+                objectMapper.writeValueAsString(disconnectRequestPayload))
+            .andExpect(status().isNoContent());
+
+        channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
+        assertThat(ChannelConnectionState.DISCONNECTED, equalTo(channels.get(0).getConnectionState()));
+    }
+
+    private void canInstagramConnect() throws Exception {
+        // Connect to instagram channel
+        final ConnectInstagramRequestPayload connectPayload = this.mockConnectInstagramRequestPayload();
+        final PageWithConnectInfo pageWithConnectInfo = this.mockPageWithConnectInfo();
+
+        doReturn("new-long-live-token-string").when(api).exchangeToLongLivingUserAccessToken(connectPayload.getPageToken());
+        doReturn(pageWithConnectInfo).when(api).getPageForUser(connectPayload.getPageId(), "new-long-live-token-string");
+        doNothing().when(api).connectPageToApp(pageWithConnectInfo.getAccessToken());
+
+
+        final String content = webTestHelper.post(
+                "/channels.instagram.connect",
+                objectMapper.writeValueAsString(connectPayload))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        final JsonNode jsonNode = new ObjectMapper().readTree(content);
+
+        List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
+        final Channel channel = channels.get(0);
+
+        assertThat("instagram", equalTo(channel.getSource()));
+        assertThat(connectPayload.getAccountId(), equalTo(channel.getSourceChannelId()));
+        assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
+
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
+        final Metadata metadata = metadataList.get(0);
+
+        assertThat(MetadataKeys.ChannelKeys.NAME, equalTo(metadata.getKey()));
+        assertThat(connectPayload.getName(), equalTo(metadata.getValue()));
+
+
+        // Disconnect from instagram channel
+        final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
+                UUID.fromString(jsonNode.get("id").textValue()));
+        webTestHelper.post(
+                "/channels.instagram.disconnect",
                 objectMapper.writeValueAsString(disconnectRequestPayload))
             .andExpect(status().isNoContent());
 
@@ -158,5 +207,14 @@ class ChannelsControllerTest {
                 "some-access-token",
                 new PageWithConnectInfo.PagePic(new PageWithConnectInfo.PagePic.PicData("facebook app image")),
                 true);
+    }
+
+    private ConnectInstagramRequestPayload mockConnectInstagramRequestPayload() {
+        return new ConnectInstagramRequestPayload(
+                "7562107744668308",
+                "1847583685763736",
+                "some-access-token",
+                "facebook app",
+                "instagram-image-url");
     }
 }

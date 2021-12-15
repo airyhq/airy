@@ -37,7 +37,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -98,7 +97,6 @@ class SendMessageTest {
     void canSendMessages() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
-        final String failingMessageId = "message-id-failing";
         final String sourceConversationId = "+491234567";
         final String sourceChannelId = "+497654321";
         final String payload = "{\"Body\":\"Hello World\"}";
@@ -136,7 +134,7 @@ class SendMessageTest {
         kafkaTestHelper.produceRecords(List.of(
                 // This message should fail
                 new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
-                        .setId(failingMessageId)
+                        .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId("user-id")
                         .setIsFromContact(false)
@@ -166,12 +164,11 @@ class SendMessageTest {
             assertEquals(sourceChannelId, fromCaptor.getValue());
         }, "Twilio API was not called");
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
 
-        assertThat(metadataList.size(), equalTo(1));
+        assertThat(metadataList.size(), equalTo(2));
         assertThat(metadataList.stream().anyMatch((metadata) ->
                 metadata.getKey().equals(MetadataKeys.MessageKeys.ERROR)
-                        && metadata.getValue().equals(errorMessage)
-                        && getSubject(metadata).getIdentifier().equals(failingMessageId)), equalTo(true));
+                        && metadata.getValue().equals(errorMessage)), equalTo(true));
     }
 }

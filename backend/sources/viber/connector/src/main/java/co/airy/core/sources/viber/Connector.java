@@ -60,10 +60,10 @@ public class Connector {
             return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to viber \n SendMessageRequest: %s", sendMessageRequest), e);
+            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.ERROR, e.getMessage());
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         }
-
-        updateDeliveryState(message, DeliveryState.FAILED);
-        return List.of(KeyValue.pair(message.getId(), message));
     }
 
     private boolean isMessageStale(Message message) {

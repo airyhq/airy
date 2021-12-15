@@ -8,6 +8,7 @@ import co.airy.uuid.UUIDv5;
 import com.viber.bot.Request;
 import com.viber.bot.event.incoming.IncomingConversationStartedEvent;
 import com.viber.bot.event.incoming.IncomingDeliveredEvent;
+import com.viber.bot.event.incoming.IncomingErrorEvent;
 import com.viber.bot.event.incoming.IncomingMessageEvent;
 import com.viber.bot.event.incoming.IncomingSeenEvent;
 import com.viber.bot.profile.UserProfile;
@@ -90,6 +91,13 @@ public class EventsRouter {
                 final IncomingSeenEvent event = (IncomingSeenEvent) request.getEvent();
                 final String messageId = getMessageId(event.getToken());
                 final Metadata metadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.Source.DELIVERY_STATE, "seen");
+                return List.of(KeyValue.pair(getId(metadata).toString(), metadata));
+            }
+
+            case ERROR: {
+                final IncomingErrorEvent event = (IncomingErrorEvent) request.getEvent();
+                final String messageId = getMessageId(event.getToken());
+                final Metadata metadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.ERROR, event.getDescription());
                 return List.of(KeyValue.pair(getId(metadata).toString(), metadata));
             }
 

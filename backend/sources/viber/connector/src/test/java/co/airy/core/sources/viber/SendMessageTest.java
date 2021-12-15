@@ -2,12 +2,15 @@ package co.airy.core.sources.viber;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.viber.dto.SendMessageResponse;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
 import co.airy.core.sources.viber.lib.Topics;
 import co.airy.core.sources.viber.services.Api;
+import co.airy.core.sources.viber.services.ApiException;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -30,6 +33,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -68,13 +72,16 @@ class SendMessageTest {
     void sendsMessage() throws Exception {
         final String conversationId = "conversationId";
         final String messageId = "message-id";
+        final String failingMessageId = "message-id-failing";
         final Long messageToken = 123L;
         final String sourceConversationId = "9MVsH/2gRPr6pP72Eb6aXw==";
         final String content = "{\"type\":\"text\",\"text\":\"Hello\"}";
+        final String errorMessage = "failed to deliver message";
 
         ArgumentCaptor<String> receiverCaptor = ArgumentCaptor.forClass(String.class);
         when(api.sendMessage(receiverCaptor.capture(), Mockito.any(), eq(content)))
-                .thenReturn(new SendMessageResponse(0, "ok", messageToken));
+                .thenReturn(new SendMessageResponse(0, "ok", messageToken))
+                        .thenThrow(new ApiException(errorMessage));
 
         testHelper.produceRecords(List.of(
                 new ProducerRecord<>(Topics.applicationCommunicationMessages.name(), "other-message-id",
@@ -107,8 +114,31 @@ class SendMessageTest {
                         .build())
         );
 
+        // This message should fail
+        testHelper.produceRecord(new ProducerRecord<>(Topics.applicationCommunicationMessages.name(), messageId,
+                Message.newBuilder()
+                        .setId(failingMessageId)
+                        .setSentAt(Instant.now().toEpochMilli())
+                        .setSenderId("user-id")
+                        .setDeliveryState(DeliveryState.PENDING)
+                        .setConversationId(conversationId)
+                        .setChannelId("channelId")
+                        .setSource("viber")
+                        .setContent(content)
+                        .setIsFromContact(false)
+                        .build())
+        );
+
         retryOnException(() -> {
             assertThat(receiverCaptor.getValue(), equalTo(sourceConversationId));
         }, "Viber API was not called");
+
+        final List<Metadata> metadataList = testHelper.consumeValues(2, Topics.applicationCommunicationMetadata.name());
+
+        assertThat(metadataList.size(), equalTo(2));
+        assertThat(metadataList.stream().anyMatch((metadata) ->
+                metadata.getKey().equals(MetadataKeys.MessageKeys.ERROR)
+                && metadata.getValue().equals(errorMessage)
+                && getSubject(metadata).getIdentifier().equals(failingMessageId)), equalTo(true));
     }
 }

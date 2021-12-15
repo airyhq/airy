@@ -2,12 +2,16 @@ package co.airy.core.sources.twilio;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.twilio.services.Api;
+import co.airy.core.sources.twilio.services.ApiException;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -32,11 +36,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
+import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
@@ -51,6 +57,7 @@ class SendMessageTest {
 
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @MockBean
     Api api;
@@ -69,7 +76,8 @@ class SendMessageTest {
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
-                applicationCommunicationMessages
+                applicationCommunicationMessages,
+                applicationCommunicationMetadata
         );
 
         kafkaTestHelper.beforeAll();
@@ -90,15 +98,17 @@ class SendMessageTest {
     void canSendMessages() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
+        final String failingMessageId = "message-id-failing";
         final String sourceConversationId = "+491234567";
         final String sourceChannelId = "+497654321";
         final String payload = "{\"Body\":\"Hello World\"}";
+        final String errorMessage = "message delivery failed";
 
         ArgumentCaptor<String> payloadCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> fromCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
 
-        doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
+        doThrow(new ApiException(errorMessage)).doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
 
         // Test that phone number input gets cleaned up
         final String channelPayload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
@@ -123,11 +133,10 @@ class SendMessageTest {
                                 .build())
         ));
 
-        TimeUnit.SECONDS.sleep(5);
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
-                Message.newBuilder()
-                        .setId(messageId)
+        kafkaTestHelper.produceRecords(List.of(
+                // This message should fail
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
+                        .setId(failingMessageId)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId("user-id")
                         .setIsFromContact(false)
@@ -136,13 +145,33 @@ class SendMessageTest {
                         .setChannelId(channelId)
                         .setSource("twilio.sms")
                         .setContent(payload)
-                        .build())
-        );
+                        .build()),
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                        Message.newBuilder()
+                                .setId(messageId)
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId("user-id")
+                                .setIsFromContact(false)
+                                .setDeliveryState(DeliveryState.PENDING)
+                                .setConversationId(conversationId)
+                                .setChannelId(channelId)
+                                .setSource("twilio.sms")
+                                .setContent(payload)
+                                .build())
+        ));
 
         retryOnException(() -> {
             assertEquals(payload, payloadCaptor.getValue());
             assertEquals(sourceConversationId, toCaptor.getValue());
             assertEquals(sourceChannelId, fromCaptor.getValue());
         }, "Twilio API was not called");
+
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
+
+        assertThat(metadataList.size(), equalTo(1));
+        assertThat(metadataList.stream().anyMatch((metadata) ->
+                metadata.getKey().equals(MetadataKeys.MessageKeys.ERROR)
+                        && metadata.getValue().equals(errorMessage)
+                        && getSubject(metadata).getIdentifier().equals(failingMessageId)), equalTo(true));
     }
 }

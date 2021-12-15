@@ -68,7 +68,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
                     @Override
                     public void handleError(ClientHttpResponse response) throws IOException {
                         final String errorPayload = new String(response.getBody().readAllBytes());
-                        final int rawStatusCode = response.getRawStatusCode();
+                        final int statusCode = response.getRawStatusCode();
 
                         final JsonNode jsonNode = objectMapper.readTree(errorPayload);
                         final String errorMessage = Optional.of(jsonNode.get("error"))
@@ -76,7 +76,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
                                 .map(JsonNode::textValue)
                                 .orElseGet(() -> {
                                     log.warn("Could not parse error message from response: {}", errorPayload);
-                                    return String.format("Api replied with status code %s and payload %s", rawStatusCode, errorPayload);
+                                    return String.format("Api replied with status code %s and payload %s", statusCode, errorPayload);
                                 });
                         throw new ApiException(errorMessage, errorPayload);
                     }

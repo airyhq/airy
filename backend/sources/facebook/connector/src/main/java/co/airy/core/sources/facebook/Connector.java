@@ -83,7 +83,7 @@ public class Connector {
             updateDeliveryState(message, DeliveryState.FAILED);
             return List.of(KeyValue.pair(message.getId(), message),
                     KeyValue.pair(getId(error).toString(), errorPayload),
-                    KeyValue.pair(getId(errorPayload).toString(), errorPayload),
+                    KeyValue.pair(getId(errorPayload).toString(), errorPayload)
             );
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);

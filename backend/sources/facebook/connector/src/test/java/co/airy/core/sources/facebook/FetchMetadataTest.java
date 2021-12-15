@@ -35,9 +35,11 @@ import java.time.Instant;
 import java.util.List;
 
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
+import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static co.airy.test.Timing.retryOnException;
 
@@ -56,6 +58,9 @@ class FetchMetadataTest {
 
     @MockBean
     private Api api;
+
+    @Autowired
+    private Stores stores;
 
     @Autowired
     @InjectMocks
@@ -78,7 +83,7 @@ class FetchMetadataTest {
     }
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws Exception {
         MockitoAnnotations.openMocks(this);
         retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }

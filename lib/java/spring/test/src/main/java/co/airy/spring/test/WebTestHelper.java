@@ -1,9 +1,7 @@
 package co.airy.spring.test;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -13,12 +11,11 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Component
 public class WebTestHelper {
     private final MockMvc mvc;
     private final String systemToken;
 
-    WebTestHelper(MockMvc mvc, @Value("${systemToken:#{null}}") String systemToken) {
+    WebTestHelper(MockMvc mvc, String systemToken) {
         this.mvc = mvc;
         this.systemToken = systemToken;
     }

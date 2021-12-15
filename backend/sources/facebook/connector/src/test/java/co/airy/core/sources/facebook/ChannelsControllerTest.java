@@ -137,10 +137,6 @@ class ChannelsControllerTest {
 
 
         // Explore facebook connected channels
-
-        // FIXME: I don't know why store raises an exception. I am guessing is not ready but it should return an
-        //        empty List instead of raising an exception
-        Thread.sleep(5000);
         final ExploreRequestPayload explorePayload = new ExploreRequestPayload("explore-token-string");
 
         doReturn(Arrays.asList(pageWithConnectInfo)).when(api).getPagesInfo(explorePayload.getAuthToken());

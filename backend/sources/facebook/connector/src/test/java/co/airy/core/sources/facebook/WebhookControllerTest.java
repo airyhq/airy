@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static co.airy.test.Timing.retryOnException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -50,6 +51,12 @@ class WebhookControllerTest {
     @AfterAll
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        MockitoAnnotations.openMocks(this);
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

@@ -42,6 +42,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doNothing;
+import static co.airy.test.Timing.retryOnException;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -84,6 +85,12 @@ class ChannelsControllerTest {
     @AfterAll
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        MockitoAnnotations.openMocks(this);
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

@@ -39,6 +39,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static co.airy.test.Timing.retryOnException;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -79,6 +80,7 @@ class FetchMetadataTest {
     @BeforeEach
     void beforeEach() {
         MockitoAnnotations.openMocks(this);
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

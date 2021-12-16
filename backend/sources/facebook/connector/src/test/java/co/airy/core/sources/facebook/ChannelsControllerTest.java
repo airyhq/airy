@@ -7,7 +7,6 @@ import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
-import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -149,11 +148,9 @@ class ChannelsControllerTest {
 
 
         // Disconnect from facebook channel
-        final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
-                UUID.fromString(jsonNode.get("id").textValue()));
         webTestHelper.post(
                 "/channels.facebook.disconnect",
-                objectMapper.writeValueAsString(disconnectRequestPayload))
+                String.format("{\"channel_id\":\"%s\"}", jsonNode.get("id").textValue()))
             .andExpect(status().isNoContent());
 
         channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
@@ -191,11 +188,9 @@ class ChannelsControllerTest {
 
 
         // Disconnect from instagram channel
-        final DisconnectChannelRequestPayload disconnectRequestPayload = new DisconnectChannelRequestPayload(
-                UUID.fromString(jsonNode.get("id").textValue()));
         webTestHelper.post(
                 "/channels.instagram.disconnect",
-                objectMapper.writeValueAsString(disconnectRequestPayload))
+                String.format("{\"channel_id\":\"%s\"}", jsonNode.get("id").textValue()))
             .andExpect(status().isNoContent());
 
         channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());

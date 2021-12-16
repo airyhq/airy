@@ -17,7 +17,6 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -119,7 +118,7 @@ class ChannelsControllerTest {
                 "/channels.facebook.connect",
                 objectMapper.writeValueAsString(connectPayload))
             .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        final JsonNode jsonNode = new ObjectMapper().readTree(content);
+        final String channelId = new ObjectMapper().readTree(content).get("id").textValue();
 
         List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
         final Channel channel = channels.get(0);
@@ -128,12 +127,26 @@ class ChannelsControllerTest {
         assertThat(pageWithConnectInfo.getId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
-        final Metadata metadata = metadataList.get(0);
-
-        assertThat(MetadataKeys.ChannelKeys.IMAGE_URL, equalTo(metadata.getKey()));
-        assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
-
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(4, applicationCommunicationMetadata.name());
+        metadataList.stream().forEach((metadata) -> {
+            final String key = metadata.getKey();
+            switch (key) {
+                case MetadataKeys.ChannelKeys.NAME:
+                    assertThat(pageWithConnectInfo.getNameWithLocationDescriptor(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.IMAGE_URL:
+                    assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.PAGE_ID:
+                    assertThat(connectPayload.getPageId(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.PAGE_TOKEN:
+                    assertThat(connectPayload.getPageToken(), equalTo(metadata.getValue()));
+                    break;
+                default:
+                    assertThat(String.format("unexpected key: %s", key), false);
+            }
+        });
 
         // Explore facebook connected channels
         final ExploreRequestPayload explorePayload = new ExploreRequestPayload("explore-token-string");
@@ -150,7 +163,7 @@ class ChannelsControllerTest {
         // Disconnect from facebook channel
         webTestHelper.post(
                 "/channels.facebook.disconnect",
-                String.format("{\"channel_id\":\"%s\"}", jsonNode.get("id").textValue()))
+                String.format("{\"channel_id\":\"%s\"}", channelId))
             .andExpect(status().isNoContent());
 
         channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
@@ -171,7 +184,7 @@ class ChannelsControllerTest {
                 "/channels.instagram.connect",
                 objectMapper.writeValueAsString(connectPayload))
             .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        final JsonNode jsonNode = new ObjectMapper().readTree(content);
+        final String channelId = new ObjectMapper().readTree(content).get("id").textValue();
 
         List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
         final Channel channel = channels.get(0);
@@ -180,17 +193,34 @@ class ChannelsControllerTest {
         assertThat(connectPayload.getAccountId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
-        final Metadata metadata = metadataList.get(0);
-
-        assertThat(MetadataKeys.ChannelKeys.NAME, equalTo(metadata.getKey()));
-        assertThat(connectPayload.getName(), equalTo(metadata.getValue()));
-
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(4, applicationCommunicationMetadata.name());
+        metadataList.stream().forEach((metadata) -> {
+            final String key = metadata.getKey();
+            switch (key) {
+                case MetadataKeys.ChannelKeys.NAME:
+                    assertThat(pageWithConnectInfo.getNameWithLocationDescriptor(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.ACCOUNT_ID:
+                    assertThat(connectPayload.getAccountId(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.PAGE_ID:
+                    assertThat(connectPayload.getPageId(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.PAGE_TOKEN:
+                    assertThat(connectPayload.getPageToken(), equalTo(metadata.getValue()));
+                    break;
+                case MetadataKeys.ChannelKeys.IMAGE_URL:
+                    assertThat(connectPayload.getImageUrl(), equalTo(metadata.getValue()));
+                    break;
+                default:
+                    assertThat(String.format("unexpected key: %s", key), false);
+            }
+        });
 
         // Disconnect from instagram channel
         webTestHelper.post(
                 "/channels.instagram.disconnect",
-                String.format("{\"channel_id\":\"%s\"}", jsonNode.get("id").textValue()))
+                String.format("{\"channel_id\":\"%s\"}", channelId))
             .andExpect(status().isNoContent());
 
         channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());

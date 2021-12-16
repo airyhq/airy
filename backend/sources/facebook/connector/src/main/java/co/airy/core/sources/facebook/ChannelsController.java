@@ -104,7 +104,9 @@ public class ChannelsController {
                     )
                     .metadataMap(MetadataMap.from(List.of(
                             newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(pageWithConnectInfo.getNameWithLocationDescriptor())),
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(pageWithConnectInfo.getPicture().getData().getUrl()))
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(pageWithConnectInfo.getPicture().getData().getUrl())),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken())
                     ))).build();
 
             stores.storeChannelContainer(container);
@@ -132,7 +134,10 @@ public class ChannelsController {
             api.connectPageToApp(pageWithConnectInfo.getAccessToken());
 
             final MetadataMap metadataMap = MetadataMap.from(List.of(
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", pageWithConnectInfo.getNameWithLocationDescriptor())))
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", pageWithConnectInfo.getNameWithLocationDescriptor()))),
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken()),
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.ACCOUNT_ID, payload.getAccountId())
             ));
 
             Optional.ofNullable(payload.getImageUrl())

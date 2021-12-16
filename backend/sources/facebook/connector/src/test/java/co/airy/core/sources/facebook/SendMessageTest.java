@@ -4,7 +4,9 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
+import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.model.SendMessageResponse;
 import co.airy.kafka.schema.Topic;
@@ -13,6 +15,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +39,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -89,17 +93,21 @@ class SendMessageTest {
     }
 
     @Test
-    void canSendMessageViaTheFacebookApi() throws Exception {
+    void canSendMessage() throws Exception {
         final String conversationId = "conversationId";
         final String messageId = "message-id";
+        final String failingMessageId = "message-id-failing";
         final String sourceConversationId = "source-conversation-id";
         final String channelId = "channel-id";
         final String token = "token";
         final String text = "Hello World";
+        final String errorMessage = "message delivery failed";
 
         ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
         ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
-        when(api.sendMessage(tokenCaptor.capture(), payloadCaptor.capture())).thenReturn(new SendMessageResponse("recipient id", "message id"));
+        when(api.sendMessage(tokenCaptor.capture(), payloadCaptor.capture()))
+                .thenReturn(new SendMessageResponse("recipient id", "message id"))
+                .thenThrow(new ApiException(errorMessage));
 
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
@@ -129,7 +137,7 @@ class SendMessageTest {
         final ObjectMapper objectMapper = new ObjectMapper();
         final JsonNode messagePayload = objectMapper.readTree("{\"text\":\"Hello Facebook\"}");
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+        kafkaTestHelper.produceRecords(List.of(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
@@ -140,8 +148,21 @@ class SendMessageTest {
                         .setSource("facebook")
                         .setContent(objectMapper.writeValueAsString(messagePayload))
                         .setIsFromContact(false)
-                        .build())
-        );
+                        .build()),
+                // This message should fail
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                        Message.newBuilder()
+                                .setId(failingMessageId)
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId("user-id")
+                                .setDeliveryState(DeliveryState.PENDING)
+                                .setConversationId(conversationId)
+                                .setChannelId(channelId)
+                                .setSource("facebook")
+                                .setContent(objectMapper.writeValueAsString(messagePayload))
+                                .setIsFromContact(false)
+                                .build())
+        ));
 
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
@@ -150,5 +171,13 @@ class SendMessageTest {
 
             assertThat(tokenCaptor.getValue(), equalTo(token));
         }, "Facebook API was not called");
+
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(3, applicationCommunicationMetadata.name());
+
+        assertThat(metadataList.size(), equalTo(3));
+        assertThat(metadataList.stream().anyMatch((metadata) ->
+                metadata.getKey().equals(MetadataKeys.MessageKeys.ERROR)
+                        && metadata.getValue().equals(errorMessage)
+                        && getSubject(metadata).getIdentifier().equals(failingMessageId)), equalTo(true));
     }
 }

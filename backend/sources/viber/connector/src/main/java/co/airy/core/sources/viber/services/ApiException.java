@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.api;
+package co.airy.core.sources.viber.services;
 
 import lombok.Getter;
 

@@ -73,7 +73,6 @@ class ChannelsTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -93,7 +92,7 @@ class ChannelsTest {
         ArgumentCaptor<String> webhookCaptor = ArgumentCaptor.forClass(String.class);
         doNothing().when(api).setWebhook(webhookCaptor.capture());
         doNothing().when(api).removeWebhook();
-        Thread.sleep(5000);
+
         final String content = webTestHelper.post("/channels.viber.connect")
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         final JsonNode jsonNode = new ObjectMapper().readTree(content);

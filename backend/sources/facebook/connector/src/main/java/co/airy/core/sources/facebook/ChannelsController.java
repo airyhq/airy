@@ -5,7 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
-import co.airy.core.sources.facebook.api.model.MetadataKeys;
+import co.airy.core.sources.facebook.api.model.FaceBookMetadataKeys;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
@@ -14,6 +14,7 @@ import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -105,8 +106,8 @@ public class ChannelsController {
                     .metadataMap(MetadataMap.from(List.of(
                             newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(pageWithConnectInfo.getNameWithLocationDescriptor())),
                             newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(pageWithConnectInfo.getPicture().getData().getUrl())),
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken())
+                            newChannelMetadata(channelId, FaceBookMetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
+                            newChannelMetadata(channelId, FaceBookMetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken())
                     ))).build();
 
             stores.storeChannelContainer(container);
@@ -135,9 +136,9 @@ public class ChannelsController {
 
             final MetadataMap metadataMap = MetadataMap.from(List.of(
                     newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", pageWithConnectInfo.getNameWithLocationDescriptor()))),
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken()),
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.ACCOUNT_ID, payload.getAccountId())
+                    newChannelMetadata(channelId, FaceBookMetadataKeys.ChannelKeys.PAGE_ID, payload.getPageId()),
+                    newChannelMetadata(channelId, FaceBookMetadataKeys.ChannelKeys.PAGE_TOKEN, payload.getPageToken()),
+                    newChannelMetadata(channelId, FaceBookMetadataKeys.ChannelKeys.ACCOUNT_ID, payload.getAccountId())
             ));
 
             Optional.ofNullable(payload.getImageUrl())

@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
-import co.airy.core.sources.facebook.api.model.MetadataKeys;
+import co.airy.core.sources.facebook.api.model.FaceBookMetadataKeys;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
 import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
@@ -15,6 +15,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -137,10 +138,10 @@ class ChannelsControllerTest {
                 case MetadataKeys.ChannelKeys.IMAGE_URL:
                     assertThat(pageWithConnectInfo.getPicture().getData().getUrl(), equalTo(metadata.getValue()));
                     break;
-                case MetadataKeys.ChannelKeys.PAGE_ID:
+                case FaceBookMetadataKeys.ChannelKeys.PAGE_ID:
                     assertThat(connectPayload.getPageId(), equalTo(metadata.getValue()));
                     break;
-                case MetadataKeys.ChannelKeys.PAGE_TOKEN:
+                case FaceBookMetadataKeys.ChannelKeys.PAGE_TOKEN:
                     assertThat(connectPayload.getPageToken(), equalTo(metadata.getValue()));
                     break;
                 default:
@@ -200,13 +201,13 @@ class ChannelsControllerTest {
                 case MetadataKeys.ChannelKeys.NAME:
                     assertThat(pageWithConnectInfo.getNameWithLocationDescriptor(), equalTo(metadata.getValue()));
                     break;
-                case MetadataKeys.ChannelKeys.ACCOUNT_ID:
+                case FaceBookMetadataKeys.ChannelKeys.ACCOUNT_ID:
                     assertThat(connectPayload.getAccountId(), equalTo(metadata.getValue()));
                     break;
-                case MetadataKeys.ChannelKeys.PAGE_ID:
+                case FaceBookMetadataKeys.ChannelKeys.PAGE_ID:
                     assertThat(connectPayload.getPageId(), equalTo(metadata.getValue()));
                     break;
-                case MetadataKeys.ChannelKeys.PAGE_TOKEN:
+                case FaceBookMetadataKeys.ChannelKeys.PAGE_TOKEN:
                     assertThat(connectPayload.getPageToken(), equalTo(metadata.getValue()));
                     break;
                 case MetadataKeys.ChannelKeys.IMAGE_URL:

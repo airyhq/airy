@@ -7,6 +7,10 @@
   border-top-right-radius: 8px;
   border-bottom: 1px solid #fff;
   height: 48px;
+  @media only screen and (max-device-width: 420px) and (max-device-width: 820px) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
 .headerInfo {
@@ -26,6 +30,8 @@
   font-size: 20px;
   line-height: 24px;
   font-weight: bold;
+  text-align: left;
+  text-transform: none;
   padding: 0;
   margin: 0 8px 0 8px;
   cursor: none;

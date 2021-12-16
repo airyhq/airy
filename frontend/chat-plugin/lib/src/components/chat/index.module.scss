@@ -51,6 +51,11 @@
   flex-direction: column;
   flex-grow: 1;
   pointer-events: all;
+  @media only screen and (max-device-width: 420px) and (max-device-width: 820px) {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 
 .containerAnimationOpen {

@@ -38,7 +38,12 @@ const AiryBubble = (props: Props) => {
   };
 
   return (
-    <div className={style.hideBubble} onClick={() => props.toggleHideChat()} data-cy={props.dataCyId}>
+    <div
+      className={style.hideBubble}
+      style={props.isChatHidden && {height: '60px', display: 'block'}}
+      onClick={() => props.toggleHideChat()}
+      data-cy={props.dataCyId}
+    >
       {!props.isChatHidden ? (
         <svg width="24px" height="60px" viewBox="0 0 10 6" version="1.1">
           <g id="Page-1" stroke="none" strokeWidth="1" fill="#ffffff" fillRule="evenodd">

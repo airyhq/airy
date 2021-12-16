@@ -64,13 +64,10 @@ variable "kubeconfig_output_path" {
   default = "../main/.kubeconfig"
 }
 
-variable "fargate_namespaces" {
-  type = list(string)
-  default = [ "default" ]
-}
-
 variable "fargate_profiles" {
-  
+  type        = list(string)
+  description = "List of Fargate namespaces (maximum of 10)"
+  default     = []
 }
 
 variable "kubernetes_users" {

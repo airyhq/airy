@@ -1,7 +1,6 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.Note;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
@@ -174,19 +173,7 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        final Note note = Note.newBuilder()
-                .setNoteId(UUID.randomUUID().toString())
-                .setText(text)
-                .setConversationId(conversationId)
-                .build();
-
-        try {
-            stores.storeNote(note);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
-        }
-
-        final Metadata metadata = newConversationNote(conversationId, note.getNoteId());
+        final Metadata metadata = newConversationNote(conversationId, text);
 
         try {
             stores.storeMetadata(metadata);
@@ -216,19 +203,17 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        try {
-            stores.deleteNote(noteId);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
-        }
-
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/conversations.updateNote")
     ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
-        final Note note = stores.getNotesStore().get(payload.getNoteId().toString());
-        if (note == null) {
+        final String conversationId = payload.getConversationId().toString();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
             return ResponseEntity.notFound().build();
         }
 
@@ -238,10 +223,10 @@ public class ConversationsController {
                     .body(new RequestErrorResponsePayload("Text length must be >0 and <50000"));
         }
 
-        note.setText(Optional.ofNullable(payload.getText()).orElse(note.getText()));
+        final Metadata metadata = updateConversationNote(conversationId, noteId, text);
 
         try {
-            stores.storeNote(note);
+            stores.storeMetadata(metadata);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

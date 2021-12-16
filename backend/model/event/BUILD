@@ -12,7 +12,6 @@ custom_java_library(
         "//backend/model/conversation",
         "//backend/model/message",
         "//backend/model/metadata",
-        "//backend/model/note",
         "//backend/model/tag",
     ],
 )

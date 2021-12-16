@@ -9,7 +9,6 @@ public enum EventType {
     MESSAGE_UPDATED("message.updated"),
     CONVERSATION_UPDATED("conversation.updated"),
     CHANNEL_UPDATED("channel.updated"),
-    NOTE_UPDATED("note.updated"),
     TAG_UPDATED("tag.updated"),
     METADATA_ITEM("metadata.item"),
     METADATA_UPDATED("metadata.updated");

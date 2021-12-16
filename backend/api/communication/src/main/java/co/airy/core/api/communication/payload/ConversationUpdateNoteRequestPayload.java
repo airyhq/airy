@@ -14,5 +14,7 @@ public class ConversationUpdateNoteRequestPayload {
     @NotNull
     private UUID noteId;
     @NotNull
+    private UUID conversationId;
+    @NotNull
     private String text;
 }

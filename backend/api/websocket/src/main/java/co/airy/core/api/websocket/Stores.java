@@ -37,10 +37,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .peek((channelId, channel) -> webSocketController.onChannel(channel));
 
-        builder.<String, Note>stream(new ApplicationCommunicationNotes().name())
-                .filter((id, note) -> note != null)
-                .peek((id, note) -> webSocketController.onNote(note));
-
         builder.<String, Tag>stream(new ApplicationCommunicationTags().name())
                 .filter((id, tag) -> tag != null)
                 .peek((id, tag) -> webSocketController.onTag(tag));

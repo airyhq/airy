@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.ConversationIndex;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataNode;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -13,6 +14,7 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexableField;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -38,14 +40,13 @@ public class DocumentMapper {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));
         }
 
-        for (String noteId : conversation.getNoteIds()) {
-            document.add(new TextField("note_ids", noteId, Field.Store.YES));
-        }
-
         for (MetadataNode node : conversation.getMetadata()) {
             final String key = String.format("metadata.%s", node.getKey());
-            // Index but don't store metadata
-            document.add(new TextField(key, node.getValue(), Field.Store.NO));
+            if (node.getKey().startsWith(MetadataKeys.ConversationKeys.NOTES)) {
+                document.add(new TextField(key, node.getValue(), Field.Store.YES));
+            } else { // Index but don't store metadata
+                document.add(new TextField(key, node.getValue(), Field.Store.NO));
+            }
         }
 
         return document;
@@ -60,17 +61,18 @@ public class DocumentMapper {
                 .map(IndexableField::stringValue)
                 .collect(toList());
 
-        final List<String> noteIds = document.getFields().stream()
-                .filter((field) -> field.name().equals("note_ids"))
-                .map(IndexableField::stringValue)
-                .collect(toList());
+        final List<MetadataNode> notes = document.getFields().stream()
+                .filter((field) -> field.name().startsWith(String.format("metadata.%s", MetadataKeys.ConversationKeys.NOTES)))
+                .map((record) -> new MetadataNode(record.name().split("\\.")[1]+'.'+record.name().split("\\.")[2],
+                        record.readerValue().toString()))
+                .collect(Collectors.toList());
 
         return ConversationIndex.builder()
                 .id(document.get("id"))
                 .unreadMessageCount(unreadCount)
                 .createdAt(createdAt)
                 .tagIds(tagIds)
-                .noteIds(noteIds)
+                .metadata(notes)
                 .displayName(document.get("display_name"))
                 .build();
     }

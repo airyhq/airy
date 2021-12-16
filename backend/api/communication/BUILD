@@ -8,7 +8,6 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//:springboot_websocket",
-    "//backend/avro:note-avro",
     "//backend/model/message",
     "//backend/model/channel",
     "//backend/model/metadata",

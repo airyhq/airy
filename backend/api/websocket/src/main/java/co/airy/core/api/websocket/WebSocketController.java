@@ -2,7 +2,6 @@ package co.airy.core.api.websocket;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.Note;
 import co.airy.avro.communication.Tag;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.event.payload.*;
@@ -39,10 +38,6 @@ public class WebSocketController {
         }
 
         messagingTemplate.convertAndSend(QUEUE_EVENTS, MetadataUpdated.fromMetadataMap(metadataMap));
-    }
-
-    public void onNote(Note note) {
-        messagingTemplate.convertAndSend(QUEUE_EVENTS, NoteEvent.fromNote(note));
     }
 
     public void onTag(Tag tag) {

@@ -100,21 +100,17 @@ module "eks" {
 
 }
 
-resource "aws_eks_fargate_profile" "example" {
-
-
+resource "aws_eks_fargate_profile" "namespaces" {
+  count                  = length(var.fargate_profiles)
   cluster_name           = var.core_id
-  fargate_profile_name   = "stateless"
+  fargate_profile_name   = "stateless-${var.fargate_profiles[count.index]}"
   pod_execution_role_arn = module.eks.fargate_iam_role_arn
   subnet_ids             = module.vpc.private_subnets
 
-  dynamic "selector" {
-    for_each = var.fargate_profiles
-    content {
-      namespace = selector.value
+  selector {
+      namespace = var.fargate_profiles[count.index]
       labels = {
         WorkerType = "fargate"
       }
-    }
   }
 }

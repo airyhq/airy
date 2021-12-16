@@ -25,3 +25,11 @@ output "vpc_id" {
 output "vpc_cidr_block" {
   value = module.vpc.vpc_cidr_block
 }
+
+output "fargate_iam_role_arn" {
+  value = module.eks.fargate_iam_role_arn
+}
+
+output "vpc_private_subnets" {
+  value = module.vpc.private_subnets
+}

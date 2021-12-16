@@ -193,7 +193,7 @@ class ChannelsControllerTest {
         assertThat(connectPayload.getAccountId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(4, applicationCommunicationMetadata.name());
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(5, applicationCommunicationMetadata.name());
         metadataList.stream().forEach((metadata) -> {
             final String key = metadata.getKey();
             switch (key) {

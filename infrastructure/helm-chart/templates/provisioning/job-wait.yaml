@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:

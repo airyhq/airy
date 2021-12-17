@@ -69,7 +69,7 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
       initContainers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:

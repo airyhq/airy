@@ -126,7 +126,7 @@ spec:
     spec:
       initContainers:
       - name: wait-api-admin
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
@@ -269,7 +269,7 @@ spec:
     spec:
       initContainers:
       - name: wait-api-admin
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:

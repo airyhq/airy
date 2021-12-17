@@ -108,7 +108,7 @@ spec:
       {{- end }}
       initContainers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
@@ -118,7 +118,7 @@ spec:
         - name: kafka-helper-scripts
           mountPath: /opt/provisioning
       - name: fix-permissions
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command:
           - sh

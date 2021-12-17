@@ -66,7 +66,7 @@ spec:
 {{ toYaml .Values.connector.resources | indent 12 }}
       initContainers:
         - name: wait
-          image: busybox
+          image: "{{ .Values.global.busyboxImage }}"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh" ]
           env:
@@ -156,7 +156,7 @@ spec:
 {{ toYaml .Values.eventsRouter.resources | indent 12 }}
       initContainers:
         - name: wait
-          image: busybox
+          image: "{{ .Values.global.busyboxImage }}"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh" ]
           env:

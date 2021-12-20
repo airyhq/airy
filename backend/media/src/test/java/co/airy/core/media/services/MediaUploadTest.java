@@ -26,7 +26,7 @@ public class MediaUploadTest {
     private AmazonS3 amazonS3Client;
 
     @Test
-    void connectionStatusOK() throws Exception {
+    void connectionStatusOk() throws Exception {
         final List<Bucket> emptyList = Collections.emptyList();
         doReturn(emptyList).when(amazonS3Client).listBuckets();
 
@@ -35,7 +35,7 @@ public class MediaUploadTest {
     }
 
     @Test
-    void connectionStatusNotOK() throws Exception {
+    void connectionStatusNotOk() throws Exception {
         doReturn(null).when(amazonS3Client).listBuckets();
 
         final MediaUpload m = new MediaUpload(amazonS3Client, "my-bucket", "my/path");

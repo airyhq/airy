@@ -53,7 +53,11 @@ public class MediaController implements HealthIndicator {
 
     @Override
     public Health health() {
-        return Health.up().build();
+        if (mediaUpload.isConnectionStatus()) {
+            return Health.up().build();
+        }
+        log.error("s3 connection status is not healthy check credentials");
+        return Health.down().build();
     }
 }
 

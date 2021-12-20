@@ -81,6 +81,7 @@ const MessageInput = (props: Props) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
+  const [blockSpam, setBlockSpam] = useState<boolean>(false);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -237,6 +238,7 @@ const MessageInput = (props: Props) => {
     if (canSendMessage()) {
       setSelectedSuggestedReply(null);
       setSelectedTemplate(null);
+      setBlockSpam(true);
 
       sendMessages(
         selectedTemplate || selectedSuggestedReply
@@ -255,6 +257,7 @@ const MessageInput = (props: Props) => {
             }
       ).then(() => {
         setInput('');
+        setBlockSpam(false);
         removeElementFromInput();
       });
     }
@@ -267,7 +270,7 @@ const MessageInput = (props: Props) => {
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (input.trim().length > 0) {
+      if (input.trim().length > 0 && !blockSpam) {
         sendMessage();
       }
     }
@@ -453,7 +456,7 @@ const MessageInput = (props: Props) => {
               (input.trim().length != 0 || canSendMessage()) && styles.sendButtonActive
             }`}
             onClick={sendMessage}
-            disabled={input.trim().length == 0 && !canSendMessage()}
+            disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
             data-cy={cyMessageSendButton}
           >
             <div className={styles.sendButtonText}>

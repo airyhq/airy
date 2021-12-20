@@ -40,7 +40,7 @@ const AiryBubble = (props: Props) => {
   return (
     <div
       className={style.hideBubble}
-      style={props.isChatHidden ? {height: '60px', display: 'block'} : {}}
+      style={props.isChatHidden && {height: '60px', display: 'block'}}
       onClick={() => props.toggleHideChat()}
       data-cy={props.dataCyId}
     >

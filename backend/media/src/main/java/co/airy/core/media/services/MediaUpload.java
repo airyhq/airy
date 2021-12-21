@@ -43,7 +43,7 @@ public class MediaUpload implements HealthIndicator {
         this.path = appendSlash(path);
         this.host = new URL(String.format("https://%s.s3.amazonaws.com/", bucket));
 
-        // Check if the connection is healthy
+        // Check if the connection is healthy. This is only done during the construction face
         checkConnectionStatus();
     }
 
@@ -84,10 +84,10 @@ public class MediaUpload implements HealthIndicator {
                 connectionStatus = true;
             }
         } catch (SdkClientException e) {
-            log.error("AWS SDK extension", e);
+            log.error("AWS SDK exception", e);
 
         } catch (Exception e) {
-            log.error("unexpected extension", e);
+            log.error("unexpected exception", e);
         }
     }
 

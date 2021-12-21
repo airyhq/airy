@@ -81,6 +81,7 @@ const MessageInput = (props: Props) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
+  const [blockSpam, setBlockSpam] = useState(false);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -237,6 +238,7 @@ const MessageInput = (props: Props) => {
     if (canSendMessage()) {
       setSelectedSuggestedReply(null);
       setSelectedTemplate(null);
+      setBlockSpam(true);
 
       sendMessages(
         selectedTemplate || selectedSuggestedReply
@@ -255,6 +257,7 @@ const MessageInput = (props: Props) => {
             }
       ).then(() => {
         setInput('');
+        setBlockSpam(false);
         removeElementFromInput();
       });
     }
@@ -267,7 +270,7 @@ const MessageInput = (props: Props) => {
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (input.trim().length > 0) {
+      if (input.trim().length > 0 && !blockSpam) {
         sendMessage();
       }
     }
@@ -371,8 +374,7 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+            dataCy={cySuggestionsButton}>
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -453,9 +455,8 @@ const MessageInput = (props: Props) => {
               (input.trim().length != 0 || canSendMessage()) && styles.sendButtonActive
             }`}
             onClick={sendMessage}
-            disabled={input.trim().length == 0 && !canSendMessage()}
-            data-cy={cyMessageSendButton}
-          >
+            disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
+            data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />
             </div>
@@ -464,8 +465,7 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
-      >
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
         {'Shift + Enter to add line'}
       </div>
     </div>

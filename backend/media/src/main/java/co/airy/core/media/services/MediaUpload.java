@@ -10,6 +10,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ import java.util.List;
 
 @Service
 @EnableRetry
-public class MediaUpload {
+public class MediaUpload implements HealthIndicator {
     private static final Logger log = AiryLoggerFactory.getLogger(MediaUpload.class);
     private final AmazonS3 amazonS3Client;
     private final String bucket;
@@ -87,5 +89,14 @@ public class MediaUpload {
         } catch (Exception e) {
             log.error("unexpected extension", e);
         }
+    }
+
+    @Override
+    public Health health() {
+        if (connectionStatus) {
+            return Health.up().build();
+        }
+        log.error("s3 connection status is not healthy check credentials");
+        return Health.down().build();
     }
 }

@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 @RestController
-public class MediaController implements HealthIndicator {
+public class MediaController {
     private static final Logger log = AiryLoggerFactory.getLogger(MediaController.class);
     private final MediaUpload mediaUpload;
 
@@ -49,15 +47,6 @@ public class MediaController implements HealthIndicator {
             log.error("Media upload failed:", e);
             return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("Media Upload failed with error: %s", e.getMessage())));
         }
-    }
-
-    @Override
-    public Health health() {
-        if (mediaUpload.isConnectionStatus()) {
-            return Health.up().build();
-        }
-        log.error("s3 connection status is not healthy check credentials");
-        return Health.down().build();
     }
 }
 

@@ -29,13 +29,13 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class Stores implements ApplicationListener<ApplicationReadyEvent>, DisposableBean, HealthIndicator {
@@ -56,11 +56,12 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Contact table and conversation -> contact mapping
         final KTable<String, MetadataMap> conversationToContactTable = builder.<String, Metadata>table(applicationCommunicationContacts)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
+                // Create Contact table
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(contactsStore))
                 .toStream()
+                // Create map of: conversation id -> contact metadatamap
                 .flatMap((contactId, metadataMap) -> {
                     final Contact contact = Contact.fromMetadataMap(metadataMap);
                     if (contact == null || contact.getConversations() == null) {
@@ -68,7 +69,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                     }
 
                     return contact.getConversations().keySet().stream()
-                            .map((conversationId) -> KeyValue.pair(conversationId.toString(), metadataMap)).collect(Collectors.toList());
+                            .map((conversationId) -> KeyValue.pair(conversationId.toString(), metadataMap)).collect(toList());
                 })
                 .toTable(Materialized.as(conversationToContactStore));
 
@@ -79,6 +80,8 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
 
 
+        // 1. Auto create contacts if they don't exist
+        // 2. Populate contact metadata with conversation metadata (if missing)
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
@@ -114,6 +117,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                         metadata.add(newContactMetadata(contactId, Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
 
                     } else {
+                        // Update contact if necessary
                         if (contact.getDisplayName() == null) {
                             metadata.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
                         }
@@ -124,7 +128,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                     }
 
                     return metadata;
-                });
+                })
+                .flatMap((conversationId, metadataList) -> metadataList.stream()
+                        .map((metadata) -> KeyValue.pair(getId(metadata), metadata)).collect(toList()))
+                .to(applicationCommunicationContacts);
 
         streams.start(builder.build(), appId);
     }

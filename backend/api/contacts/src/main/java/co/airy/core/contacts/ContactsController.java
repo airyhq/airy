@@ -7,6 +7,7 @@ import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;
 import co.airy.core.contacts.payload.PaginationData;
+import co.airy.core.contacts.payload.UpdateContactPayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -105,9 +107,34 @@ public class ContactsController implements HealthIndicator {
     }
 
     @PostMapping("/contacts.update")
-    public ResponseEntity<?> updateContact() {
-        // TODO update contact, "" values indicate deletion
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> updateContact(@RequestBody @Valid UpdateContactPayload payload) {
+        final String id = payload.getId().toString();
+        final Contact contact = stores.getContact(id);
+        if (contact == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
+        }
+
+        final Contact updatedContact = contact.toBuilder()
+                .metadata(Optional.of(payload.getMetadata()).orElse(contact.getMetadata()))
+                .address(Optional.of(payload.getAddress()).orElse(contact.getAddress()))
+                .conversations(Optional.of(payload.getConversations()).orElse(contact.getConversations()))
+                .displayName(Optional.of(payload.getDisplayName()).orElse(contact.getDisplayName()))
+                .avatarUrl(Optional.of(payload.getAvatarUrl()).orElse(contact.getAvatarUrl()))
+                .gender(Optional.of(payload.getGender()).orElse(contact.getGender()))
+                .locale(Optional.of(payload.getLocale()).orElse(contact.getLocale()))
+                .organizationName(Optional.of(payload.getOrganizationName()).orElse(contact.getOrganizationName()))
+                .timezone(Optional.of(payload.getTimezone()).orElse(contact.getTimezone()))
+                .title(Optional.of(payload.getTitle()).orElse(contact.getTitle()))
+                .via(Optional.of(payload.getVia()).orElse(contact.getVia()))
+                .build();
+
+        try {
+            stores.storeContact(updatedContact.toMetadata());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(ContactResponsePayload.fromContact(updatedContact));
     }
 
     @PostMapping("/contacts.refetch")

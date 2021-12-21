@@ -18,16 +18,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.AVATAR_URL;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.GENDER;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.LOCALE;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.ORGANIZATION_NAME;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.TIMEZONE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TITLE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.VIA;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static java.util.stream.Collectors.toMap;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contact implements Serializable {
@@ -45,6 +50,7 @@ public class Contact implements Serializable {
     private JsonNode metadata;
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Address implements Serializable {
@@ -55,6 +61,47 @@ public class Contact implements Serializable {
         private String city;
         private String state;
         private String country;
+
+        public static Address fromMetadataMap(MetadataMap map) {
+            if (map == null) {
+                return null;
+            }
+            return Address.builder()
+                    .organizationName(map.getMetadataValue(MetadataKeys.Address.ORGANIZATION_NAME))
+                    .addressLine1(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE_1))
+                    .addressLine2(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE_2))
+                    .city(map.getMetadataValue(MetadataKeys.Address.CITY))
+                    .state(map.getMetadataValue(MetadataKeys.Address.STATE))
+                    .zip(map.getMetadataValue(MetadataKeys.Address.ZIP))
+                    .country(map.getMetadataValue(MetadataKeys.Address.COUNTRY))
+                    .build();
+        }
+        @JsonIgnore
+        public List<Metadata> toMetadata(String contactId) {
+            List<Metadata> metadata = new ArrayList<>();
+            if (organizationName != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ORGANIZATION_NAME, organizationName));
+            }
+            if (addressLine1 != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE_1, addressLine1));
+            }
+            if (addressLine2 != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE_2, addressLine2));
+            }
+            if (city != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.CITY, city));
+            }
+            if (state != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.STATE, state));
+            }
+            if (zip != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ZIP, zip));
+            }
+            if (country != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.COUNTRY, country));
+            }
+            return metadata;
+        }
     }
 
     private Long createdAt;
@@ -69,11 +116,21 @@ public class Contact implements Serializable {
         public static String TIMEZONE = "timezone";
         public static String LOCALE = "locale";
         public static String ORGANIZATION_NAME = "organizationName";
-        public static String VIA = "VIA";
-        public static String ADDRESS = "ADDRESS";
-        public static String CONVERSATIONS = "CONVERSATIONS";
-        public static String METADATA = "METADATA";
+        public static String VIA = "via";
+        public static String CONVERSATIONS = "conversations";
+        public static String METADATA = "metadata";
 
+        public static String ADDRESS = "address";
+
+        public static class Address {
+            public static String ORGANIZATION_NAME = "address.organizationName";
+            public static String ADDRESS_LINE_1 = "address.address_line_1";
+            public static String ADDRESS_LINE_2 = "address.address_line_2";
+            public static String ZIP = "address.zip";
+            public static String CITY = "address.city";
+            public static String STATE = "address.state";
+            public static String COUNTRY = "address.country";
+        }
     }
 
 
@@ -89,13 +146,28 @@ public class Contact implements Serializable {
         if (title != null) {
             metadata.add(newContactMetadata(id, TITLE, title));
         }
+        if (gender != null) {
+            metadata.add(newContactMetadata(id, GENDER, gender));
+        }
+        if (timezone != null) {
+            metadata.add(newContactMetadata(id, TIMEZONE, timezone.toString()));
+        }
+        if (locale != null) {
+            metadata.add(newContactMetadata(id, LOCALE, locale));
+        }
+        if (organizationName != null) {
+            metadata.add(newContactMetadata(id, ORGANIZATION_NAME, organizationName));
+        }
         if (via != null && !via.isEmpty()) {
             via.forEach((key, value) -> metadata.add(newContactMetadata(id, VIA + "." + key, value)));
         }
         if (conversations != null && !conversations.isEmpty()) {
             conversations.forEach((key, value) -> metadata.add(newContactMetadata(id, CONVERSATIONS + "." + key, value)));
         }
-        // TODO
+        if (address != null) {
+            metadata.addAll(address.toMetadata(id));
+        }
+
         return metadata;
     }
 
@@ -115,13 +187,32 @@ public class Contact implements Serializable {
         final Map<UUID, String> conversations = values.stream().filter(metadata -> metadata.getKey().startsWith(CONVERSATIONS))
                 .collect(toMap(metadata -> UUID.fromString(metadata.getKey().substring(metadata.getKey().lastIndexOf('.') + 1)), Metadata::getValue));
 
+        final Map<String, String> via = values.stream().filter(metadata -> metadata.getKey().startsWith(VIA))
+                .collect(toMap(metadata -> metadata.getKey().substring(metadata.getKey().lastIndexOf('.') + 1), Metadata::getValue));
+
+        final boolean hasAddress = values.stream().anyMatch(metadata -> metadata.getKey().startsWith(ADDRESS));
+
         return Contact.builder()
                 .id(id)
                 // TODO
                 .displayName(map.getMetadataValue(DISPLAY_NAME))
                 .avatarUrl(map.getMetadataValue(AVATAR_URL))
                 .title(map.getMetadataValue(TITLE))
+                .gender(map.getMetadataValue(GENDER))
+                .timezone(parseOrNull(map.getMetadataValue(TIMEZONE)))
+                .locale(map.getMetadataValue(LOCALE))
+                .organizationName(map.getMetadataValue(ORGANIZATION_NAME))
+                .via(via.size() > 0 ? via : null)
+                .address(hasAddress ? Address.fromMetadataMap(map) : null)
                 .conversations(conversations.size() > 0 ? conversations : null)
                 .build();
+    }
+
+    private static Integer parseOrNull(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }

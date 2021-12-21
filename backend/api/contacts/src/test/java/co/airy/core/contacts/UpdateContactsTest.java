@@ -27,6 +27,8 @@ import java.util.UUID;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,18 +67,35 @@ public class UpdateContactsTest {
     private TestContact testContact;
 
     @Test
-    void canUpdate() throws Exception {
+    void canUpdateContact() throws Exception {
         final UUID conversationId = UUID.randomUUID();
         final String contactId = testContact.createContact(Contact.builder()
                 .displayName("Ada Lovelace")
+                .address(
+                        Contact.Address.builder()
+                                .addressLine1("123 Fake St")
+                                .city("SF")
+                                .build())
                 .conversations(Map.of(conversationId, "source"))
                 .build());
+
+        // Add two fields and delete a nested field
+        final String payload = "{\"id\":\"" + contactId + "\"," +
+                "\"address\":{\"address_line_1\":\"123 Real St\",\"city\":\"\"},\"timezone\":-3}";
+        retryOnException(() -> {
+            webTestHelper.post("/contacts.update", payload)
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id", equalTo(contactId)))
+                    .andExpect(jsonPath("$.address.address_line_1", equalTo("123 Real St")))
+                    .andExpect(jsonPath("$.address.city", is(nullValue())));
+        }, "Could not update contact using contact id", 5_000);
 
         retryOnException(() -> {
             webTestHelper.post("/contacts.info", "{\"id\":\"" + contactId + "\"}")
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id", equalTo(contactId)))
-                    .andExpect(jsonPath("$.display_name", equalTo("Ada Lovelace")));
-        }, "Contact was not found using contact id");
+                    .andExpect(jsonPath("$.address.address_line_1", equalTo("123 Real St")))
+                    .andExpect(jsonPath("$.address.city", is(nullValue())));
+        }, "Could not update contact using contact id", 5_000);
     }
 }

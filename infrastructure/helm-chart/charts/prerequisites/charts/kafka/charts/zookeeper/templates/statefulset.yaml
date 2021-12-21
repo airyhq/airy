@@ -47,7 +47,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       initContainers:
       - name: fix-permissions
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command:
           - sh

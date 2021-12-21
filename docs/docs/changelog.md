@@ -3,11 +3,55 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.37.0
+
+#### Changes
+
+- [[#2653](https://github.com/airyhq/airy/issues/2653)] upgrade slf4j and underlying log4j libraries [[#2654](https://github.com/airyhq/airy/pull/2654)]
+
+#### 🚀 Features
+
+- [[#2586](https://github.com/airyhq/airy/issues/2586)] Set min and max size for EKS node group [[#2648](https://github.com/airyhq/airy/pull/2648)]
+- [[#2586](https://github.com/airyhq/airy/issues/2586)] Fix terraform [[#2643](https://github.com/airyhq/airy/pull/2643)]
+- [[#2611](https://github.com/airyhq/airy/issues/2611)] Session timeout  [[#2630](https://github.com/airyhq/airy/pull/2630)]
+
+#### 🐛 Bug Fixes
+
+- [[#2660](https://github.com/airyhq/airy/issues/2660)] Refactor fargate\_profiles in AWS EKS [[#2661](https://github.com/airyhq/airy/pull/2661)]
+- [[#2649](https://github.com/airyhq/airy/issues/2649)] ui fix instagram messages [[#2650](https://github.com/airyhq/airy/pull/2650)]
+- [[#2637](https://github.com/airyhq/airy/issues/2637)] Fix channel prefill [[#2639](https://github.com/airyhq/airy/pull/2639)]
+
+#### 📚 Documentation
+
+- [[#2550](https://github.com/airyhq/airy/issues/2550)] Docs for multiple providers using helm [[#2597](https://github.com/airyhq/airy/pull/2597)]
+
+#### 🧰 Maintenance
+
+- Bump terser-webpack-plugin from 5.2.4 to 5.2.5 [[#2655](https://github.com/airyhq/airy/pull/2655)]
+- Bump prettier from 2.4.1 to 2.5.1 [[#2635](https://github.com/airyhq/airy/pull/2635)]
+- Bump algoliasearch-helper from 3.4.4 to 3.6.2 in /docs [[#2614](https://github.com/airyhq/airy/pull/2614)]
+- Bump @babel/preset-typescript from 7.15.0 to 7.16.0 [[#2599](https://github.com/airyhq/airy/pull/2599)]
+- Bump webpack from 5.59.1 to 5.64.4 [[#2620](https://github.com/airyhq/airy/pull/2620)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.36.2/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.36.2/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.36.2/windows/amd64/airy.exe)
+
 ## 0.36.1
+
+#### Changes
 
 #### 🐛 Bug Fixes
 
 - [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix instagram ingestion race condition [[#2625](https://github.com/airyhq/airy/pull/2625)]
+
+#### 🧰 Maintenance
+
+- Bump webpack from 5.59.1 to 5.64.4 [[#2620](https://github.com/airyhq/airy/pull/2620)]
 
 #### Airy CLI
 
@@ -1126,57 +1170,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.16.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.16.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.16.0/windows/amd64/airy.exe)
-
-## 0.15.1 Hotfix
-
-- [[#1427](https://github.com/airyhq/airy/issues/1427)] Fix broken UI pod config for AWS deployment
-
-## 0.15.0
-
-#### 🚀 Features
-
-- [[#1299](https://github.com/airyhq/airy/issues/1299)] Video Fallback for the render library [[#1412](https://github.com/airyhq/airy/pull/1412)]
-- [[#1357](https://github.com/airyhq/airy/issues/1357)] Rename the draft release with release.sh [[#1394](https://github.com/airyhq/airy/pull/1394)]
-- [[#1018](https://github.com/airyhq/airy/issues/1018)] Introduce aws provider for airy create [[#1240](https://github.com/airyhq/airy/pull/1240)]
-- [[#1182](https://github.com/airyhq/airy/issues/1182)] Added gifs and image to supported message types chat plugin [[#1365](https://github.com/airyhq/airy/pull/1365)]
-- [[#1326](https://github.com/airyhq/airy/issues/1326)] Move Carousel to components lib [[#1364](https://github.com/airyhq/airy/pull/1364)]
-- [[#1097](https://github.com/airyhq/airy/issues/1097)] Allow users to fetch a chat plugin resume token [[#1350](https://github.com/airyhq/airy/pull/1350)]
-- [[#1325](https://github.com/airyhq/airy/issues/1325)] Move ListenOutsideClick to component lib [[#1345](https://github.com/airyhq/airy/pull/1345)]
-
-#### 🐛 Bug Fixes
-
-- [[#1392](https://github.com/airyhq/airy/issues/1392)] Cypress testing for filtering is false positive [[#1402](https://github.com/airyhq/airy/pull/1402)]
-- [[#1097](https://github.com/airyhq/airy/issues/1097)] Fix CORS issue introduced by PR #1350 [[#1371](https://github.com/airyhq/airy/pull/1371)]
-- [[#1369](https://github.com/airyhq/airy/issues/1369)] Improved filtering for channels [[#1375](https://github.com/airyhq/airy/pull/1375)]
-
-#### 📚 Documentation
-
-- [[#1363](https://github.com/airyhq/airy/issues/1363)] Added suggested replies doc [[#1381](https://github.com/airyhq/airy/pull/1381)]
-- [[#1355](https://github.com/airyhq/airy/issues/1355)] Add debugging advices to all sources [[#1368](https://github.com/airyhq/airy/pull/1368)]
-- [[#1318](https://github.com/airyhq/airy/issues/1318)] Improve components page [[#1360](https://github.com/airyhq/airy/pull/1360)]
-
-#### 🧰 Maintenance
-
-- [[#1045](https://github.com/airyhq/airy/issues/1045)] Automated testing of the web socket [[#1382](https://github.com/airyhq/airy/pull/1382)]
-- Move CLI to root [[#1401](https://github.com/airyhq/airy/pull/1401)]
-- Bump @babel/core from 7.8.4 to 7.13.10 [[#1186](https://github.com/airyhq/airy/pull/1186)]
-- Bump webpack from 4.46.0 to 5.27.2 [[#1352](https://github.com/airyhq/airy/pull/1352)]
-- Minor tweaks to titles and paragraphs [[#1379](https://github.com/airyhq/airy/pull/1379)]
-- Bump @typescript-eslint/eslint-plugin from 4.18.0 to 4.19.0 [[#1376](https://github.com/airyhq/airy/pull/1376)]
-- Bump css-loader from 5.1.3 to 5.2.0 [[#1378](https://github.com/airyhq/airy/pull/1378)]
-- Bump html-webpack-plugin from 4.5.2 to 5.3.1 [[#1372](https://github.com/airyhq/airy/pull/1372)]
-- Bump @bazel/typescript from 3.2.2 to 3.2.3 [[#1374](https://github.com/airyhq/airy/pull/1374)]
-- Bump sass-loader from 10.1.1 to 11.0.1 [[#1373](https://github.com/airyhq/airy/pull/1373)]
-- Bump copy-webpack-plugin from 6.4.1 to 8.1.0 [[#1366](https://github.com/airyhq/airy/pull/1366)]
-- Bump eslint-plugin-react from 7.22.0 to 7.23.0 [[#1339](https://github.com/airyhq/airy/pull/1339)]
-- Bump webpack from 5.27.2 to 5.28.0 [[#1361](https://github.com/airyhq/airy/pull/1361)]
-- Update the release process [[#1358](https://github.com/airyhq/airy/pull/1358)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.15.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.15.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.15.0/windows/amd64/airy.exe)
 

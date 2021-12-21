@@ -78,13 +78,23 @@ public class Connector {
 
             return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n Api Exception: %s \n", sendMessageRequest, e.getMessage()), e);
+            final ArrayList<KeyValue<String, SpecificRecordBase>> results = new ArrayList<>();
+            final Metadata error = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.ERROR, e.getMessage());
+            results.add(KeyValue.pair(getId(error).toString(), error));
+
+            if (e.getErrorPayload() != null) {
+                final Metadata errorPayload = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.Source.ERROR, e.getErrorPayload());
+                results.add(KeyValue.pair(getId(errorPayload).toString(), errorPayload));
+            }
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return results;
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.ERROR, e.getMessage());
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         }
-
-        updateDeliveryState(message, DeliveryState.FAILED);
-        return List.of(KeyValue.pair(message.getId(), message));
     }
 
     private boolean isMessageStale(Message message) {

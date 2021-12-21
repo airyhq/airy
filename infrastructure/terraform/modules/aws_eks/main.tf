@@ -21,8 +21,12 @@ module "vpc" {
   private_subnets = var.private_subnets
   public_subnets  = var.public_subnets
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = true
+  enable_nat_gateway   = true
+  enable_vpn_gateway   = true
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  single_nat_gateway = true
 
   tags = {
     Terraform = "true"
@@ -56,10 +60,13 @@ module "eks" {
   fargate_subnets        = [local.vpc.private_subnets[0]]
   kubeconfig_output_path = var.kubeconfig_output_path
   write_kubeconfig       = true
+  map_users              = var.kubernetes_users
 
   node_groups = {
     default = {
       desired_capacity = var.node_group_size
+      min_capacity     = var.node_group_size
+      max_capacity     = (var.node_group_size + 1)
 
       instance_types = [var.instance_type]
       update_config = {
@@ -93,21 +100,17 @@ module "eks" {
 
 }
 
-resource "aws_eks_fargate_profile" "example" {
-
-
+resource "aws_eks_fargate_profile" "namespaces" {
+  count                  = length(var.fargate_profiles)
   cluster_name           = var.core_id
-  fargate_profile_name   = "stateless"
+  fargate_profile_name   = "stateless-${var.fargate_profiles[count.index]}"
   pod_execution_role_arn = module.eks.fargate_iam_role_arn
   subnet_ids             = module.vpc.private_subnets
 
-  dynamic "selector" {
-    for_each = var.fargate_profiles
-    content {
-      namespace = selector.value
+  selector {
+      namespace = var.fargate_profiles[count.index]
       labels = {
         WorkerType = "fargate"
       }
-    }
   }
 }

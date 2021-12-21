@@ -4,8 +4,11 @@ sidebar_label: Helm
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import ButtonBox from "@site/src/components/ButtonBox";
 import DiamondSVG from "@site/static/icons/diamond.svg";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <TLDR>
 Deploy Airy with Helm, on an existing Kubernetes cluster.
@@ -16,28 +19,194 @@ an already existing Kubernetes cluster [Helm](https://helm.sh/).
 
 ## Prerequisites
 
-You would need an existing Kubernetes cluster and administrative access to it. For the purpose of this guide, we will use a Google (GKE) Kubernetes cluster.
-The cluster that we will create will have two nodes with 2cpu and 16GB RAM each.
+### Kubernetes
+
+You would need an existing Kubernetes cluster and administrative access to it. The size of the cluster depends on the number of connected sources and the number of messages flowing through the `Airy Core` platform. It is important that the pods are running stable and that they are not restarting. You can start with a simple setup of `two nodes`, each of them with `4 vCPUs` and `8GB RAM`. After that you can add or remove computing resources, so that the cluster is not under or over provisioned.
+
+In case you are not sure how to create a Kubernetes cluster, here is a small guide on setting up Kubernetes in different environments:
+
+<Tabs
+groupId="cloud-environments"
+defaultValue="google"
+values={[
+{label: 'Google', value: 'google'},
+{label: 'Azure', value: 'azure'},
+{label: 'DigitalOcean', value: 'digitalocean'},
+{label: 'AWS', value: 'aws'},
+{label: 'Minikube', value: 'minikube'},
+]
+}>
+
+<TabItem value="google">
+
+For creating a Kubernetes cluster in Google, you can use either the [Google cloud dashboard](https://console.cloud.google.com) or the [gcloud](https://cloud.google.com/sdk/docs/install) command line tool which is part of the Google SDK.
+
+After you install the Google SDK and you have setup your Google account, you can create a Kubernetes cluster with one command:
 
 ```sh
 gcloud container clusters create awesomechat --num-nodes=2 --machine-type=e2-standard-4
 ```
 
-You will also need the [Helm](https://helm.sh/docs/intro/quickstart/) and [Kubectl](https://kubernetes.io/docs/tasks/tools/) binaries, locally on your machine.
+The command will also update your `kubeconfig` file.
 
-Make sure that you can access the cluster running:
+For more information refer to the [official Google Guide](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+
+</TabItem>
+
+<TabItem value="azure">
+
+For creating a Kubernetes cluster on Microsoft Azure, you can use the [Microsoft Azure Portal](https://portal.azure.com), the [Azure PowerShell utility](https://docs.microsoft.com/en-us/powershell/azure/get-started-azureps) or the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+
+The simplest way to create the cluster is using the Microsoft Azure Portal. Navigate to the `Kubernetes services` dashboard and click on `Create` -> `Create a Kubernetes cluster`.
+
+On the following screen make sure that you:
+
+- Select the default resource group or create a new one.
+- Fill in the name of the cluster (ex. awesomechat).
+- Select the number of nodes.
+
+<img alt="Azure portal - Kubernetes services" src={useBaseUrl('img/getting-started/installation/k8s-azure.jpg')} />
+
+After the cluster is created, you can use the `az` Azure CLI to setup access to the cluster:
 
 ```sh
-kubectl get pods
-No resources found in default namespace.
-
-helm list
-NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+az login
+az aks list
+az aks get-credentials --resource-group DefaultResourceGroup-EUS --name awesomechat
 ```
+
+The last command will update your `kubeconfig` file with the proper credentials.
+
+For more information refer to the [official Microsoft Guide](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough).
+
+</TabItem>
+
+<TabItem value="digitalocean">
+
+A Kubernetes cluster can be created directly on the [DigitalOcean dashboard](https://cloud.digitalocean.com/kubernetes/clusters) by clicking `Create` -> `Kubernetes`. You can leave all the options default, except for the `Node plan` as the default nodes might be too small for running the `Airy Core` platform.
+
+<img alt="DigitalOcean - Create Kubernetes" src={useBaseUrl('img/getting-started/installation/k8s-digitalocean.jpg')} />
+
+After you create the cluster you need to go through a short guided cluster setup.
+
+<img alt="DigitalOcean - Setup Kubernetes" src={useBaseUrl('img/getting-started/installation/k8s-digitalocean-setup.jpg')} />
+
+After you complete the setup you can `Download Config File` to save the `kubeconfig` file to your machine. With the `kubeconfig` file you can now access the kubernetes cluster.
+
+```sh
+kubectl --kubeconfig ./awesomechat-kubeconfig.yaml get pods
+```
+
+For more information refer to the [official DigitalOcean Guide](https://docs.digitalocean.com/products/kubernetes/quickstart/)
+
+</TabItem>
+
+<TabItem value="minikube">
+
+`Airy Core` can be created on Minikube with predefined settings, using the [Airy CLI](/cli/introduction). However, if you want to create your custom Minikube instance, for example with custom settings for CPU and RAM, you can also do that with the [Minikube](https://minikube.sigs.k8s.io/docs/start/) utility:
+
+```sh
+minikube -p airy start --driver=virtualbox --cpus=4 --memory=7168 --extra-config=apiserver.service-nodeport-range=1-65535
+```
+
+The `apiserver.service-nodeport-range` settings is needed if you want to use port 80 on the Minikube VM as the NodePort for the ingress controller service.
+
+For more information refer to the [official Minikube Documentation](https://minikube.sigs.k8s.io/docs/start/).
+
+</TabItem>
+
+<TabItem value="aws">
+
+`Airy Core` can be created on AWS using the [Airy CLI](/cli/introduction). However that approach doesn't allow you to customize parameters other then the `vpcId` and `instanceType`. To be fully in control of the creation of the [Kubernetes cluster on AWS](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) you can use create one using the [AWS Console](https://console.aws.amazon.com/) or the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+
+For creating a cluster you first need an AWS IAM Role and a VPC. Export your profile and your region:
+
+```sh
+export AWS_PROFILE=my-aws-profile
+export AWS_REGION=my-aws-region
+```
+
+Create a new AWS IAM Role and attach the appropriate policies:
+
+```sh
+export POLICY='{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Principal": {"Service": "eks.amazonaws.com"},"Action": "sts:AssumeRole"}]}'
+```
+
+```sh
+aws iam create-role --role-name awesomechat --assume-role-policy-document "$POLICY"
+```
+
+```sh
+aws iam attach-role-policy --role-name awesomechat --policy-arn \
+  "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+```
+
+```sh
+aws iam attach-role-policy --role-name awesomechat --policy-arn \
+  "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+```
+
+```sh
+aws iam attach-role-policy --role-name awesomechat --policy-arn \
+  "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+```
+
+```sh
+aws iam attach-role-policy --role-name awesomechat --policy-arn \
+  "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+```
+
+```sh
+ROLE_ARN=$(aws iam get-role --role-name awesomechat --query 'Role.Arn' --output text)
+```
+
+Get the default VPC and the public subnets:
+
+```sh
+VPC_ID=$(aws ec2 describe-vpcs --filters Name=is-default,Values=true --query 'Vpcs[0].VpcId' --output text)
+```
+
+```sh
+SUBNETS=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${VPC_ID} \
+  --query 'Subnets[?MapPublicIpOnLaunch==`true`].SubnetId' --output text | sed 's/\t/,/g')
+```
+
+You can modify the list of subnets according to your needs, but you must have at least two subnets with the property `MapPublicIpOnLaunch` set to true.
+
+Then create the Kubernetes cluster with the following command:
+
+```sh
+aws eks create-cluster --name awesomechat --role-arn ${ROLE_ARN} --resources-vpc-config subnetIds=${SUBNETS}
+```
+
+To update your `kubeconfig` file run:
+
+```sh
+aws eks update-kubeconfig --name awesomechat --alias awesomechat
+```
+
+For more information refer to the [official AWS Guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html).
+
+</TabItem>
+
+</Tabs>
+
+### Command line utilities
+
+You will also need the [Helm](https://helm.sh/docs/intro/quickstart/) and [Kubectl](https://kubernetes.io/docs/tasks/tools/) binaries, locally on your machine.
 
 ## Install
 
-Deploy Airy Core with the latest version. You can also configure a specific version
+:::note
+
+Before you proceed with the Helm installation, make sure that you are connected to the correct Kubernetes cluster.
+If you are not using your default `kubeconfig` file, you need to export an environment variable:
+
+export KUBECONFIG=./kube.conf
+
+:::
+
+Deploy Airy Core with the latest version. You can also configure a specific version.
 
 ```sh
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
@@ -49,7 +218,7 @@ By default `Airy Core` creates only a HTTP listener and when running in cloud en
 Get the address of your LoadBalancer:
 
 ```sh
-kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}{"\n"}'
 ```
 
 Configure your DNS so that your desired hostname points to the IP address of LoadBalancer. In this example we will be using the hostname `awesomechat.airy.co`.

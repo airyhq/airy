@@ -1,5 +1,6 @@
 global:
   containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
 security:
   systemToken: ""
   allowedOrigins: "*"

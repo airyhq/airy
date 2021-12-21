@@ -27,7 +27,6 @@ import java.util.UUID;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class ListContactsTest {
+public class UpdateContactsTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper kafkaTestHelper;
@@ -66,19 +65,7 @@ public class ListContactsTest {
     private TestContact testContact;
 
     @Test
-    void canListContacts() throws Exception {
-        final String contactId1 = testContact.createContact(Contact.builder().displayName("Grace Hopper").build());
-        final String contactId2 = testContact.createContact(Contact.builder().displayName("Barbara Liskov").build());
-
-        retryOnException(() -> {
-            webTestHelper.post("/contacts.list")
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.data[*].id", containsInAnyOrder(contactId1, contactId2)));
-        }, "Contacts were not listed");
-    }
-
-    @Test
-    void canGetContact() throws Exception {
+    void canUpdate() throws Exception {
         final UUID conversationId = UUID.randomUUID();
         final String contactId = testContact.createContact(Contact.builder()
                 .displayName("Ada Lovelace")
@@ -91,12 +78,5 @@ public class ListContactsTest {
                     .andExpect(jsonPath("$.id", equalTo(contactId)))
                     .andExpect(jsonPath("$.display_name", equalTo("Ada Lovelace")));
         }, "Contact was not found using contact id");
-
-        retryOnException(() -> {
-            webTestHelper.post("/contacts.info", "{\"conversation_id\":\"" + conversationId + "\"}")
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id", equalTo(contactId)))
-                    .andExpect(jsonPath("$.display_name", equalTo("Ada Lovelace")));
-        }, "Contact was not found using conversation id");
     }
 }

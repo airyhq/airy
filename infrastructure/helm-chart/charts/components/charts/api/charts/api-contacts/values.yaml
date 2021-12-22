@@ -1,0 +1,5 @@
+component: api-contacts
+mandatory: false
+enabled: true
+image: api/contacts
+resources: {}

@@ -168,7 +168,9 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
 
     public void storeContact(List<Metadata> metadataList) throws Exception {
         for (Metadata metadata : metadataList) {
-            producer.send(new ProducerRecord<>(applicationCommunicationContacts, getId(metadata).toString(), metadata)).get();
+            producer.send(new ProducerRecord<>(applicationCommunicationContacts, getId(metadata).toString(),
+                    // Interpret "" as a deletion
+                    metadata.getValue().equals("") ? null : metadata)).get();
         }
     }
 

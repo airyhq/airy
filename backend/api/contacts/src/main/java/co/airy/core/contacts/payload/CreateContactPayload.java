@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ public class CreateContactPayload {
     private String locale;
     private String organizationName;
     private Map<String, String> via;
+    @Valid
     private Contact.Address address;
     private Map<UUID, String> conversations;
     private JsonNode metadata;

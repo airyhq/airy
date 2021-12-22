@@ -58,8 +58,9 @@ public class ListContactsTest {
     }
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws Exception {
         MockitoAnnotations.openMocks(this);
+        webTestHelper.waitUntilHealthy();
     }
 
     @Autowired

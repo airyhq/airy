@@ -59,8 +59,9 @@ public class UpdateContactsTest {
     }
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws Exception {
         MockitoAnnotations.openMocks(this);
+        webTestHelper.waitUntilHealthy();
     }
 
     @Autowired
@@ -81,21 +82,18 @@ public class UpdateContactsTest {
 
         // Add two fields and delete a nested field
         final String payload = "{\"id\":\"" + contactId + "\"," +
-                "\"address\":{\"address_line_1\":\"123 Real St\",\"city\":\"\"},\"timezone\":-3}";
+                "\"address\":{\"address_line1\":\"123 Real St\",\"city\":\"\"},\"timezone\":-3}";
         retryOnException(() -> {
             webTestHelper.post("/contacts.update", payload)
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id", equalTo(contactId)))
-                    .andExpect(jsonPath("$.address.address_line_1", equalTo("123 Real St")))
-                    .andExpect(jsonPath("$.address.city", is(nullValue())));
-        }, "Could not update contact using contact id", 5_000);
+                    .andExpect(status().isAccepted());
+        }, "Could not update contact using contact id");
 
         retryOnException(() -> {
             webTestHelper.post("/contacts.info", "{\"id\":\"" + contactId + "\"}")
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id", equalTo(contactId)))
-                    .andExpect(jsonPath("$.address.address_line_1", equalTo("123 Real St")))
+                    .andExpect(jsonPath("$.address.address_line1", equalTo("123 Real St")))
                     .andExpect(jsonPath("$.address.city", is(nullValue())));
-        }, "Could not update contact using contact id", 5_000);
+        }, "Could not confirm that the contact was updated");
     }
 }

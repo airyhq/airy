@@ -48,4 +48,9 @@ public class ContactResponsePayload {
                 .updatedAt(contact.getUpdatedAt())
                 .build();
     }
+
+    private static String getValue(String value) {
+        // "" is null
+        return "".equals(value) ? null : value;
+    }
 }

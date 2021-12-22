@@ -21,6 +21,7 @@ import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.AVATAR_URL;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.CREATED_AT;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.GENDER;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.LOCALE;
@@ -50,14 +51,14 @@ public class Contact implements Serializable {
     private JsonNode metadata;
 
     @Data
-    @Builder
+    @Builder(toBuilder = true)
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Address implements Serializable {
         private String organizationName;
         private String addressLine1;
         private String addressLine2;
-        private String zip;
+        private String postalCode;
         private String city;
         private String state;
         private String country;
@@ -68,11 +69,11 @@ public class Contact implements Serializable {
             }
             return Address.builder()
                     .organizationName(map.getMetadataValue(MetadataKeys.Address.ORGANIZATION_NAME))
-                    .addressLine1(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE_1))
-                    .addressLine2(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE_2))
+                    .addressLine1(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE1))
+                    .addressLine2(map.getMetadataValue(MetadataKeys.Address.ADDRESS_LINE2))
                     .city(map.getMetadataValue(MetadataKeys.Address.CITY))
                     .state(map.getMetadataValue(MetadataKeys.Address.STATE))
-                    .zip(map.getMetadataValue(MetadataKeys.Address.ZIP))
+                    .postalCode(map.getMetadataValue(MetadataKeys.Address.POSTAL_CODE))
                     .country(map.getMetadataValue(MetadataKeys.Address.COUNTRY))
                     .build();
         }
@@ -83,10 +84,10 @@ public class Contact implements Serializable {
                 metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ORGANIZATION_NAME, organizationName));
             }
             if (addressLine1 != null) {
-                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE_1, addressLine1));
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE1, addressLine1));
             }
             if (addressLine2 != null) {
-                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE_2, addressLine2));
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ADDRESS_LINE2, addressLine2));
             }
             if (city != null) {
                 metadata.add(newContactMetadata(contactId, MetadataKeys.Address.CITY, city));
@@ -94,8 +95,8 @@ public class Contact implements Serializable {
             if (state != null) {
                 metadata.add(newContactMetadata(contactId, MetadataKeys.Address.STATE, state));
             }
-            if (zip != null) {
-                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.ZIP, zip));
+            if (postalCode != null) {
+                metadata.add(newContactMetadata(contactId, MetadataKeys.Address.POSTAL_CODE, postalCode));
             }
             if (country != null) {
                 metadata.add(newContactMetadata(contactId, MetadataKeys.Address.COUNTRY, country));
@@ -109,6 +110,7 @@ public class Contact implements Serializable {
 
     public static class MetadataKeys {
         public static String ID = "id";
+        public static String CREATED_AT = "created_at";
         public static String DISPLAY_NAME = "displayName";
         public static String AVATAR_URL = "avatarUrl";
         public static String TITLE = "title";
@@ -124,9 +126,9 @@ public class Contact implements Serializable {
 
         public static class Address {
             public static String ORGANIZATION_NAME = "address.organizationName";
-            public static String ADDRESS_LINE_1 = "address.address_line_1";
-            public static String ADDRESS_LINE_2 = "address.address_line_2";
-            public static String ZIP = "address.zip";
+            public static String ADDRESS_LINE1 = "address.address_line1";
+            public static String ADDRESS_LINE2 = "address.address_line2";
+            public static String POSTAL_CODE = "address.postal_code";
             public static String CITY = "address.city";
             public static String STATE = "address.state";
             public static String COUNTRY = "address.country";
@@ -139,6 +141,9 @@ public class Contact implements Serializable {
         List<Metadata> metadata = new ArrayList<>();
         if (displayName != null) {
             metadata.add(newContactMetadata(id, DISPLAY_NAME, displayName));
+        }
+        if (createdAt != null) {
+            metadata.add(newContactMetadata(id, CREATED_AT, createdAt.toString()));
         }
         if (avatarUrl != null) {
             metadata.add(newContactMetadata(id, AVATAR_URL, avatarUrl));
@@ -175,6 +180,7 @@ public class Contact implements Serializable {
         if (map == null) {
             return null;
         }
+
         final Collection<Metadata> values = map.values();
 
         final Optional<Metadata> anyRecord = values.stream().findAny();
@@ -194,7 +200,8 @@ public class Contact implements Serializable {
 
         return Contact.builder()
                 .id(id)
-                // TODO
+                .updatedAt(map.getUpdatedAt())
+                .createdAt(Optional.ofNullable(map.get(CREATED_AT)).map(Metadata::getTimestamp).orElse(null))
                 .displayName(map.getMetadataValue(DISPLAY_NAME))
                 .avatarUrl(map.getMetadataValue(AVATAR_URL))
                 .title(map.getMetadataValue(TITLE))

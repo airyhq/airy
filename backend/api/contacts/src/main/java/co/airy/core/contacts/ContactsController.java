@@ -114,18 +114,30 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
         }
 
+        final Contact.Address address = Optional.ofNullable(contact.getAddress()).orElse(new Contact.Address());
+
         final Contact updatedContact = contact.toBuilder()
-                .metadata(Optional.of(payload.getMetadata()).orElse(contact.getMetadata()))
-                .address(Optional.of(payload.getAddress()).orElse(contact.getAddress()))
-                .conversations(Optional.of(payload.getConversations()).orElse(contact.getConversations()))
-                .displayName(Optional.of(payload.getDisplayName()).orElse(contact.getDisplayName()))
-                .avatarUrl(Optional.of(payload.getAvatarUrl()).orElse(contact.getAvatarUrl()))
-                .gender(Optional.of(payload.getGender()).orElse(contact.getGender()))
-                .locale(Optional.of(payload.getLocale()).orElse(contact.getLocale()))
-                .organizationName(Optional.of(payload.getOrganizationName()).orElse(contact.getOrganizationName()))
-                .timezone(Optional.of(payload.getTimezone()).orElse(contact.getTimezone()))
-                .title(Optional.of(payload.getTitle()).orElse(contact.getTitle()))
-                .via(Optional.of(payload.getVia()).orElse(contact.getVia()))
+                .metadata(Optional.ofNullable(payload.getMetadata()).orElse(contact.getMetadata()))
+                .address(Optional.ofNullable(payload.getAddress())
+                        .map((payloadAddress) -> address.toBuilder()
+                                .addressLine1(Optional.ofNullable(payloadAddress.getAddressLine1()).orElse(address.getAddressLine1()))
+                                .addressLine2(Optional.ofNullable(payloadAddress.getAddressLine2()).orElse(address.getAddressLine2()))
+                                .city(Optional.ofNullable(payloadAddress.getCity()).orElse(address.getCity()))
+                                .country(Optional.ofNullable(payloadAddress.getCountry()).orElse(address.getCountry()))
+                                .postalCode(Optional.ofNullable(payloadAddress.getPostalCode()).orElse(address.getPostalCode()))
+                                .organizationName(Optional.ofNullable(payloadAddress.getOrganizationName()).orElse(address.getOrganizationName()))
+                                .build()
+                        )
+                        .orElse(address))
+                .conversations(Optional.ofNullable(payload.getConversations()).orElse(contact.getConversations()))
+                .displayName(Optional.ofNullable(payload.getDisplayName()).orElse(contact.getDisplayName()))
+                .avatarUrl(Optional.ofNullable(payload.getAvatarUrl()).orElse(contact.getAvatarUrl()))
+                .gender(Optional.ofNullable(payload.getGender()).orElse(contact.getGender()))
+                .locale(Optional.ofNullable(payload.getLocale()).orElse(contact.getLocale()))
+                .organizationName(Optional.ofNullable(payload.getOrganizationName()).orElse(contact.getOrganizationName()))
+                .timezone(Optional.ofNullable(payload.getTimezone()).orElse(contact.getTimezone()))
+                .title(Optional.ofNullable(payload.getTitle()).orElse(contact.getTitle()))
+                .via(Optional.ofNullable(payload.getVia()).orElse(contact.getVia()))
                 .build();
 
         try {
@@ -134,7 +146,7 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(ContactResponsePayload.fromContact(updatedContact));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @PostMapping("/contacts.refetch")

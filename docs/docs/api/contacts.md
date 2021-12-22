@@ -160,17 +160,7 @@ All fields set on the [creation request](#create-contact) can be updated. To rem
 }
 ```
 
-**Sample response**
-
-```json5
-{
-  "id": "6b80b10c-ae6e-4995-844d-c56c4da11623",
-  "display_name": "Barabara Liskov",
-  "title": "Professor",
-  "created_at": "2021-11-16T13:21:03.580Z", // ISO 8601
-  "updated_at": "2021-11-16T13:45:52.433Z" // ISO 8601
-}
-```
+**Sample response 202 (Accepted)**
 
 ### Re-fetch contact
 

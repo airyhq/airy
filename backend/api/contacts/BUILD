@@ -35,7 +35,7 @@ test_deps = [
 
 custom_java_library(
     name = "test-util",
-    srcs = ["src/test/java/co/airy/core/contacts/util/TestContact.java"],
+    srcs = ["src/test/java/co/airy/core/contacts/util/TestContact.java", "src/test/java/co/airy/core/contacts/util/Topics.java"],
     deps = test_deps,
 )
 

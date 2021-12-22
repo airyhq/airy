@@ -3,6 +3,7 @@ package co.airy.core.contacts;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.contacts.dto.Contact;
+import co.airy.core.contacts.dto.ConversationContact;
 import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -11,6 +12,7 @@ import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
+import co.airy.uuid.UUIDv5;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -28,7 +30,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
@@ -108,29 +109,35 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                     return conversation;
                 }, Materialized.as(conversationsStore)).toStream()
                 // Stream conversation contact data to existing contacts or create new ones
-                .leftJoin(conversationToContactTable, (conversation, metadataMap) -> {
-                    List<Metadata> metadata = new ArrayList<>();
-                    final Contact contact = Contact.fromMetadataMap(metadataMap);
+                .leftJoin(conversationToContactTable, ConversationContact::new)
+                .flatMap((conversationId, conversationContact) -> {
+                    List<Metadata> metadataList = new ArrayList<>();
+                    final Conversation conversation = conversationContact.getConversation();
+                    final Contact contact = Contact.fromMetadataMap(conversationContact.getContact());
                     // Create contact
                     if (contact == null) {
-                        final String contactId = UUID.randomUUID().toString();
-                        metadata.add(newContactMetadata(contactId, Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
+                        // Create a stable uuid in case the conversation updates more quickly than
+                        // the conversationToContactStore
+                        final String contactId = UUIDv5.fromName(conversation.getId()).toString();
+                        metadataList.add(newContactMetadata(contactId, Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
 
                     } else {
-                        // Update contact if necessary
-                        if (contact.getDisplayName() == null) {
-                            metadata.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
+                        // Update display name if it's missing or if the conversation display name is no longer just the default
+                        final String displayNameOrDefault = conversation.getDisplayNameOrDefault();
+                        final String defaultDisplayName = conversation.getDefaultDisplayName();
+                        if (contact.getDisplayName() == null || (contact.getDisplayName().equals(defaultDisplayName)
+                                && displayNameOrDefault.equals(defaultDisplayName))) {
+                            metadataList.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.DISPLAY_NAME, displayNameOrDefault));
                         }
-                        conversation.getMetadataMap().getMetadataValue(MetadataKeys.ConversationKeys.Contact.AVATAR_URL);
-                        if (contact.getAvatarUrl() == null) {
-                            metadata.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.AVATAR_URL, conversation.getDisplayNameOrDefault()));
+                        final String avatarUrl = conversation.getMetadataMap().getMetadataValue(MetadataKeys.ConversationKeys.Contact.AVATAR_URL);
+                        if (contact.getAvatarUrl() == null && avatarUrl != null) {
+                            metadataList.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.AVATAR_URL, avatarUrl));
                         }
                     }
 
-                    return metadata;
+                    return metadataList.stream()
+                            .map((metadata) -> KeyValue.pair(getId(metadata).toString(), metadata)).collect(toList());
                 })
-                .flatMap((conversationId, metadataList) -> metadataList.stream()
-                        .map((metadata) -> KeyValue.pair(getId(metadata), metadata)).collect(toList()))
                 .to(applicationCommunicationContacts);
 
         streams.start(builder.build(), appId);

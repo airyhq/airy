@@ -2,9 +2,7 @@ package co.airy.core.contacts;
 
 import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.util.TestContact;
-import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.core.contacts.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -46,10 +44,7 @@ public class UpdateContactsTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                new ApplicationCommunicationContacts(),
-                new ApplicationCommunicationMetadata(),
-                new ApplicationCommunicationMessages());
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
         kafkaTestHelper.beforeAll();
     }
 

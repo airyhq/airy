@@ -50,7 +50,7 @@ public class ContactResponsePayload {
     }
 
     private static String getValue(String value) {
-        // "" is null
+        // "" is interpreted as a deletion
         return "".equals(value) ? null : value;
     }
 }

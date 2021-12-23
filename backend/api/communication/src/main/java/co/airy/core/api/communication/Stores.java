@@ -1,6 +1,9 @@
 package co.airy.core.api.communication;
 
-import co.airy.avro.communication.*;
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;

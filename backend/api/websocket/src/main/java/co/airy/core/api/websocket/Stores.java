@@ -1,7 +1,13 @@
 package co.airy.core.api.websocket;
 
-import co.airy.avro.communication.*;
-import co.airy.kafka.schema.application.*;
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Tag;
+import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KeyValue;

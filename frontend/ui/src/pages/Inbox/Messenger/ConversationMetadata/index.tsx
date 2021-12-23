@@ -83,7 +83,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [showNotesDialog, setShowNotesDialog] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [noteId, setNoteId] = useState('');
-  //console.log(conversation)
 
   useEffect(() => {
     setShowEditDisplayName(false);

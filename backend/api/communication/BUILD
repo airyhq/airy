@@ -14,7 +14,6 @@ app_deps = [
     "//backend/model/conversation",
     "//backend:read-receipt",
     "//lib/java/date",
-    "//lib/java/kafka/schema:all-topics",
     "//lib/java/uuid",
     "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",

@@ -1,7 +1,16 @@
 package co.airy.core.api.admin;
 
-import co.airy.avro.communication.*;
-import co.airy.kafka.schema.application.*;
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Tag;
+import co.airy.avro.communication.Template;
+import co.airy.avro.communication.Webhook;
+import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
+import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
+import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.dto.MetadataMap;

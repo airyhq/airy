@@ -259,8 +259,6 @@ function allReducer(
         return state;
       }
 
-      console.log(action.payload);
-
       return {
         ...state,
         items: {

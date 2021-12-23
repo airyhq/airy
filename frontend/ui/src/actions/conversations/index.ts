@@ -169,8 +169,8 @@ export const updateContact = (conversationId: string, displayName: string) => (d
   );
 };
 
-export const addNoteToConversation = (conversationId: string, text: string) => (dispatch: Dispatch<any>) => {
-  HttpClientInstance.addNote({conversationId, text}).then(() => {});
+export const addNoteToConversation = (conversationId: string, text: string) => () => {
+  HttpClientInstance.addNote({conversationId, text});
 };
 
 export const removeNoteFromConversation = (conversationId: string, noteId: string) => (dispatch: Dispatch<any>) => {

@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template, Note} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,

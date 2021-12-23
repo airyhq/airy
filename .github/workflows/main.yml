@@ -89,7 +89,7 @@ jobs:
           bazel run //lib/typescript/httpclient:publish-npm release
         env:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
-          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
+          DEPLOY_NPM_TOKEN: ${{ secrets.DEPLOY_NPM_TOKEN }}
           DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
 
       - name: Publish chat-plugin library to npm
@@ -99,5 +99,5 @@ jobs:
           bazel run //frontend/chat-plugin/lib:publish-npm release
         env:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
-          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
+          DEPLOY_NPM_TOKEN: ${{ secrets.DEPLOY_NPM_TOKEN }}
           DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}

@@ -63,6 +63,7 @@ module.exports = {
         'api/websocket',
         'api/webhook',
         'api/source',
+        'api/contacts',
       ],
     },
     {

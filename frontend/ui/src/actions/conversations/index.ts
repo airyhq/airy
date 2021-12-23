@@ -15,6 +15,8 @@ const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
 const CONVERSATION_SET_STATE = '@@conversations/CONVERSATION_SET_STATE';
 const CONVERSATION_UPDATE_CONTACT = '@@conversations/CONVERSATION_UPDATE_CONTACT';
+const CONVERSATION_REMOVE_NOTE = '@@conversations/CONVERSATION_REMOVE_NOTE';
+const CONVERSATION_UPDATE_NOTE = '@@conversations/CONVERSATION_UPDATE_NOTE';
 
 export const loadingConversationAction = createAction(
   CONVERSATION_LOADING,
@@ -65,6 +67,20 @@ export const updateContactAction = createAction(
     displayName,
   })
 )<{conversationId: string; displayName: string}>();
+
+export const removeNoteFromConversationAction = createAction(
+  CONVERSATION_REMOVE_NOTE,
+  (conversationId: string, noteId: string) => ({conversationId, noteId})
+)<{conversationId: string; noteId: string}>();
+
+export const updateNoteAction = createAction(
+  CONVERSATION_UPDATE_NOTE,
+  (conversationId: string, noteId: string, text: string) => ({
+    conversationId,
+    noteId,
+    text,
+  })
+)<{conversationId: string; noteId: string, text: string}>();
 
 export const fetchConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction(true));
@@ -150,5 +166,31 @@ export const removeTagFromConversation = (conversationId: string, tagId: string)
 export const updateContact = (conversationId: string, displayName: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.updateContact({conversationId, displayName}).then(() =>
     dispatch(updateContactAction(conversationId, displayName))
+  );
+};
+
+export const addNoteToConversation = (conversationId: string, text: string) => (dispatch: Dispatch<any>) => {
+    HttpClientInstance.addNote({conversationId, text}).then(() => {});
+};
+
+export const removeNoteFromConversation = (conversationId: string, noteId: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.deleteNote({conversationId, noteId}).then(() =>
+    dispatch(removeNoteFromConversationAction(conversationId, noteId))
+  );
+};
+
+export const updateConversationNote = (conversationId: string, noteId: string, text: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.updateNote({conversationId, noteId, text}).then(() =>
+    dispatch(
+      setMetadataAction({
+        subject: 'conversation',
+        identifier: conversationId,
+        metadata: {
+          notes: {
+            [noteId]: text,
+          },
+        },
+      })
+    )
   );
 };

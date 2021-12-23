@@ -18,6 +18,9 @@ export const cyTagsTable = 'tagsTable';
 export const cyTagsTableRowDisplayDeleteModal = 'tagsTableRowDisplayDeleteModal';
 export const cyTagsTableRowDisplayDeleteModalInput = 'tagsTableRowDisplayDeleteModalInput';
 export const cyTagsTableRowDisplayDeleteModalButton = 'tagsTableRowDisplayDeleteModalButton';
+export const cyShowNotesDialog = 'showTagsDialog';
+export const cyNotesDialogButton = 'notesDialogButton';
+export const cyNotesDialogInput = 'notesDialogInput';
 
 export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
 export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';

@@ -1,0 +1,69 @@
+.note {
+  display: inline-block;
+  padding: 4px;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.noteInner {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px;
+  background: var(--color-background-yellow);
+  color: var(--color-text-gray);
+  border-radius: 4px;
+  line-height: 24px;
+  //min-height: 48px;
+  max-width: 100%;
+  min-width: 100%;
+  border: 1px solid var(--color-text-gray);
+}
+
+.editNote {
+  margin-left: 4px;
+  height: 18px;
+  width: 18px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+}
+
+.removeNote {
+  cursor: pointer;
+  margin-bottom: auto;
+}
+
+.closeButton {
+  margin-left: 4px;
+  height: 14px;
+  width: 14px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-red-alert);
+    }
+  }
+}
+
+.noteName {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noteNameExpanded {
+  @extend .noteName;
+  white-space: unset;
+  overflow-wrap: break-word;
+  margin-right: 4px;
+}
+

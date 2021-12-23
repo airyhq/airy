@@ -64,7 +64,7 @@ public class DocumentMapper {
         final List<MetadataNode> notes = document.getFields().stream()
                 .filter((field) -> field.name().startsWith(String.format("metadata.%s", MetadataKeys.ConversationKeys.NOTES)))
                 .map((record) -> new MetadataNode(record.name().split("\\.")[1]+'.'+record.name().split("\\.")[2],
-                        record.readerValue().toString()))
+                        record.stringValue()))
                 .collect(Collectors.toList());
 
         return ConversationIndex.builder()

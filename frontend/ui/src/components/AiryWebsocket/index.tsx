@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       camelcaseKeys(setMetadataAction(metadataEvent), {
         deep: true,
-        stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
+        stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags', 'payload.metadata.notes'],
       })
     ),
   onTag: (tag: Tag) => {

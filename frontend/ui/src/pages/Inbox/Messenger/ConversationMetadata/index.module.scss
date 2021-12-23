@@ -121,22 +121,22 @@
   }
 }
 
-.tags {
+.tags, .notes {
   border-bottom: 1px solid var(--color-light-gray);
   padding-bottom: 16px;
 }
 
-.tagsHeader {
+.tagsHeader, .notesHeader {
   display: flex;
   margin: 8px 0;
   justify-content: space-between;
 }
 
-.tagsHeaderTitle {
+.tagsHeaderTitle, .notesHeaderTitle {
   font-weight: bold;
 }
 
-.addTags {
+.addTags, .addNotes {
   padding: 8px;
   width: 260px;
 }

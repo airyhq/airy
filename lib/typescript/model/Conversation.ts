@@ -9,6 +9,9 @@ export type ConversationMetadata = Metadata & {
   tags: {
     [tagId: string]: string;
   };
+  notes: {
+    [noteId: string]: string;
+  };
   state: string;
 };
 

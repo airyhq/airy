@@ -77,6 +77,19 @@ public class Contact implements Serializable {
                     .country(map.getMetadataValue(MetadataKeys.Address.COUNTRY))
                     .build();
         }
+
+        @JsonIgnore
+        public Address merge(Address address) {
+            return this.toBuilder()
+                    .addressLine1(Optional.ofNullable(address.getAddressLine1()).orElse(address.getAddressLine1()))
+                    .addressLine2(Optional.ofNullable(address.getAddressLine2()).orElse(address.getAddressLine2()))
+                    .city(Optional.ofNullable(address.getCity()).orElse(address.getCity()))
+                    .country(Optional.ofNullable(address.getCountry()).orElse(address.getCountry()))
+                    .postalCode(Optional.ofNullable(address.getPostalCode()).orElse(address.getPostalCode()))
+                    .organizationName(Optional.ofNullable(address.getOrganizationName()).orElse(address.getOrganizationName()))
+                    .build();
+        }
+
         @JsonIgnore
         public List<Metadata> toMetadata(String contactId) {
             List<Metadata> metadata = new ArrayList<>();

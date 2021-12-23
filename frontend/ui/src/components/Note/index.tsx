@@ -30,15 +30,21 @@ type noteState = {
   settings: Settings;
 };
 
-export const Note = ({note, expanded, variant, onClick, removeNote, updateNote, settings}: NoteProps & noteState): JSX.Element => {
+export const Note = ({
+  note,
+  expanded,
+  variant,
+  onClick,
+  removeNote,
+  updateNote,
+  settings,
+}: NoteProps & noteState): JSX.Element => {
   return (
     <div className={styles.note} onClick={onClick}>
-      <div
-        className={`${styles.noteInner} ${onClick ? styles.clickable : ''} ${removeNote ? styles.isRemovable : ''}`}
-      >
+      <div className={`${styles.noteInner} ${onClick ? styles.clickable : ''} ${removeNote ? styles.isRemovable : ''}`}>
         <span className={`${styles.noteNameExpanded}`}>{note.text}</span>
         <span className={styles.removeNote} onClick={updateNote}>
-          <EditPencilIcon className={`${styles.editNote}`} title="Edit note"/>
+          <EditPencilIcon className={`${styles.editNote}`} title="Edit note" />
         </span>
         {removeNote && (
           <span className={styles.removeNote} onClick={removeNote}>

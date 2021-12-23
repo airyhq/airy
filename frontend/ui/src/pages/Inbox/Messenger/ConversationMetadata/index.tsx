@@ -6,7 +6,11 @@ import {Tag as TagModel, TagColor, Note as NoteModel} from 'model';
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
 import {updateContact} from '../../../../actions/conversations';
-import {addNoteToConversation, removeNoteFromConversation, updateConversationNote} from '../../../../actions/conversations';
+import {
+  addNoteToConversation,
+  removeNoteFromConversation,
+  updateConversationNote,
+} from '../../../../actions/conversations';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -58,8 +62,18 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation, updateContact, addNoteToConversation, removeNoteFromConversation, updateConversationNote} =
-    props;
+  const {
+    tags,
+    createTag,
+    conversation,
+    listTags,
+    addTagToConversation,
+    removeTagFromConversation,
+    updateContact,
+    addNoteToConversation,
+    removeNoteFromConversation,
+    updateConversationNote,
+  } = props;
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
@@ -107,7 +121,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setNoteText(note.text);
     setShowNotesDialog(true);
     setNoteId(note.id);
-  }
+  };
 
   const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
 
@@ -116,16 +130,15 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
       .map(tagId => tags[tagId])
       .filter(tag => tag !== undefined)
       .sort(tagSorter);
-  }
+  };
 
   const conversationNotes = () => {
     return Object.keys(conversation.metadata.notes || {})
       .map(noteId => {
-        return {"id":noteId, "text":conversation.metadata.notes[noteId]} as NoteModel
+        return {id: noteId, text: conversation.metadata.notes[noteId]} as NoteModel;
       })
       .filter(note => note !== undefined);
-  }
-
+  };
 
   const checkIfExists = (tagName: string) => {
     const usedTags = conversationTags();
@@ -370,7 +383,12 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.noteList}>
               {conversationNotes().map(note => (
-                <Note key={note.id} note={note} removeNote={() => removeNote(note)} updateNote={() => updateNote(note)} />
+                <Note
+                  key={note.id}
+                  note={note}
+                  removeNote={() => removeNote(note)}
+                  updateNote={() => updateNote(note)}
+                />
               ))}
             </div>
           </div>

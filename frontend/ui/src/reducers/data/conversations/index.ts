@@ -182,7 +182,12 @@ const removeNoteFromConversation = (state: AllConversationsState, conversationId
   };
 };
 
-const updateNoteInConversation = (state: AllConversationsState, conversationId: string, noteId: string, text: string) => {
+const updateNoteInConversation = (
+  state: AllConversationsState,
+  conversationId: string,
+  noteId: string,
+  text: string
+) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
     return state;
@@ -335,7 +340,7 @@ function allReducer(
       return removeNoteFromConversation(state, action.payload.conversationId, action.payload.noteId);
 
     case getType(actions.updateNoteAction):
-      return updateNoteInConversation(state, action.payload.conversationId, action.payload.noteId, action.payload.text)
+      return updateNoteInConversation(state, action.payload.conversationId, action.payload.noteId, action.payload.text);
 
     case getType(actions.updateMessagesPaginationDataAction):
       if (state.items[action.payload.conversationId]) {

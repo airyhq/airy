@@ -80,7 +80,7 @@ export const updateNoteAction = createAction(
     noteId,
     text,
   })
-)<{conversationId: string; noteId: string, text: string}>();
+)<{conversationId: string; noteId: string; text: string}>();
 
 export const fetchConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction(true));
@@ -170,7 +170,7 @@ export const updateContact = (conversationId: string, displayName: string) => (d
 };
 
 export const addNoteToConversation = (conversationId: string, text: string) => (dispatch: Dispatch<any>) => {
-    HttpClientInstance.addNote({conversationId, text}).then(() => {});
+  HttpClientInstance.addNote({conversationId, text}).then(() => {});
 };
 
 export const removeNoteFromConversation = (conversationId: string, noteId: string) => (dispatch: Dispatch<any>) => {
@@ -179,18 +179,19 @@ export const removeNoteFromConversation = (conversationId: string, noteId: strin
   );
 };
 
-export const updateConversationNote = (conversationId: string, noteId: string, text: string) => (dispatch: Dispatch<any>) => {
-  HttpClientInstance.updateNote({conversationId, noteId, text}).then(() =>
-    dispatch(
-      setMetadataAction({
-        subject: 'conversation',
-        identifier: conversationId,
-        metadata: {
-          notes: {
-            [noteId]: text,
+export const updateConversationNote =
+  (conversationId: string, noteId: string, text: string) => (dispatch: Dispatch<any>) => {
+    HttpClientInstance.updateNote({conversationId, noteId, text}).then(() =>
+      dispatch(
+        setMetadataAction({
+          subject: 'conversation',
+          identifier: conversationId,
+          metadata: {
+            notes: {
+              [noteId]: text,
+            },
           },
-        },
-      })
-    )
-  );
-};
+        })
+      )
+    );
+  };

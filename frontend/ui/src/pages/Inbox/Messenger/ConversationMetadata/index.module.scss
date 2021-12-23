@@ -121,22 +121,26 @@
   }
 }
 
-.tags, .notes {
+.tags,
+.notes {
   border-bottom: 1px solid var(--color-light-gray);
   padding-bottom: 16px;
 }
 
-.tagsHeader, .notesHeader {
+.tagsHeader,
+.notesHeader {
   display: flex;
   margin: 8px 0;
   justify-content: space-between;
 }
 
-.tagsHeaderTitle, .notesHeaderTitle {
+.tagsHeaderTitle,
+.notesHeaderTitle {
   font-weight: bold;
 }
 
-.addTags, .addNotes {
+.addTags,
+.addNotes {
   padding: 8px;
   width: 260px;
 }

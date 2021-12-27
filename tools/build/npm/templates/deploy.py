@@ -42,9 +42,9 @@ npm_repositories = {
 }
 npm_registry = npm_repositories[repo_type]
 
-npm_username, npm_password, npm_email = (
+npm_username, npm_token, npm_email = (
     os.getenv('DEPLOY_NPM_USERNAME'),
-    os.getenv('DEPLOY_NPM_PASSWORD'),
+    os.getenv('DEPLOY_NPM_TOKEN'),
     os.getenv('DEPLOY_NPM_EMAIL'),
 )
 
@@ -54,10 +54,10 @@ if not npm_username:
         '$DEPLOY_NPM_USERNAME env variable'
     )
 
-if not npm_password:
+if not npm_token:
     raise Exception(
-        'password should be passed via '
-        '$DEPLOY_NPM_PASSWORD env variable'
+        'token should be passed via '
+        '$DEPLOY_NPM_TOKEN env variable'
     )
 
 if not npm_email:
@@ -69,7 +69,7 @@ if not npm_email:
 expect_input_tmpl = '''spawn npm adduser --registry={registry}
 expect {{
   "Username:" {{send "{username}\r"; exp_continue}}
-  "Password:" {{send "$env(PASSWORD)\r"; exp_continue}}
+  "Token:" {{send "$env(TOKEN)\r"; exp_continue}}
   "Email: (this IS public)" {{send "{email}\r"; exp_continue}}
 }}'''
 
@@ -89,18 +89,11 @@ node_path = ':'.join([
     os.path.realpath('external/nodejs_windows_amd64/bin/'),
 ])
 
-with open(expect_input_file.name) as expect_input:
-    subprocess.check_call([
-        '/usr/bin/expect',
-    ], stdin=expect_input, env={
-        'PATH': node_path,
-        'PASSWORD': npm_password
-    })
-
 subprocess.check_call([
     'npm',
     'publish',
     '--registry={}'.format(npm_registry),
+    '--token={}'.format(npm_token),
     'deploy_npm.tgz'
 ], env={
     'PATH': node_path

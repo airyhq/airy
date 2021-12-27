@@ -3,6 +3,7 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: airy-core-tools
+  namespace: {{ .Values.namespace }}
   labels:
     core.airy.co/managed: "true"
 spec:
@@ -16,5 +17,8 @@ spec:
                 name: akhq
                 port:
                   number: 8080
+    {{- if .Values.hostname }}
+      host: {{ .Values.hostname }}
+    {{- end }}
   ingressClassName: nginx
   {{- end }}

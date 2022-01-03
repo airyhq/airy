@@ -1,1 +1,12 @@
 enabled: false
+workerType:
+hostname:
+namespace: "default"
+kafka:
+  bootstrapServers: "kafka-headless"
+  port: 9092
+  schemaRegistryUrl: "schema-registry"
+  schemaRegistryPort: 8081
+  namespaces:
+    - default
+resources:

@@ -2,7 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: akhq 
+  name: akhq
+  namespace: {{ .Values.namespace }}
 spec:
   ports:
     - port: 8080

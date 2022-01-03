@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: beanstalk-config
 data:
-  BEANSTALK_HOSTNAME: "beanstalk"
+  BEANSTALK_HOSTNAME: "beanstalkd"
   BEANSTALK_PORT: "{{ .Values.port }}"

@@ -13,7 +13,6 @@
     "camelcase-keys": "^7.0.1",
     "core-js": "3.18.3",
     "emoji-mart": "3.0.1",
-    "form-data": "^4.0.0",
     "i18next": "^21.6.4",
     "form-data": "^4.0.0",
     "isomorphic-fetch": "^3.0.0",

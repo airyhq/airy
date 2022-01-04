@@ -1,3 +1,4 @@
+{{- if .Values.enabled }}
 {{- if .Capabilities.APIVersions.Has "apps/v1" }}
 apiVersion: apps/v1
 {{- else }}
@@ -12,7 +13,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: {{ template "kafka-connect.name" . }}
@@ -149,3 +150,4 @@ spec:
       affinity:
 {{ toYaml .Values.affinity | indent 8 }}
       {{- end }}
+{{- end }}

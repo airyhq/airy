@@ -1,4 +1,5 @@
 {{- if and .Values.prometheus.jmx.enabled }}
+{{- if .Values.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -30,4 +31,5 @@ data:
         connector: $1
         task: $2
         status: $3
+{{- end }}
 {{- end }}

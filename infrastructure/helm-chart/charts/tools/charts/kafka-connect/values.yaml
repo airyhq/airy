@@ -1,6 +1,4 @@
-enabled: true
-connect:
-  enabled: false
+enabled: false
 podAnnotations: {}
 nameOverride: "connect"
 fullnameOverride: "kafka-connect"

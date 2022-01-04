@@ -135,7 +135,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                         final String displayNameOrDefault = conversation.getDisplayNameOrDefault();
                         final String defaultDisplayName = conversation.getDefaultDisplayName();
                         if (contact.getDisplayName() == null || (contact.getDisplayName().equals(defaultDisplayName)
-                                && displayNameOrDefault.equals(defaultDisplayName))) {
+                                && !displayNameOrDefault.equals(defaultDisplayName))) {
                             metadataList.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.DISPLAY_NAME, displayNameOrDefault));
                         }
                         // Update the avatar url if it's missing or hasn't been set yet

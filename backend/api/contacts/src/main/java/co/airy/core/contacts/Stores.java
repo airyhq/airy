@@ -28,10 +28,14 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
@@ -109,6 +113,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                     return conversation;
                 }, Materialized.as(conversationsStore)).toStream()
                 // Stream conversation contact data to existing contacts or create new ones
+                // To avoid recursion with updates to the conversation mapping we use a stream here
                 .leftJoin(conversationToContactTable, ConversationContact::new)
                 .flatMap((conversationId, conversationContact) -> {
                     List<Metadata> metadataList = new ArrayList<>();
@@ -116,11 +121,15 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                     final Contact contact = Contact.fromMetadataMap(conversationContact.getContact());
                     // Create contact
                     if (contact == null) {
-                        // Create a stable uuid in case the conversation updates more quickly than
-                        // the conversationToContactStore
-                        final String contactId = UUIDv5.fromName(conversation.getId()).toString();
-                        metadataList.add(newContactMetadata(contactId, Contact.MetadataKeys.DISPLAY_NAME, conversation.getDisplayNameOrDefault()));
-
+                        final Contact newContact = Contact.builder()
+                                // Create a stable uuid in case the conversation updates more quickly than
+                                // the conversationToContactStore
+                                .id(UUIDv5.fromName(conversation.getId()).toString())
+                                .displayName(conversation.getDisplayNameOrDefault())
+                                .createdAt(Instant.now().toEpochMilli())
+                                .conversations(Map.of(UUID.fromString(conversationId), conversation.getLastMessageContainer().getMessage().getSource()))
+                                .build();
+                        metadataList.addAll(newContact.toMetadata());
                     } else {
                         // Update display name if it's missing or if the conversation display name is no longer just the default
                         final String displayNameOrDefault = conversation.getDisplayNameOrDefault();
@@ -129,9 +138,15 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                                 && displayNameOrDefault.equals(defaultDisplayName))) {
                             metadataList.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.DISPLAY_NAME, displayNameOrDefault));
                         }
+                        // Update the avatar url if it's missing or hasn't been set yet
                         final String avatarUrl = conversation.getMetadataMap().getMetadataValue(MetadataKeys.ConversationKeys.Contact.AVATAR_URL);
                         if (contact.getAvatarUrl() == null && avatarUrl != null) {
                             metadataList.add(newContactMetadata(contact.getId(), Contact.MetadataKeys.AVATAR_URL, avatarUrl));
+                        }
+
+                        // Create conversation to contact mapping if it doesn't exist
+                        if (contact.getConversations().keySet().stream().noneMatch(existingConversationId -> existingConversationId.toString().equals(conversationId))) {
+                            metadataList.add(newContactMetadata(contact.getId(), String.format("%s.%s", CONVERSATIONS, conversationId), conversation.getLastMessageContainer().getMessage().getSource()));
                         }
                     }
 

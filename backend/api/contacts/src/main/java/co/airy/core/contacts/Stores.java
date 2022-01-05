@@ -16,6 +16,7 @@ import co.airy.uuid.UUIDv5;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
@@ -209,5 +210,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         if (streams != null) {
             streams.close();
         }
+    }
+
+    // visible for testing
+    KafkaStreams.State getStreamState() {
+        return streams.state();
     }
 }

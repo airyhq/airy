@@ -66,7 +66,7 @@ public class ContactsController implements HealthIndicator {
 
     @PostMapping("/contacts.import")
     public ResponseEntity<?> importContacts(@RequestBody @Valid List<CreateContactPayload> payload) {
-        List<Metadata> contactsMetadata new ArrayList<Metadata>();
+        List<Metadata> contactsMetadata = new ArrayList<Metadata>();
         payload.stream().forEach((p) -> {
             final Contact newContact = Contact.builder()
                     .id(UUID.randomUUID().toString())

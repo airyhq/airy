@@ -1,5 +1,6 @@
 package co.airy.core.contacts;
 
+import co.airy.avro.communication.Metadata;
 import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.validation.Valid;
 
 import static java.util.stream.Collectors.toList;
 
@@ -63,8 +65,33 @@ public class ContactsController implements HealthIndicator {
     }
 
     @PostMapping("/contacts.import")
-    public ResponseEntity<?> importContacts() {
-        // TODO import an array of contacts
+    public ResponseEntity<?> importContacts(@RequestBody @Valid List<CreateContactPayload> payload) {
+        List<Metadata> contactsMetadata new ArrayList<Metadata>();
+        payload.stream().forEach((p) -> {
+            final Contact newContact = Contact.builder()
+                    .id(UUID.randomUUID().toString())
+                    .createdAt(Instant.now().toEpochMilli())
+                    .metadata(p.getMetadata())
+                    .address(p.getAddress())
+                    .conversations(p.getConversations())
+                    .displayName(p.getDisplayName())
+                    .avatarUrl(p.getAvatarUrl())
+                    .gender(p.getGender())
+                    .locale(p.getLocale())
+                    .organizationName(p.getOrganizationName())
+                    .timezone(p.getTimezone())
+                    .title(p.getTitle())
+                    .via(p.getVia())
+                    .build();
+            contactsMetadata.addAll(newContact.toMetadata());
+        });
+
+        try {
+            stores.storeContact(contactsMetadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

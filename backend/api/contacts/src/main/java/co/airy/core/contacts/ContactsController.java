@@ -67,6 +67,8 @@ public class ContactsController implements HealthIndicator {
     @PostMapping("/contacts.import")
     public ResponseEntity<?> importContacts(@RequestBody @Valid List<CreateContactPayload> payload) {
         List<Metadata> contactsMetadata = new ArrayList<Metadata>();
+        List<ContactResponsePayload> createdContacts = new ArrayList<ContactResponsePayload>();
+
         payload.stream().forEach((p) -> {
             final Contact newContact = Contact.builder()
                     .id(UUID.randomUUID().toString())
@@ -84,6 +86,7 @@ public class ContactsController implements HealthIndicator {
                     .via(p.getVia())
                     .build();
             contactsMetadata.addAll(newContact.toMetadata());
+            createdContacts.add(ContactResponsePayload.fromContact(newContact));
         });
 
         try {
@@ -92,7 +95,7 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdContacts);
     }
 
     @PostMapping("/contacts.list")

@@ -10,7 +10,8 @@ locals {
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "3.11.0"
 
   create_vpc = local.create_vpc
 
@@ -28,9 +29,7 @@ module "vpc" {
 
   single_nat_gateway = true
 
-  tags = {
-    Terraform = "true"
-  }
+  tags = merge(var.tags, {Terraform = "true"})
 }
 
 locals {
@@ -50,8 +49,8 @@ locals {
 }
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-
+  source  = "terraform-aws-modules/eks/aws"
+  version = "17.24.0"
 
   cluster_version        = var.cluster_version
   cluster_name           = var.core_id
@@ -61,6 +60,7 @@ module "eks" {
   kubeconfig_output_path = var.kubeconfig_output_path
   write_kubeconfig       = true
   map_users              = var.kubernetes_users
+  tags                   = var.tags
 
   node_groups = {
     default = {
@@ -106,6 +106,7 @@ resource "aws_eks_fargate_profile" "namespaces" {
   fargate_profile_name   = "stateless-${var.fargate_profiles[count.index]}"
   pod_execution_role_arn = module.eks.fargate_iam_role_arn
   subnet_ids             = module.vpc.private_subnets
+  tags                   = var.tags
 
   selector {
       namespace = var.fargate_profiles[count.index]

@@ -73,6 +73,11 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     'showOutboundMessageTextColorPicker',
     false
   );
+  const [unreadMessageDotColor, setUnreadMessageDotColor] = useLocalState('unreadMessageDotColor', '');
+  const [showUnreadMessageDotColorPicker, setShowUnreadMessageDotColorPicker] = useLocalState(
+    'showUnreadMessageDotColorPicker',
+    false
+  );
 
   const [height, setHeight] = useLocalState('height', '700');
   const [width, setWidth] = useLocalState('width', '350');
@@ -127,6 +132,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const toggleShowOutboundMessageTextColorPicker = () => {
     setShowOutboundMessageTextColorPicker(!showOutboundMessageTextColorPicker);
   };
+  const toggleShowUnreadMessageDotColorPicker = () => {
+    setShowUnreadMessageDotColorPicker(!showUnreadMessageDotColorPicker);
+  };
 
   const getTemplateConfig = () => {
     const config = [
@@ -144,6 +152,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       inboundMessageTextColor && `inboundMessageTextColor: '${inboundMessageTextColor}'`,
       outboundMessageBackgroundColor && `outboundMessageColor: '${outboundMessageBackgroundColor}'`,
       outboundMessageTextColor && `outboundMessageTextColor: '${outboundMessageTextColor}'`,
+      unreadMessageDotColor && `unreadMessageDotColor: '${unreadMessageDotColor}'`,
       height && `height: '${height}'`,
       width && `width: '${width}'`,
       `closeMode: '${closingOption}'`,
@@ -177,6 +186,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(outboundMessageTextColor && {outboundMessageTextColor}),
       ...(inboundMessageBackgroundColor && {inboundMessageColor: inboundMessageBackgroundColor}),
       ...(inboundMessageTextColor && {inboundMessageTextColor}),
+      ...(unreadMessageDotColor && {unreadMessageDotColor}),
       ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
       ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
       ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
@@ -421,8 +431,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageColorPicker}>
               <SketchPicker
                 color={inboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -462,8 +471,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageTextColorPicker}>
               <SketchPicker
                 color={inboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -503,8 +511,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageColorPicker}>
               <SketchPicker
                 color={outboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -544,8 +551,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}>
               <SketchPicker
                 color={outboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -573,6 +579,46 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
                 setOutboundMessageTextColor(newBackgroundColor.toUpperCase());
               } else {
                 setOutboundMessageTextColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
+        <p>Unread Message Dot Color</p>
+        <div className={styles.colorPicker}>
+          {showUnreadMessageDotColorPicker && (
+            <ListenOutsideClick
+              className={styles.colorPickerWrapper}
+              onOuterClick={toggleShowUnreadMessageDotColorPicker}>
+              <SketchPicker
+                color={unreadMessageDotColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setUnreadMessageDotColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: unreadMessageDotColor}}
+            onClick={toggleShowUnreadMessageDotColorPicker}
+          />
+          <Input
+            type="text"
+            name="backgroundColor"
+            value={unreadMessageDotColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setUnreadMessageDotColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newBackgroundColor = value.startsWith('#') ? value : '#' + value;
+                setUnreadMessageDotColor(newBackgroundColor.toUpperCase());
+              } else {
+                setUnreadMessageDotColor('');
               }
             }}
             placeholder="#FFFFFF"
@@ -745,8 +791,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         style={{
           ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
           ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}
-      >
+        }}>
         <div className={styles.pluginContainer}>
           <AiryChatPlugin config={demoConfig} />
         </div>

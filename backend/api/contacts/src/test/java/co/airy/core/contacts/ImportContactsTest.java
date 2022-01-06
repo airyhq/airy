@@ -1,11 +1,14 @@
 package co.airy.core.contacts;
 
+import co.airy.core.contacts.dto.Contact;
+import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +27,10 @@ import java.util.Arrays;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
@@ -59,7 +65,7 @@ public class ImportContactsTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -70,6 +76,25 @@ public class ImportContactsTest {
                 "/contacts.import",
                 objectMapper.writeValueAsString(payload))
             .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+
+        List<ContactResponsePayload> contactsResp = objectMapper.readValue(
+                content,
+                new TypeReference<List<ContactResponsePayload>>() {});
+        contactsResp.stream().forEach((contactResponse) -> {
+            try {
+                retryOnException(() -> {
+                    final Contact c = stores.getContact(contactResponse.getId());
+                    assertNotNull(c, "Contact with id %s not found".format(contactResponse.getId()));
+
+                    assertThat(contactResponse.getDisplayName(), equalTo(c.getDisplayName()));
+                    assertThat(contactResponse.getAvatarUrl(), equalTo(c.getAvatarUrl()));
+                    assertThat(contactResponse.getTitle(), equalTo(c.getTitle()));
+                    assertThat(contactResponse.getGender(), equalTo(c.getGender()));
+                }, "The cache is not sync yet");
+            } catch (Exception e) {
+                assertThat(String.format("exception after retryOnException %s", e.getMessage()), false);
+            }
+        });
     }
 
     private List<CreateContactPayload> mockContactsListPayload() {

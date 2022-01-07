@@ -607,7 +607,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           )}
           <div
             className={styles.colorPickerSample}
-            style={{backgroundColor: unreadMessageDotColor}}
+            style={{backgroundColor: unreadMessageDotColor || 'red'}}
             onClick={toggleShowUnreadMessageDotColorPicker}
           />
           <Input

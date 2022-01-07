@@ -74,13 +74,16 @@ const Chat = ({config, ...props}: Props) => {
   const [unreadMessage, setUnreadMessage] = useState(false);
 
   const messageLengthRef = useRef(messages.length);
+  const lastMessage = messages[messages.length - 1];
 
   useEffect(() => {
-    if (isChatHidden) {
-      messageLengthRef.current = messages.length;
-    }
+    messages.length > messageLengthRef.current && !lastMessage.fromContact
+      ? setUnreadMessage(true)
+      : setUnreadMessage(false);
 
-    messages.length > messageLengthRef.current ? setUnreadMessage(true) : setUnreadMessage(false);
+    !isChatHidden && messages.length > messageLengthRef.current && setUnreadMessage(false);
+
+    messageLengthRef.current = messages.length;
   }, [isChatHidden, messages]);
 
   useEffect(() => {

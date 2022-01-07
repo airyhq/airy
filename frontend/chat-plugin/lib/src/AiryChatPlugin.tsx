@@ -55,6 +55,9 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
     ...(config.config?.inboundMessageTextColor && {
       '--color-airy-message-text-inbound': config.config?.inboundMessageTextColor,
     }),
+    ...(config.config?.unreadMessageDotColor && {
+      '--color-red-alert': config.config?.unreadMessageDotColor,
+    }),
   };
 
   return (

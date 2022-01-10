@@ -17,23 +17,18 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [windowBrowserHeight, setWindowBrowserHeight] = useState(window.outerHeight);
-  const [windowBrowserWidth, setWindowBrowserWidth] = useState(window.outerWidth);
 
   const handleResize = () => {
     setWindowHeight(window.innerHeight);
     setWindowWidth(window.innerWidth);
-    setWindowBrowserHeight(window.outerHeight);
-    setWindowBrowserWidth(window.outerWidth);
   };
 
   window.addEventListener('resize', handleResize);
 
   const customStyle = {
     background: 'transparent',
-    width: windowBrowserWidth < 420 ? windowBrowserWidth : Math.min(config.config?.width ?? defaultWidth, windowWidth),
-    height:
-      windowBrowserHeight < 850 ? windowBrowserHeight : Math.min(config.config?.height ?? defaultHeight, windowHeight),
+    width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? defaultWidth, windowWidth),
+    height: windowHeight < 700 ? windowHeight : Math.min(config.config?.height ?? defaultHeight, windowHeight),
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
       '--color-airy-message-outbound': config.config?.primaryColor,

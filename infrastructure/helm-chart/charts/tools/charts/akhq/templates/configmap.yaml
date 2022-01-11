@@ -4,14 +4,14 @@
 {{- $kafkaPort := .Values.kafka.port }}
 {{- $schemaRegistryUrl := .Values.kafka.schemaRegistryUrl }}
 {{- $schemaRegistryPort := .Values.kafka.schemaRegistryPort }}
-kind: ConfigMap 
-apiVersion: v1 
+kind: ConfigMap
+apiVersion: v1
 metadata:
   name: akhq-config
   namespace: {{ .Values.namespace }}
-data:  
+data:
   password: {{ $password }}
-  application.yml: | 
+  application.yml: |
     akhq:
       server:
         access-log:
@@ -27,8 +27,8 @@ data:
           properties:
             bootstrap.servers: {{ $bootstrapServers }}.{{ . }}:{{ $kafkaPort }}
           schema-registry:
-            url: {{ $schemaRegistryUrl }}.{{ . }}:{{ $schemaRegistryPort }}
-      {{- end }}    
+            url: http://{{ $schemaRegistryUrl }}.{{ . }}:{{ $schemaRegistryPort }}
+      {{- end }}
       pagination:
         page-size: 25
         threads: 16

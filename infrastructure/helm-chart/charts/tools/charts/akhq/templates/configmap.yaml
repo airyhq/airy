@@ -1,9 +1,14 @@
 {{- if .Values.enabled }}
 {{- $password := (randAlphaNum 10 | lower) }}
+{{- $bootstrapServers := .Values.kafka.bootstrapServers }}
+{{- $kafkaPort := .Values.kafka.port }}
+{{- $schemaRegistryUrl := .Values.kafka.schemaRegistryUrl }}
+{{- $schemaRegistryPort := .Values.kafka.schemaRegistryPort }}
 kind: ConfigMap 
 apiVersion: v1 
 metadata:
   name: akhq-config
+  namespace: {{ .Values.namespace }}
 data:  
   password: {{ $password }}
   application.yml: | 
@@ -17,11 +22,13 @@ data:
           properties:
             isolation.level: read_committed
       connections:
-        core:
+      {{- range .Values.kafka.namespaces }}
+        {{ . }}:
           properties:
-            bootstrap.servers: ${KAFKA_BROKERS}
+            bootstrap.servers: {{ $bootstrapServers }}.{{ . }}:{{ $kafkaPort }}
           schema-registry:
-            url: ${KAFKA_SCHEMA_REGISTRY_URL}
+            url: {{ $schemaRegistryUrl }}.{{ . }}:{{ $schemaRegistryPort }}
+      {{- end }}    
       pagination:
         page-size: 25
         threads: 16

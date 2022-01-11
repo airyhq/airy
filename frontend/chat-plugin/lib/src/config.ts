@@ -19,6 +19,7 @@ export type Config = {
   inboundMessageColor?: string;
   outboundMessageTextColor?: string;
   inboundMessageTextColor?: string;
+  unreadMessageDotColor?: string;
   sendMessageIcon?: string;
   showMode?: boolean;
   height?: number;

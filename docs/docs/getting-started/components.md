@@ -49,8 +49,8 @@ Airy Core contains the following core components:
 <ButtonBox
     icon={<FishingPoleSVG />}
     iconInvertible={true}
-    title='Webhook integration to connect custom apps'
-    description="A webhook integration server that allows its users to programmatically participate in conversations by sending messages (the webhook integration exposes events users can listen to and react programmatically.)"
+    title='Outbound webhook integration to connect custom apps'
+    description="A destination webhook integration server that allows its users to programmatically participate in conversations by sending messages (the webhook integration exposes events users can listen to and react programmatically.)"
     link='/api/webhook'
 />
 <ButtonBox

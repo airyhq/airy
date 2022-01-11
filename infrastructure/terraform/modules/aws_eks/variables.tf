@@ -78,3 +78,8 @@ variable "kubernetes_users" {
   }))
   default = []
 }
+
+variable "tags" {
+  description = "Tags for all resources"
+  default     = {}
+}

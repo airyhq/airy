@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-communication
+  name: api-websocket
   labels:
-    app: api-communication
+    app: api-websocket
     type: api
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-communication
+      app: api-websocket
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,12 +21,12 @@ spec:
   template:
     metadata:
       labels:
-        app: api-communication
+        app: api-websocket
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.communication.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
@@ -58,7 +58,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.communication.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 }}
       initContainers:
       - name: wait
         image: "{{ .Values.global.busyboxImage }}"

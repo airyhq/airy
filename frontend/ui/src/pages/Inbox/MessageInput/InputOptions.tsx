@@ -155,7 +155,8 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaResolverComponentsConfig.enabled &&
+      {mediaResolverComponentsConfig &&
+        mediaResolverComponentsConfig.enabled &&
         (source === 'facebook' ||
           source === 'instagram' ||
           source === 'google' ||

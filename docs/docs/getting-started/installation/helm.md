@@ -32,8 +32,8 @@ values={[
 {label: 'Google', value: 'google'},
 {label: 'Azure', value: 'azure'},
 {label: 'DigitalOcean', value: 'digitalocean'},
-{label: 'AWS', value: 'aws'},
 {label: 'Minikube', value: 'minikube'},
+{label: 'AWS', value: 'aws'},
 ]
 }>
 

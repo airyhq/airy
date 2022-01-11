@@ -1,9 +1,5 @@
 component: api-communication
 mandatory: false
 enabled: true
-communication:
-  image: api/communication
-  resources: {}
-websocket:
-  image: api/websocket
-  resources: {}
+image: api/communication
+resources: {}

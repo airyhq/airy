@@ -33,6 +33,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /contacts
+            pathType: Prefix
+            backend:
+              service:
+                name: api-contacts
+                port:
+                  number: 80
           - path: /messages
             pathType: Prefix
             backend:

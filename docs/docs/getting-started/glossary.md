@@ -39,6 +39,14 @@ A contact represents the [source](#source) participant. A
 [conversation](#conversation) exists _only_ if it has _at least one_
 [message](#message) from a contact.
 
+:::note
+
+Not the same as [users](#user). Contacts are source participants whereas users are the actual users interacting with
+the airy platform.
+
+:::
+
+
 ## Conversation
 
 A conversation is the logical aggregation of [messages](#message) (at least one)
@@ -118,7 +126,8 @@ for the Twilio SMS and WhatsApp sources.
 
 ## User
 
-A user represents one authorized agent in Airy Core.
+A user represents one authorized agent in Airy Core, which is different from a Contact
+
 
 ## Template
 

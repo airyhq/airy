@@ -53,16 +53,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
-        - name: BEANSTALK_HOSTNAME
-          valueFrom:
-            configMapKeyRef:
-              name: beanstalk-config
-              key: BEANSTALK_HOSTNAME
-        - name: BEANSTALK_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: beanstalk-config
-              key: BEANSTALK_PORT
         livenessProbe:
           httpGet:
             path: /actuator/health

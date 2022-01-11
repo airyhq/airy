@@ -1,10 +1,6 @@
 package co.airy.core.api.admin;
 
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationTags;
-import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
-import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
+import co.airy.core.api.admin.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -36,11 +32,6 @@ public class TagsControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
-    private static final ApplicationCommunicationTemplates applicationCommunicationTemplates = new ApplicationCommunicationTemplates();
     private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
@@ -51,12 +42,7 @@ public class TagsControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels,
-                applicationCommunicationWebhooks,
-                applicationCommunicationMetadata,
-                applicationCommunicationTags,
-                applicationCommunicationTemplates
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics()
         );
         kafkaTestHelper.beforeAll();
     }

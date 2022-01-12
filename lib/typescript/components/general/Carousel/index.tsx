@@ -12,7 +12,6 @@ export const Carousel = ({children}) => {
   let currentElementIndex = 0;
 
   const getScrollBy = () => {
-    console.log(currentElementIndex);
     const currentElementWidth = getElementWidth(carouselChildren.current.children[currentElementIndex] as HTMLElement);
     return currentElementWidth;
   };

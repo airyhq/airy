@@ -58,6 +58,7 @@ module.exports = {
             'api/endpoints/metadata',
             'api/endpoints/tags',
             'api/endpoints/templates',
+            'api/endpoints/users',
           ],
         },
         'api/websocket',

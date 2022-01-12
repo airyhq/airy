@@ -112,7 +112,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                             .setId(user.getId())
                             .setName(Optional.ofNullable(user.getName()).orElse(log.getUserName()))
                             .setAvatarUrl(Optional.ofNullable(user.getAvatarUrl()).orElse(log.getUserAvatar()))
-                            .setFirstSeenAt(logWithTimestamp.getTimestamp())
+                            .setFirstSeenAt(user.getFirstSeenAt())
                             .setLastSeenAt(logWithTimestamp.getTimestamp())
                             .build();
                 })

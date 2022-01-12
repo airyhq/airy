@@ -89,7 +89,7 @@ spec:
                 name: api-admin
                 port:
                   number: 80
-          - path: /users.getProfile
+          - path: /users
             pathType: Prefix
             backend:
               service:

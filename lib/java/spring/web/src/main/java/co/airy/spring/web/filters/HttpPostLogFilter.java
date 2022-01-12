@@ -97,7 +97,7 @@ public class HttpPostLogFilter extends OncePerRequestFilter {
     }
 
     private boolean shouldLog(HttpServletRequest request) {
-        return !"POST".equalsIgnoreCase(request.getMethod())
+        return "POST".equalsIgnoreCase(request.getMethod())
                 && !isPathIgnored(request);
     }
 

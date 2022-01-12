@@ -4,10 +4,10 @@ import co.airy.kafka.schema.ApplicationCommunication;
 
 import java.util.Map;
 
-public class ApplicationCommunicationWebhooks extends ApplicationCommunication {
+public class ApplicationCommunicationUsers extends ApplicationCommunication {
     @Override
     public String dataset() {
-        return "webhooks-v0.29.0";
+        return "users";
     }
 
     @Override

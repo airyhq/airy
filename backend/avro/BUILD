@@ -40,9 +40,8 @@ avro_java_library(
     srcs = ["template.avsc"],
 )
 
-avro_java_library(
-    name = "http-log",
-    srcs = ["http-log.avsc"],
-)
+avro_java_library(name = "http-log")
+
+avro_java_library(name = "user")
 
 check_pkg(name = "buildifier")

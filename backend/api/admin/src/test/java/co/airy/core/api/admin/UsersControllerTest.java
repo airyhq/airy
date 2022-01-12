@@ -98,7 +98,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void canListWebhooks() throws Exception {
+    public void canListUsers() throws Exception {
         retryOnException(() -> webTestHelper.post("/users.list")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(2)))

@@ -99,53 +99,29 @@ public class ImportContactsTest {
 
     private List<CreateContactPayload> mockContactsListPayload() {
         return Arrays.asList(
-                new CreateContactPayload(
-                    "some name 1",
-                    "avatar-url-1",
-                    "a-title-1",
-                    "M",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null),
-                new CreateContactPayload(
-                    "some name 2",
-                    "avatar-url-2",
-                    "a-title-2",
-                    "F",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null),
-                new CreateContactPayload(
-                    "some name 3",
-                    "avatar-url-3",
-                    "a-title-3",
-                    "D",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null),
-                new CreateContactPayload(
-                    "some name 4",
-                    "avatar-url-4",
-                    "a-title-4",
-                    "N",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null));
+                CreateContactPayload.builder()
+                    .displayName("some name 1")
+                    .avatarUrl("avatar-url-1")
+                    .title("a-title-1")
+                    .gender("M")
+                    .build(),
+                CreateContactPayload.builder()
+                    .displayName("some name 2")
+                    .avatarUrl("avatar-url-2")
+                    .title("a-title-2")
+                    .gender("F")
+                    .build(),
+                CreateContactPayload.builder()
+                    .displayName("some name 3")
+                    .avatarUrl("avatar-url-3")
+                    .title("a-title-3")
+                    .gender("D")
+                    .build(),
+                CreateContactPayload.builder()
+                    .displayName("some name 4")
+                    .avatarUrl("avatar-url-4")
+                    .title("a-title-4")
+                    .gender("N")
+                    .build());
     }
 }

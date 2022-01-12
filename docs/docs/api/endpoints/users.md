@@ -9,8 +9,8 @@ Different from contacts. See [glossary](getting-started/glossary.md#Contact).
 
 :::
 
-Users are not directly managed by Airy. Instead, users are managed by an [authentication](getting-started/installation/security.md) 
-provider and whenever a user interacts with Airy their profile is presented in this API.  
+Users are not directly managed by Airy. Instead, users are managed by an [authentication](getting-started/installation/security.md)
+provider and whenever a user interacts with Airy their profile is presented in this API.
 
 ## List
 

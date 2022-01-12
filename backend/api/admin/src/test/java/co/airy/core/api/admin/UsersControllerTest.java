@@ -56,7 +56,7 @@ public class UsersControllerTest {
     @MockBean
     private ServiceDiscovery serviceDiscovery;
 
-    private final static List<User> users = List.of(
+    private static final List<User> users = List.of(
             User.newBuilder()
                     .setId("user-id-1")
                     .setName("user-name-1")

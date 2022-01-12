@@ -46,7 +46,6 @@ the airy platform.
 
 :::
 
-
 ## Conversation
 
 A conversation is the logical aggregation of [messages](#message) (at least one)
@@ -127,7 +126,6 @@ for the Twilio SMS and WhatsApp sources.
 ## User
 
 A user represents one authorized agent in Airy Core, which is different from a Contact
-
 
 ## Template
 

@@ -94,6 +94,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, HttpLog>stream(opsApplicationLogs)
                 .filter((logId, log) -> log.getUserId() != null)
                 .selectKey((logId, log) -> log.getUserId())
+                // Extract the Kafka record timestamp header
                 .transform(timestampExtractor())
                 .leftJoin(usersTable, (logWithTimestamp, user) -> {
                     final HttpLog log = logWithTimestamp.getLog();

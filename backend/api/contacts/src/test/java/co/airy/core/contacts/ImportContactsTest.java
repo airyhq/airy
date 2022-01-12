@@ -26,10 +26,8 @@ import java.util.List;
 import java.util.Arrays;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -84,7 +82,7 @@ public class ImportContactsTest {
             try {
                 retryOnException(() -> {
                     final Contact c = stores.getContact(contactResponse.getId());
-                    assertNotNull(c, "Contact with id %s not found".format(contactResponse.getId()));
+                    assertNotNull(c, String.format("Contact with id %s not found", contactResponse.getId()));
 
                     assertThat(contactResponse.getDisplayName(), equalTo(c.getDisplayName()));
                     assertThat(contactResponse.getAvatarUrl(), equalTo(c.getAvatarUrl()));

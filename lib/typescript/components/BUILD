@@ -15,6 +15,7 @@ ts_web_library(
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
         "@npm//react-router-dom",
+        "@npm//lodash-es",
     ],
 )
 

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as LeftArrow} from 'assets/images/icons/leftArrow.svg';
 import {ReactComponent as RightArrow} from 'assets/images/icons/rightArrow.svg';

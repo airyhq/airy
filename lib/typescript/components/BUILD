@@ -9,13 +9,13 @@ ts_web_library(
     deps = [
         "//lib/typescript/model",
         "//lib/typescript/types",
+        "@npm//lodash-es",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
-        "@npm//react-router-dom",
-        "@npm//lodash-es",
+        "@npm//react-router-dom",        
     ],
 )
 

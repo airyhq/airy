@@ -148,6 +148,32 @@ public class Contact implements Serializable {
         }
     }
 
+    public List<Metadata> deleteAllMetadata() {
+        List<Metadata> metadata = new ArrayList<>();
+
+        // Using kafka tombstones to delete all contact's metadata
+        metadata.add(newContactMetadata(id, CREATED_AT, null));
+        metadata.add(newContactMetadata(id, DISPLAY_NAME, null));
+        metadata.add(newContactMetadata(id, AVATAR_URL, null));
+        metadata.add(newContactMetadata(id, TITLE, null));
+        metadata.add(newContactMetadata(id, GENDER, null));
+        metadata.add(newContactMetadata(id, TIMEZONE, null));
+        metadata.add(newContactMetadata(id, LOCALE, null));
+        metadata.add(newContactMetadata(id, ORGANIZATION_NAME, null));
+        metadata.add(newContactMetadata(id, VIA, null));
+        metadata.add(newContactMetadata(id, CONVERSATIONS, null));
+
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ORGANIZATION_NAME, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE1, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE2, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.POSTAL_CODE, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.CITY, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.STATE, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.COUNTRY, null));
+
+        return metadata;
+    }
+
 
     @JsonIgnore
     public List<Metadata> toMetadata() {

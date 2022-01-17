@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
@@ -149,29 +150,13 @@ public class Contact implements Serializable {
     }
 
     public List<Metadata> deleteAllMetadata() {
-        List<Metadata> metadata = new ArrayList<>();
-
         // Using kafka tombstones to delete all contact's metadata
-        metadata.add(newContactMetadata(id, CREATED_AT, ""));
-        metadata.add(newContactMetadata(id, DISPLAY_NAME, ""));
-        metadata.add(newContactMetadata(id, AVATAR_URL, ""));
-        metadata.add(newContactMetadata(id, TITLE, ""));
-        metadata.add(newContactMetadata(id, GENDER, ""));
-        metadata.add(newContactMetadata(id, TIMEZONE, ""));
-        metadata.add(newContactMetadata(id, LOCALE, ""));
-        metadata.add(newContactMetadata(id, ORGANIZATION_NAME, ""));
-        metadata.add(newContactMetadata(id, VIA, ""));
-        metadata.add(newContactMetadata(id, CONVERSATIONS, ""));
-
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ORGANIZATION_NAME, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE1, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE2, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.POSTAL_CODE, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.CITY, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.STATE, ""));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.COUNTRY, ""));
-
-        return metadata;
+        return toMetadata().stream()
+            .map((m) -> {
+                m.setValue("");
+                return m;
+            })
+            .collect(Collectors.toList());
     }
 
 

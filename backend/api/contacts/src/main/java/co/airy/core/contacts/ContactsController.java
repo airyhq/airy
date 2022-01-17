@@ -5,6 +5,7 @@ import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
+import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;
 import co.airy.core.contacts.payload.PaginationData;
@@ -184,9 +185,20 @@ public class ContactsController implements HealthIndicator {
     }
 
     @PostMapping("/contacts.delete")
-    public ResponseEntity<?> deleteContact() {
-        // TODO delete contact
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> deleteContact(@RequestBody @Valid DeleteContactPayload payload) {
+        final String id = payload.getId().toString();
+        final Contact contact = stores.getContact(id);
+        if (contact == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
+        }
+
+        try {
+            stores.storeContact(contact.deleteAllMetadata());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @Override

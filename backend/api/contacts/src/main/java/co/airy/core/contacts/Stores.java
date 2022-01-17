@@ -65,7 +65,8 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         final KTable<String, MetadataMap> conversationToContactTable = builder.<String, Metadata>table(applicationCommunicationContacts)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 // Create Contact table
-                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(contactsStore))
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
+                .filter((metadataId, metadataMap) -> metadataMap.size() != 0, Materialized.as(contactsStore))
                 .toStream()
                 // Create map of: conversation id -> contact metadatamap
                 .flatMap((contactId, metadataMap) -> {

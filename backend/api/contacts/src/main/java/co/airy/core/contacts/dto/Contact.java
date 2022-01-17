@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
@@ -146,6 +147,16 @@ public class Contact implements Serializable {
             public static String STATE = "address.state";
             public static String COUNTRY = "address.country";
         }
+    }
+
+    public List<Metadata> deleteAllMetadata() {
+        // Using kafka tombstones to delete all contact's metadata
+        return toMetadata().stream()
+            .map((m) -> {
+                m.setValue("");
+                return m;
+            })
+            .collect(Collectors.toList());
     }
 
 

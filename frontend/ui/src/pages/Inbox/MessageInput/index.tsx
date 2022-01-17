@@ -55,7 +55,7 @@ export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const contentResizedHeight = 100;
+const contentResizedHeight = 120;
 
 const MessageInput = (props: Props) => {
   const {
@@ -128,15 +128,8 @@ const MessageInput = (props: Props) => {
     if (fileToUpload) {
       setLoadingSelector(true);
       setDragAndDropDisabled(true);
-      setInput('');
     }
   }, [fileToUpload]);
-
-  useEffect(() => {
-    if (isElementSelected()) {
-      setInput('');
-    }
-  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
 
   useEffect(() => {
     if (prevConversationId !== conversation.id) {
@@ -218,7 +211,6 @@ const MessageInput = (props: Props) => {
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-    if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
     if (uploadedFileUrl) setUploadedFileUrl(null);
 
@@ -240,22 +232,48 @@ const MessageInput = (props: Props) => {
       setSelectedTemplate(null);
       setBlockSpam(true);
 
-      sendMessages(
-        selectedTemplate || selectedSuggestedReply
-          ? {
-              conversationId: conversation.id,
-              message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-            }
-          : uploadedFileUrl
-          ? {
+      const message = {
+        conversationId: conversation.id,
+        message: {},
+      };
+
+      switch (source) {
+        case Source.facebook:
+        case Source.google:
+        case Source.twilioWhatsApp:
+        case Source.instagram:
+        case Source.chatPlugin:
+          if (selectedTemplate || selectedSuggestedReply) {
+            input
+              ? sendMessages({
+                  conversationId: conversation.id,
+                  message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+                }) && (message.message = outboundMapper.getTextPayload(input))
+              : (message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content);
+          }
+          if (uploadedFileUrl && input.length == 0) {
+            message.message = outboundMapper.getAttachmentPayload(uploadedFileUrl);
+          }
+          if (!uploadedFileUrl && input.length > 0) {
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          if (uploadedFileUrl && input.length > 0) {
+            sendMessages({
               conversationId: conversation.id,
               message: outboundMapper.getAttachmentPayload(uploadedFileUrl),
-            }
-          : {
-              conversationId: conversation.id,
-              message: outboundMapper.getTextPayload(input),
-            }
-      ).then(() => {
+            });
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          break;
+        case Source.twilioSMS:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+        case Source.viber:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+      }
+
+      sendMessages(message).then(() => {
         setInput('');
         setBlockSpam(false);
         removeElementFromInput();
@@ -270,7 +288,7 @@ const MessageInput = (props: Props) => {
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (input.trim().length > 0 && !blockSpam) {
+      if ((input.trim().length > 0 || isElementSelected()) && !blockSpam) {
         sendMessage();
       }
     }
@@ -301,8 +319,6 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (input) setInput('');
-
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
     if (uploadedFileUrl) setUploadedFileUrl(null);
@@ -318,8 +334,6 @@ const MessageInput = (props: Props) => {
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-    if (input) setInput('');
 
     if (selectedTemplate) setSelectedTemplate(null);
 
@@ -386,63 +400,60 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!isElementSelected() && (
-              <>
-                <textarea
-                  className={styles.messageTextArea}
-                  ref={textAreaRef}
-                  rows={1}
-                  name="inputBar"
-                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
-                  autoFocus={channelConnected}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  data-cy={cyMessageTextArea}
-                  disabled={!channelConnected || loadingSelector || fileUploadErrorPopUp ? true : false}
-                />
-                {loadingSelector && (
-                  <div className={styles.selectorLoader}>
-                    <SimpleLoader />
-                    <span>loading file... </span>
-                  </div>
-                )}
-
-                <InputOptions
-                  source={source}
-                  inputDisabled={!channelConnected}
-                  input={input}
-                  setInput={setInput}
-                  selectTemplate={selectTemplate}
-                  focusInput={focusInput}
-                  sendMessages={sendMessages}
-                  selectFile={selectFile}
-                  fileUploadErrorPopUp={fileUploadErrorPopUp}
-                  mediaResolverComponentsConfig={config.components['media-resolver']}
-                  closeFileErrorPopUp={closeFileErrorPopUp}
-                  loadingSelector={loadingSelector}
-                />
-              </>
-            )}
-
-            {isElementSelected() && (
-              <>
-                <InputSelector
-                  message={
-                    selectedTemplate?.message ??
-                    selectedSuggestedReply?.message ??
-                    outboundMapper?.getAttachmentPayload(uploadedFileUrl)
-                  }
-                  source={source}
-                  messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
-                  removeElementFromInput={removeElementFromInput}
-                  contentResizedHeight={contentResizedHeight}
-                />
-              </>
-            )}
+            <div className={styles.contentInput}>
+              {loadingSelector && (
+                <div className={styles.selectorLoader}>
+                  <SimpleLoader />
+                  <span>loading file... </span>
+                </div>
+              )}
+              {isElementSelected() && (
+                <div className={styles.imagesContainer}>
+                  <InputSelector
+                    message={
+                      selectedTemplate?.message ??
+                      selectedSuggestedReply?.message ??
+                      outboundMapper?.getAttachmentPayload(uploadedFileUrl)
+                    }
+                    source={source}
+                    messageType={
+                      selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'
+                    }
+                    removeElementFromInput={removeElementFromInput}
+                    contentResizedHeight={selectTemplate ? 60 : contentResizedHeight}
+                  />
+                </div>
+              )}
+              <textarea
+                className={styles.messageTextArea}
+                ref={textAreaRef}
+                rows={1}
+                name="inputBar"
+                placeholder={channelConnected && 'Enter a message...'}
+                autoFocus={channelConnected}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                data-cy={cyMessageTextArea}
+                disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
+              />
+            </div>
+            <InputOptions
+              source={source}
+              inputDisabled={!channelConnected}
+              input={input}
+              setInput={setInput}
+              selectTemplate={selectTemplate}
+              focusInput={focusInput}
+              sendMessages={sendMessages}
+              selectFile={selectFile}
+              fileUploadErrorPopUp={fileUploadErrorPopUp}
+              mediaResolverComponentsConfig={config.components['media-resolver']}
+              closeFileErrorPopUp={closeFileErrorPopUp}
+              loadingSelector={loadingSelector}
+            />
           </div>
         </div>
-
         <div className={styles.sendDiv}>
           {!channelConnected && (
             <div className={styles.disconnectedChannelToolTip}>

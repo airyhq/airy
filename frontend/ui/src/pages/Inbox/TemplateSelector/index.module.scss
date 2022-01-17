@@ -13,7 +13,7 @@
   right: 72px;
   left: 14px;
   background-color: var(--color-template-highlight);
-  z-index: $popup;
+  z-index: $base;
 }
 
 .topLine {
@@ -28,7 +28,7 @@
 
 .templateList {
   max-height: 500px; // Old Firefox fallback
-  max-height: calc(100vh - 230px);
+  max-height: calc(100vh - 260px);
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;

@@ -18,9 +18,8 @@
 
 .removeButton {
   position: absolute;
-  right: 5px;
-  top: 7px;
-  padding: 8px;
+  right: 4px;
+  top: 8px;
   margin: 0;
   line-height: 0;
   border-radius: 50%;
@@ -30,17 +29,11 @@
   outline: none;
   z-index: 1;
 
-  svg {
-    height: 10px;
-    width: 10px;
-  }
-}
+  &:hover {
+    border-color: var(--color-airy-blue);
 
-.removeButton:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+    svg {
+      fill: var(--color-airy-blue);
+    }
+  }
 }

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Text} from '../../components/Text';
 import styles from './index.module.scss';
 
 type VideoRenderProps = {

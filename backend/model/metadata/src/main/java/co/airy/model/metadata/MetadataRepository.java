@@ -59,20 +59,10 @@ public class MetadataRepository {
                 .build();
     }
 
-    public static Metadata newConversationNote(String conversationId, String text) {
-        String noteId = UUID.randomUUID().toString();
-        return Metadata.newBuilder()
-                .setSubject(new Subject("conversation", conversationId).toString())
-                .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId))
-                .setValue(text)
-                .setTimestamp(Instant.now().toEpochMilli())
-                .build();
-    }
-
     public static Metadata updateConversationNote(String conversationId, String noteId, String text) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation", conversationId).toString())
-                .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId))
+                .setKey(String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"))
                 .setValue(text)
                 .setTimestamp(Instant.now().toEpochMilli())
                 .build();

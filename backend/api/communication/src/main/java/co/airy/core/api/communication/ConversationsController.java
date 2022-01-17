@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import static co.airy.model.metadata.MetadataRepository.*;
 import static java.util.stream.Collectors.toList;
@@ -176,10 +177,21 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        final Metadata metadata = newConversationNote(conversationId, text);
+        String noteId = UUID.randomUUID().toString();
+        final Metadata noteText = newConversationMetadata(
+                conversationId,
+                String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"),
+                text
+        );
+        final Metadata noteTime = newConversationMetadata(
+                conversationId,
+                String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"),
+                String.valueOf(Instant.now().toEpochMilli())
+        );
 
         try {
-            stores.storeMetadata(metadata);
+            stores.storeMetadata(noteText);
+            stores.storeMetadata(noteTime);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
@@ -200,8 +212,9 @@ public class ConversationsController {
 
         try {
             final Subject subject = new Subject("conversation", conversationId);
-            final String metadataKey = String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId);
-            stores.deleteMetadata(subject, metadataKey);
+            stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"));
+            stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"));
+            stores.deleteMetadata(subject, String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

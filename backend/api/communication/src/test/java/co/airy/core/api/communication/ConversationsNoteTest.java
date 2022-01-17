@@ -103,7 +103,7 @@ class ConversationsNoteTest {
                 "Note was not added");
 
         String noteKey = "";
-        Pattern pattern = Pattern.compile("(\"notes\":\\{\"){1}([a-z0-9-]*)(\":\"){1}");
+        Pattern pattern = Pattern.compile("(\"notes\":\\{\"){1}([a-z0-9-]*)(\":\\{\"){1}");
         Matcher matcher = pattern.matcher(content[0]);
         if (matcher.find()) {
             noteKey = matcher.group(2);
@@ -115,7 +115,7 @@ class ConversationsNoteTest {
                         "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(conversationId)))
-                .andExpect(jsonPath(String.format("$.metadata.notes['%s']", finalNoteKey), is(text)));
+                .andExpect(jsonPath(String.format("$.metadata.notes['%s']['text']", finalNoteKey), is(text)));
 
         webTestHelper.post("/conversations.deleteNote",
                         "{\"conversation_id\":\"" + UUID.fromString(conversationId) + "\",\"note_id\":\"" + UUID.fromString(finalNoteKey) + "\"}")
@@ -171,7 +171,7 @@ class ConversationsNoteTest {
                 "Note was not added");
 
         String noteKey = "";
-        Pattern pattern = Pattern.compile("(\"notes\":\\{\"){1}([a-z0-9-]*)(\":\"){1}");
+        Pattern pattern = Pattern.compile("(\"notes\":\\{\"){1}([a-z0-9-]*)(\":\\{\"){1}");
         Matcher matcher = pattern.matcher(content[0]);
         if (matcher.find()) {
             noteKey = matcher.group(2);
@@ -182,7 +182,7 @@ class ConversationsNoteTest {
                         "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(conversationId)))
-                .andExpect(jsonPath(String.format("$.metadata.notes['%s']", finalNoteKey), is(text)));
+                .andExpect(jsonPath(String.format("$.metadata.notes['%s']['text']", finalNoteKey), is(text)));
 
         final String newText = "This is updated text";
 
@@ -196,7 +196,7 @@ class ConversationsNoteTest {
                         .andExpect(status().isOk())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
-                        .andExpect(jsonPath(String.format("$.metadata.notes['%s']", finalNoteKey), is(newText))),
+                        .andExpect(jsonPath(String.format("$.metadata.notes['%s']['text']", finalNoteKey), is(newText))),
                 "Note was not updated");
 
     }

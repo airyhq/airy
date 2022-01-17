@@ -145,6 +145,23 @@
   width: 260px;
 }
 
+.sortText, .sortOption {
+  @include font-s;
+}
+
+.sortText {
+  font-weight: bold;
+}
+
+.sortOption {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.sortSelected {
+  color: var(--color-airy-blue);
+}
+
 .tag {
   max-width: 88%;
 }

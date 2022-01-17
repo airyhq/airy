@@ -17,15 +17,20 @@ const Note = ({note, onClick, removeNote, updateNote}: NoteProps): JSX.Element =
   return (
     <div className={styles.note} onClick={onClick}>
       <div className={`${styles.noteInner} ${onClick ? styles.clickable : ''} ${removeNote ? styles.isRemovable : ''}`}>
-        <span className={`${styles.noteNameExpanded}`}>{note.text}</span>
-        <span className={styles.removeNote} onClick={updateNote}>
-          <EditPencilIcon className={`${styles.editNote}`} title="Edit note" />
-        </span>
-        {removeNote && (
-          <span className={styles.removeNote} onClick={removeNote}>
+        <div>
+          <span className={`${styles.noteNameExpanded}`}>{note.text}</span>
+          {removeNote && (
+            <span className={styles.removeNote} onClick={removeNote}>
             <Close className={styles.closeButton} title="Delete" />
           </span>
-        )}
+          )}
+          <span className={styles.removeNote} onClick={updateNote}>
+            <EditPencilIcon className={`${styles.editNote}`} title="Edit note" />
+          </span>
+        </div>
+        <div>
+          <p className={`${styles.noteDate}`}>{note.timestamp.toLocaleDateString()} {note.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+        </div>
       </div>
     </div>
   );

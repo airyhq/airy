@@ -152,24 +152,24 @@ public class Contact implements Serializable {
         List<Metadata> metadata = new ArrayList<>();
 
         // Using kafka tombstones to delete all contact's metadata
-        metadata.add(newContactMetadata(id, CREATED_AT, null));
-        metadata.add(newContactMetadata(id, DISPLAY_NAME, null));
-        metadata.add(newContactMetadata(id, AVATAR_URL, null));
-        metadata.add(newContactMetadata(id, TITLE, null));
-        metadata.add(newContactMetadata(id, GENDER, null));
-        metadata.add(newContactMetadata(id, TIMEZONE, null));
-        metadata.add(newContactMetadata(id, LOCALE, null));
-        metadata.add(newContactMetadata(id, ORGANIZATION_NAME, null));
-        metadata.add(newContactMetadata(id, VIA, null));
-        metadata.add(newContactMetadata(id, CONVERSATIONS, null));
+        metadata.add(newContactMetadata(id, CREATED_AT, ""));
+        metadata.add(newContactMetadata(id, DISPLAY_NAME, ""));
+        metadata.add(newContactMetadata(id, AVATAR_URL, ""));
+        metadata.add(newContactMetadata(id, TITLE, ""));
+        metadata.add(newContactMetadata(id, GENDER, ""));
+        metadata.add(newContactMetadata(id, TIMEZONE, ""));
+        metadata.add(newContactMetadata(id, LOCALE, ""));
+        metadata.add(newContactMetadata(id, ORGANIZATION_NAME, ""));
+        metadata.add(newContactMetadata(id, VIA, ""));
+        metadata.add(newContactMetadata(id, CONVERSATIONS, ""));
 
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ORGANIZATION_NAME, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE1, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE2, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.POSTAL_CODE, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.CITY, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.STATE, null));
-        metadata.add(newContactMetadata(id, MetadataKeys.Address.COUNTRY, null));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ORGANIZATION_NAME, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE1, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.ADDRESS_LINE2, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.POSTAL_CODE, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.CITY, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.STATE, ""));
+        metadata.add(newContactMetadata(id, MetadataKeys.Address.COUNTRY, ""));
 
         return metadata;
     }

@@ -1,6 +1,5 @@
 package co.airy.core.contacts;
 
-import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;

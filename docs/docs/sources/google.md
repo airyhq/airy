@@ -147,14 +147,20 @@ Whatever is put on the `message` field will be forwarded "as-is" to the source's
     }
   },
   "delivery_state": "pending|failed|delivered",
-  "from_contact": "true|false",
   // See glossary
-  "sent_at": "{string}",
+  "from_contact": "true|false",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "sent_at": "{string}",
   "source": "google",
+  // metadata object of the message
   "metadata": {
     "sentFrom": "iPhone"
+  },
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
   }
-  // metadata object of the message
 }
 ```

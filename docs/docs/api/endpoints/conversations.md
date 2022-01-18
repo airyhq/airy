@@ -136,7 +136,13 @@ Find users whose name ends with "Lovelace":
     "delivery_state": "{String}",
     "from_contact": true,
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-    "sent_at": "{string}"
+    "sent_at": "{string}",
+    // details about the sender
+    "sender": {
+      "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+      "name": "John Doe", // optional
+      "avatar_url": "http://example.org/avatar.png" // optional
+    }
   }
 }
 ```

@@ -286,7 +286,8 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        // By removing the FETCH_STATE from the metadata that will trigger the stream to refetch the metadata for the specific conversation
+        // Removing the FETCH_STATE from the metadata that will trigger the source to refetch
+        // the metadata for the specific conversation (if supported)
         final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FETCH_STATE, "");
 
         try {

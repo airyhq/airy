@@ -1,5 +1,5 @@
 export const deleteNoteDef = {
-  endpoint: 'conversations.deleteNote',
+  endpoint: 'conversations.delete-note',
   mapRequest: ({conversationId, noteId}) => ({
     conversation_id: conversationId,
     note_id: noteId,

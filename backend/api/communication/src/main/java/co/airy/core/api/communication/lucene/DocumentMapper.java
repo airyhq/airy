@@ -42,11 +42,8 @@ public class DocumentMapper {
 
         for (MetadataNode node : conversation.getMetadata()) {
             final String key = String.format("metadata.%s", node.getKey());
-            if (node.getKey().startsWith(MetadataKeys.ConversationKeys.NOTES)) {
-                document.add(new TextField(key, node.getValue(), Field.Store.YES));
-            } else { // Index but don't store metadata
-                document.add(new TextField(key, node.getValue(), Field.Store.NO));
-            }
+            // Index but don't store metadata
+            document.add(new TextField(key, node.getValue(), Field.Store.NO));
         }
 
         return document;

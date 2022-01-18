@@ -1,5 +1,5 @@
 export const addNoteDef = {
-  endpoint: 'conversations.addNote',
+  endpoint: 'conversations.add-note',
   mapRequest: ({conversationId, text}) => ({
     conversation_id: conversationId,
     text: text,

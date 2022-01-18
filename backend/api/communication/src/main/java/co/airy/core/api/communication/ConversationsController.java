@@ -161,14 +161,10 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.addNote")
+    @PostMapping("/conversations.add-note")
     ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationAddNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String text = payload.getText();
-        if (text != null && (text.length() == 0 || text.length() >50000)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new RequestErrorResponsePayload("Text length must be >0 and <50000"));
-        }
 
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
@@ -199,7 +195,7 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.deleteNote")
+    @PostMapping("/conversations.delete-note")
     ResponseEntity<?> conversationDeleteNote(@RequestBody @Valid ConversationDeleteNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String noteId = payload.getNoteId().toString();
@@ -222,22 +218,16 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.updateNote")
+    @PostMapping("/conversations.update-note")
     ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String noteId = payload.getNoteId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
-
         if (conversation == null) {
             return ResponseEntity.notFound().build();
         }
-
         final String text = payload.getText();
-        if (text != null && (text.length() == 0 || text.length() > 50000)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new RequestErrorResponsePayload("Text length must be >0 and <50000"));
-        }
 
         final Metadata metadata = updateConversationNote(conversationId, noteId, text);
 

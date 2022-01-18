@@ -1,5 +1,5 @@
 export const updateNoteDef = {
-  endpoint: 'conversations.updateNote',
+  endpoint: 'conversations.update-note',
   mapRequest: ({conversationId, noteId, text}) => ({
     conversation_id: conversationId,
     note_id: noteId,

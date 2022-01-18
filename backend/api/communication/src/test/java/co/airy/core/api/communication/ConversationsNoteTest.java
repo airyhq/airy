@@ -83,7 +83,7 @@ class ConversationsNoteTest {
 
         final String text = "This is a test note";
 
-        webTestHelper.post("/conversations.addNote",
+        webTestHelper.post("/conversations.add-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\"" + text + "\"}")
                 .andExpect(status().isNoContent());
 
@@ -117,8 +117,8 @@ class ConversationsNoteTest {
                 .andExpect(jsonPath("$.id", is(conversationId)))
                 .andExpect(jsonPath(String.format("$.metadata.notes['%s']['text']", finalNoteKey), is(text)));
 
-        webTestHelper.post("/conversations.deleteNote",
-                        "{\"conversation_id\":\"" + UUID.fromString(conversationId) + "\",\"note_id\":\"" + UUID.fromString(finalNoteKey) + "\"}")
+        webTestHelper.post("/conversations.delete-note",
+                        "{\"conversation_id\":\"" + conversationId + "\",\"note_id\":\"" + finalNoteKey + "\"}")
                 .andExpect(status().isNoContent());
 
         retryOnException(
@@ -153,7 +153,7 @@ class ConversationsNoteTest {
         final String text = "This is a test note";
         final String[] content = {""};
 
-        webTestHelper.post("/conversations.addNote",
+        webTestHelper.post("/conversations.add-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\"" + text + "\"}")
                 .andExpect(status().isNoContent());
 
@@ -186,7 +186,7 @@ class ConversationsNoteTest {
 
         final String newText = "This is updated text";
 
-        webTestHelper.post("/conversations.updateNote",
+        webTestHelper.post("/conversations.update-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\"" + newText + "\",\"note_id\":\"" + noteKey + "\"}")
                 .andExpect(status().isNoContent());
 
@@ -203,13 +203,13 @@ class ConversationsNoteTest {
 
     @Test
     public void canHandleAnEmptyPayload() throws Exception {
-        webTestHelper.post("/conversations.addNote", "{}")
+        webTestHelper.post("/conversations.add-note", "{}")
                 .andExpect(status().isBadRequest());
 
-        webTestHelper.post("/conversations.deleteNote", "{}")
+        webTestHelper.post("/conversations.delete-note", "{}")
                 .andExpect(status().isBadRequest());
 
-        webTestHelper.post("/conversations.updateNote", "{}")
+        webTestHelper.post("/conversations.update-note", "{}")
                 .andExpect(status().isBadRequest());
     }
 
@@ -221,19 +221,19 @@ class ConversationsNoteTest {
             generatedString.append("a");
         }
 
-        webTestHelper.post("/conversations.addNote",
+        webTestHelper.post("/conversations.add-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\"\"}")
                 .andExpect(status().isBadRequest());
 
-        webTestHelper.post("/conversations.updateNote",
+        webTestHelper.post("/conversations.update-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\"\"}")
                 .andExpect(status().isBadRequest());
 
-        webTestHelper.post("/conversations.addNote",
+        webTestHelper.post("/conversations.add-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\""+ generatedString +"\"}")
                 .andExpect(status().isBadRequest());
 
-        webTestHelper.post("/conversations.updateNote",
+        webTestHelper.post("/conversations.update-note",
                         "{\"conversation_id\":\"" + conversationId + "\",\"text\":\""+ generatedString +"\"}")
                 .andExpect(status().isBadRequest());
     }

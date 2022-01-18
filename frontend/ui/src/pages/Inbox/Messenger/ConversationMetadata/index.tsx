@@ -83,7 +83,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [showNotesDialog, setShowNotesDialog] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [noteId, setNoteId] = useState('');
-  const [notesSortNewest, changeNotesSort] = useState(false)
+  const [notesSortNewest, changeNotesSort] = useState(false);
 
   useEffect(() => {
     setShowEditDisplayName(false);
@@ -138,15 +138,15 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     } else {
       return a.timestamp > b.timestamp ? 1 : -1;
     }
-  }
+  };
 
   const conversationNotes = () => {
     return Object.keys(conversation.metadata.notes || {})
       .map(noteId => {
         return {
           id: noteId,
-          text: conversation.metadata.notes[noteId]["text"],
-          timestamp: new Date(parseInt(conversation.metadata.notes[noteId]["timestamp"]))
+          text: conversation.metadata.notes[noteId]['text'],
+          timestamp: new Date(parseInt(conversation.metadata.notes[noteId]['timestamp'])),
         } as NoteModel;
       })
       .filter(note => note !== undefined)
@@ -393,14 +393,24 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             </div>
 
             {showNotesDialog && renderNotesDialog()}
-            
-            {conversationNotes().length > 1 &&  <div>
-              <span className={styles.sortText}>Sort: </span>
-              <span className={`${notesSortNewest ? styles.sortSelected : ''} ${styles.sortOption}`}
-                    onClick={() => changeNotesSort(true)}>Newest first</span>
-              <span className={`${notesSortNewest ? '' : styles.sortSelected} ${styles.sortOption}`}
-                    onClick={() => changeNotesSort(false)}>Oldest first</span>
-            </div>}
+
+            {conversationNotes().length > 1 && (
+              <div>
+                <span className={styles.sortText}>Sort: </span>
+                <span
+                  className={`${notesSortNewest ? styles.sortSelected : ''} ${styles.sortOption}`}
+                  onClick={() => changeNotesSort(true)}
+                >
+                  Newest first
+                </span>
+                <span
+                  className={`${notesSortNewest ? '' : styles.sortSelected} ${styles.sortOption}`}
+                  onClick={() => changeNotesSort(false)}
+                >
+                  Oldest first
+                </span>
+              </div>
+            )}
 
             <div className={styles.noteList}>
               {conversationNotes().map(note => (

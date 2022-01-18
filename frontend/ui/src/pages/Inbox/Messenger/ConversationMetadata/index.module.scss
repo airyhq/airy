@@ -145,7 +145,8 @@
   width: 260px;
 }
 
-.sortText, .sortOption {
+.sortText,
+.sortOption {
   @include font-s;
 }
 

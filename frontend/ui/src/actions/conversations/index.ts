@@ -188,7 +188,10 @@ export const updateConversationNote =
           identifier: conversationId,
           metadata: {
             notes: {
-              [noteId]: text,
+              [noteId]: {
+                text: text,
+                timestamp: new Date().getTime(),
+              },
             },
           },
         })

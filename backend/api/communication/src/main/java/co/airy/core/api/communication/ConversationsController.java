@@ -165,15 +165,31 @@ public class ConversationsController {
     ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationAddNoteRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String text = payload.getText();
-
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String noteId = UUID.randomUUID().toString();
 
+        return saveNote(conversationId, noteId, text);
+    }
+
+    @PostMapping("/conversations.update-note")
+    ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String text = payload.getText();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
         if (conversation == null) {
             return ResponseEntity.notFound().build();
         }
 
-        String noteId = UUID.randomUUID().toString();
+        return saveNote(conversationId, noteId, text);
+    }
+
+    ResponseEntity<?> saveNote(String conversationId, String noteId, String text) {
         final Metadata noteText = newConversationMetadata(
                 conversationId,
                 String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"),
@@ -201,7 +217,6 @@ public class ConversationsController {
         final String noteId = payload.getNoteId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
-
         if (conversation == null) {
             return ResponseEntity.notFound().build();
         }
@@ -211,28 +226,6 @@ public class ConversationsController {
             stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"));
             stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"));
             stores.deleteMetadata(subject, String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
-        }
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/conversations.update-note")
-    ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
-        final String conversationId = payload.getConversationId().toString();
-        final String noteId = payload.getNoteId().toString();
-        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-        final Conversation conversation = store.get(conversationId);
-        if (conversation == null) {
-            return ResponseEntity.notFound().build();
-        }
-        final String text = payload.getText();
-
-        final Metadata metadata = updateConversationNote(conversationId, noteId, text);
-
-        try {
-            stores.storeMetadata(metadata);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

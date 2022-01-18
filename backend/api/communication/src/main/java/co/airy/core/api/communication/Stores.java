@@ -217,13 +217,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public void storeMetadata(Metadata metadata) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(),
-                    // Interpret "" as a deletion
-                    metadata.getValue().equals("") ? null : metadata)).get();
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata)).get();
     }
 
     public void deleteMetadata(Subject subject, String key) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
+    }
+
+    public void deleteMetadata(Metadata metadata) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), null)).get();
     }
 
     public MetadataMap getMetadata(String subjectId) {

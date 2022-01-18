@@ -291,7 +291,7 @@ public class ConversationsController {
         final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FETCH_STATE, "");
 
         try {
-            stores.storeMetadata(metadata);
+            stores.deleteMetadata(metadata);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

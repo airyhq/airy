@@ -276,4 +276,26 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/conversations.refetch")
+    ResponseEntity<?> conversationMetadataRefetch(@RequestBody @Valid ConversationByIdRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // By removing the FETCH_STATE from the metadata that will trigger the stream to refetch the metadata for the specific conversation
+        final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FETCH_STATE, "");
+
+        try {
+            stores.storeMetadata(metadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.accepted().build();
+    }
+
 }

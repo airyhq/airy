@@ -3,6 +3,12 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.38.1
+
+#### 🐛 Bug Fixes
+
+- [[#2736](https://github.com/airyhq/airy/issues/2736)] Hotfix for re-provisioning topics on upgrade
+
 ## 0.38.0
 
 #### Changes

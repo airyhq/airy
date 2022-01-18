@@ -244,12 +244,15 @@ const MessageInput = (props: Props) => {
         case Source.instagram:
         case Source.chatPlugin:
           if (selectedTemplate || selectedSuggestedReply) {
-            input
-              ? sendMessages({
-                  conversationId: conversation.id,
-                  message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-                }) && (message.message = outboundMapper.getTextPayload(input))
-              : (message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content);
+            if (input.length > 0) {
+              sendMessages({
+                conversationId: conversation.id,
+                message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+              }),
+                (message.message = outboundMapper.getTextPayload(input));
+            } else {
+              message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content;
+            }
           }
           if (uploadedFileUrl && input.length == 0) {
             message.message = outboundMapper.getAttachmentPayload(uploadedFileUrl);

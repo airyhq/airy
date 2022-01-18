@@ -30,19 +30,25 @@ are sorted from oldest to latest.
   "data": [
     {
       "id": "{UUID}",
-      "content": {"text": "Hello World"},
       // source message payload
-      "state": "{String}",
+      "content": {"text": "Hello World"},
       // delivery state of message, one of PENDING, FAILED, DELIVERED
+      "state": "{String}",
       "from_contact": true,
-      "sent_at": "{string}",
       // ISO 8601 date string
-      "source": "{String}",
+      "sent_at": "{string}",
       // one of the possible sources
+      "source": "{String}",
+      // metadata object of the message
       "metadata": {
         "sentFrom": "iPhone"
+      },
+      // details about the sender
+      "sender": {
+        "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+        "name": "John Doe", // optional
+        "avatar_url": "http://example.org/avatar.png" // optional
       }
-      // metadata object of the message
     }
   ],
   "pagination_data": {
@@ -80,16 +86,22 @@ to see learn how to send text, media, and many more message types.
   "id": "{UUID}",
   "content": "{\"text\":\"Hello\"}",
   "state": "pending|failed|delivered",
-  "from_contact": true,
   // See glossary
-  "sent_at": "{string}",
+  "from_contact": true,
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "source": "{String}",
+  "sent_at": "{string}",
   // one of the possible sources
+  "source": "{String}",
+  // metadata object of the message
   "metadata": {
     "sentFrom": "iPhone"
+  },
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
   }
-  // metadata object of the message
 }
 ```
 
@@ -120,7 +132,13 @@ allow you to send messages to contacts that did not previously message you first
   "from_contact": true,
   "sent_at": "{string}",
   "source": "{String}",
-  "metadata": {}
+  "metadata": {},
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
+  }
 }
 ```
 

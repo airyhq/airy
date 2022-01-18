@@ -3,6 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.User;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMetadata;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationUsers;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
@@ -73,20 +75,31 @@ class ConversationsInfoTest {
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
+        final String userId = "sender-user-id";
+        final String userName = "Barbara Liskov";
+        final User user = User.newBuilder()
+                .setId(userId)
+                .setName(userName)
+                .setFirstSeenAt(0)
+                .setLastSeenAt(0)
+                .build();
 
         final Metadata metadata = newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, channelName);
         kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationUsers.name(), user.getId(), user),
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), getId(metadata).toString(), metadata),
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel)
         ));
         final String conversationId = UUID.randomUUID().toString();
-        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1, userId));
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}")
+                                "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
+                        .andExpect(jsonPath("$.last_message.sender.id", is(userId)))
+                        .andExpect(jsonPath("$.last_message.sender.name", is(userName)))
                         .andExpect(jsonPath("$.channel.metadata.name", is(channelName))),
                 "Cannot find conversation"
         );

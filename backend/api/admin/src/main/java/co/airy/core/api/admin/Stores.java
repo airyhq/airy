@@ -73,7 +73,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // metadata table keyed by subject id
+        // Metadata table keyed by subject id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);

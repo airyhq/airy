@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
+import co.airy.avro.communication.User;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
 import co.airy.core.api.communication.lucene.ExtendedQueryParser;
@@ -14,16 +15,19 @@ import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
+import co.airy.log.AiryLoggerFactory;
 import co.airy.model.conversation.Conversation;
+import co.airy.model.message.dto.MessageContainer;
+import co.airy.model.message.dto.Sender;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
-import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -99,7 +102,7 @@ public class ConversationsController {
                 .map((conversationIndex -> conversationsStore.get(conversationIndex.getId())))
                 .collect(toList());
 
-        final List<Conversation> enrichedConversations = stores.addChannelMetadata(conversations);
+        final List<Conversation> enrichedConversations = stores.enrichConversations(conversations);
 
         String nextCursor = null;
         if (cursor + pageSize < queryResult.getFilteredTotal()) {
@@ -130,18 +133,15 @@ public class ConversationsController {
         final MetadataMap channelMetadata = stores.getMetadata(conversation.getChannelId());
         conversation.getChannelContainer().setMetadataMap(channelMetadata);
 
+        final MessageContainer lastMessageContainer = conversation.getLastMessageContainer();
+        final String senderId = lastMessageContainer.getMessage().getSenderId();
+        final User user = stores.getUser(senderId);
+        lastMessageContainer.setSender(Sender.builder().id(senderId)
+                .name(Optional.ofNullable(user).map(User::getName).orElse(null))
+                .avatarUrl(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
+                .build());
+
         return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
-    }
-
-    private List<Conversation> fetchAllConversations() {
-        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-
-        final KeyValueIterator<String, Conversation> iterator = store.all();
-
-        List<Conversation> conversations = new ArrayList<>();
-        iterator.forEachRemaining(kv -> conversations.add(kv.value));
-
-        return conversations;
     }
 
     @PostMapping({"/conversations.markRead", "/conversations.mark-read"})

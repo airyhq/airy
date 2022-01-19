@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
+import co.airy.avro.communication.User;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
@@ -15,10 +16,12 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
+import co.airy.kafka.schema.application.ApplicationCommunicationUsers;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
+import co.airy.model.message.dto.Sender;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -40,13 +43,13 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
@@ -70,6 +73,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String conversationsStore = "conversations-store";
     private final String channelsStore = "channels-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
+    private final String usersStore = "users-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
@@ -185,6 +189,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .toStream()
                 .process(IndexingProcessor.getSupplier(conversationsLuceneStore), conversationsLuceneStore);
 
+        builder.table(new ApplicationCommunicationUsers().name(), Materialized.as(usersStore));
+
         streams.start(builder.build(), appId);
     }
 
@@ -206,6 +212,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public ReadOnlyKeyValueStore<String, MetadataMap> getMetadataStore() {
         return streams.acquireLocalStore(metadataStore);
+    }
+
+    public ReadOnlyKeyValueStore<String, User> getUsersStore() {
+        return streams.acquireLocalStore(usersStore);
     }
 
     public ReadOnlyLuceneStore getConversationLuceneStore() {
@@ -234,22 +244,42 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return store.get(messageId);
     }
 
-    public List<Conversation> addChannelMetadata(List<Conversation> conversations) {
-        final ReadOnlyKeyValueStore<String, MetadataMap> store = getMetadataStore();
+    // There are likely much more conversations than users or channels, therefore we
+    // look them up once per conversation and cache the responses
+    public List<Conversation> enrichConversations(List<Conversation> conversations) {
+        final ReadOnlyKeyValueStore<String, MetadataMap> metadataStore = getMetadataStore();
+        final ReadOnlyKeyValueStore<String, User> usersStore = getUsersStore();
         Map<String, MetadataMap> metadataCache = new HashMap<>();
+        Map<String, User> userCache = new HashMap<>();
 
         for (Conversation conversation : conversations) {
+            // Add channel metadata to the conversation
             final ChannelContainer container = conversation.getChannelContainer();
             final String channelId = container.getChannel().getId();
-            if (metadataCache.containsKey(channelId)) {
-                container.setMetadataMap(metadataCache.get(channelId));
-            } else {
-                final MetadataMap metadataMap = store.get(channelId);
+            MetadataMap metadataMap = metadataCache.get(channelId);
+            if (metadataMap == null) {
+                metadataMap = metadataStore.get(channelId);
                 if (metadataMap != null) {
                     metadataCache.put(channelId, metadataMap);
-                    container.setMetadataMap(metadataMap);
                 }
             }
+            container.setMetadataMap(metadataMap);
+
+            // Add sender user information to the conversation's last message
+            final MessageContainer lastMessageContainer = conversation.getLastMessageContainer();
+            final String senderId = lastMessageContainer.getMessage().getSenderId();
+
+            User user = userCache.get(senderId);
+            if (user == null) {
+                user = usersStore.get(senderId);
+                if (user != null) {
+                    userCache.put(senderId, user);
+                }
+            }
+            lastMessageContainer.setSender(Sender.builder().id(senderId)
+                    .name(Optional.ofNullable(user).map(User::getName).orElse(null))
+                    .name(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
+                    .build());
         }
 
         return conversations;
@@ -259,7 +289,35 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
         final Messages messagesTreeSet = store.get(conversationId);
 
-        return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);
+        if (messagesTreeSet == null) {
+            return null;
+        }
+        // Enrich messages with user information
+        List<String> senderIds = messagesTreeSet.stream().map((container) -> container.getMessage().getSenderId()).collect(Collectors.toList());
+        Map<String, User> users = collectUsers(senderIds);
+        return messagesTreeSet.stream().peek((container) -> {
+            final User user = users.get(container.getMessage().getSenderId());
+
+            container.setSender(Sender.builder().id(container.getMessage().getSenderId())
+                    .name(Optional.ofNullable(user).map(User::getName).orElse(null))
+                    .name(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
+                    .build());
+        }).collect(Collectors.toList());
+    }
+
+    private Map<String, User> collectUsers(List<String> userIds) {
+        final Map<String, User> users = new HashMap<>();
+
+        for (String userId : userIds) {
+            if (!users.containsKey(userId)) {
+                users.put(userId, getUser(userId));
+            }
+        }
+        return users;
+    }
+
+    public User getUser(String userId) {
+        return getUsersStore().get(userId);
     }
 
     @Override
@@ -282,6 +340,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         getMessagesStore();
         getMessagesByIdStore();
         getMetadataStore();
+        getUsersStore();
 
         return Health.status(Status.UP).build();
     }

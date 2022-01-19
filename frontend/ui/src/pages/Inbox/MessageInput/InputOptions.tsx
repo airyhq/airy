@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Picker} from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
@@ -48,7 +48,9 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
+  const [inputValue, setInputValue] = useState();
 
   useEffect(() => {
     const inputAcceptValue = getInputAcceptedFilesForSource(source);
@@ -57,8 +59,9 @@ export const InputOptions = (props: Props) => {
   }, [source]);
 
   const toggleEmojiDrawer = () => {
-    if (isShowingTemplateModal) {
+    if (isShowingTemplateModal || isShowingFileSelector) {
       setIsShowingTemplateModal(false);
+      setIsShowingFileSelector(false);
     }
     if (isShowingEmojiDrawer) {
       focusInput();
@@ -94,10 +97,19 @@ export const InputOptions = (props: Props) => {
   }, [isShowingEmojiDrawer]);
 
   const toggleTemplateModal = () => {
-    if (isShowingEmojiDrawer) {
+    if (isShowingEmojiDrawer || isShowingFileSelector) {
       setIsShowingEmojiDrawer(false);
+      setIsShowingFileSelector(false);
     }
     setIsShowingTemplateModal(!isShowingTemplateModal);
+  };
+
+  const toggleFileSelector = () => {
+    if (isShowingEmojiDrawer || isShowingTemplateModal) {
+      setIsShowingEmojiDrawer(false);
+      setIsShowingFileSelector(false);
+    }
+    setIsShowingFileSelector(!isShowingFileSelector);
   };
 
   const addEmoji = emoji => {
@@ -133,8 +145,7 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleEmojiDrawer}
-      >
+        onClick={toggleEmojiDrawer}>
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
       </button>
@@ -142,8 +153,7 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleTemplateModal}
-      >
+        onClick={toggleTemplateModal}>
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
@@ -157,16 +167,15 @@ export const InputOptions = (props: Props) => {
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
             type="button"
             disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-          >
+            onClick={toggleFileSelector}>
             <div className={styles.actionToolTip}>Files</div>
 
             <label
               htmlFor="file"
-              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
-            >
+              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}>
               <Paperclip aria-hidden className={styles.paperclipIcon} />
             </label>
 
@@ -175,6 +184,7 @@ export const InputOptions = (props: Props) => {
               id="file"
               name="file"
               onChange={selectFile}
+              value={inputValue}
               className={styles.fileInput}
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
               accept={inputAcceptedFiles}

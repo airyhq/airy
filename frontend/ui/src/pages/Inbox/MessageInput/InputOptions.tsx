@@ -16,11 +16,6 @@ const mapDispatchToProps = {sendMessages};
 
 const connector = connect(null, mapDispatchToProps);
 
-interface MediaResolverComponentConfig {
-  enabled: boolean;
-  healthy: boolean;
-}
-
 type Props = {
   source: Source;
   inputDisabled: boolean;
@@ -31,7 +26,7 @@ type Props = {
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
-  mediaResolverComponentsConfig: MediaResolverComponentConfig;
+  canSendMedia: boolean;
   loadingSelector: boolean;
 } & ConnectedProps<typeof connector>;
 
@@ -45,7 +40,7 @@ export const InputOptions = (props: Props) => {
     focusInput,
     selectFile,
     fileUploadErrorPopUp,
-    mediaResolverComponentsConfig,
+    canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
   } = props;
@@ -138,8 +133,7 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleEmojiDrawer}
-      >
+        onClick={toggleEmojiDrawer}>
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
       </button>
@@ -147,16 +141,14 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleTemplateModal}
-      >
+        onClick={toggleTemplateModal}>
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
         </div>
       </button>
 
-      {mediaResolverComponentsConfig &&
-        mediaResolverComponentsConfig.enabled &&
+      {canSendMedia &&
         (source === 'facebook' ||
           source === 'instagram' ||
           source === 'google' ||
@@ -165,14 +157,12 @@ export const InputOptions = (props: Props) => {
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
             type="button"
-            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-          >
+            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}>
             <div className={styles.actionToolTip}>Files</div>
 
             <label
               htmlFor="file"
-              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
-            >
+              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}>
               <Paperclip aria-hidden className={styles.paperclipIcon} />
             </label>
 

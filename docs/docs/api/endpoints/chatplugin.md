@@ -45,17 +45,21 @@ endpoint](#get-a-resume-token).
   "messages": [
     {
       "id": "{UUID}",
-      "content": {"text": "Hello World"},
       // source message payload
-      "state": "{String}",
+      "content": {"text": "Hello World"},
       // delivery state of message, one of PENDING, FAILED, DELIVERED
+      "state": "{String}",
       "from_contact": true,
-      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "sent_at": "{string}",
+      // metadata object of the message
       "metadata": {
         "sentFrom": "iPhone"
+      },
+      // details about the sender
+      "sender": {
+        "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
       }
-      // metadata object of the message
     }
   ]
 }
@@ -111,17 +115,21 @@ endpoint](#authenticating-web-users) as an `Authorization` header.
 ```json5
 {
   "id": "{UUID}",
-  "content": {"text": "Hello World"},
   // source message payload
-  "state": "{String}",
+  "content": {"text": "Hello World"},
   // delivery state of message, one of PENDING, FAILED, DELIVERED
+  "state": "{String}",
   "from_contact": true,
-  "sent_at": "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "sent_at": "{string}",
+  // metadata object of the message
   "metadata": {
     "sentFrom": "iPhone"
+  },
+  // details about the sender
+  "sender": {
+    "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
   }
-  // metadata object of the message
 }
 ```
 
@@ -143,17 +151,21 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 {
   "message": {
     "id": "{UUID}",
-    "content": {"text": "Hello World"},
     // source message payload
-    "state": "{String}",
+    "content": {"text": "Hello World"},
     // delivery state of message, one of PENDING, FAILED, DELIVERED
+    "state": "{String}",
     "from_contact": true,
-    "sent_at": "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    "sent_at": "{string}",
+    // metadata object of the message
     "metadata": {
       "sentFrom": "iPhone"
+    },
+    // details about the sender
+    "sender": {
+      "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
     }
-    // metadata object of the message
   }
 }
 ```

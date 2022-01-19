@@ -54,11 +54,19 @@ public class TestConversation {
     }
 
     public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount) {
-        return TestConversation.from(conversationId, channel, messageCount).generateRecords(messageCount);
+        return TestConversation.generateRecords(conversationId, channel, messageCount, "airy-core-anonymous");
+    }
+
+    public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount, String senderId) {
+        return TestConversation.from(conversationId, channel, messageCount).generateRecords(messageCount, senderId);
     }
 
     private List<ProducerRecord<String, SpecificRecordBase>> generateRecords(int messageCount) {
-        final List<ProducerRecord<String, SpecificRecordBase>> messages = getMessages(messageCount);
+        return generateRecords(messageCount, "airy-core-anonymous");
+    }
+
+    private List<ProducerRecord<String, SpecificRecordBase>> generateRecords(int messageCount, String senderId) {
+        final List<ProducerRecord<String, SpecificRecordBase>> messages = getMessages(messageCount, senderId);
         this.lastMessageSentAt = ((Message) messages.get(messages.size() - 1).value()).getSentAt();
         List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>(messages);
 
@@ -72,7 +80,7 @@ public class TestConversation {
         return records;
     }
 
-    private List<ProducerRecord<String, SpecificRecordBase>> getMessages(int messageCount) {
+    private List<ProducerRecord<String, SpecificRecordBase>> getMessages(int messageCount, String senderId) {
         List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>();
         Random random = new Random();
         Instant startDate = Instant.now().minus(Duration.ofDays(random.nextInt(365)));
@@ -81,7 +89,7 @@ public class TestConversation {
             records.add(new ProducerRecord<>(applicationCommunicationMessages, messageId, Message.newBuilder()
                     .setId(messageId)
                     .setSentAt(startDate.minus(Duration.ofDays(messageCount - index)).toEpochMilli())
-                    .setSenderId("source-conversation-id")
+                    .setSenderId(senderId)
                     .setDeliveryState(DeliveryState.DELIVERED)
                     .setSource("facebook")
                     .setConversationId(conversationId)

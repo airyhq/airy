@@ -234,6 +234,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
     }
 
+    public void deleteMetadata(Metadata metadata) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), null)).get();
+    }
+
     public MetadataMap getMetadata(String subjectId) {
         final ReadOnlyKeyValueStore<String, MetadataMap> store = getMetadataStore();
         return store.get(subjectId);

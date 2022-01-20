@@ -249,6 +249,7 @@ Refetch all conversation metadata including contact information if supported by 
 `POST /conversations.refetch`
 
 **Sample request**
+
 ```json5
 {
   "conversation_id": "CONVERSATION_ID"

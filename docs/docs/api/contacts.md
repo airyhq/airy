@@ -80,59 +80,62 @@ import ContactResponsePayload from './../sources/applyVariables-note.mdx'
 <ContactResponsePayload />
 
 ### Import contacts
+
 `POST /contacts.import`
 
 Creates contacts in a bulk.
 
 **Sample request**
+
 ```json5
 [
   {
     "display_name": "Barabara Liskov",
     "avatar_url": "https://example.org/avatar.jpg",
-    "title": "Professor",
+    "title": "Professor"
   },
   {
     "display_name": "Eleanor B. Garcia",
     "avatar_url": "https://example.org/avatar.jpg",
-    "title": "Estimator project manager",
+    "title": "Estimator project manager"
   },
   {
     "display_name": "Marie R. Lemelin",
     "avatar_url": "https://example.org/avatar.jpg",
-    "title": "Accountant",
+    "title": "Accountant"
   },
   {
     "display_name": "Lori L. Carter",
     "avatar_url": "https://example.org/avatar.jpg",
-    "title": "Occupational health and safety technician",
-  },
+    "title": "Occupational health and safety technician"
+  }
 ]
 ```
 
 **(201) Success Response Payload**
+
 ```json5
 {
   "data": [
     {
       "display_name": "Barabara Liskov",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Professor",
+      "title": "Professor"
     },
     {
       "display_name": "Eleanor B. Garcia",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Estimator project manager",
+      "title": "Estimator project manager"
     },
     {
       "display_name": "Marie R. Lemelin",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Accountant",
+      "title": "Accountant"
     },
     {
       "display_name": "Lori L. Carter",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Occupational health and safety technician",
+      "title": "Occupational health and safety technician"
     }
   ],
   "pagination_data": {

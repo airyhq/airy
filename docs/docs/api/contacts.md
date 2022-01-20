@@ -138,7 +138,7 @@ Creates contacts in a bulk.
   "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
-    "total": 1
+    "total": 4
   }
 }
 ```
@@ -225,29 +225,6 @@ All fields set on the [creation request](#create-contact) can be updated. To rem
 ```
 
 **Sample response 202 (Accepted)**
-
-### Merge contacts
-
-If you are sure two conversations belong to the same contact you can either:
-
-1. Call this endpoint if there are already contacts for both
-2. Update the either contact if the other does not exist
-3. Create a fresh contact if neither exist.
-
-Calling this endpoint will cause the source contact to be deleted. However, calls to `/contacts.info` and `/contacts.update` will continue to be forwarded to the target contact.
-
-**Sample request**
-
-```json5
-{
-  "source_contact": "6b80b10c-ae6e-4995-844d-c56c4da11623", // merge contact with this id
-  "target_contact": "c564cea4-a96f-4ebb-a220-3fb81b6ad522" // into contact with this id
-}
-```
-
-**Sample response**
-
-<ContactResponsePayload />
 
 ### Delete contact
 

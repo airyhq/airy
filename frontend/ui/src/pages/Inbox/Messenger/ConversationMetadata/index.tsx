@@ -1,7 +1,14 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, Note as NoteModel} from 'model';
+import {
+  Tag as TagModel,
+  TagColor,
+  Note as NoteModel,
+  conversationNotes,
+  conversationTags,
+  getFilteredTags,
+} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -39,7 +46,6 @@ import {
   cyNotesDialogButton,
   cyNotesDialogInput,
 } from 'handles';
-import difference from 'lodash/difference';
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
@@ -123,15 +129,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setNoteId(note.id);
   };
 
-  const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
-
-  const conversationTags = () => {
-    return Object.keys(conversation.metadata.tags || {})
-      .map(tagId => tags[tagId])
-      .filter(tag => tag !== undefined)
-      .sort(tagSorter);
-  };
-
   const notesSorter = (a: NoteModel, b: NoteModel) => {
     if (notesSortNewest) {
       return a.timestamp < b.timestamp ? 1 : -1;
@@ -140,21 +137,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     }
   };
 
-  const conversationNotes = () => {
-    return Object.keys(conversation.metadata.notes || {})
-      .map(noteId => {
-        return {
-          id: noteId,
-          text: conversation.metadata.notes[noteId]['text'],
-          timestamp: new Date(parseInt(conversation.metadata.notes[noteId]['timestamp'])),
-        } as NoteModel;
-      })
-      .filter(note => note !== undefined)
-      .sort(notesSorter);
-  };
-
   const checkIfExists = (tagName: string) => {
-    const usedTags = conversationTags();
+    const usedTags = conversationTags(conversation, tags);
     if (tagName.length === 0) {
       return true;
     }
@@ -166,16 +150,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     return true;
   };
 
-  const getFilteredTags = (): TagModel[] =>
-    difference(Object.keys(tags), Object.keys(conversation.metadata.tags || {}))
-      .map(id => tags[id])
-      .filter(tag => tag !== undefined)
-      .sort(tagSorter)
-      .filter((tag: TagModel) => tag.name.startsWith(tagName));
-
   const submitTagForm = (event: FormEvent) => {
     event.preventDefault();
-    const filteredTags = getFilteredTags();
+    const filteredTags = getFilteredTags(conversation, tags, tagName);
 
     if (filteredTags.length === 1) {
       addTag(filteredTags[0]);
@@ -216,7 +193,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const renderTagsDialog = () => {
-    const filteredTags = getFilteredTags();
+    const filteredTags = getFilteredTags(conversation, tags, tagName);
 
     return (
       <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
@@ -379,7 +356,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             {showTagsDialog && renderTagsDialog()}
 
             <div className={styles.tagList}>
-              {conversationTags().map(tag => (
+              {conversationTags(conversation, tags).map(tag => (
                 <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />
               ))}
             </div>
@@ -394,7 +371,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
             {showNotesDialog && renderNotesDialog()}
 
-            {conversationNotes().length > 1 && (
+            {conversationNotes(conversation).sort(notesSorter).length > 1 && (
               <div>
                 <span className={styles.sortText}>Sort: </span>
                 <span
@@ -413,14 +390,16 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             )}
 
             <div className={styles.noteList}>
-              {conversationNotes().map(note => (
-                <Note
-                  key={note.id}
-                  note={note}
-                  removeNote={() => removeNote(note)}
-                  updateNote={() => updateNote(note)}
-                />
-              ))}
+              {conversationNotes(conversation)
+                .sort(notesSorter)
+                .map(note => (
+                  <Note
+                    key={note.id}
+                    note={note}
+                    removeNote={() => removeNote(note)}
+                    updateNote={() => updateNote(note)}
+                  />
+                ))}
             </div>
           </div>
         </div>

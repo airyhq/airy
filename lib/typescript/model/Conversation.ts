@@ -2,6 +2,8 @@ import {Contact} from './Contact';
 import {Message} from './Message';
 import {Metadata} from './Metadata';
 import {Channel} from './Channel';
+import {Tag as TagModel, Note as NoteModel} from 'model';
+import difference from 'lodash/difference';
 
 export type ConversationMetadata = Metadata & {
   contact: Contact;
@@ -10,7 +12,10 @@ export type ConversationMetadata = Metadata & {
     [tagId: string]: string;
   };
   notes: {
-    [noteId: string]: string;
+    [noteId: string]: {
+      text: string;
+      timestamp: string;
+    };
   };
   state: string;
 };
@@ -21,4 +26,35 @@ export interface Conversation {
   metadata: ConversationMetadata;
   createdAt: Date;
   lastMessage: Message;
+}
+
+export function conversationNotes(conversation: Conversation) {
+  return Object.keys(conversation.metadata.notes || {})
+    .map(noteId => {
+      return {
+        id: noteId,
+        text: conversation.metadata.notes[noteId]['text'],
+        timestamp: conversation.metadata.notes[noteId]['timestamp']
+          ? new Date(parseInt(conversation.metadata.notes[noteId]['timestamp']))
+          : '',
+      } as NoteModel;
+    })
+    .filter(note => note !== undefined);
+}
+
+const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
+
+export function conversationTags(conversation: Conversation, tags: {[tagId: string]: TagModel}) {
+  return Object.keys(conversation.metadata.tags || {})
+    .map(tagId => tags[tagId])
+    .filter(tag => tag !== undefined)
+    .sort(tagSorter);
+}
+
+export function getFilteredTags(conversation: Conversation, tags: {[tagId: string]: TagModel}, tagName) {
+  return difference(Object.keys(tags), Object.keys(conversation.metadata.tags || {}))
+    .map(id => tags[id])
+    .filter(tag => tag !== undefined)
+    .sort(tagSorter)
+    .filter((tag: TagModel) => tag.name.startsWith(tagName));
 }

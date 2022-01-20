@@ -126,7 +126,7 @@ class ConversationsNoteTest {
                                     "{\"conversation_id\":\"" + conversationId + "\"}")
                             .andExpect(status().isOk())
                             .andExpect(jsonPath("$.id", is(conversationId)))
-                            .andExpect(jsonPath("$.metadata.notes").doesNotExist())
+                            .andExpect(jsonPath(String.format("$.metadata.notes['%s']", finalNoteKey)).doesNotExist())
                             .andReturn(),
                 "Note is not removed"
         );

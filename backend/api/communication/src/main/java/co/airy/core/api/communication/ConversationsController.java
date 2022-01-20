@@ -225,7 +225,6 @@ public class ConversationsController {
             final Subject subject = new Subject("conversation", conversationId);
             stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"));
             stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"));
-            stores.deleteMetadata(subject, String.format("%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

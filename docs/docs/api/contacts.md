@@ -79,7 +79,71 @@ import ContactResponsePayload from './../sources/applyVariables-note.mdx'
 
 <ContactResponsePayload />
 
-### Create contact
+### Import contacts
+`POST /contacts.import`
+
+Creates contacts in a bulk.
+
+**Sample request**
+```json5
+[
+  {
+    "display_name": "Barabara Liskov",
+    "avatar_url": "https://example.org/avatar.jpg",
+    "title": "Professor",
+  },
+  {
+    "display_name": "Eleanor B. Garcia",
+    "avatar_url": "https://example.org/avatar.jpg",
+    "title": "Estimator project manager",
+  },
+  {
+    "display_name": "Marie R. Lemelin",
+    "avatar_url": "https://example.org/avatar.jpg",
+    "title": "Accountant",
+  },
+  {
+    "display_name": "Lori L. Carter",
+    "avatar_url": "https://example.org/avatar.jpg",
+    "title": "Occupational health and safety technician",
+  },
+]
+```
+
+**(201) Success Response Payload**
+```json5
+{
+  "data": [
+    {
+      "display_name": "Barabara Liskov",
+      "avatar_url": "https://example.org/avatar.jpg",
+      "title": "Professor",
+    },
+    {
+      "display_name": "Eleanor B. Garcia",
+      "avatar_url": "https://example.org/avatar.jpg",
+      "title": "Estimator project manager",
+    },
+    {
+      "display_name": "Marie R. Lemelin",
+      "avatar_url": "https://example.org/avatar.jpg",
+      "title": "Accountant",
+    },
+    {
+      "display_name": "Lori L. Carter",
+      "avatar_url": "https://example.org/avatar.jpg",
+      "title": "Occupational health and safety technician",
+    }
+  ],
+  "pagination_data": {
+    "previous_cursor": "",
+    "next_cursor": "",
+    "total": 1
+  }
+}
+```
+
+### List contacts
 
 `POST /contacts.list`
 
@@ -161,22 +225,6 @@ All fields set on the [creation request](#create-contact) can be updated. To rem
 ```
 
 **Sample response 202 (Accepted)**
-
-### Re-fetch contact
-
-`POST /contacts.refetch`
-
-If there are conversations associated with this contact the sources will try to re-fetch the contact data that was ingested. This only works for messaging sources that allow you to pull contact data such as [Facebook Messenger](https://developers.facebook.com/docs/messenger-platform/identity/user-profile/). Others like Google Business Messages will push new contact information, which will cause it to show up automatically.
-
-**Sample request**
-
-```json5
-{
-  "contacts": ["6b80b10c-ae6e-4995-844d-c56c4da11623", "c564cea4-a96f-4ebb-a220-3fb81b6ad522"]
-}
-```
-
-**(202) Sample response**
 
 ### Merge contacts
 

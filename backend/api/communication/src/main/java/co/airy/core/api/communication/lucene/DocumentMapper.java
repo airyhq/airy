@@ -1,7 +1,6 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.ConversationIndex;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataNode;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -14,7 +13,6 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexableField;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -58,18 +56,11 @@ public class DocumentMapper {
                 .map(IndexableField::stringValue)
                 .collect(toList());
 
-        final List<MetadataNode> notes = document.getFields().stream()
-                .filter((field) -> field.name().startsWith(String.format("metadata.%s", MetadataKeys.ConversationKeys.NOTES)))
-                .map((record) -> new MetadataNode(record.name().split("\\.")[1]+'.'+record.name().split("\\.")[2],
-                        record.stringValue()))
-                .collect(Collectors.toList());
-
         return ConversationIndex.builder()
                 .id(document.get("id"))
                 .unreadMessageCount(unreadCount)
                 .createdAt(createdAt)
                 .tagIds(tagIds)
-                .metadata(notes)
                 .displayName(document.get("display_name"))
                 .build();
     }

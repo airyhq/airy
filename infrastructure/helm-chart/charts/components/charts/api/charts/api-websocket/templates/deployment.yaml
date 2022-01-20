@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.websocket.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
@@ -58,10 +58,10 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.websocket.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 }}
       initContainers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:

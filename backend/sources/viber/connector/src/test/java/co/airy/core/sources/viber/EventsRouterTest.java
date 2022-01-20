@@ -5,6 +5,7 @@ import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
 import co.airy.core.sources.viber.lib.Topics;
+import co.airy.core.sources.viber.services.Api;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.metadata.MetadataRepository;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -46,6 +48,9 @@ class EventsRouterTest {
 
     @Autowired
     private AccountInfo accountInfo;
+
+    @MockBean
+    private Api api;
 
     @BeforeAll
     static void beforeAll() throws Exception {

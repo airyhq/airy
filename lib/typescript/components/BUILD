@@ -11,6 +11,7 @@ ts_web_library(
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",
+        "@npm//lodash-es",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",

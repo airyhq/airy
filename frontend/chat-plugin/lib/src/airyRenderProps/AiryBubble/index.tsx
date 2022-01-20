@@ -7,38 +7,66 @@ type Props = {
   toggleHideChat: () => void;
   dataCyId?: string;
   config?: Config;
+  unreadMessage: boolean;
 };
 
 const AiryBubble = (props: Props) => {
-  const {config} = props;
+  const {config, unreadMessage} = props;
 
   const BubbleImage = () => {
-    if (config?.bubbleIcon) {
-      return (
-        <img
-          style={{
-            maxHeight: '60px',
-            maxWidth: '60px',
-            objectFit: 'contain',
-          }}
-          src={config.bubbleIcon}
-        />
-      );
-    }
     return (
-      <svg height="40" className={style.bubbleIcon} viewBox="0 0 39 40" width="39" xmlns="http://www.w3.org/2000/svg">
-        <g fill="#fff" fillRule="evenodd" transform="translate(.030165 .02054)">
-          <path d="m37.1887765 33.360495-10.066549 4.0324258-13.4940785-33.36076733 10.066549-4.03215347z" />
-          <path d="m17.3157765 18.1023243-11.86678434 4.7221039 7.08317644-16.54846533z" />
-          <path d="m25.3931725 38.0753564-19.37490191-13.3660891 12.03396081-4.7839109z" />
-          <path d="m11.5947451 30.9400594-11.5947451 4.6153713 4.16898039-9.7363614z" />
-        </g>
-      </svg>
+      <>
+        {(config.showMode || unreadMessage) && (
+          <>
+            <div
+              style={{
+                position: 'absolute',
+                right: 10,
+                height: '16px',
+                width: '16px',
+                backgroundColor: config.unreadMessageDotColor || 'red',
+                borderRadius: '8px',
+                zIndex: 1,
+              }}
+            />
+          </>
+        )}
+        {config?.bubbleIcon ? (
+          <img
+            style={{
+              maxHeight: '60px',
+              maxWidth: '60px',
+              objectFit: 'contain',
+            }}
+            src={config.bubbleIcon}
+          />
+        ) : (
+          <svg
+            height="40"
+            className={style.bubbleIcon}
+            viewBox="0 0 39 40"
+            width="39"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g fill="#fff" fillRule="evenodd" transform="translate(.030165 .02054)">
+              <path d="m37.1887765 33.360495-10.066549 4.0324258-13.4940785-33.36076733 10.066549-4.03215347z" />
+              <path d="m17.3157765 18.1023243-11.86678434 4.7221039 7.08317644-16.54846533z" />
+              <path d="m25.3931725 38.0753564-19.37490191-13.3660891 12.03396081-4.7839109z" />
+              <path d="m11.5947451 30.9400594-11.5947451 4.6153713 4.16898039-9.7363614z" />
+            </g>
+          </svg>
+        )}
+      </>
     );
   };
 
   return (
-    <div className={style.hideBubble} onClick={() => props.toggleHideChat()} data-cy={props.dataCyId}>
+    <div
+      className={style.hideBubble}
+      style={props.isChatHidden ? {height: '60px', display: 'block'} : {}}
+      onClick={() => props.toggleHideChat()}
+      data-cy={props.dataCyId}
+    >
       {!props.isChatHidden ? (
         <svg width="24px" height="60px" viewBox="0 0 10 6" version="1.1">
           <g id="Page-1" stroke="none" strokeWidth="1" fill="#ffffff" fillRule="evenodd">

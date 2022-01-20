@@ -3,6 +3,7 @@ package co.airy.core.sources.viber;
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
 import co.airy.core.sources.viber.lib.Topics;
+import co.airy.core.sources.viber.services.Api;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
@@ -47,6 +49,9 @@ class WebhookControllerTest {
 
     @Autowired
     private AccountInfo accountInfo;
+
+    @MockBean
+    private Api api;
 
     @Value("${authToken}")
     private String authToken;

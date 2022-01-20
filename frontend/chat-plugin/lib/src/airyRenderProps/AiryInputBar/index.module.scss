@@ -198,7 +198,7 @@
 
   svg {
     path {
-      fill: #4bb3fd;
+      fill: var(--color-airy-accent);
     }
   }
 
@@ -208,7 +208,7 @@
 }
 
 .fileInput {
-  display: none;
+  display: none !important;
 }
 
 .selectorLoader {

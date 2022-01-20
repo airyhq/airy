@@ -7,9 +7,11 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +42,9 @@ class WebhookControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Stores stores;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceFacebookEvents);
@@ -50,6 +55,11 @@ class WebhookControllerTest {
     @AfterAll
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

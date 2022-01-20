@@ -53,16 +53,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
-        - name: BEANSTALK_HOSTNAME
-          valueFrom:
-            configMapKeyRef:
-              name: beanstalk-config
-              key: BEANSTALK_HOSTNAME
-        - name: BEANSTALK_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: beanstalk-config
-              key: BEANSTALK_PORT
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -77,7 +67,7 @@ spec:
 {{ toYaml .Values.api.admin.resources | indent 10 }}
       initContainers:
       - name: wait
-        image: busybox
+        image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:

@@ -30,19 +30,25 @@ are sorted from oldest to latest.
   "data": [
     {
       "id": "{UUID}",
-      "content": {"text": "Hello World"},
       // source message payload
-      "state": "{String}",
+      "content": {"text": "Hello World"},
       // delivery state of message, one of PENDING, FAILED, DELIVERED
+      "state": "{String}",
       "from_contact": true,
-      "sent_at": "{string}",
       // ISO 8601 date string
-      "source": "{String}",
+      "sent_at": "{string}",
       // one of the possible sources
+      "source": "{String}",
+      // metadata object of the message
       "metadata": {
         "sentFrom": "iPhone"
+      },
+      // details about the sender
+      "sender": {
+        "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+        "name": "John Doe", // optional
+        "avatar_url": "http://example.org/avatar.png" // optional
       }
-      // metadata object of the message
     }
   ],
   "pagination_data": {
@@ -80,20 +86,26 @@ to see learn how to send text, media, and many more message types.
   "id": "{UUID}",
   "content": "{\"text\":\"Hello\"}",
   "state": "pending|failed|delivered",
-  "from_contact": true,
   // See glossary
-  "sent_at": "{string}",
+  "from_contact": true,
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "source": "{String}",
+  "sent_at": "{string}",
   // one of the possible sources
+  "source": "{String}",
+  // metadata object of the message
   "metadata": {
     "sentFrom": "iPhone"
+  },
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
   }
-  // metadata object of the message
 }
 ```
 
-**Starting a conversation**
+### Starting a conversation
 
 The previous flow covers the use cases of most messaging sources. However, some sources such as SMS or Whatsapp also
 allow you to send messages to contacts that did not previously message you first. This means that you can create new conversations with them if you know their `source recipient id`.
@@ -116,19 +128,64 @@ allow you to send messages to contacts that did not previously message you first
 {
   "id": "{UUID}",
   "content": "{\"text\":\"Hello world\"}", // Source specific body
-  "state": "pending|failed|delivered",
+  "state": "pending",
   "from_contact": true,
   "sent_at": "{string}",
   "source": "{String}",
-  "metadata": {}
+  "metadata": {},
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
+  }
 }
 ```
 
-## Send from Google's Business Messages source
+### Error handling
 
-import GoogleMessagesSend from './google-messages-send.mdx'
+Since outbound messages are delegated to the source apps we don't implement synchronous error replies. Instead, errors are sent
+asynchronously as updates to the message's metadata. Those updates can be consumed with either the [webhook](/api/webhook) or the [websocket](/api/websocket).
 
-<GoogleMessagesSend />
+The message's state will also change to `failed`. Both changes will be visible in the conversation and messages query endpoints.
+
+**Sample metadata websocket update**
+
+```json5
+{
+  "type": "metadata.updated",
+  "payload": {
+    "subject": "message",
+    "identifier": "failed message id",
+    "metadata": {
+      "error": "Some error message"
+    }
+  }
+}
+```
+
+**Sample message webhook update**
+
+```json5
+{
+  "type": "message.updated",
+  "payload": {
+    "conversation_id": "conversation id",
+    "channel_id": "channel id",
+    "message": {
+      "id": "failed message id",
+      "content": {"text": "Hello World"}, // source message payload
+      "delivery_state": "failed",
+      "from_contact": false,
+      "sent_at": "2020-10-25T21:24:54.560Z", // ISO 8601 date string
+      "source": "facebook", // messaging source
+      "metadata": {
+        "error": "Some error message"
+      }
+    }
+  }
+}
+```
 
 ## Suggest replies
 

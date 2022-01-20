@@ -116,6 +116,51 @@ import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
-import GoogleMessagesSend from '../api/endpoints/google-messages-send.mdx'
+Note that when you send a message from this source, you must specify a representative, the individual or automation that composed the message.
+Google's Business Messages supports "BOT" and "HUMAN" as the `representativeType`. Find more information on [Google's Business Messages guide](https://developers.google.com/business-communications/business-messages/guides/build/send).
 
-<GoogleMessagesSend />
+Whatever is put on the `message` field will be forwarded "as-is" to the source's message endpoint.
+
+**Sending a text message**
+
+```json5
+{
+  conversation_id: "a688d36c-a85e-44af-bc02-4248c2c97622",
+  message: {
+    text: "Hello!",
+    representative: {
+      representativeType: "HUMAN"
+    }
+  }
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "{UUID}",
+  "content": {
+    "text": "Hello!",
+    "representative": {
+      "representativeType": "HUMAN"
+    }
+  },
+  "delivery_state": "pending|failed|delivered",
+  // See glossary
+  "from_contact": "true|false",
+  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "sent_at": "{string}",
+  "source": "google",
+  // metadata object of the message
+  "metadata": {
+    "sentFrom": "iPhone"
+  },
+  // details about the sender
+  "sender": {
+    "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+    "name": "John Doe", // optional
+    "avatar_url": "http://example.org/avatar.png" // optional
+  }
+}
+```

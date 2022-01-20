@@ -2,11 +2,7 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationTags;
-import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
-import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
+import co.airy.core.api.admin.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -44,24 +40,13 @@ public class ChannelsControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper kafkaTestHelper;
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
-    private static final ApplicationCommunicationTemplates applicationCommunicationTemplates = new ApplicationCommunicationTemplates();
 
     @Autowired
     private WebTestHelper webTestHelper;
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels,
-                applicationCommunicationWebhooks,
-                applicationCommunicationMetadata,
-                applicationCommunicationTags,
-                applicationCommunicationTemplates
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
         kafkaTestHelper.beforeAll();
     }
 
@@ -87,7 +72,7 @@ public class ChannelsControllerTest {
 
         testDataInitialized = true;
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(),
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(Topics.applicationCommunicationChannels.name(),
                 connectedChannel.getId(), connectedChannel));
 
         webTestHelper.waitUntilHealthy();
@@ -98,7 +83,7 @@ public class ChannelsControllerTest {
         final String disconnectedChannel = "channel-id-2";
 
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationChannels.name(), disconnectedChannel,
+                new ProducerRecord<>(Topics.applicationCommunicationChannels.name(), disconnectedChannel,
                         Channel.newBuilder()
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
                                 .setId(disconnectedChannel)

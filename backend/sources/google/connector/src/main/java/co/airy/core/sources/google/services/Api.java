@@ -2,10 +2,12 @@ package co.airy.core.sources.google.services;
 
 import co.airy.core.sources.google.ApiException;
 import co.airy.core.sources.google.model.GoogleServiceAccount;
+import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
+import org.slf4j.Logger;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationListener;
@@ -22,19 +24,17 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class Api implements ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger log = AiryLoggerFactory.getLogger(Api.class);
     final RestTemplateBuilder restTemplateBuilder;
     final ObjectMapper objectMapper;
     final GoogleServiceAccount serviceAccount;
 
     private RestTemplate restTemplate;
     private static final String requestTemplate = "https://businessmessages.googleapis.com/v1/conversations/%s/messages";
-    private static final String errorMessageTemplate =
-            "Exception while sending a message to Google: \n" +
-                    "Http Status Code: %s \n" +
-                    "Error Message: %s \n";
 
     public Api(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, GoogleServiceAccount serviceAccount) {
         this.restTemplateBuilder = restTemplateBuilder;
@@ -67,7 +67,18 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
                     @Override
                     public void handleError(ClientHttpResponse response) throws IOException {
-                        throw new ApiException(String.format(errorMessageTemplate, response.getRawStatusCode(), new String(response.getBody().readAllBytes())));
+                        final String errorPayload = new String(response.getBody().readAllBytes());
+                        final int statusCode = response.getRawStatusCode();
+
+                        final JsonNode jsonNode = objectMapper.readTree(errorPayload);
+                        final String errorMessage = Optional.of(jsonNode.get("error"))
+                                .map((node) -> node.get("message"))
+                                .map(JsonNode::textValue)
+                                .orElseGet(() -> {
+                                    log.warn("Could not parse error message from response: {}", errorPayload);
+                                    return String.format("Api replied with status code %s and payload %s", statusCode, errorPayload);
+                                });
+                        throw new ApiException(errorMessage, errorPayload);
                     }
                 })
                 .additionalMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))

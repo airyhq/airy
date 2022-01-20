@@ -10,6 +10,10 @@
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   pointer-events: all;
+  @media only screen and (max-device-width: 420px) and (max-device-width: 820px) {
+    height: 0;
+    display: none;
+  }
 }
 
 .hideBubble:hover {

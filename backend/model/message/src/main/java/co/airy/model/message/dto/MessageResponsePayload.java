@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.message.MessageRepository.resolveContent;
 import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
@@ -23,11 +25,15 @@ public class MessageResponsePayload {
     private boolean isFromContact;
     private String source;
     private JsonNode metadata;
+    private Sender sender;
 
     public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
         final Message message = messageContainer.getMessage();
+        final Sender sender = Optional.ofNullable(messageContainer.getSender())
+                .orElse(messageContainer.getDefaultSender());
         return MessageResponsePayload.builder()
                 .content(resolveContent(message, messageContainer.getMetadataMap()))
+                .sender(sender)
                 .isFromContact(message.getIsFromContact())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
@@ -40,6 +46,7 @@ public class MessageResponsePayload {
     public static MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
                 .content(resolveContent(message))
+                .sender(Sender.builder().id(message.getSenderId()).build())
                 .isFromContact(message.getIsFromContact())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())

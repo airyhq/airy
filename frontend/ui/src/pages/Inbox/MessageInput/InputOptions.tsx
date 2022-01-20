@@ -16,11 +16,6 @@ const mapDispatchToProps = {sendMessages};
 
 const connector = connect(null, mapDispatchToProps);
 
-interface MediaResolverComponentConfig {
-  enabled: boolean;
-  healthy: boolean;
-}
-
 type Props = {
   source: Source;
   inputDisabled: boolean;
@@ -31,7 +26,7 @@ type Props = {
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
-  mediaResolverComponentsConfig: MediaResolverComponentConfig;
+  canSendMedia: boolean;
   loadingSelector: boolean;
 } & ConnectedProps<typeof connector>;
 
@@ -45,7 +40,7 @@ export const InputOptions = (props: Props) => {
     focusInput,
     selectFile,
     fileUploadErrorPopUp,
-    mediaResolverComponentsConfig,
+    canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
   } = props;
@@ -155,7 +150,7 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaResolverComponentsConfig.enabled &&
+      {canSendMedia &&
         (source === 'facebook' ||
           source === 'instagram' ||
           source === 'google' ||

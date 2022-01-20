@@ -84,9 +84,23 @@ public class MetadataObjectMapper {
     }
 
     public static List<Metadata> getMetadataFromJson(Subject subject, JsonNode payload) throws Exception {
+        return getMetadataFromJson(subject, payload, "");
+    }
+
+    // Assembles a list of metadata values for a given subject from a JSON payload
+    // The prefix path must end with a dot or be empty
+    // Example:
+    // {
+    //   "foo": {
+    //     "bar": "bar"
+    //   }
+    //   "baz": "baz"
+    // }
+    // -> <"foo.bar","bar">, <"baz","baz">
+    public static List<Metadata> getMetadataFromJson(Subject subject, JsonNode payload, String prefixPath) throws Exception {
         final long creationTime = Instant.now().toEpochMilli();
 
-        return getKeyValuePairs(payload, "")
+        return getKeyValuePairs(payload, prefixPath)
                 .stream()
                 .map((keyValuePair ->
                         Metadata.newBuilder()

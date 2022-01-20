@@ -12,22 +12,15 @@ export const getCurrentConversation = (state: StateModel, props: ConversationRou
 export const getCurrentFilteredConversation = (state: StateModel, props: ConversationRouteProps) =>
   state.data.conversations.filtered.items[props.match.params.conversationId];
 
-export const getConversation = createSelector(
-  getCurrentConversation,
-  getCurrentFilteredConversation,
-  (conversation, filteredConversation) => {
-    if (!conversation && !filteredConversation) return undefined;
-    return {...conversation, ...filteredConversation};
-  }
-);
+export const getConversation = (state: StateModel, props: ConversationRouteProps) => {
+  const currentConversation = getCurrentConversation(state, props);
+  const currentFilteredConversation = getCurrentFilteredConversation(state, props);
+  if (!currentConversation && !currentFilteredConversation) return undefined;
+  return {...currentConversation, ...currentFilteredConversation};
+};
 
 export const getCurrentMessages = (state: StateModel, props: ConversationRouteProps) =>
   state.data.messages.all[props.match.params.conversationId];
-
-export const filteredConversationSelector = createSelector(
-  (state: StateModel) => state.data.conversations.filtered.items,
-  (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
-);
 
 // Filter out conversations that only have metadata
 export const allConversations = (state: StateModel): MergedConversation[] =>

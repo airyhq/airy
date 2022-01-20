@@ -19,7 +19,7 @@ For more details on how to enable it, refer to our [Configuration Section](getti
 
 :::
 
-The webhook integration enables you to programmatically participate in
+The outbound webhook integration enables you to programmatically participate in
 conversations by sending messages or reacting to them. Here's a common
 integration pattern:
 
@@ -164,7 +164,11 @@ request with one the following payloads:
       "delivery_state": "pending|failed|delivered", // delivery state of message, one of pending, failed, delivered
       "from_contact": true,
       "sent_at": "2020-10-25T21:24:54.560Z", // ISO 8601 date string
-      "source": "facebook" // messaging source
+      "source": "facebook", // messaging source
+      // details about the sender
+      "sender": {
+        "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
+      }
     }
   }
 }
@@ -192,6 +196,10 @@ Sent whenever a message is updated (e.g. delivery state) or its [metadata](conce
           "id": "facebook message id",
           "delivery_state": "seen"
         }
+      },
+      // details about the sender
+      "sender": {
+        "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
       }
     }
   }
@@ -221,7 +229,11 @@ Sent whenever a message is updated (e.g. delivery state) or its [metadata](conce
       "delivery_state": "pending|failed|delivered", // delivery state of message, one of pending, failed, delivered
       "from_contact": true,
       "sent_at": "2020-10-25T21:24:54.560Z", // ISO 8601 date string
-      "source": "facebook" // messaging source
+      "source": "facebook", // messaging source
+      // details about the sender
+      "sender": {
+        "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
+      }
     }
   }
 }

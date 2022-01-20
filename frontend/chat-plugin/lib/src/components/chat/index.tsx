@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 import {useTranslation} from 'react-i18next';
@@ -71,6 +71,20 @@ const Chat = ({config, ...props}: Props) => {
   const [connectionState, setConnectionState] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newConversation, setNewConversation] = useState(false);
+  const [unreadMessage, setUnreadMessage] = useState(false);
+
+  const messageLengthRef = useRef(messages.length);
+  const lastMessage = messages[messages.length - 1];
+
+  useEffect(() => {
+    messages.length > messageLengthRef.current && !lastMessage.fromContact
+      ? setUnreadMessage(true)
+      : setUnreadMessage(false);
+
+    !isChatHidden && messages.length > messageLengthRef.current && setUnreadMessage(false);
+
+    messageLengthRef.current = messages.length;
+  }, [isChatHidden, messages]);
 
   useEffect(() => {
     if (config.showMode) return;
@@ -213,6 +227,7 @@ const Chat = ({config, ...props}: Props) => {
           toggleHideChat={ctrl.toggleHideChat}
           dataCyId={cyBubble}
           config={config}
+          unreadMessage={unreadMessage}
         />
       );
 

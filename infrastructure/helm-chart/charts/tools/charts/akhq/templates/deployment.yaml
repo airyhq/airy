@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: akhq
-  namespace: "default"
+  namespace: {{ .Values.namespace }}
   labels:
     app: akhq
     type: enterprise
@@ -21,7 +21,7 @@ spec:
     metadata:
       labels:
         app: akhq
-        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+        WorkerType: "{{ default "NodeGroup" .Values.workerType }}"
     spec:
       containers:
         - name: app
@@ -32,16 +32,6 @@ spec:
             mountPath: /app/application.yml
             subPath: application.yml
           env:
-            - name: KAFKA_BROKERS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_BROKERS
-            - name: KAFKA_SCHEMA_REGISTRY_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_SCHEMA_REGISTRY_URL
             - name: SERVICE_NAME
               value: akhq
       volumes:

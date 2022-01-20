@@ -2,14 +2,18 @@ import React, {useCallback, useEffect, useRef} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as LeftArrow} from 'assets/images/icons/leftArrow.svg';
 import {ReactComponent as RightArrow} from 'assets/images/icons/rightArrow.svg';
+import {throttle} from 'lodash-es';
 
 export const Carousel = ({children}) => {
   const carouselChildren = useRef<HTMLDivElement>(null);
   const buttonLeft = useRef<HTMLButtonElement>(null);
   const buttonRight = useRef<HTMLButtonElement>(null);
 
-  const getScrollBy = (element: HTMLDivElement) => {
-    return element.clientWidth * 0.92;
+  let currentElementIndex = 0;
+
+  const getScrollBy = () => {
+    const currentElementWidth = getElementWidth(carouselChildren.current.children[currentElementIndex] as HTMLElement);
+    return currentElementWidth;
   };
 
   const getElementWidth = (element: HTMLElement) => {
@@ -30,6 +34,7 @@ export const Carousel = ({children}) => {
       currentPosX += getElementWidth(element.children[currentChild] as HTMLElement);
     }
 
+    if (currentElementIndex > 0) currentElementIndex--;
     return maxScroll - element.clientWidth;
   };
 
@@ -45,28 +50,35 @@ export const Carousel = ({children}) => {
       currentPosX += getElementWidth(element.children[currentChild] as HTMLElement);
     }
 
+    if (currentElementIndex < carouselChildren.current.children.length - 1) currentElementIndex++;
     return maxScroll;
   };
 
-  const moveLeft = useCallback(() => {
-    carouselChildren.current.scroll({
-      left: Math.max(
-        carouselChildren.current.scrollLeft - getScrollBy(carouselChildren.current),
-        maximumScrollLeft(carouselChildren.current)
-      ),
-      behavior: 'smooth',
-    });
-  }, [carouselChildren]);
+  const moveLeft = useCallback(
+    throttle(() => {
+      carouselChildren.current.scroll({
+        left: Math.max(
+          carouselChildren.current.scrollLeft - getScrollBy(),
+          maximumScrollLeft(carouselChildren.current)
+        ),
+        behavior: 'smooth',
+      });
+    }, 1000),
+    [carouselChildren]
+  );
 
-  const moveRight = useCallback(() => {
-    carouselChildren.current.scroll({
-      left: Math.min(
-        carouselChildren.current.scrollLeft + getScrollBy(carouselChildren.current),
-        maximumScrollRight(carouselChildren.current)
-      ),
-      behavior: 'smooth',
-    });
-  }, [carouselChildren]);
+  const moveRight = useCallback(
+    throttle(() => {
+      carouselChildren.current.scroll({
+        left: Math.max(
+          carouselChildren.current.scrollLeft + getScrollBy(),
+          maximumScrollRight(carouselChildren.current)
+        ),
+        behavior: 'smooth',
+      });
+    }, 1000),
+    [carouselChildren]
+  );
 
   const resetScrollButtons = useCallback(() => {
     const element = carouselChildren.current;

@@ -51,6 +51,7 @@ public class MetadataKeys {
         public static class Source {
             public static final String ID = "source.id";
             public static final String DELIVERY_STATE = "source.delivery_state";
+            public static final String ERROR = "source.error";
         }
 
         public static class Reaction {

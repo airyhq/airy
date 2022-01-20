@@ -111,6 +111,43 @@ Bazel also offers a friendly and powerful autocompletion, please refer to [this
 document](https://github.com/bazelbuild/bazel/blob/master/site/docs/completion.md)
 to install it locally.
 
+### Publishing and running images locally
+
+You can test your images locally at runtime if you have a local instance of Airy
+Core running in Minikube.
+
+#### Publish image to minikube's registry
+
+In order for the Airy Core cluster to have access to a newly built image, you need
+to publish the image to Minikube's (built-in) docker registry. Do this by pointing
+your shell's docker environment to the docker instance in minikube:
+
+```sh
+eval $(minikube -p airy-core docker-env)
+```
+
+Next, create an image with bazel, which will automatically load the image into
+Minikube's registry. For example:
+
+```sh
+bazel run //backend/api/communication:image
+```
+
+You can verify this action with `docker images` and you can restore the shell
+environment to point to your local docker instance with
+`eval $(minikube -p airy-core docker-env -u)`.
+
+#### Run image on Airy Core
+
+Next, you will want to run this image in the Airy Core cluster. For this example
+that means you need to:
+
+```sh
+kubectl patch deployment api-communication -p '{"spec":{"template":{"spec":{"containers":[{"name":"app","image":"bazel/backend/api/communication:image","imagePullPolicy":"Never"}]}}}}'
+```
+
+Once this is done, the image will be up and running in your local cluster.
+
 ## Naming conventions
 
 In order to organize our releases in the best possible way, we follow a few

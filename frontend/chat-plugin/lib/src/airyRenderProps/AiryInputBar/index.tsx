@@ -42,8 +42,10 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   const isMobileDevice = window.innerHeight < 1200 || window.innerWidth < 1000;
 
   useEffect(() => {
-    textInputRef.current.selectionStart = props.messageString?.length ?? 0;
-    textInputRef.current.selectionEnd = props.messageString?.length ?? 0;
+    if (textInputRef.current) {
+      textInputRef.current.selectionStart = props.messageString?.length ?? 0;
+      textInputRef.current.selectionEnd = props.messageString?.length ?? 0;
+    }
   }, []);
 
   useEffect(() => {

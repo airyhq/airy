@@ -27,8 +27,8 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const customStyle = {
     background: 'transparent',
-    width: Math.min(config.config?.width ?? defaultWidth, windowWidth),
-    height: Math.min(config.config?.height ?? defaultHeight, windowHeight),
+    width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? defaultWidth, windowWidth),
+    height: windowHeight < 700 ? windowHeight : Math.min(config.config?.height ?? defaultHeight, windowHeight),
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
       '--color-airy-message-outbound': config.config?.primaryColor,
@@ -49,6 +49,9 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
     }),
     ...(config.config?.inboundMessageTextColor && {
       '--color-airy-message-text-inbound': config.config?.inboundMessageTextColor,
+    }),
+    ...(config.config?.unreadMessageDotColor && {
+      '--color-red-alert': config.config?.unreadMessageDotColor,
     }),
   };
 

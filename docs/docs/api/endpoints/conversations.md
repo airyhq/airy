@@ -60,6 +60,12 @@ Find users whose name ends with "Lovelace":
           "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
           "display_name": "Airy Support"
         },
+        "notes": {
+          "5cb42352-6d23-412f-9d3e-830a62924700": {
+            "text": "Sample note text",
+            "timestamp": "1642672490266"
+          }
+        },
         "tags": {
           "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
         },
@@ -118,6 +124,12 @@ Find users whose name ends with "Lovelace":
       "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
       "display_name": "Airy Support"
     },
+    "notes": {
+      "5cb42352-6d23-412f-9d3e-830a62924700": {
+        "text": "Sample note text",
+        "timestamp": "1642672490266"
+      }
+    },
     "tags": {
       "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
     },
@@ -148,6 +160,56 @@ Resets the unread count of a conversation.
 ```json5
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
+}
+```
+
+**Empty response (204)**
+
+## Add a note to a conversation
+
+Adds a textual note to a conversation. Returns status code `200` if successful.
+
+`POST /conversations.add-note`
+
+**Sample request**
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "text": "Sample note text"
+}
+```
+
+**Empty response (204)**
+
+## Update a note of a conversation
+
+Updates the text of an existing note for an existing conversation. This also updates the note's timestamp.
+Returns status code `200` if successful.
+
+`POST /conversations.update-note`
+
+**Sample request**
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "note_id": "5cb42352-6d23-412f-9d3e-830a62924700",
+  "text": "Sample updated note text"
+}
+```
+
+**Empty response (204)**
+
+## Delete a note from a conversation
+
+Removes a note from a conversation. Returns status code `200` if successful.
+
+`POST /conversations.delete-note`
+
+**Sample request**
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "note_id": "5cb42352-6d23-412f-9d3e-830a62924700"
 }
 ```
 

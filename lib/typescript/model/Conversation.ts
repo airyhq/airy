@@ -3,7 +3,7 @@ import {Message} from './Message';
 import {Metadata} from './Metadata';
 import {Channel} from './Channel';
 import {Tag as TagModel, Note as NoteModel} from 'model';
-import difference from 'lodash/difference';
+import {difference} from 'lodash-es';
 
 export type ConversationMetadata = Metadata & {
   contact: Contact;

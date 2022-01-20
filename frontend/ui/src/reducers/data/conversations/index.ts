@@ -203,7 +203,10 @@ const updateNoteInConversation = (
           ...conversation.metadata,
           notes: {
             ...conversation.metadata.notes,
-            noteId: text,
+            [noteId]: {
+              text: text,
+              timestamp: new Date().getMilliseconds().toString(),
+            },
           },
         },
       },

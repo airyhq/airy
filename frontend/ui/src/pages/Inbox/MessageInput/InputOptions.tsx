@@ -24,6 +24,7 @@ type Props = {
   selectTemplate: (template: Template) => void;
   focusInput: () => void;
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isFileLoaded: boolean;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
   canSendMedia: boolean;
@@ -39,6 +40,7 @@ export const InputOptions = (props: Props) => {
     selectTemplate,
     focusInput,
     selectFile,
+    isFileLoaded,
     fileUploadErrorPopUp,
     canSendMedia,
     closeFileErrorPopUp,
@@ -50,13 +52,39 @@ export const InputOptions = (props: Props) => {
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
-  const [inputValue, setInputValue] = useState();
+  const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const inputAcceptValue = getInputAcceptedFilesForSource(source);
-
     setInputAcceptedFiles(inputAcceptValue);
   }, [source]);
+
+  useEffect(() => {
+    if (!isFileLoaded) {
+      setInputFile(null);
+      inputRef.current.value = null;
+    }
+  }, [isFileLoaded]);
+
+  useEffect(() => {
+    if (isShowingEmojiDrawer) {
+      document.addEventListener('keydown', handleEmojiKeyEvent);
+      document.addEventListener('click', handleEmojiClickedOutside);
+
+      return () => {
+        document.removeEventListener('keydown', handleEmojiKeyEvent);
+        document.removeEventListener('click', handleEmojiClickedOutside);
+      };
+    }
+  }, [isShowingEmojiDrawer]);
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    setInputFile(file);
+    selectFile(event);
+  };
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal || isShowingFileSelector) {
@@ -80,21 +108,8 @@ export const InputOptions = (props: Props) => {
     if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
       return;
     }
-
     toggleEmojiDrawer();
   };
-
-  useEffect(() => {
-    if (isShowingEmojiDrawer) {
-      document.addEventListener('keydown', handleEmojiKeyEvent);
-      document.addEventListener('click', handleEmojiClickedOutside);
-
-      return () => {
-        document.removeEventListener('keydown', handleEmojiKeyEvent);
-        document.removeEventListener('click', handleEmojiClickedOutside);
-      };
-    }
-  }, [isShowingEmojiDrawer]);
 
   const toggleTemplateModal = () => {
     if (isShowingEmojiDrawer || isShowingFileSelector) {
@@ -105,6 +120,7 @@ export const InputOptions = (props: Props) => {
   };
 
   const toggleFileSelector = () => {
+    console.log(inputFile);
     if (isShowingEmojiDrawer || isShowingTemplateModal) {
       setIsShowingEmojiDrawer(false);
       setIsShowingFileSelector(false);
@@ -145,7 +161,8 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleEmojiDrawer}>
+        onClick={toggleEmojiDrawer}
+      >
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
       </button>
@@ -153,7 +170,8 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleTemplateModal}>
+        onClick={toggleTemplateModal}
+      >
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
@@ -170,12 +188,14 @@ export const InputOptions = (props: Props) => {
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
             type="button"
             disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-            onClick={toggleFileSelector}>
+            onClick={toggleFileSelector}
+          >
             <div className={styles.actionToolTip}>Files</div>
 
             <label
               htmlFor="file"
-              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}>
+              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
+            >
               <Paperclip aria-hidden className={styles.paperclipIcon} />
             </label>
 
@@ -183,8 +203,9 @@ export const InputOptions = (props: Props) => {
               type="file"
               id="file"
               name="file"
-              onChange={selectFile}
-              value={inputValue}
+              ref={inputRef}
+              value={inputFile?.value}
+              onChange={onChangeHandler}
               className={styles.fileInput}
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
               accept={inputAcceptedFiles}

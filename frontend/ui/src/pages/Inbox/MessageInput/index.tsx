@@ -83,6 +83,7 @@ const MessageInput = (props: Props) => {
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -176,33 +177,35 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   const uploadFile = (file: File) => {
-    const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed =
-      source === 'instagram'
-        ? 8
-        : source === 'twilio.whatsapp' || source === 'google'
-        ? 5
-        : 15 || (source === 'chatplugin' ? 5 : 15);
+    if (file) {
+      const fileSizeInMB = file.size / Math.pow(1024, 2);
+      const maxFileSizeAllowed =
+        source === 'instagram'
+          ? 8
+          : source === 'twilio.whatsapp' || source === 'google'
+          ? 5
+          : 15 || (source === 'chatplugin' ? 5 : 15);
 
-    //size limit error
-    if (fileSizeInMB >= maxFileSizeAllowed) {
-      return setFileUploadErrorPopUp(
-        `Failed to upload the file.
+      //size limit error
+      if (fileSizeInMB >= maxFileSizeAllowed) {
+        return setFileUploadErrorPopUp(
+          `Failed to upload the file.
         The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
-      );
-    }
+        );
+      }
 
-    //unsupported file error
-    if (!getAttachmentType(file.name, source)) {
-      const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
+      //unsupported file error
+      if (!getAttachmentType(file.name, source)) {
+        const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
 
-      const errorMessage = `This file type is not supported by this source. 
+        const errorMessage = `This file type is not supported by this source. 
       Supported files: ${supportedFilesForSource}`;
 
-      return setFileUploadErrorPopUp(errorMessage);
-    }
+        return setFileUploadErrorPopUp(errorMessage);
+      }
 
-    setFileToUpload(file);
+      setFileToUpload(file);
+    }
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,6 +213,7 @@ const MessageInput = (props: Props) => {
     if (selectedTemplate) setSelectedTemplate(null);
     if (uploadedFileUrl) setUploadedFileUrl(null);
 
+    setIsFileLoaded(true);
     const file = event.target.files[0];
     return uploadFile(file);
   };
@@ -358,6 +362,7 @@ const MessageInput = (props: Props) => {
 
     if (uploadedFileUrl) {
       setUploadedFileUrl(null);
+      setIsFileLoaded(false);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -387,7 +392,8 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}>
+            dataCy={cySuggestionsButton}
+          >
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -445,6 +451,7 @@ const MessageInput = (props: Props) => {
               focusInput={focusInput}
               sendMessages={sendMessages}
               selectFile={selectFile}
+              isFileLoaded={isFileLoaded}
               fileUploadErrorPopUp={fileUploadErrorPopUp}
               mediaResolverComponentsConfig={config.components['media-resolver']}
               closeFileErrorPopUp={closeFileErrorPopUp}
@@ -466,7 +473,8 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
-            data-cy={cyMessageSendButton}>
+            data-cy={cyMessageSendButton}
+          >
             <div className={styles.sendButtonText}>
               <Paperplane />
             </div>
@@ -475,7 +483,8 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
+      >
         {'Shift + Enter to add line'}
       </div>
     </div>

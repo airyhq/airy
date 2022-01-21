@@ -5,6 +5,7 @@ export interface Content {
     | 'images'
     | 'video'
     | 'file'
+    | 'audio'
     | 'richText'
     | 'richCard'
     | 'richCardCarousel'
@@ -37,6 +38,11 @@ export interface VideoContent extends Content {
 export interface FileContent extends Content {
   type: 'file';
   fileUrl: string;
+}
+
+export interface AudioContent extends Content {
+  type: 'audio';
+  audioUrl: string;
 }
 
 export interface RichTextContent extends Content {
@@ -133,10 +139,11 @@ export type ContentUnion =
   | ImagesContent
   | VideoContent
   | FileContent
+  | AudioContent
   | RichTextContent
   | RichCardContent
   | RichCardCarouselContent
   | SuggestionResponse
   | QuickRepliesContent;
 
-export type AttachmentUnion = TextContent | ImageContent | ImagesContent | VideoContent | FileContent;
+export type AttachmentUnion = TextContent | ImageContent | ImagesContent | VideoContent | FileContent | AudioContent;

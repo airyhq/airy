@@ -37,10 +37,10 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Text fromContact={props.message.fromContact || false} text={content.title ?? content.payload} />;
 
     case 'image':
-      return <Image imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} text={content.text} />;
 
     case 'images':
-      return <Image images={content.images} />;
+      return <Image images={content.images} text={content.images[0].text} />;
 
     case 'video':
       return <Video videoUrl={content.videoUrl} />;
@@ -98,12 +98,14 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 }
 
 const parseAttachment = (
-  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
+  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment,
+  text?: string
 ): AttachmentUnion => {
   if (attachment.type === 'image') {
     return {
       type: 'image',
       imageUrl: attachment.payload.url,
+      text: text,
     };
   }
 
@@ -189,7 +191,7 @@ function facebookInbound(message): ContentUnion {
     return {
       type: 'images',
       images: messageJson.attachments.map(image => {
-        return parseAttachment(image);
+        return parseAttachment(image, messageJson.text);
       }),
     };
   }

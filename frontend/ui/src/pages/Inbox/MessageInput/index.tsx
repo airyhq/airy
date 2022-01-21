@@ -55,8 +55,8 @@ export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.whatsapp'];
 const contentResizedHeight = 120;
+const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.whatsapp'];
 
 const MessageInput = (props: Props) => {
   const {
@@ -452,8 +452,8 @@ const MessageInput = (props: Props) => {
               sendMessages={sendMessages}
               selectFile={selectFile}
               isFileLoaded={isFileLoaded}
+              canSendMedia={canSendMedia}
               fileUploadErrorPopUp={fileUploadErrorPopUp}
-              mediaResolverComponentsConfig={config.components['media-resolver']}
               closeFileErrorPopUp={closeFileErrorPopUp}
               loadingSelector={loadingSelector}
             />

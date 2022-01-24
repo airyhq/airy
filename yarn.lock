@@ -3867,6 +3867,11 @@ html-entities@^2.3.2:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.3.2.tgz#760b404685cb1d794e4f4b744332e3b00dcfe488"
   integrity sha512-c3Ab/url5ksaT0WyleslpBEthOzWhrjQbg75y7XUsfSzi3Dgzt0l8w5e7DylRn15MTlMMD58dTfzddNS2kcAjQ==
 
+html-escaper@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
+  integrity sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==
+
 html-minifier-terser@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/html-minifier-terser/-/html-minifier-terser-6.0.2.tgz#14059ad64b69bf9f8b8a33f25b53411d8321e75d"
@@ -5672,12 +5677,13 @@ react-hot-loader@^4.13.0:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
-react-i18next@^11.14.2:
-  version "11.14.2"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.14.2.tgz#2ff28f6a0ddf06eaf79435ed6c70c441d709cf34"
-  integrity sha512-fmDhwNA0zDmSEL3BBT5qwNMvxrKu25oXDDAZyHprfB0AHZmWXfBmRLf8MX8i1iBd2I2C2vsA2D9wxYBIwzooEQ==
+react-i18next@^11.15.3:
+  version "11.15.3"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.15.3.tgz#7608fb3cacc02ac75a62fc2d68b579f140b198dd"
+  integrity sha512-RSUEM4So3Tu2JHV0JsZ5Yje+4nz66YViMfPZoywxOy0xyn3L7tE2CHvJ7Y9LUsrTU7vGmZ5bwb8PpjnkatdIxg==
   dependencies:
     "@babel/runtime" "^7.14.5"
+    html-escaper "^2.0.2"
     html-parse-stringify "^3.0.1"
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:

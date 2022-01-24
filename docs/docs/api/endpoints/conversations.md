@@ -241,3 +241,19 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 ```
 
 **Empty response (204)**
+
+## Refetch conversation metadata
+
+Refetch all conversation metadata including contact information if supported by the source
+
+`POST /conversations.refetch`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID"
+}
+```
+
+**Empty response (202)**

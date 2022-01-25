@@ -2,7 +2,7 @@ import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 
-import {env} from '../../../../../env';
+import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
@@ -112,7 +112,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     }
     if (channelId?.length > 0) {
       const channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      return <EditChatPlugin channel={channel} host={env.API_HOST} updateConnection={updateConnection} />;
+      return <EditChatPlugin channel={channel} host={apiHostUrl} updateConnection={updateConnection} />;
     }
     return <OverviewSection />;
   };

@@ -55,7 +55,7 @@ export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const contentResizedHeight = 100;
+const contentResizedHeight = 120;
 const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.whatsapp'];
 
 const MessageInput = (props: Props) => {
@@ -83,6 +83,7 @@ const MessageInput = (props: Props) => {
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -131,15 +132,8 @@ const MessageInput = (props: Props) => {
     if (fileToUpload) {
       setLoadingSelector(true);
       setDragAndDropDisabled(true);
-      setInput('');
     }
   }, [fileToUpload]);
-
-  useEffect(() => {
-    if (isElementSelected()) {
-      setInput('');
-    }
-  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
 
   useEffect(() => {
     if (prevConversationId !== conversation.id) {
@@ -183,41 +177,43 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   const uploadFile = (file: File) => {
-    const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed =
-      source === 'instagram'
-        ? 8
-        : source === 'twilio.whatsapp' || source === 'google'
-        ? 5
-        : 15 || (source === 'chatplugin' ? 5 : 15);
+    if (file) {
+      const fileSizeInMB = file.size / Math.pow(1024, 2);
+      const maxFileSizeAllowed =
+        source === 'instagram'
+          ? 8
+          : source === 'twilio.whatsapp' || source === 'google'
+          ? 5
+          : 15 || (source === 'chatplugin' ? 5 : 15);
 
-    //size limit error
-    if (fileSizeInMB >= maxFileSizeAllowed) {
-      return setFileUploadErrorPopUp(
-        `Failed to upload the file.
+      //size limit error
+      if (fileSizeInMB >= maxFileSizeAllowed) {
+        return setFileUploadErrorPopUp(
+          `Failed to upload the file.
         The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
-      );
-    }
+        );
+      }
 
-    //unsupported file error
-    if (!getAttachmentType(file.name, source)) {
-      const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
+      //unsupported file error
+      if (!getAttachmentType(file.name, source)) {
+        const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
 
-      const errorMessage = `This file type is not supported by this source. 
+        const errorMessage = `This file type is not supported by this source. 
       Supported files: ${supportedFilesForSource}`;
 
-      return setFileUploadErrorPopUp(errorMessage);
-    }
+        return setFileUploadErrorPopUp(errorMessage);
+      }
 
-    setFileToUpload(file);
+      setFileToUpload(file);
+    }
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-    if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
     if (uploadedFileUrl) setUploadedFileUrl(null);
 
+    setIsFileLoaded(true);
     const file = event.target.files[0];
     return uploadFile(file);
   };
@@ -236,22 +232,51 @@ const MessageInput = (props: Props) => {
       setSelectedTemplate(null);
       setBlockSpam(true);
 
-      sendMessages(
-        selectedTemplate || selectedSuggestedReply
-          ? {
-              conversationId: conversation.id,
-              message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+      const message = {
+        conversationId: conversation.id,
+        message: {},
+      };
+
+      switch (source) {
+        case Source.facebook:
+        case Source.google:
+        case Source.twilioWhatsApp:
+        case Source.instagram:
+        case Source.chatPlugin:
+          if (selectedTemplate || selectedSuggestedReply) {
+            if (input.length > 0) {
+              sendMessages({
+                conversationId: conversation.id,
+                message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+              }),
+                (message.message = outboundMapper.getTextPayload(input));
+            } else {
+              message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content;
             }
-          : uploadedFileUrl
-          ? {
+          }
+          if (uploadedFileUrl && input.length == 0) {
+            message.message = outboundMapper.getAttachmentPayload(uploadedFileUrl);
+          }
+          if (!uploadedFileUrl && input.length > 0) {
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          if (uploadedFileUrl && input.length > 0) {
+            sendMessages({
               conversationId: conversation.id,
               message: outboundMapper.getAttachmentPayload(uploadedFileUrl),
-            }
-          : {
-              conversationId: conversation.id,
-              message: outboundMapper.getTextPayload(input),
-            }
-      ).then(() => {
+            });
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          break;
+        case Source.twilioSMS:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+        case Source.viber:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+      }
+
+      sendMessages(message).then(() => {
         setInput('');
         setBlockSpam(false);
         removeElementFromInput();
@@ -266,7 +291,7 @@ const MessageInput = (props: Props) => {
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (input.trim().length > 0 && !blockSpam) {
+      if ((input.trim().length > 0 || isElementSelected()) && !blockSpam) {
         sendMessage();
       }
     }
@@ -297,8 +322,6 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (input) setInput('');
-
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
     if (uploadedFileUrl) setUploadedFileUrl(null);
@@ -314,8 +337,6 @@ const MessageInput = (props: Props) => {
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-    if (input) setInput('');
 
     if (selectedTemplate) setSelectedTemplate(null);
 
@@ -341,6 +362,7 @@ const MessageInput = (props: Props) => {
 
     if (uploadedFileUrl) {
       setUploadedFileUrl(null);
+      setIsFileLoaded(false);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -382,63 +404,61 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!isElementSelected() && (
-              <>
-                <textarea
-                  className={styles.messageTextArea}
-                  ref={textAreaRef}
-                  rows={1}
-                  name="inputBar"
-                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
-                  autoFocus={channelConnected}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  data-cy={cyMessageTextArea}
-                  disabled={!!(!channelConnected || loadingSelector || fileUploadErrorPopUp)}
-                />
-                {loadingSelector && (
-                  <div className={styles.selectorLoader}>
-                    <SimpleLoader />
-                    <span>loading file... </span>
-                  </div>
-                )}
-
-                <InputOptions
-                  source={source}
-                  inputDisabled={!channelConnected}
-                  input={input}
-                  setInput={setInput}
-                  selectTemplate={selectTemplate}
-                  focusInput={focusInput}
-                  sendMessages={sendMessages}
-                  selectFile={selectFile}
-                  fileUploadErrorPopUp={fileUploadErrorPopUp}
-                  canSendMedia={canSendMedia}
-                  closeFileErrorPopUp={closeFileErrorPopUp}
-                  loadingSelector={loadingSelector}
-                />
-              </>
-            )}
-
-            {isElementSelected() && (
-              <>
-                <InputSelector
-                  message={
-                    selectedTemplate?.message ??
-                    selectedSuggestedReply?.message ??
-                    outboundMapper?.getAttachmentPayload(uploadedFileUrl)
-                  }
-                  source={source}
-                  messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
-                  removeElementFromInput={removeElementFromInput}
-                  contentResizedHeight={contentResizedHeight}
-                />
-              </>
-            )}
+            <div className={styles.contentInput}>
+              {loadingSelector && (
+                <div className={styles.selectorLoader}>
+                  <SimpleLoader />
+                  <span>loading file... </span>
+                </div>
+              )}
+              {isElementSelected() && (
+                <div className={styles.imagesContainer}>
+                  <InputSelector
+                    message={
+                      selectedTemplate?.message ??
+                      selectedSuggestedReply?.message ??
+                      outboundMapper?.getAttachmentPayload(uploadedFileUrl)
+                    }
+                    source={source}
+                    messageType={
+                      selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'
+                    }
+                    removeElementFromInput={removeElementFromInput}
+                    contentResizedHeight={selectTemplate ? 60 : contentResizedHeight}
+                  />
+                </div>
+              )}
+              <textarea
+                className={styles.messageTextArea}
+                ref={textAreaRef}
+                rows={1}
+                name="inputBar"
+                placeholder={channelConnected && 'Enter a message...'}
+                autoFocus={channelConnected}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                data-cy={cyMessageTextArea}
+                disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
+              />
+            </div>
+            <InputOptions
+              source={source}
+              inputDisabled={!channelConnected}
+              input={input}
+              setInput={setInput}
+              selectTemplate={selectTemplate}
+              focusInput={focusInput}
+              sendMessages={sendMessages}
+              selectFile={selectFile}
+              isFileLoaded={isFileLoaded}
+              canSendMedia={canSendMedia}
+              fileUploadErrorPopUp={fileUploadErrorPopUp}
+              closeFileErrorPopUp={closeFileErrorPopUp}
+              loadingSelector={loadingSelector}
+            />
           </div>
         </div>
-
         <div className={styles.sendDiv}>
           {!channelConnected && (
             <div className={styles.disconnectedChannelToolTip}>

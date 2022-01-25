@@ -48,8 +48,13 @@ export const InputSelector = (props: InputSelectorProps) => {
 
     if (scaleRatio <= 0.9) {
       if (scaleRatio < 0.5) {
-        iconSize = scaleRatio > 0.3 ? '18px' : '36px';
-        buttonSize = scaleRatio > 0.3 ? '36px' : '72px';
+        iconSize = scaleRatio > 0.3 ? '24px' : '36px';
+        buttonSize = scaleRatio > 0.3 ? '56px' : '72px';
+
+        if (messageType == 'template') {
+          iconSize = '48px';
+          buttonSize = '116px';
+        }
       } else {
         iconSize = '18px';
         buttonSize = '36px';

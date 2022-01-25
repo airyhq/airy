@@ -120,7 +120,6 @@ export const InputOptions = (props: Props) => {
   };
 
   const toggleFileSelector = () => {
-    console.log(inputFile);
     if (isShowingEmojiDrawer || isShowingTemplateModal) {
       setIsShowingEmojiDrawer(false);
       setIsShowingFileSelector(false);

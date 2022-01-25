@@ -1,5 +1,5 @@
 import React, {createRef, useEffect} from 'react';
-import {Button, Dropdown, Input, ListenOutsideClick, Toggle} from 'components';
+import {Button, Dropdown, ErrorNotice, Input, ListenOutsideClick, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
@@ -19,11 +19,13 @@ enum BubbleState {
 
 interface CustomiseSectionProps {
   channelId: string;
-  host: string;
+  host?: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const useLocalState = getUseLocalState(channelId);
+  const defaultHost = 'http://airy.core';
+  const [customHost, setCustomHost] = useLocalState('customHost', host || defaultHost);
   const [headerText, setHeaderText] = useLocalState('headerText', '');
   const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
   const [startNewConversationText, setStartNewConversationText] = useLocalState('startNewConversationText', '');
@@ -202,7 +204,6 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(hideFiles && {hideFiles: hideFiles}),
     },
   };
-
   const copyToClipboard = () => {
     codeAreaRef.current?.select();
     document.execCommand('copy');
@@ -213,7 +214,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         (function(w, d, s, n) {
           w[n] = w[n] || {};
           w[n].channelId = '${channelId}';
-          w[n].host = '${host}';
+          w[n].host = '${customHost}';
           ${getTemplateConfig()}
           var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
@@ -232,7 +233,16 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         <div>
           <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={getCode()} />
         </div>
-        <Button onClick={copyToClipboard}>Copy code</Button>
+        <div className={styles.copyButtonHostName}>
+          <Button onClick={copyToClipboard} disabled={customHost.length == 0}>
+            Copy code
+          </Button>
+          {customHost.length == 0 && (
+            <div style={{marginLeft: '8px'}}>
+              <ErrorNotice theme="warning">You need to add a Host URL</ErrorNotice>
+            </div>
+          )}
+        </div>
       </div>
       <div className={styles.customiseContainer}>
         <p>Header Text Color</p>
@@ -703,6 +713,18 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSendMessageIconUrl(e.target.value)}
           label="Input Icon URL"
           placeholder="(optionally) add an image url"
+          height={32}
+          fontClass="font-base"
+          showErrors={false}
+        />
+        <Input
+          type="text"
+          name="customHostUrl"
+          value={customHost}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomHost(e.target.value)}
+          label="Custom Host URL"
+          placeholder={`${defaultHost}`}
+          required={true}
           height={32}
           fontClass="font-base"
           showErrors={false}

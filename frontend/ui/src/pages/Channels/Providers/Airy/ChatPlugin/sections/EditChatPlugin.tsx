@@ -11,7 +11,7 @@ import {cyChannelsChatPluginFormNameInput} from 'handles';
 
 interface EditChatPluginProps {
   channel: Channel;
-  host: string;
+  host?: string;
   updateConnection(displayName: string, imageUrl?: string): void;
 }
 

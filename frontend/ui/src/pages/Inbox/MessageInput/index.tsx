@@ -12,7 +12,7 @@ import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
 import {ConversationRouteProps} from '../index';
-import {StateModel} from '../../../reducers';
+import {isComponentHealthy, StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
 import {getConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
@@ -56,6 +56,7 @@ export interface SelectedSuggestedReply {
 }
 
 const contentResizedHeight = 100;
+const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.whatsapp'];
 
 const MessageInput = (props: Props) => {
   const {
@@ -88,6 +89,8 @@ const MessageInput = (props: Props) => {
   const sendButtonRef = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
+
+  const canSendMedia = isComponentHealthy(config, 'media-resolver') && sourcesWithAttachments.indexOf(source) !== -1;
 
   useEffect(() => {
     if (loadingSelector && fileToUpload) {
@@ -154,19 +157,12 @@ const MessageInput = (props: Props) => {
   }, [conversation.id]);
 
   useEffect(() => {
-    const sendingAttachmentEnabled =
-      config.components['media-resolver'].enabled &&
-      (source === 'facebook' ||
-        source === 'instagram' ||
-        source === 'google' ||
-        source === 'twilio.whatsapp' ||
-        source === 'chatplugin');
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
-    } else if (sendingAttachmentEnabled) {
+    } else if (canSendMedia) {
       setDragAndDropDisabled(false);
     }
-  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl, config]);
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl, canSendMedia]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -399,7 +395,7 @@ const MessageInput = (props: Props) => {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected || loadingSelector || fileUploadErrorPopUp ? true : false}
+                  disabled={!!(!channelConnected || loadingSelector || fileUploadErrorPopUp)}
                 />
                 {loadingSelector && (
                   <div className={styles.selectorLoader}>
@@ -418,7 +414,7 @@ const MessageInput = (props: Props) => {
                   sendMessages={sendMessages}
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
-                  mediaResolverComponentsConfig={config.components['media-resolver']}
+                  canSendMedia={canSendMedia}
                   closeFileErrorPopUp={closeFileErrorPopUp}
                   loadingSelector={loadingSelector}
                 />

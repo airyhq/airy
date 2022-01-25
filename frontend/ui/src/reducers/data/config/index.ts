@@ -8,6 +8,9 @@ export type Config = {
   components: {[key: string]: {enabled: boolean; healthy: boolean}};
 };
 
+export const isComponentHealthy = (config: Config, component: string): boolean =>
+  config.components?.[component]?.healthy;
+
 const defaultState = {
   components: {},
 };

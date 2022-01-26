@@ -40,14 +40,9 @@ import {
   CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {useNavigate} from 'react-router-dom';
-import {Config, StateModel} from '../../../reducers';
+import {StateModel} from '../../../reducers';
 import {allChannelsConnected} from '../../../selectors/channels';
 import {useSelector} from 'react-redux';
-
-type MainPageProps = {
-  channels: Channel[];
-  config: Config;
-};
 
 export type SourceInfo = {
   type: Source;

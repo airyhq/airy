@@ -2,11 +2,7 @@ import React, {useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {debounce} from 'lodash-es';
 
-import {
-  newestConversationFirst,
-  newestFilteredConversationFirst,
-  useCurrentConversation,
-} from '../../../selectors/conversations';
+import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {fetchNextConversationPage} from '../../../actions/conversations';
 import {fetchNextFilteredPage} from '../../../actions/conversationsFilter';
 

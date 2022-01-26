@@ -67,7 +67,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const {
     tags,
     createTag,
-    conversation,
     listTags,
     addTagToConversation,
     removeTagFromConversation,

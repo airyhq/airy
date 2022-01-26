@@ -31,7 +31,7 @@ import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.GENDER;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.LOCALE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ORGANIZATION_NAME;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.SUB_CONTACTS;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.MERGE_HISTORY;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TIMEZONE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TITLE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.VIA;
@@ -55,7 +55,7 @@ public class Contact implements Serializable {
     private Address address;
     private Map<UUID, String> conversations;
     private JsonNode metadata;
-    private List<Contact> subContacts;
+    private List<Contact> mergeHistory;
 
     @Data
     @Builder(toBuilder = true)
@@ -141,7 +141,7 @@ public class Contact implements Serializable {
         public static String VIA = "via";
         public static String CONVERSATIONS = "conversations";
         public static String METADATA = "metadata";
-        public static String SUB_CONTACTS = "subContacts";
+        public static String MERGE_HISTORY = "mergeHistory";
 
         public static String ADDRESS = "address";
 
@@ -185,8 +185,8 @@ public class Contact implements Serializable {
                 .timezone(Optional.ofNullable(this.getTimezone()).orElse(c.getTimezone()))
                 .title(Optional.ofNullable(this.getTitle()).orElse(c.getTitle()))
                 .via(Optional.ofNullable(this.getVia()).orElse(c.getVia()))
-                // Aggregate subcontacts
-                .subContacts(Stream.concat(this.getSubContacts().stream(), c.getSubContacts().stream()).collect(Collectors.toList()))
+                // Aggregate mergehistory
+                .mergeHistory(Stream.concat(this.getMergeHistory().stream(), c.getMergeHistory().stream()).collect(Collectors.toList()))
                 .build();
     }
 
@@ -227,12 +227,12 @@ public class Contact implements Serializable {
         if (address != null) {
             metadata.addAll(address.toMetadata(id));
         }
-        if (subContacts != null && !subContacts.isEmpty()) {
+        if (mergeHistory != null && !mergeHistory.isEmpty()) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
-                final String subContactsBlob = mapper.writeValueAsString(subContacts);
+                final String mergeHistoryBlob = mapper.writeValueAsString(mergeHistory);
 
-                metadata.add(newContactMetadata(id, SUB_CONTACTS, subContactsBlob));
+                metadata.add(newContactMetadata(id, MERGE_HISTORY, mergeHistoryBlob));
             } catch (JsonProcessingException e) {
                 //FIXME: not sure what to do here
             }
@@ -263,14 +263,14 @@ public class Contact implements Serializable {
 
         final boolean hasAddress = values.stream().anyMatch(metadata -> metadata.getKey().startsWith(ADDRESS));
 
-        final String subContactsBlob = map.getMetadataValue(SUB_CONTACTS);
-        List<Contact> subContacts = null;
-        if (subContactsBlob != "") {
+        final String mergeHistoryBlob = map.getMetadataValue(MERGE_HISTORY);
+        List<Contact> mergeHistory = null;
+        if (mergeHistoryBlob != "") {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
 
-                subContacts = mapper.readValue(
-                        subContactsBlob,
+                mergeHistory = mapper.readValue(
+                        mergeHistoryBlob,
                         new TypeReference<List<Contact>>() {});
             } catch (JsonProcessingException e) {
                 //FIXME: not sure what to do here
@@ -291,7 +291,7 @@ public class Contact implements Serializable {
                 .via(via.size() > 0 ? via : null)
                 .address(hasAddress ? Address.fromMetadataMap(map) : null)
                 .conversations(conversations.size() > 0 ? conversations : null)
-                .subContacts(subContacts)
+                .mergeHistory(mergeHistory)
                 .build();
     }
 

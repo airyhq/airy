@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
+import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.metadata.MetadataRepository.*;
 import static java.util.stream.Collectors.toList;
 
@@ -208,7 +209,7 @@ public class ConversationsController {
         final Metadata noteTime = newConversationMetadata(
                 conversationId,
                 String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"),
-                String.valueOf(Instant.now().toEpochMilli())
+                isoFromMillis(Instant.now().toEpochMilli())
         );
 
         try {

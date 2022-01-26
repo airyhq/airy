@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -169,13 +170,22 @@ public class Contact implements Serializable {
 
     @JsonIgnore
     public Contact merge(Contact c) {
+        // Concatenate merge history of both contacts
+        final List<Contact> history = Stream.concat(
+                Optional.ofNullable(this.getMergeHistory()).orElseGet(Collections::emptyList).stream(),
+                Optional.ofNullable(c.getMergeHistory()).orElseGet(Collections::emptyList).stream())
+            .collect(Collectors.toList());
+
+        // Add source contact in this case c (without its history) to the history list.
+        history.add(c.toBuilder().mergeHistory(null).build());
+
         return this.toBuilder()
                 .metadata(Optional.ofNullable(this.getMetadata()).orElse(c.getMetadata()))
                 .address(this.getAddress().merge(c.getAddress()))
                 // Aggregate conversations
                 .conversations(Stream.concat(
-                            this.getConversations().entrySet().stream(),
-                            c.getConversations().entrySet().stream())
+                            Optional.ofNullable(this.getConversations()).orElseGet(Collections::emptyMap).entrySet().stream(),
+                            Optional.ofNullable(c.getConversations()).orElseGet(Collections::emptyMap).entrySet().stream())
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)))
                 .displayName(Optional.ofNullable(this.getDisplayName()).orElse(c.getDisplayName()))
                 .avatarUrl(Optional.ofNullable(this.getAvatarUrl()).orElse(c.getAvatarUrl()))
@@ -186,7 +196,7 @@ public class Contact implements Serializable {
                 .title(Optional.ofNullable(this.getTitle()).orElse(c.getTitle()))
                 .via(Optional.ofNullable(this.getVia()).orElse(c.getVia()))
                 // Aggregate mergehistory
-                .mergeHistory(Stream.concat(this.getMergeHistory().stream(), c.getMergeHistory().stream()).collect(Collectors.toList()))
+                .mergeHistory(history)
                 .build();
     }
 

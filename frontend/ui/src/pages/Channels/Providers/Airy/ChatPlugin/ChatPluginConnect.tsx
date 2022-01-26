@@ -1,11 +1,11 @@
 import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {env} from '../../../../../env';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
-import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
+import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
 import {Button, LinkButton, InfoButton} from 'components';
 import {Channel} from 'model';
@@ -33,14 +33,9 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-interface ChatPluginRouterProps {
-  channelId?: string;
-}
-
-type ChatPluginProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<ChatPluginRouterProps>;
-
-const ChatPluginConnect = (props: ChatPluginProps) => {
-  const channelId = props.match.params.channelId;
+const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
+  const {channelId} = useParams();
+  const navigate = useNavigate();
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -51,13 +46,13 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         }),
       })
       .then(() => {
-        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
+        navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
       });
   };
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
+      navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
     });
   };
 
@@ -67,9 +62,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     }
   };
 
-  const openNewPage = () => {
-    props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
-  };
+  const openNewPage = () => navigate(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
 
   const OverviewSection = () => (
     <div className={styles.overview}>
@@ -111,7 +104,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }
     if (channelId?.length > 0) {
-      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
+      const channel: Channel = props.channels.find((channel: Channel) => channel.id === channelId);
       return <EditChatPlugin channel={channel} host={env.API_HOST} updateConnection={updateConnection} />;
     }
     return <OverviewSection />;
@@ -135,7 +128,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           text="more information about this source"
           color="grey"
         />
-        <LinkButton onClick={props.history.goBack} type="button">
+        <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
           Back
         </LinkButton>
@@ -145,4 +138,4 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   );
 };
 
-export default connector(withRouter(ChatPluginConnect));
+export default connector(ChatPluginConnect);

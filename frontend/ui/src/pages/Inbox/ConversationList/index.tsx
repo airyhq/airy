@@ -1,9 +1,12 @@
 import React, {useRef} from 'react';
-import {withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {debounce} from 'lodash-es';
 
-import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
+import {
+  newestConversationFirst,
+  newestFilteredConversationFirst,
+  useCurrentConversation,
+} from '../../../selectors/conversations';
 import {fetchNextConversationPage} from '../../../actions/conversations';
 import {fetchNextFilteredPage} from '../../../actions/conversationsFilter';
 
@@ -15,8 +18,8 @@ import NoConversations from '../NoConversations';
 import {StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
-import {ConversationRouteProps} from '../index';
 import {cyConversationList} from 'handles';
+import {useParams} from 'react-router-dom';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
@@ -25,8 +28,7 @@ const mapDispatchToProps = {
   fetchNextFiltered: fetchNextFilteredPage,
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-  currentConversationId: ownProps.match.params.conversationId,
+const mapStateToProps = (state: StateModel) => ({
   conversations: newestConversationFirst(state),
   filteredConversations: newestFilteredConversationFirst(state),
   conversationsPaginationData: state.data.conversations.all.paginationData,
@@ -39,7 +41,6 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
   const {
-    currentConversationId,
     conversations,
     filteredConversations,
     conversationsPaginationData,
@@ -50,6 +51,7 @@ const ConversationList = (props: ConversationListProps) => {
   } = props;
   const conversationListRef = useRef(null);
 
+  const {conversationId} = useParams();
   const hasFilter = Object.keys(currentFilter || {}).length > 0;
   const items = hasFilter ? filteredConversations : conversations;
   const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
@@ -107,7 +109,7 @@ const ConversationList = (props: ConversationListProps) => {
                   <ConversationListItem
                     key={conversation.id}
                     conversation={conversation}
-                    active={conversation.id === currentConversationId}
+                    active={conversation.id === conversationId}
                   />
                 ))}
             </>
@@ -118,4 +120,4 @@ const ConversationList = (props: ConversationListProps) => {
   );
 };
 
-export default withRouter(connector(ConversationList));
+export default connector(ConversationList);

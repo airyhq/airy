@@ -4,23 +4,35 @@ import {Conversation} from 'model';
 import {MergedConversation, StateModel} from '../reducers';
 import {ConversationFilter} from '../reducers/data/conversationsFilter';
 import {ConversationMap} from '../reducers/data/conversations';
-import {ConversationRouteProps} from '../pages/Inbox';
+import {useParams} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
-export const getCurrentConversation = (state: StateModel, props: ConversationRouteProps) =>
-  state.data.conversations.all.items[props.match.params.conversationId];
+export const getCurrentConversation = conversationId => (state: StateModel) =>
+  state.data.conversations.all.items[conversationId];
 
-export const getCurrentFilteredConversation = (state: StateModel, props: ConversationRouteProps) =>
-  state.data.conversations.filtered.items[props.match.params.conversationId];
+export const getCurrentFilteredConversation = conversationId => (state: StateModel) =>
+  state.data.conversations.filtered.items[conversationId];
 
-export const getConversation = (state: StateModel, props: ConversationRouteProps) => {
-  const currentConversation = getCurrentConversation(state, props);
-  const currentFilteredConversation = getCurrentFilteredConversation(state, props);
-  if (!currentConversation && !currentFilteredConversation) return undefined;
-  return {...currentConversation, ...currentFilteredConversation};
+export const getConversationSelector = conversationId => {
+  const currentConversationFn = getCurrentConversation(conversationId);
+  const currentFilteredConversationFn = getCurrentFilteredConversation(conversationId);
+  return (state: StateModel) => {
+    const currentConversation = currentConversationFn(state);
+    const currentFilteredConversation = currentFilteredConversationFn(state);
+    if (!currentConversation && !currentFilteredConversation) return undefined;
+    return {...currentConversation, ...currentFilteredConversation};
+  };
 };
 
-export const getCurrentMessages = (state: StateModel, props: ConversationRouteProps) =>
-  state.data.messages.all[props.match.params.conversationId];
+export const useCurrentConversation = () => {
+  const {conversationId} = useParams();
+  return useSelector(getConversationSelector(conversationId));
+};
+
+export const useCurrentMessages = () => {
+  const {conversationId} = useParams();
+  return useSelector((state: StateModel) => state.data.messages.all[conversationId]);
+};
 
 // Filter out conversations that only have metadata
 export const allConversations = (state: StateModel): MergedConversation[] =>

@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {connectInstagramChannel} from '../../../../actions/channel';
-import {StateModel} from '../../../../reducers';
+import {connectInstagramChannel} from '../../../../actions';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
@@ -12,24 +10,19 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.
 import styles from './InstagramConnect.module.scss';
 
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
-
-type InstagramProps = {
-  channelId?: string;
-} & RouteComponentProps<{channelId: string}> &
-  ConnectedProps<typeof connector>;
-
-const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
-  channel: state.data.channels[props.match.params.channelId],
-});
+import {useCurrentChannel} from '../../../../selectors/channels';
+import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
   connectInstagramChannel,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
-const InstagramConnect = (props: InstagramProps) => {
-  const {connectInstagramChannel, channel} = props;
+const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
+  const {connectInstagramChannel} = props;
+  const channel = useCurrentChannel();
+  const navigate = useNavigate();
   const [id, setId] = useState(channel?.metadata?.pageId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
@@ -65,7 +58,7 @@ const InstagramConnect = (props: InstagramProps) => {
 
     connectInstagramChannel(connectPayload)
       .then(() => {
-        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/instagram');
+        navigate(CHANNELS_CONNECTED_ROUTE + '/instagram', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');
@@ -80,9 +73,9 @@ const InstagramConnect = (props: InstagramProps) => {
           link="https://airy.co/docs/core/sources/instagram"
           text="more information about this source"
           color="grey"
-        ></InfoButton>
+        />
 
-        <LinkButton onClick={props.history.goBack} type="button">
+        <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
           Back
         </LinkButton>
@@ -150,4 +143,4 @@ const InstagramConnect = (props: InstagramProps) => {
   );
 };
 
-export default withRouter(connector(InstagramConnect));
+export default connector(InstagramConnect);

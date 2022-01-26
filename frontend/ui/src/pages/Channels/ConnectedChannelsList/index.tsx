@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import _, {useSelector} from 'react-redux';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
 import {StateModel} from '../../../reducers';
@@ -26,25 +26,17 @@ import {
   CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
-type ConnectedChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
-
-const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps<{source: string}>) => ({
-  channels: Object.values(allChannels(state)).filter(
-    (channel: Channel) => channel.source === ownProps.match.params.source
-  ),
-});
-
-const connector = connect(mapStateToProps, null);
-
-const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
-  const {channels} = props;
+const ConnectedChannelsList = () => {
+  const {source} = useParams();
+  const navigate = useNavigate();
+  const channels = useSelector((state: StateModel) => {
+    return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
+  });
 
   const [name, setName] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
-
-  const source = props.match.params.source;
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -112,7 +104,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
                 <SearchIcon className={styles.searchIcon} />
               )}
             </button>
-            <button onClick={() => props.history.push(path)}>
+            <button onClick={() => navigate(path)}>
               <PlusIcon className={styles.plusIcon} />
             </button>
           </div>
@@ -144,4 +136,4 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   );
 };
 
-export default withRouter(connector(ConnectedChannelsList));
+export default ConnectedChannelsList;

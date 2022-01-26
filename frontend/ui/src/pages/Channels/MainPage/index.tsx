@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Source, Channel, Config} from 'model';
+import {Source, Channel} from 'model';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {InstagramRequirementsDialog} from '../Providers/Instagram/InstagramRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
@@ -40,6 +39,10 @@ import {
   CHANNELS_GOOGLE_ROUTE,
   CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
+import {useNavigate} from 'react-router-dom';
+import {Config, StateModel} from '../../../reducers';
+import {allChannelsConnected} from '../../../selectors/channels';
+import {useSelector} from 'react-redux';
 
 type MainPageProps = {
   channels: Channel[];
@@ -141,8 +144,9 @@ const SourcesInfo: SourceInfo[] = [
   },
 ];
 
-const MainPage = (props: MainPageProps & RouteComponentProps) => {
-  const {channels, config} = props;
+const MainPage = () => {
+  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const config = useSelector((state: StateModel) => state.data.config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
@@ -162,9 +166,10 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
   };
 
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
+  const navigate = useNavigate();
 
   return (
-    <>
+    <div className={styles.channelsWrapper}>
       <div className={styles.channelsHeadline}>
         <div>
           <h1 className={styles.channelsHeadlineText}>Channels</h1>
@@ -184,7 +189,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
                 if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                  props.history.push(infoItem.newChannelRoute);
+                  navigate(infoItem.newChannelRoute);
                 } else {
                   setDisplayDialogFromSource(infoItem.type);
                 }
@@ -194,8 +199,8 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
-export default withRouter(MainPage);
+export default MainPage;

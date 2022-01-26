@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions/channel';
+import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions';
 
 import {Button, Input, LinkButton, UrlInputField, InfoButton} from 'components';
 import {Channel, Source} from 'model';
@@ -11,6 +10,7 @@ import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg'
 import styles from './TwilioConnect.module.scss';
 
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {useNavigate} from 'react-router-dom';
 
 type TwilioConnectProps = {
   channel?: Channel;
@@ -18,16 +18,16 @@ type TwilioConnectProps = {
   pageTitle: string;
   buttonText: string;
   infoLink: string;
-} & ConnectedProps<typeof connector> &
-  RouteComponentProps;
+} & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 
 const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
-  const {channel, source, pageTitle, buttonText, infoLink, history, connectTwilioWhatsapp, connectTwilioSms} = props;
+  const {channel, source, pageTitle, buttonText, infoLink, connectTwilioWhatsapp, connectTwilioSms} = props;
 
+  const navigate = useNavigate();
   const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
   const [nameInput, setNameInput] = useState(channel?.metadata?.name || '');
   const [imageUrlInput, setImageUrlInput] = useState(channel?.metadata?.imageUrl || '');
@@ -55,15 +55,15 @@ const TwilioConnect = (props: TwilioConnectProps) => {
 
     if (source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload).then(() => {
-        history.replace({
-          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,
+        navigate(CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`, {
+          replace: true,
           state: {source: 'twilio.whatsapp'},
         });
       });
     }
     if (source === Source.twilioSMS) {
       connectTwilioSms(connectPayload).then(() => {
-        history.replace(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`);
+        navigate(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`, {replace: true, state: {source: 'twilio.sms'}});
       });
     }
   };
@@ -72,8 +72,8 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>{pageTitle}</h1>
       <div>
-        <InfoButton link={infoLink} text="more information about this source" color="grey"></InfoButton>
-        <LinkButton onClick={history.goBack} type="button">
+        <InfoButton link={infoLink} text="more information about this source" color="grey" />
+        <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeft className={styles.backIcon} />
           Back
         </LinkButton>
@@ -128,4 +128,4 @@ const TwilioConnect = (props: TwilioConnectProps) => {
   );
 };
 
-export default withRouter(connector(TwilioConnect));
+export default connector(TwilioConnect);

@@ -1,20 +1,15 @@
 import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
-import {conversationState} from '../../../../actions/conversations';
-import {setFilter} from '../../../../actions/conversationsFilter';
+import {conversationState, setFilter} from '../../../../actions';
 import {StateModel} from '../../../../reducers';
 import {cyConversationStatus} from 'handles';
 import {SimpleLoader} from 'components';
+import {useCurrentConversation} from '../../../../selectors/conversations';
 
-const mapStateToProps = (state: StateModel, ownProps) => {
-  return {
-    currentConversationState:
-      state.data.conversations.all.items[ownProps.match.params.conversationId]?.metadata?.state || 'OPEN',
-    currentFilter: state.data.conversations.filtered.currentFilter,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  currentFilter: state.data.conversations.filtered.currentFilter,
+});
 
 const mapDispatchToProps = {
   conversationState,
@@ -23,11 +18,11 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type Props = ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
+function ConversationStatus(props: ConnectedProps<typeof connector>) {
+  const {conversationState, currentFilter, setFilter} = props;
 
-function ConversationStatus(props: Props) {
-  const {currentConversationState, conversationState, currentFilter, setFilter} = props;
-
+  const conversation = useCurrentConversation();
+  const currentConversationState = conversation?.metadata?.state || 'OPEN';
   const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -57,15 +52,12 @@ function ConversationStatus(props: Props) {
       ) : (
         <>
           <div className={styles.closedButtonWrapper}>
-            <div
-              className={styles.closedButton}
-              onClick={() => toggleState(props.match.params.conversationId, 'CLOSED')}
-            >
+            <div className={styles.closedButton} onClick={() => toggleState(conversation?.id, 'CLOSED')}>
               Closed
             </div>
           </div>
           <div className={styles.openButtonWrapper}>
-            <div className={styles.openButton} onClick={() => toggleState(props.match.params.conversationId, 'OPEN')}>
+            <div className={styles.openButton} onClick={() => toggleState(conversation?.id, 'OPEN')}>
               Open
             </div>
           </div>
@@ -75,4 +67,4 @@ function ConversationStatus(props: Props) {
   );
 }
 
-export default withRouter(connector(ConversationStatus));
+export default connector(ConversationStatus);

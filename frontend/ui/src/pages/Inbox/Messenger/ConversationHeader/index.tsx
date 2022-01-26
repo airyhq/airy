@@ -1,21 +1,15 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Avatar} from 'components';
 
 import ConversationStatus from '../ConversationStatus';
 
 import styles from './index.module.scss';
-import {getConversation} from '../../../../selectors/conversations';
 import IconChannel from '../../../../components/IconChannel';
+import {useCurrentConversation} from '../../../../selectors/conversations';
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    conversation: getConversation(state, ownProps),
-  };
-};
-
-const ConversationHeader = ({conversation}) => {
+const ConversationHeader = () => {
+  const conversation = useCurrentConversation();
   const participant = conversation.metadata.contact;
   const channel = conversation.channel;
 
@@ -45,4 +39,4 @@ const ConversationHeader = ({conversation}) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(ConversationHeader));
+export default ConversationHeader;

@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
 
 import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
 
-import {setSearch, resetFilteredConversationAction} from '../../../actions/conversationsFilter';
+import {setSearch, resetFilteredConversationAction} from '../../../actions';
 
 import {ReactComponent as IconSearch} from 'assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
@@ -30,7 +29,7 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConversationListHeaderProps = ConnectedProps<typeof connector> & RouteComponentProps;
+type ConversationListHeaderProps = ConnectedProps<typeof connector>;
 
 const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const {setSearch, resetFilteredConversationAction, currentFilter} = props;

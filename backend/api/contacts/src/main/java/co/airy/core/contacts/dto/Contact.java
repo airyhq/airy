@@ -275,7 +275,7 @@ public class Contact implements Serializable {
 
         final String mergeHistoryBlob = map.getMetadataValue(MERGE_HISTORY);
         List<Contact> mergeHistory = null;
-        if (mergeHistoryBlob != "") {
+        if (mergeHistoryBlob != null && mergeHistoryBlob != "") {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
 

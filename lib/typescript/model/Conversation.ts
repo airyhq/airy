@@ -2,7 +2,8 @@ import {Contact} from './Contact';
 import {Message} from './Message';
 import {Metadata} from './Metadata';
 import {Channel} from './Channel';
-import {Tag as TagModel, Note as NoteModel} from 'model';
+import {Tag as TagModel} from './Tag';
+import {Note as NoteModel} from './Note';
 import {difference} from 'lodash-es';
 
 export type ConversationMetadata = Metadata & {
@@ -36,7 +37,7 @@ export function conversationNotes(conversation: Conversation) {
         text: conversation.metadata.notes[noteId]['text'],
         timestamp: conversation.metadata.notes[noteId]['timestamp']
           ? new Date(parseInt(conversation.metadata.notes[noteId]['timestamp']))
-          : '',
+          : null,
       } as NoteModel;
     })
     .filter(note => note !== undefined);

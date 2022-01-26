@@ -2,7 +2,7 @@ import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
-import {env} from '../../../../../env';
+import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
@@ -88,8 +88,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                 type="button"
                 onClick={() => {
                   disconnectChannel(channel);
-                }}
-              >
+                }}>
                 Delete
               </LinkButton>
             </div>
@@ -104,8 +103,8 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }
     if (channelId?.length > 0) {
-      const channel: Channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      return <EditChatPlugin channel={channel} host={env.API_HOST} updateConnection={updateConnection} />;
+      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
+      return <EditChatPlugin channel={channel} host={apiHostUrl} updateConnection={updateConnection} />;
     }
     return <OverviewSection />;
   };

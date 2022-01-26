@@ -27,9 +27,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       );
 
     case 'video':
-      return (
-        <Video videoUrl={content.videoUrl} text={content?.text} fromContact={props.message.fromContact || false} />
-      );
+      return <Video videoUrl={content.videoUrl} />;
 
     case 'audio':
       return <Audio audioUrl={content.audioUrl} />;

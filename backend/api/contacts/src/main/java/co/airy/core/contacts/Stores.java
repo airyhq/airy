@@ -90,6 +90,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         // 1. Auto create contacts if they don't exist
         // 2. Populate contact metadata with conversation metadata (if missing)
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> message != null)
                 .groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {

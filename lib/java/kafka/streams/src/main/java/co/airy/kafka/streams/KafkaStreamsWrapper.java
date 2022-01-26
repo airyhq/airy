@@ -176,7 +176,7 @@ public class KafkaStreamsWrapper {
         int retries = 0;
         do {
             try {
-                if (!streams.state().equals(KafkaStreams.State.RUNNING)) {
+                if (streams == null || !streams.state().equals(KafkaStreams.State.RUNNING)) {
                     throw new InvalidStateStoreException("Streams thread is not running");
                 }
                 return streams.store(StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore()));

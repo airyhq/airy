@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
-import {withRouter} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
@@ -8,14 +7,12 @@ import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
-import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
+import {ReactComponent as PaperPlane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
-import {ConversationRouteProps} from '../index';
 import {isComponentHealthy, StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
-import {getConversation} from '../../../selectors/conversations';
-import {getCurrentMessages} from '../../../selectors/conversations';
+import {useCurrentConversation, useCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
@@ -28,9 +25,7 @@ import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-  conversation: getConversation(state, ownProps),
-  messages: getCurrentMessages(state, ownProps),
+const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
   listTemplates,
 });
@@ -55,13 +50,12 @@ export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const contentResizedHeight = 100;
+const contentResizedHeight = 120;
 const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.whatsapp'];
 
 const MessageInput = (props: Props) => {
   const {
     source,
-    conversation,
     suggestions,
     showSuggestedReplies,
     hideSuggestedReplies,
@@ -72,6 +66,8 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
+  const conversation = useCurrentConversation();
+  const messages = useCurrentMessages();
   const outboundMapper: any = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 
@@ -83,6 +79,7 @@ const MessageInput = (props: Props) => {
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -131,15 +128,8 @@ const MessageInput = (props: Props) => {
     if (fileToUpload) {
       setLoadingSelector(true);
       setDragAndDropDisabled(true);
-      setInput('');
     }
   }, [fileToUpload]);
-
-  useEffect(() => {
-    if (isElementSelected()) {
-      setInput('');
-    }
-  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
 
   useEffect(() => {
     if (prevConversationId !== conversation.id) {
@@ -183,41 +173,43 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   const uploadFile = (file: File) => {
-    const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed =
-      source === 'instagram'
-        ? 8
-        : source === 'twilio.whatsapp' || source === 'google'
-        ? 5
-        : 15 || (source === 'chatplugin' ? 5 : 15);
+    if (file) {
+      const fileSizeInMB = file.size / Math.pow(1024, 2);
+      const maxFileSizeAllowed =
+        source === 'instagram'
+          ? 8
+          : source === 'twilio.whatsapp' || source === 'google'
+          ? 5
+          : 15 || (source === 'chatplugin' ? 5 : 15);
 
-    //size limit error
-    if (fileSizeInMB >= maxFileSizeAllowed) {
-      return setFileUploadErrorPopUp(
-        `Failed to upload the file.
+      //size limit error
+      if (fileSizeInMB >= maxFileSizeAllowed) {
+        return setFileUploadErrorPopUp(
+          `Failed to upload the file.
         The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
-      );
-    }
+        );
+      }
 
-    //unsupported file error
-    if (!getAttachmentType(file.name, source)) {
-      const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
+      //unsupported file error
+      if (!getAttachmentType(file.name, source)) {
+        const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
 
-      const errorMessage = `This file type is not supported by this source. 
+        const errorMessage = `This file type is not supported by this source. 
       Supported files: ${supportedFilesForSource}`;
 
-      return setFileUploadErrorPopUp(errorMessage);
-    }
+        return setFileUploadErrorPopUp(errorMessage);
+      }
 
-    setFileToUpload(file);
+      setFileToUpload(file);
+    }
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-    if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
     if (uploadedFileUrl) setUploadedFileUrl(null);
 
+    setIsFileLoaded(true);
     const file = event.target.files[0];
     return uploadFile(file);
   };
@@ -236,22 +228,51 @@ const MessageInput = (props: Props) => {
       setSelectedTemplate(null);
       setBlockSpam(true);
 
-      sendMessages(
-        selectedTemplate || selectedSuggestedReply
-          ? {
-              conversationId: conversation.id,
-              message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+      const message = {
+        conversationId: conversation.id,
+        message: {},
+      };
+
+      switch (source) {
+        case Source.facebook:
+        case Source.google:
+        case Source.twilioWhatsApp:
+        case Source.instagram:
+        case Source.chatPlugin:
+          if (selectedTemplate || selectedSuggestedReply) {
+            if (input.length > 0) {
+              sendMessages({
+                conversationId: conversation.id,
+                message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+              }),
+                (message.message = outboundMapper.getTextPayload(input));
+            } else {
+              message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content;
             }
-          : uploadedFileUrl
-          ? {
+          }
+          if (uploadedFileUrl && input.length == 0) {
+            message.message = outboundMapper.getAttachmentPayload(uploadedFileUrl);
+          }
+          if (!uploadedFileUrl && input.length > 0) {
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          if (uploadedFileUrl && input.length > 0) {
+            sendMessages({
               conversationId: conversation.id,
               message: outboundMapper.getAttachmentPayload(uploadedFileUrl),
-            }
-          : {
-              conversationId: conversation.id,
-              message: outboundMapper.getTextPayload(input),
-            }
-      ).then(() => {
+            });
+            message.message = outboundMapper.getTextPayload(input);
+          }
+          break;
+        case Source.twilioSMS:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+        case Source.viber:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
+      }
+
+      sendMessages(message).then(() => {
         setInput('');
         setBlockSpam(false);
         removeElementFromInput();
@@ -266,21 +287,21 @@ const MessageInput = (props: Props) => {
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (input.trim().length > 0 && !blockSpam) {
+      if ((input.trim().length > 0 || isElementSelected()) && !blockSpam) {
         sendMessage();
       }
     }
   };
 
   const getLastMessageWithSuggestedReplies = useCallback(() => {
-    const lastMessages = props.messages
+    const lastMessages = messages
       ?.filter((message: Message) => message.fromContact)
-      .slice(props.messages.length - 5)
+      .slice(messages.length - 5)
       .reverse();
     return lastMessages?.find(
       (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
     );
-  }, [props.messages]);
+  }, [messages]);
 
   const hasSuggestions = () => !isEmpty(suggestions);
 
@@ -297,8 +318,6 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (input) setInput('');
-
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
     if (uploadedFileUrl) setUploadedFileUrl(null);
@@ -314,8 +333,6 @@ const MessageInput = (props: Props) => {
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-    if (input) setInput('');
 
     if (selectedTemplate) setSelectedTemplate(null);
 
@@ -341,6 +358,7 @@ const MessageInput = (props: Props) => {
 
     if (uploadedFileUrl) {
       setUploadedFileUrl(null);
+      setIsFileLoaded(false);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -382,63 +400,61 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!isElementSelected() && (
-              <>
-                <textarea
-                  className={styles.messageTextArea}
-                  ref={textAreaRef}
-                  rows={1}
-                  name="inputBar"
-                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
-                  autoFocus={channelConnected}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  data-cy={cyMessageTextArea}
-                  disabled={!!(!channelConnected || loadingSelector || fileUploadErrorPopUp)}
-                />
-                {loadingSelector && (
-                  <div className={styles.selectorLoader}>
-                    <SimpleLoader />
-                    <span>loading file... </span>
-                  </div>
-                )}
-
-                <InputOptions
-                  source={source}
-                  inputDisabled={!channelConnected}
-                  input={input}
-                  setInput={setInput}
-                  selectTemplate={selectTemplate}
-                  focusInput={focusInput}
-                  sendMessages={sendMessages}
-                  selectFile={selectFile}
-                  fileUploadErrorPopUp={fileUploadErrorPopUp}
-                  canSendMedia={canSendMedia}
-                  closeFileErrorPopUp={closeFileErrorPopUp}
-                  loadingSelector={loadingSelector}
-                />
-              </>
-            )}
-
-            {isElementSelected() && (
-              <>
-                <InputSelector
-                  message={
-                    selectedTemplate?.message ??
-                    selectedSuggestedReply?.message ??
-                    outboundMapper?.getAttachmentPayload(uploadedFileUrl)
-                  }
-                  source={source}
-                  messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
-                  removeElementFromInput={removeElementFromInput}
-                  contentResizedHeight={contentResizedHeight}
-                />
-              </>
-            )}
+            <div className={styles.contentInput}>
+              {loadingSelector && (
+                <div className={styles.selectorLoader}>
+                  <SimpleLoader />
+                  <span>loading file... </span>
+                </div>
+              )}
+              {isElementSelected() && (
+                <div className={styles.imagesContainer}>
+                  <InputSelector
+                    message={
+                      selectedTemplate?.message ??
+                      selectedSuggestedReply?.message ??
+                      outboundMapper?.getAttachmentPayload(uploadedFileUrl)
+                    }
+                    source={source}
+                    messageType={
+                      selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'
+                    }
+                    removeElementFromInput={removeElementFromInput}
+                    contentResizedHeight={selectTemplate ? 60 : contentResizedHeight}
+                  />
+                </div>
+              )}
+              <textarea
+                className={styles.messageTextArea}
+                ref={textAreaRef}
+                rows={1}
+                name="inputBar"
+                placeholder={channelConnected && 'Enter a message...'}
+                autoFocus={channelConnected}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                data-cy={cyMessageTextArea}
+                disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
+              />
+            </div>
+            <InputOptions
+              source={source}
+              inputDisabled={!channelConnected}
+              input={input}
+              setInput={setInput}
+              selectTemplate={selectTemplate}
+              focusInput={focusInput}
+              sendMessages={sendMessages}
+              selectFile={selectFile}
+              isFileLoaded={isFileLoaded}
+              canSendMedia={canSendMedia}
+              fileUploadErrorPopUp={fileUploadErrorPopUp}
+              closeFileErrorPopUp={closeFileErrorPopUp}
+              loadingSelector={loadingSelector}
+            />
           </div>
         </div>
-
         <div className={styles.sendDiv}>
           {!channelConnected && (
             <div className={styles.disconnectedChannelToolTip}>
@@ -456,7 +472,7 @@ const MessageInput = (props: Props) => {
             data-cy={cyMessageSendButton}
           >
             <div className={styles.sendButtonText}>
-              <Paperplane />
+              <PaperPlane />
             </div>
           </button>
         </div>
@@ -471,4 +487,4 @@ const MessageInput = (props: Props) => {
   );
 };
 
-export default withRouter(connector(MessageInput));
+export default connector(MessageInput);

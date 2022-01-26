@@ -1,7 +1,7 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/tags';
 import {Tag} from 'model';
-import {omit, keyBy} from 'lodash';
+import {omit, keyBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 

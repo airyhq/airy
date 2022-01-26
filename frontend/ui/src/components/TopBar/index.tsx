@@ -1,6 +1,5 @@
 import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
@@ -22,7 +21,7 @@ const logoutUrl = `${env.API_HOST}/logout`;
 
 const connector = connect(mapStateToProps);
 
-const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteComponentProps) => {
+const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
 
@@ -113,4 +112,4 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
   );
 };
 
-export default withRouter(connect(mapStateToProps)(TopBar));
+export default connect(mapStateToProps)(TopBar);

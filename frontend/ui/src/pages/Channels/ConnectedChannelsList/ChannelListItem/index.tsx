@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {disconnectChannel} from '../../../../actions/channel';
 
@@ -11,11 +10,11 @@ import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg
 import ChannelAvatar from '../../../../components/ChannelAvatar';
 
 import styles from './index.module.scss';
+import {useNavigate} from 'react-router-dom';
 
 type ChannelListItemProps = {
   channel: Channel;
-} & ConnectedProps<typeof connector> &
-  RouteComponentProps<{channelId: string}>;
+} & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
   disconnectChannel,
@@ -25,6 +24,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const ChannelListItem = (props: ChannelListItemProps) => {
   const {channel} = props;
+  const navigate = useNavigate();
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
 
   const togglePopupVisibility = () => {
@@ -63,8 +63,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
               styleVariant="link"
               type="button"
               onClick={() =>
-                props.history.push({
-                  pathname: `/channels/${channel.source}/${channel.id}`,
+                navigate(`/channels/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
               }
@@ -105,4 +104,4 @@ const ChannelListItem = (props: ChannelListItemProps) => {
   );
 };
 
-export default withRouter(connector(ChannelListItem));
+export default connector(ChannelListItem);

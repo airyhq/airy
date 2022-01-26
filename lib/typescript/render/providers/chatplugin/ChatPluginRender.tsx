@@ -7,7 +7,7 @@ import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
-import {Image, Video, File} from 'render/components';
+import {Image, Video, File, Audio} from 'render/components';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.message), props);
@@ -68,6 +68,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     case 'file':
       return <File fileUrl={content.fileUrl} />;
+
+    case 'audio':
+      return <Audio audioUrl={content.audioUrl} />;
   }
 }
 
@@ -171,6 +174,13 @@ const parseAttachment = (attachment: SimpleAttachment): AttachmentUnion => {
     return {
       type: 'file',
       fileUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'audio') {
+    return {
+      type: 'audio',
+      audioUrl: attachment.payload.url,
     };
   }
 

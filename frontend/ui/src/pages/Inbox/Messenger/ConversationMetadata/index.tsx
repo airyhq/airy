@@ -47,12 +47,12 @@ import {
   cyNotesDialogInput,
 } from 'handles';
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  return {
-    conversation: getConversation(state, ownProps),
-    tags: state.data.tags.all,
-  };
-};
+import {difference} from 'lodash-es';
+import {useCurrentConversation} from '../../../../selectors/conversations';
+
+const mapStateToProps = (state: StateModel) => ({
+  tags: state.data.tags.all,
+});
 
 const mapDispatchToProps = {
   createTag,
@@ -80,6 +80,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     removeNoteFromConversation,
     updateConversationNote,
   } = props;
+  const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
@@ -408,4 +409,4 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   );
 };
 
-export default withRouter(connector(ConversationMetadata));
+export default connector(ConversationMetadata);

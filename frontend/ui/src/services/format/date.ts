@@ -1,6 +1,6 @@
 import {Message} from 'model';
 
-export function dateFormat(date: Date) {
+export function dateFormat(date: Date, fullDate: boolean=false) {
   const now = new Date();
   if (!date)
     return now.toLocaleDateString('en-GB', {
@@ -9,7 +9,7 @@ export function dateFormat(date: Date) {
       month: 'short',
     });
 
-  if (date.toLocaleDateString() === now.toLocaleDateString()) {
+  if (!fullDate && date.toLocaleDateString() === now.toLocaleDateString()) {
     return date.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit', hour12: false});
   } else if (isYesterday(date)) {
     return 'Yesterday ' + date.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit', hour12: false});

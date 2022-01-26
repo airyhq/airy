@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {connectGoogleChannel} from '../../../../actions/channel';
-import {StateModel} from '../../../../reducers';
+import {connectGoogleChannel} from '../../../../actions';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
@@ -12,24 +10,19 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.
 import styles from './GoogleConnect.module.scss';
 
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
-
-type GoogleProps = {
-  channelId?: string;
-} & RouteComponentProps<{channelId: string}> &
-  ConnectedProps<typeof connector>;
-
-const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
-  channel: state.data.channels[props.match.params.channelId],
-});
+import {useCurrentChannel} from '../../../../selectors/channels';
+import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
   connectGoogleChannel,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
-const GoogleConnect = (props: GoogleProps) => {
-  const {connectGoogleChannel, channel} = props;
+const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
+  const {connectGoogleChannel} = props;
+  const channel = useCurrentChannel();
+  const navigate = useNavigate();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
@@ -44,7 +37,7 @@ const GoogleConnect = (props: GoogleProps) => {
     if (channel) {
       setButtonTitle('Update Page');
     }
-  }, []);
+  }, [channel]);
 
   const connectNewChannel = () => {
     const connectPayload: ConnectChannelGoogleRequestPayload = {
@@ -58,7 +51,7 @@ const GoogleConnect = (props: GoogleProps) => {
 
     connectGoogleChannel(connectPayload)
       .then(() => {
-        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/google');
+        navigate(CHANNELS_CONNECTED_ROUTE + '/google', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');
@@ -73,9 +66,9 @@ const GoogleConnect = (props: GoogleProps) => {
           link="https://airy.co/docs/core/sources/google"
           text="more information about this source"
           color="grey"
-        ></InfoButton>
+        />
 
-        <LinkButton onClick={props.history.goBack} type="button">
+        <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
           Back
         </LinkButton>
@@ -121,4 +114,4 @@ const GoogleConnect = (props: GoogleProps) => {
   );
 };
 
-export default withRouter(connector(GoogleConnect));
+export default connector(GoogleConnect);

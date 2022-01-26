@@ -1,6 +1,17 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+.channelsWrapper {
+  background: white;
+  display: block;
+  border-radius: 10px;
+  width: 100%;
+  padding: 32px;
+  margin: 88px 1.5em 0 16px;
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
+}
+
 .channelsHeadline {
   @include font-xl;
   font-weight: 900;

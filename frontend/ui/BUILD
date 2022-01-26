@@ -29,6 +29,7 @@ ts_web_library(
         "@npm//@types/react",
         "@npm//@types/react-dom",
         "@npm//@types/react-redux",
+        "@npm//@types/lodash-es",
         "@npm//lodash-es",
         "@npm//react",
         "@npm//react-router-dom",

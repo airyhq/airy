@@ -1,11 +1,10 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 import {Tag as TagModel, TagColor} from 'model';
 
-import {createTag, listTags} from '../../../../actions/tags';
-import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
-import {updateContact} from '../../../../actions/conversations';
+import {createTag, listTags} from '../../../../actions';
+import {addTagToConversation, removeTagFromConversation} from '../../../../actions';
+import {updateContact} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -15,8 +14,6 @@ import {useAnimation} from '../../../../assets/animations';
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from 'components';
-import {getConversation} from '../../../../selectors/conversations';
-import {ConversationRouteProps} from '../../index';
 import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
@@ -30,14 +27,12 @@ import {
   cyDisplayNameInput,
   cyEditDisplayNameCheckmark,
 } from 'handles';
-import difference from 'lodash/difference';
+import {difference} from 'lodash-es';
+import {useCurrentConversation} from '../../../../selectors/conversations';
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  return {
-    conversation: getConversation(state, ownProps),
-    tags: state.data.tags.all,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  tags: state.data.tags.all,
+});
 
 const mapDispatchToProps = {
   createTag,
@@ -50,8 +45,8 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation, updateContact} =
-    props;
+  const {tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
+  const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
@@ -277,4 +272,4 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   );
 };
 
-export default withRouter(connector(ConversationMetadata));
+export default connector(ConversationMetadata);

@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
-import {withRouter} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
@@ -8,14 +7,12 @@ import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
-import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
+import {ReactComponent as PaperPlane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
-import {ConversationRouteProps} from '../index';
 import {isComponentHealthy, StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
-import {getConversation} from '../../../selectors/conversations';
-import {getCurrentMessages} from '../../../selectors/conversations';
+import {useCurrentConversation, useCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
@@ -28,9 +25,7 @@ import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-  conversation: getConversation(state, ownProps),
-  messages: getCurrentMessages(state, ownProps),
+const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
   listTemplates,
 });
@@ -61,7 +56,6 @@ const sourcesWithAttachments = ['facebook', 'instagram', 'chatplugin', 'twilio.w
 const MessageInput = (props: Props) => {
   const {
     source,
-    conversation,
     suggestions,
     showSuggestedReplies,
     hideSuggestedReplies,
@@ -72,6 +66,8 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
+  const conversation = useCurrentConversation();
+  const messages = useCurrentMessages();
   const outboundMapper: any = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 
@@ -298,14 +294,14 @@ const MessageInput = (props: Props) => {
   };
 
   const getLastMessageWithSuggestedReplies = useCallback(() => {
-    const lastMessages = props.messages
+    const lastMessages = messages
       ?.filter((message: Message) => message.fromContact)
-      .slice(props.messages.length - 5)
+      .slice(messages.length - 5)
       .reverse();
     return lastMessages?.find(
       (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
     );
-  }, [props.messages]);
+  }, [messages]);
 
   const hasSuggestions = () => !isEmpty(suggestions);
 
@@ -476,7 +472,7 @@ const MessageInput = (props: Props) => {
             data-cy={cyMessageSendButton}
           >
             <div className={styles.sendButtonText}>
-              <Paperplane />
+              <PaperPlane />
             </div>
           </button>
         </div>
@@ -491,4 +487,4 @@ const MessageInput = (props: Props) => {
   );
 };
 
-export default withRouter(connector(MessageInput));
+export default connector(MessageInput);

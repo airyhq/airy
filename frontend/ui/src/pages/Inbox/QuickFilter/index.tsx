@@ -6,7 +6,7 @@ import {ConversationFilter, StateModel} from '../../../reducers';
 import {setFilter} from '../../../actions/conversationsFilter';
 
 import styles from './index.module.scss';
-import {omit} from 'lodash';
+import {omit} from 'lodash-es';
 
 const mapStateToProps = (state: StateModel) => {
   return {

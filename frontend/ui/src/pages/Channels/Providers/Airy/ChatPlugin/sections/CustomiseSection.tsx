@@ -19,13 +19,12 @@ enum BubbleState {
 
 interface CustomiseSectionProps {
   channelId: string;
-  host?: string;
+  host: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const useLocalState = getUseLocalState(channelId);
-  const defaultHost = 'http://airy.core';
-  const [customHost, setCustomHost] = useLocalState('customHost', host || defaultHost);
+  const [customHost, setCustomHost] = useLocalState('customHost', host);
   const [headerText, setHeaderText] = useLocalState('headerText', '');
   const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
   const [startNewConversationText, setStartNewConversationText] = useLocalState('startNewConversationText', '');
@@ -723,7 +722,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           value={customHost}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomHost(e.target.value)}
           label="Custom Host URL"
-          placeholder={`${defaultHost}`}
+          placeholder="http://airy.core"
           required={true}
           height={32}
           fontClass="font-base"

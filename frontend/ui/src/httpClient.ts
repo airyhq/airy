@@ -5,7 +5,7 @@ export const apiHostUrl = env.API_HOST ?? `${location.protocol + '//' + location
 
 export const HttpClientInstance = new HttpClient(apiHostUrl, (error, loginUrl) => {
   console.error(error);
-  if (location.href != loginUrl) {
+  if (location.href != loginUrl && !location.href.includes('http://localhost:')) {
     location.replace(loginUrl);
   }
 });

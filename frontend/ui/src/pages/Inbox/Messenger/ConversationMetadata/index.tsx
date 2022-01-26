@@ -1,6 +1,5 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 import {
   Tag as TagModel,
   TagColor,
@@ -28,8 +27,6 @@ import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import Note from '../../../../components/Note';
 import {Button, Input, LinkButton, TextArea} from 'components';
-import {getConversation} from '../../../../selectors/conversations';
-import {ConversationRouteProps} from '../../index';
 import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
@@ -47,7 +44,6 @@ import {
   cyNotesDialogInput,
 } from 'handles';
 
-import {difference} from 'lodash-es';
 import {useCurrentConversation} from '../../../../selectors/conversations';
 
 const mapStateToProps = (state: StateModel) => ({

@@ -3,7 +3,10 @@ package co.airy.core.contacts.dto;
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
@@ -27,6 +31,7 @@ import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.GENDER;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.LOCALE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.ORGANIZATION_NAME;
+import static co.airy.core.contacts.dto.Contact.MetadataKeys.SUB_CONTACTS;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TIMEZONE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.TITLE;
 import static co.airy.core.contacts.dto.Contact.MetadataKeys.VIA;
@@ -50,6 +55,7 @@ public class Contact implements Serializable {
     private Address address;
     private Map<UUID, String> conversations;
     private JsonNode metadata;
+    private List<Contact> subContacts;
 
     @Data
     @Builder(toBuilder = true)
@@ -82,12 +88,12 @@ public class Contact implements Serializable {
         @JsonIgnore
         public Address merge(Address address) {
             return this.toBuilder()
-                    .addressLine1(Optional.ofNullable(address.getAddressLine1()).orElse(address.getAddressLine1()))
-                    .addressLine2(Optional.ofNullable(address.getAddressLine2()).orElse(address.getAddressLine2()))
-                    .city(Optional.ofNullable(address.getCity()).orElse(address.getCity()))
-                    .country(Optional.ofNullable(address.getCountry()).orElse(address.getCountry()))
-                    .postalCode(Optional.ofNullable(address.getPostalCode()).orElse(address.getPostalCode()))
-                    .organizationName(Optional.ofNullable(address.getOrganizationName()).orElse(address.getOrganizationName()))
+                    .addressLine1(Optional.ofNullable(this.getAddressLine1()).orElse(address.getAddressLine1()))
+                    .addressLine2(Optional.ofNullable(this.getAddressLine2()).orElse(address.getAddressLine2()))
+                    .city(Optional.ofNullable(this.getCity()).orElse(address.getCity()))
+                    .country(Optional.ofNullable(this.getCountry()).orElse(address.getCountry()))
+                    .postalCode(Optional.ofNullable(this.getPostalCode()).orElse(address.getPostalCode()))
+                    .organizationName(Optional.ofNullable(this.getOrganizationName()).orElse(address.getOrganizationName()))
                     .build();
         }
 
@@ -135,6 +141,7 @@ public class Contact implements Serializable {
         public static String VIA = "via";
         public static String CONVERSATIONS = "conversations";
         public static String METADATA = "metadata";
+        public static String SUB_CONTACTS = "subContacts";
 
         public static String ADDRESS = "address";
 
@@ -149,6 +156,7 @@ public class Contact implements Serializable {
         }
     }
 
+    @JsonIgnore
     public List<Metadata> deleteAllMetadata() {
         // Using kafka tombstones to delete all contact's metadata
         return toMetadata().stream()
@@ -157,6 +165,29 @@ public class Contact implements Serializable {
                 return m;
             })
             .collect(Collectors.toList());
+    }
+
+    @JsonIgnore
+    public Contact merge(Contact c) {
+        return this.toBuilder()
+                .metadata(Optional.ofNullable(this.getMetadata()).orElse(c.getMetadata()))
+                .address(this.getAddress().merge(c.getAddress()))
+                // Aggregate conversations
+                .conversations(Stream.concat(
+                            this.getConversations().entrySet().stream(),
+                            c.getConversations().entrySet().stream())
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)))
+                .displayName(Optional.ofNullable(this.getDisplayName()).orElse(c.getDisplayName()))
+                .avatarUrl(Optional.ofNullable(this.getAvatarUrl()).orElse(c.getAvatarUrl()))
+                .gender(Optional.ofNullable(this.getGender()).orElse(c.getGender()))
+                .locale(Optional.ofNullable(this.getLocale()).orElse(c.getLocale()))
+                .organizationName(Optional.ofNullable(this.getOrganizationName()).orElse(c.getOrganizationName()))
+                .timezone(Optional.ofNullable(this.getTimezone()).orElse(c.getTimezone()))
+                .title(Optional.ofNullable(this.getTitle()).orElse(c.getTitle()))
+                .via(Optional.ofNullable(this.getVia()).orElse(c.getVia()))
+                // Aggregate subcontacts
+                .subContacts(Stream.concat(this.getSubContacts().stream(), c.getSubContacts().stream()).collect(Collectors.toList()))
+                .build();
     }
 
 
@@ -196,6 +227,16 @@ public class Contact implements Serializable {
         if (address != null) {
             metadata.addAll(address.toMetadata(id));
         }
+        if (subContacts != null && !subContacts.isEmpty()) {
+            try {
+                final ObjectMapper mapper = new ObjectMapper();
+                final String subContactsBlob = mapper.writeValueAsString(subContacts);
+
+                metadata.add(newContactMetadata(id, SUB_CONTACTS, subContactsBlob));
+            } catch (JsonProcessingException e) {
+                //FIXME: not sure what to do here
+            }
+        }
 
         return metadata;
     }
@@ -222,6 +263,20 @@ public class Contact implements Serializable {
 
         final boolean hasAddress = values.stream().anyMatch(metadata -> metadata.getKey().startsWith(ADDRESS));
 
+        final String subContactsBlob = map.getMetadataValue(SUB_CONTACTS);
+        List<Contact> subContacts = null;
+        if (subContactsBlob != "") {
+            try {
+                final ObjectMapper mapper = new ObjectMapper();
+
+                subContacts = mapper.readValue(
+                        subContactsBlob,
+                        new TypeReference<List<Contact>>() {});
+            } catch (JsonProcessingException e) {
+                //FIXME: not sure what to do here
+            }
+        }
+
         return Contact.builder()
                 .id(id)
                 .updatedAt(map.getUpdatedAt())
@@ -236,6 +291,7 @@ public class Contact implements Serializable {
                 .via(via.size() > 0 ? via : null)
                 .address(hasAddress ? Address.fromMetadataMap(map) : null)
                 .conversations(conversations.size() > 0 ? conversations : null)
+                .subContacts(subContacts)
                 .build();
     }
 

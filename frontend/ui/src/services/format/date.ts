@@ -1,6 +1,6 @@
 import {Message} from 'model';
 
-export function dateFormat(date: Date, fullDate: boolean=false) {
+export function dateFormat(date: Date, fullDate = false) {
   const now = new Date();
   if (!date)
     return now.toLocaleDateString('en-GB', {

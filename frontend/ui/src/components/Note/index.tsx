@@ -16,9 +16,7 @@ const Note = ({note, onClick, removeNote, updateNote}: NoteProps): JSX.Element =
   if (!note.timestamp || !note.text) return null;
   return (
     <div className={styles.note} onClick={onClick}>
-      <div
-        className={`${styles.noteInner} ${onClick ? styles.clickable : ''} ${removeNote ? styles.isRemovable : ''}`}
-      >
+      <div className={`${styles.noteInner} ${onClick ? styles.clickable : ''} ${removeNote ? styles.isRemovable : ''}`}>
         <div>
           <span className={`${styles.noteNameExpanded}`}>{note.text}</span>
           {removeNote && (
@@ -31,12 +29,11 @@ const Note = ({note, onClick, removeNote, updateNote}: NoteProps): JSX.Element =
           </span>
         </div>
         <div>
-          <p className={`${styles.noteDate}`}>
-            {dateFormat(note.timestamp, true)}
-          </p>
+          <p className={`${styles.noteDate}`}>{dateFormat(note.timestamp, true)}</p>
         </div>
       </div>
-    </div>)
+    </div>
+  );
 };
 
 export default Note;

@@ -4,6 +4,7 @@ import co.airy.avro.communication.Metadata;
 import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
+import co.airy.core.contacts.payload.ContactWithMergeHistoryResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
@@ -190,7 +191,7 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(ContactWithMergeHistoryResponsePayload.fromContact(mergedContact));
     }
 
     @PostMapping("/contacts.delete")

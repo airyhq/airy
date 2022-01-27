@@ -3,8 +3,9 @@ package co.airy.core.contacts.dto;
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -88,6 +89,10 @@ public class Contact implements Serializable {
 
         @JsonIgnore
         public Address merge(Address address) {
+            if (address == null) {
+                return this.toBuilder().build();
+            }
+
             return this.toBuilder()
                     .addressLine1(Optional.ofNullable(this.getAddressLine1()).orElse(address.getAddressLine1()))
                     .addressLine2(Optional.ofNullable(this.getAddressLine2()).orElse(address.getAddressLine2()))
@@ -181,7 +186,7 @@ public class Contact implements Serializable {
 
         return this.toBuilder()
                 .metadata(Optional.ofNullable(this.getMetadata()).orElse(c.getMetadata()))
-                .address(this.getAddress().merge(c.getAddress()))
+                .address(Optional.ofNullable(this.getAddress()).orElseGet(Address::new).merge(c.getAddress()))
                 // Aggregate conversations
                 .conversations(Stream.concat(
                             Optional.ofNullable(this.getConversations()).orElseGet(Collections::emptyMap).entrySet().stream(),
@@ -240,6 +245,7 @@ public class Contact implements Serializable {
         if (mergeHistory != null && !mergeHistory.isEmpty()) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
+                mapper.setSerializationInclusion(Include.NON_NULL);
                 final String mergeHistoryBlob = mapper.writeValueAsString(mergeHistory);
 
                 metadata.add(newContactMetadata(id, MERGE_HISTORY, mergeHistoryBlob));

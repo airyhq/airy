@@ -1,7 +1,9 @@
 package co.airy.core.contacts.dto;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.dto.MetadataMap;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,6 +48,8 @@ import static java.util.stream.Collectors.toMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contact implements Serializable {
+    private static final Logger log = AiryLoggerFactory.getLogger(Contact.class);
+
     private String id;
     private String displayName;
     private String avatarUrl;
@@ -250,7 +255,11 @@ public class Contact implements Serializable {
 
                 metadata.add(newContactMetadata(id, MERGE_HISTORY, mergeHistoryBlob));
             } catch (JsonProcessingException e) {
-                //FIXME: not sure what to do here
+                log.error(String.format(
+                            "unable to marshal mergeHistory << %s >> for contact id %s",
+                            mergeHistory.toString(),
+                            this.getId()));
+
             }
         }
 
@@ -289,7 +298,10 @@ public class Contact implements Serializable {
                         mergeHistoryBlob,
                         new TypeReference<List<Contact>>() {});
             } catch (JsonProcessingException e) {
-                //FIXME: not sure what to do here
+                log.error(String.format(
+                            "unable to unmarshal mergeHistory << %s >> for contact id %s",
+                            mergeHistoryBlob,
+                            id));
             }
         }
 

@@ -240,3 +240,38 @@ All fields set on the [creation request](#create-contact) can be updated. To rem
 ```
 
 **(202) Sample response**
+
+### Merge contacts
+
+`POST /contacts.merge`
+
+Merge the source contact into the destination one, only the fields that are not present on the
+destination contact will be merged, a copy of the source contact will be saved in the merge history
+
+**Sample request**
+
+```json5
+{
+  "source_id": "6b80b10c-ae6e-4995-844d-c56c4da11623",
+  "destination_id": "c564cea4-a96f-4ebb-a220-3fb81b6ad522"
+}
+```
+
+**(200) Success Response Payload**
+
+```json5
+{
+  "display_name": "Barabara Liskov",
+  "avatar_url": "https://example.org/avatar.jpg",
+  "title": "Estimator project manager"
+  "organization_name": "Airy.co",
+  "merge_history": [
+    {
+      "display_name": "Eleanor B. Garcia",
+      "avatar_url": "https://example.org/avatar.jpg",
+      "title": "Estimator project manager"
+      "organization_name": "Airy.co"
+    }
+  ]
+}
+```

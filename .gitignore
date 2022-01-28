@@ -38,6 +38,5 @@ package-lock.json
 cypress
 
 # Airy config files
-airy
 airy.yaml
 cli.yaml

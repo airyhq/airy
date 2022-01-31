@@ -156,7 +156,7 @@
     pointer-events: none;
 
     path {
-      fill: #a0abb2;
+      fill: var(--color-icons-gray);
     }
   }
 
@@ -189,6 +189,10 @@
   svg {
     height: 24px;
     width: 24px;
+  }
+
+  path {
+    fill: var(--color-icons-gray);
   }
 }
 

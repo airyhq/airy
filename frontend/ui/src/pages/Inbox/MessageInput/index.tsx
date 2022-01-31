@@ -429,7 +429,7 @@ const MessageInput = (props: Props) => {
                 ref={textAreaRef}
                 rows={1}
                 name="inputBar"
-                placeholder={channelConnected && 'Enter a message...'}
+                placeholder={channelConnected ? 'Enter a message...' : ''}
                 autoFocus={channelConnected}
                 value={input}
                 onChange={e => setInput(e.target.value)}

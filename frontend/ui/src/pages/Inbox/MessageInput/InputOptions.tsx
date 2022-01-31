@@ -64,7 +64,9 @@ export const InputOptions = (props: Props) => {
   useEffect(() => {
     if (!isFileLoaded) {
       setInputFile(null);
-      inputRef.current.value = null;
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = null;
+      }
     }
   }, [isFileLoaded]);
 

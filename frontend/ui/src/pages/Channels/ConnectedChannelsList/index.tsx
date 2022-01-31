@@ -50,7 +50,7 @@ const ConnectedChannelsList = () => {
     switch (source) {
       case Source.facebook:
         setName('Facebook Messenger');
-        setPath(CHANNELS_FACEBOOK_ROUTE);
+        setPath(CHANNELS_FACEBOOK_ROUTE + '/new');
         break;
       case Source.google:
         setName('Google Business Messages');

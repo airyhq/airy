@@ -19,11 +19,11 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Channels = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
-    if (props.channels.length == 0) {
+    if (props.channels.length === 0) {
       props.listChannels();
     }
     setPageTitle('Channels');
-  }, [props.channels]);
+  }, [props.channels.length]);
 
   return <Outlet />;
 };

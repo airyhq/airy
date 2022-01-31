@@ -8,6 +8,9 @@ metadata:
     # Keep in sync with the backend/media application properties
     nginx.ingress.kubernetes.io/proxy-body-size: "512m"
     nginx.org/client-max-body-size: "512m"
+  {{- if .Values.global.letsencrypt }}
+    cert-manager.io/cluster-issuer: 'letsencrypt'
+  {{- end }}
 spec:
   rules:
     - http:
@@ -215,7 +218,13 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
-    {{- if .Values.global.host }}
+{{- if .Values.global.host }}
       host: {{ .Values.global.host }}
-    {{- end }}
+ {{- if .Values.global.letsencrypt }}
+  tls:
+  - hosts:
+    - {{ .Values.global.host }}
+    secretName: airy-core-ui
+ {{- end }}
+{{- end }}
   ingressClassName: nginx

@@ -1,10 +1,8 @@
 package co.airy.core.media.services;
 
 
-import co.airy.core.media.services.MediaUpload;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 
@@ -14,9 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -42,6 +37,7 @@ public class MediaUploadTest {
         ArgumentCaptor<ListObjectsV2Request> arg = ArgumentCaptor.forClass(ListObjectsV2Request.class);
         verify(amazonS3Client).listObjectsV2(arg.capture());
         assertThat(arg.getValue().getBucketName(), equalTo("my-bucket"));
+        assertThat(arg.getValue().getPrefix(), equalTo("my/path/"));
         assertThat(arg.getValue().getMaxKeys(), equalTo(1));
     }
 

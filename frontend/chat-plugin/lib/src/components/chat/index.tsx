@@ -39,6 +39,7 @@ const defaultWelcomeMessage: Message = {
   deliveryState: DeliveryState.delivered,
   fromContact: false,
   sentAt: new Date(),
+  sender: {id: '12345'},
 };
 
 type Props = AiryChatPluginConfiguration;

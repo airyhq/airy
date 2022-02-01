@@ -38,7 +38,7 @@ export interface MessageMetadata {
 
 export interface MessageSender {
   id: string;
-  name: string;
+  name?: string;
   avatarUrl?: string;
 }
 

@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Text} from '../../components/Text';
 import styles from './index.module.scss';
 
 type VideoRenderProps = {
   videoUrl: string;
-  text?: string;
-  fromContact?: boolean;
 };
 
 /**
@@ -16,7 +13,7 @@ type VideoRenderProps = {
  */
 const failedUrls = [];
 
-export const Video = ({videoUrl, text, fromContact}: VideoRenderProps) => {
+export const Video = ({videoUrl}: VideoRenderProps) => {
   const [isVideoFailed, setVideoFailed] = useState(failedUrls.includes(videoUrl));
 
   useEffect(() => {
@@ -44,8 +41,6 @@ export const Video = ({videoUrl, text, fromContact}: VideoRenderProps) => {
           )}
         </div>
       </div>
-
-      {text && <Text text={text} fromContact={fromContact} />}
     </>
   );
 };

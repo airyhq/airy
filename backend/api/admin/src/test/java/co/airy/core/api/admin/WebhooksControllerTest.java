@@ -2,13 +2,9 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
+import co.airy.core.api.admin.util.Topics;
 import co.airy.core.api.config.ServiceDiscovery;
 import co.airy.core.api.config.dto.ServiceInfo;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationTags;
-import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
-import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.event.payload.EventType;
@@ -65,21 +61,9 @@ public class WebhooksControllerTest {
     @MockBean
     private ServiceDiscovery serviceDiscovery;
 
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
-    private static final ApplicationCommunicationTemplates applicationCommunicationTemplates = new ApplicationCommunicationTemplates();
-
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels,
-                applicationCommunicationWebhooks,
-                applicationCommunicationMetadata,
-                applicationCommunicationTags,
-                applicationCommunicationTemplates
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
         kafkaTestHelper.beforeAll();
     }
 
@@ -147,7 +131,7 @@ public class WebhooksControllerTest {
     @Test
     public void canListWebhooks() throws Exception {
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
+                new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook")
                                 .setId(UUID.randomUUID().toString())
@@ -155,7 +139,7 @@ public class WebhooksControllerTest {
                                 .setSubscribedAt(Instant.now().toEpochMilli())
                                 .build()
                 ),
-                new ProducerRecord<>(applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
+                new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook-2")
                                 .setId(UUID.randomUUID().toString())

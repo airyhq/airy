@@ -5,6 +5,7 @@ import co.airy.kafka.schema.ops.OpsApplicationLogs;
 import co.airy.spring.auth.session.UserProfile;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
+@ConditionalOnExpression("${logs.enabled:true}")
 public class KafkaListener implements ApplicationListener<HttpEvent> {
     private final KafkaProducer<String, HttpLog> producer;
     private final OpsApplicationLogs opsApplicationLogs = new OpsApplicationLogs();

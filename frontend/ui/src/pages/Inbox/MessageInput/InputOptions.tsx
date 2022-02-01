@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Picker} from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
@@ -16,11 +16,6 @@ const mapDispatchToProps = {sendMessages};
 
 const connector = connect(null, mapDispatchToProps);
 
-interface MediaResolverComponentConfig {
-  enabled: boolean;
-  healthy: boolean;
-}
-
 type Props = {
   source: Source;
   inputDisabled: boolean;
@@ -29,9 +24,10 @@ type Props = {
   selectTemplate: (template: Template) => void;
   focusInput: () => void;
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isFileLoaded: boolean;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
-  mediaResolverComponentsConfig: MediaResolverComponentConfig;
+  canSendMedia: boolean;
   loadingSelector: boolean;
 } & ConnectedProps<typeof connector>;
 
@@ -44,8 +40,9 @@ export const InputOptions = (props: Props) => {
     selectTemplate,
     focusInput,
     selectFile,
+    isFileLoaded,
     fileUploadErrorPopUp,
-    mediaResolverComponentsConfig,
+    canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
   } = props;
@@ -53,17 +50,48 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
+  const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const inputAcceptValue = getInputAcceptedFilesForSource(source);
-
     setInputAcceptedFiles(inputAcceptValue);
   }, [source]);
 
+  useEffect(() => {
+    if (!isFileLoaded) {
+      setInputFile(null);
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = null;
+      }
+    }
+  }, [isFileLoaded]);
+
+  useEffect(() => {
+    if (isShowingEmojiDrawer) {
+      document.addEventListener('keydown', handleEmojiKeyEvent);
+      document.addEventListener('click', handleEmojiClickedOutside);
+
+      return () => {
+        document.removeEventListener('keydown', handleEmojiKeyEvent);
+        document.removeEventListener('click', handleEmojiClickedOutside);
+      };
+    }
+  }, [isShowingEmojiDrawer]);
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    setInputFile(file);
+    selectFile(event);
+  };
+
   const toggleEmojiDrawer = () => {
-    if (isShowingTemplateModal) {
+    if (isShowingTemplateModal || isShowingFileSelector) {
       setIsShowingTemplateModal(false);
+      setIsShowingFileSelector(false);
     }
     if (isShowingEmojiDrawer) {
       focusInput();
@@ -82,27 +110,23 @@ export const InputOptions = (props: Props) => {
     if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
       return;
     }
-
     toggleEmojiDrawer();
   };
 
-  useEffect(() => {
-    if (isShowingEmojiDrawer) {
-      document.addEventListener('keydown', handleEmojiKeyEvent);
-      document.addEventListener('click', handleEmojiClickedOutside);
-
-      return () => {
-        document.removeEventListener('keydown', handleEmojiKeyEvent);
-        document.removeEventListener('click', handleEmojiClickedOutside);
-      };
-    }
-  }, [isShowingEmojiDrawer]);
-
   const toggleTemplateModal = () => {
-    if (isShowingEmojiDrawer) {
+    if (isShowingEmojiDrawer || isShowingFileSelector) {
       setIsShowingEmojiDrawer(false);
+      setIsShowingFileSelector(false);
     }
     setIsShowingTemplateModal(!isShowingTemplateModal);
+  };
+
+  const toggleFileSelector = () => {
+    if (isShowingEmojiDrawer || isShowingTemplateModal) {
+      setIsShowingEmojiDrawer(false);
+      setIsShowingFileSelector(false);
+    }
+    setIsShowingFileSelector(!isShowingFileSelector);
   };
 
   const addEmoji = emoji => {
@@ -155,17 +179,17 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaResolverComponentsConfig &&
-        mediaResolverComponentsConfig.enabled &&
+      {canSendMedia &&
         (source === 'facebook' ||
           source === 'instagram' ||
           source === 'google' ||
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
             type="button"
             disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+            onClick={toggleFileSelector}
           >
             <div className={styles.actionToolTip}>Files</div>
 
@@ -180,7 +204,9 @@ export const InputOptions = (props: Props) => {
               type="file"
               id="file"
               name="file"
-              onChange={selectFile}
+              ref={inputRef}
+              value={inputFile?.value}
+              onChange={onChangeHandler}
               className={styles.fileInput}
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
               accept={inputAcceptedFiles}

@@ -16,6 +16,7 @@ import co.airy.uuid.UUIDv5;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
@@ -64,7 +65,8 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         final KTable<String, MetadataMap> conversationToContactTable = builder.<String, Metadata>table(applicationCommunicationContacts)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 // Create Contact table
-                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(contactsStore))
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
+                .filter((metadataId, metadataMap) -> metadataMap.size() != 0, Materialized.as(contactsStore))
                 .toStream()
                 // Create map of: conversation id -> contact metadatamap
                 .flatMap((contactId, metadataMap) -> {
@@ -88,6 +90,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         // 1. Auto create contacts if they don't exist
         // 2. Populate contact metadata with conversation metadata (if missing)
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> message != null)
                 .groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {
@@ -209,5 +212,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         if (streams != null) {
             streams.close();
         }
+    }
+
+    // visible for testing
+    KafkaStreams.State getStreamState() {
+        return streams.state();
     }
 }

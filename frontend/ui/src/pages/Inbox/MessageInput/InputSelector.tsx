@@ -20,6 +20,8 @@ export const InputSelector = (props: InputSelectorProps) => {
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
   const [selectorPreviewCloseButton, setSelectorPreviewCloseButton] = useState(false);
+  let iconSize = '18px';
+  let buttonSize = '36px';
 
   const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
@@ -43,13 +45,16 @@ export const InputSelector = (props: InputSelectorProps) => {
 
   const scaleDownInputSelector = (fileSelectorHeight: number) => {
     const scaleRatio = Number(Math.min(contentResizedHeight / fileSelectorHeight).toFixed(2));
-    let iconSize;
-    let buttonSize;
 
     if (scaleRatio <= 0.9) {
       if (scaleRatio < 0.5) {
-        iconSize = scaleRatio > 0.3 ? '36px' : '60px';
-        buttonSize = scaleRatio > 0.3 ? '72px' : '120px';
+        iconSize = scaleRatio > 0.3 ? '24px' : '36px';
+        buttonSize = scaleRatio > 0.3 ? '56px' : '72px';
+
+        if (messageType == 'template') {
+          iconSize = '48px';
+          buttonSize = '116px';
+        }
       } else {
         iconSize = '18px';
         buttonSize = '36px';
@@ -72,7 +77,12 @@ export const InputSelector = (props: InputSelectorProps) => {
   return (
     <div className={styles.container} ref={fileSelectorDiv}>
       {selectorPreviewCloseButton && (
-        <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
+        <button
+          className={styles.removeButton}
+          onClick={removeElementFromInput}
+          ref={removeFileButton}
+          style={{height: iconSize, width: iconSize}}
+        >
           <Close
             style={{
               width: closeIconWidth ?? '',

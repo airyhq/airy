@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import {connectFacebookChannel} from '../../../../../actions/channel';
-import {StateModel} from '../../../../../reducers';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
@@ -12,24 +10,19 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.
 import styles from './FacebookConnect.module.scss';
 
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
-
-type FacebookProps = {
-  channelId?: string;
-} & RouteComponentProps<{channelId: string}> &
-  ConnectedProps<typeof connector>;
-
-const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
-  channel: state.data.channels[props.match.params.channelId],
-});
+import {useCurrentChannel} from '../../../../../selectors/channels';
+import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
   connectFacebookChannel,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
-const FacebookConnect = (props: FacebookProps) => {
-  const {connectFacebookChannel, channel} = props;
+const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
+  const {connectFacebookChannel} = props;
+  const channel = useCurrentChannel();
+  const navigate = useNavigate();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState('');
   const [name, setName] = useState(channel?.metadata?.name || '');
@@ -63,7 +56,7 @@ const FacebookConnect = (props: FacebookProps) => {
 
     connectFacebookChannel(connectPayload)
       .then(() => {
-        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
+        navigate(CHANNELS_CONNECTED_ROUTE + '/facebook', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');
@@ -78,9 +71,9 @@ const FacebookConnect = (props: FacebookProps) => {
           link="https://airy.co/docs/core/sources/facebook"
           text="more information about this source"
           color="grey"
-        ></InfoButton>
+        />
 
-        <LinkButton onClick={props.history.goBack} type="button">
+        <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
           Back
         </LinkButton>
@@ -137,4 +130,4 @@ const FacebookConnect = (props: FacebookProps) => {
   );
 };
 
-export default withRouter(connector(FacebookConnect));
+export default connector(FacebookConnect);

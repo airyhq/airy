@@ -3,11 +3,69 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.39.0
+
+#### 🚀 Features
+
+- [#2693] Contacts merge endpoint (#2773)
+- [#2769] Added custom host url (#2772)
+- [#2768] Make hostname optional for frontend-ui  (#2770)
+- [#2562] Possibility to send media/templates with text (#2735)
+- [#2745] Conversations.refetch endpoint (#2747)
+- [#2647] Add sender information to messages (#2746)
+
+#### 🐛 Bug Fixes
+
+- [#2781] Endless loop for channels.list  (#2783)
+- [#2764] Bug null pointer exception on api contacts service (#2767)
+- [#2715] Fixed notification badge after reload (#2765)
+
+#### 📚 Documentation
+
+- [#2693] Docs for contacts service endpoins (#2752)
+
+#### 🧰 Maintenance
+
+- Bump @babel/plugin-proposal-object-rest-spread from 7.15.6 to 7.16.7 (#2776)
+- Bump css-loader from 6.2.0 to 6.5.1 (#2777)
+- Bump react-router-dom from 5.3.0 to 6.2.1 (#2749)
+- Update Bazel Dev Server (#2771)
+- Bump terser-webpack-plugin from 5.2.5 to 5.3.0 (#2760)
+- Bump node-fetch from 2.6.6 to 2.6.7 (#2763)
+- Bump webpack from 5.66.0 to 5.67.0 (#2762)
+- Bump react-i18next from 11.14.2 to 11.15.3 (#2761)
+- Bump nanoid from 3.1.23 to 3.2.0 (#2759)
+- Bump nanoid from 3.1.20 to 3.2.0 in /docs (#2758)
+- Bump react-modal from 3.14.3 to 3.14.4 (#2751)
+- Bump webpack-dev-server from 3.11.2 to 4.7.3 (#2729)
+- Bump core-js from 3.18.3 to 3.20.3 (#2748)
+- Bump nth-check from 2.0.0 to 2.0.1 (#2750)
+- Bump @bazel/typescript from 4.3.0 to 4.6.1 (#2741)
+- Bump @svgr/webpack from 5.5.0 to 6.2.0 (#2717)
+- Bump @babel/preset-env from 7.15.8 to 7.16.8 (#2732)
+- Bump reselect from 4.1.1 to 4.1.5 (#2621)
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.39.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.39.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.39.0/windows/amd64/airy.exe)
+
 ## 0.38.1
 
 #### 🐛 Bug Fixes
 
-- [[#2736](https://github.com/airyhq/airy/issues/2736)] Hotfix for re-provisioning topics on upgrade
+- [[#2736](https://github.com/airyhq/airy/issues/2736)] Hotfix for re-provisioning topics on upgrade [[#2740](https://github.com/airyhq/airy/pull/2740)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.38.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.38.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.38.1/windows/amd64/airy.exe)
 
 ## 0.38.0
 
@@ -49,9 +107,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.37.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.37.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.37.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.38.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.38.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.38.0/windows/amd64/airy.exe)
 
 ## 0.37.0
 

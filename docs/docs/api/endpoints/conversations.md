@@ -67,16 +67,21 @@ Find users whose name ends with "Lovelace":
       },
       "last_message": {
         id: "{UUID}",
-        "content": {"text": "Hello World"},
         // source message payload
-        // typed source message model
-        state: "{String}",
+        "content": {"text": "Hello World"},
         // delivery state of message, one of PENDING, FAILED, DELIVERED
+        state: "{String}",
         "from_contact": true,
-        sent_at: "{string}",
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-        "source": "{String}"
+        sent_at: "{string}",
         // one of the possible sources
+        "source": "{String}",
+        // details about the sender
+        "sender": {
+          "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+          "name": "John Doe", // optional
+          "avatar_url": "http://example.org/avatar.png" // optional
+        }
       }
     }
   ],
@@ -125,14 +130,19 @@ Find users whose name ends with "Lovelace":
   },
   "last_message": {
     "id": "{UUID}",
-    "content": {"text": "Hello World"},
     // source message payload
-    // typed source message model
-    "delivery_state": "{String}",
+    "content": {"text": "Hello World"},
     // delivery state of message, one of PENDING, FAILED, DELIVERED
+    "delivery_state": "{String}",
     "from_contact": true,
-    "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    "sent_at": "{string}",
+    // details about the sender
+    "sender": {
+      "id": "github:12345", // For unauthenticated instances this defaults to "airy-core-anonymous"
+      "name": "John Doe", // optional
+      "avatar_url": "http://example.org/avatar.png" // optional
+    }
   }
 }
 ```
@@ -231,3 +241,19 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 ```
 
 **Empty response (204)**
+
+## Refetch conversation metadata
+
+Refetch all conversation metadata including contact information if supported by the source
+
+`POST /conversations.refetch`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID"
+}
+```
+
+**Empty response (202)**

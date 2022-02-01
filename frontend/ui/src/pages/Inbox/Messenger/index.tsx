@@ -1,57 +1,48 @@
-import React from 'react';
-import {Route, withRouter, Redirect, RouteComponentProps} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import ConversationList from '../ConversationList';
 
-import {MergedConversation, StateModel} from '../../../reducers';
+import {StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
 import MessengerContainer from './MessengerContainer';
 import {allConversations} from '../../../selectors/conversations';
+import {usePrevious} from '../../../services/hooks/usePrevious';
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    loading: state.data.conversations.all.paginationData.loading,
-    conversations: allConversations(state),
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  loading: state.data.conversations.all.paginationData.loading,
+  conversations: allConversations(state),
+});
 
 const connector = connect(mapStateToProps);
 
-const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps) => {
-  const {conversations, match} = props;
+const Messenger = (props: ConnectedProps<typeof connector>) => {
+  const {conversations} = props;
+  const {conversationId} = useParams();
+  const prevConversations = usePrevious(conversations);
+  const navigate = useNavigate();
 
-  const waitForContentAndRedirect = (conversations: MergedConversation[]) => {
-    const conversationId = conversations[0].id;
-    const targetPath = `/inbox/conversations/${conversationId}`;
-    if (targetPath !== window.location.pathname) {
-      return <Redirect to={targetPath} />;
+  useEffect(() => {
+    if (conversations?.length > 0 && (!prevConversations || prevConversations?.length === 0) && !conversationId) {
+      const conversationId = conversations[0].id;
+      const targetPath = `/inbox/conversations/${conversationId}`;
+      navigate(targetPath);
     }
-  };
-
-  if (match.isExact && conversations.length) {
-    return waitForContentAndRedirect(conversations);
-  }
+  }, [conversations, prevConversations]);
 
   return (
     <section className={styles.wrapper}>
-      <Route
-        path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={props => (
-          <>
-            {!!conversations && (
-              <section className={styles.leftPanel}>
-                <ConversationList />
-              </section>
-            )}
+      {!!conversations && (
+        <section className={styles.leftPanel}>
+          <ConversationList />
+        </section>
+      )}
 
-            <MessengerContainer {...props} />
-          </>
-        )}
-      />
+      <MessengerContainer {...props} />
     </section>
   );
 };
 
-export default withRouter(connector(Messenger));
+export default connector(Messenger);

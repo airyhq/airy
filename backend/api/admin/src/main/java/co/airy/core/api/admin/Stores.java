@@ -5,12 +5,16 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Tag;
 import co.airy.avro.communication.Template;
+import co.airy.avro.communication.User;
 import co.airy.avro.communication.Webhook;
+import co.airy.avro.ops.HttpLog;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
+import co.airy.kafka.schema.application.ApplicationCommunicationUsers;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
+import co.airy.kafka.schema.ops.OpsApplicationLogs;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -32,8 +36,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.core.api.admin.TimestampExtractor.timestampExtractor;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 
@@ -48,12 +54,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String tagsStore = "tags-store";
     private final String webhooksStore = "webhooks-store";
     private final String templatesStore = "templates-store";
+    private final String usersStore = "users-store";
 
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationTemplates = new ApplicationCommunicationTemplates().name();
+    private final String applicationCommunicationUsers = new ApplicationCommunicationUsers().name();
+    private final String opsApplicationLogs = new OpsApplicationLogs().name();
 
     public Stores(KafkaStreamsWrapper streams, KafkaProducer<String, SpecificRecordBase> producer) {
         this.streams = streams;
@@ -64,7 +73,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // metadata table keyed by subject id
+        // Metadata table keyed by subject id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
@@ -78,6 +87,36 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(tagsStore));
 
         builder.<String, Template>table(applicationCommunicationTemplates, Materialized.as(templatesStore));
+
+        final KTable<String, User> usersTable = builder.table(applicationCommunicationUsers, Materialized.as(usersStore));
+
+        // Extract users from the op log to the users topic
+        builder.<String, HttpLog>stream(opsApplicationLogs)
+                .filter((logId, log) -> log.getUserId() != null)
+                .selectKey((logId, log) -> log.getUserId())
+                // Extract the Kafka record timestamp header
+                .transform(timestampExtractor())
+                .leftJoin(usersTable, (logWithTimestamp, user) -> {
+                    final HttpLog log = logWithTimestamp.getLog();
+                    if (user == null) {
+                        return User.newBuilder()
+                                .setId(log.getUserId())
+                                .setName(log.getUserName())
+                                .setAvatarUrl(log.getUserAvatar())
+                                .setFirstSeenAt(logWithTimestamp.getTimestamp())
+                                .setLastSeenAt(logWithTimestamp.getTimestamp())
+                                .build();
+                    }
+
+                    return User.newBuilder()
+                            .setId(user.getId())
+                            .setName(Optional.ofNullable(user.getName()).orElse(log.getUserName()))
+                            .setAvatarUrl(Optional.ofNullable(user.getAvatarUrl()).orElse(log.getUserAvatar()))
+                            .setFirstSeenAt(user.getFirstSeenAt())
+                            .setLastSeenAt(logWithTimestamp.getTimestamp())
+                            .build();
+                })
+                .to(applicationCommunicationUsers);
 
         streams.start(builder.build(), appId);
     }
@@ -123,6 +162,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public void deleteTemplate(Template template) {
         producer.send(new ProducerRecord<>(applicationCommunicationTemplates, template.getId(), null));
+    }
+
+    public ReadOnlyKeyValueStore<String, User> getUsersStore() {
+        return streams.acquireLocalStore(usersStore);
     }
 
     public ReadOnlyKeyValueStore<String, ChannelContainer> getConnectedChannelsStore() {
@@ -175,6 +218,13 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return webhooks;
     }
 
+    public List<User> getUsers() {
+        final KeyValueIterator<String, User> iterator = getUsersStore().all();
+        List<User> users = new ArrayList<>();
+        iterator.forEachRemaining(kv -> users.add(kv.value));
+        return users;
+    }
+
     @Override
     public void destroy() {
         if (streams != null) {
@@ -187,6 +237,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         getConnectedChannelsStore();
         getWebhookStore();
         getTagsStore();
+        getUsersStore();
 
         return Health.up().build();
     }

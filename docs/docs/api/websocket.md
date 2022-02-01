@@ -32,15 +32,19 @@ payload.
     "channel_id": "{UUID}",
     "message": {
       "id": "{UUID}",
-      "content": {"text": "Hello World"},
       // source message payload
-      "delivery_state": "pending|failed|delivered",
+      "content": {"text": "Hello World"},
       // delivery state of message, one of pending, failed, delivered
+      "delivery_state": "pending|failed|delivered",
       "from_contact": true,
-      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "source": "{String}"
+      "sent_at": "{string}",
       // one of the possible sources
+      "source": "{String}",
+      // details about the sender
+      "sender": {
+        "id": "github:12345" // For unauthenticated instances this defaults to "airy-core-anonymous"
+      }
     }
   }
 }

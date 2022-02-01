@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
@@ -9,13 +8,13 @@ import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import ConversationHeader from '../ConversationHeader';
 import MessageInput from '../../MessageInput';
-import {allConversations, getConversation} from '../../../../selectors/conversations';
+import {allConversations, useCurrentConversation} from '../../../../selectors/conversations';
 import {Source, Suggestions} from 'model';
 import {getConversationInfo} from '../../../../actions';
+import {useParams} from 'react-router-dom';
 
-const mapStateToProps = (state: StateModel, ownProps) => ({
+const mapStateToProps = (state: StateModel) => ({
   conversations: allConversations(state),
-  currentConversation: getConversation(state, ownProps),
   config: state.data.config,
 });
 
@@ -25,19 +24,15 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type MessengerContainerProps = ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
+type MessengerContainerProps = ConnectedProps<typeof connector>;
 
-const MessengerContainer = ({
-  conversations,
-  currentConversation,
-  getConversationInfo,
-  match,
-  config,
-}: MessengerContainerProps) => {
+const MessengerContainer = ({conversations, getConversationInfo, config}: MessengerContainerProps) => {
+  const {conversationId} = useParams();
+  const conversation = useCurrentConversation();
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
-  const source = currentConversation?.channel?.source;
+  const source = conversation?.channel?.source;
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
 
   let dragCounter = 0;
@@ -58,7 +53,7 @@ const MessengerContainer = ({
         setDragAndDropDisabled(true);
       }
     }
-  }, [source, config, currentConversation?.id, draggedAndDroppedFile]);
+  }, [source, config, conversation?.id, draggedAndDroppedFile]);
 
   useEffect(() => {
     window.addEventListener(
@@ -81,13 +76,13 @@ const MessengerContainer = ({
   }, [isFileDragged]);
 
   useEffect(() => {
-    if (!currentConversation && match.params.conversationId) {
-      getConversationInfo(match.params.conversationId);
+    if (!conversation && conversationId) {
+      getConversationInfo(conversationId);
     }
 
     setIsFileDragged(false);
     setDraggedAndDroppedFile(null);
-  }, [currentConversation, match.params.conversationId]);
+  }, [conversation, conversationId]);
 
   const hideSuggestedReplies = () => {
     showSuggestedReplies(null);
@@ -160,7 +155,7 @@ const MessengerContainer = ({
           </div>
         ) : (
           <div className={styles.messageDisplay}>
-            {currentConversation && (
+            {conversation && (
               <>
                 <ConversationHeader />
                 <MessageList showSuggestedReplies={showSuggestedReplies} />
@@ -168,7 +163,7 @@ const MessengerContainer = ({
                   suggestions={suggestions}
                   showSuggestedReplies={showSuggestedReplies}
                   hideSuggestedReplies={hideSuggestedReplies}
-                  source={currentConversation.channel.source as Source}
+                  source={conversation.channel.source as Source}
                   draggedAndDroppedFile={draggedAndDroppedFile}
                   setDraggedAndDroppedFile={setDraggedAndDroppedFile}
                   setDragAndDropDisabled={setDragAndDropDisabled}
@@ -179,9 +174,9 @@ const MessengerContainer = ({
         )}
       </div>
 
-      {currentConversation && <ConversationMetadata />}
+      {conversation && <ConversationMetadata />}
     </>
   );
 };
 
-export default withRouter(connector(MessengerContainer));
+export default connector(MessengerContainer);

@@ -1,0 +1,12 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "User",
+  "type": "record",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "firstSeenAt", "type": "long", "logicalType": "timestamp-millis"},
+    {"name": "lastSeenAt", "type": "long", "logicalType": "timestamp-millis"},
+    {"name": "name", "type": ["null", "string"], "default": null},
+    {"name": "avatarUrl", "type": ["null", "string"], "default": null}
+  ]
+}

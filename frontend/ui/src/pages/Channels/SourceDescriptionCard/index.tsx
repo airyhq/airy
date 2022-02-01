@@ -16,7 +16,7 @@ const SourceDescriptionCard = (props: SourceDescriptionCardProps) => {
 
   return (
     <>
-      <div className={styles.requirementsDialogBackground}></div>
+      <div className={styles.requirementsDialogBackground} />
       <div className={styles.channelCard}>
         <div className={`${sourceInfo.type === 'instagram' ? styles.channelLogoInstagram : styles.channelLogo}`}>
           {sourceInfo.image}

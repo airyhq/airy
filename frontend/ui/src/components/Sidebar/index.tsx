@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter, Link, matchPath, RouteProps} from 'react-router-dom';
+import {Link, matchPath, useLocation} from 'react-router-dom';
 
 import {ReactComponent as PlugIcon} from 'assets/images/icons/git-merge.svg';
 import {ReactComponent as InboxIcon} from 'assets/images/icons/inbox.svg';
@@ -9,9 +9,10 @@ import {INBOX_ROUTE, CHANNELS_ROUTE, TAGS_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 
-const Sidebar = (props: RouteProps) => {
+export const Sidebar = () => {
+  const location = useLocation();
   const isActive = (route: string) => {
-    return !!matchPath(props.location.pathname, route);
+    return !!matchPath(location.pathname, route);
   };
 
   return (
@@ -39,5 +40,3 @@ const Sidebar = (props: RouteProps) => {
     </nav>
   );
 };
-
-export default withRouter(Sidebar);

@@ -65,7 +65,23 @@
   max-height: 120px;
 }
 
+.contentInput {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.imagesContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 80px;
+  max-width: 300px;
+}
+
 .messageTextArea {
+  width: 100%;
   background: transparent;
   position: relative;
   flex-grow: 1;
@@ -153,11 +169,11 @@
 }
 
 .selectorLoader {
-  position: absolute;
-  left: 25px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  min-height: 80px;
+  margin-left: 8px;
 }
 
 .selectorLoader span {

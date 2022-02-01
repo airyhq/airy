@@ -1,11 +1,15 @@
 package co.airy.core.contacts;
 
+import co.airy.avro.communication.Metadata;
 import co.airy.core.contacts.dto.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
+import co.airy.core.contacts.payload.ContactWithMergeHistoryResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
+import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;
+import co.airy.core.contacts.payload.MergeContactsRequestPayload;
 import co.airy.core.contacts.payload.PaginationData;
 import co.airy.core.contacts.payload.UpdateContactPayload;
 import co.airy.pagination.Page;
@@ -19,11 +23,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.validation.Valid;
 
 import static java.util.stream.Collectors.toList;
 
@@ -63,9 +68,37 @@ public class ContactsController implements HealthIndicator {
     }
 
     @PostMapping("/contacts.import")
-    public ResponseEntity<?> importContacts() {
-        // TODO import an array of contacts
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> importContacts(@RequestBody @Valid List<CreateContactPayload> payload) {
+        List<Metadata> contactsMetadata = new ArrayList<Metadata>();
+        List<ContactResponsePayload> createdContacts = new ArrayList<ContactResponsePayload>();
+
+        payload.stream().forEach((p) -> {
+            final Contact newContact = Contact.builder()
+                    .id(UUID.randomUUID().toString())
+                    .createdAt(Instant.now().toEpochMilli())
+                    .metadata(p.getMetadata())
+                    .address(p.getAddress())
+                    .conversations(p.getConversations())
+                    .displayName(p.getDisplayName())
+                    .avatarUrl(p.getAvatarUrl())
+                    .gender(p.getGender())
+                    .locale(p.getLocale())
+                    .organizationName(p.getOrganizationName())
+                    .timezone(p.getTimezone())
+                    .title(p.getTitle())
+                    .via(p.getVia())
+                    .build();
+            contactsMetadata.addAll(newContact.toMetadata());
+            createdContacts.add(ContactResponsePayload.fromContact(newContact));
+        });
+
+        try {
+            stores.storeContact(contactsMetadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdContacts);
     }
 
     @PostMapping("/contacts.list")
@@ -141,22 +174,41 @@ public class ContactsController implements HealthIndicator {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PostMapping("/contacts.refetch")
-    public ResponseEntity<?> refetchContact() {
-        // TODO trigger sources to refetch contact information
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
     @PostMapping("/contacts.merge")
-    public ResponseEntity<?> mergeContact() {
-        // TODO merge contact A into contact B. R
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> mergeContact(@RequestBody @Valid MergeContactsRequestPayload payload) {
+        final Contact sourceContact = stores.getContact(payload.getSourceId().toString());
+        final Contact destinationContact = stores.getContact(payload.getDestinationId().toString());
+
+        if (sourceContact == null || destinationContact == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
+        }
+
+        final Contact mergedContact = destinationContact.merge(sourceContact);
+        try {
+            stores.storeContact(mergedContact.toMetadata());
+            stores.storeContact(sourceContact.deleteAllMetadata());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(ContactWithMergeHistoryResponsePayload.fromContact(mergedContact));
     }
 
     @PostMapping("/contacts.delete")
-    public ResponseEntity<?> deleteContact() {
-        // TODO delete contact
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> deleteContact(@RequestBody @Valid DeleteContactPayload payload) {
+        final String id = payload.getId().toString();
+        final Contact contact = stores.getContact(id);
+        if (contact == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
+        }
+
+        try {
+            stores.storeContact(contact.deleteAllMetadata());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @Override

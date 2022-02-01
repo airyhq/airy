@@ -3,21 +3,17 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {isEqual} from 'lodash-es';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
-import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
 import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 
-import {StateModel} from '../../../../reducers';
-
 import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
-import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
-import {ConversationRouteProps} from '../../index';
+import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
 import {MessageInfoWrapper, Reaction} from 'components';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
@@ -26,21 +22,17 @@ type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-  messages: getCurrentMessages(state, ownProps),
-  conversation: getConversation(state, ownProps),
-});
-
 const mapDispatchToProps = {
   listMessages,
   listPreviousMessages,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;
-
+  const {listMessages, listPreviousMessages, showSuggestedReplies} = props;
+  const conversation = useCurrentConversation();
+  const messages = useCurrentMessages();
   if (!conversation) {
     return null;
   }
@@ -198,4 +190,4 @@ const arePropsEqual = (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 };
 
-export default withRouter(connector(React.memo(MessageList, arePropsEqual)));
+export default connector(React.memo(MessageList, arePropsEqual));

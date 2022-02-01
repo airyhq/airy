@@ -137,12 +137,7 @@ Creates contacts in a bulk.
       "avatar_url": "https://example.org/avatar.jpg",
       "title": "Occupational health and safety technician"
     }
-  ],
-  "pagination_data": {
-    "previous_cursor": null,
-    "next_cursor": "2",
-    "total": 4
-  }
+  ]
 }
 ```
 

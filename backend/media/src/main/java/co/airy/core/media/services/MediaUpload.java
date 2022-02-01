@@ -3,8 +3,9 @@ package co.airy.core.media.services;
 import co.airy.log.AiryLoggerFactory;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.Getter;
@@ -21,7 +22,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 
 @Service
 @EnableRetry
@@ -78,8 +78,12 @@ public class MediaUpload implements HealthIndicator {
     private void checkConnectionStatus() {
         connectionStatus = false;
         try {
-            List<Bucket> buckets = amazonS3Client.listBuckets();
-            if (buckets != null) {
+            ListObjectsV2Result bucketObjects = amazonS3Client.listObjectsV2(
+                    new ListObjectsV2Request()
+                        .withBucketName(this.bucket)
+                        .withPrefix(this.path)
+                        .withMaxKeys(1));
+            if (bucketObjects != null) {
                 log.info("check connection to S3 successful");
                 connectionStatus = true;
             }

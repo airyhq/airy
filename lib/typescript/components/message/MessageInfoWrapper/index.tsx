@@ -18,12 +18,11 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
   const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin, decoration, senderName} = props;
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
-  const senderIdentity = ` - sent by ${senderName}`;
+  const senderIdentity = `sent by ${senderName}`;
 
   const MessageInfo = () => (
     <span className={styles.infoMessage}>
-      {sentAt}
-      {senderName && senderIdentity}
+      {sentAt && `${sentAt} - `} {senderName && senderIdentity}
     </span>
   );
 

@@ -8,6 +8,7 @@ import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.s
 import {decodeURIComponentMessage, getAttachmentType} from './services';
 import {Conversation, Message} from 'model';
 import {Emoji} from 'components';
+import ReactMarkdown from 'react-markdown';
 
 interface SourceMessagePreviewProps {
   conversation: Conversation;
@@ -98,6 +99,14 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
       }
 
       return text;
+    }
+
+    if ((lastMessageContent.text || lastMessageContent.message?.text) && lastMessageContent.containsRichText) {
+      return (
+        <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
+          {lastMessageContent.text || lastMessageContent.message?.text}
+        </ReactMarkdown>
+      );
     }
 
     if (

@@ -34,8 +34,17 @@
   width: 15px;
   height: auto;
   margin-left: 4px;
+}
+
+.contactIcon {
   path {
     fill: var(--color-text-contrast);
+  }
+}
+
+.memberIcon {
+  path {
+    fill: white;
   }
 }
 
@@ -43,6 +52,15 @@
 .shareLink:hover,
 .shareLink:visited,
 .shareLink:active {
-  color: var(--color-text-contrast);
   font-style: italic;
+}
+
+.contactShareLink {
+  @extend .shareLink;
+  color: var(--color-text-contrast);
+}
+
+.memberShareLink {
+  @extend .shareLink;
+  color: white;
 }

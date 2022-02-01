@@ -24,6 +24,7 @@ export interface Message {
   fromContact: boolean;
   sentAt: Date;
   metadata?: MessageMetadata;
+  sender: MessageSender;
 }
 
 export interface MessageMetadata {
@@ -32,6 +33,13 @@ export interface MessageMetadata {
     emoji: string;
     sentAt: string;
   };
+  sentFrom?: string;
+}
+
+export interface MessageSender {
+  id: string;
+  name: string;
+  avatarUrl?: string;
 }
 
 export const mapMessage = (payload): Message => {

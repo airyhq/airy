@@ -5406,10 +5406,10 @@ postcss@^8.2.15:
     nanoid "^3.1.23"
     source-map-js "^0.6.2"
 
-preact@^10.5.15:
-  version "10.5.15"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.15.tgz#6df94d8afecf3f9e10a742fd8c362ddab464225f"
-  integrity sha512-5chK29n6QcJc3m1lVrKQSQ+V7K1Gb8HeQY6FViQ5AxCAEGu3DaHffWNDkC9+miZgsLvbvU9rxbV1qinGHMHzqA==
+preact@^10.6.5:
+  version "10.6.5"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.6.5.tgz#726d8bd12903a0d51cdd17e2e1b90cc539403e0c"
+  integrity sha512-i+LXM6JiVjQXSt2jG2vZZFapGpCuk1fl8o6ii3G84MA3xgj686FKjs4JFDkmUVhtxyq21+4ay74zqPykz9hU6w==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

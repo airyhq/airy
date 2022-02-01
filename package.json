@@ -19,7 +19,7 @@
     "linkify-react": "^3.0.1",
     "linkifyjs": "^3.0.1",
     "lodash-es": "^4.17.21",
-    "preact": "^10.5.15",
+    "preact": "^10.6.5",
     "react": "17.0.2",
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",

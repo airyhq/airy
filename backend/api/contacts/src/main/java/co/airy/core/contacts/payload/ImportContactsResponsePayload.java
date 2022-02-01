@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MergeContactsResponsePayload {
+public class ImportContactsResponsePayload {
     private List<ContactResponsePayload> data;
 }

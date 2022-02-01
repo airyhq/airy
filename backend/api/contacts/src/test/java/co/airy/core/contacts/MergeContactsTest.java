@@ -4,15 +4,17 @@ import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.ContactWithMergeHistoryResponsePayload;
 import co.airy.core.contacts.payload.CreateContactPayload;
 import co.airy.core.contacts.payload.MergeContactsRequestPayload;
+import co.airy.core.contacts.payload.ImportContactsResponsePayload;
 import co.airy.core.contacts.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import co.airy.test.RunnableTest;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,20 +26,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.Arrays;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -102,9 +101,7 @@ public class MergeContactsTest {
                 objectMapper.writeValueAsString(payload))
             .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 
-        List<ContactResponsePayload> contactsResp = objectMapper.readValue(importContent,
-                new TypeReference<>() {
-                });
+        List<ContactResponsePayload> contactsResp = objectMapper.readValue(importContent, ImportContactsResponsePayload.class).getData();
         assertEquals(contactsResp.size(), 2);
 
         MergeContacts mergeContacts = new MergeContacts(contactsResp);

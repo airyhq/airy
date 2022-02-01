@@ -99,12 +99,12 @@ public class Contact implements Serializable {
             }
 
             return this.toBuilder()
-                    .addressLine1(Optional.ofNullable(this.getAddressLine1()).orElse(address.getAddressLine1()))
-                    .addressLine2(Optional.ofNullable(this.getAddressLine2()).orElse(address.getAddressLine2()))
-                    .city(Optional.ofNullable(this.getCity()).orElse(address.getCity()))
-                    .country(Optional.ofNullable(this.getCountry()).orElse(address.getCountry()))
-                    .postalCode(Optional.ofNullable(this.getPostalCode()).orElse(address.getPostalCode()))
-                    .organizationName(Optional.ofNullable(this.getOrganizationName()).orElse(address.getOrganizationName()))
+                    .addressLine1(Optional.ofNullable(address.getAddressLine1()).orElse(this.getAddressLine1()))
+                    .addressLine2(Optional.ofNullable(address.getAddressLine2()).orElse(this.getAddressLine2()))
+                    .city(Optional.ofNullable(address.getCity()).orElse(this.getCity()))
+                    .country(Optional.ofNullable(address.getCountry()).orElse(this.getCountry()))
+                    .postalCode(Optional.ofNullable(address.getPostalCode()).orElse(this.getPostalCode()))
+                    .organizationName(Optional.ofNullable(address.getOrganizationName()).orElse(this.getOrganizationName()))
                     .build();
         }
 

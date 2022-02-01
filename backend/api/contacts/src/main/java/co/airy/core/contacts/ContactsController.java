@@ -10,7 +10,7 @@ import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;
 import co.airy.core.contacts.payload.MergeContactsRequestPayload;
-import co.airy.core.contacts.payload.MergeContactsResponsePayload;
+import co.airy.core.contacts.payload.ImportContactsResponsePayload;
 import co.airy.core.contacts.payload.PaginationData;
 import co.airy.core.contacts.payload.UpdateContactPayload;
 import co.airy.pagination.Page;
@@ -99,7 +99,7 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MergeContactsResponsePayload(createdContacts));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ImportContactsResponsePayload(createdContacts));
     }
 
     @PostMapping("/contacts.list")

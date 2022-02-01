@@ -14,7 +14,7 @@ these contacts to your existing CRM solutions.
 
 :::note
 
-This feature is disabled by default. To enable it you need to set the `integration.source-api.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
+This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
 
 :::
 

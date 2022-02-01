@@ -102,15 +102,15 @@ public class MergeContactsTest {
                 objectMapper.writeValueAsString(payload))
             .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 
-        List<ContactResponsePayload> contactsResp = objectMapper.readValue(
-                importContent,
-                new TypeReference<List<ContactResponsePayload>>() {});
+        List<ContactResponsePayload> contactsResp = objectMapper.readValue(importContent,
+                new TypeReference<>() {
+                });
         assertEquals(contactsResp.size(), 2);
 
-        MergeContacts mc = new MergeContacts(contactsResp);
-        retryOnException(mc, "Not able to merge contacts");
+        MergeContacts mergeContacts = new MergeContacts(contactsResp);
+        retryOnException(mergeContacts, "Not able to merge contacts");
 
-        final ContactWithMergeHistoryResponsePayload mergedContact = objectMapper.readValue(mc.getMergeContent(),
+        final ContactWithMergeHistoryResponsePayload mergedContact = objectMapper.readValue(mergeContacts.getMergeContent(),
                 ContactWithMergeHistoryResponsePayload.class);
         final CreateContactPayload sourceContact = payload.get(0);
         final CreateContactPayload destinationContact = payload.get(1);
@@ -120,7 +120,7 @@ public class MergeContactsTest {
         assertNotNull(mergedContact.getMergeHistory());
         assertEquals(mergedContact.getMergeHistory().size(), 1);
         assertThat(mergedContact.getMergeHistory().get(0).getAvatarUrl(), equalTo(sourceContact.getAvatarUrl()));
-         
+
     }
 
     private List<CreateContactPayload> mockContactsListPayload() {

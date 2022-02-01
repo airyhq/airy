@@ -139,8 +139,8 @@ Creates contacts in a bulk.
     }
   ],
   "pagination_data": {
-    "previous_cursor": "",
-    "next_cursor": "",
+    "previous_cursor": null,
+    "next_cursor": "2",
     "total": 4
   }
 }
@@ -263,13 +263,13 @@ destination contact will be merged, a copy of the source contact will be saved i
 {
   "display_name": "Barabara Liskov",
   "avatar_url": "https://example.org/avatar.jpg",
-  "title": "Estimator project manager"
+  "title": "Estimator project manager",
   "organization_name": "Airy.co",
   "merge_history": [
     {
       "display_name": "Eleanor B. Garcia",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Estimator project manager"
+      "title": "Estimator project manager",
       "organization_name": "Airy.co"
     }
   ]

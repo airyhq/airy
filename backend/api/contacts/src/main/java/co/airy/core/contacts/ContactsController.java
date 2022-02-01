@@ -10,6 +10,7 @@ import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.payload.ListContactsRequestPayload;
 import co.airy.core.contacts.payload.ListContactsResponsePayload;
 import co.airy.core.contacts.payload.MergeContactsRequestPayload;
+import co.airy.core.contacts.payload.MergeContactsResponsePayload;
 import co.airy.core.contacts.payload.PaginationData;
 import co.airy.core.contacts.payload.UpdateContactPayload;
 import co.airy.pagination.Page;
@@ -23,12 +24,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.validation.Valid;
 
 import static java.util.stream.Collectors.toList;
 
@@ -72,7 +73,7 @@ public class ContactsController implements HealthIndicator {
         List<Metadata> contactsMetadata = new ArrayList<Metadata>();
         List<ContactResponsePayload> createdContacts = new ArrayList<ContactResponsePayload>();
 
-        payload.stream().forEach((p) -> {
+        payload.forEach((p) -> {
             final Contact newContact = Contact.builder()
                     .id(UUID.randomUUID().toString())
                     .createdAt(Instant.now().toEpochMilli())
@@ -98,7 +99,7 @@ public class ContactsController implements HealthIndicator {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdContacts);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MergeContactsResponsePayload(createdContacts));
     }
 
     @PostMapping("/contacts.list")

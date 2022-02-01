@@ -64,18 +64,23 @@ public class ImportContactsTest {
     void canImportContacts() throws Exception {
         final List<CreateContactPayload> payload = mockContactsListPayload();
 
-        webTestHelper.post(
+        final ResultActions importActions = webTestHelper.post(
                         "/contacts.import",
                         objectMapper.writeValueAsString(payload))
                 .andExpect(status().isCreated());
 
+        for (CreateContactPayload contact : payload) {
+            importActions.andExpect(jsonPath(String.format("$.data[?(@.display_name == \"%s\" && @.avatar_url == \"%s\" && @.title == \"%s\" && @.gender == \"%s\")]",
+                    contact.getDisplayName(), contact.getAvatarUrl(), contact.getTitle(), contact.getGender())).exists());
+        }
+
         retryOnException(() -> {
-            final ResultActions actions = webTestHelper.post("/contacts.list")
+            final ResultActions listActions = webTestHelper.post("/contacts.list")
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data", hasSize(4)));
 
             for (CreateContactPayload contact : payload) {
-                actions.andExpect(jsonPath(String.format("$.data[?(@.display_name == \"%s\" && @.avatar_url == \"%s\" && @.title == \"%s\" && @.gender == \"%s\")]",
+                listActions.andExpect(jsonPath(String.format("$.data[?(@.display_name == \"%s\" && @.avatar_url == \"%s\" && @.title == \"%s\" && @.gender == \"%s\")]",
                         contact.getDisplayName(), contact.getAvatarUrl(), contact.getTitle(), contact.getGender())).exists());
             }
         }, "Unable to find imported contacts");

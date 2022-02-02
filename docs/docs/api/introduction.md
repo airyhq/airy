@@ -7,6 +7,7 @@ import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import HighVoltageSVG from "@site/static/icons/high-voltage.svg";
+import PackageSVG from "@site/static/icons/package.svg";
 import ElectricPlugSVG from "@site/static/icons/electric-plug.svg";
 import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
 import HammerAndWrenchSVG from "@site/static/icons/hammer-and-wrench.svg";
@@ -41,6 +42,13 @@ interacting with data:
     title='HTTP API'
     description='Access your conversational data with blazing fast HTTP endpoints'
     link='api/endpoints/introduction'
+/>
+<ButtonBox
+    icon={<PackageSVG />}
+    iconInvertible={true}
+    title='HTTP Client'
+    description='Make requests easily with the HTTP client package'
+    link='api/httpClient'
 />
 <ButtonBox
     icon={<ElectricPlugSVG />}

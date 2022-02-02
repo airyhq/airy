@@ -9,7 +9,7 @@ import {ConversationFilter, StateModel} from '../../../reducers';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
-import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark-circle.svg';
+import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmarkCircle.svg';
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 import ChannelAvatar from '../../../components/ChannelAvatar';

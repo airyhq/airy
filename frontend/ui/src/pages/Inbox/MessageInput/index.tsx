@@ -8,7 +8,7 @@ import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
 import {ReactComponent as PaperPlane} from 'assets/images/icons/paperplane.svg';
-import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
+import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
 
 import {isComponentHealthy, StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';

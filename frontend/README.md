@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://airy.co/">
-    <img width="350" src="./assets/airy_primary_rgb.svg" alt="Airy Logo" />
+    <img width="350" src="./assets/airyPrimaryRgb.svg" alt="Airy Logo" />
     </a>
 </p>
 

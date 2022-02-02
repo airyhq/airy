@@ -3,9 +3,9 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
-import {ReactComponent as LogoutIcon} from 'assets/images/icons/sign-out.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/logo/airy_primary_rgb.svg';
-import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
+import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/logo/airyPrimaryRgb.svg';
+import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
 

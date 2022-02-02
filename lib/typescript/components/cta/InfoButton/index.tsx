@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as InfoCircle} from 'assets/images/icons/info-circle.svg';
+import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
 
 import styles from './style.module.scss';
 

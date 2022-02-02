@@ -10,12 +10,12 @@ import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import RocketSVG from "@site/static/icons/rocket.svg";
 import DiamondSVG from "@site/static/icons/diamond.svg";
-import SpeechBalloonSVG from "@site/static/icons/speech-balloon.svg";
-import HighVoltageSVG from "@site/static/icons/high-voltage.svg";
-import ElectricPlugSVG from "@site/static/icons/electric-plug.svg";
-import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
+import SpeechBalloonSVG from "@site/static/icons/speechBalloon.svg";
+import HighVoltageSVG from "@site/static/icons/highVoltage.svg";
+import ElectricPlugSVG from "@site/static/icons/electricPlug.svg";
+import FishingPoleSVG from "@site/static/icons/fishingPole.svg";
 import GearSVG from "@site/static/icons/gear.svg";
-import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
+import AiryBubbleSVG from "@site/static/icons/airyBubble.svg";
 
 <TLDR>
 

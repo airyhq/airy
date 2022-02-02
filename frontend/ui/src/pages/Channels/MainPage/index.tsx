@@ -8,12 +8,12 @@ import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDi
 import SourceDescriptionCard from '../SourceDescriptionCard';
 import ConnectedChannelsBySourceCard from '../ConnectedChannelsBySourceCard';
 
-import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram_avatar.svg';
+import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
+import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messengerAvatar.svg';
+import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/smsAvatar.svg';
+import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsAppAvatar.svg';
+import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleAvatar.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramAvatar.svg';
 
 import styles from './index.module.scss';
 import {

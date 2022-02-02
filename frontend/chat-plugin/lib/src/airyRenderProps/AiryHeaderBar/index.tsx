@@ -2,7 +2,7 @@ import React from 'react';
 import {Config} from '../../config';
 import style from './index.module.scss';
 import {ReactComponent as CloseButton} from 'assets/images/icons/close.svg';
-import {ReactComponent as MinimizeButton} from 'assets/images/icons/minimize-button.svg';
+import {ReactComponent as MinimizeButton} from 'assets/images/icons/minimizeButton.svg';
 import {cyChatPluginHeaderBarCloseButton} from 'chat-plugin-handles';
 
 type AiryHeaderBarProps = {

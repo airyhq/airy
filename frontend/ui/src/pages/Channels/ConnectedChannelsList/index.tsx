@@ -9,7 +9,7 @@ import {allChannels} from '../../../selectors/channels';
 import {Channel, Source} from 'model';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from 'components';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';

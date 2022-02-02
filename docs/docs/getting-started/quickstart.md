@@ -30,6 +30,7 @@ title='Did you already install the Airy CLI?'
 description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
 link='/getting-started/installation/introduction'
 />
+<br />
 
 :::note
 

@@ -6,11 +6,10 @@ sidebar_label: Introduction
 import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
-import HighVoltageSVG from "@site/static/icons/high-voltage.svg";
-import PackageSVG from "@site/static/icons/package.svg";
-import ElectricPlugSVG from "@site/static/icons/electric-plug.svg";
-import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
-import HammerAndWrenchSVG from "@site/static/icons/hammer-and-wrench.svg";
+import HighVoltageSVG from "@site/static/icons/highVoltage.svg";
+import ElectricPlugSVG from "@site/static/icons/electricPlug.svg";
+import FishingPoleSVG from "@site/static/icons/fishingPole.svg";
+import HammerAndWrenchSVG from "@site/static/icons/hammerAndWrench.svg";
 
 <TLDR>
 

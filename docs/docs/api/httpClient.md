@@ -31,7 +31,7 @@ yarn add @airyhq/http-client
 
 The library exports an `HttpClient` class with public methods that make requests to the Airy Core API.
 
-To get started, instantiate the `HttpClient` class with an Airy Core API URL:
+To get started, instantiate the `HttpClient` class with your API host URL:
 
 ```
 const client = new HttpClient("http://airy.core");

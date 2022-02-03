@@ -6,8 +6,8 @@ import {listTemplates} from '../../../actions/templates';
 import {SearchField, ErrorNotice} from 'components';
 import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers';
-import emptyState from 'assets/images/empty-state/templates-empty-state.png';
-import notFoundState from 'assets/images/not-found/templates-not-found.png';
+import emptyState from 'assets/images/emptyState/templatesEmptyState.png';
+import notFoundState from 'assets/images/notFound/templatesNotFound.png';
 import {SourceMessage} from 'render';
 
 const mapDispatchToProps = {

@@ -14,7 +14,7 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 import {setFilter} from '../../../actions/conversationsFilter';
 
 import styles from './index.module.scss';
-import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
+import {ReactComponent as Checkmark} from 'assets/images/icons/checkmarkCircle.svg';
 import {newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo, cyClickableListItem} from 'handles';
 

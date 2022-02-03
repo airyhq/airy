@@ -5,7 +5,7 @@ import {connectInstagramChannel} from '../../../../actions';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './InstagramConnect.module.scss';
 

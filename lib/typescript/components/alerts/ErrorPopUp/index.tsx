@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ReactComponent as WarningIcon} from 'assets/images/icons/exclamation-triangle.svg';
+import {ReactComponent as WarningIcon} from 'assets/images/icons/exclamationTriangle.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import styles from './style.module.scss';
 

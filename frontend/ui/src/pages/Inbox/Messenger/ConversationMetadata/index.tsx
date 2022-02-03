@@ -14,7 +14,7 @@ import {useAnimation} from '../../../../assets/animations';
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from 'components';
-import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/editPencil.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 

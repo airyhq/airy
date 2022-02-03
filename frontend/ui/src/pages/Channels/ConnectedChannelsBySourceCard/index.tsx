@@ -4,7 +4,7 @@ import {LinkButton} from 'components';
 import {Channel} from 'model';
 import {SourceInfo} from '../MainPage';
 import ChannelAvatar from '../../../components/ChannelAvatar';
-import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
+import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plusCircle.svg';
 
 import styles from './index.module.scss';
 import {useNavigate} from 'react-router-dom';

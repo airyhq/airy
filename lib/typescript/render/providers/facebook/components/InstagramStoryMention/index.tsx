@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {ReactComponent as LinkIcon} from 'assets/images/icons/external-link.svg';
+import {ReactComponent as LinkIcon} from 'assets/images/icons/externalLink.svg';
 import {timeElapsedInHours} from 'dates';
 
 type StoryMentionProps = {

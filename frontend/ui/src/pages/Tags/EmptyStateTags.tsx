@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from 'components';
-import {ReactComponent as EmptyImage} from 'assets/images/empty-state/tags-empty-state.svg';
+import {ReactComponent as EmptyImage} from 'assets/images/emptyState/tagsEmptyState.svg';
 import styles from './EmptyStateTags.module.scss';
 
 interface EmptyStateTagsProps {

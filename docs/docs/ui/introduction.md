@@ -6,9 +6,9 @@ sidebar_label: Introduction
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import GearSVG from "@site/static/icons/gear.svg";
-import DesktopComputerSVG from "@site/static/icons/desktop-computer.svg";
+import DesktopComputerSVG from "@site/static/icons/desktopComputer.svg";
 import LabelSVG from "@site/static/icons/label.svg";
-import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
+import CommentBubbleSVG from "@site/static/icons/commentBubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Not every message can be handled by code, which is why Airy comes with different UIs ready for you and your team to use.

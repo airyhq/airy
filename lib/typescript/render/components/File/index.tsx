@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {getFileName} from '../../services';
-import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/file-download.svg';
+import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/fileDownload.svg';
 
 type FileRenderProps = {
   fileUrl: string;

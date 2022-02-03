@@ -14,7 +14,7 @@ these contacts to your existing CRM solutions.
 
 :::note
 
-This feature is disabled by default. To enable it you need to set the `integration.source-api.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
+This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
 
 :::
 
@@ -75,7 +75,7 @@ All request fields are optional, but an empty payload will not be accepted.
 
 **(201) Success Response Payload**
 
-import ContactResponsePayload from './../sources/applyVariables-note.mdx'
+import ContactResponsePayload from './contacts-response-payload.md'
 
 <ContactResponsePayload />
 
@@ -137,12 +137,7 @@ Creates contacts in a bulk.
       "avatar_url": "https://example.org/avatar.jpg",
       "title": "Occupational health and safety technician"
     }
-  ],
-  "pagination_data": {
-    "previous_cursor": "",
-    "next_cursor": "",
-    "total": 4
-  }
+  ]
 }
 ```
 
@@ -263,13 +258,13 @@ destination contact will be merged, a copy of the source contact will be saved i
 {
   "display_name": "Barabara Liskov",
   "avatar_url": "https://example.org/avatar.jpg",
-  "title": "Estimator project manager"
+  "title": "Estimator project manager",
   "organization_name": "Airy.co",
   "merge_history": [
     {
       "display_name": "Eleanor B. Garcia",
       "avatar_url": "https://example.org/avatar.jpg",
-      "title": "Estimator project manager"
+      "title": "Estimator project manager",
       "organization_name": "Airy.co"
     }
   ]

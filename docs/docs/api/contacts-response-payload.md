@@ -25,7 +25,7 @@
   "conversations": {
     // Automatically created contacts will always have a single conversation that is linked here
     "ea1cba21-2bd6-477c-9a40-59cd9bb96bef": "facebook",
-    "8904adee-38b4-493b-a4d8-272e2e5a6815": "twilio.sms",
+    "8904adee-38b4-493b-a4d8-272e2e5a6815": "twilio.sms"
   },
   "metadata": {
     "facebook": {
@@ -36,6 +36,6 @@
     "zendesk_id": "XYZ789",
     "key": "value" // allows for any additional key and value (arrays are prohibited)
   },
-  "created_at": "2021-11-16T13:21:03.580Z", // ISO 8601
+  "created_at": "2021-11-16T13:21:03.580Z" // ISO 8601
 }
 ```

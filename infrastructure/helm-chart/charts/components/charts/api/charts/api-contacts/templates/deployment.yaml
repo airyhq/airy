@@ -31,6 +31,8 @@ spec:
         envFrom:
           - configMapRef:
               name: security
+          - configMapRef:
+              name: "integration-contacts"
         env:
         - name: KAFKA_BROKERS
           valueFrom:

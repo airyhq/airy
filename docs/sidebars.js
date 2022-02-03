@@ -61,6 +61,7 @@ module.exports = {
             'api/endpoints/users',
           ],
         },
+        'api/httpClient',
         'api/websocket',
         'api/webhook',
         'api/source',

@@ -161,6 +161,59 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId:
   };
 };
 
+const removeNoteFromConversation = (state: AllConversationsState, conversationId: string, noteId: string) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          notes: pickBy(conversation.metadata?.notes, (_, key) => key !== noteId),
+        },
+      },
+    },
+  };
+};
+
+const updateNoteInConversation = (
+  state: AllConversationsState,
+  conversationId: string,
+  noteId: string,
+  text: string
+) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          notes: {
+            ...conversation.metadata.notes,
+            [noteId]: {
+              text: text,
+              timestamp: new Date().getMilliseconds().toString(),
+            },
+          },
+        },
+      },
+    },
+  };
+};
+
 const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
@@ -283,6 +336,12 @@ function allReducer(
 
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
+
+    case getType(actions.removeNoteFromConversationAction):
+      return removeNoteFromConversation(state, action.payload.conversationId, action.payload.noteId);
+
+    case getType(actions.updateNoteAction):
+      return updateNoteInConversation(state, action.payload.conversationId, action.payload.noteId, action.payload.text);
 
     case getType(actions.updateMessagesPaginationDataAction):
       if (state.items[action.payload.conversationId]) {

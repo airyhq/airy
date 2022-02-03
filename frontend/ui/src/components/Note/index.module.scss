@@ -1,0 +1,80 @@
+@import 'assets/scss/fonts.scss';
+
+.note {
+  display: inline-block;
+  padding: 4px;
+  max-width: 100%;
+  min-width: 100%;
+  position: relative;
+}
+
+.noteInner {
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px;
+  background: var(--color-background-yellow);
+  color: var(--color-text-gray);
+  border-radius: 4px;
+  line-height: 24px;
+  max-width: 100%;
+  min-width: 100%;
+  border: 1px solid var(--color-text-gray);
+}
+
+.noteDate {
+  color: var(--color-text-gray);
+  @include font-s;
+  margin-top: 10px;
+}
+
+.editNote {
+  margin-left: 4px;
+  height: 18px;
+  width: 18px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+  float: right;
+  cursor: pointer;
+  position: absolute;
+}
+
+.removeNote {
+  cursor: pointer;
+  position: absolute;
+  margin-bottom: auto;
+  float: right;
+}
+
+.closeButton {
+  margin-left: 4px;
+  height: 14px;
+  width: 14px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-red-alert);
+    }
+  }
+}
+
+.noteName {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noteNameExpanded {
+  @extend .noteName;
+  white-space: unset;
+  overflow-wrap: break-word;
+  margin-right: 4px;
+}

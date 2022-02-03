@@ -7,13 +7,16 @@ import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
 import co.airy.core.api.communication.lucene.ExtendedQueryParser;
 import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
+import co.airy.core.api.communication.payload.ConversationAddNoteRequestPayload;
 import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
+import co.airy.core.api.communication.payload.ConversationDeleteNoteRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
+import co.airy.core.api.communication.payload.ConversationUpdateNoteRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.conversation.Conversation;
@@ -41,9 +44,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
-import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
-import static co.airy.model.metadata.MetadataRepository.newConversationTag;
+import static co.airy.date.format.DateFormat.isoFromMillis;
+import static co.airy.model.metadata.MetadataRepository.*;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -161,6 +165,77 @@ public class ConversationsController {
 
         try {
             stores.storeReadReceipt(readReceipt);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.add-note")
+    ResponseEntity<?> conversationAddNote(@RequestBody @Valid ConversationAddNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String text = payload.getText();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String noteId = UUID.randomUUID().toString();
+
+        return saveNote(conversationId, noteId, text);
+    }
+
+    @PostMapping("/conversations.update-note")
+    ResponseEntity<?> conversationUpdateNote(@RequestBody @Valid ConversationUpdateNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String text = payload.getText();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return saveNote(conversationId, noteId, text);
+    }
+
+    ResponseEntity<?> saveNote(String conversationId, String noteId, String text) {
+        final Metadata noteText = newConversationMetadata(
+                conversationId,
+                String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"),
+                text
+        );
+        final Metadata noteTime = newConversationMetadata(
+                conversationId,
+                String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"),
+                isoFromMillis(Instant.now().toEpochMilli())
+        );
+
+        try {
+            stores.storeMetadata(noteText);
+            stores.storeMetadata(noteTime);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.delete-note")
+    ResponseEntity<?> conversationDeleteNote(@RequestBody @Valid ConversationDeleteNoteRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String noteId = payload.getNoteId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            final Subject subject = new Subject("conversation", conversationId);
+            stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "text"));
+            stores.deleteMetadata(subject, String.format("%s.%s.%s", MetadataKeys.ConversationKeys.NOTES, noteId, "timestamp"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

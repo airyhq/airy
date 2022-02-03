@@ -12,7 +12,10 @@ export const listConversationsDef = {
   },
   mapResponse: response => {
     const conversationData = (response as PaginatedPayload<any>).data.map(messagePayload => ({
-      ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['metadata.user_data', 'metadata.tags']}),
+      ...camelcaseKeys(messagePayload, {
+        deep: true,
+        stopPaths: ['metadata.user_data', 'metadata.tags', 'metadata.notes'],
+      }),
       createdAt: new Date(messagePayload.created_at),
       lastMessage: mapMessage(messagePayload.last_message),
     }));

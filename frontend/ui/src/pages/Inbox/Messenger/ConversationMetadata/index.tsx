@@ -1,10 +1,22 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {Tag as TagModel, TagColor} from 'model';
+import {
+  Tag as TagModel,
+  TagColor,
+  Note as NoteModel,
+  conversationNotes,
+  conversationTags,
+  getFilteredTags,
+} from 'model';
 
-import {createTag, listTags} from '../../../../actions';
-import {addTagToConversation, removeTagFromConversation} from '../../../../actions';
-import {updateContact} from '../../../../actions';
+import {createTag, listTags} from '../../../../actions/tags';
+import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
+import {updateContact} from '../../../../actions/conversations';
+import {
+  addNoteToConversation,
+  removeNoteFromConversation,
+  updateConversationNote,
+} from '../../../../actions/conversations';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -13,7 +25,8 @@ import {useAnimation} from '../../../../assets/animations';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
-import {Button, Input, LinkButton} from 'components';
+import Note from '../../../../components/Note';
+import {Button, Input, LinkButton, TextArea} from 'components';
 import {ReactComponent as EditPencilIcon} from 'assets/images/icons/editPencil.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
@@ -26,8 +39,11 @@ import {
   cyDisplayName,
   cyDisplayNameInput,
   cyEditDisplayNameCheckmark,
+  cyShowNotesDialog,
+  cyNotesDialogButton,
+  cyNotesDialogInput,
 } from 'handles';
-import {difference} from 'lodash-es';
+
 import {useCurrentConversation} from '../../../../selectors/conversations';
 
 const mapStateToProps = (state: StateModel) => ({
@@ -40,12 +56,25 @@ const mapDispatchToProps = {
   addTagToConversation,
   removeTagFromConversation,
   updateContact,
+  addNoteToConversation,
+  removeNoteFromConversation,
+  updateConversationNote,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
+  const {
+    tags,
+    createTag,
+    listTags,
+    addTagToConversation,
+    removeTagFromConversation,
+    updateContact,
+    addNoteToConversation,
+    removeNoteFromConversation,
+    updateConversationNote,
+  } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -53,6 +82,10 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
   const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
   const [fade, setFade] = useState(true);
+  const [showNotesDialog, setShowNotesDialog] = useState(false);
+  const [noteText, setNoteText] = useState('');
+  const [noteId, setNoteId] = useState('');
+  const [notesSortNewest, changeNotesSort] = useState(false);
 
   useEffect(() => {
     setShowEditDisplayName(false);
@@ -68,6 +101,12 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setShowTagsDialog(true);
   };
 
+  const showAddNotes = () => {
+    setNoteText('');
+    setNoteId('');
+    setShowNotesDialog(true);
+  };
+
   const addTag = (tag: TagModel) => {
     addTagToConversation(conversation.id, tag.id);
   };
@@ -76,16 +115,26 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     removeTagFromConversation(conversation.id, tag.id);
   };
 
-  const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
+  const removeNote = (note: NoteModel) => {
+    removeNoteFromConversation(conversation.id, note.id);
+  };
 
-  const conversationTags = () =>
-    Object.keys(conversation.metadata.tags || {})
-      .map(tagId => tags[tagId])
-      .filter(tag => tag !== undefined)
-      .sort(tagSorter);
+  const updateNote = (note: NoteModel) => {
+    setNoteText(note.text);
+    setShowNotesDialog(true);
+    setNoteId(note.id);
+  };
+
+  const notesSorter = (a: NoteModel, b: NoteModel) => {
+    if (notesSortNewest) {
+      return a.timestamp < b.timestamp ? 1 : -1;
+    } else {
+      return a.timestamp > b.timestamp ? 1 : -1;
+    }
+  };
 
   const checkIfExists = (tagName: string) => {
-    const usedTags = conversationTags();
+    const usedTags = conversationTags(conversation, tags);
     if (tagName.length === 0) {
       return true;
     }
@@ -97,16 +146,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     return true;
   };
 
-  const getFilteredTags = (): TagModel[] =>
-    difference(Object.keys(tags), Object.keys(conversation.metadata.tags || {}))
-      .map(id => tags[id])
-      .filter(tag => tag !== undefined)
-      .sort(tagSorter)
-      .filter((tag: TagModel) => tag.name.startsWith(tagName));
-
-  const submitForm = (event: FormEvent) => {
+  const submitTagForm = (event: FormEvent) => {
     event.preventDefault();
-    const filteredTags = getFilteredTags();
+    const filteredTags = getFilteredTags(conversation, tags, tagName);
 
     if (filteredTags.length === 1) {
       addTag(filteredTags[0]);
@@ -118,6 +160,18 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         }
       });
     }
+  };
+
+  const submitNoteForm = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (noteId === '') {
+      addNoteToConversation(conversation.id, noteText);
+    } else {
+      updateConversationNote(conversation.id, noteId, noteText);
+    }
+
+    setShowNotesDialog(false);
   };
 
   const saveEditDisplayName = () => {
@@ -135,12 +189,12 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const renderTagsDialog = () => {
-    const filteredTags = getFilteredTags();
+    const filteredTags = getFilteredTags(conversation, tags, tagName);
 
     return (
       <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
         <Dialog close={() => useAnimation(setShowTagsDialog, showTagsDialog, setFade, 400)}>
-          <form className={styles.addTags} onSubmit={submitForm}>
+          <form className={styles.addTags} onSubmit={submitTagForm}>
             <Input
               type="text"
               label="Add a tag"
@@ -189,6 +243,43 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 </div>
               </div>
             )}
+          </form>
+        </Dialog>
+      </div>
+    );
+  };
+
+  const renderNotesDialog = () => {
+    return (
+      <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
+        <Dialog close={() => useAnimation(setShowNotesDialog, showNotesDialog, setFade, 400)}>
+          <form className={styles.addNotes} onSubmit={submitNoteForm}>
+            <TextArea
+              type="textarea"
+              label="Add a note"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setNoteText(e.target.value);
+              }}
+              value={noteText}
+              name="note_text"
+              placeholder="Please enter the note text"
+              autoComplete="off"
+              autoFocus
+              fontClass="font-base"
+              minLength={1}
+              maxLength={50000}
+              showErrors
+              dataCy={cyNotesDialogInput}
+              minRows={10}
+              maxRows={25}
+            />
+            <div>
+              <div className={styles.addNotesButtonRow}>
+                <Button type="submit" styleVariant="small" dataCy={cyNotesDialogButton}>
+                  Save Note
+                </Button>
+              </div>
+            </div>
           </form>
         </Dialog>
       </div>
@@ -261,9 +352,50 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             {showTagsDialog && renderTagsDialog()}
 
             <div className={styles.tagList}>
-              {conversationTags().map(tag => (
+              {conversationTags(conversation, tags).map(tag => (
                 <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />
               ))}
+            </div>
+          </div>
+          <div className={styles.notes}>
+            <div className={styles.notesHeader}>
+              <h3 className={styles.notesHeaderTitle}>Notes</h3>
+              <LinkButton onClick={showAddNotes} type="button" dataCy={cyShowNotesDialog}>
+                {showNotesDialog ? 'Close' : '+ Add Note'}{' '}
+              </LinkButton>
+            </div>
+
+            {showNotesDialog && renderNotesDialog()}
+
+            {conversationNotes(conversation).sort(notesSorter).length > 1 && (
+              <div>
+                <span className={styles.sortText}>Sort: </span>
+                <span
+                  className={`${notesSortNewest ? styles.sortSelected : ''} ${styles.sortOption}`}
+                  onClick={() => changeNotesSort(true)}
+                >
+                  Newest first
+                </span>
+                <span
+                  className={`${notesSortNewest ? '' : styles.sortSelected} ${styles.sortOption}`}
+                  onClick={() => changeNotesSort(false)}
+                >
+                  Oldest first
+                </span>
+              </div>
+            )}
+
+            <div className={styles.noteList}>
+              {conversationNotes(conversation)
+                .sort(notesSorter)
+                .map(note => (
+                  <Note
+                    key={note.id}
+                    note={note}
+                    removeNote={() => removeNote(note)}
+                    updateNote={() => updateNote(note)}
+                  />
+                ))}
             </div>
           </div>
         </div>

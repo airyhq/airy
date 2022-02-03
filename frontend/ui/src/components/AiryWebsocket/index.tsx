@@ -25,13 +25,16 @@ const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
   onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
   getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-  onMetadata: (metadataEvent: MetadataEvent) =>
-    dispatch(
-      camelcaseKeys(setMetadataAction(metadataEvent), {
-        deep: true,
-        stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
-      })
-    ),
+  onMetadata: (metadataEvent: MetadataEvent) => {
+    return dispatch(
+      setMetadataAction(
+        camelcaseKeys(metadataEvent, {
+          deep: true,
+          stopPaths: ['metadata.user_data', 'metadata.tags', 'metadata.notes'],
+        })
+      )
+    );
+  },
   onTag: (tag: Tag) => {
     dispatch(upsertTagAction(tag));
   },

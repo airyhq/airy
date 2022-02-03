@@ -117,7 +117,6 @@ public class MergeContactsTest {
         assertNotNull(mergedContact.getMergeHistory());
         assertEquals(mergedContact.getMergeHistory().size(), 1);
         assertThat(mergedContact.getMergeHistory().get(0).getAvatarUrl(), equalTo(sourceContact.getAvatarUrl()));
-
     }
 
     private List<CreateContactPayload> mockContactsListPayload() {

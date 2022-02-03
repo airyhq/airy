@@ -6,5 +6,6 @@ export const getConversationInfoDef = {
   mapRequest: conversationId => ({
     conversation_id: conversationId,
   }),
-  mapResponse: response => camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']}),
+  mapResponse: response =>
+    camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data', 'metadata.notes', 'metadata.tags']}),
 };

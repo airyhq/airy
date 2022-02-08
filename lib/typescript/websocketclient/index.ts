@@ -23,7 +23,10 @@ export class WebSocketClient {
 
   constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `${protocol}//${new URL(apiUrl).host}/ws.communication`;
+    const apiWsUrl = apiUrl
+      ? `${protocol}//${new URL(apiUrl).host}/ws.communication`
+      : `${protocol}//${location.host}/ws.communication`;
+    this.apiUrlConfig = apiWsUrl;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,

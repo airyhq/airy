@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import {render} from 'react-dom';
 import {config} from './config';
+import process from 'process';
 
 declare global {
   interface Window {

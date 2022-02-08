@@ -16,7 +16,9 @@ declare global {
 
 const queryParams = new URLSearchParams(window.location.search);
 const channelId = queryParams.get('channel_id');
-const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
+const apiHost: string = window.airy
+  ? window.airy.host
+  : process.env.API_HOST ?? `${location.protocol + '//' + location.host}`;
 
 const renderMethod = async () => {
   const AiryChatPlugin = (await import('chat-plugin')).AiryChatPlugin;

@@ -42,6 +42,7 @@
   float: right;
   cursor: pointer;
   position: absolute;
+  @include font-s;
 }
 
 .removeNote {

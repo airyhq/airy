@@ -46,7 +46,7 @@
     "@hot-loader/react-dom": "^17.0.2",
     "@svgr/plugin-svgo": "^6.2.0",
     "@svgr/webpack": "^6.2.0",
-    "@types/lodash-es": "^4.17.5",
+    "@types/lodash-es": "^4.17.6",
     "@types/react-window-infinite-loader": "^1.0.5",
     "@types/resize-observer-browser": "^0.1.6",
     "@typescript-eslint/eslint-plugin": "^4.33.0",

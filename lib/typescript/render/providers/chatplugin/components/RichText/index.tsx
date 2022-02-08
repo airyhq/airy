@@ -8,12 +8,13 @@ type RichTextRenderProps = {
   fromContact: boolean;
   fallback: string;
   containsRichText: boolean;
+  customFont?: string;
 };
 
 export const RichText = (props: RichTextRenderProps) => {
-  const {text, fromContact} = props;
+  const {text, fromContact, customFont} = props;
   return (
-    <div className={fromContact ? styles.contactContent : styles.memberContent}>
+    <div className={fromContact ? styles.contactContent : styles.memberContent} style={{fontFamily: customFont}}>
       <ReactMarkdown className={styles.richText} skipHtml={true} linkTarget={'_blank'}>
         {text}
       </ReactMarkdown>

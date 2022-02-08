@@ -261,8 +261,7 @@ const Chat = ({config, ...props}: Props) => {
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}
-          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}
-        >
+          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
           <HeaderBarProp render={headerBar} />
           <DragAndDropWrapper setDragDropFile={handleDragDrop}>
             <div className={style.connectedContainer}>
@@ -282,14 +281,14 @@ const Chat = ({config, ...props}: Props) => {
                                 <MessageInfoWrapper
                                   fromContact={message.fromContact}
                                   isChatPlugin={true}
-                                  lastInGroup={lastInGroup}
-                                >
+                                  lastInGroup={lastInGroup}>
                                   <SourceMessage
                                     contentType="message"
                                     message={message}
                                     source="chatplugin"
                                     invertSides={true}
                                     commandCallback={commandCallback}
+                                    customFont={config.customFont}
                                   />
                                 </MessageInfoWrapper>
                               )
@@ -305,9 +304,12 @@ const Chat = ({config, ...props}: Props) => {
                 {showModal && (
                   <div className={style.modalOverlay}>
                     <div className={style.modalCloseChat}>
-                      <p>Are you sure you want to end this chat?</p>
+                      <p style={{fontFamily: config.customFont}}>Are you sure you want to end this chat?</p>
                       <div className={style.buttonWrapper}>
-                        <button className={style.cancelButton} onClick={closeModalOnClick}>
+                        <button
+                          className={style.cancelButton}
+                          onClick={closeModalOnClick}
+                          style={{fontFamily: config.customFont}}>
                           {' '}
                           {t('cancel')}
                         </button>
@@ -315,7 +317,7 @@ const Chat = ({config, ...props}: Props) => {
                           className={style.endChatButton}
                           onClick={cancelChatSession}
                           data-cy={cyChatPluginEndChatModalButton}
-                        >
+                          style={{fontFamily: config.customFont}}>
                           {' '}
                           {t('endChat')}
                         </button>

@@ -15,6 +15,7 @@ export type QuickRepliesRenderProps = {
   fromContact?: boolean;
   quickReplies: QuickReply[];
   commandCallback?: (command: CommandUnion) => void;
+  customFont?: string;
 };
 
 export const QuickReplies = ({
@@ -23,6 +24,7 @@ export const QuickReplies = ({
   text,
   attachment,
   commandCallback,
+  customFont
 }: QuickRepliesRenderProps) => {
   const clickPostback = (reply: QuickReply) => {
     commandCallback &&
@@ -34,9 +36,9 @@ export const QuickReplies = ({
 
   return (
     <div className={styles.wrapper}>
-      {text && <Text text={text} fromContact={fromContact} />}
+      {text && <Text text={text} fromContact={fromContact} customFont={customFont} />}
 
-      {attachment && 'text' in attachment && <Text text={attachment.text} fromContact={fromContact} />}
+      {attachment && 'text' in attachment && <Text text={attachment.text} fromContact={fromContact} customFont={customFont}/>}
 
       {attachment && 'imageUrl' in attachment && <Image imageUrl={attachment.imageUrl} />}
 
@@ -53,7 +55,7 @@ export const QuickReplies = ({
                 isTemplate
               />
             )}
-            <h1 key={reply.title} className={styles.title}>
+            <h1 key={reply.title} className={styles.title} style={{fontFamily: customFont}}>
               {reply.title}
             </h1>
           </button>

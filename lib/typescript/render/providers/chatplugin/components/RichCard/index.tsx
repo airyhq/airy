@@ -13,9 +13,18 @@ export type RichCardRenderProps = {
   media: MediaRenderProps;
   cardWidth?: string;
   commandCallback?: (command: CommandUnion) => void;
+  customFont?: string;
 };
 
-export const RichCard = ({title, description, suggestions, media, cardWidth, commandCallback}: RichCardRenderProps) => {
+export const RichCard = ({
+  title,
+  description,
+  suggestions,
+  media,
+  cardWidth,
+  commandCallback,
+  customFont,
+}: RichCardRenderProps) => {
   const clickSuggestion = (suggestion: RichCardSuggestion) => {
     if (suggestion.reply) {
       commandCallback &&
@@ -43,7 +52,7 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
         <div className={styles.mediaContainer}>
           <Media {...media} />
         </div>
-        <div className={styles.textContainer}>
+        <div className={styles.textContainer} style={{fontFamily: customFont}}>
           {title && <h2 className={styles.title}>{title}</h2>}
           {description && <span className={styles.description}>{description}</span>}
           <div className={styles.suggestionsContainer}>
@@ -52,10 +61,10 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
                 type="button"
                 key={idx}
                 className={styles.suggestionButton}
+                style={{fontFamily: customFont}}
                 onClick={() => {
                   clickSuggestion(suggestion);
-                }}
-              >
+                }}>
                 {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
               </button>
             ))}

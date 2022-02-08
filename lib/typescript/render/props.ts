@@ -28,6 +28,7 @@ interface RenderProps {
     fromContact?: boolean;
   };
   source: string;
+  customFont?: string;
 }
 
 export interface MessageRenderProps extends RenderProps {

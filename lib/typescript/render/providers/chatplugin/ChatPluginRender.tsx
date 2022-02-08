@@ -23,9 +23,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
   switch (content.type) {
     case 'text':
-      return <Text {...propsToUse} text={content.text} />;
+      return <Text {...propsToUse} text={content.text} customFont={props.customFont} />;
     case 'suggestionResponse':
-      return <Text {...propsToUse} text={content.text} />;
+      return <Text {...propsToUse} text={content.text} customFont={props.customFont} />;
     case 'richText':
       return (
         <RichText
@@ -33,6 +33,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}
+          customFont={props.customFont}
         />
       );
     case 'richCard':
@@ -43,6 +44,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           description={content.description}
           media={content.media}
           suggestions={content.suggestions}
+          customFont={props.customFont}
         />
       );
     case 'richCardCarousel':
@@ -54,6 +56,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
+          customFont={props.customFont}
         />
       );
 

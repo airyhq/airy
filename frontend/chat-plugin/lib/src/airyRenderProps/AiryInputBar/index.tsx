@@ -223,8 +223,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <form
           className={style.inputBar}
           style={uploadedFileUrl ? {justifyContent: 'space-between'} : {justifyContent: 'flex-end'}}
-          onSubmit={onSubmit}
-        >
+          onSubmit={onSubmit}>
           {loadingFile ? (
             <div className={style.selectorLoader}>
               <SimpleLoader />
@@ -242,6 +241,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
                 <textarea
                   ref={textInputRef}
                   className={style.textArea}
+                  style={{fontFamily: config.customFont}}
                   placeholder={t('sendMessageInputPlaceholder')}
                   autoFocus={isMobileDevice ? false : !config.showMode}
                   onChange={handleChange}
@@ -267,7 +267,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
           target="_blank"
           rel="noreferrer"
-        >
+          style={{fontFamily: config.customFont}}>
           Powered by Airy <AiryIcon />
         </a>
       </div>

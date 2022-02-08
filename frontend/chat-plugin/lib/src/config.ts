@@ -29,6 +29,8 @@ export type Config = {
   closeMode?: 'basic' | 'medium' | 'full';
   hideInputBar?: boolean;
   hideEmojis?: boolean;
+  useCustomFont?: boolean;
+  customFont?: 'Arial' | 'Lato';
   hideAttachments?: boolean;
   hideImages?: boolean;
   hideVideos?: boolean;

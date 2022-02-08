@@ -17,6 +17,11 @@ enum BubbleState {
   expanded = 'expanded',
 }
 
+enum FontFamily {
+  lato = 'Lato',
+  default = 'Arial',
+}
+
 interface CustomiseSectionProps {
   channelId: string;
   host: string;
@@ -89,6 +94,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [hideImages, setHideImages] = useLocalState('hideImages', false);
   const [hideVideos, setHideVideos] = useLocalState('hideVideos', false);
   const [hideFiles, setHideFiles] = useLocalState('hideFiles', false);
+  const [useCustomFont, setUseCustomFont] = useLocalState('useCustomFont', true);
+  const [customFont, setCustomFont] = useLocalState('customFont', FontFamily.lato);
   const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
   const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
 
@@ -97,6 +104,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   useEffect(() => {
     hideImages && hideVideos && hideFiles ? setHideAttachments(true) : setHideAttachments(false);
   }, [hideImages, hideVideos, hideFiles]);
+
+  useEffect(() => {
+    useCustomFont ? setCustomFont(FontFamily.lato) : setCustomFont(FontFamily.default);
+  }, [useCustomFont]);
 
   const toggleShowHeaderTextColorPicker = () => {
     setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
@@ -161,6 +172,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       `disableMobile: '${disableMobile}'`,
       `hideInputBar: '${hideInputBar}'`,
       `hideEmojis: '${hideEmojis}'`,
+      `useCustomFont: '${useCustomFont}'`,
+      `customFont: '${customFont}'`,
       `hideAttachments: '${hideAttachments}'`,
       `hideImages: '${hideImages}'`,
       `hideVideos: '${hideVideos}'`,
@@ -197,6 +210,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(disableMobile && {disableMobile: disableMobile}),
       ...(hideInputBar && {hideInputBar: hideInputBar}),
       ...(hideEmojis && {hideEmojis: hideEmojis}),
+      ...(useCustomFont && {useCustomFont: useCustomFont}),
+      ...(customFont && {customFont: customFont}),
       ...(hideAttachments && {hideAttachments: hideAttachments}),
       ...(hideImages && {hideImages: hideImages}),
       ...(hideVideos && {hideVideos: hideVideos}),
@@ -440,8 +455,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageColorPicker}>
               <SketchPicker
                 color={inboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -481,8 +495,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageTextColorPicker}>
               <SketchPicker
                 color={inboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -522,8 +535,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageColorPicker}>
               <SketchPicker
                 color={outboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -563,8 +575,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}>
               <SketchPicker
                 color={outboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -604,8 +615,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showUnreadMessageDotColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowUnreadMessageDotColorPicker}
-            >
+              onOuterClick={toggleShowUnreadMessageDotColorPicker}>
               <SketchPicker
                 color={unreadMessageDotColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -799,6 +809,13 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         <div className={styles.extraOptions}>
           <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
         </div>
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={useCustomFont}
+            text="Use Custom Font"
+            updateValue={(value: boolean) => setUseCustomFont(value)}
+          />
+        </div>
         <div>
           <p>Supported file types:</p>
           <div className={styles.extraOptions}>
@@ -817,8 +834,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         style={{
           ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
           ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}
-      >
+        }}>
         <div className={styles.pluginContainer}>
           <AiryChatPlugin config={demoConfig} />
         </div>

@@ -1,22 +1,26 @@
 {
-    "name": "kcbq-connect4",
-    "config": {
-      "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
-      "tasks.max" : "1",
-      "topics" : "application.communication.channels",
-      "sanitizeTopics" : "true",
-      "autoCreateTables" : "true",
-      "autoUpdateSchemas" : "true",
-      "schemaRegistryLocation":"http://schema-registry:8081",
-      "bufferSize": "100000",
-      "maxWriteSize":"10000",
-      "tableWriteWait": "1000",
-      "project" : "airy-core",
-      "datasets" : "application.communication.channels=application_commucation",
-      "keyfile" : "/home/appuser/key.json",
-      "defaultDataset": "application_commucation",
-      "value.converter": "io.confluent.connect.avro.AvroConverter",
-      "value.converter.schema.registry.url": "http://schema-registry:8081",
-      "key.converter": "org.apache.kafka.connect.storage.StringConverter"
-    }
+  "name": "kcbq-connect5",
+  "config": {
+    "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
+    "tasks.max" : "1",
+    "topics" : "application.communication.messages",
+    "sanitizeTopics" : "true",
+    "autoCreateTables" : "true",
+    "autoUpdateSchemas" : "true",
+    "schemaRegistryLocation":"http://schema-registry:8081",
+    "bufferSize": "100000",
+    "maxWriteSize":"10000",
+    "tableWriteWait": "1000",
+    "project" : "airy-core",
+    "datasets" : "application.communication.messages=application_communication",
+    "keyfile" : "/home/appuser/key.json",
+    "defaultDataset": "application_communication",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "transforms" : "RegexTransformation",
+    "transforms.RegexTransformation.type" : "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.RegexTransformation.regex" : "(application.communication.)(.*)",
+    "transforms.RegexTransformation.replacement" : "$2"
   }
+}

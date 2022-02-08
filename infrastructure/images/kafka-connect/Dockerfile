@@ -7,3 +7,9 @@ RUN yum install unzip -y
 
 ADD https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.0.0/confluentinc-kafka-connect-s3-10.0.0.zip /tmp/
 RUN unzip /tmp/confluentinc-kafka-connect-s3-10.0.0.zip -d /usr/share/confluent-hub-components
+
+ADD wepay-kafka-connect-bigquery-2.1.10.zip /tmp/
+RUN unzip wepay-kafka-connect-bigquery-2.1.10.zip -d /usr/share/confluent-hub-components
+
+ADD ~/airy-core-178dcbaba41b.json /home/appuser/key.json
+

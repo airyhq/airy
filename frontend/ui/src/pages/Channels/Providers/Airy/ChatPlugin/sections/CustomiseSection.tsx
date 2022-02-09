@@ -5,6 +5,7 @@ import {SketchPicker} from 'react-color';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
+import {fetchGoogleFonts} from '../../../../../../api/index';
 
 enum CloseOption {
   basic = 'basic',
@@ -15,11 +16,6 @@ enum CloseOption {
 enum BubbleState {
   minimized = 'minimized',
   expanded = 'expanded',
-}
-
-enum FontFamily {
-  lato = 'Lato',
-  default = 'Arial',
 }
 
 interface CustomiseSectionProps {
@@ -95,7 +91,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [hideVideos, setHideVideos] = useLocalState('hideVideos', false);
   const [hideFiles, setHideFiles] = useLocalState('hideFiles', false);
   const [useCustomFont, setUseCustomFont] = useLocalState('useCustomFont', true);
-  const [customFont, setCustomFont] = useLocalState('customFont', FontFamily.lato);
+  const [customFont, setCustomFont] = useLocalState('customFont', 'Lato');
   const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
   const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
 
@@ -106,7 +102,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   }, [hideImages, hideVideos, hideFiles]);
 
   useEffect(() => {
-    useCustomFont ? setCustomFont(FontFamily.lato) : setCustomFont(FontFamily.default);
+    !useCustomFont && setCustomFont('Arial');
   }, [useCustomFont]);
 
   const toggleShowHeaderTextColorPicker = () => {
@@ -455,7 +451,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageColorPicker}>
+              onOuterClick={toggleShowInboundMessageColorPicker}
+            >
               <SketchPicker
                 color={inboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -495,7 +492,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageTextColorPicker}>
+              onOuterClick={toggleShowInboundMessageTextColorPicker}
+            >
               <SketchPicker
                 color={inboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -535,7 +533,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageColorPicker}>
+              onOuterClick={toggleShowOutboundMessageColorPicker}
+            >
               <SketchPicker
                 color={outboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -575,7 +574,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageTextColorPicker}>
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}
+            >
               <SketchPicker
                 color={outboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -615,7 +615,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showUnreadMessageDotColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowUnreadMessageDotColorPicker}>
+              onOuterClick={toggleShowUnreadMessageDotColorPicker}
+            >
               <SketchPicker
                 color={unreadMessageDotColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -829,15 +830,30 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           </div>
         </div>
       </div>
-      <div
-        className={styles.pluginWrapper}
-        style={{
-          ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
-          ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}>
-        <div className={styles.pluginContainer}>
-          <AiryChatPlugin config={demoConfig} />
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div
+          className={styles.pluginWrapper}
+          style={{
+            ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
+            ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
+          }}
+        >
+          <div className={styles.pluginContainer}>
+            <AiryChatPlugin config={demoConfig} />
+          </div>
         </div>
+        {useCustomFont && (
+          <div className={styles.fontDropdownContainer}>
+            <Dropdown
+              text={`Custom Font: ${customFont}`}
+              variant="normal"
+              options={fetchGoogleFonts()}
+              onClick={font => {
+                setCustomFont(font);
+              }}
+            />
+          </div>
+        )}
       </div>
     </>
   );

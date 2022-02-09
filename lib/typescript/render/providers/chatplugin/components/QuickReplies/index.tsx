@@ -24,7 +24,7 @@ export const QuickReplies = ({
   text,
   attachment,
   commandCallback,
-  customFont
+  customFont,
 }: QuickRepliesRenderProps) => {
   const clickPostback = (reply: QuickReply) => {
     commandCallback &&
@@ -38,7 +38,9 @@ export const QuickReplies = ({
     <div className={styles.wrapper}>
       {text && <Text text={text} fromContact={fromContact} customFont={customFont} />}
 
-      {attachment && 'text' in attachment && <Text text={attachment.text} fromContact={fromContact} customFont={customFont}/>}
+      {attachment && 'text' in attachment && (
+        <Text text={attachment.text} fromContact={fromContact} customFont={customFont} />
+      )}
 
       {attachment && 'imageUrl' in attachment && <Image imageUrl={attachment.imageUrl} />}
 

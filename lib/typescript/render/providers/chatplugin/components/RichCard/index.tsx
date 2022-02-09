@@ -64,7 +64,8 @@ export const RichCard = ({
                 style={{fontFamily: customFont}}
                 onClick={() => {
                   clickSuggestion(suggestion);
-                }}>
+                }}
+              >
                 {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
               </button>
             ))}

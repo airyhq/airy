@@ -30,7 +30,7 @@ export type Config = {
   hideInputBar?: boolean;
   hideEmojis?: boolean;
   useCustomFont?: boolean;
-  customFont?: 'Arial' | 'Lato';
+  customFont?: string;
   hideAttachments?: boolean;
   hideImages?: boolean;
   hideVideos?: boolean;

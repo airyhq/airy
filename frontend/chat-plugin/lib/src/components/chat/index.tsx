@@ -261,7 +261,8 @@ const Chat = ({config, ...props}: Props) => {
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}
-          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
+          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}
+        >
           <HeaderBarProp render={headerBar} />
           <DragAndDropWrapper setDragDropFile={handleDragDrop}>
             <div className={style.connectedContainer}>
@@ -281,7 +282,8 @@ const Chat = ({config, ...props}: Props) => {
                                 <MessageInfoWrapper
                                   fromContact={message.fromContact}
                                   isChatPlugin={true}
-                                  lastInGroup={lastInGroup}>
+                                  lastInGroup={lastInGroup}
+                                >
                                   <SourceMessage
                                     contentType="message"
                                     message={message}
@@ -309,7 +311,8 @@ const Chat = ({config, ...props}: Props) => {
                         <button
                           className={style.cancelButton}
                           onClick={closeModalOnClick}
-                          style={{fontFamily: config.customFont}}>
+                          style={{fontFamily: config.customFont}}
+                        >
                           {' '}
                           {t('cancel')}
                         </button>
@@ -317,7 +320,8 @@ const Chat = ({config, ...props}: Props) => {
                           className={style.endChatButton}
                           onClick={cancelChatSession}
                           data-cy={cyChatPluginEndChatModalButton}
-                          style={{fontFamily: config.customFont}}>
+                          style={{fontFamily: config.customFont}}
+                        >
                           {' '}
                           {t('endChat')}
                         </button>

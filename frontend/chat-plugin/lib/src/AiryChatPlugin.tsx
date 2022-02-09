@@ -25,6 +25,15 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   window.addEventListener('resize', handleResize);
 
+  const link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', `https://fonts.googleapis.com/css?family=${config.config?.customFont}:300,400,700,900`);
+
+  if (config.config?.useCustomFont) {
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+
   const chatpluginStyle = {
     background: 'transparent',
     width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? DEFAULT_WIDTH, windowWidth),

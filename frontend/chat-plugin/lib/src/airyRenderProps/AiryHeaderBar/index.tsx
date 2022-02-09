@@ -43,7 +43,8 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
           className={style.closeButton}
           onClick={props.toggleHideChat}
           title="End chat"
-          data-cy={cyChatPluginHeaderBarCloseButton}>
+          data-cy={cyChatPluginHeaderBarCloseButton}
+        >
           <CloseButton />
         </button>
       </div>
@@ -60,7 +61,8 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
           className={style.closeButton}
           onClick={showModalOnClick}
           title="End chat"
-          data-cy={cyChatPluginHeaderBarCloseButton}>
+          data-cy={cyChatPluginHeaderBarCloseButton}
+        >
           <CloseButton />
         </button>
       </div>

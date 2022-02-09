@@ -102,7 +102,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   }, [hideImages, hideVideos, hideFiles]);
 
   useEffect(() => {
-    !useCustomFont && setCustomFont('Arial');
+    useCustomFont ? setCustomFont('Lato') : setCustomFont('Arial');
   }, [useCustomFont]);
 
   const toggleShowHeaderTextColorPicker = () => {
@@ -848,7 +848,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
               text={`Custom Font: ${customFont}`}
               variant="normal"
               options={fetchGoogleFonts()}
-              onClick={font => {
+              onClick={(font: string) => {
                 setCustomFont(font);
               }}
             />

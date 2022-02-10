@@ -306,13 +306,9 @@ const Chat = ({config, ...props}: Props) => {
                 {showModal && (
                   <div className={style.modalOverlay}>
                     <div className={style.modalCloseChat}>
-                      <p style={{fontFamily: config.customFont}}>Are you sure you want to end this chat?</p>
+                      <p>Are you sure you want to end this chat?</p>
                       <div className={style.buttonWrapper}>
-                        <button
-                          className={style.cancelButton}
-                          onClick={closeModalOnClick}
-                          style={{fontFamily: config.customFont}}
-                        >
+                        <button className={style.cancelButton} onClick={closeModalOnClick}>
                           {' '}
                           {t('cancel')}
                         </button>
@@ -320,7 +316,6 @@ const Chat = ({config, ...props}: Props) => {
                           className={style.endChatButton}
                           onClick={cancelChatSession}
                           data-cy={cyChatPluginEndChatModalButton}
-                          style={{fontFamily: config.customFont}}
                         >
                           {' '}
                           {t('endChat')}

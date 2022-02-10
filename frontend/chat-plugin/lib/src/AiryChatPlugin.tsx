@@ -25,7 +25,7 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   window.addEventListener('resize', handleResize);
 
-  if (config.config?.useCustomFont) {
+  if (config.config?.useCustomFont && config.config?.customFont !== 'Arial') {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('type', 'text/css');

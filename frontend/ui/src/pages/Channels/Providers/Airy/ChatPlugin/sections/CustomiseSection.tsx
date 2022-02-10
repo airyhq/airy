@@ -103,6 +103,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
 
   useEffect(() => {
     useCustomFont ? setCustomFont(customFont) : setCustomFont('Arial');
+    useCustomFont && customFont === 'Arial' && setCustomFont('Lato');
   }, [useCustomFont]);
 
   const toggleShowHeaderTextColorPicker = () => {
@@ -845,7 +846,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         {useCustomFont && (
           <div className={styles.fontDropdownContainer}>
             <Dropdown
-              text={customFont === 'Arial' ? `Default Font: ${customFont}` : `Custom Font: ${customFont}`}
+              text={`Custom Font: ${customFont}`}
               variant="normal"
               options={fetchGoogleFonts()}
               onClick={(font: string) => {

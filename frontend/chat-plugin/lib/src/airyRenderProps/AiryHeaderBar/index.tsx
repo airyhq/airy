@@ -22,8 +22,6 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
     ...(config?.headerTextColor && {
       color: config?.headerTextColor,
     }),
-
-    fontFamily: config?.customFont,
   };
 
   const customStyleSubtitle = {
@@ -33,7 +31,6 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
     ...(config?.subtitleTextColor && {
       color: config?.subtitleTextColor,
     }),
-    fontFamily: config?.customFont,
   };
 
   const ClosingOptionMedium = () => {

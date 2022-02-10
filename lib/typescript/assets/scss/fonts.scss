@@ -1,3 +1,7 @@
+:root {
+  --font: 'Lato';
+}
+
 @mixin font-s {
   font-family: 'Lato', sans-serif;
   font-size: 13px;
@@ -48,59 +52,6 @@
 
 @mixin font-5l {
   font-family: 'Lato', sans-serif;
-  font-size: 76px;
-  line-height: 82px;
-}
-@mixin font-s-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 13px;
-  line-height: 16px;
-}
-
-@mixin font-base-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-@mixin font-m-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 20px;
-  line-height: 32px;
-}
-
-@mixin font-l-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 25px;
-  line-height: 32px;
-}
-
-@mixin font-xl-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 31px;
-  line-height: 42px;
-}
-
-@mixin font-xxl-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 39px;
-  line-height: 48px;
-}
-
-@mixin font-xxxl-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 48px;
-  line-height: 56px;
-}
-
-@mixin font-4l-default {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 61px;
-  line-height: 72px;
-}
-
-@mixin font-5l-default {
-  font-family: 'Times New Roman', Times, serif;
   font-size: 76px;
   line-height: 82px;
 }

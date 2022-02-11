@@ -85,7 +85,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 final String registrationId = configProvider.getRegistration().getRegistrationId();
                 log.info("Oidc auth enabled with provider: {}", registrationId);
 
-                // By default oauth2Login creates an authentication entrypoint that redirects clients to the
+                // By default, oauth2Login creates an authentication entrypoint that redirects clients to the
                 // login form. For API clients we instead want to return a 403.
                 http.exceptionHandling()
                         .defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(),

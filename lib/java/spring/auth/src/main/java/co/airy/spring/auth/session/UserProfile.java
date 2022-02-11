@@ -22,8 +22,8 @@ public class UserProfile implements AuthenticatedPrincipal {
         // e.g. github:4403838
         if (user instanceof OidcUser) {
             final String id = String.format("%s:%s", auth.getAuthorizedClientRegistrationId(),
-                    user.getName());
-            return new UserProfile(id, ((OidcUser) user).getFullName(), ((OidcUser) user).getPicture());
+                    ((OidcUser) user).getEmail());
+            return new UserProfile(id, user.getName(), ((OidcUser) user).getPicture());
         }
 
         final String id = String.format("%s:%s", auth.getAuthorizedClientRegistrationId(),

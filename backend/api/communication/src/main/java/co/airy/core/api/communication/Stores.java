@@ -282,7 +282,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
             }
             lastMessageContainer.setSender(Sender.builder().id(senderId)
                     .name(Optional.ofNullable(user).map(User::getName).orElse(null))
-                    .name(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
+                    .avatarUrl(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
                     .build());
         }
 
@@ -304,7 +304,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
             container.setSender(Sender.builder().id(container.getMessage().getSenderId())
                     .name(Optional.ofNullable(user).map(User::getName).orElse(null))
-                    .name(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
+                    .avatarUrl(Optional.ofNullable(user).map(User::getAvatarUrl).orElse(null))
                     .build());
         }).collect(Collectors.toList());
     }

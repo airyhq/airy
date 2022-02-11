@@ -64,15 +64,6 @@ export interface GenericAttachment extends Attachment {
   };
 }
 
-export interface GenericEchoAttachment extends Attachment {
-  type: 'template';
-  payload: {
-    generic: {
-      elements: Element[];
-    };
-  };
-}
-
 export interface MediaTemplate extends Content {
   type: 'mediaTemplate';
   media_type: 'video' | 'image';

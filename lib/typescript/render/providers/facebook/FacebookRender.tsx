@@ -9,7 +9,6 @@ import {
   ButtonAttachment,
   GenericAttachment,
   MediaAttachment,
-  GenericEchoAttachment,
 } from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';

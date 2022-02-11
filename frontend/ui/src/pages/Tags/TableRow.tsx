@@ -88,7 +88,7 @@ const TableRowComponent = (props: TableRowProps) => {
 
   const getColorValue = useCallback(
     (color: string) =>
-      (settings && settings.colors && settings.colors[color] && settings.colors[color].default) || '1578D4',
+      (settings && settings.colors && settings.colors[color] && settings.colors[color].deflt) || '1578D4',
     [settings]
   );
 

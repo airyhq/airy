@@ -32,7 +32,7 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagP
   const tagColor = (settings && settings.colors[tag.color]) || {
     background: 'F1FAFF',
     border: '1578D4',
-    default: '1578D4',
+    deflt: '1578D4',
     font: '1578D4',
   };
 
@@ -45,7 +45,7 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagP
       };
     }
 
-    return {backgroundColor: `#${tagColor.default}`};
+    return {backgroundColor: `#${tagColor.deflt}`};
   };
 
   return (

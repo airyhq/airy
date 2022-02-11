@@ -1,10 +1,11 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/settings';
+import {Config} from "../../../../../../lib/typescript/model";
 
 type Action = ActionType<typeof actions>;
 
 export interface ColorSettings {
-  default: string;
+  deflt: string;
   background: string;
   font: string;
   position: number;

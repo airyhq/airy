@@ -1,6 +1,7 @@
 package co.airy.core.api.config.payload;
 
 import co.airy.core.api.config.dto.ServiceInfo;
+import co.airy.core.api.config.dto.TagConfig;
 import co.airy.spring.auth.session.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +17,5 @@ import java.util.Map;
 public class ClientConfigResponsePayload {
     private Map<String, ServiceInfo> services;
     private UserProfile userProfile;
+    private TagConfig tagConfig;
 }

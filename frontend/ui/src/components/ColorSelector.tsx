@@ -25,7 +25,7 @@ type ColorSelectorState = {
 
 const ColorSelector = ({handleUpdate, color, editing, id, settings}: ColorSelectorProps & ColorSelectorState) => {
   const getColorValue = useCallback(
-    (color: string) => (settings && settings.colors[color].default) || '1578D4',
+    (color: string) => (settings && settings.colors[color].deflt) || '1578D4',
     [settings]
   );
   const dataCyTagsDialogColorSelectorBlue = cyTagsDialogColorSelectorBlue;

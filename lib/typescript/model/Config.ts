@@ -1,7 +1,9 @@
 import {User} from './User';
+import {Settings} from "../../../frontend/ui/src/reducers";
 
 export interface Config {
   services: {[key: string]: {enabled: boolean; healthy: boolean; component: string}};
+  tagConfig?: Settings;
   userProfile?: User;
 }
 

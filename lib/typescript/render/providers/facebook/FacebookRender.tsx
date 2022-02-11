@@ -9,6 +9,7 @@ import {
   ButtonAttachment,
   GenericAttachment,
   MediaAttachment,
+  GenericEchoAttachment,
 } from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
@@ -281,6 +282,13 @@ function facebookOutbound(message): ContentUnion {
       type: 'story_mention',
       url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
       sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.attachments?.[0].payload?.generic && messageJson.is_echo) {
+    return {
+      type: 'genericTemplate',
+      elements: messageJson.attachments?.[0].payload.generic.elements,
     };
   }
 

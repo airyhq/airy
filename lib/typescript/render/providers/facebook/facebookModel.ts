@@ -11,7 +11,7 @@ export interface SimpleAttachment {
 }
 
 export interface URLButton extends Content {
-  type: 'web_url';
+  type: 'web_url' | 'open_url';
   url: string;
   title: string;
 }
@@ -61,6 +61,15 @@ export interface GenericAttachment extends Attachment {
     text: string;
     template_type: 'generic';
     elements: Element[];
+  };
+}
+
+export interface GenericEchoAttachment extends Attachment {
+  type: 'template';
+  payload: {
+    generic: {
+      elements: Element[];
+    };
   };
 }
 

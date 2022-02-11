@@ -9,8 +9,8 @@ type AiryChatPluginProps = {
   className?: string;
 };
 
-const defaultWidth = 380;
-const defaultHeight = 700;
+const DEFAULT_WIDTH = 380;
+const DEFAULT_HEIGHT = 700;
 
 export const AiryChatPlugin = (props: AiryChatPluginProps) => {
   const {config, className} = props;
@@ -25,10 +25,26 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   window.addEventListener('resize', handleResize);
 
-  const customStyle = {
+  const chatpluginStyle = {
     background: 'transparent',
-    width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? defaultWidth, windowWidth),
-    height: windowHeight < 700 ? windowHeight : Math.min(config.config?.height ?? defaultHeight, windowHeight),
+    width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? DEFAULT_WIDTH, windowWidth),
+    height: windowHeight < 700 ? windowHeight : Math.min(config.config?.height ?? DEFAULT_HEIGHT, windowHeight),
+    ...customStyle(config),
+  };
+
+  if (config.apiHost === '') {
+    config.apiHost = window.origin;
+  }
+
+  return (
+    <div className={className} style={chatpluginStyle}>
+      <Chat {...config} />
+    </div>
+  );
+};
+
+const customStyle = (config: AiryChatPluginConfiguration) => {
+  return {
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
       '--color-airy-message-outbound': config.config?.primaryColor,
@@ -54,10 +70,4 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
       '--color-red-alert': config.config?.unreadMessageDotColor,
     }),
   };
-
-  return (
-    <div className={className} style={customStyle}>
-      <Chat {...config} />
-    </div>
-  );
 };

@@ -1,3 +1,5 @@
+import process from 'process';
+
 export interface Env {
   API_HOST?: string;
 }

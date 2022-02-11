@@ -20,8 +20,6 @@ const apiHost: string = window.airy
   ? window.airy.host
   : process.env.API_HOST ?? `${location.protocol + '//' + location.host}`;
 
-console.log('AUDREY');
-
 const renderMethod = async () => {
   const AiryChatPlugin = (await import('chat-plugin')).AiryChatPlugin;
   render(

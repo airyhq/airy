@@ -9,7 +9,7 @@ metadata:
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
     core.airy.co/component: "{{ .Values.component }}"
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: {{ .Values.component }}

@@ -284,6 +284,13 @@ function facebookOutbound(message): ContentUnion {
     };
   }
 
+  if (messageJson.attachments?.[0].payload?.generic && messageJson.is_echo) {
+    return {
+      type: 'genericTemplate',
+      elements: messageJson.attachments?.[0].payload.generic.elements,
+    };
+  }
+
   if (messageJson.reply_to) {
     return {
       type: 'story_replies',

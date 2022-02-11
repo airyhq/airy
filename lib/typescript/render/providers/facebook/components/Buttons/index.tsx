@@ -13,7 +13,7 @@ export const Buttons = ({buttons, mediaTemplate}: ButtonsProps) => {
       {buttons.map((button, idx) => {
         return (
           <div key={`button-${idx}`} className={`${styles.button} ${mediaTemplate ? '' : styles.buttonMargin}`}>
-            {button.type === 'web_url' && button.url.length ? (
+            {(button.type === 'web_url' || button.type === 'open_url') && button.url.length ? (
               <a href={button.url} target="_blank" rel="noreferrer" className={styles.buttonText}>
                 {button.title}
               </a>

@@ -13,7 +13,7 @@ export const fetchGoogleFonts = () => {
       });
     })
     .catch((error: Error) => {
-      console.log(error);
+      console.error(error);
     });
   return fontFamilies;
 };

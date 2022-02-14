@@ -6,7 +6,6 @@ import {RenderPropsUnion} from './props';
 
 type SourceMessageState = {
   hasError: boolean;
-  customFont?: string;
 };
 
 export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessageState> {

@@ -10,7 +10,9 @@
   padding: 10px;
   margin-top: 5px;
   border-radius: 8px;
-  @include font-base;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .contactContent {

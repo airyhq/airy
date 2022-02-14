@@ -290,7 +290,6 @@ const Chat = ({config, ...props}: Props) => {
                                     source="chatplugin"
                                     invertSides={true}
                                     commandCallback={commandCallback}
-                                    customFont={config.customFont}
                                   />
                                 </MessageInfoWrapper>
                               )

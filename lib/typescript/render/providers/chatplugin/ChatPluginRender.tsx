@@ -23,9 +23,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
   switch (content.type) {
     case 'text':
-      return <Text {...propsToUse} text={content.text} customFont={props.customFont} />;
+      return <Text {...propsToUse} text={content.text} />;
     case 'suggestionResponse':
-      return <Text {...propsToUse} text={content.text} customFont={props.customFont} />;
+      return <Text {...propsToUse} text={content.text} />;
     case 'richText':
       return (
         <RichText
@@ -56,7 +56,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
-          customFont={props.customFont}
         />
       );
 

@@ -47,7 +47,7 @@
     "@svgr/plugin-svgo": "^6.2.0",
     "@svgr/webpack": "^6.2.1",
     "@types/lodash-es": "^4.17.6",
-    "@types/react-window-infinite-loader": "^1.0.5",
+    "@types/react-window-infinite-loader": "^1.0.6",
     "@types/resize-observer-browser": "^0.1.6",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
@@ -71,6 +71,6 @@
     "webpack": "^5.67.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.3"
+    "webpack-dev-server": "^4.7.4"
   }
 }

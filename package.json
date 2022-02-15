@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^4.32.0",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^9.0.1",
-    "css-loader": "^6.5.1",
+    "css-loader": "^6.6.0",
     "cypress": "^8.7.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.28.0",

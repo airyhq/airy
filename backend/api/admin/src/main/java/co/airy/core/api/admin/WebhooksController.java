@@ -62,7 +62,7 @@ public class WebhooksController {
     }
 
     @PostMapping("/webhooks.update")
-    public ResponseEntity<?> update(@RequestBody @Valid WebhookSubscribePayload payload) {
+    public ResponseEntity<?> update(@RequestBody @Valid WebhookUpdatePayload payload) {
         final ComponentInfo component = serviceDiscovery.getComponent("integration-webhook");
         if (component == null || !component.isEnabled()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)

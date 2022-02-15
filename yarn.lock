@@ -1579,10 +1579,10 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-window-infinite-loader@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/@types/react-window-infinite-loader/-/react-window-infinite-loader-1.0.5.tgz"
-  integrity sha512-3v45+4oBNJpSroULtb2EgTJyyK4pCjOMCg+RT/HnA3or5zY4jYufv6uH9NWPyLv0nx8dqt1s4nJqHilfthwKSw==
+"@types/react-window-infinite-loader@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-window-infinite-loader/-/react-window-infinite-loader-1.0.6.tgz#d7b23b4afaa1e0e2050876b766c3ea19f748f549"
+  integrity sha512-V8g8sBDLVeJJAfEENJS7VXZK+DRJ+jzPNtk8jpj2G+obhf+iqGNUDGwNWCbBhLiD+KpHhf3kWQlKBRi0tAeU4Q==
   dependencies:
     "@types/react" "*"
     "@types/react-window" "*"

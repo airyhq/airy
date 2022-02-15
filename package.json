@@ -45,7 +45,7 @@
     "@bazel/typescript": "^4.6.1",
     "@hot-loader/react-dom": "^17.0.2",
     "@svgr/plugin-svgo": "^6.2.0",
-    "@svgr/webpack": "^6.2.0",
+    "@svgr/webpack": "^6.2.1",
     "@types/lodash-es": "^4.17.6",
     "@types/react-window-infinite-loader": "^1.0.5",
     "@types/resize-observer-browser": "^0.1.6",
@@ -70,7 +70,7 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.67.0",
     "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^4.9.1",
+    "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.3"
   }
 }

@@ -33,6 +33,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}
+          customFont={props.customFont}
         />
       );
     case 'richCard':
@@ -43,6 +44,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           description={content.description}
           media={content.media}
           suggestions={content.suggestions}
+          customFont={props.customFont}
         />
       );
     case 'richCardCarousel':

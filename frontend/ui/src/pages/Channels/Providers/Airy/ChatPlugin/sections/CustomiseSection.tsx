@@ -5,6 +5,7 @@ import {SketchPicker} from 'react-color';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
+import {fetchGoogleFonts} from '../../../../../../api/index';
 
 enum CloseOption {
   basic = 'basic',
@@ -89,6 +90,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [hideImages, setHideImages] = useLocalState('hideImages', false);
   const [hideVideos, setHideVideos] = useLocalState('hideVideos', false);
   const [hideFiles, setHideFiles] = useLocalState('hideFiles', false);
+  const [useCustomFont, setUseCustomFont] = useLocalState('useCustomFont', true);
+  const [customFont, setCustomFont] = useLocalState('customFont', 'Lato');
   const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
   const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
 
@@ -97,6 +100,11 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   useEffect(() => {
     hideImages && hideVideos && hideFiles ? setHideAttachments(true) : setHideAttachments(false);
   }, [hideImages, hideVideos, hideFiles]);
+
+  useEffect(() => {
+    useCustomFont ? setCustomFont(customFont) : setCustomFont('Arial');
+    useCustomFont && customFont === 'Arial' && setCustomFont('Lato');
+  }, [useCustomFont]);
 
   const toggleShowHeaderTextColorPicker = () => {
     setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
@@ -161,6 +169,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       `disableMobile: '${disableMobile}'`,
       `hideInputBar: '${hideInputBar}'`,
       `hideEmojis: '${hideEmojis}'`,
+      `useCustomFont: '${useCustomFont}'`,
+      `customFont: '${customFont}'`,
       `hideAttachments: '${hideAttachments}'`,
       `hideImages: '${hideImages}'`,
       `hideVideos: '${hideVideos}'`,
@@ -197,6 +207,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(disableMobile && {disableMobile: disableMobile}),
       ...(hideInputBar && {hideInputBar: hideInputBar}),
       ...(hideEmojis && {hideEmojis: hideEmojis}),
+      ...(useCustomFont && {useCustomFont: useCustomFont}),
+      ...(customFont && {customFont: customFont}),
       ...(hideAttachments && {hideAttachments: hideAttachments}),
       ...(hideImages && {hideImages: hideImages}),
       ...(hideVideos && {hideVideos: hideVideos}),
@@ -799,6 +811,13 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         <div className={styles.extraOptions}>
           <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
         </div>
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={useCustomFont}
+            text="Use Custom Font"
+            updateValue={(value: boolean) => setUseCustomFont(value)}
+          />
+        </div>
         <div>
           <p>Supported file types:</p>
           <div className={styles.extraOptions}>
@@ -812,16 +831,30 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           </div>
         </div>
       </div>
-      <div
-        className={styles.pluginWrapper}
-        style={{
-          ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
-          ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}
-      >
-        <div className={styles.pluginContainer}>
-          <AiryChatPlugin config={demoConfig} />
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div
+          className={styles.pluginWrapper}
+          style={{
+            ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
+            ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
+          }}
+        >
+          <div className={styles.pluginContainer}>
+            <AiryChatPlugin config={demoConfig} />
+          </div>
         </div>
+        {useCustomFont && (
+          <div className={styles.fontDropdownContainer}>
+            <Dropdown
+              text={`Custom Font: ${customFont}`}
+              variant="normal"
+              options={fetchGoogleFonts()}
+              onClick={(font: string) => {
+                setCustomFont(font);
+              }}
+            />
+          </div>
+        )}
       </div>
     </>
   );

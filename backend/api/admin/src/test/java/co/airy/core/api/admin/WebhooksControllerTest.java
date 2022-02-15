@@ -33,9 +33,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -87,9 +85,13 @@ public class WebhooksControllerTest {
         final String url = "http://example.org/webhook";
         final String xAuthHeader = "auth token";
         final EventType subscribeEvent = EventType.MESSAGE_CREATED;
+        final EventType newSubscribeEvent = EventType.MESSAGE_UPDATED;
 
         final String subscribePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\"]}",
                 webhookId, url, xAuthHeader, subscribeEvent.getEventType());
+
+        final String updatePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\", \"%s\"]}",
+                webhookId, url, xAuthHeader, subscribeEvent.getEventType(), newSubscribeEvent.getEventType());
 
         when(serviceDiscovery.getComponent(Mockito.anyString())).thenCallRealMethod();
 
@@ -113,6 +115,15 @@ public class WebhooksControllerTest {
                 .andExpect(jsonPath("$.id", equalTo(webhookId)))
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
+
+        retryOnException(() -> webTestHelper.post("/webhooks.update", updatePayload)
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(webhookId)))
+                        .andExpect(jsonPath("$.url", equalTo(url)))
+                        .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
+                        .andExpect(jsonPath("$.events", hasSize(2))),
+                "Webhook was not stored to update"
+        );
 
         retryOnException(() -> webTestHelper.post("/webhooks.info", infoPayload)
                         .andExpect(status().isOk())
@@ -146,12 +157,20 @@ public class WebhooksControllerTest {
                                 .setStatus(Status.Subscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
                                 .build()
+                ),
+                new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
+                        Webhook.newBuilder()
+                                .setEndpoint("http://endpoint.com/webhook-2")
+                                .setId(UUID.randomUUID().toString())
+                                .setStatus(Status.Unsubscribed)
+                                .setSubscribedAt(Instant.now().toEpochMilli())
+                                .build()
                 )
         ));
 
         retryOnException(() -> webTestHelper.post("/webhooks.list")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(2)))),
+                        .andExpect(jsonPath("$.data", hasSize(lessThanOrEqualTo(2)))),
                 "list did not return all results"
         );
     }

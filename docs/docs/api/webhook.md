@@ -94,15 +94,45 @@ Subscribes the webhook for the first time or update its parameters.
 }
 ```
 
+## Update
+
+`POST /webhooks.update`
+
+Update the webhook parameters.
+
+**Sample response**
+
+```json5
+{
+  "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
+  "name": "Customer relationship tool", // optional
+  "url": "https://endpoint.com/webhook",
+  "events": [
+    // optional
+    "message.created",
+    "message.updated",
+    "conversation.updated",
+    "channel.updated"
+  ],
+  "headers": {
+    // optional
+    "X-Custom-Header": "custom-code-for-header"
+  },
+  "status": "Subscribed"
+}
+}
+```
+
 ## List
 
 `POST /webhooks.list`
+
+List of subscribed webhooks.
 
 ```json5
 {
   "data": [
     {
-      "status": "Subscribed",
       "name": "Customer relationship tool",
       "url": "https://endpoint.com/webhook",
       "headers": {
@@ -110,7 +140,6 @@ Subscribes the webhook for the first time or update its parameters.
       }
     },
     {
-      "status": "Subscribed",
       "name": "Datalake connector",
       "url": "https://other-endpoint.com/webhook",
       "events": ["conversation.updated"]

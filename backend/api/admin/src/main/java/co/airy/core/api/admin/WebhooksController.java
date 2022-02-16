@@ -82,11 +82,18 @@ public class WebhooksController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fromWebhook(webhook));
         }
 
-        webhook.setEvents(payload.getEvents().stream().map(EventType::getEventType).collect(Collectors.toList()));
-        webhook.setEndpoint(payload.getUrl().toString());
-        webhook.setStatus(Status.Subscribed);
-        webhook.setHeaders(payload.getHeaders());
-        webhook.setSignKey(payload.getSignatureKey());
+        if (payload.getUrl() != null) {
+            webhook.setEndpoint(payload.getUrl().toString());
+        }
+        if (payload.getEvents() != null) {
+            webhook.setEvents(payload.getEvents().stream().map(EventType::getEventType).collect(Collectors.toList()));
+        }
+        if (payload.getHeaders() != null) {
+            webhook.setHeaders(payload.getHeaders());
+        }
+        if (payload.getSignatureKey() != null) {
+            webhook.setSignKey(payload.getSignatureKey());
+        }
 
         try {
             stores.storeWebhook(webhook);

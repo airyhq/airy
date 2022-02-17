@@ -14,7 +14,7 @@
     "core-js": "3.21.0",
     "emoji-mart": "3.0.1",
     "form-data": "^4.0.0",
-    "i18next": "^21.6.4",
+    "i18next": "^21.6.11",
     "isomorphic-fetch": "^3.0.0",
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.1",
@@ -35,7 +35,7 @@
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.16.7",
+    "@babel/core": "7.17.4",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
     "@babel/plugin-transform-spread": "^7.16.7",

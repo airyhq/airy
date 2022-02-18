@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
+import co.airy.core.api.communication.service.SendMessageExecutorService;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
@@ -28,7 +29,7 @@ import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 @RestController
 public class SendMessageController {
@@ -36,14 +37,16 @@ public class SendMessageController {
     private final ObjectMapper objectMapper;
     private final PrincipalAccess principalAccess;
     private final KafkaProducer<String, Message> producer;
+    private final SendMessageExecutorService sendMessageExecutorService;
 
     private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
-    SendMessageController(Stores stores, ObjectMapper objectMapper, PrincipalAccess principalAccess, KafkaProducer<String, Message> producer) {
+    SendMessageController(Stores stores, ObjectMapper objectMapper, PrincipalAccess principalAccess, KafkaProducer<String, Message> producer, SendMessageExecutorService sendMessageExecutorService) {
         this.stores = stores;
         this.objectMapper = objectMapper;
         this.principalAccess = principalAccess;
         this.producer = producer;
+        this.sendMessageExecutorService = sendMessageExecutorService;
     }
 
     @PostMapping("/messages.send")
@@ -52,18 +55,24 @@ public class SendMessageController {
         String conversationId;
 
         if (payload.getConversationId() != null) {
-            // Append message to existing conversation
-            final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
-            final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
-            if (conversation == null) {
+            try {
+                Conversation conversation;
+                conversation = sendMessageExecutorService.getFutureCallableConversationAsync(stores, payload).get(5, TimeUnit.SECONDS);
+                if (conversation == null) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
+                conversationId = conversation.getId();
+                channel = conversation.getChannel();
+                if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                }
+            } catch (TimeoutException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-
-            conversationId = conversation.getId();
-            channel = conversation.getChannel();
-            if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            finally {
+                sendMessageExecutorService.shutdown();
             }
+
         } else if (payload.getSourceRecipientId() != null && payload.getChannelId() != null) {
             // Create new conversation
             final ReadOnlyKeyValueStore<String, Channel> channelsStore = stores.getChannelsStore();

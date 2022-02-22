@@ -7,9 +7,9 @@ sidebar_label: 📝 Changelog
 
 #### 🚀 Features
 
+- [[#2742](https://github.com/airyhq/airy/issues/2742)] List objects in s3 bucket [[#2785](https://github.com/airyhq/airy/pull/2785)]
 - [[#2722](https://github.com/airyhq/airy/issues/2722)] Webhook subscription editable and resubscribable [[#2847](https://github.com/airyhq/airy/pull/2847)]
 - [[#2809](https://github.com/airyhq/airy/issues/2809)] Added custom fonts to Chatplugin [[#2832](https://github.com/airyhq/airy/pull/2832)]
-- [[#2742](https://github.com/airyhq/airy/issues/2742)] List objects in s3 bucket [[#2785](https://github.com/airyhq/airy/pull/2785)]
 
 #### 🐛 Bug Fixes
 
@@ -22,14 +22,14 @@ sidebar_label: 📝 Changelog
 - [[#2612](https://github.com/airyhq/airy/issues/2612)] Update ClusterIssuer resource [[#2830](https://github.com/airyhq/airy/pull/2830)]
 - [[#2827](https://github.com/airyhq/airy/issues/2827)] Fix bug in the chatplugin dev environment [[#2828](https://github.com/airyhq/airy/pull/2828)]
 - [[#2791](https://github.com/airyhq/airy/issues/2791)] Contacts service should be off by default [[#2792](https://github.com/airyhq/airy/pull/2792)]
-- [[#2421](https://github.com/airyhq/airy/issues/2421)] Svg naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
+- [[#2421](https://github.com/airyhq/airy/issues/2421)] SVG naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
 - [[#2766](https://github.com/airyhq/airy/issues/2766)] ReactMarkdown error [[#2798](https://github.com/airyhq/airy/pull/2798)]
+- [[#2877](https://github.com/airyhq/airy/issues/2877)] Fixed custom font error chatplugin
 
 #### 📚 Documentation
 
-- [[#2861](https://github.com/airyhq/airy/issues/2861)] Adding Instagram in the sources list [[#2863](https://github.com/airyhq/airy/pull/2863)]
+- [[#2861](https://github.com/airyhq/airy/issues/2861)] Adding instagram in the sources list [[#2863](https://github.com/airyhq/airy/pull/2863)]
 - [[#2652](https://github.com/airyhq/airy/issues/2652)] Add telemetry docs [[#2824](https://github.com/airyhq/airy/pull/2824)]
-- [[#2421](https://github.com/airyhq/airy/issues/2421)] Svg naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
 - [[#634](https://github.com/airyhq/airy/issues/634)] HTTP client library documentation [[#2803](https://github.com/airyhq/airy/pull/2803)]
 
 #### 🧰 Maintenance
@@ -63,6 +63,7 @@ sidebar_label: 📝 Changelog
 - Bump sass-loader from 12.3.0 to 12.4.0 [[#2811](https://github.com/airyhq/airy/pull/2811)]
 - Bump @types/react from 17.0.37 to 17.0.39 [[#2812](https://github.com/airyhq/airy/pull/2812)]
 - Bump @babel/preset-env from 7.16.8 to 7.16.11 [[#2778](https://github.com/airyhq/airy/pull/2778)]
+- [[#2421](https://github.com/airyhq/airy/issues/2421)] svg naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
 
 #### Airy CLI
 

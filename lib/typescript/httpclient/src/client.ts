@@ -71,10 +71,12 @@ interface EndpointDefinition<T, K = void> {
 export class HttpClient {
   public readonly apiUrl?: string;
   public readonly loginUrl?: string;
+  private readonly token?: string;
   private readonly unauthorizedErrorCallback?: (body: any, loginUrl: string) => void;
 
-  constructor(apiUrl: string, unauthorizedErrorCallback?: (body: any, loginUrl: string) => void) {
+  constructor(apiUrl: string, token?: string, unauthorizedErrorCallback?: (body: any, loginUrl: string) => void) {
     this.apiUrl = apiUrl;
+    this.token = token;
     this.loginUrl = `${apiUrl}/login`;
     this.unauthorizedErrorCallback = unauthorizedErrorCallback;
   }
@@ -83,6 +85,7 @@ export class HttpClient {
     const headers = {
       Accept: 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
+      ...(this.token && {Authorization: `Bearer ${this.token}`}),
     };
 
     if (!(body instanceof FormData)) {

@@ -15,7 +15,7 @@ start() {
     create_release_branch
     update_release_version
     rename_draft_release
-    commit_version_and_changelog
+    commit_version
 }
 
 create_issue() {
@@ -38,6 +38,7 @@ create_release_branch() {
 
 finish() {
     release_number=$1
+    commit_changelog
     echo -e "Finishing release ${release_number}\n"
     merge_main
     merge_develop
@@ -52,13 +53,21 @@ update_release_version() {
     echo -e "Updated VERSION file\n"
 }
 
-commit_version_and_changelog() {
+commit_version() {
     # shellcheck disable=SC1091
-    source scripts/changelog_md.sh "${release_number}"
-    command git add VERSION docs/docs/changelog.md
+    command git add VERSION
     command git commit -m "Fixes #${issue_number}"
     command git push origin release/"${release_number}"
-    echo -e "Updated VERSION file and changelog.md\n"
+    echo -e "Updated VERSION\n"
+}
+
+commit_changelog() {
+    # shellcheck disable=SC1091
+    source scripts/changelog_md.sh "${release_number}"
+    command git add docs/docs/changelog.md
+    command git commit -m "Update changelog #${issue_number}"
+    command git push origin release/"${release_number}"
+    echo -e "Updated changelog.md\n"
 }
 
 create_alpha_version() {

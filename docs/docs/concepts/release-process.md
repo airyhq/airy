@@ -19,7 +19,6 @@ permission to the Airy organization to function correctly
 
 Once a release day comes, we execute the following steps:
 
-- We clean up the draft release. If the upgrade to the new version requires manual steps, we detail them.
 - We run `./scripts/release.sh start x.y.z`
 - We wait for the release candidate CLI to be pushed and then download it by running:
   - `wget https://airy-core-binaries.s3.amazonaws.com/$VERSION-rc/darwin/amd64/airy`
@@ -28,6 +27,7 @@ Once a release day comes, we execute the following steps:
   - Any additional hot-fix is committed directly to the release branch
   - You must wait for all the images to be pushed via CI
 - Once we're satisfied with the release, we publish the release:
+  - We clean up the draft release. If the upgrade to the new version requires manual steps, we detail them.
   - We run `./scripts/release.sh finish x.y.z`
   - We update the version string to `x.y.z` and the sha to `https://airy-core-binaries.s3.amazonaws.com/x.y.z/darwin/amd64/airy_darwin_sha256sum.txt` in the [Homebrew
     Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)

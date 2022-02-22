@@ -5,6 +5,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/templateAlt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
+import {ReactComponent as Microphone} from 'assets/images/icons/microphone.svg';
 import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
 import {Template, Source} from 'model';
@@ -53,19 +54,22 @@ export const InputOptions = (props: Props) => {
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
   const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
+  const [inputAudio, setInputAudio] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const inputAudioRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const inputAcceptValue = getInputAcceptedFilesForSource(source);
-    setInputAcceptedFiles(inputAcceptValue);
+    const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
+    setInputAcceptedFiles(inputAcceptFilesValue);
+
   }, [source]);
 
   useEffect(() => {
     if (!isFileLoaded) {
       setInputFile(null);
-      if (inputRef && inputRef.current) {
-        inputRef.current.value = null;
+      if (inputFileRef && inputFileRef.current) {
+        inputFileRef.current.value = null;
       }
     }
   }, [isFileLoaded]);
@@ -82,7 +86,7 @@ export const InputOptions = (props: Props) => {
     }
   }, [isShowingEmojiDrawer]);
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const onInputFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     setInputFile(file);
     selectFile(event);
@@ -134,6 +138,17 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
+  const onInputAudioChangeHandler = () => {
+    console.log('INPUT AUDIO CHANGE');
+    
+  }
+
+  const recordVoiceMessage = () => {
+    console.log('RECORD VOICE MSG TRIGGER');
+  };
+
+
+
   return (
     <div className={styles.container}>
       {fileUploadErrorPopUp && (
@@ -162,8 +177,7 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleEmojiDrawer}
-      >
+        onClick={toggleEmojiDrawer}>
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
       </button>
@@ -171,8 +185,7 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleTemplateModal}
-      >
+        onClick={toggleTemplateModal}>
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
@@ -185,33 +198,63 @@ export const InputOptions = (props: Props) => {
           source === 'google' ||
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
-          <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
-            type="button"
-            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-            onClick={toggleFileSelector}
-          >
-            <div className={styles.actionToolTip}>Files</div>
-
-            <label
-              htmlFor="file"
-              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
-            >
-              <Paperclip aria-hidden className={styles.paperclipIcon} />
-            </label>
-
-            <input
-              type="file"
-              id="file"
-              name="file"
-              ref={inputRef}
-              value={inputFile?.value}
-              onChange={onChangeHandler}
-              className={styles.fileInput}
+          <>
+            <button
+              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
+              type="button"
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              accept={inputAcceptedFiles}
-            />
-          </button>
+              onClick={toggleFileSelector}>
+              <div className={styles.actionToolTip}>Files</div>
+
+              <label
+                htmlFor="file"
+                style={{
+                  cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
+                }}>
+                <Paperclip aria-hidden className={styles.paperclipIcon} />
+              </label>
+
+              <input
+                type="file"
+                id="file"
+                name="file"
+                ref={inputFileRef}
+                value={inputFile?.value}
+                onChange={onInputFileChangeHandler}
+                className={styles.fileInput}
+                disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+                accept={inputAcceptedFiles}
+              />
+            </button>
+
+            <button
+              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
+              type="button"
+              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+              onClick={recordVoiceMessage}>
+              <div className={styles.actionToolTip}>Record audio clip</div>
+
+              <label
+                htmlFor="file"
+                style={{
+                  cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
+                }}>
+                <Microphone aria-hidden className={styles.paperclipIcon} />
+              </label>
+
+              <input
+                type="file"
+                id="audioRecording"
+                name="audioRecording"
+                ref={inputAudioRef}
+                value={inputAudio?.value}
+                onChange={onInputAudioChangeHandler}
+                className={styles.fileInput}
+                disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+                accept={inputAcceptedFiles}
+              />
+            </button>
+          </>
         )}
     </div>
   );

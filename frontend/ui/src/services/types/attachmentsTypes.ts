@@ -39,4 +39,4 @@ export const getInputAcceptedFilesForSource = (source: string) => {
   const inputAcceptValue = `${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
 
   return inputAcceptValue;
-};
+}

@@ -19,7 +19,7 @@ export class StompWrapper {
 
   initConnection = () => {
     this.stompClient = new Client({
-      brokerURL: this.url,      
+      brokerURL: this.url,
       reconnectDelay: 2000,
       onConnect: this.stompOnConnect,
       onStompError: this.stompOnError,

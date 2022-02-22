@@ -24,12 +24,12 @@ sidebar_label: 📝 Changelog
 - [[#2791](https://github.com/airyhq/airy/issues/2791)] Contacts service should be off by default [[#2792](https://github.com/airyhq/airy/pull/2792)]
 - [[#2421](https://github.com/airyhq/airy/issues/2421)] SVG naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
 - [[#2766](https://github.com/airyhq/airy/issues/2766)] ReactMarkdown error [[#2798](https://github.com/airyhq/airy/pull/2798)]
-- [[#2877](https://github.com/airyhq/airy/issues/2877)] Fixed custom font error chatplugin
 
 #### 📚 Documentation
 
 - [[#2861](https://github.com/airyhq/airy/issues/2861)] Adding instagram in the sources list [[#2863](https://github.com/airyhq/airy/pull/2863)]
 - [[#2652](https://github.com/airyhq/airy/issues/2652)] Add telemetry docs [[#2824](https://github.com/airyhq/airy/pull/2824)]
+- [[#2421](https://github.com/airyhq/airy/issues/2421)] SVG naming fix [[#2806](https://github.com/airyhq/airy/pull/2806)]
 - [[#634](https://github.com/airyhq/airy/issues/634)] HTTP client library documentation [[#2803](https://github.com/airyhq/airy/pull/2803)]
 
 #### 🧰 Maintenance

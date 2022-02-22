@@ -5,7 +5,7 @@ import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions';
 
 import {Button, Input, LinkButton, UrlInputField, InfoButton} from 'components';
 import {Channel, Source} from 'model';
-import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './TwilioConnect.module.scss';
 

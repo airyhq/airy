@@ -116,7 +116,9 @@
 }
 
 .modalCloseChat {
-  @include font-m;
+  font-family: var(--font), sans-serif;
+  font-size: 20px;
+  line-height: 32px;
   width: 100%;
   margin: 16px;
   padding: 32px 0 38px 0;
@@ -136,7 +138,7 @@
   justify-content: center;
   button {
     margin: 0 8px;
-    font-family: 'Lato', sans-serif;
+    font-family: var(--font), sans-serif;
   }
 }
 

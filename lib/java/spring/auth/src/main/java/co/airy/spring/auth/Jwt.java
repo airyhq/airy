@@ -69,8 +69,8 @@ public class Jwt {
         return builder.compact();
     }
 
-    public Authentication loadFromToken(final String authHeader) throws Exception {
-        Claims claims = extractClaims(authHeader);
+    public Authentication loadFromToken(final String token) throws Exception {
+        Claims claims = extractClaims(token);
         final String principalClaim = (String) claims.get(PRINCIPAL_CLAIM);
         try {
             return new UserAuth(objectMapper.readValue(principalClaim, UserProfile.class));

@@ -26,7 +26,7 @@
 
 .headerTitle {
   color: white;
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font), sans-serif;
   font-size: 20px;
   line-height: 24px;
   font-weight: bold;
@@ -42,7 +42,7 @@
 
 .subtitle {
   color: white;
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font), sans-serif;
   font-size: 12px;
   margin-left: 8px;
   font-weight: normal;

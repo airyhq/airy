@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {ReactComponent as GoogleIcon} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as SmsIcon} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as FacebookIcon} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram_avatar.svg';
+import {ReactComponent as GoogleIcon} from 'assets/images/icons/googleAvatar.svg';
+import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsAppAvatar.svg';
+import {ReactComponent as SmsIcon} from 'assets/images/icons/smsAvatar.svg';
+import {ReactComponent as FacebookIcon} from 'assets/images/icons/messengerAvatar.svg';
+import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyAvatar.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramAvatar.svg';
 import {ReactComponent as BubbleIcon} from 'assets/images/icons/bubble.svg';
 
 const sourceIconsMap = {

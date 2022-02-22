@@ -6,13 +6,14 @@ sidebar_label: Introduction
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
-import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
-import FacebookMessengerSVG from "@site/static/icons/facebook-messenger.svg";
+import AiryBubbleSVG from "@site/static/icons/airyBubble.svg";
+import FacebookMessengerSVG from "@site/static/icons/facebookMessenger.svg";
+import InstagramSVG from "@site/static/icons/instagram.svg";
 import GoogleSVG from "@site/static/icons/google.svg";
 import WhatsAppSVG from "@site/static/icons/whatsapp.svg";
 import ViberSVG from "@site/static/icons/viber.svg";
 import SmsSVG from "@site/static/icons/sms.svg";
-import ChannelsUI from "@site/static/icons/channelsUi-icon.svg";
+import ChannelsUI from "@site/static/icons/channelsUi.svg";
 
 <TLDR>
 
@@ -56,6 +57,13 @@ icon={<FacebookMessengerSVG />}
 title='Facebook Messenger'
 description='Send and receive messages from Facebook Pages'
 link='sources/facebook'
+/>
+
+<ButtonBox
+icon={<InstagramSVG />}
+title='Instagram'
+description='Send and receive messages from Instagram accounts'
+link='sources/instagram'
 />
 
 <ButtonBox

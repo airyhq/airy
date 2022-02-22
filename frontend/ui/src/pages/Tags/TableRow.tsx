@@ -10,7 +10,7 @@ import {Tag as TagModel, TagColor} from 'model';
 import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
 
-import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/editPencil.svg';
 import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 
 import styles from './TableRow.module.scss';

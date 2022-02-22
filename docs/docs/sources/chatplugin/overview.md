@@ -6,7 +6,7 @@ sidebar_label: Overview
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
-import HammerAndWrenchSVG from "@site/static/icons/hammer-and-wrench.svg";
+import HammerAndWrenchSVG from "@site/static/icons/hammerAndWrench.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <TLDR>

@@ -2,12 +2,13 @@ import React from 'react';
 import {ReactComponent as AttachmentTemplate} from 'assets/images/icons/attachmentTemplate.svg';
 import {ReactComponent as AttachmentImage} from 'assets/images/icons/attachmentImage.svg';
 import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentVideo.svg';
-import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.svg';
-import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
+import {ReactComponent as AttachmentAudio} from 'assets/images/icons/fileAudio.svg';
+import {ReactComponent as AttachmentFile} from 'assets/images/icons/fileDownload.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {decodeURIComponentMessage, getAttachmentType} from './services';
 import {Conversation, Message} from 'model';
 import {Emoji} from 'components';
+import ReactMarkdown from 'react-markdown';
 
 interface SourceMessagePreviewProps {
   conversation: Conversation;
@@ -98,6 +99,14 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
       }
 
       return text;
+    }
+
+    if ((lastMessageContent.text || lastMessageContent.message?.text) && lastMessageContent.containsRichText) {
+      return (
+        <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
+          {lastMessageContent.text || lastMessageContent.message?.text}
+        </ReactMarkdown>
+      );
     }
 
     if (

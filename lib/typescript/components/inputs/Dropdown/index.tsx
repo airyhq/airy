@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useCallback} from 'react';
 import styles from './style.module.scss';
-import {ReactComponent as ChevronDown} from 'assets/images/icons/chevron-down.svg';
+import {ReactComponent as ChevronDown} from 'assets/images/icons/chevronDown.svg';
 
 export const Dropdown = ({text, options, variant, onClick}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);

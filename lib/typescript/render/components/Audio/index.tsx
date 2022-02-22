@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as PlayIcon} from 'assets/images/icons/play.svg';
 import {ReactComponent as PauseIcon} from 'assets/images/icons/pause.svg';
-import {ReactComponent as FileAudioIcon} from 'assets/images/icons/file-audio.svg';
+import {ReactComponent as FileAudioIcon} from 'assets/images/icons/fileAudio.svg';
 import {ReactComponent as DownloadIcon} from 'assets/images/icons/download.svg';
 import {formatSecondsAsTime} from 'dates';
 

@@ -4,8 +4,8 @@ sidebar_label: Inbox
 ---
 
 import ButtonBox from "@site/src/components/ButtonBox";
-import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
-import PriceTag from "@site/static/icons/price-tag.svg";
+import AiryBubbleSVG from "@site/static/icons/airyBubble.svg";
+import PriceTag from "@site/static/icons/priceTag.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction

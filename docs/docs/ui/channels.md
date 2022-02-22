@@ -6,7 +6,7 @@ sidebar_label: Channels UI
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ChannelsUI from "@site/static/icons/channelsUi-icon.svg";
+import ChannelsUI from "@site/static/icons/channelsUi.svg";
 
 ## Introduction
 

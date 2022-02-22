@@ -7,8 +7,8 @@ import {StateModel} from '../../../reducers';
 import {setSearch, resetFilteredConversationAction} from '../../../actions';
 
 import {ReactComponent as IconSearch} from 'assets/images/icons/search.svg';
-import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
+import {ReactComponent as BackIcon} from 'assets/images/icons/arrowLeft.svg';
+import {ReactComponent as FilterIcon} from 'assets/images/icons/filterAlt.svg';
 
 import styles from './index.module.scss';
 

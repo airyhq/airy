@@ -13,8 +13,8 @@ import {Channel} from 'model';
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 import {EditChatPlugin} from './sections/EditChatPlugin';
 
-import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './ChatPluginConnect.module.scss';
 

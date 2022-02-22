@@ -32,9 +32,10 @@
   flex-shrink: 0;
 }
 
-.time {
+.infoMessage {
   @include font-s;
   color: var(--color-text-gray);
-  margin-top: 5px;
+  margin-bottom: 5px;
   padding-left: 50px;
+  display: block;
 }

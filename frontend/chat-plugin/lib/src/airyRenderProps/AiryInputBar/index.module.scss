@@ -21,7 +21,7 @@
   width: 100%;
   padding: 4px 4px 0 8px;
   margin: 0 8px 0 0;
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font), sans-serif;
   font-size: 16px;
   letter-spacing: 0;
   line-height: 24px;
@@ -41,7 +41,7 @@
     color: var(--color-text-gray);
     cursor: pointer;
     text-decoration: none;
-    font-family: 'Lato', sans-serif;
+    font-family: var(--font), sans-serif;
     font-size: 12px;
     align-items: center;
 

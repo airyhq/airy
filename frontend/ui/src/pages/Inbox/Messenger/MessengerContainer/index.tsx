@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
-import {ReactComponent as EmptyStateImage} from 'assets/images/empty-state/inbox-empty-state.svg';
+import {ReactComponent as EmptyStateImage} from 'assets/images/emptyState/inboxEmptyState.svg';
 import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import ConversationHeader from '../ConversationHeader';

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {ReactComponent as PlayCircleIcon} from 'assets/images/icons/play-circle.svg';
+import {ReactComponent as PlayCircleIcon} from 'assets/images/icons/playCircle.svg';
 import Linkify from 'linkify-react';
 import {timeElapsedInHours} from 'dates';
 

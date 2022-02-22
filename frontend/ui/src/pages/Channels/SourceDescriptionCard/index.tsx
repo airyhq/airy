@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {SourceInfo} from '../MainPage';
-import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
+import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plusCircle.svg';
 
 import styles from './index.module.scss';
 

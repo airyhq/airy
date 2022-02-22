@@ -11,17 +11,25 @@ type MessageInfoWrapperProps = {
   contact?: Contact;
   sentAt?: string;
   decoration?: ReactNode;
+  senderName?: string;
 };
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
-  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin, decoration} = props;
+  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin, decoration, senderName} = props;
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
+  const senderIdentity = sentAt ? ` - sent by ${senderName}` : `sent by ${senderName}`;
+
+  const MessageInfo = () => (
+    <span className={styles.infoMessage}>
+      {sentAt && `${sentAt}`} {senderName && senderIdentity}
+    </span>
+  );
 
   const MemberMessage = () => (
     <div className={styles.member}>
       <div className={styles.memberContent}>{children}</div>
-      <div className={styles.time}>{sentAt}</div>
+      <MessageInfo />
     </div>
   );
 
@@ -41,7 +49,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
         </div>
         {decoration}
       </div>
-      <div className={styles.time}>{sentAt}</div>
+      <MessageInfo />
     </>
   );
 

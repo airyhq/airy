@@ -166,6 +166,7 @@ const MessageList = (props: MessageListProps) => {
               lastInGroup={lastInGroup}
               isChatPlugin={false}
               decoration={messageDecoration}
+              senderName={message?.sender?.name}
             >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />

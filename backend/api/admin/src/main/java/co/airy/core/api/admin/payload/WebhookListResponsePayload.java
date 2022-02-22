@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebhookListResponsePayload {
-    private List<WebhookResponsePayload> data;
+    private List<WebhookListPayload> data;
 }

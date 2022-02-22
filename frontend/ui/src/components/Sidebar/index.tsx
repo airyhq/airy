@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link, matchPath, useLocation} from 'react-router-dom';
 
-import {ReactComponent as PlugIcon} from 'assets/images/icons/git-merge.svg';
+import {ReactComponent as PlugIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as InboxIcon} from 'assets/images/icons/inbox.svg';
-import {ReactComponent as TagIcon} from 'assets/images/icons/price-tag.svg';
+import {ReactComponent as TagIcon} from 'assets/images/icons/priceTag.svg';
 
 import {INBOX_ROUTE, CHANNELS_ROUTE, TAGS_ROUTE} from '../../routes/routes';
 

@@ -1,0 +1,35 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  width: 100%;
+  position: relative;
+}
+
+.audioButtons {
+  width: 28px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1578d4;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    fill: white;
+  }
+}
+
+.cancelButton {
+  position: absolute;
+  right: 0;
+}
+
+.stopButton {
+  margin-right: 10px;
+}

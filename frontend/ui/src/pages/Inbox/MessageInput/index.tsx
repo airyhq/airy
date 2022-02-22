@@ -21,6 +21,7 @@ import {InputSelector} from './InputSelector';
 import {getAttachmentType} from 'render';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
+import {AudioRecording} from './AudioRecording';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -80,6 +81,9 @@ const MessageInput = (props: Props) => {
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
   const [isFileLoaded, setIsFileLoaded] = useState(false);
+
+  //audio stuff
+  const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -371,6 +375,10 @@ const MessageInput = (props: Props) => {
     setDraggedAndDroppedFile(null);
   };
 
+  const getAudioStream = (stream: MediaStream) => {
+    setAudioStream(stream);
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -400,44 +408,50 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            <div className={styles.contentInput}>
-              {loadingSelector && (
-                <div className={styles.selectorLoader}>
-                  <SimpleLoader />
-                  <span>loading file... </span>
-                </div>
-              )}
-              {isElementSelected() && (
-                <div className={styles.imagesContainer}>
-                  <InputSelector
-                    message={
-                      selectedTemplate?.message ??
-                      selectedSuggestedReply?.message ??
-                      outboundMapper?.getAttachmentPayload(uploadedFileUrl)
-                    }
-                    source={source}
-                    messageType={
-                      selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'
-                    }
-                    removeElementFromInput={removeElementFromInput}
-                    contentResizedHeight={selectTemplate ? 60 : contentResizedHeight}
-                  />
-                </div>
-              )}
-              <textarea
-                className={styles.messageTextArea}
-                ref={textAreaRef}
-                rows={1}
-                name="inputBar"
-                placeholder={channelConnected ? 'Enter a message...' : ''}
-                autoFocus={channelConnected}
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                data-cy={cyMessageTextArea}
-                disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
-              />
-            </div>
+            {!audioStream && (
+              <div className={styles.contentInput}>
+                {loadingSelector && (
+                  <div className={styles.selectorLoader}>
+                    <SimpleLoader />
+                    <span>loading file... </span>
+                  </div>
+                )}
+                {isElementSelected() && (
+                  <div className={styles.imagesContainer}>
+                    <InputSelector
+                      message={
+                        selectedTemplate?.message ??
+                        selectedSuggestedReply?.message ??
+                        outboundMapper?.getAttachmentPayload(uploadedFileUrl)
+                      }
+                      source={source}
+                      messageType={
+                        selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'
+                      }
+                      removeElementFromInput={removeElementFromInput}
+                      contentResizedHeight={selectTemplate ? 60 : contentResizedHeight}
+                    />
+                  </div>
+                )}
+
+                <textarea
+                  className={styles.messageTextArea}
+                  ref={textAreaRef}
+                  rows={1}
+                  name="inputBar"
+                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  autoFocus={channelConnected}
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  data-cy={cyMessageTextArea}
+                  disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
+                />
+              </div>
+            )}
+
+            {audioStream && <AudioRecording audio={audioStream} />}
+
             <InputOptions
               source={source}
               inputDisabled={!channelConnected}
@@ -452,6 +466,7 @@ const MessageInput = (props: Props) => {
               fileUploadErrorPopUp={fileUploadErrorPopUp}
               closeFileErrorPopUp={closeFileErrorPopUp}
               loadingSelector={loadingSelector}
+              getAudioStream={getAudioStream}
             />
           </div>
         </div>

@@ -30,6 +30,7 @@ type Props = {
   fileUploadErrorPopUp: string;
   canSendMedia: boolean;
   loadingSelector: boolean;
+  getAudioStream: (stream: MediaStream) => void;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -46,6 +47,7 @@ export const InputOptions = (props: Props) => {
     canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
+    getAudioStream,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -54,7 +56,9 @@ export const InputOptions = (props: Props) => {
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
   const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
-  const [inputAudio, setInputAudio] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
+
+  //audio stuff
+  const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const inputAudioRef = useRef<HTMLInputElement>(null);
@@ -62,7 +66,6 @@ export const InputOptions = (props: Props) => {
   useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptFilesValue);
-
   }, [source]);
 
   useEffect(() => {
@@ -138,16 +141,19 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const onInputAudioChangeHandler = () => {
-    console.log('INPUT AUDIO CHANGE');
-    
-  }
-
-  const recordVoiceMessage = () => {
+  const recordVoiceMessage = async () => {
     console.log('RECORD VOICE MSG TRIGGER');
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+
+    //pass the audioStream to messageInput
+    getAudioStream(stream);
+
+    //set in state to make icons disappear
+    setAudioStream(stream);
   };
-
-
 
   return (
     <div className={styles.container}>
@@ -167,30 +173,36 @@ export const InputOptions = (props: Props) => {
           source={source}
         />
       )}
-      {isShowingEmojiDrawer && (
+      {isShowingEmojiDrawer && !audioStream && (
         <div ref={emojiDiv} className={styles.emojiDrawer}>
           <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
         </div>
       )}
 
-      <button
-        className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
-        type="button"
-        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleEmojiDrawer}>
-        <div className={styles.actionToolTip}>Emojis</div>
-        <Smiley aria-hidden className={styles.smileyIcon} />
-      </button>
-      <button
-        className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
-        type="button"
-        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-        onClick={toggleTemplateModal}>
-        <div className={styles.actionToolTip}>Templates</div>
-        <div className={styles.templateActionContainer}>
-          <TemplateAlt aria-hidden className={styles.templateAltIcon} />
-        </div>
-      </button>
+      {!audioStream && (
+        <>
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
+            type="button"
+            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+            onClick={toggleEmojiDrawer}
+          >
+            <div className={styles.actionToolTip}>Emojis</div>
+            <Smiley aria-hidden className={styles.smileyIcon} />
+          </button>
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            type="button"
+            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+            onClick={toggleTemplateModal}
+          >
+            <div className={styles.actionToolTip}>Templates</div>
+            <div className={styles.templateActionContainer}>
+              <TemplateAlt aria-hidden className={styles.templateAltIcon} />
+            </div>
+          </button>
+        </>
+      )}
 
       {canSendMedia &&
         (source === 'facebook' ||
@@ -199,60 +211,48 @@ export const InputOptions = (props: Props) => {
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <>
-            <button
-              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
-              type="button"
-              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              onClick={toggleFileSelector}>
-              <div className={styles.actionToolTip}>Files</div>
-
-              <label
-                htmlFor="file"
-                style={{
-                  cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
-                }}>
-                <Paperclip aria-hidden className={styles.paperclipIcon} />
-              </label>
-
-              <input
-                type="file"
-                id="file"
-                name="file"
-                ref={inputFileRef}
-                value={inputFile?.value}
-                onChange={onInputFileChangeHandler}
-                className={styles.fileInput}
+            {!audioStream && (
+              <button
+                className={`${styles.iconButton} ${styles.templateButton} ${
+                  isShowingFileSelector ? styles.active : ''
+                }`}
+                type="button"
                 disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-                accept={inputAcceptedFiles}
-              />
-            </button>
+                onClick={toggleFileSelector}
+              >
+                <div className={styles.actionToolTip}>Files</div>
+
+                <label
+                  htmlFor="file"
+                  style={{
+                    cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  <Paperclip aria-hidden className={styles.paperclipIcon} />
+                </label>
+
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  ref={inputFileRef}
+                  value={inputFile?.value}
+                  onChange={onInputFileChangeHandler}
+                  className={styles.fileInput}
+                  disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+                  accept={inputAcceptedFiles}
+                />
+              </button>
+            )}
 
             <button
               className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
               type="button"
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              onClick={recordVoiceMessage}>
+              onClick={recordVoiceMessage}
+            >
               <div className={styles.actionToolTip}>Record audio clip</div>
-
-              <label
-                htmlFor="file"
-                style={{
-                  cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
-                }}>
-                <Microphone aria-hidden className={styles.paperclipIcon} />
-              </label>
-
-              <input
-                type="file"
-                id="audioRecording"
-                name="audioRecording"
-                ref={inputAudioRef}
-                value={inputAudio?.value}
-                onChange={onInputAudioChangeHandler}
-                className={styles.fileInput}
-                disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-                accept={inputAcceptedFiles}
-              />
+              <Microphone aria-hidden />
             </button>
           </>
         )}

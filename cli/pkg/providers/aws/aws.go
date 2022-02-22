@@ -418,7 +418,6 @@ func (p *provider) createCluster(name string, roleArn *string, subnetIds []strin
 	createdCluster, err := p.eksClient.CreateCluster(context.TODO(), &eks.CreateClusterInput{
 		Name:    aws.String(name),
 		RoleArn: roleArn,
-		Version: aws.String("1.19"),
 		ResourcesVpcConfig: &eksTypes.VpcConfigRequest{
 			SubnetIds: subnetIds,
 		},

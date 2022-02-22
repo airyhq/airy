@@ -25,11 +25,17 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   window.addEventListener('resize', handleResize);
 
-  if (config.config?.useCustomFont && config.config?.customFont !== 'Arial') {
+  if (
+    (config.config?.useCustomFont === undefined || config.config?.useCustomFont) &&
+    config.config.customFont !== 'Arial'
+  ) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('type', 'text/css');
-    link.setAttribute('href', `https://fonts.googleapis.com/css?family=${config.config?.customFont}:300,400,700,900`);
+    link.setAttribute(
+      'href',
+      `https://fonts.googleapis.com/css?family=${config.config?.customFont || 'Lato'}:300,400,700,900`
+    );
     document.getElementsByTagName('head')[0].appendChild(link);
   }
 

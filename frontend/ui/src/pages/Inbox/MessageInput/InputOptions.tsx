@@ -31,6 +31,8 @@ type Props = {
   canSendMedia: boolean;
   loadingSelector: boolean;
   getAudioStream: (stream: MediaStream) => void;
+  getSavedAudio: (savedAudio: HTMLAudioElement) => void;
+  isAudioCanceled: boolean;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -48,6 +50,8 @@ export const InputOptions = (props: Props) => {
     closeFileErrorPopUp,
     loadingSelector,
     getAudioStream,
+    getSavedAudio,
+    isAudioCanceled
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -56,12 +60,25 @@ export const InputOptions = (props: Props) => {
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
   const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
+  const [savedAudioRecording, setSavedAudioRecording] = useState<null | HTMLAudioElement>(null);
 
   //audio stuff
   const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const inputAudioRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+
+    console.log('inputOptions isAudioCanceled', isAudioCanceled);
+
+    if(isAudioCanceled) setAudioStream(null);
+
+  }, [isAudioCanceled])
+
+  useEffect(() => {
+    console.log('inputOptions audioStream', audioStream);
+  }, [audioStream])
 
   useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
@@ -141,12 +158,47 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
+  const saveAudioRecording = (stream) => {
+    const mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.start();
+
+    const audioChunks = [];
+
+    mediaRecorder.addEventListener("dataavailable", (event) => {
+      audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+
+      const audioBlob = new Blob(audioChunks);
+ 
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const savedAudio = new Audio(audioUrl);
+
+      setSavedAudioRecording(savedAudio)
+      getSavedAudio(savedAudio)
+
+      if(isAudioCanceled === true){
+        console.log('isAudioCanceled', isAudioCanceled)
+        console.log('STOP MEDIA RECORDER SET NULL')
+        setAudioStream(null);
+        getAudioStream(null);
+      }
+
+
+    });
+
+  }
+
   const recordVoiceMessage = async () => {
     console.log('RECORD VOICE MSG TRIGGER');
 
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
+
+    saveAudioRecording(stream)
 
     //pass the audioStream to messageInput
     getAudioStream(stream);

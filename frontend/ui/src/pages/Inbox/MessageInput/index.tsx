@@ -81,9 +81,27 @@ const MessageInput = (props: Props) => {
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
   const [isFileLoaded, setIsFileLoaded] = useState(false);
+  
 
   //audio stuff
   const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
+  const [savedAudioRecording, setSavedAudioRecording] = useState<null | HTMLAudioElement>(null);
+  const [isAudioCanceled, setIsAudioCanceled] = useState(false);
+
+
+  useEffect(() => {
+    console.log('INPUT', isAudioCanceled);
+  }, [isAudioCanceled])
+
+  useEffect(() => {
+    console.log('INPUT', audioStream)
+
+    console.log('audioStream === null', audioStream === null)
+
+    if(audioStream === null) setIsAudioCanceled(true)
+
+  }, [audioStream, isAudioCanceled])
+
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -379,6 +397,18 @@ const MessageInput = (props: Props) => {
     setAudioStream(stream);
   };
 
+  const getSavedAudio = (savedAudio: HTMLAudioElement) => {
+    setSavedAudioRecording(savedAudio);
+  }
+
+  const isAudioRecordingCanceled = (isCanceled: boolean) => {
+    console.log('INPUT', isCanceled);
+    if(isCanceled){
+      setIsAudioCanceled(true);
+      setAudioStream(null)
+    } 
+  }
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -450,7 +480,7 @@ const MessageInput = (props: Props) => {
               </div>
             )}
 
-            {audioStream && <AudioRecording audio={audioStream} />}
+            {audioStream && <AudioRecording audio={audioStream} savedAudio={savedAudioRecording} isAudioRecordingCanceled={isAudioRecordingCanceled}/>}
 
             <InputOptions
               source={source}
@@ -467,6 +497,8 @@ const MessageInput = (props: Props) => {
               closeFileErrorPopUp={closeFileErrorPopUp}
               loadingSelector={loadingSelector}
               getAudioStream={getAudioStream}
+              getSavedAudio={getSavedAudio}
+              isAudioCanceled={isAudioCanceled}
             />
           </div>
         </div>

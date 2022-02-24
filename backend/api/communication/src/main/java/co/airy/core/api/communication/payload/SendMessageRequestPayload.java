@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -19,4 +20,5 @@ public class SendMessageRequestPayload {
     @Valid
     @NotNull
     private JsonNode message;
+    private Instant timestamp = Instant.now();
 }

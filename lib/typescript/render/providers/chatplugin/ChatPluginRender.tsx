@@ -7,7 +7,8 @@ import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
-import {Image, Video, File, Audio} from 'render/components';
+import {Image, Video, File} from 'render/components';
+import {Audio} from 'components';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.message), props);

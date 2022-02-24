@@ -1,0 +1,41 @@
+@import 'assets/scss/fonts';
+@import 'assets/scss/colors';
+
+.audioContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 40px;
+  margin-top: 80px;
+  border-radius: 12px;
+  background-color: var(--color-airy-blue);
+  padding: 0 6px;
+  height: 48px;
+}
+
+.audioContainer audio {
+  display: 'none';
+}
+
+.audioContainer button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  margin-right: 6px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 20px;
+  height: 24px;
+  fill: white;
+}
+
+.audioTime {
+  color: white;
+  margin-left: 6px;
+  @include font-s;
+}

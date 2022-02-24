@@ -15,13 +15,17 @@ export function AudioRecording({audio, savedAudio, isAudioRecordingCanceled}) {
   const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   let audioAnalyser;
   let audioArr;
   let updateAudioArrId;
   let source;
-  
+
   useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    console.log('savedAudio', savedAudio);
+  }, [savedAudio]);
+
+  useEffect(() => {
     audioAnalyser = audioContext.createAnalyser();
     audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
 
@@ -46,26 +50,35 @@ export function AudioRecording({audio, savedAudio, isAudioRecordingCanceled}) {
   };
 
   const stopRecording = () => {
+    console.log('STOP RECORDING, audioRecording');
     audio.getTracks().forEach(track => track.stop());
+    //isAudioRecordingCanceled(false);
     //setDataArr(null);
     setIsPlaying(false);
+
     //window.cancelAnimationFrame(updateAudioArrId);
   };
 
   const cancelRecording = () => {
-    console.log('CANCEL RECORDING')
+    console.log('CANCEL RECORDING');
     audio.getTracks().forEach(track => track.stop());
-    //isAudioRecordingCanceled(true);
- 
-    //setDataArr(null);
-    //setIsPlaying(false);
+    isAudioRecordingCanceled(true);
 
-  }
+    setDataArr(null);
+    setIsPlaying(false);
+  };
 
-  const startSavedRecording = () => {
+  const startSavedRecording = async () => {
+    // const arrayBuffer = await new Response(savedAudio).arrayBuffer();
+    // const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    //setDataArr([...savedAudio]);
+    // source = audioContext.createBufferSource();
+    // source.buffer = audioBuffer;
+    // source.connect(audioAnalyser);
+    // source.start(0);
     savedAudio.play();
     setIsPlaying(true);
-  }
+  };
 
   //add cancel and stop button around Waveform
   return (
@@ -75,7 +88,11 @@ export function AudioRecording({audio, savedAudio, isAudioRecordingCanceled}) {
           <Stop />
         </button>
       ) : (
-        <button type="button" className={`${styles.audioButtons} ${styles.stopPlayButtons}`} onClick={startSavedRecording}>
+        <button
+          type="button"
+          className={`${styles.audioButtons} ${styles.stopPlayButtons}`}
+          onClick={startSavedRecording}
+        >
           <Play />
         </button>
       )}

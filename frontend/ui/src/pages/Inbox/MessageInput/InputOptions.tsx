@@ -31,7 +31,8 @@ type Props = {
   canSendMedia: boolean;
   loadingSelector: boolean;
   getAudioStream: (stream: MediaStream) => void;
-  getSavedAudio: (savedAudio: HTMLAudioElement) => void;
+  getSavedAudio: (savedAudio: any) => void;
+  isAudioRecordingCanceled: (status: boolean) => void;
   isAudioCanceled: boolean;
 } & ConnectedProps<typeof connector>;
 
@@ -51,7 +52,8 @@ export const InputOptions = (props: Props) => {
     loadingSelector,
     getAudioStream,
     getSavedAudio,
-    isAudioCanceled
+    isAudioRecordingCanceled,
+    isAudioCanceled,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -60,25 +62,11 @@ export const InputOptions = (props: Props) => {
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
   const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
-  const [savedAudioRecording, setSavedAudioRecording] = useState<null | HTMLAudioElement>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   //audio stuff
   const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
-
-  const inputFileRef = useRef<HTMLInputElement>(null);
-  const inputAudioRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-
-    console.log('inputOptions isAudioCanceled', isAudioCanceled);
-
-    if(isAudioCanceled) setAudioStream(null);
-
-  }, [isAudioCanceled])
-
-  useEffect(() => {
-    console.log('inputOptions audioStream', audioStream);
-  }, [audioStream])
+  const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
 
   useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
@@ -158,47 +146,52 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const saveAudioRecording = (stream) => {
+  const saveAudioRecording = stream => {
     const mediaRecorder = new MediaRecorder(stream);
 
     mediaRecorder.start();
 
     const audioChunks = [];
 
-    mediaRecorder.addEventListener("dataavailable", (event) => {
+    mediaRecorder.addEventListener('dataavailable', event => {
       audioChunks.push(event.data);
     });
 
-    mediaRecorder.addEventListener("stop", () => {
-
+    mediaRecorder.addEventListener('stop', () => {
+      //create audio from audioChunks
       const audioBlob = new Blob(audioChunks);
- 
       const audioUrl = URL.createObjectURL(audioBlob);
       const savedAudio = new Audio(audioUrl);
 
-      setSavedAudioRecording(savedAudio)
-      getSavedAudio(savedAudio)
+      //savedAudio.crossOrigin = "anonymous";
+      // let audioSrc = context.createMediaElementSource(audio);
+      // audioSrc.connect(analyser);
+      // audioSrc.connect(context.destination);
+      // analyser.connect(context.destination);
 
-      if(isAudioCanceled === true){
-        console.log('isAudioCanceled', isAudioCanceled)
-        console.log('STOP MEDIA RECORDER SET NULL')
-        setAudioStream(null);
-        getAudioStream(null);
-      }
+      setSavedAudioRecording(savedAudio);
+      getSavedAudio(savedAudio);
 
-
+      // if(isAudioCanceled === true){
+      //   console.log('isAudioCanceled', isAudioCanceled)
+      //   console.log('STOP MEDIA RECORDER SET NULL')
+      //   setAudioStream(null);
+      //   getAudioStream(null);
+      // }
     });
-
-  }
+  };
 
   const recordVoiceMessage = async () => {
-    console.log('RECORD VOICE MSG TRIGGER');
+    //console.log('RECORD VOICE MSG TRIGGER');
 
+    isAudioRecordingCanceled(false);
+
+    //catch /try
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
 
-    saveAudioRecording(stream)
+    saveAudioRecording(stream);
 
     //pass the audioStream to messageInput
     getAudioStream(stream);
@@ -225,13 +218,13 @@ export const InputOptions = (props: Props) => {
           source={source}
         />
       )}
-      {isShowingEmojiDrawer && !audioStream && (
+      {isShowingEmojiDrawer && (
         <div ref={emojiDiv} className={styles.emojiDrawer}>
           <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
         </div>
       )}
 
-      {!audioStream && (
+      {isAudioCanceled && (
         <>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
@@ -263,7 +256,7 @@ export const InputOptions = (props: Props) => {
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <>
-            {!audioStream && (
+            {isAudioCanceled && (
               <button
                 className={`${styles.iconButton} ${styles.templateButton} ${
                   isShowingFileSelector ? styles.active : ''

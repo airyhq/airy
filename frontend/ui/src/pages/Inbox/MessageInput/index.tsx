@@ -81,26 +81,24 @@ const MessageInput = (props: Props) => {
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
   const [isFileLoaded, setIsFileLoaded] = useState(false);
-  
 
   //audio stuff
   const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
-  const [savedAudioRecording, setSavedAudioRecording] = useState<null | HTMLAudioElement>(null);
-  const [isAudioCanceled, setIsAudioCanceled] = useState(false);
+  const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
+  const [isAudioCanceled, setIsAudioCanceled] = useState(true);
 
+  // useEffect(() => {
+  //   console.log('INPUT isAudioCanceled', isAudioCanceled);
+  // }, [isAudioCanceled])
 
-  useEffect(() => {
-    console.log('INPUT', isAudioCanceled);
-  }, [isAudioCanceled])
+  // useEffect(() => {
+  //   //console.log('INPUT audioStream', audioStream)
 
-  useEffect(() => {
-    console.log('INPUT', audioStream)
+  //   //console.log('audioStream === null', audioStream === null)
 
-    console.log('audioStream === null', audioStream === null)
+  //   if(audioStream === null) setIsAudioCanceled(true)
 
-    if(audioStream === null) setIsAudioCanceled(true)
-
-  }, [audioStream, isAudioCanceled])
+  // }, [audioStream, isAudioCanceled])
 
   const prevConversationId = usePrevious(conversation.id);
 
@@ -399,15 +397,16 @@ const MessageInput = (props: Props) => {
 
   const getSavedAudio = (savedAudio: HTMLAudioElement) => {
     setSavedAudioRecording(savedAudio);
-  }
+  };
 
   const isAudioRecordingCanceled = (isCanceled: boolean) => {
-    console.log('INPUT', isCanceled);
-    if(isCanceled){
+    if (isCanceled) {
+      setAudioStream(null);
       setIsAudioCanceled(true);
-      setAudioStream(null)
-    } 
-  }
+    } else {
+      setIsAudioCanceled(false);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -480,7 +479,13 @@ const MessageInput = (props: Props) => {
               </div>
             )}
 
-            {audioStream && <AudioRecording audio={audioStream} savedAudio={savedAudioRecording} isAudioRecordingCanceled={isAudioRecordingCanceled}/>}
+            {audioStream && (
+              <AudioRecording
+                audio={audioStream}
+                savedAudio={savedAudioRecording}
+                isAudioRecordingCanceled={isAudioRecordingCanceled}
+              />
+            )}
 
             <InputOptions
               source={source}
@@ -498,6 +503,7 @@ const MessageInput = (props: Props) => {
               loadingSelector={loadingSelector}
               getAudioStream={getAudioStream}
               getSavedAudio={getSavedAudio}
+              isAudioRecordingCanceled={isAudioRecordingCanceled}
               isAudioCanceled={isAudioCanceled}
             />
           </div>

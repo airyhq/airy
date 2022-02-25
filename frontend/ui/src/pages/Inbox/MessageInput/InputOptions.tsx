@@ -30,14 +30,12 @@ type Props = {
   fileUploadErrorPopUp: string;
   canSendMedia: boolean;
   loadingSelector: boolean;
-  getAudioStream?: (stream: MediaStream) => void;
-  getSavedAudio?: (savedAudio: any) => void;
-  isAudioRecordingCanceled?: (status: boolean) => void;
-  isAudioCanceled?: boolean;
+  isAudioRecordingCanceled?: boolean;
+  audioRecordingCanceledUpdate?: (status:boolean) => void;
   voiceRecordingStart: () => void;
   savedAudioRecording?: any;
-  isVoiceRecordingPaused?:any;
-  resumeVoiceRecording?:any;
+  isVoiceRecordingPaused?: (status:boolean) => void;
+  resumeVoiceRecording?:() => void;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -54,10 +52,8 @@ export const InputOptions = (props: Props) => {
     canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
-    getAudioStream,
-    getSavedAudio,
+    audioRecordingCanceledUpdate,
     isAudioRecordingCanceled,
-    isAudioCanceled,
     voiceRecordingStart,
     savedAudioRecording, 
     isVoiceRecordingPaused,
@@ -151,27 +147,20 @@ export const InputOptions = (props: Props) => {
   };
 
   const startVoiceRecording = () => {
-    isAudioRecordingCanceled(false);
+    audioRecordingCanceledUpdate(false);
     voiceRecordingStart();
   }
 
   const handleMicrophoneIconClick = () => {
+ 
     if(savedAudioRecording){
-      //resume after preview 
-      console.log('RESUME AUDIO');
+      console.log('RESUME RECORDING');
       resumeVoiceRecording();
-      isVoiceRecordingPaused(false);
-     
+      isVoiceRecordingPaused(false); 
     } else {
-      //start
-      console.log('START AUDIO');
       startVoiceRecording();
     }
   }
-
-  //microphone icon: on click ==> 
-  //startVoiceRecording 
-  //if savedAudio (audioPreview): continue recording
 
   return (
     <div className={styles.container}>
@@ -197,7 +186,7 @@ export const InputOptions = (props: Props) => {
         </div>
       )}
 
-      {isAudioCanceled && (
+      {isAudioRecordingCanceled && (
         <>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
@@ -229,7 +218,7 @@ export const InputOptions = (props: Props) => {
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <>
-            {isAudioCanceled && (
+            {isAudioRecordingCanceled && (
               <button
                 className={`${styles.iconButton} ${styles.templateButton} ${
                   isShowingFileSelector ? styles.active : ''

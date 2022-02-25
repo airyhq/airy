@@ -2,7 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {AudioStream} from './AudioStream';
 import {AudioClip} from 'components';
 import styles from './index.module.scss';
-import {ReactComponent as CancelCross} from 'assets/images/icons/cancelCross.svg';
+import {ReactComponent as Cancel} from 'assets/images/icons/cancelCross.svg';
+import {SimpleLoader} from 'components';
 
 declare global {
   interface Window {
@@ -12,43 +13,33 @@ declare global {
 
 export function AudioRecording({
   recordingResumed,
-  isAudioRecordingCanceled,
-  getAudioStream,
+  audioRecordingCanceledUpdate,
   getSavedAudio,
   savedAudioFileUploaded,
   setVoiceRecordingOn,
   isVoiceRecordingPaused,
 }) {
-  const [audioStream, setAudioStream] = useState<any>(null);
-  const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [recordingCanceled, setRecordingCanceled] = useState<boolean>(false);
-  const [savedAudioRecording, setSavedAudioRecording] = useState<any>();
-  const [mediaRecorder, setMediaRecorder] = useState<any>();
-  const [recordingPause, setRecordingPaused] = useState(false);
-  const [pausedDataChunks, setPausedDataChunks] = useState<any>();
+  const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
+  const [recordingCanceled, setRecordingCanceled] = useState(false);
+  const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log('audioRecording - recordingCanceled', recordingCanceled);
-  }, [recordingCanceled]);
-
-  useEffect(() => {
-    console.log('AUDIORECORD, savedAudio', savedAudioRecording);
-  }, [savedAudioRecording]);
-
-  useEffect(() => {
-    console.log('savedAudioFileUploaded', savedAudioFileUploaded);
-  }, [savedAudioFileUploaded]);
+  console.log('audioStream', audioStream);
 
   useEffect(() => {
     if (recordingResumed) {
-      mediaRecorder.resume();
-      console.log('RESUME - audioStream', audioStream);
-      setAudioStream(audioStream);
-      setRecordingCanceled(true);
       setSavedAudioRecording(null);
     }
   }, [recordingResumed]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [savedAudioFileUploaded]);
+
+  useEffect(() => {
+    recordVoiceMessage();
+  }, []);
 
   useEffect(() => {
     if (audioStream) {
@@ -61,53 +52,20 @@ export function AudioRecording({
         if (event.data.size > 0) {
           audioChunks.push(event.data);
 
-          console.log('REQUEST DATA')
           const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
-          const file = new File(audioChunks, 'audiorecording.mp3', {
+          const file = new File(audioChunks, 'recording.mp3', {
             type: audioBlob.type,
             lastModified: Date.now(),
           });
-  
-          console.log('FILE', file);
-  
-          setSavedAudioRecording(file);
-          getSavedAudio(file);
 
-          // if(pausedDataChunks){
-          //   pausedDataChunks.push(event.data);
-          // } else {
-          //   audioChunks.push(event.data);
-          // }
+          setSavedAudioRecording(file);
+          setLoading(true);
+          getSavedAudio(file);
         }
       });
 
-      // mediaRecorder.addEventListener('requestData', () => {
-      //   const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
-
-      //   //console.log('audioBlob', audioBlob)
-
-      //   console.log('REQUEST DATA')
-
-      //   const file = new File(audioChunks, 'audiorecording.mp3', {
-      //     type: audioBlob.type,
-      //     lastModified: Date.now(),
-      //   });
-
-      //   console.log('FILE', file);
-
-      //   setSavedAudioRecording(file);
-      //   getSavedAudio(file);
-      // });
-
       mediaRecorder.addEventListener('pause', () => {
-        //const chunks = pausedDataChunks ?? audioChunks;
-
-        console.log('PAUSE')
-
         isVoiceRecordingPaused(true);
-        //setAudioStream(null);
-
-        setIsPlaying(false);
       });
 
       setMediaRecorder(mediaRecorder);
@@ -115,68 +73,65 @@ export function AudioRecording({
   }, [audioStream]);
 
   useEffect(() => {
-    recordVoiceMessage();
-  }, []);
+    console.log('mediaRecorder AUDIORECOR', mediaRecorder);
+    if (recordingResumed && mediaRecorder) {
+      mediaRecorder.resume();
+      setAudioStream(audioStream);
+      setRecordingCanceled(true);
+      setSavedAudioRecording(null);
+    }
+  }, [recordingResumed]);
 
   const recordVoiceMessage = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
 
-    getAudioStream(stream);
     setAudioStream(stream);
   };
 
   const pauseRecording = () => {
-    console.log('STOP FUNC');
     mediaRecorder.requestData();
     mediaRecorder.pause();
-    setRecordingPaused(true);
-    // audioStream.getTracks().forEach(track => track.stop());
-    isAudioRecordingCanceled(false);
+
+    audioRecordingCanceledUpdate(false);
     setRecordingCanceled(false);
   };
 
   const cancelRecording = () => {
-    console.log('CANCEL RECORDING');
+    audioStream.getTracks().forEach(track => track.stop());
+    mediaRecorder.stop();
+
     setAudioStream(null);
     setSavedAudioRecording(null);
-    isAudioRecordingCanceled(true);
+    audioRecordingCanceledUpdate(true);
     setRecordingCanceled(true);
-    setIsPlaying(false);
     setVoiceRecordingOn(false);
   };
 
-  // const startSavedRecording = async () => {
-  //   savedAudio.play();
-  //   setIsPlaying(true);
-  // };
-
-  //add cancel and stop button around Waveform
   return (
     <div className={styles.container}>
-      <button type="button" className={`${styles.audioButtons} ${styles.cancelButton}`} onClick={cancelRecording}>
-        <CancelCross />
-      </button>
+      {!loading && (
+        <button type="button" className={`${styles.audioButtons} ${styles.cancelButton}`} onClick={cancelRecording}>
+          <Cancel />
+        </button>
+      )}
 
-      {audioStream && (
+      {!savedAudioRecording && (
         <AudioStream
           savedAudioRecording={savedAudioRecording}
           pauseRecording={pauseRecording}
-          cancelRecording={cancelRecording}
-          recordingCanceled={recordingCanceled}
           audioStream={audioStream}
-          isAudioRecordingCanceled={isAudioRecordingCanceled}
           recordingResumed={recordingResumed}
         />
       )}
 
-      {savedAudioFileUploaded && !recordingCanceled && (
-        <>
-          <div className={styles.audioComponent}>
-            <AudioClip audioUrl={savedAudioFileUploaded} />
-          </div>
-        </>
+      {loading && <SimpleLoader />}
+
+      {savedAudioFileUploaded && (
+        <div className={styles.audioComponent}>
+          <AudioClip audioUrl={savedAudioFileUploaded} />
+        </div>
       )}
     </div>
   );

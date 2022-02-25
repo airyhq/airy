@@ -83,30 +83,27 @@ const MessageInput = (props: Props) => {
   const [isFileLoaded, setIsFileLoaded] = useState(false);
 
   //audio stuff
-  const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
-  const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
-  const [isAudioCanceled, setIsAudioCanceled] = useState(true);
+  //const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
+  const [savedAudioRecording, setSavedAudioRecording] = useState<File | null>(null);
+  const [isAudioRecordingCanceled, setIsAudioRecordingCanceled] = useState(true);
   const [voiceRecordingOn, setVoiceRecordingOn] = useState(false);
-  const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<any>();
+  const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
   const [recordingPaused, setRecordingPaused] = useState(false);
   const [recordingResumed, setRecordingResumed] = useState(false);
 
   useEffect(() => {
     console.log('savedAudioRecording', savedAudioRecording);
-    if(savedAudioRecording){
-      setSavedAudioRecording(savedAudioRecording)
-      console.log(savedAudioRecording.src)
+    if (savedAudioRecording) {
+      setSavedAudioRecording(savedAudioRecording);
     }
-  }, [savedAudioRecording])
+  }, [savedAudioRecording]);
 
   // useEffect(() => {
-  //   //console.log('INPUT audioStream', audioStream)
-
-  //   //console.log('audioStream === null', audioStream === null)
-
-  //   if(audioStream === null) setIsAudioCanceled(true)
-
-  // }, [audioStream, isAudioCanceled])
+  //   if (recordingResumed) {
+  //     setSavedAudioRecording(null);
+  //     setRecordedAudioFileUploaded(null);
+  //   }
+  // }, [recordingResumed]);
 
   const prevConversationId = usePrevious(conversation.id);
 
@@ -148,7 +145,6 @@ const MessageInput = (props: Props) => {
     }
   }, [loadingSelector, fileToUpload]);
 
-
   //move this upload to Audio?
   useEffect(() => {
     if (savedAudioRecording) {
@@ -162,7 +158,6 @@ const MessageInput = (props: Props) => {
         try {
           const uploadAudioRecordingResponse: any = await HttpClientInstance.uploadFile({file: formData});
           setRecordedAudioFileUploaded(uploadAudioRecordingResponse.mediaUrl);
-          
         } catch {
           setFileUploadErrorPopUp('Failed to preview audio recording. Please try again later.');
         }
@@ -273,7 +268,10 @@ const MessageInput = (props: Props) => {
   };
 
   const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input && !uploadedFileUrl && !recordedAudioFileUploaded) || !channelConnected);
+    return !(
+      (!selectedTemplate && !selectedSuggestedReply && !input && !uploadedFileUrl && !recordedAudioFileUploaded) ||
+      !channelConnected
+    );
   };
 
   const isElementSelected = () => {
@@ -308,7 +306,7 @@ const MessageInput = (props: Props) => {
               message.message = selectedTemplate?.message.content || selectedSuggestedReply?.message.content;
             }
           }
-          if(recordedAudioFileUploaded){
+          if (recordedAudioFileUploaded) {
             message.message = outboundMapper.getAttachmentPayload(recordedAudioFileUploaded);
           }
           if (uploadedFileUrl && input.length == 0) {
@@ -338,9 +336,8 @@ const MessageInput = (props: Props) => {
         setBlockSpam(false);
         removeElementFromInput();
         setRecordedAudioFileUploaded(null);
-        setIsAudioCanceled(true);
+        setIsAudioRecordingCanceled(true);
         setVoiceRecordingOn(false);
-
       });
     }
   };
@@ -436,40 +433,43 @@ const MessageInput = (props: Props) => {
     setDraggedAndDroppedFile(null);
   };
 
-  const getAudioStream = (stream: MediaStream) => {
-    setAudioStream(stream);
-  };
+  // const getAudioStream = (stream: MediaStream) => {
+  //   setAudioStream(stream);
+  // };
 
-  const getSavedAudio = (savedAudio: HTMLAudioElement) => {
+  const getSavedAudio = (savedAudio: File) => {
     setSavedAudioRecording(savedAudio);
   };
 
-  const isVoiceRecordingPaused = (status:boolean) => {
-    if(status){
+  const isVoiceRecordingPaused = (status: boolean) => {
+    if (status) {
       setRecordingPaused(true);
     } else {
       setRecordingPaused(false);
     }
-  }
+  };
 
   const resumeVoiceRecording = () => {
+    console.log('SET RESUME VOICE');
     setRecordingResumed(true);
-    setRecordingPaused(false);
-  }
+    setSavedAudioRecording(null);
+    setRecordedAudioFileUploaded(null);
+    // setRecordingPaused(false);
+  };
 
   const voiceRecordingStart = () => {
-    setIsAudioCanceled(false);
-    setVoiceRecordingOn(true)
-  }
+    setIsAudioRecordingCanceled(false);
+    setVoiceRecordingOn(true);
+  };
 
-  const isAudioRecordingCanceled = (isCanceled: boolean) => {
+  const audioRecordingCanceledUpdate = (isCanceled: boolean) => {
     if (isCanceled) {
-      setAudioStream(null);
+      //setAudioStream(null);
       setSavedAudioRecording(null);
-      setIsAudioCanceled(true);
+      setIsAudioRecordingCanceled(true);
       setRecordedAudioFileUploaded(null);
     } else {
-      setIsAudioCanceled(false);
+      setIsAudioRecordingCanceled(false);
     }
   };
 
@@ -490,8 +490,7 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+            dataCy={cySuggestionsButton}>
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -544,11 +543,10 @@ const MessageInput = (props: Props) => {
               </div>
             )}
 
-            {voiceRecordingOn && !isAudioCanceled && (
+            {voiceRecordingOn && !isAudioRecordingCanceled && (
               <AudioRecording
-                getAudioStream={getAudioStream}
                 getSavedAudio={getSavedAudio}
-                isAudioRecordingCanceled={isAudioRecordingCanceled}
+                audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
                 savedAudioFileUploaded={recordedAudioFileUploaded}
                 setVoiceRecordingOn={setVoiceRecordingOn}
                 isVoiceRecordingPaused={isVoiceRecordingPaused}
@@ -573,12 +571,11 @@ const MessageInput = (props: Props) => {
               voiceRecordingStart={voiceRecordingStart}
               isVoiceRecordingPaused={isVoiceRecordingPaused}
               resumeVoiceRecording={resumeVoiceRecording}
-              
               // getAudioStream={getAudioStream}
               // getSavedAudio={getSavedAudio}
-               isAudioRecordingCanceled={isAudioRecordingCanceled}
-               isAudioCanceled={isAudioCanceled}
-               savedAudioRecording={savedAudioRecording}
+              audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
+              isAudioRecordingCanceled={isAudioRecordingCanceled}
+              savedAudioRecording={savedAudioRecording}
             />
           </div>
         </div>
@@ -596,8 +593,7 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
-            data-cy={cyMessageSendButton}
-          >
+            data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <PaperPlane />
             </div>
@@ -606,8 +602,7 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
-      >
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
         {'Shift + Enter to add line'}
       </div>
     </div>

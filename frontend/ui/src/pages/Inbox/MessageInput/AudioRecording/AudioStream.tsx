@@ -10,15 +10,7 @@ declare global {
   }
 }
 
-export function AudioStream({
-  savedAudioRecording,
-  audioStream,
-  pauseRecording,
-  cancelRecording,
-  recordingCanceled,
-  isAudioRecordingCanceled,
-  recordingResumed
-}) {
+export function AudioStream({savedAudioRecording, audioStream, pauseRecording, recordingResumed}) {
   const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
   let audioAnalyser;
   let audioArr;
@@ -52,15 +44,11 @@ export function AudioStream({
 
   return (
     <div className={styles.container}>
-      {!savedAudioRecording && (
-        <>
-          <WaveformAudio audioData={dataArr} />
+      <WaveformAudio audioData={dataArr} />
 
-          <button type="button" className={`${styles.audioButtons} ${styles.pauseButton}`} onClick={pauseRecording}>
-            <Pause />
-          </button>
-        </>
-      )}
+      <button type="button" className={`${styles.audioButtons} ${styles.pauseButton}`} onClick={pauseRecording}>
+        <Pause />
+      </button>
     </div>
   );
 }

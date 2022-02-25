@@ -8,8 +8,7 @@ type AudioRenderProps = {
   audioUrl: string;
 };
 
-export const Audio = ({audioUrl}: AudioRenderProps) => {
-  audioUrl = 'https://res.cloudinary.com/dzyccx5om/video/upload/v1645707917/Irish_Phone_Msg_mzdruz.mp3';
+export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const barsSamplesPaths = {
     path0: new Path2D(),
@@ -70,10 +69,14 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
   const canvasWidth = 174;
   const canvasHeight = 40;
 
+  
+
   useEffect(() => {
+    let abort = false;
+
     const context = canvas.current.getContext('2d');
     const ratio = window.devicePixelRatio;
-    console.log('ratio', ratio);
+
     canvas.current.width = 174 * ratio;
     canvas.current.height = 40 * ratio;
 
@@ -81,8 +84,14 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
     canvas.current.style.height = canvasHeight + 'px';
 
     context.scale(ratio, ratio);
+    //console.log(audioUrl)
+    if (!abort) {
+      visualizeAudio(context);
+    }
 
-    visualizeAudio(context);
+    return () => {
+      abort = false;
+    };
   }, []);
 
   const visualizeAudio = async canvasContext => {
@@ -94,18 +103,17 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
 
     canvasContext.translate(0, canvas.current.offsetHeight / 2);
     canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
+    const canvasCurrent = canvas.current;
     const barsColor = 'white';
 
     try {
-      const readableStream = await fetch(
-        'https://res.cloudinary.com/dzyccx5om/video/upload/v1645707917/Irish_Phone_Msg_mzdruz.mp3'
-      );
+      const readableStream = await fetch('https://res.cloudinary.com/dzyccx5om/video/upload/v1645707917/Irish_Phone_Msg_mzdruz.mp3');
       const arrayBuffer = await readableStream.arrayBuffer(); //ArrayBuffer
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); //AudioBuffer
-      console.log('audioBuffer', audioBuffer);
+      //console.log('audioBuffer', audioBuffer);
       const filteredData = filterData(audioBuffer);
 
-      drawAudioSampleBars(filteredData, barsColor, canvasContext);
+      drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
     } catch (error) {
       console.log('fetch error', error);
     }
@@ -115,7 +123,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
     const channelData = audioBuffer.getChannelData(0);
     const sampleNumPerBar = Math.floor(channelData.length / totalBars);
 
-    console.log('channelData', channelData);
+    // console.log('channelData', channelData);
 
     const filteredData = [];
     for (let i = 0; i < totalBars; i++) {
@@ -129,7 +137,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
       const average = Number((sum / sampleNumPerBar).toFixed(2));
       const averageSample = Math.round(average * 100);
 
-      console.log('averageSample', averageSample);
+      //console.log('averageSample', averageSample);
       filteredData.push(averageSample);
     }
 
@@ -138,7 +146,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
 
     //setData(audioData);
 
-    console.log('audioData', audioData);
+    //console.log('audioData', audioData);
 
     return audioData;
   };
@@ -159,12 +167,12 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
     colorProgressBars(step);
   };
 
-  const drawAudioSampleBars = (freqData, color, ctx) => {
+  const drawAudioSampleBars = (freqData, color, canvasCurrent, ctx) => {
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
 
-    const width = Math.round(canvas.current.offsetWidth / freqData.length);
-    const canvasOffsetHeight = canvas.current.offsetHeight;
+    const width = Math.round(canvasCurrent.offsetWidth / freqData.length);
+    const canvasOffsetHeight = canvasCurrent.offsetHeight;
 
     let x;
 
@@ -180,7 +188,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
   };
 
   const drawBar = (i, x, height, isEven, color, barWidth, ctx) => {
-    console.log('drawBar', height);
+    //console.log('drawBar', height);
     if (height <= 1) {
       height += 4;
     }
@@ -494,8 +502,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
         src={'https://res.cloudinary.com/dzyccx5om/video/upload/v1645707917/Irish_Phone_Msg_mzdruz.mp3'}
         crossOrigin="anonymous"
         onTimeUpdate={getCurrentDuration}
-        onLoadedData={e => setDuration(Number(e.currentTarget.duration.toFixed(2)))}
-      ></audio>
+        onLoadedData={e => setDuration(Number(e.currentTarget.duration.toFixed(2)))}></audio>
 
       <canvas ref={canvas} onClick={e => navigateAudioTrack(e.nativeEvent.offsetX)}></canvas>
 

@@ -6,17 +6,34 @@ export function WaveformAudio({audioData}) {
   const maxFrequencyValue = 255;
   const barWidth = 2;
   const barTotalCount = 57;
+  const canvasWidth = 470;
+  const canvasHeight = 40;
 
   //find canvas width in pixel dynamically
 
   useEffect(() => {
     if (canvas && canvas.current) {
-      setContext(canvas.current.getContext('2d'));
+      setContext(canvas.current.getContext('2d')); 
+      //const context = canvas.current.getContext('2d');
+     
+      //setContext(context);
+      // const ratio = window.devicePixelRatio;
+
+      // canvas.current.width = canvasWidth * ratio;
+      // canvas.current.height = canvasHeight * ratio;
+
+      // canvas.current.style.width = canvasWidth + 'px';
+      // canvas.current.style.height = canvasHeight + 'px';
+
+      // context.scale(ratio, ratio);
+      // context.translate(0, canvas.current.offsetHeight / 2);
+
+      
     }
   }, [canvas]);
 
   useEffect(() => {
-    if (context !== null && audioData) {
+    if (audioData && context) {
       context.clearRect(0, 0, canvas.current.width, canvas.current.height);
       visualizeAudioRecording();
     }
@@ -25,6 +42,8 @@ export function WaveformAudio({audioData}) {
   const visualizeAudioRecording = () => {
     const canvasHeight = canvas.current.height;
     const singleBarSize = canvas.current.width / barTotalCount;
+
+
 
     context.lineWidth = barWidth;
     context.strokeStyle = '#1578D4'; //use scss color

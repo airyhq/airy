@@ -30,10 +30,11 @@ type Props = {
   fileUploadErrorPopUp: string;
   canSendMedia: boolean;
   loadingSelector: boolean;
-  getAudioStream: (stream: MediaStream) => void;
-  getSavedAudio: (savedAudio: any) => void;
-  isAudioRecordingCanceled: (status: boolean) => void;
-  isAudioCanceled: boolean;
+  getAudioStream?: (stream: MediaStream) => void;
+  getSavedAudio?: (savedAudio: any) => void;
+  isAudioRecordingCanceled?: (status: boolean) => void;
+  isAudioCanceled?: boolean;
+  voiceRecordingStart: () => void;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -54,6 +55,7 @@ export const InputOptions = (props: Props) => {
     getSavedAudio,
     isAudioRecordingCanceled,
     isAudioCanceled,
+    voiceRecordingStart
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -146,59 +148,10 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const saveAudioRecording = stream => {
-    const mediaRecorder = new MediaRecorder(stream);
-
-    mediaRecorder.start();
-
-    const audioChunks = [];
-
-    mediaRecorder.addEventListener('dataavailable', event => {
-      audioChunks.push(event.data);
-    });
-
-    mediaRecorder.addEventListener('stop', () => {
-      //create audio from audioChunks
-      const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const savedAudio = new Audio(audioUrl);
-
-      //savedAudio.crossOrigin = "anonymous";
-      // let audioSrc = context.createMediaElementSource(audio);
-      // audioSrc.connect(analyser);
-      // audioSrc.connect(context.destination);
-      // analyser.connect(context.destination);
-
-      setSavedAudioRecording(savedAudio);
-      getSavedAudio(savedAudio);
-
-      // if(isAudioCanceled === true){
-      //   console.log('isAudioCanceled', isAudioCanceled)
-      //   console.log('STOP MEDIA RECORDER SET NULL')
-      //   setAudioStream(null);
-      //   getAudioStream(null);
-      // }
-    });
-  };
-
-  const recordVoiceMessage = async () => {
-    //console.log('RECORD VOICE MSG TRIGGER');
-
+  const startVoiceRecording = () => {
     isAudioRecordingCanceled(false);
-
-    //catch /try
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
-
-    saveAudioRecording(stream);
-
-    //pass the audioStream to messageInput
-    getAudioStream(stream);
-
-    //set in state to make icons disappear
-    setAudioStream(stream);
-  };
+    voiceRecordingStart();
+  }
 
   return (
     <div className={styles.container}>
@@ -294,7 +247,7 @@ export const InputOptions = (props: Props) => {
               className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
               type="button"
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              onClick={recordVoiceMessage}
+              onClick={startVoiceRecording}
             >
               <div className={styles.actionToolTip}>Record audio clip</div>
               <Microphone aria-hidden />

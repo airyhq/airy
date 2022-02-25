@@ -58,7 +58,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
         />
         <FileAudioIcon />
         <div className={styles.buttonsContainer}>
-          <button>{audioPlaying ? <PauseIcon onClick={pauseAudio} /> : <PlayIcon onClick={playAudio} />}</button>
+          <button type="button">{audioPlaying ? <PauseIcon onClick={pauseAudio} /> : <PlayIcon onClick={playAudio} />}</button>
           <a href={audioUrl} target="_blank" rel="noopener noreferrer" download>
             <DownloadIcon />
           </a>

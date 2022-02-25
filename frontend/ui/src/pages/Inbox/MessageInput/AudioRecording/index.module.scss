@@ -2,11 +2,12 @@
 @import 'assets/scss/fonts.scss';
 
 .container {
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   padding-left: 18px;
   width: 100%;
-  position: relative;
 }
 
 .audioButtons {
@@ -26,10 +27,13 @@
 }
 
 .cancelButton {
-  position: absolute;
-  right: 0;
+  margin-right: 6px;
 }
 
 .stopPlayButtons {
   margin-right: 10px;
+}
+
+.audioComponent {
+  margin: 4px 0;
 }

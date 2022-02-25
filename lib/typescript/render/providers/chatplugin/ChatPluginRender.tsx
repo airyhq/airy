@@ -8,7 +8,7 @@ import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
 import {Image, Video, File} from 'render/components';
-import {Audio} from 'components';
+import {AudioClip} from 'components';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.message), props);
@@ -73,7 +73,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <File fileUrl={content.fileUrl} />;
 
     case 'audio':
-      return <Audio audioUrl={content.audioUrl} />;
+      return <AudioClip audioUrl={content.audioUrl} />;
   }
 }
 

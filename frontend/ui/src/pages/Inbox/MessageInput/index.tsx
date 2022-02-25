@@ -22,6 +22,7 @@ import {getAttachmentType} from 'render';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 import {AudioRecording} from './AudioRecording';
+import {Audio} from 'components';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -86,10 +87,17 @@ const MessageInput = (props: Props) => {
   const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
   const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
   const [isAudioCanceled, setIsAudioCanceled] = useState(true);
+  const [voiceRecordingOn, setVoiceRecordingOn] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('INPUT isAudioCanceled', isAudioCanceled);
-  // }, [isAudioCanceled])
+  useEffect(() => {
+    console.log('savedAudioRecording', savedAudioRecording);
+    if(savedAudioRecording){
+      setSavedAudioRecording(savedAudioRecording)
+      console.log(savedAudioRecording.src)
+    }
+  }, [savedAudioRecording])
+
+
 
   // useEffect(() => {
   //   //console.log('INPUT audioStream', audioStream)
@@ -399,9 +407,15 @@ const MessageInput = (props: Props) => {
     setSavedAudioRecording(savedAudio);
   };
 
+  const voiceRecordingStart = () => {
+    setIsAudioCanceled(false);
+    setVoiceRecordingOn(true)
+  }
+
   const isAudioRecordingCanceled = (isCanceled: boolean) => {
     if (isCanceled) {
       setAudioStream(null);
+      setSavedAudioRecording(null);
       setIsAudioCanceled(true);
     } else {
       setIsAudioCanceled(false);
@@ -479,9 +493,9 @@ const MessageInput = (props: Props) => {
               </div>
             )}
 
-            {audioStream && (
+            {voiceRecordingOn && !isAudioCanceled && (
               <AudioRecording
-                audio={audioStream}
+              getAudioStream={getAudioStream}
                 savedAudio={savedAudioRecording}
                 isAudioRecordingCanceled={isAudioRecordingCanceled}
               />
@@ -501,10 +515,11 @@ const MessageInput = (props: Props) => {
               fileUploadErrorPopUp={fileUploadErrorPopUp}
               closeFileErrorPopUp={closeFileErrorPopUp}
               loadingSelector={loadingSelector}
-              getAudioStream={getAudioStream}
-              getSavedAudio={getSavedAudio}
-              isAudioRecordingCanceled={isAudioRecordingCanceled}
-              isAudioCanceled={isAudioCanceled}
+              voiceRecordingStart={voiceRecordingStart}
+              // getAudioStream={getAudioStream}
+              // getSavedAudio={getSavedAudio}
+               isAudioRecordingCanceled={isAudioRecordingCanceled}
+               isAudioCanceled={isAudioCanceled}
             />
           </div>
         </div>

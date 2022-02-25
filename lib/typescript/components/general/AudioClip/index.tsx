@@ -57,7 +57,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [count, setCount] = useState(0);
   //const [percentage, setPercentage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState<string | number>(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [ctx, setCtx] = useState(null);
 
@@ -68,10 +68,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const canvasWidth = 174;
   const canvasHeight = 40;
-
-  useEffect(() => {
-    console.log('duration', duration)
-  }, [duration])
 
   useEffect(() => {
     let abort = false;
@@ -101,7 +97,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     var audioContext = new AudioContext();
 
     const audio = audioElement.current;
-    audio.crossOrigin = 'anonymous';
+    //audio.crossOrigin = 'anonymous';
     console.log('audioElement duration', audio.duration);
 
     canvasContext.translate(0, canvas.current.offsetHeight / 2);
@@ -493,6 +489,13 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     }
   };
 
+  const handleLoaded = (e) => {
+    const totalTime = Math.floor(audioElement.current?.duration);
+
+    const formattedTotalTime = formatSecondsAsTime(totalTime);
+    setDuration(formattedTotalTime);
+  }
+
   return (
     <div className={styles.audioContainer}>
       <button type="button" onClick={toggleAudio}>
@@ -501,17 +504,15 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
       <audio
         ref={audioElement}
-        autoPlay={false}
         src={audioUrl}
-        crossOrigin="anonymous"
         onTimeUpdate={getCurrentDuration}
-        onLoadedData={e => setDuration(Number(e.currentTarget.duration.toFixed(2)))}></audio>
+        onLoadedData={handleLoaded}></audio>
 
       <canvas ref={canvas} onClick={e => navigateAudioTrack(e.nativeEvent.offsetX)}></canvas>
 
       {duration && (
         <span className={styles.audioTime}>
-          {currentTime !== 0 ? formatSecondsAsTime(audioElement.current.currentTime) : formatSecondsAsTime(audioElement.current.duration)}
+          {currentTime !== 0 ? formatSecondsAsTime(audioElement.current.currentTime) : formatSecondsAsTime(duration)}
         </span>
       )}
     </div>

@@ -10,13 +10,23 @@ declare global {
   }
 }
 
-export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSavedAudio, savedAudioFileUploaded}) {
+export function AudioRecording({
+  recordingResumed,
+  isAudioRecordingCanceled,
+  getAudioStream,
+  getSavedAudio,
+  savedAudioFileUploaded,
+  setVoiceRecordingOn,
+  isVoiceRecordingPaused,
+}) {
   const [audioStream, setAudioStream] = useState<any>(null);
   const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [recordingCanceled, setRecordingCanceled] = useState<boolean>(false);
   const [savedAudioRecording, setSavedAudioRecording] = useState<any>();
   const [mediaRecorder, setMediaRecorder] = useState<any>();
+  const [recordingPause, setRecordingPaused] = useState(false);
+  const [pausedDataChunks, setPausedDataChunks] = useState<any>();
 
   useEffect(() => {
     console.log('audioRecording - recordingCanceled', recordingCanceled);
@@ -31,6 +41,16 @@ export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSav
   }, [savedAudioFileUploaded]);
 
   useEffect(() => {
+    if (recordingResumed) {
+      mediaRecorder.resume();
+      console.log('RESUME - audioStream', audioStream);
+      setAudioStream(audioStream);
+      setRecordingCanceled(true);
+      setSavedAudioRecording(null);
+    }
+  }, [recordingResumed]);
+
+  useEffect(() => {
     if (audioStream) {
       const mediaRecorder = new MediaRecorder(audioStream, {mimeType: 'audio/webm'});
 
@@ -40,23 +60,52 @@ export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSav
       mediaRecorder.addEventListener('dataavailable', event => {
         if (event.data.size > 0) {
           audioChunks.push(event.data);
+
+          console.log('REQUEST DATA')
+          const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+          const file = new File(audioChunks, 'audiorecording.mp3', {
+            type: audioBlob.type,
+            lastModified: Date.now(),
+          });
+  
+          console.log('FILE', file);
+  
+          setSavedAudioRecording(file);
+          getSavedAudio(file);
+
+          // if(pausedDataChunks){
+          //   pausedDataChunks.push(event.data);
+          // } else {
+          //   audioChunks.push(event.data);
+          // }
         }
       });
 
-      mediaRecorder.addEventListener('stop', () => {
+      // mediaRecorder.addEventListener('requestData', () => {
+      //   const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
 
-        const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+      //   //console.log('audioBlob', audioBlob)
 
-        const file = new File(audioChunks, 'music.mp3', {
-          type: audioBlob.type,
-          lastModified: Date.now(),
-        });
+      //   console.log('REQUEST DATA')
 
-        console.log('FILE', file);
+      //   const file = new File(audioChunks, 'audiorecording.mp3', {
+      //     type: audioBlob.type,
+      //     lastModified: Date.now(),
+      //   });
 
-        setSavedAudioRecording(file);
-        getSavedAudio(file);
-        setAudioStream(null);
+      //   console.log('FILE', file);
+
+      //   setSavedAudioRecording(file);
+      //   getSavedAudio(file);
+      // });
+
+      mediaRecorder.addEventListener('pause', () => {
+        //const chunks = pausedDataChunks ?? audioChunks;
+
+        console.log('PAUSE')
+
+        isVoiceRecordingPaused(true);
+        //setAudioStream(null);
 
         setIsPlaying(false);
       });
@@ -78,10 +127,12 @@ export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSav
     setAudioStream(stream);
   };
 
-  const stopRecording = () => {
+  const pauseRecording = () => {
     console.log('STOP FUNC');
-    mediaRecorder.stop();
-    audioStream.getTracks().forEach(track => track.stop());
+    mediaRecorder.requestData();
+    mediaRecorder.pause();
+    setRecordingPaused(true);
+    // audioStream.getTracks().forEach(track => track.stop());
     isAudioRecordingCanceled(false);
     setRecordingCanceled(false);
   };
@@ -93,6 +144,7 @@ export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSav
     isAudioRecordingCanceled(true);
     setRecordingCanceled(true);
     setIsPlaying(false);
+    setVoiceRecordingOn(false);
   };
 
   // const startSavedRecording = async () => {
@@ -110,11 +162,12 @@ export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSav
       {audioStream && (
         <AudioStream
           savedAudioRecording={savedAudioRecording}
-          stopRecording={stopRecording}
+          pauseRecording={pauseRecording}
           cancelRecording={cancelRecording}
           recordingCanceled={recordingCanceled}
           audioStream={audioStream}
           isAudioRecordingCanceled={isAudioRecordingCanceled}
+          recordingResumed={recordingResumed}
         />
       )}
 

@@ -35,6 +35,9 @@ type Props = {
   isAudioRecordingCanceled?: (status: boolean) => void;
   isAudioCanceled?: boolean;
   voiceRecordingStart: () => void;
+  savedAudioRecording?: any;
+  isVoiceRecordingPaused?:any;
+  resumeVoiceRecording?:any;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -55,7 +58,10 @@ export const InputOptions = (props: Props) => {
     getSavedAudio,
     isAudioRecordingCanceled,
     isAudioCanceled,
-    voiceRecordingStart
+    voiceRecordingStart,
+    savedAudioRecording, 
+    isVoiceRecordingPaused,
+    resumeVoiceRecording
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -65,10 +71,6 @@ export const InputOptions = (props: Props) => {
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
   const [inputFile, setInputFile] = useState<React.InputHTMLAttributes<HTMLInputElement>>(undefined);
   const inputFileRef = useRef<HTMLInputElement>(null);
-
-  //audio stuff
-  const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
-  const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
 
   useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
@@ -151,6 +153,20 @@ export const InputOptions = (props: Props) => {
   const startVoiceRecording = () => {
     isAudioRecordingCanceled(false);
     voiceRecordingStart();
+  }
+
+  const handleMicrophoneIconClick = () => {
+    if(savedAudioRecording){
+      //resume after preview 
+      console.log('RESUME AUDIO');
+      resumeVoiceRecording();
+      isVoiceRecordingPaused(false);
+     
+    } else {
+      //start
+      console.log('START AUDIO');
+      startVoiceRecording();
+    }
   }
 
   //microphone icon: on click ==> 
@@ -251,7 +267,7 @@ export const InputOptions = (props: Props) => {
               className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
               type="button"
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              onClick={startVoiceRecording}
+              onClick={handleMicrophoneIconClick}
             >
               <div className={styles.actionToolTip}>Record audio clip</div>
               <Microphone aria-hidden />

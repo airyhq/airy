@@ -49,7 +49,7 @@ export function WaveformAudio({audioData}) {
     context.strokeStyle = '#1578D4'; //use scss color
     context.lineCap = 'round';
 
-    let x = barWidth;
+    let x = barWidth*2;
     for (let i = 0; i < barTotalCount; i++) {
       const freqHeight = (audioData[i] / maxFrequencyValue) * canvasHeight;
       const y = canvasHeight / 2 - freqHeight / 2;

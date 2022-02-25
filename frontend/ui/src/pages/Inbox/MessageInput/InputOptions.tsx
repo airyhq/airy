@@ -153,6 +153,10 @@ export const InputOptions = (props: Props) => {
     voiceRecordingStart();
   }
 
+  //microphone icon: on click ==> 
+  //startVoiceRecording 
+  //if savedAudio (audioPreview): continue recording
+
   return (
     <div className={styles.container}>
       {fileUploadErrorPopUp && (

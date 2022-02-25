@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export function AudioRecording({savedAudio, isAudioRecordingCanceled, getAudioStream}) {
+export function AudioRecording({isAudioRecordingCanceled, getAudioStream, getSavedAudio, savedAudioFileUploaded}) {
   const [audioStream, setAudioStream] = useState<any>(null);
   const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -27,27 +27,37 @@ export function AudioRecording({savedAudio, isAudioRecordingCanceled, getAudioSt
   }, [savedAudioRecording]);
 
   useEffect(() => {
+    console.log('savedAudioFileUploaded', savedAudioFileUploaded);
+  }, [savedAudioFileUploaded]);
+
+  useEffect(() => {
     if (audioStream) {
-      const mediaRecorder = new MediaRecorder(audioStream);
+      const mediaRecorder = new MediaRecorder(audioStream, {mimeType: 'audio/webm'});
 
       mediaRecorder.start();
 
       const audioChunks = [];
       mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
       });
-    
+
       mediaRecorder.addEventListener('stop', () => {
-        //mediaRecorder.stop()
 
-        console.log('STOP EVT LISTENER');
-        const audioBlob = new Blob(audioChunks);
-        const audioUrl: any = URL.createObjectURL(audioBlob);
-        const savedAudio = new Audio(audioUrl);
+        const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
 
-        setSavedAudioRecording(savedAudio);
+        const file = new File(audioChunks, 'music.mp3', {
+          type: audioBlob.type,
+          lastModified: Date.now(),
+        });
+
+        console.log('FILE', file);
+
+        setSavedAudioRecording(file);
+        getSavedAudio(file);
         setAudioStream(null);
-       
+
         setIsPlaying(false);
       });
 
@@ -74,7 +84,6 @@ export function AudioRecording({savedAudio, isAudioRecordingCanceled, getAudioSt
     audioStream.getTracks().forEach(track => track.stop());
     isAudioRecordingCanceled(false);
     setRecordingCanceled(false);
-
   };
 
   const cancelRecording = () => {
@@ -86,10 +95,10 @@ export function AudioRecording({savedAudio, isAudioRecordingCanceled, getAudioSt
     setIsPlaying(false);
   };
 
-  const startSavedRecording = async () => {
-    savedAudio.play();
-    setIsPlaying(true);
-  };
+  // const startSavedRecording = async () => {
+  //   savedAudio.play();
+  //   setIsPlaying(true);
+  // };
 
   //add cancel and stop button around Waveform
   return (
@@ -109,10 +118,10 @@ export function AudioRecording({savedAudio, isAudioRecordingCanceled, getAudioSt
         />
       )}
 
-      {savedAudioRecording && !recordingCanceled && (
+      {savedAudioFileUploaded && !recordingCanceled && (
         <>
           <div className={styles.audioComponent}>
-            <AudioClip audioUrl={savedAudioRecording?.src} />
+            <AudioClip audioUrl={savedAudioFileUploaded} />
           </div>
         </>
       )}

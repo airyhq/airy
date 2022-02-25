@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-left: 18px;
   width: 100%;
 }
 
@@ -27,13 +26,16 @@
 }
 
 .cancelButton {
+  margin-left: 18px;
   margin-right: 6px;
 }
 
 .stopPlayButtons {
   margin-right: 10px;
+  margin-left: 6px;
 }
 
 .audioComponent {
   margin: 4px 0;
 }
+

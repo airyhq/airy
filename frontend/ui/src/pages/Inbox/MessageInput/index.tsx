@@ -22,7 +22,6 @@ import {getAttachmentType} from 'render';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 import {AudioRecording} from './AudioRecording';
-import {Audio} from 'components';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -88,6 +87,7 @@ const MessageInput = (props: Props) => {
   const [savedAudioRecording, setSavedAudioRecording] = useState<any>(null);
   const [isAudioCanceled, setIsAudioCanceled] = useState(true);
   const [voiceRecordingOn, setVoiceRecordingOn] = useState(false);
+  const [savedAudioFileUploaded, setSavedAudioFileUploaded] = useState<any>()
 
   useEffect(() => {
     console.log('savedAudioRecording', savedAudioRecording);
@@ -96,8 +96,6 @@ const MessageInput = (props: Props) => {
       console.log(savedAudioRecording.src)
     }
   }, [savedAudioRecording])
-
-
 
   // useEffect(() => {
   //   //console.log('INPUT audioStream', audioStream)
@@ -123,10 +121,12 @@ const MessageInput = (props: Props) => {
 
       const fetchMediaUrl = async () => {
         const formData = new FormData();
+        console.log('FILE TO UPLOAD', fileToUpload);
         formData.append('file', fileToUpload);
 
         try {
           const uploadFileResponse: any = await HttpClientInstance.uploadFile({file: formData});
+          console.log('uploadFileResponse', uploadFileResponse);
 
           if (!isRequestAborted) {
             setUploadedFileUrl(uploadFileResponse.mediaUrl);
@@ -145,6 +145,33 @@ const MessageInput = (props: Props) => {
       };
     }
   }, [loadingSelector, fileToUpload]);
+
+
+  useEffect(() => {
+    if (savedAudioRecording) {
+      let isRequestAborted = false;
+
+      const fetchMediaUrl = async () => {
+        const formData = new FormData();
+        
+        formData.append('file', savedAudioRecording);
+
+        try {
+          const uploadAudioRecordingResponse: any = await HttpClientInstance.uploadFile({file: formData});
+          setSavedAudioFileUploaded(uploadAudioRecordingResponse.mediaUrl);
+          
+        } catch {
+          setFileUploadErrorPopUp('Failed to preview audio recording. Please try again later.');
+        }
+      };
+
+      fetchMediaUrl();
+
+      return () => {
+        isRequestAborted = true;
+      };
+    }
+  }, [savedAudioRecording]);
 
   useEffect(() => {
     if (draggedAndDroppedFile && !loadingSelector) {
@@ -495,9 +522,10 @@ const MessageInput = (props: Props) => {
 
             {voiceRecordingOn && !isAudioCanceled && (
               <AudioRecording
-              getAudioStream={getAudioStream}
-                savedAudio={savedAudioRecording}
+                getAudioStream={getAudioStream}
+                getSavedAudio={getSavedAudio}
                 isAudioRecordingCanceled={isAudioRecordingCanceled}
+                savedAudioFileUploaded={savedAudioFileUploaded}
               />
             )}
 

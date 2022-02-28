@@ -4,7 +4,7 @@ metadata:
   name: 'airy-core-chat-plugin'
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-  {{- if .Values.global.letsencrypt }}
+  {{- if .Values.global.ingress.letsencrypt }}
     cert-manager.io/cluster-issuer: 'letsencrypt'
   {{- end }}
   labels:
@@ -22,7 +22,7 @@ spec:
                   number: 80
 {{- if .Values.global.host }}
       host: {{ .Values.global.host }}
- {{- if .Values.global.letsencrypt }}
+ {{- if .Values.global.ingress.letsencrypt }}
   tls:
   - hosts:
     - {{ .Values.global.host }}

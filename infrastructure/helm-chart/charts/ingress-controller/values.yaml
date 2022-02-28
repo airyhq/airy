@@ -4,4 +4,4 @@ httpsCertificate: ""
 loadbalancerAnnotations: {}
 letsencryptEmail:
 namespace: kube-system
-serviceAccount: airy-admin
+ngrokEnabled: false

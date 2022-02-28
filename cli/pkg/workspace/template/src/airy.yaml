@@ -1,10 +1,10 @@
-global:
-{{- if .Host }}
-  host: {{ .Host }}
-{{- end }}
 security:
   allowedOrigins: '*'
   jwtSecret: {{ randAlphaNum 128 }}
+{{- if .Host }}
+global:
+  host: {{ .Host }}
+{{- end }}
 ingress-controller:
 {{- if .NgrokEnabled }}
   ngrokEnabled: {{ .NgrokEnabled }}

@@ -4,7 +4,7 @@ metadata:
   name: 'airy-core-ui'
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
- {{- if .Values.global.letsencrypt }}
+ {{- if .Values.global.ingress.letsencrypt }}
     cert-manager.io/cluster-issuer: 'letsencrypt'
  {{- end }}
   labels:
@@ -22,7 +22,7 @@ spec:
                   number: 80
 {{- if .Values.global.host }}
       host: {{ .Values.global.host }}
- {{- if .Values.global.letsencrypt }}
+ {{- if .Values.global.ingress.letsencrypt }}
   tls:
   - hosts:
     - {{ .Values.global.host }}
@@ -37,7 +37,9 @@ metadata:
   name: 'airy-core-redirect'
   annotations:
     nginx.ingress.kubernetes.io/permanent-redirect: /ui
-    cert-manager.io/cluster-issuer: "letsencrypt"
+  {{- if .Values.global.ingress.letsencrypt }}
+    cert-manager.io/cluster-issuer: 'letsencrypt'
+  {{- end }}
   labels:
     core.airy.co/managed: "true"
 spec:
@@ -51,7 +53,13 @@ spec:
                 name: frontend-ui
                 port:
                   number: 80
-    {{- if .Values.global.host }}
+{{- if .Values.global.host }}
       host: {{ .Values.global.host }}
-    {{- end }}
+ {{- if .Values.global.ingress.letsencrypt }}
+  tls:
+  - hosts:
+    - {{ .Values.global.host }}
+    secretName: airy-core-redirect
+ {{- end }}
+{{- end }}
   ingressClassName: nginx

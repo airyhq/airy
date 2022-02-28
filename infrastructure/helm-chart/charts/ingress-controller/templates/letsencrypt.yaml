@@ -1,9 +1,36 @@
 {{ if .Values.https }}
 {{ if .Values.letsencryptEmail }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: letsencrypt-admin
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "-5"    
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.namespace }}-letsencrypt-admin
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "-5"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: letsencrypt-admin
+  namespace: {{ .Values.namespace }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: install-letsencrypt
+  namespace: {{ .Values.namespace }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "11"
@@ -22,7 +49,55 @@ spec:
         - "apply"
         - "-f"
         - "https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml"
-      serviceAccountName: {{ .Values.serviceAccount }}
+      serviceAccountName: letsencrypt-admin
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provisioning-scripts
+  namespace: {{ .Values.namespace }}
+data:
+  wait-for-crd.sh: |
+    #!/bin/sh
+    delay=${DELAY:-5}
+    crd=${CRD}
+    while ! kubectl get ${crd} > /dev/null 2>&1; do
+      echo "Waiting for ${crd} CRD to be created..."
+      sleep ${delay}
+    done
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-cluster-issuer
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "12"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: "bitnami/kubectl"
+        command: ["/bin/sh", "/opt/provisioning/wait-for-crd.sh"]
+        env:
+        - name: CRD
+          value: ClusterIssuer
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      serviceAccountName: letsencrypt-admin
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
       restartPolicy: Never
   backoffLimit: 3
 ---
@@ -33,7 +108,7 @@ metadata:
  namespace: cert-manager
  annotations:
     "helm.sh/hook": "post-upgrade"
-    "helm.sh/hook-weight": "12"
+    "helm.sh/hook-weight": "13"
 spec:
  acme:
    server: https://acme-v02.api.letsencrypt.org/directory

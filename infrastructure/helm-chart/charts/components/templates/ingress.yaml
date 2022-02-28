@@ -8,7 +8,7 @@ metadata:
     # Keep in sync with the backend/media application properties
     nginx.ingress.kubernetes.io/proxy-body-size: "512m"
     nginx.org/client-max-body-size: "512m"
-  {{- if .Values.global.letsencrypt }}
+  {{- if .Values.global.ingress.letsencrypt }}
     cert-manager.io/cluster-issuer: 'letsencrypt'
   {{- end }}
 spec:
@@ -220,7 +220,7 @@ spec:
                   number: 80
 {{- if .Values.global.host }}
       host: {{ .Values.global.host }}
- {{- if .Values.global.letsencrypt }}
+ {{- if .Values.global.ingress.letsencrypt }}
   tls:
   - hosts:
     - {{ .Values.global.host }}

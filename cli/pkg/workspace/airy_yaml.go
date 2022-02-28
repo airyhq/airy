@@ -1,7 +1,12 @@
 package workspace
 
+type IngressGlobalConf struct {
+	Lertsencrypt bool `yaml:"letsencrypt,omitempty"`
+}
+
 type GlobalConf struct {
-	Host string `yaml:"host,omitempty"`
+	Host              string            `yaml:"host,omitempty"`
+	IngressGlobalConf IngressGlobalConf `yaml:"ingress,omitempty"`
 }
 
 type IngressConf struct {

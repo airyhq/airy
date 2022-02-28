@@ -3,7 +3,8 @@ global:
   busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
   host:
   apiHost:
-  letsencrypt: false
+  ingress:
+    letsencrypt: false
 security:
   systemToken: ""
   allowedOrigins: "*"

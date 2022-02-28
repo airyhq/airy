@@ -43,9 +43,8 @@ cluster and Redis.
 
 ### Ingress
 
-- `ingress`
+- `ingress-controller`
 
-  - `host` the hostname which will be used to access your `Airy Core` instance, outside of the Kubernetes cluster (default: airy.core)
   - `https` set to `true` to enable HTTPS
   - `loadbalancerAnnotations` list of annotations used to configure the LoadBalancer pointing to the ingress controller, in cloud environment (for AWS the following annotation is added by default: `service.beta.kubernetes.io/aws-load-balancer-type: nlb` )
   - `letsencryptEmail` the e-mail address used for Let's Encrypt registration, when using HTTPS.
@@ -87,6 +86,14 @@ cluster and Redis.
     - `s3Bucket` set this to your AWS S3 bucket
     - `s3Region` set this to your AWS region
     - `s3Path` set this to your AWS S3 path
+
+### Global
+
+- `global`
+
+  - `host` set this to your Host 
+  - `ingress`
+    - `letsencrypt` set this to `true` if you are using LetsEncrypt in your ingress-controller
 
 ### Tools
 

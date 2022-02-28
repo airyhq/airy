@@ -66,6 +66,7 @@ airy_jvm_deps = [
     "org.rocksdb:rocksdbjni:5.18.3",
     "com.segment.analytics.java:analytics-core:3.1.3",
     "com.segment.analytics.java:analytics:3.1.3",
+    "javax.annotation:javax.annotation-api:1.3.2",
 ]
 
 excluded_artifacts = [

@@ -170,7 +170,10 @@ export const InputOptions = (props: Props) => {
  
     if(!audioRecordingCanceled){
       console.log('RESUME RECORDING');
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      audioContext.resume();
       setRecordingResumed(true);
+      resumeVoiceRecording()
       isVoiceRecordingPaused(false); 
     } else {
       console.log('START VOICE RECORDING');

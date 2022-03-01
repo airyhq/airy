@@ -20,7 +20,7 @@ export function AudioRecording({
   setFileUploadErrorPopUp,
   getUploadedAudioRecordingFile,
   audioRecordingSent,
-  setAudioRecordingSentFinish
+  setRecordingResumed,
 }) {
   const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
@@ -29,34 +29,68 @@ export function AudioRecording({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('recordingResumed resume', recordingResumed)
-    //console.log('mediaRecorder resume', mediaRecorder)
+    let abort = false;
+
+    const startVoiceRecording = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+
+      setAudioStream(stream);
+    };
+
+    if (!abort) {
+      console.log('!abort, fetching');
+      startVoiceRecording()
+    }
+
+    return () => {
+      abort = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (audioStream && !audioRecordingSent) {
+      console.log('audioStream', audioStream);
+      const mediaRecorder = new MediaRecorder(audioStream, {mimeType: 'audio/webm'});
+      console.log('mediaRecorder', mediaRecorder);
+
+      mediaRecorder.start();
+      setMediaRecorder(mediaRecorder);
+
+      const audioChunks = [];
+
+      const getAudioFile = (event)  => {
+        audioChunks.push(event.data);
+    
+        const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+        const file = new File(audioChunks, 'recording.mp3', {
+          type: audioBlob.type,
+          lastModified: Date.now(),
+        });
+    
+        setSavedAudioRecording(file);
+      }
+
+      mediaRecorder.addEventListener('dataavailable', getAudioFile)
+
+      return () => mediaRecorder.removeEventListener('dataavailable', getAudioFile);
+    }
+  }, [audioStream]);
+
+  useEffect(() => {
     if (recordingResumed && mediaRecorder) {
       setRecordedAudioFileUploaded(null);
       mediaRecorder.resume();
-      //setAudioStream(audioStream);
     }
   }, [recordingResumed, mediaRecorder]);
 
   useEffect(() => {
-    console.log('AUDIORECORDING SENT', audioRecordingSent);
-    if(audioRecordingSent){
-      console.log('audioStream inside', audioStream);
-      console.log('mediaRecorder', mediaRecorder);
-
-      audioStream.getTracks().forEach(track => track.stop());
-      //mediaRecorder.stop();
-
-      setAudioStream(null);
-      setRecordedAudioFileUploaded(null);
-      setLoading(false);
-      //setAudioRecordingPreviewLoading(false)
-      //setAudioRecordingSentFinish(true);
-  
-
+    if (audioRecordingSent) {
+      console.log('audioRecordingSent', audioRecordingSent);
+      cancelRecording();
     }
-
-  }, [audioRecordingSent])
+  }, [audioRecordingSent]);
 
   useEffect(() => {
     console.log('AUDIORECORDING loading', loading);
@@ -67,42 +101,12 @@ export function AudioRecording({
     }
   }, [loading]);
 
-
-  useEffect(() => {
-    recordVoiceMessage();
-  }, []);
-
-  useEffect(() => {
-    if (audioStream) {
-      console.log('audioStream', audioStream);
-      const mediaRecorder = new MediaRecorder(audioStream, {mimeType: 'audio/webm'});
-      console.log('mediaRecorder', mediaRecorder);
-
-      mediaRecorder.start();
-
-      const audioChunks = [];
-      mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
-
-        const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
-        const file = new File(audioChunks, 'recording.mp3', {
-          type: audioBlob.type,
-          lastModified: Date.now(),
-        });
-
-       
-        setSavedAudioRecording(file);
-      });
-
-      setMediaRecorder(mediaRecorder);
-    }
-  }, [audioStream]);
-
   useEffect(() => {
     if (savedAudioRecording && !audioRecordingSent) {
       let isRequestAborted = false;
-      setLoading(true);
+
       if (!isRequestAborted) {
+        setLoading(true);
         uploadMedia(savedAudioRecording)
           .then((response: {mediaUrl: string}) => {
             console.log('response.mediaUrl', response.mediaUrl);
@@ -120,31 +124,26 @@ export function AudioRecording({
         isRequestAborted = true;
       };
     }
-  }, [savedAudioRecording]);
-
-  const recordVoiceMessage = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
-
-    setAudioStream(stream);
-  };
+  }, [savedAudioRecording, audioRecordingSent]);
 
   const pauseRecording = () => {
     mediaRecorder.requestData();
     mediaRecorder.pause();
     isVoiceRecordingPaused(true);
+    setRecordingResumed(false);
   };
 
   const cancelRecording = () => {
-    audioRecordingCanceledUpdate(true);
     setRecordedAudioFileUploaded(null);
 
     audioStream.getTracks().forEach(track => track.stop());
-    //mediaRecorder.stop();
+    mediaRecorder.stop();
 
     setAudioStream(null);
+    audioRecordingCanceledUpdate(true);
   };
+
+
 
   return (
     <div className={`${styles.container} ${loading ? styles.loadingContainer : ''}`}>
@@ -154,7 +153,7 @@ export function AudioRecording({
         </button>
       )}
 
-      {!recordedAudioFileUploaded && !loading && (
+      {!recordedAudioFileUploaded && !loading && audioStream && (
         <AudioStream pauseRecording={pauseRecording} audioStream={audioStream} />
       )}
 

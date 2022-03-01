@@ -6,8 +6,11 @@ export function WaveformAudio({audioData}) {
   const maxFrequencyValue = 255;
   const barWidth = 3;
   const barTotalCount = 57;
+  //57
   const canvasWidth = 940; //270
   const canvasHeight = 40;
+
+  //responsive: barCount: 90 / barWidth: 4
 
   //find canvas width in pixel dynamically
 

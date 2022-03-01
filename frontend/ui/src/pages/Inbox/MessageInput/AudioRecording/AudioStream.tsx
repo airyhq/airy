@@ -17,26 +17,24 @@ export function AudioStream({audioStream, pauseRecording}) {
   let source;
 
   useEffect(() => {
-    if (audioStream) {
-      console.log('AUDIOSTREAM', audioStream);
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       audioAnalyser = audioContext.createAnalyser();
-      console.log('audioAnalyser', audioAnalyser);
+      audioAnalyser.minDecibels = -90;
+      audioAnalyser.maxDecibels = -10;
+      audioAnalyser.smoothingTimeConstant = 0.85;
       audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
-      console.log('audioArr', audioArr);
 
       source = audioContext.createMediaStreamSource(audioStream);
-      console.log('source', source);
       source.connect(audioAnalyser);
       updateAudioArrId = requestAnimationFrame(updateAudio);
-
+     
       return () => {
         window.cancelAnimationFrame(updateAudioArrId);
         audioAnalyser.disconnect();
         source.disconnect();
       };
-    }
-  }, [audioStream]);
+    
+  }, []);
 
   const updateAudio = () => {
     audioAnalyser.getByteFrequencyData(audioArr);

@@ -4,18 +4,22 @@ export function WaveformAudio({audioData}) {
   const canvas = useRef(null);
   const [context, setContext] = useState(null);
   const maxFrequencyValue = 255;
-  const barWidth = 2;
+  const barWidth = 3;
   const barTotalCount = 57;
-  const canvasWidth = 470;
+  const canvasWidth = 940; //270
   const canvasHeight = 40;
 
   //find canvas width in pixel dynamically
 
   useEffect(() => {
     if (canvas && canvas.current) {
-      setContext(canvas.current.getContext('2d')); 
+      setContext(canvas.current.getContext('2d'));
+      canvas.current.style.width = '100%';
+      canvas.current.style.height = 40 + 'px';
+      canvas.current.width = canvas.current.offsetWidth;
+      canvas.current.height = canvas.current.offsetHeight;
       //const context = canvas.current.getContext('2d');
-     
+
       //setContext(context);
       // const ratio = window.devicePixelRatio;
 
@@ -27,8 +31,6 @@ export function WaveformAudio({audioData}) {
 
       // context.scale(ratio, ratio);
       // context.translate(0, canvas.current.offsetHeight / 2);
-
-      
     }
   }, [canvas]);
 
@@ -43,13 +45,11 @@ export function WaveformAudio({audioData}) {
     const canvasHeight = canvas.current.height;
     const singleBarSize = canvas.current.width / barTotalCount;
 
-
-
     context.lineWidth = barWidth;
     context.strokeStyle = '#1578D4'; //use scss color
     context.lineCap = 'round';
 
-    let x = barWidth*2;
+    let x = barWidth * 2;
     for (let i = 0; i < barTotalCount; i++) {
       const freqHeight = (audioData[i] / maxFrequencyValue) * canvasHeight;
       const y = canvasHeight / 2 - freqHeight / 2;
@@ -62,5 +62,5 @@ export function WaveformAudio({audioData}) {
     }
   };
 
-  return <canvas ref={canvas} width="470" height="40"></canvas>;
+  return <canvas ref={canvas}></canvas>;
 }

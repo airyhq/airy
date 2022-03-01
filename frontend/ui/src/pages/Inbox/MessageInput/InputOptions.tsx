@@ -5,7 +5,8 @@ import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/templateAlt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
-import {ReactComponent as Microphone} from 'assets/images/icons/microphone.svg';
+import {ReactComponent as MicrophoneOutline} from 'assets/images/icons/microphoneOutline.svg';
+import {ReactComponent as MicrophoneFilled} from 'assets/images/icons/microphoneFilled.svg';
 import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
 import {Template, Source} from 'model';
@@ -33,9 +34,11 @@ type Props = {
   isAudioRecordingCanceled?: boolean;
   audioRecordingCanceledUpdate?: (status:boolean) => void;
   voiceRecordingStart: () => void;
-  savedAudioRecording?: any;
+  recordedAudioFileUploaded?: any;
   isVoiceRecordingPaused?: (status:boolean) => void;
   resumeVoiceRecording?:() => void;
+  voiceRecordingStarted?: boolean;
+  voiceRecordingPaused?: boolean;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -55,9 +58,11 @@ export const InputOptions = (props: Props) => {
     audioRecordingCanceledUpdate,
     isAudioRecordingCanceled,
     voiceRecordingStart,
-    savedAudioRecording, 
+    recordedAudioFileUploaded, 
     isVoiceRecordingPaused,
-    resumeVoiceRecording
+    resumeVoiceRecording,
+    voiceRecordingStarted,
+    voiceRecordingPaused
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -153,11 +158,12 @@ export const InputOptions = (props: Props) => {
 
   const handleMicrophoneIconClick = () => {
  
-    if(savedAudioRecording){
+    if(!isAudioRecordingCanceled){
       console.log('RESUME RECORDING');
       resumeVoiceRecording();
       isVoiceRecordingPaused(false); 
     } else {
+      console.log('START VOICE RECORDING');
       startVoiceRecording();
     }
   }
@@ -253,13 +259,13 @@ export const InputOptions = (props: Props) => {
             )}
 
             <button
-              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''}`}
+              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''} ${voiceRecordingStarted || voiceRecordingPaused ? styles.voiceRecording : ''}`}
               type="button"
-              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector || voiceRecordingStarted}
               onClick={handleMicrophoneIconClick}
             >
               <div className={styles.actionToolTip}>Record audio clip</div>
-              <Microphone aria-hidden />
+              {voiceRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
             </button>
           </>
         )}

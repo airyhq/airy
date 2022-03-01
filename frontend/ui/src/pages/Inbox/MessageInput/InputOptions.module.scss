@@ -85,6 +85,20 @@
   }
 }
 
+.voiceRecording {
+  background-color: #1578D4;
+  border-radius: 50%;
+
+  svg {
+    path {
+      fill: white;
+    }
+  }
+
+}
+
+
+
 .smileyIcon {
   height: 20px;
   width: 20px;

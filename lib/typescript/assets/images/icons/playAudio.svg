@@ -1,3 +1,18 @@
-<svg width="9" height="12" viewBox="0 0 9 12" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.82726 6.32991L0.602917 11.9336C0.544492 11.9733 0.476615 11.9961 0.406516 11.9995C0.336417 12.003 0.266721 11.9869 0.204851 11.9531C0.142982 11.9192 0.0912551 11.8688 0.0551809 11.8073C0.0191068 11.7458 3.62529e-05 11.6754 0 11.6037V0.39632C3.62529e-05 0.324595 0.0191068 0.254223 0.0551809 0.192699C0.0912551 0.131175 0.142982 0.0808037 0.204851 0.0469494C0.266721 0.0130951 0.336417 -0.00297422 0.406516 0.000453015C0.476615 0.00388025 0.544492 0.0266759 0.602917 0.0664116L8.82726 5.67009C8.8804 5.7063 8.92397 5.75536 8.9541 5.81291C8.98423 5.87046 9 5.93473 9 6C9 6.06527 8.98423 6.12954 8.9541 6.18709C8.92397 6.24464 8.8804 6.2937 8.82726 6.32991Z" fill="white"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>play_circle_filled_white</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Rounded" transform="translate(-816.000000, -952.000000)">
+            <g id="AV" transform="translate(100.000000, 852.000000)">
+                <g id="-Round-/-AV-/-play_circle_filled_white" transform="translate(714.000000, 98.000000)">
+                    <g>
+                        <rect id="Rectangle-Copy-64" x="0" y="0" width="24" height="24"></rect>
+                        <path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M10,15.5 L10,8.5 C10,8.09 10.47,7.85 10.8,8.1 L15.47,11.6 C15.74,11.8 15.74,12.2 15.47,12.4 L10.8,15.9 C10.47,16.15 10,15.91 10,15.5 Z" id="🔹Icon-Color" fill="white"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

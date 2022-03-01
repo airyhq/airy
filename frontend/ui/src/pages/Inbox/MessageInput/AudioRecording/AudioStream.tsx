@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {WaveformAudio} from './WaveformAudio';
 import styles from './index.module.scss';
 import {ReactComponent as Pause} from 'assets/images/icons/stopMedia.svg';
-import {AudioClip} from 'components';
 
 declare global {
   interface Window {
@@ -10,7 +9,7 @@ declare global {
   }
 }
 
-export function AudioStream({savedAudioRecording, audioStream, pauseRecording, recordingResumed}) {
+export function AudioStream({audioStream, pauseRecording}) {
   const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
   let audioAnalyser;
   let audioArr;
@@ -22,7 +21,6 @@ export function AudioStream({savedAudioRecording, audioStream, pauseRecording, r
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       audioAnalyser = audioContext.createAnalyser();
       audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
-      console.log('audioStream', audioStream);
 
       source = audioContext.createMediaStreamSource(audioStream);
       source.connect(audioAnalyser);
@@ -44,7 +42,9 @@ export function AudioStream({savedAudioRecording, audioStream, pauseRecording, r
 
   return (
     <div className={styles.container}>
-      <WaveformAudio audioData={dataArr} />
+      <div className={styles.waveformContainer}>
+        <WaveformAudio audioData={dataArr} />
+      </div>
 
       <button type="button" className={`${styles.audioButtons} ${styles.pauseButton}`} onClick={pauseRecording}>
         <Pause />

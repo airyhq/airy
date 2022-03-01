@@ -9,6 +9,16 @@
   width: 100%;
 }
 
+.waveformContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.loadingContainer {
+  margin: 4px 0;
+}
+
 .audioButtons {
   width: 28px;
   height: 24px;
@@ -35,7 +45,16 @@
   margin-left: 6px;
 }
 
-.audioComponent {
-  margin: 4px 0;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
+.audioComponent {
+  margin: 4px 6px 4px 0;
+  animation: fadeIn 3.5s linear forwards;
+}

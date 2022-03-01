@@ -84,26 +84,27 @@ const MessageInput = (props: Props) => {
 
   //audio stuff
   //const [audioStream, setAudioStream] = useState<null | MediaStream>(null);
+  //naming changed: disabled instead of canceled 
   const [savedAudioRecording, setSavedAudioRecording] = useState<File | null>(null);
   const [isAudioRecordingCanceled, setIsAudioRecordingCanceled] = useState(true);
   const [voiceRecordingOn, setVoiceRecordingOn] = useState(false);
   const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
-  const [recordingPaused, setRecordingPaused] = useState(false);
+  //const [recordingPaused, setRecordingPaused] = useState(false);
   const [recordingResumed, setRecordingResumed] = useState(false);
 
+  //track state for the micro icon color 
+  const [voiceRecordingStarted, setVoiceRecordingStarted] = useState(false);
+  const [voiceRecordingPaused, setVoiceRecordingPaused] = useState(false);
+
+
   useEffect(() => {
-    console.log('savedAudioRecording', savedAudioRecording);
+    //console.log('savedAudioRecording', savedAudioRecording);
     if (savedAudioRecording) {
       setSavedAudioRecording(savedAudioRecording);
     }
   }, [savedAudioRecording]);
 
-  // useEffect(() => {
-  //   if (recordingResumed) {
-  //     setSavedAudioRecording(null);
-  //     setRecordedAudioFileUploaded(null);
-  //   }
-  // }, [recordingResumed]);
+
 
   const prevConversationId = usePrevious(conversation.id);
 
@@ -147,8 +148,11 @@ const MessageInput = (props: Props) => {
 
   //move this upload to Audio?
   useEffect(() => {
-    if (savedAudioRecording) {
+    console.log('upload audio file outside');
+    if (savedAudioRecording && voiceRecordingOn) {
       let isRequestAborted = false;
+
+      console.log('upload audio file inside');
 
       const fetchMediaUrl = async () => {
         const formData = new FormData();
@@ -338,6 +342,8 @@ const MessageInput = (props: Props) => {
         setRecordedAudioFileUploaded(null);
         setIsAudioRecordingCanceled(true);
         setVoiceRecordingOn(false);
+        setVoiceRecordingPaused(false);
+        setVoiceRecordingStarted(false);
       });
     }
   };
@@ -444,30 +450,34 @@ const MessageInput = (props: Props) => {
   const isVoiceRecordingPaused = (status: boolean) => {
     if (status) {
       setRecordingPaused(true);
+      setVoiceRecordingPaused(true);
+      setVoiceRecordingStarted(false);
     } else {
       setRecordingPaused(false);
     }
   };
 
   const resumeVoiceRecording = () => {
-    console.log('SET RESUME VOICE');
     setRecordingResumed(true);
-    setSavedAudioRecording(null);
     setRecordedAudioFileUploaded(null);
-    // setRecordingPaused(false);
+    setVoiceRecordingStarted(true);
+    setVoiceRecordingPaused(false);
   };
 
   const voiceRecordingStart = () => {
     setIsAudioRecordingCanceled(false);
     setVoiceRecordingOn(true);
+    setVoiceRecordingStarted(true);
   };
 
   const audioRecordingCanceledUpdate = (isCanceled: boolean) => {
     if (isCanceled) {
-      //setAudioStream(null);
       setSavedAudioRecording(null);
       setIsAudioRecordingCanceled(true);
       setRecordedAudioFileUploaded(null);
+      setVoiceRecordingOn(false);
+      setVoiceRecordingPaused(false);
+      setVoiceRecordingStarted(false);
     } else {
       setIsAudioRecordingCanceled(false);
     }
@@ -498,7 +508,7 @@ const MessageInput = (props: Props) => {
           </Button>
         </div>
       )}
-      <form className={styles.inputForm}>
+      <form className={`${styles.inputForm} ${recordedAudioFileUploaded ? styles.centerSendButton : ''}`}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
             {!voiceRecordingOn && (
@@ -547,7 +557,7 @@ const MessageInput = (props: Props) => {
               <AudioRecording
                 getSavedAudio={getSavedAudio}
                 audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
-                savedAudioFileUploaded={recordedAudioFileUploaded}
+                recordedAudioFileUploaded={recordedAudioFileUploaded}
                 setVoiceRecordingOn={setVoiceRecordingOn}
                 isVoiceRecordingPaused={isVoiceRecordingPaused}
                 recordingResumed={recordingResumed}
@@ -571,11 +581,11 @@ const MessageInput = (props: Props) => {
               voiceRecordingStart={voiceRecordingStart}
               isVoiceRecordingPaused={isVoiceRecordingPaused}
               resumeVoiceRecording={resumeVoiceRecording}
-              // getAudioStream={getAudioStream}
-              // getSavedAudio={getSavedAudio}
               audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
               isAudioRecordingCanceled={isAudioRecordingCanceled}
-              savedAudioRecording={savedAudioRecording}
+              recordedAudioFileUploaded={recordedAudioFileUploaded}
+              voiceRecordingStarted={voiceRecordingStarted}
+              voiceRecordingPaused={voiceRecordingPaused}
             />
           </div>
         </div>

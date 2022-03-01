@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {formatSecondsAsTime} from 'dates';
-import {ReactComponent as PlayIcon} from 'assets/images/icons/play.svg';
-import {ReactComponent as PauseIcon} from 'assets/images/icons/pause.svg';
+import {ReactComponent as PlayIcon} from 'assets/images/icons/playAudio.svg';
+import {ReactComponent as PauseIcon} from 'assets/images/icons/pauseAudio.svg';
+//import {barsSamplesPaths} from './canvasPaths';
 import styles from './index.module.scss';
 
 type AudioRenderProps = {
@@ -9,7 +10,6 @@ type AudioRenderProps = {
 };
 
 export const AudioClip = ({audioUrl}: AudioRenderProps) => {
-
   const barsSamplesPaths = {
     path0: new Path2D(),
     path1: new Path2D(),
@@ -55,9 +55,8 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [path19, setPath19] = useState(new Path2D());
 
   const [count, setCount] = useState(0);
-  //const [percentage, setPercentage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState<string | number>(0);
+  const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
   const [ctx, setCtx] = useState(null);
 
@@ -68,6 +67,10 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const canvasWidth = 174;
   const canvasHeight = 40;
+
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   useEffect(() => {
     let abort = false;
@@ -82,7 +85,8 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     canvas.current.style.height = canvasHeight + 'px';
 
     context.scale(ratio, ratio);
-    //console.log(audioUrl)
+    
+
     if (!abort) {
       visualizeAudio(context);
     }
@@ -96,10 +100,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     var audioContext = new AudioContext();
 
-    const audio = audioElement.current;
-    //audio.crossOrigin = 'anonymous';
-    console.log('audioElement duration', audio.duration);
-
     canvasContext.translate(0, canvas.current.offsetHeight / 2);
     canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
     const canvasCurrent = canvas.current;
@@ -107,11 +107,13 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     try {
       const readableStream = await fetch(audioUrl);
-      const arrayBuffer = await readableStream.arrayBuffer(); //ArrayBuffer
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); //AudioBuffer
-      //console.log('audioBuffer', audioBuffer);
-      const filteredData = filterData(audioBuffer);
+      const arrayBuffer = await readableStream.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); 
+      
+      const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
+      setFormattedDuration(formattedDuration);
 
+      const filteredData = filterData(audioBuffer);
       drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
     } catch (error) {
       console.log('fetch error', error);
@@ -464,19 +466,16 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     }
   };
 
-  const navigateAudioTrack = e => {
-    const audio = audioElement.current;
+  const navigateAudioTrack = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const rect = canvas.current.getBoundingClientRect();
-    const sampleNum = totalBars;
+    const audio = audioElement.current;
 
     const offsetX = Math.round(e.clientX - rect.left);
 
     const updatedPercentage = Math.ceil((offsetX / canvas.current.clientWidth) * 100);
 
-    //setPercentage(updatedPercentage);
-
     const currentTime = audio.duration * (offsetX / canvas.current.clientWidth);
-    const updatedCount = Math.ceil(sampleNum * (updatedPercentage / 100));
+    const updatedCount = Math.ceil(totalBars * (updatedPercentage / 100));
 
     audio.currentTime = audio.duration * (offsetX / canvas.current.clientWidth);
 
@@ -484,17 +483,10 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     if (updatedCount > count) {
       colorBarsBlue(count, updatedCount);
-    } else if (updatedCount < count) {
+    } else {
       colorBarsGrey(count, updatedCount);
     }
   };
-
-  const handleLoaded = (e) => {
-    const totalTime = Math.floor(audioElement.current?.duration);
-
-    const formattedTotalTime = formatSecondsAsTime(totalTime);
-    setDuration(formattedTotalTime);
-  }
 
   return (
     <div className={styles.audioContainer}>
@@ -502,17 +494,13 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
         {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
       </button>
 
-      <audio
-        ref={audioElement}
-        src={audioUrl}
-        onTimeUpdate={getCurrentDuration}
-        onLoadedData={handleLoaded}></audio>
+      <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
 
-      <canvas ref={canvas} onClick={e => navigateAudioTrack(e.nativeEvent.offsetX)}></canvas>
+      <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
 
-      {duration && (
+      {formattedDuration && (
         <span className={styles.audioTime}>
-          {currentTime !== 0 ? formatSecondsAsTime(audioElement.current.currentTime) : formatSecondsAsTime(duration)}
+          {currentTime !== 0 ? formatSecondsAsTime(audioElement.current.currentTime) : formattedDuration}
         </span>
       )}
     </div>

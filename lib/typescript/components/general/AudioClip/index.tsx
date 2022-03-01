@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {formatSecondsAsTime} from 'dates';
-import {ReactComponent as PlayIcon} from 'assets/images/icons/playAudio.svg';
-import {ReactComponent as PauseIcon} from 'assets/images/icons/pauseAudio.svg';
+import {ReactComponent as PlayIcon} from 'assets/images/icons/play.svg';
+import {ReactComponent as PauseIcon} from 'assets/images/icons/pause.svg';
 //import {barsSamplesPaths} from './canvasPaths';
 import styles from './index.module.scss';
 

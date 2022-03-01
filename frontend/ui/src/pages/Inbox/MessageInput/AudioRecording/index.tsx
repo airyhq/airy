@@ -29,10 +29,12 @@ export function AudioRecording({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('recordingResumed resume', recordingResumed)
+    //console.log('mediaRecorder resume', mediaRecorder)
     if (recordingResumed && mediaRecorder) {
       setRecordedAudioFileUploaded(null);
       mediaRecorder.resume();
-      setAudioStream(audioStream);
+      //setAudioStream(audioStream);
     }
   }, [recordingResumed, mediaRecorder]);
 

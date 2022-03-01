@@ -40,6 +40,7 @@ type Props = {
   voiceRecordingPaused?: boolean;
   audioRecordingPreviewLoading?: boolean;
   setAudioRecordingSent?: any;
+  setRecordingResumed?:any;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -64,7 +65,8 @@ export const InputOptions = (props: Props) => {
     voiceRecordingStarted,
     voiceRecordingPaused, 
     audioRecordingPreviewLoading,
-    setAudioRecordingSent
+    setAudioRecordingSent,
+    setRecordingResumed
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -168,7 +170,7 @@ export const InputOptions = (props: Props) => {
  
     if(!audioRecordingCanceled){
       console.log('RESUME RECORDING');
-      resumeVoiceRecording();
+      setRecordingResumed(true);
       isVoiceRecordingPaused(false); 
     } else {
       console.log('START VOICE RECORDING');

@@ -101,6 +101,11 @@ const MessageInput = (props: Props) => {
 
   const canSendMedia = isComponentHealthy(config, 'media-resolver') && sourcesWithAttachments.indexOf(source) !== -1;
 
+
+  useEffect(() => {
+    console.log('input recordingResumed', recordingResumed);
+  }, [recordingResumed])
+
   useEffect(() => {
     if (loadingSelector && fileToUpload) {
       let isRequestAborted = false;
@@ -401,9 +406,10 @@ const MessageInput = (props: Props) => {
   };
 
   const resumeVoiceRecording = () => {
+    console.log('RESUME RECORDING input')
     setRecordingResumed(true);
     setRecordedAudioFileUploaded(null);
-    setVoiceRecordingStarted(true);
+    //setVoiceRecordingStarted(true);
     setVoiceRecordingPaused(false);
   };
 
@@ -526,7 +532,7 @@ const MessageInput = (props: Props) => {
               loadingSelector={loadingSelector}
               voiceRecordingStart={voiceRecordingStart}
               isVoiceRecordingPaused={isVoiceRecordingPaused}
-              resumeVoiceRecording={resumeVoiceRecording}
+              setRecordingResumed={setRecordingResumed}
               audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
               audioRecordingCanceled={audioRecordingCanceled}
               voiceRecordingStarted={voiceRecordingStarted}

@@ -31,14 +31,15 @@ type Props = {
   fileUploadErrorPopUp: string;
   canSendMedia: boolean;
   loadingSelector: boolean;
-  isAudioRecordingCanceled?: boolean;
+  audioRecordingCanceled?: boolean;
   audioRecordingCanceledUpdate?: (status:boolean) => void;
   voiceRecordingStart: () => void;
-  recordedAudioFileUploaded?: any;
   isVoiceRecordingPaused?: (status:boolean) => void;
   resumeVoiceRecording?:() => void;
   voiceRecordingStarted?: boolean;
   voiceRecordingPaused?: boolean;
+  audioRecordingPreviewLoading?: boolean;
+  setAudioRecordingSent?: any;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -56,13 +57,14 @@ export const InputOptions = (props: Props) => {
     closeFileErrorPopUp,
     loadingSelector,
     audioRecordingCanceledUpdate,
-    isAudioRecordingCanceled,
+    audioRecordingCanceled,
     voiceRecordingStart,
-    recordedAudioFileUploaded, 
     isVoiceRecordingPaused,
     resumeVoiceRecording,
     voiceRecordingStarted,
-    voiceRecordingPaused
+    voiceRecordingPaused, 
+    audioRecordingPreviewLoading,
+    setAudioRecordingSent
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -77,6 +79,11 @@ export const InputOptions = (props: Props) => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptFilesValue);
   }, [source]);
+
+  useEffect(() => {
+    console.log('voiceRecordingStarted', voiceRecordingStarted);
+    console.log('audioRecordingPreviewLoading', audioRecordingPreviewLoading);
+  }, [voiceRecordingStarted, audioRecordingPreviewLoading])
 
   useEffect(() => {
     if (!isFileLoaded) {
@@ -152,13 +159,14 @@ export const InputOptions = (props: Props) => {
   };
 
   const startVoiceRecording = () => {
+    setAudioRecordingSent(false);
     audioRecordingCanceledUpdate(false);
     voiceRecordingStart();
   }
 
   const handleMicrophoneIconClick = () => {
  
-    if(!isAudioRecordingCanceled){
+    if(!audioRecordingCanceled){
       console.log('RESUME RECORDING');
       resumeVoiceRecording();
       isVoiceRecordingPaused(false); 
@@ -192,7 +200,7 @@ export const InputOptions = (props: Props) => {
         </div>
       )}
 
-      {isAudioRecordingCanceled && (
+      {audioRecordingCanceled && (
         <>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
@@ -224,7 +232,7 @@ export const InputOptions = (props: Props) => {
           source === 'twilio.whatsapp' ||
           source === 'chatplugin') && (
           <>
-            {isAudioRecordingCanceled && (
+            {audioRecordingCanceled && (
               <button
                 className={`${styles.iconButton} ${styles.templateButton} ${
                   isShowingFileSelector ? styles.active : ''
@@ -259,9 +267,9 @@ export const InputOptions = (props: Props) => {
             )}
 
             <button
-              className={`${styles.iconButton} ${styles.templateButton} ${isShowingFileSelector ? styles.active : ''} ${voiceRecordingStarted || voiceRecordingPaused ? styles.voiceRecording : ''}`}
+              className={`${styles.iconButton} ${styles.templateButton} ${voiceRecordingStarted || voiceRecordingPaused ? styles.voiceRecording : ''}`}
               type="button"
-              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector || voiceRecordingStarted}
+              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector || (voiceRecordingStarted || audioRecordingPreviewLoading)}
               onClick={handleMicrophoneIconClick}
             >
               <div className={styles.actionToolTip}>Record audio clip</div>

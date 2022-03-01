@@ -4,8 +4,9 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   height: 100%;
+  margin-bottom: 10px;
   padding-right: 6px;
 
   .emoji {

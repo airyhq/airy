@@ -18,11 +18,15 @@ export function AudioStream({audioStream, pauseRecording}) {
 
   useEffect(() => {
     if (audioStream) {
+      console.log('AUDIOSTREAM', audioStream);
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       audioAnalyser = audioContext.createAnalyser();
+      console.log('audioAnalyser', audioAnalyser);
       audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
+      console.log('audioArr', audioArr);
 
       source = audioContext.createMediaStreamSource(audioStream);
+      console.log('source', source);
       source.connect(audioAnalyser);
       updateAudioArrId = requestAnimationFrame(updateAudio);
 

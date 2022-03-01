@@ -91,7 +91,7 @@ cluster and Redis.
 
 - `global`
 
-  - `host` set this to your Host 
+  - `host` set this to your Host
   - `ingress`
     - `letsencrypt` set this to `true` if you are using LetsEncrypt in your ingress-controller
 

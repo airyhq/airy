@@ -34,7 +34,7 @@
   }
 }
 
-.iconButton {
+@mixin optionsIconButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,6 +43,73 @@
   cursor: pointer;
   background: transparent;
   border: none;
+}
+
+
+
+.iconRecordingDefault {
+  svg {
+    width: 22px;
+    pointer-events: none;
+
+    path {
+      stroke: var(--color-icons-gray);
+      fill:none;
+    }
+  }
+}
+
+.recordingIconButton {
+  @include optionsIconButton;
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 1;
+  }
+
+  &:hover {
+    background-color: var(--color-background-blue);
+    border-radius: 50%;
+
+    svg {
+      path {
+        stroke: var(--color-airy-logo-blue);
+      }
+    }
+
+    .actionToolTip {
+      display: block;
+    }
+  }
+
+  &.active {
+    background-color: var(--color-background-blue);
+    border-radius: 50%;
+    svg {
+      path {
+        stroke: var(--color-airy-logo-blue);
+      }
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.iconButton {
+  @include optionsIconButton;
 
   svg {
     width: 22px;
@@ -86,19 +153,34 @@
   }
 }
 
-.voiceRecording {
+@mixin iconButtonRecordingOn {
   background-color: #1578D4;
   border-radius: 50%;
+}
+
+.iconRecordingStarted {
+  @include iconButtonRecordingOn;
 
   svg {
+    width: 22px;
+    pointer-events: none;
+
     path {
-      fill: white;
+      stroke: white;
+      fill:none;
     }
   }
 
 }
 
-
+.iconRecordingPaused {
+  @include iconButtonRecordingOn;
+  svg {
+    width: 22px;
+    pointer-events: none;
+  }
+  
+}
 
 .smileyIcon {
   height: 20px;

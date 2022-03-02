@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import {ReactComponent as Cancel} from 'assets/images/icons/cancelCross.svg';
 import {uploadMedia} from '../../../../services/mediaUploader';
 import {SimpleLoader} from 'components';
+import AudioRecorder from 'audio-recorder-polyfill';
 
 declare global {
   interface Window {
@@ -27,6 +28,8 @@ export function AudioRecording({
   const [savedAudioRecording, setSavedAudioRecording] = useState<File | null>(null);
   const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  window.MediaRecorder = AudioRecorder;
 
   useEffect(() => {
     let abort = false;
@@ -56,14 +59,14 @@ export function AudioRecording({
       options = 'audio/mp3';
     } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
       options = 'audio/ogg';
-    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-      //chrome + firefox
-      options = 'audio/webm';
     } else if (MediaRecorder.isTypeSupported('audio/mpeg audio/x-mpeg')) {
       options = 'audio/mpeg audio/x-mpeg';
     } else if (MediaRecorder.isTypeSupported('audio/mp4;codecs=opus')) {
       //safari
       options = 'audio/mp4;codecs=opus';
+    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+      //chrome + firefox
+      options = 'audio/webm';
     } 
 
     return options;
@@ -76,7 +79,7 @@ export function AudioRecording({
       const options = getMimeTypeForBrowser();
       console.log('OPTIONS', options);
 
-      const mediaRecorder = new MediaRecorder(audioStream, {mimeType:options});
+      const mediaRecorder = new MediaRecorder(audioStream);
       console.log('mediaRecorder', mediaRecorder);
 
       mediaRecorder.start();
@@ -87,7 +90,7 @@ export function AudioRecording({
       const getAudioFile = event => {
         audioChunks.push(event.data);
 
-        const audioBlob = new Blob(audioChunks, {type: options});
+        const audioBlob = new Blob(audioChunks);
         console.log('audioBlob.type', audioBlob.type);
         const file = new File(audioChunks, 'recording.mp3', {
           type: audioBlob.type,

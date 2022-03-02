@@ -20,17 +20,19 @@
 }
 
 .audioContainer button {
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  margin-right: 6px;
-  padding: 0;
+  width:20px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline:none;
+  cursor: pointer;
 }
 
 .icon {
-  width: 20px;
   fill: white;
 }
 

@@ -276,7 +276,7 @@ export const InputOptions = (props: Props) => {
             )}
 
             <button
-              className={`${styles.iconButton} ${styles.templateButton} ${voiceRecordingStarted || voiceRecordingPaused ? styles.voiceRecording : ''}`}
+            className={`${styles.recordingIconButton} ${voiceRecordingStarted ? styles.iconRecordingStarted : voiceRecordingPaused ? styles.iconRecordingPaused : styles.iconRecordingDefault}`}
               type="button"
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector || (voiceRecordingStarted || audioRecordingPreviewLoading)}
               onClick={handleMicrophoneIconClick}
@@ -289,3 +289,6 @@ export const InputOptions = (props: Props) => {
     </div>
   );
 };
+
+
+//[styles.iconButtonRecordingOn, styles.iconButtonRecordingStarted] : voiceRecordingPaused ? [styles.iconButtonRecordingOn, styles.iconButtonRecordingPaused] : styles.iconRecordingDefault}

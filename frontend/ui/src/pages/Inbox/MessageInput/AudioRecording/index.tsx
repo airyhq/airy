@@ -5,7 +5,12 @@ import styles from './index.module.scss';
 import {ReactComponent as Cancel} from 'assets/images/icons/cancelCross.svg';
 import {uploadMedia} from '../../../../services/mediaUploader';
 import {SimpleLoader} from 'components';
-import AudioRecorder from 'audio-recorder-polyfill';
+import AudioRecorder from 'audio-recorder-polyfill'
+import mpegEncoder from 'audio-recorder-polyfill/mpeg-encoder'
+
+AudioRecorder.encoder = mpegEncoder;
+AudioRecorder.prototype.mimeType = 'audio/mpeg';
+window.MediaRecorder = AudioRecorder;
 
 declare global {
   interface Window {
@@ -29,8 +34,6 @@ export function AudioRecording({
   const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  window.MediaRecorder = AudioRecorder;
-
   useEffect(() => {
     let abort = false;
 
@@ -52,38 +55,16 @@ export function AudioRecording({
     };
   }, []);
 
-  const getMimeTypeForBrowser = () => {
-    let options;
 
-    if (MediaRecorder.isTypeSupported('audio/mp3')) {
-      options = 'audio/mp3';
-    } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
-      options = 'audio/ogg';
-    } else if (MediaRecorder.isTypeSupported('audio/mpeg audio/x-mpeg')) {
-      options = 'audio/mpeg audio/x-mpeg';
-    } else if (MediaRecorder.isTypeSupported('audio/mp4;codecs=opus')) {
-      //safari
-      options = 'audio/mp4;codecs=opus';
-    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-      //chrome + firefox
-      options = 'audio/webm';
-    } 
-
-    return options;
-  };
 
   useEffect(() => {
     if (audioStream && !audioRecordingSent) {
-      console.log('audioStream', audioStream);
-
-      const options = getMimeTypeForBrowser();
-      console.log('OPTIONS', options);
-
+   
       const mediaRecorder = new MediaRecorder(audioStream);
       console.log('mediaRecorder', mediaRecorder);
+      setMediaRecorder(mediaRecorder);
 
       mediaRecorder.start();
-      setMediaRecorder(mediaRecorder);
 
       const audioChunks = [];
 
@@ -92,6 +73,7 @@ export function AudioRecording({
 
         const audioBlob = new Blob(audioChunks);
         console.log('audioBlob.type', audioBlob.type);
+
         const file = new File(audioChunks, 'recording.mp3', {
           type: audioBlob.type,
           lastModified: Date.now(),
@@ -112,6 +94,8 @@ export function AudioRecording({
     if (recordingResumed && mediaRecorder) {
       setRecordedAudioFileUploaded(null);
       mediaRecorder.resume();
+      console.log('mediaRecorder.resumed()');
+      console.log(mediaRecorder)
     }
   }, [recordingResumed, mediaRecorder]);
 
@@ -138,6 +122,7 @@ export function AudioRecording({
 
       if (!isRequestAborted) {
         setLoading(true);
+        console.log('savedAudioRecording', savedAudioRecording);
         uploadMedia(savedAudioRecording)
           .then((response: {mediaUrl: string}) => {
             console.log('uploadedMedia', response.mediaUrl);
@@ -167,8 +152,8 @@ export function AudioRecording({
   const cancelRecording = () => {
     setRecordedAudioFileUploaded(null);
 
-    audioStream.getTracks().forEach(track => track.stop());
-    //mediaRecorder.stop();
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks()[0].stop()
 
     setAudioStream(null);
     audioRecordingCanceledUpdate(true);

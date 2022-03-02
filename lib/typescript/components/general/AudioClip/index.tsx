@@ -120,18 +120,20 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const getCurrentDuration = e => {
-    console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
-    console.log('e.currentTarget.duration', e.currentTarget.duration);
+    // console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
+    // console.log('e.currentTarget.duration', e.currentTarget.duration);
     const updatedCurrentTime = e.currentTarget.currentTime;
-    console.log('updatedCurrentTime', updatedCurrentTime);
+    //console.log('updatedCurrentTime', updatedCurrentTime);
     let audioDuration = e.currentTarget.duration;
 
     if(audioDuration === Infinity) audioDuration = duration;
 
+    //console.log('audioDuration', audioDuration);
+
     const percentForCurrTimeAndDuration = Math.round((updatedCurrentTime / audioDuration) * 100);
-    console.log('percentForCurrTimeAndDuration', percentForCurrTimeAndDuration);
+    //console.log('percentForCurrTimeAndDuration', percentForCurrTimeAndDuration);
     const step = Math.round(totalBars * (percentForCurrTimeAndDuration / 100));
-    console.log('step', step);
+   // console.log('step', step);
 
     if (updatedCurrentTime === audioDuration) {
       setIsPlaying(false);
@@ -251,13 +253,16 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const navigateAudioTrack = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+
+    if(!isPlaying) return; 
+
     const rect = canvas.current.getBoundingClientRect();
     const audio = audioElement.current;
-    console.log('rect.left', rect.left);
-    console.log('e.clientX', e.clientX);
+    // console.log('rect.left', rect.left);
+    // console.log('e.clientX', e.clientX);
     const offsetX = Math.round(e.clientX - rect.left);
-    console.log('offsetX', offsetX);
-    console.log('audio.duration', audio.duration);
+    // console.log('offsetX', offsetX);
+    // console.log('audio.duration', audio.duration);
 
     const updatedPercentage = Math.ceil((offsetX / canvas.current.clientWidth) * 100);
 
@@ -265,7 +270,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     const updatedCount = Math.ceil(totalBars * (updatedPercentage / 100));
 
     const updatedTime = duration * (offsetX / canvas.current.clientWidth);
-    console.log('updatedTime', updatedTime);
+    //console.log('updatedTime', updatedTime);
     audio.currentTime = updatedTime;
 
     setCurrentTime(currentTime);

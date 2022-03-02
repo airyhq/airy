@@ -151,6 +151,7 @@ const MessageInput = (props: Props) => {
       setDraggedAndDroppedFile(null);
       setFileUploadErrorPopUp('');
       setLoadingSelector(false);
+      resetAudioRecordingStatus();
     }
   }, [conversation.id]);
 
@@ -179,6 +180,16 @@ const MessageInput = (props: Props) => {
       }
     }
   }, [channelConnected]);
+
+  const resetAudioRecordingStatus = () => {
+    setAudioRecordingCanceled(true);
+    setVoiceRecordingStarted(false);
+    setVoiceRecordingPaused(false);
+    setRecordedAudioFileUploaded(null);
+    setAudioRecordingPreviewLoading(false);
+    setRecordingResumed(false);
+    setAudioRecordingSent(false);
+  }
 
   const uploadFile = (file: File) => {
     if (file) {
@@ -410,7 +421,7 @@ const MessageInput = (props: Props) => {
     console.log('RESUME RECORDING input');
     setRecordingResumed(true);
     setRecordedAudioFileUploaded(null);
-    setVoiceRecordingStarted(true);
+    //setVoiceRecordingStarted(true);
     setVoiceRecordingPaused(false);
   };
 

@@ -4,6 +4,7 @@ import {ReactComponent as PlayIcon} from 'assets/images/icons/play.svg';
 import {ReactComponent as PauseIcon} from 'assets/images/icons/pause.svg';
 //import {barsSamplesPaths} from './canvasPaths';
 import styles from './index.module.scss';
+import { $CombinedState } from 'redux';
 
 type AudioRenderProps = {
   audioUrl: string;
@@ -56,6 +57,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const [count, setCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
   const [ctx, setCtx] = useState(null);
@@ -69,12 +71,17 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const canvasHeight = 40;
 
   useEffect(() => {
-    return () => {};
-  }, []);
+
+    if(audioElement.current){
+      console.log('LOAD')
+      audioElement.current.load();
+    }
+
+
+  }, [audioElement])
 
   useEffect(() => {
-    let abort = false;
-
+    const abortController = new AbortController();
     const context = canvas.current.getContext('2d');
     const ratio = window.devicePixelRatio;
 
@@ -85,40 +92,65 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     canvas.current.style.height = canvasHeight + 'px';
 
     context.scale(ratio, ratio);
-    
 
-    if (!abort) {
-      visualizeAudio(context);
-    }
+    const visualizeAudio = async canvasContext => {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      audioContext.resume();
+
+      canvasContext.translate(0, canvas.current.offsetHeight / 2);
+      canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
+      const canvasCurrent = canvas.current;
+      const barsColor = 'white';
+
+      try {
+        const readableStream = await fetch(audioUrl, { signal: abortController.signal });
+        const arrayBuffer = await readableStream.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+          setDuration(audioBuffer.duration);
+          const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
+          setFormattedDuration(formattedDuration);
+        
+
+        const filteredData = filterData(audioBuffer);
+        drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
+      } catch (error) {
+        console.log('fetch error', error);
+      }
+    };
+
+    visualizeAudio(context);
 
     return () => {
-      abort = false;
-    };
+      abortController.abort();
+    }
+  
   }, []);
 
-  const visualizeAudio = async canvasContext => {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    var audioContext = new AudioContext();
+  // const visualizeAudio = async canvasContext => {
+  //   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  //   audioContext.resume();
 
-    canvasContext.translate(0, canvas.current.offsetHeight / 2);
-    canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
-    const canvasCurrent = canvas.current;
-    const barsColor = 'white';
+  //   canvasContext.translate(0, canvas.current.offsetHeight / 2);
+  //   canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
+  //   const canvasCurrent = canvas.current;
+  //   const barsColor = 'white';
 
-    try {
-      const readableStream = await fetch(audioUrl);
-      const arrayBuffer = await readableStream.arrayBuffer();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); 
-      
-      const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
-      setFormattedDuration(formattedDuration);
+  //   try {
+  //     const readableStream = await fetch(audioUrl);
+  //     const arrayBuffer = await readableStream.arrayBuffer();
+  //     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-      const filteredData = filterData(audioBuffer);
-      drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
-    } catch (error) {
-      console.log('fetch error', error);
-    }
-  };
+  //     setDuration(audioBuffer.duration);
+  //     const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
+  //     setFormattedDuration(formattedDuration);
+
+  //     const filteredData = filterData(audioBuffer);
+  //     drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
+  //   } catch (error) {
+  //     console.log('fetch error', error);
+  //   }
+  // };
 
   const filterData = audioBuffer => {
     const channelData = audioBuffer.getChannelData(0);
@@ -153,11 +185,18 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const getCurrentDuration = e => {
+    console.log('e.currentTarget', e.currentTarget);
     const updatedCurrentTime = e.currentTarget.currentTime;
-    const audioDuration = e.currentTarget.duration;
+    console.log('updatedCurrentTime', updatedCurrentTime);
+    let audioDuration = e.currentTarget.duration;
+    console.log('audioDuration', audioDuration);
+
+    if(audioDuration === Infinity) audioDuration = duration;
 
     const percentForCurrTimeAndDuration = Math.round((updatedCurrentTime / audioDuration) * 100);
+    console.log('percentForCurrTimeAndDuration', percentForCurrTimeAndDuration);
     const step = Math.round(totalBars * (percentForCurrTimeAndDuration / 100));
+    console.log('step', step);
 
     if (updatedCurrentTime === audioDuration) {
       setIsPlaying(false);
@@ -452,10 +491,10 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
       colorBarsGrey(19, 0);
     }
-
     //setStopPlayer(false);
-    setIsPlaying(true);
+ 
     audioElement.current.play();
+    setIsPlaying(true);
   };
 
   const toggleAudio = () => {
@@ -469,15 +508,20 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const navigateAudioTrack = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const rect = canvas.current.getBoundingClientRect();
     const audio = audioElement.current;
-
+    console.log('rect.left', rect.left);
+    console.log('e.clientX', e.clientX);
     const offsetX = Math.round(e.clientX - rect.left);
+    console.log('offsetX', offsetX);
+    console.log('audio.duration', audio.duration);
 
     const updatedPercentage = Math.ceil((offsetX / canvas.current.clientWidth) * 100);
 
     const currentTime = audio.duration * (offsetX / canvas.current.clientWidth);
     const updatedCount = Math.ceil(totalBars * (updatedPercentage / 100));
 
-    audio.currentTime = audio.duration * (offsetX / canvas.current.clientWidth);
+    const updatedTime = duration * (offsetX / canvas.current.clientWidth);
+    console.log('updatedTime', updatedTime);
+    audio.currentTime = updatedTime;
 
     setCurrentTime(currentTime);
 
@@ -500,9 +544,12 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
       {formattedDuration && (
         <span className={styles.audioTime}>
-          {currentTime !== 0 ? formatSecondsAsTime(audioElement.current.currentTime) : formattedDuration}
+          {currentTime !== 0 ? formatSecondsAsTime(audioElement?.current.currentTime) : formattedDuration}
         </span>
       )}
     </div>
   );
 };
+
+
+//

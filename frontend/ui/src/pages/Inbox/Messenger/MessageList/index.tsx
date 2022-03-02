@@ -179,6 +179,7 @@ const MessageList = (props: MessageListProps) => {
 };
 
 const arePropsEqual = (prevProps, nextProps) => {
+  console.log('nextProps', nextProps)
   if (
     prevProps.history.location.pathname === nextProps.history.location.pathname &&
     prevProps.conversation?.id === nextProps.conversation?.id &&

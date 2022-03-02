@@ -289,15 +289,14 @@ const MessageInput = (props: Props) => {
 
       sendMessages(message).then(() => {
         console.log('then');
-       //setAudioRecordingSent(false);
 
-        // setVoiceRecordingStarted(false);
-        // setVoiceRecordingPaused(false);
-        // setRecordedAudioFileUploaded(null);
-        // setAudioRecordingPreviewLoading(false);
-        // setRecordingResumed(false);
-        // setAudioRecordingCanceled(true);
-        // setAudioRecordingSent(false);
+        setVoiceRecordingStarted(false);
+        setVoiceRecordingPaused(false);
+        setRecordedAudioFileUploaded(null);
+        setAudioRecordingPreviewLoading(false);
+        setRecordingResumed(false);
+        setAudioRecordingCanceled(true);
+        setAudioRecordingSent(false);
 
         setInput('');
         setBlockSpam(false);

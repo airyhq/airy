@@ -44,7 +44,7 @@ export const attachmentsExtensions = {
 
   //chatplugin
   chatpluginImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'webp', 'heic'],
-  chatpluginVideoExtensions: ['mp4', 'mov', 'wmv'],
+  chatpluginVideoExtensions: ['mov', 'wmv', 'mp4'],
   chatpluginAudioExtensions: ['mp3', 'ogg', 'wav'],
   chatpluginFileExtensions: [
     'pdf',

@@ -41,7 +41,7 @@ export function AudioRecording({
 
     if (!abort) {
       console.log('!abort, fetching');
-      startVoiceRecording()
+      startVoiceRecording();
     }
 
     return () => {
@@ -49,10 +49,34 @@ export function AudioRecording({
     };
   }, []);
 
+  const getMimeTypeForBrowser = () => {
+    let options;
+
+    if (MediaRecorder.isTypeSupported('audio/mp3')) {
+      options = 'audio/mp3';
+    } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+      options = 'audio/ogg';
+    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+      //chrome + firefox
+      options = 'audio/webm';
+    } else if (MediaRecorder.isTypeSupported('audio/mpeg audio/x-mpeg')) {
+      options = 'audio/mpeg audio/x-mpeg';
+    } else if (MediaRecorder.isTypeSupported('audio/mp4;codecs=opus')) {
+      //safari
+      options = 'audio/mp4;codecs=opus';
+    } 
+
+    return options;
+  };
+
   useEffect(() => {
     if (audioStream && !audioRecordingSent) {
       console.log('audioStream', audioStream);
-      const mediaRecorder = new MediaRecorder(audioStream, {mimeType: 'audio/webm'});
+
+      const options = getMimeTypeForBrowser();
+      console.log('OPTIONS', options);
+
+      const mediaRecorder = new MediaRecorder(audioStream, {mimeType:options});
       console.log('mediaRecorder', mediaRecorder);
 
       mediaRecorder.start();
@@ -60,19 +84,22 @@ export function AudioRecording({
 
       const audioChunks = [];
 
-      const getAudioFile = (event)  => {
+      const getAudioFile = event => {
         audioChunks.push(event.data);
-    
-        const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+
+        const audioBlob = new Blob(audioChunks, {type: options});
+        console.log('audioBlob.type', audioBlob.type);
         const file = new File(audioChunks, 'recording.mp3', {
           type: audioBlob.type,
           lastModified: Date.now(),
         });
-    
-        setSavedAudioRecording(file);
-      }
 
-      mediaRecorder.addEventListener('dataavailable', getAudioFile)
+        console.log('file dataRequest', file);
+
+        setSavedAudioRecording(file);
+      };
+
+      mediaRecorder.addEventListener('dataavailable', getAudioFile);
 
       return () => mediaRecorder.removeEventListener('dataavailable', getAudioFile);
     }
@@ -86,8 +113,9 @@ export function AudioRecording({
   }, [recordingResumed, mediaRecorder]);
 
   useEffect(() => {
+    console.log('audioRecordingSent', audioRecordingSent);
     if (audioRecordingSent) {
-      console.log('audioRecordingSent', audioRecordingSent);
+      console.log('audioRecordingSent - CANCEL', audioRecordingSent);
       cancelRecording();
     }
   }, [audioRecordingSent]);
@@ -109,7 +137,7 @@ export function AudioRecording({
         setLoading(true);
         uploadMedia(savedAudioRecording)
           .then((response: {mediaUrl: string}) => {
-            console.log('response.mediaUrl', response.mediaUrl);
+            console.log('uploadedMedia', response.mediaUrl);
             setRecordedAudioFileUploaded(response.mediaUrl);
             getUploadedAudioRecordingFile(response.mediaUrl);
             setLoading(false);
@@ -137,13 +165,11 @@ export function AudioRecording({
     setRecordedAudioFileUploaded(null);
 
     audioStream.getTracks().forEach(track => track.stop());
-    mediaRecorder.stop();
+    //mediaRecorder.stop();
 
     setAudioStream(null);
     audioRecordingCanceledUpdate(true);
   };
-
-
 
   return (
     <div className={`${styles.container} ${loading ? styles.loadingContainer : ''}`}>

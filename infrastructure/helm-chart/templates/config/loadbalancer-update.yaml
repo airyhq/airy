@@ -1,0 +1,59 @@
+{{ if not .Values.global.host }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-scripts
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "10"
+data:
+  wait-for-loadbalancer.sh: |
+    #!/bin/sh
+    delay=${DELAY:-10}
+    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
+    while test -z "${host}"; do
+      echo "Waiting for loadbalancer to be created..."
+      sleep ${delay}
+      host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
+    done
+  update-configmap-lb.sh: |
+    #!/bin/sh
+    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
+    kubectl patch configmap core-config -p "{\"data\":{\"HOST\":\"${host}\"}}" --type merge
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-loadbalancer
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "11"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      initContainers:
+      - name: wait
+        image: "bitnami/kubectl"
+        command: ["/bin/sh", "/opt/provisioning/wait-for-loadbalancer.sh"]
+        volumeMounts:
+        - name: ingress-scripts
+          mountPath: /opt/provisioning
+      containers:
+      - name: update-configmap
+        image: "bitnami/kubectl"
+        command: ['/bin/sh', '/opt/provisioning/update-configmap-lb.sh']
+        volumeMounts:
+        - name: ingress-scripts
+          mountPath: /opt/provisioning
+      serviceAccountName: {{ .Values.serviceAccount }}
+      volumes:
+        - name: ingress-scripts
+          configMap:
+            name: ingress-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+{{ end }}

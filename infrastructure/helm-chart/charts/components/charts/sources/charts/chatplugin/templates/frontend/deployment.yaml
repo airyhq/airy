@@ -29,11 +29,13 @@ spec:
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.frontend.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
+        {{- if .Values.global.apiHost }}
           - name: API_HOST
             valueFrom:
               configMapKeyRef:
                 name: core-config
                 key: API_HOST
+        {{- end }}
         livenessProbe:
           httpGet:
             path: /health

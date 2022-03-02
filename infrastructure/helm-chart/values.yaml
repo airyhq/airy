@@ -1,6 +1,10 @@
 global:
   containerRegistry: ghcr.io/airyhq
   busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  host:
+  apiHost:
+  ingress:
+    letsencrypt: false
 security:
   systemToken: ""
   allowedOrigins: "*"
@@ -19,5 +23,4 @@ tools:
   segment:
     enabled: true
 serviceAccount: airy-admin
-apiHost: http://airy.core
 limitRange: false

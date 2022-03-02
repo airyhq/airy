@@ -11,7 +11,7 @@ import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
-import {getInputAcceptedFilesForSource} from '../../../services/types/attachmentsTypes';
+import {getInputAcceptedFilesForSource, supportsAudioRecordingMp3} from '../../../services/types/attachmentsTypes';
 import styles from './InputOptions.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -28,19 +28,19 @@ type Props = {
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isFileLoaded: boolean;
   closeFileErrorPopUp: () => void;
-  fileUploadErrorPopUp: string;
+  errorPopUp: string;
   canSendMedia: boolean;
   loadingSelector: boolean;
   audioRecordingCanceled?: boolean;
-  audioRecordingCanceledUpdate?: (status:boolean) => void;
+  audioRecordingCanceledUpdate?: (status: boolean) => void;
   voiceRecordingStart: () => void;
-  isVoiceRecordingPaused?: (status:boolean) => void;
-  resumeVoiceRecording?:() => void;
+  isVoiceRecordingPaused?: (status: boolean) => void;
+  resumeVoiceRecording?: () => void;
   voiceRecordingStarted?: boolean;
   voiceRecordingPaused?: boolean;
   audioRecordingPreviewLoading?: boolean;
   setAudioRecordingSent?: any;
-  setRecordingResumed?:any;
+  setRecordingResumed?: any;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -53,7 +53,7 @@ export const InputOptions = (props: Props) => {
     focusInput,
     selectFile,
     isFileLoaded,
-    fileUploadErrorPopUp,
+    errorPopUp,
     canSendMedia,
     closeFileErrorPopUp,
     loadingSelector,
@@ -63,10 +63,10 @@ export const InputOptions = (props: Props) => {
     isVoiceRecordingPaused,
     resumeVoiceRecording,
     voiceRecordingStarted,
-    voiceRecordingPaused, 
+    voiceRecordingPaused,
     audioRecordingPreviewLoading,
     setAudioRecordingSent,
-    setRecordingResumed
+    setRecordingResumed,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -85,7 +85,7 @@ export const InputOptions = (props: Props) => {
   useEffect(() => {
     console.log('voiceRecordingStarted', voiceRecordingStarted);
     console.log('audioRecordingPreviewLoading', audioRecordingPreviewLoading);
-  }, [voiceRecordingStarted, audioRecordingPreviewLoading])
+  }, [voiceRecordingStarted, audioRecordingPreviewLoading]);
 
   useEffect(() => {
     if (!isFileLoaded) {
@@ -164,18 +164,17 @@ export const InputOptions = (props: Props) => {
     setAudioRecordingSent(false);
     audioRecordingCanceledUpdate(false);
     voiceRecordingStart();
-  }
+  };
 
   const handleMicrophoneIconClick = () => {
- 
-    if(!audioRecordingCanceled){
+    if (!audioRecordingCanceled) {
       console.log('RESUME RECORDING');
       // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       // console.log('audioContext', audioContext);
       // audioContext.resume();
       setRecordingResumed(true);
-      resumeVoiceRecording()
-      isVoiceRecordingPaused(false); 
+      resumeVoiceRecording();
+      isVoiceRecordingPaused(false);
     } else {
       console.log('START VOICE RECORDING');
       // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -183,13 +182,13 @@ export const InputOptions = (props: Props) => {
       // audioContext.resume();
       startVoiceRecording();
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
-      {fileUploadErrorPopUp && (
+      {errorPopUp && (
         <div className={styles.fileSizeErrorPopUp}>
-          <ErrorPopUp message={fileUploadErrorPopUp} closeHandler={closeFileErrorPopUp} />
+          <ErrorPopUp message={errorPopUp} closeHandler={closeFileErrorPopUp} />
         </div>
       )}
 
@@ -214,18 +213,16 @@ export const InputOptions = (props: Props) => {
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
             type="button"
-            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-            onClick={toggleEmojiDrawer}
-          >
+            disabled={inputDisabled || !!errorPopUp || loadingSelector}
+            onClick={toggleEmojiDrawer}>
             <div className={styles.actionToolTip}>Emojis</div>
             <Smiley aria-hidden className={styles.smileyIcon} />
           </button>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
             type="button"
-            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-            onClick={toggleTemplateModal}
-          >
+            disabled={inputDisabled || !!errorPopUp || loadingSelector}
+            onClick={toggleTemplateModal}>
             <div className={styles.actionToolTip}>Templates</div>
             <div className={styles.templateActionContainer}>
               <TemplateAlt aria-hidden className={styles.templateAltIcon} />
@@ -247,17 +244,15 @@ export const InputOptions = (props: Props) => {
                   isShowingFileSelector ? styles.active : ''
                 }`}
                 type="button"
-                disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-                onClick={toggleFileSelector}
-              >
+                disabled={inputDisabled || !!errorPopUp || loadingSelector}
+                onClick={toggleFileSelector}>
                 <div className={styles.actionToolTip}>Files</div>
 
                 <label
                   htmlFor="file"
                   style={{
-                    cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
-                  }}
-                >
+                    cursor: inputDisabled || !!errorPopUp || loadingSelector ? 'not-allowed' : 'pointer',
+                  }}>
                   <Paperclip aria-hidden className={styles.paperclipIcon} />
                 </label>
 
@@ -269,26 +264,36 @@ export const InputOptions = (props: Props) => {
                   value={inputFile?.value}
                   onChange={onInputFileChangeHandler}
                   className={styles.fileInput}
-                  disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+                  disabled={inputDisabled || !!errorPopUp || loadingSelector}
                   accept={inputAcceptedFiles}
                 />
               </button>
             )}
 
-            <button
-            className={`${styles.recordingIconButton} ${voiceRecordingStarted ? styles.iconRecordingStarted : voiceRecordingPaused ? styles.iconRecordingPaused : styles.iconRecordingDefault}`}
-              type="button"
-              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector || (voiceRecordingStarted || audioRecordingPreviewLoading)}
-              onClick={handleMicrophoneIconClick}
-            >
-              <div className={styles.actionToolTip}>Record audio clip</div>
-              {voiceRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
-            </button>
+            {supportsAudioRecordingMp3(source) && (
+              <button
+                className={`${styles.recordingIconButton} ${
+                  voiceRecordingStarted
+                    ? styles.iconRecordingStarted
+                    : voiceRecordingPaused
+                    ? styles.iconRecordingPaused
+                    : styles.iconRecordingDefault
+                }`}
+                type="button"
+                disabled={
+                  inputDisabled ||
+                  !!errorPopUp ||
+                  loadingSelector ||
+                  voiceRecordingStarted ||
+                  audioRecordingPreviewLoading
+                }
+                onClick={handleMicrophoneIconClick}>
+                <div className={styles.actionToolTip}>Record audio clip</div>
+                {voiceRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
+              </button>
+            )}
           </>
         )}
     </div>
   );
 };
-
-
-//[styles.iconButtonRecordingOn, styles.iconButtonRecordingStarted] : voiceRecordingPaused ? [styles.iconButtonRecordingOn, styles.iconButtonRecordingPaused] : styles.iconRecordingDefault}

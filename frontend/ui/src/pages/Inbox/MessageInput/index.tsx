@@ -78,7 +78,7 @@ const MessageInput = (props: Props) => {
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
-  const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
+  const [errorPopUp, setErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
   const [isFileLoaded, setIsFileLoaded] = useState(false);
@@ -116,7 +116,7 @@ const MessageInput = (props: Props) => {
           })
           .catch(() => {
             setLoadingSelector(false);
-            setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+            setErrorPopUp('Failed to upload the file. Please try again later.');
           });
       }
 
@@ -149,7 +149,7 @@ const MessageInput = (props: Props) => {
       setSelectedSuggestedReply(null);
       setUploadedFileUrl(null);
       setDraggedAndDroppedFile(null);
-      setFileUploadErrorPopUp('');
+      setErrorPopUp('');
       setLoadingSelector(false);
       resetAudioRecordingStatus();
     }
@@ -181,6 +181,8 @@ const MessageInput = (props: Props) => {
     }
   }, [channelConnected]);
 
+
+
   const resetAudioRecordingStatus = () => {
     setAudioRecordingCanceled(true);
     setVoiceRecordingStarted(false);
@@ -203,7 +205,7 @@ const MessageInput = (props: Props) => {
 
       //size limit error
       if (fileSizeInMB >= maxFileSizeAllowed) {
-        return setFileUploadErrorPopUp(
+        return setErrorPopUp(
           `Failed to upload the file.
         The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
         );
@@ -216,7 +218,7 @@ const MessageInput = (props: Props) => {
         const errorMessage = `This file type is not supported by this source. 
       Supported files: ${supportedFilesForSource}`;
 
-        return setFileUploadErrorPopUp(errorMessage);
+        return setErrorPopUp(errorMessage);
       }
 
       setFileToUpload(file);
@@ -403,7 +405,7 @@ const MessageInput = (props: Props) => {
   };
 
   const closeFileErrorPopUp = () => {
-    setFileUploadErrorPopUp('');
+    setErrorPopUp('');
     setDraggedAndDroppedFile(null);
   };
 
@@ -510,7 +512,7 @@ const MessageInput = (props: Props) => {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected || fileUploadErrorPopUp ? true : false}
+                  disabled={!channelConnected || errorPopUp ? true : false}
                 />
               </div>
             )}
@@ -521,10 +523,11 @@ const MessageInput = (props: Props) => {
                 isVoiceRecordingPaused={isVoiceRecordingPaused}
                 recordingResumed={recordingResumed}
                 setAudioRecordingPreviewLoading={setAudioRecordingPreviewLoading}
-                setFileUploadErrorPopUp={setFileUploadErrorPopUp}
+                setErrorPopUp={setErrorPopUp}
                 getUploadedAudioRecordingFile={getUploadedAudioRecordingFile}
                 audioRecordingSent={audioRecordingSent}
                 setRecordingResumed={setRecordingResumed}
+                setErrorPopUp={setErrorPopUp}
               />
             )}
 
@@ -539,7 +542,7 @@ const MessageInput = (props: Props) => {
               selectFile={selectFile}
               isFileLoaded={isFileLoaded}
               canSendMedia={canSendMedia}
-              fileUploadErrorPopUp={fileUploadErrorPopUp}
+              errorPopUp={errorPopUp}
               closeFileErrorPopUp={closeFileErrorPopUp}
               loadingSelector={loadingSelector}
               voiceRecordingStart={voiceRecordingStart}

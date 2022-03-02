@@ -6,9 +6,10 @@ export function WaveformAudio({audioData}) {
   const maxFrequencyValue = 255;
   const barWidth = 3;
   const barTotalCount = 57;
+  const canvasHeight = 40;
   //57
   const canvasWidth = 940; //270
-  const canvasHeight = 40;
+
 
   //responsive: barCount: 90 / barWidth: 4
 
@@ -17,23 +18,21 @@ export function WaveformAudio({audioData}) {
   useEffect(() => {
     if (canvas && canvas.current) {
       setContext(canvas.current.getContext('2d'));
-      canvas.current.style.width = '100%';
-      canvas.current.style.height = 40 + 'px';
-      canvas.current.width = canvas.current.offsetWidth;
-      canvas.current.height = canvas.current.offsetHeight;
-      //const context = canvas.current.getContext('2d');
+     
+      const context = canvas.current.getContext('2d');
 
-      //setContext(context);
-      // const ratio = window.devicePixelRatio;
+      setContext(context);
+      const ratio = window.devicePixelRatio || 1;
 
       // canvas.current.width = canvasWidth * ratio;
       // canvas.current.height = canvasHeight * ratio;
 
-      // canvas.current.style.width = canvasWidth + 'px';
-      // canvas.current.style.height = canvasHeight + 'px';
+      canvas.current.style.width = '100%';
+      canvas.current.style.height = canvasHeight + 'px';
+      canvas.current.width = canvas.current.offsetWidth;
+      canvas.current.height = canvas.current.offsetHeight;
+  
 
-      // context.scale(ratio, ratio);
-      // context.translate(0, canvas.current.offsetHeight / 2);
     }
   }, [canvas]);
 
@@ -55,11 +54,13 @@ export function WaveformAudio({audioData}) {
     let x = barWidth * 2;
     for (let i = 0; i < barTotalCount; i++) {
       const freqHeight = (audioData[i] / maxFrequencyValue) * canvasHeight;
-      const y = canvasHeight / 2 - freqHeight / 2;
+      const baseHeight = canvasHeight/8;
+      const y = (canvasHeight / 2 - freqHeight / 2)- (baseHeight/2)
+      let calculatedHeight =  y + freqHeight + baseHeight;
 
       context.beginPath();
       context.moveTo(x, y);
-      context.lineTo(x, y + freqHeight);
+      context.lineTo(x, calculatedHeight);
       context.stroke();
       x += singleBarSize;
     }

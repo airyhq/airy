@@ -23,7 +23,7 @@ export function AudioRecording({
   audioRecordingCanceledUpdate,
   isVoiceRecordingPaused,
   setAudioRecordingPreviewLoading,
-  setFileUploadErrorPopUp,
+  setErrorPopUp,
   getUploadedAudioRecordingFile,
   audioRecordingSent,
   setRecordingResumed,
@@ -38,11 +38,19 @@ export function AudioRecording({
     let abort = false;
 
     const startVoiceRecording = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
 
-      setAudioStream(stream);
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+  
+        setAudioStream(stream);
+
+      } catch {
+        audioRecordingCanceledUpdate(true);
+        setErrorPopUp('Microphone access denied. Check your browser settings to make sure Airy has permission to access your microphone, and try again.');
+      }
+
     };
 
     if (!abort) {
@@ -86,7 +94,12 @@ export function AudioRecording({
 
       mediaRecorder.addEventListener('dataavailable', getAudioFile);
 
-      return () => mediaRecorder.removeEventListener('dataavailable', getAudioFile);
+      return () => {
+        mediaRecorder.removeEventListener('dataavailable', getAudioFile);
+        console.log('unmount STOP');
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks()[0].stop();
+      }
     }
   }, [audioStream]);
 
@@ -133,7 +146,7 @@ export function AudioRecording({
           .catch(() => {
             setLoading(false);
             cancelRecording();
-            setFileUploadErrorPopUp('Failed to load the audio recording. Please try again later.');
+            setErrorPopUp('Failed to load the audio recording. Please try again later.');
           });
       }
       return () => {

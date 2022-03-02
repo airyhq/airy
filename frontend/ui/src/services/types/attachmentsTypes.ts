@@ -40,3 +40,13 @@ export const getInputAcceptedFilesForSource = (source: string) => {
 
   return inputAcceptValue;
 };
+
+export const supportsAudioRecordingMp3 = (source: string) => {
+  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
+
+  const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
+
+  if (!audioFiles || !audioFiles.includes('mp3')) return false;
+
+  return true;
+};

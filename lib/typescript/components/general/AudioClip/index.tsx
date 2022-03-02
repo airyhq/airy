@@ -39,6 +39,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
   const [ctx, setCtx] = useState(null);
+  const [audioLoadedError, setAudioLoadedError] = useState(false);
 
   const canvas = useRef(null);
   const audioElement = useRef(null);
@@ -71,18 +72,19 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
       const barsColor = 'white';
 
       try {
-        const readableStream = await fetch(audioUrl, { signal: abortController.signal });
+        const readableStream = await fetch(audioUrl, {signal: abortController.signal});
         const arrayBuffer = await readableStream.arrayBuffer();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-          setDuration(audioBuffer.duration);
-          const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
-          setFormattedDuration(formattedDuration);
-        
+        setDuration(audioBuffer.duration);
+        const formattedDuration = formatSecondsAsTime(audioBuffer.duration);
+        setFormattedDuration(formattedDuration);
+
         const filteredData = filterData(audioBuffer);
         drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
       } catch (error) {
-        console.log('fetch error', error);
+        console.log('audioClip fetch error');
+        setAudioLoadedError(true);
       }
     };
 
@@ -90,8 +92,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     return () => {
       abortController.abort();
-    }
-  
+    };
   }, []);
 
   const filterData = audioBuffer => {
@@ -126,14 +127,14 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     //console.log('updatedCurrentTime', updatedCurrentTime);
     let audioDuration = e.currentTarget.duration;
 
-    if(audioDuration === Infinity) audioDuration = duration;
+    if (audioDuration === Infinity) audioDuration = duration;
 
     //console.log('audioDuration', audioDuration);
 
     const percentForCurrTimeAndDuration = Math.round((updatedCurrentTime / audioDuration) * 100);
     //console.log('percentForCurrTimeAndDuration', percentForCurrTimeAndDuration);
     const step = Math.round(totalBars * (percentForCurrTimeAndDuration / 100));
-   // console.log('step', step);
+    // console.log('step', step);
 
     if (updatedCurrentTime === audioDuration) {
       setIsPlaying(false);
@@ -215,7 +216,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     ctx.stroke(barsSamplesPaths['path' + i]);
   };
 
-  
   const colorBarsGrey = (prevCount, updatedCount) => {
     for (let i = prevCount; i < updatedCount; i++) {
       changeColorBarSegment(i, '#C0D0D5');
@@ -239,7 +239,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
       colorBarsWhite(19, 0);
     }
- 
+
     audioElement.current.play();
     setIsPlaying(true);
   };
@@ -253,8 +253,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const navigateAudioTrack = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-
-    if(!isPlaying) return; 
+    if (!isPlaying) return;
 
     const rect = canvas.current.getBoundingClientRect();
     const audio = audioElement.current;
@@ -283,20 +282,26 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   return (
-    <div className={styles.audioContainer}>
-      <button type="button" onClick={toggleAudio}>
-        {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
-      </button>
+    <>
+      {!audioLoadedError ? (
+        <div className={styles.audioContainer}>
+          <button type="button" onClick={toggleAudio}>
+            {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
+          </button>
 
-      <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
+          <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
 
-      <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
+          <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
 
-      {formattedDuration && (
-        <span className={styles.audioTime}>
-          {currentTime !== 0 ? formatSecondsAsTime(audioElement?.current.currentTime) : formattedDuration}
-        </span>
+          {formattedDuration && (
+            <span className={styles.audioTime}>
+              {currentTime !== 0 ? formatSecondsAsTime(audioElement?.current.currentTime) : formattedDuration}
+            </span>
+          )}
+        </div>
+      ) : (
+        <span> The audio failed to load</span>
       )}
-    </div>
+    </>
   );
 };

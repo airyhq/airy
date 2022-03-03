@@ -24,9 +24,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
+import static com.google.com.google.common.base.Strings.isNullOrEmpty;
 
 @Component
-public class AsyncSendMessageHandler implements DisposableBean, Runnable {
+public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
 
     @AllArgsConstructor
     @Data
@@ -42,7 +43,7 @@ public class AsyncSendMessageHandler implements DisposableBean, Runnable {
     private volatile boolean keepAlive;
     
 
-    AsyncSendMessageHandler(Stores stores) {
+    AsyncSendMessagesHandler(Stores stores) {
         this.stores = stores;
         this.pendingConversations = new ConcurrentLinkedQueue<>();
         this.keepAlive = true;
@@ -107,7 +108,9 @@ public class AsyncSendMessageHandler implements DisposableBean, Runnable {
                 //FIXME: Make this configurable
                 Thread.sleep(1000);
 
-            } catch (Exception e) { }
+            } catch (Exception e) { 
+                //FIXME: add logs
+            }
         }
     }
 

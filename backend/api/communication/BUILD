@@ -26,6 +26,7 @@ app_deps = [
     "@maven//:org_apache_lucene_lucene_queryparser",
     "@maven//:org_apache_lucene_lucene_analyzers_common",
     "@maven//:org_apache_lucene_lucene_core",
+    "@maven//:com_google_guava_guava",
 ]
 
 springboot(

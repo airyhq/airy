@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
-import static com.google.com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Component
 public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
@@ -120,6 +120,10 @@ public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
     }
 
     public void addPendingConversation(String messageId, String conversationId) {
+        if (isNullOrEmpty(messageId) || isNullOrEmpty(conversationId)) {
+            //FIXME: add logs
+            return;
+        }
         pendingConversations.add(new MessageConversationIdsPair(messageId, conversationId, Instant.now()));
     }
 }

@@ -8,15 +8,16 @@ import AudioRecorder from 'audio-recorder-polyfill';
 import mpegEncoder from 'audio-recorder-polyfill/mpeg-encoder';
 import styles from './index.module.scss';
 
-AudioRecorder.encoder = mpegEncoder;
-AudioRecorder.prototype.mimeType = 'audio/mpeg';
-window.MediaRecorder = AudioRecorder;
-
 declare global {
   interface Window {
     webkitAudioContext: typeof AudioContext;
+    MediaRecorder: typeof MediaRecorder;
   }
 }
+
+AudioRecorder.encoder = mpegEncoder;
+AudioRecorder.prototype.mimeType = 'audio/mpeg';
+window.MediaRecorder = AudioRecorder;
 
 type AudioRecordingProps = {
   isAudioRecordingPaused: (isPaused: boolean) => void;

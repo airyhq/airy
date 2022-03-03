@@ -6,6 +6,5 @@
   "include": [
     "./frontend/**/*",
     "./lib/typescript/**/*"
-  ],
-  "types": ["dom-mediacapture-record"]
+  ]
 }

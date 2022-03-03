@@ -1,29 +1,8 @@
-load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("//tools/build:container_release.bzl", "container_release")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@com_github_masmovil_bazel_rules//helm:helm.bzl", "helm_chart", "helm_push", "helm_release")
 
-filegroup(
-    name = "chart",
-    srcs = glob(["**/*"]),
-)
-
-pkg_tar(
-    name = "chart_tar",
-    srcs = [":chart"],
-    package_dir = "/apps/helm-chart",  # cwd of the helm image
-    strip_prefix = "./",
-)
-
-container_image(
-    name = "image",
-    base = "@helm//image",
-    tars = [
-        ":chart_tar",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-container_release(
-    registry = "ghcr.io/airyhq/infrastructure",
-    repository = "helm",
+helm_chart(
+    name = "helm_chart",
+    package_name = "airy",
+    srcs = glob(["**"]),
+    helm_chart_version = "0.41.0",
 )

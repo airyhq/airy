@@ -145,6 +145,21 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 
+### Helm rules
+
+git_repository(
+    name = "com_github_masmovil_bazel_rules",
+    # tag = 0.5.0
+    commit = "997510889b8c91b603bc265b68678d51ce396c41",
+    remote = "https://github.com/masmovil/bazel-rules.git",
+)
+
+load(
+    "@com_github_masmovil_bazel_rules//repositories:repositories.bzl",
+    mm_repositories = "repositories",
+)
+mm_repositories()
+
 ### Bazel tooling
 
 git_repository(

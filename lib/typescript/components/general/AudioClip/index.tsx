@@ -41,19 +41,20 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [ctx, setCtx] = useState(null);
   const [audioLoadedError, setAudioLoadedError] = useState(false);
 
-  //saveColor here: grey 
-
   const canvas = useRef(null);
   const audioElement = useRef(null);
+
   const totalBars = 20;
   const barWidth = 3;
+  const barsColor = 'white';
+  const greyProgressBarColor = '#C0D0D5';
 
   const canvasWidth = 174;
   const canvasHeight = 40;
 
   useEffect(() => {
     const abortController = new AbortController();
-    const context = canvas.current.getContext('2d');
+    const context: CanvasRenderingContext2D = canvas.current.getContext('2d');
     const ratio = window.devicePixelRatio;
 
     canvas.current.width = 174 * ratio;
@@ -64,14 +65,11 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     context.scale(ratio, ratio);
 
-    const visualizeAudio = async canvasContext => {
+    const visualizeAudio = async (canvasContext: CanvasRenderingContext2D) => {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      audioContext.resume();
 
       canvasContext.translate(0, canvas.current.offsetHeight / 2);
       canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
-      const canvasCurrent = canvas.current;
-      const barsColor = 'white';
 
       try {
         const readableStream = await fetch(audioUrl, {signal: abortController.signal});
@@ -83,9 +81,8 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
         setFormattedDuration(formattedDuration);
 
         const filteredData = filterData(audioBuffer);
-        drawAudioSampleBars(filteredData, barsColor, canvasCurrent, canvasContext);
+        drawAudioSampleBars(filteredData, barsColor, canvasContext);
       } catch (error) {
-        console.log('audioClip fetch error');
         setAudioLoadedError(true);
       }
     };
@@ -97,7 +94,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     };
   }, []);
 
-  const filterData = audioBuffer => {
+  const filterData = (audioBuffer: AudioBuffer) => {
     const channelData = audioBuffer.getChannelData(0);
     const sampleNumPerBar = Math.floor(channelData.length / totalBars);
     const filteredData = [];
@@ -123,20 +120,13 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const getCurrentDuration = e => {
-    // console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
-    // console.log('e.currentTarget.duration', e.currentTarget.duration);
     const updatedCurrentTime = e.currentTarget.currentTime;
-    //console.log('updatedCurrentTime', updatedCurrentTime);
     let audioDuration = e.currentTarget.duration;
 
     if (audioDuration === Infinity) audioDuration = duration;
 
-    //console.log('audioDuration', audioDuration);
-
     const percentForCurrTimeAndDuration = Math.round((updatedCurrentTime / audioDuration) * 100);
-    //console.log('percentForCurrTimeAndDuration', percentForCurrTimeAndDuration);
     const step = Math.round(totalBars * (percentForCurrTimeAndDuration / 100));
-    // console.log('step', step);
 
     if (updatedCurrentTime === audioDuration) {
       setIsPlaying(false);
@@ -147,14 +137,14 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     colorProgressBars(step);
   };
 
-  const drawAudioSampleBars = (freqData, color, canvasCurrent, ctx) => {
+  const drawAudioSampleBars = (freqData: number[], color: string, ctx: CanvasRenderingContext2D) => {
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
 
-    const width = Math.round(canvasCurrent.offsetWidth / freqData.length);
-    const canvasOffsetHeight = canvasCurrent.offsetHeight;
+    const width = Math.round(canvas.current.offsetWidth / freqData.length);
+    const canvasOffsetHeight = canvas.current.offsetHeight;
 
-    let x;
+    let x: number;
 
     for (let i = 0; i < freqData.length; i++) {
       x = width * i;
@@ -163,11 +153,18 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
         freqData[i] = canvasOffsetHeight / 2;
       }
 
-      drawBar(i, x, freqData[i], (i + 1) % 2, color, barWidth, ctx);
+      drawBar(i, x, freqData[i], (i + 1) % 2, color, ctx);
     }
   };
 
-  const drawBar = (i, x, height, isEven, color, barWidth, ctx) => {
+  const drawBar = (
+    i: number,
+    x: number,
+    height: number,
+    isEven: number,
+    color: string,
+    ctx: CanvasRenderingContext2D
+  ) => {
     if (height <= 1) {
       height += 4;
     }
@@ -198,31 +195,31 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     setCtx(ctx);
   };
 
-  const colorProgressBars = step => {
+  const colorProgressBars = (step: number) => {
     if (count === 0 && step === 0) {
-      changeColorBarSegment(step, '#C0D0D5');
+      changeColorBarSegment(step, greyProgressBarColor);
     } else {
       for (let i = count; i < step; i++) {
-        changeColorBarSegment(i, '#C0D0D5');
+        changeColorBarSegment(i, greyProgressBarColor);
       }
     }
 
     setCount(step);
   };
 
-  const changeColorBarSegment = (i, color) => {
+  const changeColorBarSegment = (i: number, color: string) => {
     ctx.strokeStyle = color;
     ctx.stroke(barsSamplesPaths['path' + i]);
   };
 
-  const colorBarsGrey = (prevCount, updatedCount) => {
+  const colorBarsGrey = (prevCount: number, updatedCount: number) => {
     for (let i = prevCount; i < updatedCount; i++) {
-      changeColorBarSegment(i, '#C0D0D5');
+      changeColorBarSegment(i, greyProgressBarColor);
     }
     setCount(updatedCount);
   };
 
-  const colorBarsWhite = (prevCount, updatedCount) => {
+  const colorBarsWhite = (prevCount: number, updatedCount: number) => {
     for (let i = prevCount; i >= updatedCount; i--) {
       changeColorBarSegment(i, 'white');
     }
@@ -238,7 +235,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
       colorBarsWhite(19, 0);
     }
-
     audioElement.current.play();
     setIsPlaying(true);
   };
@@ -256,19 +252,14 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     const rect = canvas.current.getBoundingClientRect();
     const audio = audioElement.current;
-    // console.log('rect.left', rect.left);
-    // console.log('e.clientX', e.clientX);
-    const offsetX = Math.round(e.clientX - rect.left);
-    // console.log('offsetX', offsetX);
-    // console.log('audio.duration', audio.duration);
 
+    const offsetX = Math.round(e.clientX - rect.left);
     const updatedPercentage = Math.ceil((offsetX / canvas.current.clientWidth) * 100);
 
     const currentTime = audio.duration * (offsetX / canvas.current.clientWidth);
     const updatedCount = Math.ceil(totalBars * (updatedPercentage / 100));
 
     const updatedTime = duration * (offsetX / canvas.current.clientWidth);
-    //console.log('updatedTime', updatedTime);
     audio.currentTime = updatedTime;
 
     setCurrentTime(currentTime);

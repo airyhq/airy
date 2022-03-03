@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {WaveformAudio} from './WaveformAudio';
-import styles from './index.module.scss';
 import {ReactComponent as Pause} from 'assets/images/icons/stopMedia.svg';
+import styles from './index.module.scss';
 
 declare global {
   interface Window {
@@ -9,31 +9,36 @@ declare global {
   }
 }
 
-export function AudioStream({audioStream, pauseRecording}) {
-  const [dataArr, setDataArr] = useState<any>(new Uint8Array(0));
+type AudioStreamProps = {
+  audioStream: MediaStream;
+  pauseRecording: () => void;
+};
+
+export function AudioStream({audioStream, pauseRecording}: AudioStreamProps) {
+  const [dataArr, setDataArr] = useState<number[]>([0]);
   let audioAnalyser;
   let audioArr;
   let updateAudioArrId;
   let source;
 
   useEffect(() => {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      audioAnalyser = audioContext.createAnalyser();
-      audioAnalyser.minDecibels = -90;
-      audioAnalyser.maxDecibels = -10;
-      audioAnalyser.smoothingTimeConstant = 0.85;
-      audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext.resume();
+    audioAnalyser = audioContext.createAnalyser();
+    audioAnalyser.minDecibels = -90;
+    audioAnalyser.maxDecibels = -10;
+    audioAnalyser.smoothingTimeConstant = 0.85;
+    audioArr = new Uint8Array(audioAnalyser.frequencyBinCount);
 
-      source = audioContext.createMediaStreamSource(audioStream);
-      source.connect(audioAnalyser);
-      updateAudioArrId = requestAnimationFrame(updateAudio);
-     
-      return () => {
-        window.cancelAnimationFrame(updateAudioArrId);
-        audioAnalyser.disconnect();
-        source.disconnect();
-      };
-    
+    source = audioContext.createMediaStreamSource(audioStream);
+    source.connect(audioAnalyser);
+    updateAudioArrId = requestAnimationFrame(updateAudio);
+
+    return () => {
+      window.cancelAnimationFrame(updateAudioArrId);
+      audioAnalyser.disconnect();
+      source.disconnect();
+    };
   }, []);
 
   const updateAudio = () => {

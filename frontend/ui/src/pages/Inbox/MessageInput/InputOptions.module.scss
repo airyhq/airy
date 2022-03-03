@@ -23,14 +23,30 @@
   z-index: $base;
 }
 
+.iconRecordingDefault {
+  svg {
+    path {
+      stroke: var(--color-icons-gray);
+      fill: none;
+    }
+  }
+}
+
 @mixin activeButton {
   background-color: var(--color-background-blue);
   border-radius: 50%;
 
   svg {
     path {
-      fill: #4bb3fd;
+      fill: var(--color-airy-logo-blue);
     }
+  }
+}
+
+@mixin iconsCommonStyle {
+  svg {
+    width: 22px;
+    pointer-events: none;
   }
 }
 
@@ -45,18 +61,9 @@
   border: none;
 }
 
-
-
-.iconRecordingDefault {
-  svg {
-    width: 22px;
-    pointer-events: none;
-
-    path {
-      stroke: var(--color-icons-gray);
-      fill:none;
-    }
-  }
+@mixin iconButtonRecordingOn {
+  background-color: var(--color-airy-blue);
+  border-radius: 50%;
 }
 
 .recordingIconButton {
@@ -110,11 +117,9 @@
 
 .iconButton {
   @include optionsIconButton;
+  @include iconsCommonStyle;
 
   svg {
-    width: 22px;
-    pointer-events: none;
-
     path {
       fill: var(--color-icons-gray);
     }
@@ -153,33 +158,21 @@
   }
 }
 
-@mixin iconButtonRecordingOn {
-  background-color: #1578D4;
-  border-radius: 50%;
-}
-
 .iconRecordingOn {
   @include iconButtonRecordingOn;
+  @include iconsCommonStyle;
 
   svg {
-    width: 22px;
-    pointer-events: none;
-
     path {
       stroke: white;
-      fill:none;
+      fill: none;
     }
   }
-
 }
 
 .iconRecordingPaused {
   @include iconButtonRecordingOn;
-  svg {
-    width: 22px;
-    pointer-events: none;
-  }
-  
+  @include iconsCommonStyle;
 }
 
 .smileyIcon {
@@ -189,15 +182,6 @@
 
 .templateActionContainer {
   margin-top: 8px;
-}
-
-.templateAltIcon {
-  height: 28px;
-  width: 20px;
-  svg {
-    background-color: red;
-    margin-top: 5px;
-  }
 }
 
 .fileInput {

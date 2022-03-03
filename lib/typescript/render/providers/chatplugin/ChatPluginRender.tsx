@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {RenderPropsUnion} from '../../props';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
 import {Text} from '../../components/Text';

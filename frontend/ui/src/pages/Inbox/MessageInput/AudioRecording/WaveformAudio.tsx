@@ -1,6 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-export function WaveformAudio({audioData}) {
+type WaveformAudioProps = {
+  audioData: number[];
+};
+
+export function WaveformAudio({audioData}: WaveformAudioProps) {
   const canvas = useRef(null);
   const [context, setContext] = useState(null);
   const [barWidth, setBarWidth] = useState(3);
@@ -11,9 +15,9 @@ export function WaveformAudio({audioData}) {
   useEffect(() => {
     if (window.innerWidth > 2000) {
       setBarTotalCount(90);
-      setBarWidth(4)
+      setBarWidth(4);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (canvas && canvas.current) {

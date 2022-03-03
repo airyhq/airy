@@ -2,17 +2,15 @@
 @import 'assets/scss/colors';
 
 .audioContainer {
+  width: auto;
+  height: 48px;
+  padding: 0 6px;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  height: 40px;
-  margin-top: 80px;
   border-radius: 12px;
   background-color: var(--color-airy-blue);
-  padding: 0 6px;
-  height: 48px;
-  margin:0;
 }
 
 .audioContainer audio {
@@ -20,15 +18,15 @@
 }
 
 .audioContainer button {
-  width:20px;
+  width: 20px;
+  margin-right: 6px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 6px;
-  padding: 0;
   background-color: transparent;
   border: none;
-  outline:none;
+  outline: none;
   cursor: pointer;
 }
 

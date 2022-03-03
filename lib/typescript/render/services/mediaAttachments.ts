@@ -107,5 +107,3 @@ export const getFileName = (fileUrl: string) => {
 
   return fileUrlArr[fileUrlArr.length - 1].split('?')[0];
 };
-
-

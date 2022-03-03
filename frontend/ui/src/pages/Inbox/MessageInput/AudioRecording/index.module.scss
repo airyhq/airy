@@ -2,12 +2,12 @@
 @import 'assets/scss/fonts.scss';
 
 .container {
+  width: 100%;
+  height: 100%;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
-  height:100%;
 }
 
 .waveformContainer {
@@ -26,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1578d4;
+  background-color: var(--color-airy-blue);
   border-radius: 50%;
   border: none;
   cursor: pointer;

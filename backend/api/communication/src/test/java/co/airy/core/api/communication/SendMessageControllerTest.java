@@ -15,7 +15,10 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
+@TestMethodOrder(OrderAnnotation.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 public class SendMessageControllerTest {
@@ -81,6 +85,7 @@ public class SendMessageControllerTest {
     }
 
     @Test
+    @Order(1)
     void canSendTextMessages() throws Exception {
         final String messagePayload = "{\"text\":\"answeris42\"}";
         final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
@@ -115,5 +120,10 @@ public class SendMessageControllerTest {
 
         final Message message = maybeMessage.get();
         assertThat(message.getContent(), equalTo(messagePayload));
+    }
+
+    @Test
+    @Order(2)
+    void canSendMessageAsync() throws Exception {
     }
 }

@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
+import co.airy.log.AiryLoggerFactory;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
@@ -15,10 +16,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.validation.constraints.Min;
 
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +34,9 @@ import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Component
-public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
+public class AsyncSendMessagesHandler implements Runnable {
+
+    private static final Logger log = AiryLoggerFactory.getLogger(AsyncSendMessagesHandler.class);
 
     @AllArgsConstructor
     @Data
@@ -40,14 +49,29 @@ public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
     private final Stores stores;
     private final ConcurrentLinkedQueue<MessageConversationIdsPair> pendingConversations;
     private final Thread thread;
+    private final long maxWaitSeconds;
+    private final long timePeriod;
     private volatile boolean keepAlive;
     
 
-    AsyncSendMessagesHandler(Stores stores) {
+    AsyncSendMessagesHandler(
+            Stores stores,
+            @Value("${async-messages-handler.max-wait-seconds}")
+            long maxWaitSeconds,
+            @Min(1)
+            @Value("${async-messages-handler.check-period-seconds}")
+            long periodSeconds) {
         this.stores = stores;
         this.pendingConversations = new ConcurrentLinkedQueue<>();
         this.keepAlive = true;
+        this.maxWaitSeconds = maxWaitSeconds;
+        this.timePeriod = TimeUnit.SECONDS.toMillis(periodSeconds);
         this.thread = new Thread(this);
+    }
+
+    @PostConstruct
+    private void start() {
+        thread.start();
     }
 
     @Override
@@ -69,8 +93,7 @@ public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
                     final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
                     final Conversation conversation = conversationsStore.get(p.getConversationId());
                     if (conversation == null) {
-                        //FIXME: Make this configurable
-                        if (Duration.between(p.getNow(), Instant.now()).toSeconds() < 30) {
+                        if (Duration.between(p.getNow(), Instant.now()).toSeconds() < maxWaitSeconds) {
                             continue;
                         }
 
@@ -92,7 +115,7 @@ public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
                         MessageContainer msg = Optional.ofNullable(stores.getMessageContainer(p.getMessageId()))
                             .orElseGet(MessageContainer::new);
                         if (msg.getMessage() == null) {
-                            //TODO: log error
+                            log.error(String.format("no message found with this id %s", p.getMessageId()));
                         } else {
                             Message m = Message.newBuilder(msg.getMessage())
                                 .setChannelId(channel.getId())
@@ -105,23 +128,23 @@ public class AsyncSendMessagesHandler implements DisposableBean, Runnable {
                     iter.remove();
                 }
 
-                //FIXME: Make this configurable
-                Thread.sleep(1000);
+                Thread.sleep(this.timePeriod);
 
             } catch (Exception e) { 
-                //FIXME: add logs
+                log.error(String.format("unexpected exception %s", e.toString()));
             }
         }
     }
 
-    @Override
+    @PreDestroy
     public void destroy() {
         keepAlive = false;
     }
 
+
     public void addPendingConversation(String messageId, String conversationId) {
         if (isNullOrEmpty(messageId) || isNullOrEmpty(conversationId)) {
-            //FIXME: add logs
+            log.warn(String.format("messageId and/or conversationId is empty"));
             return;
         }
         pendingConversations.add(new MessageConversationIdsPair(messageId, conversationId, Instant.now()));

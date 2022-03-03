@@ -1,8 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {formatSecondsAsTime} from 'dates';
+import {formatSecondsAsTime} from './formatSecondsAsTime';
 import {ReactComponent as PlayIcon} from 'assets/images/icons/playAudioClip.svg';
 import {ReactComponent as PauseIcon} from 'assets/images/icons/pauseAudioClip.svg';
 import styles from './index.module.scss';
+
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
 
 type AudioRenderProps = {
   audioUrl: string;
@@ -39,7 +45,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
   const [ctx, setCtx] = useState(null);
-  const [audioLoadedError, setAudioLoadedError] = useState(false);
 
   const canvas = useRef(null);
   const audioElement = useRef(null);
@@ -54,6 +59,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   useEffect(() => {
     const abortController = new AbortController();
+    let isMounted = true;
     const context: CanvasRenderingContext2D = canvas.current.getContext('2d');
     const ratio = window.devicePixelRatio;
 
@@ -83,13 +89,16 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
         const filteredData = filterData(audioBuffer);
         drawAudioSampleBars(filteredData, barsColor, canvasContext);
       } catch (error) {
-        setAudioLoadedError(true);
+        return error;
       }
     };
 
-    visualizeAudio(context);
+    if (isMounted) {
+      visualizeAudio(context);
+    }
 
     return () => {
+      isMounted = false;
       abortController.abort();
     };
   }, []);
@@ -140,6 +149,8 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const drawAudioSampleBars = (freqData: number[], color: string, ctx: CanvasRenderingContext2D) => {
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
+
+    console.log('freqData', freqData);
 
     const width = Math.round(canvas.current.offsetWidth / freqData.length);
     const canvasOffsetHeight = canvas.current.offsetHeight;
@@ -272,26 +283,20 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   return (
-    <>
-      {!audioLoadedError ? (
-        <div className={styles.audioContainer}>
-          <button type="button" onClick={toggleAudio}>
-            {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
-          </button>
+    <div className={styles.audioContainer}>
+      <button type="button" onClick={toggleAudio}>
+        {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
+      </button>
 
-          <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
+      <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
 
-          <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
+      <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
 
-          {formattedDuration && (
-            <span className={styles.audioTime}>
-              {currentTime !== 0 ? formatSecondsAsTime(audioElement?.current.currentTime) : formattedDuration}
-            </span>
-          )}
-        </div>
-      ) : (
-        <span> The audio failed to load</span>
+      {formattedDuration && (
+        <span className={styles.audioTime}>
+          {currentTime !== 0 ? formatSecondsAsTime(audioElement?.current.currentTime) : formattedDuration}
+        </span>
       )}
-    </>
+    </div>
   );
 };

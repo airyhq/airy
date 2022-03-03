@@ -71,12 +71,11 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     context.scale(ratio, ratio);
 
+    context.translate(0, canvas.current.offsetHeight / 2);
+    context.clearRect(0, 0, canvas.current.width, canvas.current.height);
+
     const visualizeAudio = async (canvasContext: CanvasRenderingContext2D) => {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-      canvasContext.translate(0, canvas.current.offsetHeight / 2);
-      canvasContext.clearRect(0, 0, canvas.current.width, canvas.current.height);
-
       try {
         const readableStream = await fetch(audioUrl, {signal: abortController.signal});
         const arrayBuffer = await readableStream.arrayBuffer();

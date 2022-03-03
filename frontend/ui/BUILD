@@ -39,6 +39,7 @@ ts_web_library(
         "@npm//typesafe-actions",
         "@npm//camelcase-keys",
         "@npm//react-color",
+        "@npm//audio-recorder-polyfill",
     ],
 )
 

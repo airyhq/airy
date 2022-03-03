@@ -66,19 +66,23 @@
   border-radius: 50%;
 }
 
+@mixin iconToolTip {
+  @include font-s;
+  position: absolute;
+  background-color: var(--color-text-contrast);
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: none;
+  bottom: 33px;
+  z-index: 1;
+}
+
 .recordingIconButton {
   @include optionsIconButton;
 
   .actionToolTip {
-    @include font-s;
-    position: absolute;
-    background-color: var(--color-text-contrast);
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
-    display: none;
-    bottom: 33px;
-    z-index: 1;
+    @include iconToolTip;
   }
 
   &:hover {
@@ -126,15 +130,7 @@
   }
 
   .actionToolTip {
-    @include font-s;
-    position: absolute;
-    background-color: var(--color-text-contrast);
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
-    display: none;
-    bottom: 33px;
-    z-index: 1;
+    @include iconToolTip;
   }
 
   &:hover {

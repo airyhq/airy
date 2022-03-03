@@ -16,7 +16,6 @@ import {useCurrentConversation, useCurrentMessages} from '../../../selectors/con
 import {isTextMessage} from '../../../services/types/messageTypes';
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
-//import {HttpClientInstance} from '../../../httpClient';
 import {uploadMedia} from '../../../services/mediaUploader';
 import {InputSelector} from './InputSelector';
 import {getAttachmentType} from 'render';

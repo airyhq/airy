@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.log.AiryLoggerFactory;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -69,11 +71,6 @@ public class AsyncSendMessagesHandler implements Runnable {
         this.thread = new Thread(this);
     }
 
-    @PostConstruct
-    private void start() {
-        thread.start();
-    }
-
     @Override
     public void run() {
         final List<MessageConversationIdsPair> pending = new LinkedList<>();
@@ -96,32 +93,15 @@ public class AsyncSendMessagesHandler implements Runnable {
                         if (Duration.between(p.getNow(), Instant.now()).toSeconds() < maxWaitSeconds) {
                             continue;
                         }
+                        setMessageSateToFailed(p.getMessageId(), "Converstaion Id not found");
 
-                        final Metadata metadata = newMessageMetadata(
-                                p.getMessageId(),
-                                MetadataKeys.MessageKeys.ERROR,    
-                                String.format("Converstaion Id not found"));
-                        stores.storeMetadata(metadata);
                     } else {
                         Channel channel = conversation.getChannel();
                         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-                            final Metadata metadata = newMessageMetadata(
-                                    p.getMessageId(),
-                                    MetadataKeys.MessageKeys.ERROR,    
-                                    String.format("Channel not connected"));
-                            stores.storeMetadata(metadata);
+                            setMessageSateToFailed(p.getMessageId(), "Channel not connected");
                         }
-
-                        MessageContainer msg = Optional.ofNullable(stores.getMessageContainer(p.getMessageId()))
-                            .orElseGet(MessageContainer::new);
-                        if (msg.getMessage() == null) {
-                            log.error(String.format("no message found with this id %s", p.getMessageId()));
-                        } else {
-                            Message m = Message.newBuilder(msg.getMessage())
-                                .setChannelId(channel.getId())
-                                .build();
-                            stores.storeMessage(m);
-                        }
+                        //FIXME: check for run condition between setMessageSateToFailed and updateMessage
+                        updateMessage(channel, p.getMessageId());
                     }
                     
                     // remove conversation from pending list
@@ -136,17 +116,57 @@ public class AsyncSendMessagesHandler implements Runnable {
         }
     }
 
-    @PreDestroy
-    public void destroy() {
-        keepAlive = false;
-    }
-
-
     public void addPendingConversation(String messageId, String conversationId) {
         if (isNullOrEmpty(messageId) || isNullOrEmpty(conversationId)) {
             log.warn(String.format("messageId and/or conversationId is empty"));
             return;
         }
         pendingConversations.add(new MessageConversationIdsPair(messageId, conversationId, Instant.now()));
+    }
+
+    @PreDestroy
+    public void destroy() {
+        keepAlive = false;
+    }
+
+    @PostConstruct
+    private void start() {
+        thread.start();
+    }
+
+    private void updateMessage(Channel channel, String messageId) throws InterruptedException, ExecutionException {
+        Message msg = Optional.ofNullable(stores.getMessageContainer(messageId))
+            .map((mc) -> mc.getMessage())
+            .orElse(null);
+
+        if (msg == null) {
+            log.error(String.format("no message found with this id %s", messageId));
+            return;
+        }
+
+        Message m = Message.newBuilder(msg)
+            .setChannelId(channel.getId())
+            .setSource(channel.getSource())
+            .build();
+        stores.storeMessage(m);
+    }
+
+    private void setMessageSateToFailed(String messageId, String errorMessage) throws InterruptedException, ExecutionException {
+        final Metadata metadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.ERROR, errorMessage);
+        stores.storeMetadata(metadata);
+
+        Message msg = Optional.ofNullable(stores.getMessageContainer(messageId))
+            .map((mc) -> mc.getMessage())
+            .orElse(null);
+
+        if (msg == null) {
+            log.error(String.format("no message found with this id %s", messageId));
+            return;
+        }
+
+        Message m = Message.newBuilder(msg)
+            .setDeliveryState(DeliveryState.FAILED)
+            .build();
+        stores.storeMessage(m);
     }
 }

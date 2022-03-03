@@ -89,7 +89,7 @@ public class SendMessageController {
                 .setConversationId(conversationId)
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
-                .setSource(Optional.ofNullable(channel).orElseGet(Channel::new).getSource())
+                .setSource(Optional.ofNullable(channel).map((c) -> c.getSource()).orElse(null))
                 .setSenderId(userId)
                 .setSentAt(Instant.now().toEpochMilli())
                 .setIsFromContact(false)

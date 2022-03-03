@@ -13,7 +13,9 @@ export function WaveformAudio({audioData}: WaveformAudioProps) {
   const canvasHeight = 40;
 
   useEffect(() => {
-    if (window.innerWidth > 2000) {
+    if (window.innerWidth >= 1800 && window.innerWidth < 2000) {
+      setBarTotalCount(72);
+    } else if (window.innerWidth >= 2000) {
       setBarTotalCount(90);
       setBarWidth(4);
     }

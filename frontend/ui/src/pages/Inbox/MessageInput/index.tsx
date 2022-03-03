@@ -85,8 +85,8 @@ const MessageInput = (props: Props) => {
 
   const [voiceRecordingStarted, setVoiceRecordingStarted] = useState(false);
   const [voiceRecordingPaused, setVoiceRecordingPaused] = useState(false);
-  const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
   const [audioRecordingPreviewLoading, setAudioRecordingPreviewLoading] = useState(false);
+  const [recordedAudioFileUploaded, setRecordedAudioFileUploaded] = useState<string | null>(null);
   const [recordingResumed, setRecordingResumed] = useState(false);
   const [audioRecordingCanceled, setAudioRecordingCanceled] = useState(true);
   const [audioRecordingSent, setAudioRecordingSent] = useState(false);
@@ -423,7 +423,6 @@ const MessageInput = (props: Props) => {
     console.log('RESUME RECORDING input');
     setRecordingResumed(true);
     setRecordedAudioFileUploaded(null);
-    //setVoiceRecordingStarted(true);
     setVoiceRecordingPaused(false);
   };
 
@@ -527,7 +526,6 @@ const MessageInput = (props: Props) => {
                 getUploadedAudioRecordingFile={getUploadedAudioRecordingFile}
                 audioRecordingSent={audioRecordingSent}
                 setRecordingResumed={setRecordingResumed}
-                setErrorPopUp={setErrorPopUp}
               />
             )}
 
@@ -547,7 +545,6 @@ const MessageInput = (props: Props) => {
               loadingSelector={loadingSelector}
               voiceRecordingStart={voiceRecordingStart}
               isVoiceRecordingPaused={isVoiceRecordingPaused}
-              setRecordingResumed={setRecordingResumed}
               audioRecordingCanceledUpdate={audioRecordingCanceledUpdate}
               audioRecordingCanceled={audioRecordingCanceled}
               voiceRecordingStarted={voiceRecordingStarted}
@@ -555,6 +552,8 @@ const MessageInput = (props: Props) => {
               audioRecordingPreviewLoading={audioRecordingPreviewLoading}
               setAudioRecordingSent={setAudioRecordingSent}
               resumeVoiceRecording={resumeVoiceRecording}
+              recordingResumed={recordingResumed}
+              setRecordingResumed={setRecordingResumed}
             />
           </div>
         </div>

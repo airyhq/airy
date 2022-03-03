@@ -41,6 +41,8 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [ctx, setCtx] = useState(null);
   const [audioLoadedError, setAudioLoadedError] = useState(false);
 
+  //saveColor here: grey 
+
   const canvas = useRef(null);
   const audioElement = useRef(null);
   const totalBars = 20;
@@ -209,9 +211,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const changeColorBarSegment = (i, color) => {
-    ctx.strokeStyle = 'white';
-    ctx.stroke(barsSamplesPaths['path' + i]);
-
     ctx.strokeStyle = color;
     ctx.stroke(barsSamplesPaths['path' + i]);
   };

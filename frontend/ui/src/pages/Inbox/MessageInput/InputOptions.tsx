@@ -41,6 +41,7 @@ type Props = {
   audioRecordingPreviewLoading?: boolean;
   setAudioRecordingSent?: any;
   setRecordingResumed?: any;
+  recordingResumed?: boolean;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -67,6 +68,7 @@ export const InputOptions = (props: Props) => {
     audioRecordingPreviewLoading,
     setAudioRecordingSent,
     setRecordingResumed,
+    recordingResumed
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -81,11 +83,6 @@ export const InputOptions = (props: Props) => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptFilesValue);
   }, [source]);
-
-  useEffect(() => {
-    console.log('voiceRecordingStarted', voiceRecordingStarted);
-    console.log('audioRecordingPreviewLoading', audioRecordingPreviewLoading);
-  }, [voiceRecordingStarted, audioRecordingPreviewLoading]);
 
   useEffect(() => {
     if (!isFileLoaded) {
@@ -273,8 +270,8 @@ export const InputOptions = (props: Props) => {
             {supportsAudioRecordingMp3(source) && (
               <button
                 className={`${styles.recordingIconButton} ${
-                  voiceRecordingStarted
-                    ? styles.iconRecordingStarted
+                  (voiceRecordingStarted || recordingResumed)
+                    ? styles.iconRecordingOn
                     : voiceRecordingPaused
                     ? styles.iconRecordingPaused
                     : styles.iconRecordingDefault

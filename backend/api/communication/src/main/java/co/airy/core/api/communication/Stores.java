@@ -74,6 +74,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String channelsStore = "channels-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
     private final String usersStore = "users-store";
+    private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
@@ -106,7 +107,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
 
         // produce unread count metadata
-        messageStream.filter((conversationId, message) -> message != null && message.getIsFromContact())
+        messageStream.filter((messageId, message) -> message != null && message.getIsFromContact())
                 .selectKey((messageId, message) -> message.getConversationId())
                 .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
@@ -224,6 +225,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
+    }
+
+    public void storeMessage(Message message) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMessages, message.getId(), message)).get();
     }
 
     public void storeMetadata(Metadata metadata) throws ExecutionException, InterruptedException {

@@ -156,6 +156,8 @@ public class SendMessageControllerTest {
                 "Could not find conversation"
         );
 
-        asyncHanlder.getInternalThread().join();
+        /*
+         *asyncHanlder.getInternalThread().join();
+         */
     }
 }

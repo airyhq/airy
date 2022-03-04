@@ -23,7 +23,6 @@ export function AudioStream({audioStream, pauseRecording}: AudioStreamProps) {
 
   useEffect(() => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    audioContext.resume();
     audioAnalyser = audioContext.createAnalyser();
     audioAnalyser.minDecibels = -90;
     audioAnalyser.maxDecibels = -10;

@@ -83,6 +83,7 @@ const MessageInput = (props: Props) => {
   const [isFileLoaded, setIsFileLoaded] = useState(false);
 
   const [audioRecordingStarted, setAudioRecordingStarted] = useState(false);
+  const [audioRecordingMediaRecorder, setAudioRecordingMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioRecordingPaused, setAudioRecordingPaused] = useState(false);
   const [audioRecordingPreviewLoading, setAudioRecordingPreviewLoading] = useState(false);
   const [audioRecordingFileUploaded, setAudioRecordingFileUploaded] = useState<string | null>(null);
@@ -175,16 +176,6 @@ const MessageInput = (props: Props) => {
       }
     }
   }, [channelConnected]);
-
-  const resetAudioRecordingStatus = () => {
-    setAudioRecordingCanceled(true);
-    setAudioRecordingStarted(false);
-    setAudioRecordingPaused(false);
-    setAudioRecordingFileUploaded(null);
-    setAudioRecordingPreviewLoading(false);
-    setAudioRecordingResumed(false);
-    setAudioRecordingSent(false);
-  };
 
   const uploadFile = (file: File) => {
     if (file) {
@@ -402,6 +393,10 @@ const MessageInput = (props: Props) => {
     setAudioRecordingCanceled(false);
   };
 
+  const fetchMediaRecorder = (mediaRecorder: MediaRecorder) => {
+    setAudioRecordingMediaRecorder(mediaRecorder);
+  };
+
   const getUploadedAudioRecordingFile = (fileUrl: string) => {
     setAudioRecordingFileUploaded(fileUrl);
   };
@@ -430,6 +425,21 @@ const MessageInput = (props: Props) => {
     } else {
       setAudioRecordingCanceled(false);
     }
+  };
+
+  const resetAudioRecordingStatus = () => {
+    if (audioRecordingMediaRecorder) {
+      audioRecordingMediaRecorder.stop();
+      audioRecordingMediaRecorder.stream.getTracks()[0].stop();
+    }
+
+    setAudioRecordingCanceled(true);
+    setAudioRecordingStarted(false);
+    setAudioRecordingPaused(false);
+    setAudioRecordingFileUploaded(null);
+    setAudioRecordingPreviewLoading(false);
+    setAudioRecordingResumed(false);
+    setAudioRecordingSent(false);
   };
 
   return (
@@ -505,6 +515,7 @@ const MessageInput = (props: Props) => {
 
             {!audioRecordingCanceled && (
               <AudioRecording
+                fetchMediaRecorder={fetchMediaRecorder}
                 isAudioRecordingPaused={isAudioRecordingPaused}
                 setAudioRecordingPreviewLoading={setAudioRecordingPreviewLoading}
                 getUploadedAudioRecordingFile={getUploadedAudioRecordingFile}

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {AudioStream} from './AudioStream';
-import {AudioClip} from 'components';
-import {SimpleLoader} from 'components';
+import {AudioClip, SimpleLoader} from 'components';
 import {uploadMedia} from '../../../../services/mediaUploader';
 import {ReactComponent as Cancel} from 'assets/images/icons/cancelCross.svg';
 import AudioRecorder from 'audio-recorder-polyfill';
@@ -20,6 +19,7 @@ AudioRecorder.prototype.mimeType = 'audio/mpeg';
 window.MediaRecorder = AudioRecorder;
 
 type AudioRecordingProps = {
+  fetchMediaRecorder: (mediaRecorder: MediaRecorder) => void;
   isAudioRecordingPaused: (isPaused: boolean) => void;
   setAudioRecordingPreviewLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getUploadedAudioRecordingFile: (fileUrl: string) => void;
@@ -27,10 +27,11 @@ type AudioRecordingProps = {
   setAudioRecordingResumed: React.Dispatch<React.SetStateAction<boolean>>;
   audioRecordingSent: boolean;
   audioRecordingCanceledUpdate: (isCanceled: boolean) => void;
-  setErrorPopUp: React.Dispatch<React.SetStateAction<string>>;
+  setErrorPopUp: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export function AudioRecording({
+  fetchMediaRecorder,
   isAudioRecordingPaused,
   setAudioRecordingPreviewLoading,
   getUploadedAudioRecordingFile,
@@ -76,6 +77,7 @@ export function AudioRecording({
     if (audioStream && !audioRecordingSent) {
       const mediaRecorder = new MediaRecorder(audioStream);
       setMediaRecorder(mediaRecorder);
+      fetchMediaRecorder(mediaRecorder);
 
       mediaRecorder.start();
 
@@ -103,27 +105,6 @@ export function AudioRecording({
   }, [audioStream]);
 
   useEffect(() => {
-    if (audioRecordingResumed && mediaRecorder) {
-      setAudioRecordingFileUploaded(null);
-      mediaRecorder.resume();
-    }
-  }, [audioRecordingResumed, mediaRecorder]);
-
-  useEffect(() => {
-    if (audioRecordingSent) {
-      cancelRecording();
-    }
-  }, [audioRecordingSent]);
-
-  useEffect(() => {
-    if (loading) {
-      setAudioRecordingPreviewLoading(true);
-    } else {
-      setAudioRecordingPreviewLoading(false);
-    }
-  }, [loading]);
-
-  useEffect(() => {
     if (savedAudioRecording && !audioRecordingSent) {
       let isRequestAborted = false;
 
@@ -147,6 +128,27 @@ export function AudioRecording({
     }
   }, [savedAudioRecording, audioRecordingSent]);
 
+  useEffect(() => {
+    if (loading) {
+      setAudioRecordingPreviewLoading(true);
+    } else {
+      setAudioRecordingPreviewLoading(false);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (audioRecordingResumed && mediaRecorder) {
+      setAudioRecordingFileUploaded(null);
+      mediaRecorder.resume();
+    }
+  }, [audioRecordingResumed, mediaRecorder]);
+
+  useEffect(() => {
+    if (audioRecordingSent) {
+      cancelRecording();
+    }
+  }, [audioRecordingSent]);
+
   const pauseRecording = () => {
     mediaRecorder.requestData();
     mediaRecorder.pause();
@@ -165,7 +167,7 @@ export function AudioRecording({
   };
 
   return (
-    <div className={`${styles.container} ${loading ? styles.loadingContainer : ''}`}>
+    <div className={`${styles.container} ${loading ? styles.loading : ''}`}>
       {!loading && (
         <button type="button" className={`${styles.audioButtons} ${styles.cancelButton}`} onClick={cancelRecording}>
           <Cancel />

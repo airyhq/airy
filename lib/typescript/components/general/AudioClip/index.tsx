@@ -149,8 +149,6 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
 
-    console.log('freqData', freqData);
-
     const width = Math.round(canvas.current.offsetWidth / freqData.length);
     const canvasOffsetHeight = canvas.current.offsetHeight;
 

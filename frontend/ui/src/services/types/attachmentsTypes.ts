@@ -46,7 +46,5 @@ export const supportsAudioRecordingMp3 = (source: string) => {
 
   const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
 
-  if (!audioFiles || !audioFiles.includes('mp3')) return false;
-
-  return true;
+  return audioFiles && audioFiles.includes('mp3');
 };

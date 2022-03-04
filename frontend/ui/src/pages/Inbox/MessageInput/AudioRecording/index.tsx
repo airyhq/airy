@@ -27,7 +27,7 @@ type AudioRecordingProps = {
   setAudioRecordingResumed: React.Dispatch<React.SetStateAction<boolean>>;
   audioRecordingSent: boolean;
   audioRecordingCanceledUpdate: (isCanceled: boolean) => void;
-  setErrorPopUp: React.Dispatch<React.SetStateAction<string | null>>;
+  setErrorPopUp: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export function AudioRecording({

@@ -282,7 +282,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   return (
     <div className={styles.audioContainer}>
       <button type="button" onClick={toggleAudio}>
-        {!isPlaying ? <PlayIcon className={styles.icon} /> : <PauseIcon className={styles.icon} />}
+        {!isPlaying ? <PlayIcon /> : <PauseIcon />}
       </button>
 
       <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>

@@ -77,7 +77,7 @@ const MessageInput = (props: Props) => {
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
-  const [errorPopUp, setErrorPopUp] = useState<string>('');
+  const [errorPopUp, setErrorPopUp] = useState('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const [blockSpam, setBlockSpam] = useState(false);
   const [isFileLoaded, setIsFileLoaded] = useState(false);

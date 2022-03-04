@@ -32,7 +32,9 @@
   cursor: pointer;
 
   svg {
-    fill: white;
+    path {
+      fill: white;
+    }
   }
 }
 

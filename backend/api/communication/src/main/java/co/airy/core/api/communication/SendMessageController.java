@@ -79,17 +79,18 @@ public class SendMessageController {
 
         final String userId = principalAccess.getUserId(auth);
         final String messageId = UUID.randomUUID().toString();
-        final String channelId = Optional.ofNullable(channel).map((c) -> c.getId()).orElse(null);
+        final String channelId = Optional.ofNullable(channel).map((c) -> c.getId()).orElse("");
 
         final Message message = Message.newBuilder()
                 .setId(messageId)
                 .setChannelId(channelId)
                 .setSourceRecipientId(payload.getSourceRecipientId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))
-                .setConversationId(conversationId)
+                // If channelId is not set we should not set the conversationId either
+                .setConversationId(channelId != "" ? conversationId : "")
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
-                .setSource(Optional.ofNullable(channel).map((c) -> c.getSource()).orElse(null))
+                .setSource(Optional.ofNullable(channel).map((c) -> c.getSource()).orElse(""))
                 .setSenderId(userId)
                 .setSentAt(Instant.now().toEpochMilli())
                 .setIsFromContact(false)
@@ -100,7 +101,7 @@ public class SendMessageController {
         // If there is no channelId it implies that the converstaion was not found
         // instally and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
-        if (channelId == null) {
+        if (channelId == "") {
             asyncHanlder.addPendingConversation(messageId, conversationId);
             s = HttpStatus.ACCEPTED;
         }

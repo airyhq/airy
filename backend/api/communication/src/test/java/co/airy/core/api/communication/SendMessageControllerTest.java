@@ -64,6 +64,9 @@ public class SendMessageControllerTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
+    @Autowired
+    private AsyncSendMessagesHandler asyncHanlder;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
@@ -125,5 +128,34 @@ public class SendMessageControllerTest {
     @Test
     @Order(2)
     void canSendMessageAsync() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+        final Channel channel = Channel.newBuilder()
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setId(UUID.randomUUID().toString())
+                .setSource("facebook")
+                .setSourceChannelId("aysnc-id")
+                .setToken("AYSNC_TOKEN")
+                .build();
+
+        final String messagePayload = "{\"text\":\"Async message\"}";
+        final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
+                        "\"message\":%s}",
+                conversationId, messagePayload);
+
+        final String response = webTestHelper.post("/messages.send", requestPayload)
+                .andExpect(status().isAccepted())
+                .andReturn().getResponse().getContentAsString();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
+
+        retryOnException(
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
+                        .andExpect(status().isOk()),
+                "Could not find conversation"
+        );
+
+        asyncHanlder.getInternalThread().join();
     }
 }

@@ -13,23 +13,15 @@ export function WaveformAudio({audioData}: WaveformAudioProps) {
   const canvasHeight = 40;
 
   useEffect(() => {
-    if (window.innerWidth >= 1800 && window.innerWidth < 2000) {
-      setBarTotalCount(72);
-    } else if (window.innerWidth >= 2000) {
-      setBarTotalCount(90);
-      setBarWidth(4);
-    }
-  }, []);
-
-  useEffect(() => {
     if (canvas && canvas.current) {
+      setResponsiveCanvas();
       setContext(canvas.current.getContext('2d'));
       canvas.current.style.width = '100%';
       canvas.current.style.height = canvasHeight + 'px';
       canvas.current.width = canvas.current.offsetWidth;
       canvas.current.height = canvas.current.offsetHeight;
     }
-  }, [canvas]);
+  }, []);
 
   useEffect(() => {
     if (audioData && context) {
@@ -37,6 +29,15 @@ export function WaveformAudio({audioData}: WaveformAudioProps) {
       visualizeAudioRecording();
     }
   }, [context, audioData]);
+
+  const setResponsiveCanvas = () => {
+    if (window.innerWidth >= 1800 && window.innerWidth < 2000) {
+      setBarTotalCount(72);
+    } else if (window.innerWidth >= 2000) {
+      setBarTotalCount(90);
+      setBarWidth(4);
+    }
+  };
 
   const visualizeAudioRecording = () => {
     const canvasHeight = canvas.current.height;

@@ -422,6 +422,7 @@ const MessageInput = (props: Props) => {
       setAudioRecordingFileUploaded(null);
       setAudioRecordingPaused(false);
       setAudioRecordingStarted(false);
+      setAudioRecordingResumed(false);
     } else {
       setAudioRecordingCanceled(false);
     }

@@ -74,6 +74,12 @@ export const InputOptions = (props: Props) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    console.log('audioRecordingStarted', audioRecordingStarted);
+    console.log('audioRecordingResumed', audioRecordingResumed);
+    console.log('audioRecordingPaused', audioRecordingPaused);
+  }, [audioRecordingStarted, audioRecordingResumed, audioRecordingPaused]);
+
+  useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptFilesValue);
   }, [source]);
@@ -265,11 +271,14 @@ export const InputOptions = (props: Props) => {
                   !!errorPopUp ||
                   loadingSelector ||
                   audioRecordingStarted ||
+                  audioRecordingResumed ||
                   audioRecordingPreviewLoading
                 }
                 onClick={handleMicrophoneIconClick}
               >
-                <div className={styles.actionToolTip}>Record audio clip</div>
+                <div className={styles.actionToolTip}>
+                  {audioRecordingPaused && !audioRecordingPreviewLoading ? 'Continue recording' : 'Record audio clip'}
+                </div>
                 {audioRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
               </button>
             )}

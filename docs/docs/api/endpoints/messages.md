@@ -81,6 +81,16 @@ to see learn how to send text, media, and many more message types.
 
 **Sample response**
 
+Because of the nature of being an asynchronous system, sometimes the conversation is not ready at the time of sending
+the message.
+
+`HTTP 200 OK`
+In this case the converstion was found and the message is attached to it
+
+`HTTP 202 ACCEPTED`
+In this case the converstion is not ready yet. the message will be attached to the converstion
+asynchronously, in the case of an error. it will be delivered asynchronously. See error handling section.
+
 ```json5
 {
   "id": "{UUID}",

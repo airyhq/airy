@@ -24,12 +24,14 @@ export interface CanvasWaveformPaths {
 const canvasWidth = 174;
 const canvasHeight = 40;
 const barWidth = 3;
+const barPadding = 2;
+const initialColorBars = 'white';
 
 export const setUpCanvas = (context: CanvasRenderingContext2D, canvas: React.MutableRefObject<HTMLCanvasElement>) => {
   const ratio = window.devicePixelRatio;
 
-  canvas.current.width = 174 * ratio;
-  canvas.current.height = 40 * ratio;
+  canvas.current.width = canvasWidth * ratio;
+  canvas.current.height = canvasHeight * ratio;
 
   canvas.current.style.width = canvasWidth + 'px';
   canvas.current.style.height = canvasHeight + 'px';
@@ -45,29 +47,32 @@ export const drawBar = (
   x: number,
   height: number,
   isEven: number,
-  color: string,
   ctx: CanvasRenderingContext2D,
   barsSamplesPaths: CanvasWaveformPaths,
-  setCtx: React.Dispatch<React.SetStateAction<null | CanvasRenderingContext2D>>
+  setCanvasContext: React.Dispatch<React.SetStateAction<null | CanvasRenderingContext2D>>
 ) => {
+  const halfCanvasHeight = canvasHeight / 2;
+  const maxBarHeight = canvasHeight / 2 - barPadding;
+  const barMinimumHeight = 4;
+
   if (height <= 1) {
-    height += 4;
+    height += barMinimumHeight;
   }
 
-  if (height >= 20) {
-    height = 18;
+  if (height >= halfCanvasHeight) {
+    height = maxBarHeight;
   }
 
-  if (height <= 19 && height >= 18) {
-    height -= 2;
+  if (height <= halfCanvasHeight - 1 && height >= halfCanvasHeight - barPadding) {
+    height -= barPadding;
   }
 
-  if (x === 0) x = 2;
+  if (x === 0) x = barPadding;
 
   height = isEven ? height : -height;
 
   ctx.lineWidth = barWidth;
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = initialColorBars;
   ctx.lineCap = 'round';
 
   barsSamplesPaths['path' + i].moveTo(x, 0);
@@ -77,20 +82,16 @@ export const drawBar = (
   barsSamplesPaths['path' + i].lineTo(x, -height);
 
   ctx.stroke(barsSamplesPaths['path' + i]);
-  setCtx(ctx);
+  setCanvasContext(ctx);
 };
 
 export const drawAudioSampleBars = (
   freqData: number[],
-  color: string,
   ctx: CanvasRenderingContext2D,
   canvas: React.MutableRefObject<HTMLCanvasElement>,
   barsSamplesPaths: CanvasWaveformPaths,
-  setCtx: React.Dispatch<React.SetStateAction<null | CanvasRenderingContext2D>>
+  setCanvasContext: React.Dispatch<React.SetStateAction<null | CanvasRenderingContext2D>>
 ) => {
-  ctx.fillStyle = color;
-  ctx.strokeStyle = color;
-
   const width = Math.round(canvas.current.offsetWidth / freqData.length);
   const canvasOffsetHeight = canvas.current.offsetHeight;
 
@@ -103,6 +104,6 @@ export const drawAudioSampleBars = (
       freqData[i] = canvasOffsetHeight / 2;
     }
 
-    drawBar(i, x, freqData[i], (i + 1) % 2, color, ctx, barsSamplesPaths, setCtx);
+    drawBar(i, x, freqData[i], (i + 1) % 2, ctx, barsSamplesPaths, setCanvasContext);
   }
 };

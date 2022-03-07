@@ -74,12 +74,6 @@ export const InputOptions = (props: Props) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log('audioRecordingStarted', audioRecordingStarted);
-    console.log('audioRecordingResumed', audioRecordingResumed);
-    console.log('audioRecordingPaused', audioRecordingPaused);
-  }, [audioRecordingStarted, audioRecordingResumed, audioRecordingPaused]);
-
-  useEffect(() => {
     const inputAcceptFilesValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptFilesValue);
   }, [source]);

@@ -5,7 +5,6 @@ import {
   filterData,
   drawAudioSampleBars,
   setUpCanvas,
-  colorProgressBars,
   colorNextBarsGrey,
   colorPlaybackBarsWhite,
 } from './services';
@@ -47,13 +46,12 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [duration, setDuration] = useState(0);
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
-  const [ctx, setCtx] = useState<null | CanvasRenderingContext2D>(null);
+  const [canvasContext, setCanvasContext] = useState<null | CanvasRenderingContext2D>(null);
 
   const canvas = useRef(null);
   const audioElement = useRef(null);
 
   const totalBars = 20;
-  const barsColor = 'white';
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -69,7 +67,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
         setFormattedDuration(formattedDuration);
 
         const filteredData = filterData(audioBuffer, totalBars);
-        drawAudioSampleBars(filteredData, barsColor, canvasContext, canvas, barsSamplesPaths, setCtx);
+        drawAudioSampleBars(filteredData, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
       } catch (error) {
         return error;
       }
@@ -98,7 +96,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     if (updatedCurrentTime === audioDuration) setIsPlaying(false);
 
     setCurrentTime(Number(updatedCurrentTime.toFixed(2)));
-    colorProgressBars(step, count, ctx, barsSamplesPaths, setCount);
+    colorNextBarsGrey(count, step, canvasContext, barsSamplesPaths, setCount);
   };
 
   const pauseAudio = () => {
@@ -108,7 +106,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const startAudio = () => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
-      colorPlaybackBarsWhite(19, 0, ctx, barsSamplesPaths, setCount);
+      colorPlaybackBarsWhite(19, 0, canvasContext, barsSamplesPaths, setCount);
     }
     audioElement.current.play();
     setIsPlaying(true);
@@ -136,9 +134,9 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     setCurrentTime(currentTime);
 
     if (updatedCount > count) {
-      colorNextBarsGrey(count, updatedCount, ctx, barsSamplesPaths, setCount);
+      colorNextBarsGrey(count, updatedCount, canvasContext, barsSamplesPaths, setCount);
     } else {
-      colorPlaybackBarsWhite(count, updatedCount, ctx, barsSamplesPaths, setCount);
+      colorPlaybackBarsWhite(count, updatedCount, canvasContext, barsSamplesPaths, setCount);
     }
   };
 

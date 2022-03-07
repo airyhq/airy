@@ -12,17 +12,6 @@ const changeColorBarSegment = (
   ctx.stroke(barsSamplesPaths['path' + i]);
 };
 
-export const colorProgressBars = (
-  step: number,
-  count: number,
-  ctx: CanvasRenderingContext2D,
-  barsSamplesPaths: CanvasWaveformPaths,
-  setCount: React.Dispatch<React.SetStateAction<number>>
-) => {
-  colorNextBarsGrey(count, step, ctx, barsSamplesPaths, setCount);
-  setCount(step);
-};
-
 export const colorNextBarsGrey = (
   prevCount: number,
   updatedCount: number,

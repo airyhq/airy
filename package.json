@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.7.2",
+    "@reduxjs/toolkit": "^1.8.0",
     "@stomp/stompjs": "^6.1.2",
     "@types/node": "17.0.20",
     "@types/react": "17.0.39",
@@ -62,7 +62,7 @@
     "minimist": "^1.2.5",
     "prettier": "^2.5.1",
     "react-hot-loader": "^4.13.0",
-    "sass": "^1.49.8",
+    "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.1",

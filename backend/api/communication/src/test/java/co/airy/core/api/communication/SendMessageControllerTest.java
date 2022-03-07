@@ -6,12 +6,20 @@ import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.message.dto.MessageContainer;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import co.airy.test.RunnableTest;
+
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +45,9 @@ import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,6 +76,9 @@ public class SendMessageControllerTest {
 
     @Autowired
     private AsyncSendMessagesHandler asyncHanlder;
+
+    @Autowired
+    private Stores stores;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -125,6 +138,28 @@ public class SendMessageControllerTest {
         assertThat(message.getContent(), equalTo(messagePayload));
     }
 
+
+    @RequiredArgsConstructor
+    private class StoredMessage implements RunnableTest {
+
+        @Getter
+        private MessageContainer msgc;
+
+        @NonNull
+        private Stores stores;
+
+        @NonNull
+        private String messageId;
+
+        public void test() throws Exception {
+            msgc = stores.getMessageContainer(messageId);
+
+            assertNotNull(msgc);
+            assertNotNull(msgc.getMessage());
+            assertThat(msgc.getMessage().getConversationId(), CoreMatchers.not(emptyOrNullString()));
+        }
+    }
+
     @Test
     @Order(2)
     void canSendMessageAsync() throws Exception {
@@ -146,6 +181,9 @@ public class SendMessageControllerTest {
                 .andExpect(status().isAccepted())
                 .andReturn().getResponse().getContentAsString();
 
+        final JsonNode responseNode = new ObjectMapper().readTree(response);
+        final String messageId = responseNode.get("id").textValue();
+
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
@@ -156,8 +194,12 @@ public class SendMessageControllerTest {
                 "Could not find conversation"
         );
 
-        /*
-         *asyncHanlder.getInternalThread().join();
-         */
+        StoredMessage sm = new StoredMessage(stores, messageId);
+        retryOnException(sm, "Message was not updated");
+
+        Message msg = sm.getMsgc().getMessage();
+        assertThat(msg.getConversationId(), equalTo(conversationId));
+        assertThat(msg.getChannelId(), equalTo(channel.getId()));
+        assertThat(msg.getSource(), equalTo(channel.getSource()));
     }
 }

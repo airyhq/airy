@@ -23,8 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.validation.constraints.Min;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -94,11 +92,12 @@ public class AsyncSendMessagesHandler implements Runnable {
                     final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
                     final Conversation conversation = conversationsStore.get(p.getConversationId());
                     final boolean messageExpired = Duration.between(p.getNow(), Instant.now()).toMillis() > maxWaitMillis;
-                    Message msg = getMessageById(p.getMessageId());
 
                     if (conversation == null && !messageExpired) {
                         continue;
                     }
+
+                    Message msg = getMessageById(p.getMessageId());
 
                     if (conversation != null) {
                         Channel channel = conversation.getChannel();
@@ -173,11 +172,5 @@ public class AsyncSendMessagesHandler implements Runnable {
         stores.storeMessage(m);
 
         return m;
-    }
-
-
-    @VisibleForTesting
-    Thread getInternalThread() {
-        return this.thread;
     }
 }

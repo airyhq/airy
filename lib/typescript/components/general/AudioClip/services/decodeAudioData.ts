@@ -1,24 +1,15 @@
-import React from 'react';
-import {formatAudioTime} from './formatAudioTime';
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
 
-export const decodeAudioStream = async (
-  audioUrl: string,
-  abortController: AbortController,
-  setDuration: React.Dispatch<React.SetStateAction<number>>,
-  setFormattedDuration: React.Dispatch<React.SetStateAction<string>>,
-  totalBars: number
-) => {
+export const decodeAudioStream = async (audioUrl: string, abortController: AbortController) => {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   try {
     const readableStream = await fetch(audioUrl, {signal: abortController.signal});
     const arrayBuffer = await readableStream.arrayBuffer();
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-    setDuration(audioBuffer.duration);
-    const formattedDuration = formatAudioTime(audioBuffer.duration);
-    setFormattedDuration(formattedDuration);
-
-    return filterData(audioBuffer, totalBars);
+    return await audioContext.decodeAudioData(arrayBuffer);
   } catch (error) {
     return error;
   }

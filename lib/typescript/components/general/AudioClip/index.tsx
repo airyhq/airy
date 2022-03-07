@@ -1,55 +1,83 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {formatAudioTime} from './formatAudioTime';
-import {decodeAudioStream} from './decodeAudioStream';
-import {paths, setUpCanvas, drawBar} from './setUpAudioWaveform';
-import {colorProgressBars, colorNextBarsGrey, colorPlaybackBarsGrey} from './setUpProgressBar';
+import {
+  formatAudioTime,
+  decodeAudioStream,
+  filterData,
+  drawAudioSampleBars,
+  setUpCanvas,
+  colorProgressBars,
+  colorNextBarsGrey,
+  colorPlaybackBarsWhite,
+} from './services';
 import {ReactComponent as PlayIcon} from 'assets/images/icons/playAudioClip.svg';
 import {ReactComponent as PauseIcon} from 'assets/images/icons/pauseAudioClip.svg';
 import styles from './index.module.scss';
-
-declare global {
-  interface Window {
-    webkitAudioContext: typeof AudioContext;
-  }
-}
 
 type AudioRenderProps = {
   audioUrl: string;
 };
 
 export const AudioClip = ({audioUrl}: AudioRenderProps) => {
+  const paths = {
+    path0: new Path2D(),
+    path1: new Path2D(),
+    path2: new Path2D(),
+    path3: new Path2D(),
+    path4: new Path2D(),
+    path5: new Path2D(),
+    path6: new Path2D(),
+    path7: new Path2D(),
+    path8: new Path2D(),
+    path9: new Path2D(),
+    path10: new Path2D(),
+    path11: new Path2D(),
+    path12: new Path2D(),
+    path13: new Path2D(),
+    path14: new Path2D(),
+    path15: new Path2D(),
+    path16: new Path2D(),
+    path17: new Path2D(),
+    path18: new Path2D(),
+    path19: new Path2D(),
+  };
+
   const [barsSamplesPaths] = useState(paths);
   const [count, setCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
-  const [canvasContext, setCanvasContext] = useState(null);
+  const [ctx, setCtx] = useState<null | CanvasRenderingContext2D>(null);
 
   const canvas = useRef(null);
   const audioElement = useRef(null);
 
   const totalBars = 20;
+  const barsColor = 'white';
 
   useEffect(() => {
     const abortController = new AbortController();
     let isMounted = true;
-    const canvasContext: CanvasRenderingContext2D = canvas.current.getContext('2d');
+    const context: CanvasRenderingContext2D = canvas.current.getContext('2d');
 
-    const visualizeAudio = async () => {
-      const filteredData = await decodeAudioStream(
-        audioUrl,
-        abortController,
-        setDuration,
-        setFormattedDuration,
-        totalBars
-      );
-      setUpAudioSampleBars(filteredData, canvasContext, canvas);
+    const visualizeAudio = async (canvasContext: CanvasRenderingContext2D) => {
+      try {
+        const audioBuffer = await decodeAudioStream(audioUrl, abortController);
+
+        setDuration(audioBuffer.duration);
+        const formattedDuration = formatAudioTime(audioBuffer.duration);
+        setFormattedDuration(formattedDuration);
+
+        const filteredData = filterData(audioBuffer, totalBars);
+        drawAudioSampleBars(filteredData, barsColor, canvasContext, canvas, barsSamplesPaths, setCtx);
+      } catch (error) {
+        return error;
+      }
     };
 
-    if (isMounted && abortController) {
-      setUpCanvas(canvas, canvasContext);
-      visualizeAudio();
+    if (isMounted) {
+      setUpCanvas(context, canvas);
+      visualizeAudio(context);
     }
 
     return () => {
@@ -58,34 +86,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     };
   }, []);
 
-  const setUpAudioSampleBars = (
-    freqData: number[],
-    color: string,
-    ctx: CanvasRenderingContext2D,
-    canvas: React.MutableRefObject<HTMLCanvasElement>
-  ) => {
-    const width = Math.round(canvas?.current?.offsetWidth / freqData.length);
-    const canvasOffsetHeight = canvas?.current?.offsetHeight;
-
-    let x: number;
-    let path: Path2D;
-    let isEven;
-
-    for (let i = 0; i < freqData.length; i++) {
-      x = width * i;
-
-      if (freqData[i] > canvasOffsetHeight / 2) {
-        freqData[i] = canvasOffsetHeight / 2;
-      }
-
-      path = barsSamplesPaths['path' + i];
-      isEven = (i + 1) % 2;
-
-      drawBar(x, freqData[i], isEven, ctx, path, setCanvasContext);
-    }
-  };
-
-  const getCurrentDuration = (e: SyntheticEvent<HTMLDivElement>) => {
+  const getCurrentDuration = (e: React.SyntheticEvent<HTMLAudioElement>) => {
     const updatedCurrentTime = e.currentTarget.currentTime;
     let audioDuration = e.currentTarget.duration;
 
@@ -94,13 +95,10 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     const percentForCurrTimeAndDuration = Math.round((updatedCurrentTime / audioDuration) * 100);
     const step = Math.round(totalBars * (percentForCurrTimeAndDuration / 100));
 
-    if (updatedCurrentTime === audioDuration) {
-      setIsPlaying(false);
-    }
+    if (updatedCurrentTime === audioDuration) setIsPlaying(false);
 
     setCurrentTime(Number(updatedCurrentTime.toFixed(2)));
-
-    colorProgressBars(step, count, setCount, barsSamplesPaths, canvasContext);
+    colorProgressBars(step, count, ctx, barsSamplesPaths, setCount);
   };
 
   const pauseAudio = () => {
@@ -110,7 +108,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
   const startAudio = () => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
-      colorBarsWhite(19, 0, setCount, canvasContext, barsSamplesPaths);
+      colorPlaybackBarsWhite(19, 0, ctx, barsSamplesPaths, setCount);
     }
     audioElement.current.play();
     setIsPlaying(true);
@@ -134,12 +132,13 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     const updatedTime = duration * (offsetX / canvas.current.clientWidth);
     audio.currentTime = updatedTime;
+
     setCurrentTime(currentTime);
 
     if (updatedCount > count) {
-      colorNextBarsGrey(count, updatedCount, setCount, canvasContext, barsSamplesPaths);
+      colorNextBarsGrey(count, updatedCount, ctx, barsSamplesPaths, setCount);
     } else {
-      colorPlaybackBarsWhite(count, updatedCount, setCount, canvasContext, barsSamplesPaths);
+      colorPlaybackBarsWhite(count, updatedCount, ctx, barsSamplesPaths, setCount);
     }
   };
 

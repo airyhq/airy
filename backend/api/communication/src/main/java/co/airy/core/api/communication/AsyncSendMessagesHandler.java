@@ -107,7 +107,7 @@ public class AsyncSendMessagesHandler implements Runnable {
                         updateMessage(conversation, msg);
 
                     } else if (messageExpired) {
-                        setMessageSateToFailed(msg, "Converstaion id not found");
+                        setMessageSateToFailed(msg, "Conversation id not found");
                     }
                     
                     // remove conversation from pending list

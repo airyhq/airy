@@ -106,7 +106,7 @@ public class AsyncSendMessagesHandler implements Runnable {
                         setMessageSateToFailed(msg, "Conversation id not found");
                     }
                     
-                    // remove conversation from pending list
+                    // remove message from pending list
                     iter.remove();
                 }
             } catch (Exception e) { 

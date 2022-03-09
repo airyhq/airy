@@ -77,11 +77,10 @@ public class SendMessageController {
         }
 
         final String userId = principalAccess.getUserId(auth);
-        final String messageId = UUID.randomUUID().toString();
         final String channelId = Optional.ofNullable(channel).map((c) -> c.getId()).orElse("");
 
         final Message message = Message.newBuilder()
-                .setId(messageId)
+                .setId(UUID.randomUUID().toString())
                 .setChannelId(channelId)
                 .setSourceRecipientId(payload.getSourceRecipientId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))

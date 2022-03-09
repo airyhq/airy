@@ -75,9 +75,6 @@ public class SendMessageControllerTest {
     private WebTestHelper webTestHelper;
 
     @Autowired
-    private AsyncSendMessagesHandler asyncHanlder;
-
-    @Autowired
     private Stores stores;
 
     @BeforeAll
@@ -156,7 +153,7 @@ public class SendMessageControllerTest {
 
             assertNotNull(msgc);
             assertNotNull(msgc.getMessage());
-            assertThat(msgc.getMessage().getConversationId(), CoreMatchers.not(emptyOrNullString()));
+            assertThat(msgc.getMessage().getChannelId(), CoreMatchers.not(emptyOrNullString()));
         }
     }
 

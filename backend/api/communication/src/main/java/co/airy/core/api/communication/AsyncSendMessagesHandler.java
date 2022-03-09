@@ -14,8 +14,6 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 
@@ -32,7 +30,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
-import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Component
 public class AsyncSendMessagesHandler implements Runnable {
@@ -41,14 +38,13 @@ public class AsyncSendMessagesHandler implements Runnable {
 
     @AllArgsConstructor
     @Data
-    private class MessageConversationIdsPair {
-        private String messageId;
-        private String conversationId;
+    private class PendingMessage {
+        private Message msg;
         private Instant now;
     }
 
     private final Stores stores;
-    private final ConcurrentLinkedQueue<MessageConversationIdsPair> pendingConversations;
+    private final ConcurrentLinkedQueue<PendingMessage> pendingConversations;
     private final Thread thread;
     private final long maxWaitMillis;
     private final long periodMillis;
@@ -72,32 +68,32 @@ public class AsyncSendMessagesHandler implements Runnable {
 
     @Override
     public void run() {
-        final List<MessageConversationIdsPair> pending = new LinkedList<>();
+        final List<PendingMessage> pending = new LinkedList<>();
 
         while (keepAlive) {
             try {
                 Thread.sleep(this.periodMillis);
 
                 // Move all values to internal list
-                MessageConversationIdsPair pair;
-                while ((pair = pendingConversations.poll()) != null) {
-                    pending.add(pair);
+                PendingMessage pm;
+                while ((pm = pendingConversations.poll()) != null) {
+                    pending.add(pm);
                 }
 
-                final ListIterator<MessageConversationIdsPair> iter = pending.listIterator();
+                final ListIterator<PendingMessage> iter = pending.listIterator();
                 while (iter.hasNext()) {
-                    MessageConversationIdsPair p = iter.next();
+                    PendingMessage pendingMsg = iter.next();
 
 
                     final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
-                    final Conversation conversation = conversationsStore.get(p.getConversationId());
-                    final boolean messageExpired = Duration.between(p.getNow(), Instant.now()).toMillis() > maxWaitMillis;
+                    final Conversation conversation = conversationsStore.get(pendingMsg.getMsg().getConversationId());
+                    final boolean messageExpired = Duration.between(pendingMsg.getNow(), Instant.now()).toMillis() > maxWaitMillis;
 
                     if (conversation == null && !messageExpired) {
                         continue;
                     }
 
-                    Message msg = getMessageById(p.getMessageId());
+                    Message msg = pendingMsg.getMsg();
 
                     if (conversation != null) {
                         Channel channel = conversation.getChannel();
@@ -119,12 +115,12 @@ public class AsyncSendMessagesHandler implements Runnable {
         }
     }
 
-    public void addPendingConversation(String messageId, String conversationId) {
-        if (isNullOrEmpty(messageId) || isNullOrEmpty(conversationId)) {
-            log.warn(String.format("messageId and/or conversationId is empty"));
+    public void addPendingConversation(Message message) {
+        if (message == null) {
+            log.warn(String.format("message is null"));
             return;
         }
-        pendingConversations.add(new MessageConversationIdsPair(messageId, conversationId, Instant.now()));
+        pendingConversations.add(new PendingMessage(message, Instant.now()));
     }
 
     @PreDestroy
@@ -137,18 +133,6 @@ public class AsyncSendMessagesHandler implements Runnable {
         thread.start();
     }
 
-    private Message getMessageById(String messageId) throws NoSuchElementException {
-        Message msg = Optional.ofNullable(stores.getMessageContainer(messageId))
-            .map((mc) -> mc.getMessage())
-            .orElse(null);
-
-        if (msg == null) {
-            throw new NoSuchElementException(String.format("no message found with this id %s", messageId));
-        }
-
-        return msg;
-    }
-
     private Message setMessageSateToFailed(Message msg, String errorMessage) throws InterruptedException, ExecutionException {
         final Metadata metadata = newMessageMetadata(msg.getId(), MetadataKeys.MessageKeys.ERROR, errorMessage);
         stores.storeMetadata(metadata);
@@ -156,7 +140,6 @@ public class AsyncSendMessagesHandler implements Runnable {
         Message m = Message.newBuilder(msg)
             .setDeliveryState(DeliveryState.FAILED)
             .build();
-        stores.storeMessage(m);
 
         return m;
     }

@@ -5,7 +5,6 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
@@ -86,8 +85,7 @@ public class SendMessageController {
                 .setChannelId(channelId)
                 .setSourceRecipientId(payload.getSourceRecipientId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))
-                // If channelId is not set we should not set the conversationId either
-                .setConversationId(channelId != "" ? conversationId : "")
+                .setConversationId(conversationId)
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(Optional.ofNullable(channel).map((c) -> c.getSource()).orElse(""))
@@ -96,15 +94,16 @@ public class SendMessageController {
                 .setIsFromContact(false)
                 .build();
 
-        stores.storeMessage(message);
-
         // If there is no channelId it implies that the converstaion was not found
         // instally and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
         if (channelId == "") {
-            asyncHanlder.addPendingConversation(messageId, conversationId);
+            asyncHanlder.addPendingConversation(message);
             s = HttpStatus.ACCEPTED;
+        } else {
+            stores.storeMessage(message);
         }
+
         return ResponseEntity.status(s).body(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, new MetadataMap())));
     }
 }

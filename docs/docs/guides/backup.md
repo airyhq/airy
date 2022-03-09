@@ -19,6 +19,12 @@ How to backup and restore your Airy Core instance.
 
 All the application data, including all the configured sources, channels and templates, are stored in Kafka. As Kafka needs Zookeeper to run properly, the Kafka operational data is stored in Zookeeper. Both Kafka and Zookeeper are deployed as statefulsets in Kubernetes and all the data is stored in PersistentVolumes, provisioned by PersistentVolumeClaims. The location of the persistent volumes is dependent of your implementation. For example, in AWS the Elastic Block Store (EBS) is used to manage the volumes.
 
+:::note
+
+It is best to do backup of the Kafka volumes when the Kafka brokers are stopped, in order to avoid inconsistencies.
+
+:::
+
 To view the PersistentVolumeClaims and PersistentVolumes run:
 
 ```
@@ -60,7 +66,7 @@ persistentvolume/restored-zookeeper created
 persistentvolume/restored-zookeeper-datalog created
 ```
 
-Run the following command to create the neccessary PVCs:
+Run the following command to create the necessary PVCs:
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/airyhq/airy/develop/infrastructure/tools/restore/pvc.yaml
@@ -83,3 +89,11 @@ Apply your `airy.yaml` configuration.
 ```
 airy config apply
 ```
+
+## Potential issues
+
+### Data inconsistencies in Kafka
+
+In rare cases, when the backup is performed on a running Kafka instance, there can be some inconsistencies in the internal topics, in the restored Kafka instance.
+
+This can be resolved by resetting the Kafka streaming apps, to beginning or to latest, depending on the setting of the particular app. Refer to the [Airy component reset guide](/guides/component-reset).

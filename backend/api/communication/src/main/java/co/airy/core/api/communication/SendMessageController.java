@@ -97,7 +97,7 @@ public class SendMessageController {
         // instally and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
         if (channelId == "") {
-            asyncHandler.addPendingConversation(message);
+            asyncHandler.addPendingMessage(message);
             s = HttpStatus.ACCEPTED;
         } else {
             stores.storeMessage(message);

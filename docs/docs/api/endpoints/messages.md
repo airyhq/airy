@@ -85,10 +85,10 @@ Because of the nature of being an asynchronous system, sometimes the conversatio
 the message.
 
 `HTTP 200 OK`
-In this case the converstion was found and the message is attached to it
+In this case the conversation was found and the message is attached to it
 
 `HTTP 202 ACCEPTED`
-In this case the converstion is not ready yet. the message will be attached to the converstion
+In this case the conversation is not ready yet. the message will be attached to the conversation
 asynchronously, in the case of an error. it will be delivered asynchronously. See error handling section.
 
 ```json5

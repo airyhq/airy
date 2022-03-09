@@ -5,8 +5,9 @@ import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentV
 import {ReactComponent as AttachmentAudio} from 'assets/images/icons/fileAudio.svg';
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/fileDownload.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
+import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
 import {decodeURIComponentMessage, getAttachmentType} from './services';
-import {Conversation, Message} from 'model';
+import {Conversation, DeliveryState, Message} from 'model';
 import {Emoji} from 'components';
 import ReactMarkdown from 'react-markdown';
 
@@ -39,6 +40,10 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation?.lastMessage?.content?.message || conversation?.lastMessage?.content;
+
+    if (conversation?.lastMessage?.deliveryState === DeliveryState.failed) {
+      return <ErrorMessageIcon style={{height: '20px', width: '20px'}} />;
+    }
 
     //google
     const googleLiveAgentRequest = lastMessageContent?.userStatus?.requestedLiveAgent;

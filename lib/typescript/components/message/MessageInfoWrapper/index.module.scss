@@ -23,6 +23,7 @@
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+  margin-left: 8px;
 }
 
 .avatar {
@@ -38,4 +39,34 @@
   margin-bottom: 5px;
   padding-left: 50px;
   display: block;
+}
+
+.messageFailedButton {
+  text-decoration: none;
+  line-height: 16px;
+  margin-left: 4px;
+  padding: 0px;
+  @include font-base;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  background: transparent;
+  color: var(--color-airy-blue);
+  cursor: pointer;
+  &:hover {
+    color: var(--color-airy-blue-hover);
+  }
+  &:active {
+    color: var(--color-airy-blue-pressed);
+  }
+}
+
+.errorFailedMessageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  svg {
+    margin-top: 5px;
+  }
 }

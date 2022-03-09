@@ -1,4 +1,4 @@
-import React, {useEffect, createRef} from 'react';
+import React, {useEffect, createRef, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {isEqual} from 'lodash-es';
 import _redux from 'redux';
@@ -20,6 +20,7 @@ import {usePrevious} from '../../../../services/hooks/usePrevious';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
+  resendMessage?: (resend: boolean) => void;
 };
 
 const mapDispatchToProps = {
@@ -136,6 +137,10 @@ const MessageList = (props: MessageListProps) => {
     showSuggestedReplies(message.metadata.suggestions);
   };
 
+  const handleResendFailedMessage = (resend: boolean) => {
+    props.resendMessage(resend);
+  };
+
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages?.map((message: Message, index: number) => {
@@ -167,7 +172,8 @@ const MessageList = (props: MessageListProps) => {
               isChatPlugin={false}
               decoration={messageDecoration}
               senderName={message?.sender?.name}
-            >
+              deliveryState={message?.deliveryState}
+              resendFailedMessage={handleResendFailedMessage}>
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />
             </MessageInfoWrapper>
@@ -180,10 +186,10 @@ const MessageList = (props: MessageListProps) => {
 
 const arePropsEqual = (prevProps, nextProps) => {
   if (
-    prevProps.history.location.pathname === nextProps.history.location.pathname &&
+    prevProps.history?.location?.pathname === nextProps.history?.location?.pathname &&
     prevProps.conversation?.id === nextProps.conversation?.id &&
-    prevProps.history.location.key === nextProps.history.location.key &&
-    prevProps.location.key !== nextProps.location.key
+    prevProps.history?.location?.key === nextProps.history?.location?.key &&
+    prevProps.location?.key !== nextProps.location?.key
   ) {
     return true;
   }

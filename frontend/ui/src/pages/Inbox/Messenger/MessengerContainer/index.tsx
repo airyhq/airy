@@ -31,6 +31,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
   const conversation = useCurrentConversation();
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
+  const [resendFailedMessage, setResendFailedMessage] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
   const source = conversation?.channel?.source;
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
@@ -130,6 +131,10 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
     }
   };
 
+  const handleResendFailedMessage = (resend: boolean) => {
+    setResendFailedMessage(resend);
+  };
+
   return (
     <>
       <div
@@ -139,8 +144,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
         onDrop={e => handleFileDrop(e)}
         onDragLeave={e => handleDragLeave(e)}
         onMouseOut={() => setIsFileDragged(false)}
-        onMouseLeave={() => setIsFileDragged(false)}
-      >
+        onMouseLeave={() => setIsFileDragged(false)}>
         {!dragAndDropDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>
@@ -158,7 +162,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
             {conversation && (
               <>
                 <ConversationHeader />
-                <MessageList showSuggestedReplies={showSuggestedReplies} />
+                <MessageList showSuggestedReplies={showSuggestedReplies} resendMessage={handleResendFailedMessage} />
                 <MessageInput
                   suggestions={suggestions}
                   showSuggestedReplies={showSuggestedReplies}
@@ -167,6 +171,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
                   draggedAndDroppedFile={draggedAndDroppedFile}
                   setDraggedAndDroppedFile={setDraggedAndDroppedFile}
                   setDragAndDropDisabled={setDragAndDropDisabled}
+                  resendFailedMessage={resendFailedMessage}
                 />
               </>
             )}

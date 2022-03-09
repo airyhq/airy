@@ -40,6 +40,7 @@ type Props = {
   draggedAndDroppedFile: File;
   setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
   setDragAndDropDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  resendFailedMessage: boolean;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -65,6 +66,7 @@ const MessageInput = (props: Props) => {
     setDraggedAndDroppedFile,
     setDragAndDropDisabled,
     config,
+    resendFailedMessage,
   } = props;
 
   const conversation = useCurrentConversation();
@@ -176,6 +178,10 @@ const MessageInput = (props: Props) => {
       }
     }
   }, [channelConnected]);
+
+  useEffect(() => {
+    resendFailedMessage && sendMessage();
+  }, [resendFailedMessage]);
 
   const uploadFile = (file: File) => {
     if (file) {
@@ -294,6 +300,10 @@ const MessageInput = (props: Props) => {
         setBlockSpam(false);
         removeElementFromInput();
       });
+      console.log('content: ', messages[messages.length - 1].content);
+      console.log('content2: ', messages[messages.length].content);
+
+      resendFailedMessage && sendMessages(messages[messages.length - 1].content);
     }
   };
 
@@ -460,8 +470,7 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+            dataCy={cySuggestionsButton}>
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -567,8 +576,7 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
-            data-cy={cyMessageSendButton}
-          >
+            data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <PaperPlane />
             </div>
@@ -577,8 +585,7 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
-      >
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
         {'Shift + Enter to add line'}
       </div>
     </div>

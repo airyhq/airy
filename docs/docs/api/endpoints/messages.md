@@ -83,7 +83,7 @@ to see learn how to send text, media, and many more message types.
 Because of the nature of being an asynchronous system, sometimes the conversation is not ready at the time of
 sending the message. The status code `202` indicates that this is the case and also does not include a response body.
 In case the conversation was eventually not found error metadata will be delivered asynchronously using the
-[webhook](api/webhook.md) and [websocket](<(api/websocket.md)>).
+[webhook](api/webhook.md) and [websocket](api/websocket.md).
 
 **Sample response (200)**
 The conversation was found and the message is pending to be delivered.

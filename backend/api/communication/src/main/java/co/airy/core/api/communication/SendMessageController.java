@@ -93,8 +93,8 @@ public class SendMessageController {
                 .setIsFromContact(false)
                 .build();
 
-        // If there is no channelId it implies that the converstaion was not found
-        // instally and it will be handled asynchronously
+        // If there is no channelId it implies that the conversation was not found
+        // instantly and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
         if (channelId == "") {
             asyncHandler.addPendingMessage(message);

@@ -79,17 +79,11 @@ to see learn how to send text, media, and many more message types.
 }
 ```
 
-**Sample response**
+**Sample response (202)**
+Because of the nature of being an asynchronous system, sometimes the conversation is not ready at the time of sending the message. The status code `202` indicates that this is the case and also does not include a response body. In case the conversation was eventually not found error metadata will be delivered asynchronously using the [webhook](api/webhook.md) and [websocket]((api/websocket.md)).
 
-Because of the nature of being an asynchronous system, sometimes the conversation is not ready at the time of sending
-the message.
-
-`HTTP 200 OK`
-In this case the conversation was found and the message is attached to it
-
-`HTTP 202 ACCEPTED`
-In this case the conversation is not ready yet. the message will be attached to the conversation
-asynchronously, in the case of an error. it will be delivered asynchronously. See error handling section.
+**Sample response (200)**
+The conversation was found and the message is pending to be delivered.
 
 ```json5
 {

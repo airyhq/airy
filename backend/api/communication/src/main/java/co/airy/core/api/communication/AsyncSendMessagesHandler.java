@@ -98,7 +98,7 @@ public class AsyncSendMessagesHandler {
                     }
                     updateMessage(conversation, msg);
 
-                } else if (messageExpired) {
+                } else {
                     setMessageSateToFailed(msg, "Conversation id not found");
                 }
 

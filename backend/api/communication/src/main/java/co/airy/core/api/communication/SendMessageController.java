@@ -33,18 +33,18 @@ public class SendMessageController {
     private final Stores stores;
     private final ObjectMapper objectMapper;
     private final PrincipalAccess principalAccess;
-    private final AsyncSendMessagesHandler asyncHanlder;
+    private final AsyncSendMessagesHandler asyncHandler;
 
     SendMessageController(
             Stores stores,
             ObjectMapper objectMapper,
             PrincipalAccess principalAccess,
-            AsyncSendMessagesHandler asyncHanlder) {
+            AsyncSendMessagesHandler asyncHandler) {
 
         this.stores = stores;
         this.objectMapper = objectMapper;
         this.principalAccess = principalAccess;
-        this.asyncHanlder = asyncHanlder;
+        this.asyncHandler = asyncHandler;
     }
 
     @PostMapping("/messages.send")
@@ -97,7 +97,7 @@ public class SendMessageController {
         // instally and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
         if (channelId == "") {
-            asyncHanlder.addPendingConversation(message);
+            asyncHandler.addPendingConversation(message);
             s = HttpStatus.ACCEPTED;
         } else {
             stores.storeMessage(message);

@@ -26,7 +26,6 @@ app_deps = [
     "@maven//:org_apache_lucene_lucene_queryparser",
     "@maven//:org_apache_lucene_lucene_analyzers_common",
     "@maven//:org_apache_lucene_lucene_core",
-    "@maven//:javax_annotation_javax_annotation_api",
 ]
 
 springboot(

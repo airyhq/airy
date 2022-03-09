@@ -1143,3 +1143,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.20.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.20.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.20.0/windows/amd64/airy.exe)
+

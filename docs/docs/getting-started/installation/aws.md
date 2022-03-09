@@ -249,11 +249,13 @@ airy create --provider aws --init-only
 Then edit your `airy.yaml` file and add the following configuration
 
 ```sh
-ingress-controller:
+global:
   host: myairy.myhostname.com
+  ingress:
+    letsencrypt: true
+ingress-controller:
   https: true
   letsencryptEmail: "mymail@myhostname.com"
-
 ```
 
 The `ingress.host` value should be set to your desired hostname. Configure the e-mail address you want to use for your Let's Encrypt registration under `ingress.letsencryptEmail`.

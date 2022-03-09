@@ -17,5 +17,10 @@ data:
   APP_IMAGE_TAG: {{ default .Chart.Version .Values.global.appImageTag }}
   CORE_ID: {{ randAlphaNum 10 | lower }}
   CHATPLUGIN_JWT_SECRET: {{ randAlphaNum 128 | quote }}
-  API_HOST: {{ .Values.apiHost }}
   SEGMENT_ANALYTICS_ENABLED: {{ .Values.tools.segment.enabled | quote }}
+{{- if .Values.global.host }}
+  HOST: {{ .Values.global.host }}
+{{- end }}
+{{- if .Values.global.apiHost }}
+  API_HOST: {{ .Values.global.apiHost }}
+{{- end }}

@@ -1,8 +1,7 @@
-host: ""
 https: false
 httpsTermination: ""
 httpsCertificate: ""
 loadbalancerAnnotations: {}
 letsencryptEmail:
 namespace: kube-system
-serviceAccount: airy-admin
+ngrokEnabled: false

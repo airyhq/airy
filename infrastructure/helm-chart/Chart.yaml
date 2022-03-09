@@ -10,3 +10,6 @@ dependencies:
     condition: ingress-controller.enabled
   - name: tools
     condition: tools.enabled
+  - name: components
+    condition: components.enabled
+

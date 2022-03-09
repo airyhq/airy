@@ -1,0 +1,43 @@
+@import 'assets/scss/fonts';
+@import 'assets/scss/colors';
+
+.audioContainer {
+  width: auto;
+  height: 48px;
+  padding: 0 6px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background-color: var(--color-airy-blue);
+}
+
+.audioContainer audio {
+  display: 'none';
+}
+
+.audioContainer button {
+  width: 20px;
+  margin-right: 6px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  svg {
+    path {
+      fill: white;
+    }
+  }
+}
+
+.audioTime {
+  color: white;
+  margin-left: 6px;
+  @include font-s;
+}

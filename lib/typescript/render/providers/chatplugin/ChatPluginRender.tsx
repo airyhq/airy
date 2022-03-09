@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {RenderPropsUnion} from '../../props';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
 import {Text} from '../../components/Text';
@@ -7,7 +6,8 @@ import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
-import {Image, Video, File, Audio} from 'render/components';
+import {Image, Video, File} from 'render/components';
+import {AudioClip} from 'components';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.message), props);
@@ -72,7 +72,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <File fileUrl={content.fileUrl} />;
 
     case 'audio':
-      return <Audio audioUrl={content.audioUrl} />;
+      return <AudioClip audioUrl={content.audioUrl} />;
   }
 }
 

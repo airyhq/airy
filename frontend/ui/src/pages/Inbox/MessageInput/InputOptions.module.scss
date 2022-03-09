@@ -23,18 +23,34 @@
   z-index: $base;
 }
 
+.iconRecordingDefault {
+  svg {
+    path {
+      stroke: var(--color-icons-gray);
+      fill: none;
+    }
+  }
+}
+
 @mixin activeButton {
   background-color: var(--color-background-blue);
   border-radius: 50%;
 
   svg {
     path {
-      fill: #4bb3fd;
+      fill: var(--color-airy-logo-blue);
     }
   }
 }
 
-.iconButton {
+@mixin iconsCommonStyle {
+  svg {
+    width: 22px;
+    pointer-events: none;
+  }
+}
+
+@mixin optionsIconButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,26 +59,78 @@
   cursor: pointer;
   background: transparent;
   border: none;
+}
+
+@mixin iconButtonRecordingOn {
+  background-color: var(--color-airy-blue);
+  border-radius: 50%;
+}
+
+@mixin iconToolTip {
+  @include font-s;
+  position: absolute;
+  background-color: var(--color-text-contrast);
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: none;
+  bottom: 33px;
+  z-index: 1;
+}
+
+.recordingIconButton {
+  @include optionsIconButton;
+
+  .actionToolTip {
+    @include iconToolTip;
+  }
+
+  &:hover {
+    background-color: var(--color-background-blue);
+    border-radius: 50%;
+
+    svg {
+      path {
+        stroke: var(--color-airy-logo-blue);
+      }
+    }
+
+    .actionToolTip {
+      display: block;
+    }
+  }
+
+  &.active {
+    background-color: var(--color-background-blue);
+    border-radius: 50%;
+    svg {
+      path {
+        stroke: var(--color-airy-logo-blue);
+      }
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.iconButton {
+  @include optionsIconButton;
+  @include iconsCommonStyle;
 
   svg {
-    width: 22px;
-    pointer-events: none;
-
     path {
       fill: var(--color-icons-gray);
     }
   }
 
   .actionToolTip {
-    @include font-s;
-    position: absolute;
-    background-color: var(--color-text-contrast);
-    color: white;
-    border-radius: 4px;
-    padding: 2px 8px;
-    display: none;
-    bottom: 33px;
-    z-index: 1;
+    @include iconToolTip;
   }
 
   &:hover {
@@ -86,6 +154,23 @@
   }
 }
 
+.iconRecordingOn {
+  @include iconButtonRecordingOn;
+  @include iconsCommonStyle;
+
+  svg {
+    path {
+      stroke: white;
+      fill: none;
+    }
+  }
+}
+
+.iconRecordingPaused {
+  @include iconButtonRecordingOn;
+  @include iconsCommonStyle;
+}
+
 .smileyIcon {
   height: 20px;
   width: 20px;
@@ -93,15 +178,6 @@
 
 .templateActionContainer {
   margin-top: 8px;
-}
-
-.templateAltIcon {
-  height: 28px;
-  width: 20px;
-  svg {
-    background-color: red;
-    margin-top: 5px;
-  }
 }
 
 .fileInput {

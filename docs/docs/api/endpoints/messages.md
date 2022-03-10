@@ -122,7 +122,7 @@ In case a message was failed to send (`"state": "failed"`), this endpoint can be
 
 ```json5
 {
-  "message_id": "message uuid",
+  "message_id": "message uuid"
 }
 ```
 
@@ -134,7 +134,7 @@ In case a message was failed to send (`"state": "failed"`), this endpoint can be
 }
 ```
 
-**Sample response (202)**
+**Sample response (200)**
 
 Message was marked as pending and will be retried by the responsible source.
 

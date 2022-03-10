@@ -147,7 +147,7 @@ public class SendMessageControllerTest {
 
         retryOnException(() -> {
             webTestHelper.post("/messages.resend", resendRequestPayload)
-                    .andExpect(status().isAccepted());
+                    .andExpect(status().isOk());
         }, "Could not resend message");
     }
 

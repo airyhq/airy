@@ -69,8 +69,6 @@ public class AsyncSendMessagesHandler {
     @Scheduled(fixedRateString = "${async-messages-handler.check-period-millis}")
     private void run() {
         try {
-            log.info(String.format("[%s] running task", Thread.currentThread().getName()));
-
             // Move all values to internal list
             PendingMessage pm;
             while ((pm = pendingMessages.poll()) != null) {

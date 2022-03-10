@@ -31,9 +31,9 @@ export function WaveformAudio({audioData}: WaveformAudioProps) {
   }, [context, audioData]);
 
   const setResponsiveCanvas = () => {
-    if (window.innerWidth >= 1800 && window.innerWidth < 2000) {
+    if (window.innerWidth >= 1800 && window.innerWidth < 1900) {
       setBarTotalCount(72);
-    } else if (window.innerWidth >= 2000) {
+    } else if (window.innerWidth >= 1900) {
       setBarTotalCount(90);
       setBarWidth(4);
     }

@@ -133,9 +133,9 @@
 }
 
 .buttonWrapper {
-  height: 30px;
   display: flex;
   justify-content: center;
+  align-items: center;
   button {
     margin: 0 8px;
     font-family: var(--font), sans-serif;
@@ -162,7 +162,7 @@
   font-weight: 600;
   line-height: 16px;
   font-size: 20px;
-  height: 40px;
+  height: max-content;
   background-color: var(--color-airy-blue);
   color: white;
   border-radius: 8px;

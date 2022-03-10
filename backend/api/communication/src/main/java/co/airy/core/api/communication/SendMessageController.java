@@ -4,12 +4,15 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.core.api.communication.payload.ResendMessageRequestPayload;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.model.conversation.Conversation;
+import co.airy.model.message.MessageRepository;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.auth.PrincipalAccess;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,7 +99,7 @@ public class SendMessageController {
         // If there is no channelId it implies that the conversation was not found
         // instantly and it will be handled asynchronously
         HttpStatus s = HttpStatus.OK;
-        if (channelId == "") {
+        if (channelId.equals("")) {
             asyncHandler.addPendingMessage(message);
             s = HttpStatus.ACCEPTED;
         } else {
@@ -104,5 +107,27 @@ public class SendMessageController {
         }
 
         return ResponseEntity.status(s).body(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, new MetadataMap())));
+    }
+
+    @PostMapping("/messages.resend")
+    public ResponseEntity<?> sendMessage(@RequestBody @Valid ResendMessageRequestPayload payload) {
+        final String messageId = payload.getMessageId().toString();
+
+        final MessageContainer messageContainer = stores.getMessageContainer(messageId);
+        if (messageContainer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        if (!messageContainer.getMessage().getDeliveryState().equals(DeliveryState.FAILED)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new RequestErrorResponsePayload("Message is not in a failed state"));
+        }
+
+        final Message message = MessageRepository.markMessageForResend(messageContainer.getMessage());
+        try {
+            stores.storeMessage(message);
+        } catch (InterruptedException | ExecutionException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }

@@ -112,6 +112,32 @@ The conversation was found and the message is pending to be delivered.
 }
 ```
 
+## Resend
+
+`POST /messages.resend`
+
+In case a message was failed to send (`"state": "failed"`), this endpoint can be used to resend it.
+
+**Sample request**
+
+```json5
+{
+  "message_id": "message uuid",
+}
+```
+
+**Sample response (409)**
+
+```json
+{
+  "error": "Message is not in a failed state"
+}
+```
+
+**Sample response (202)**
+
+Message was marked as pending and will be retried by the responsible source.
+
 ### Starting a conversation
 
 The previous flow covers the use cases of most messaging sources. However, some sources such as SMS or Whatsapp also

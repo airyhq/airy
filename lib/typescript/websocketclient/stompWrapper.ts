@@ -7,30 +7,22 @@ export class StompWrapper {
   stompClient: Client;
   onError: ErrorCallback;
   url: string;
-  private readonly authToken: string;
 
   queues: StompSubscription[];
   queueMapping: QueueMappingType;
 
-  constructor(url: string, queueMapping: QueueMappingType, onError: ErrorCallback, authToken?: string) {
+  constructor(url: string, queueMapping: QueueMappingType, onError: ErrorCallback) {
     this.url = url;
     this.queueMapping = queueMapping;
     this.onError = onError;
-    this.authToken = authToken;
   }
 
   initConnection = () => {
-    console.debug('authToken', {
-      ...(this.authToken && {Authorization: `Bearer ${this.authToken}`}),
-    });
     this.stompClient = new Client({
       brokerURL: this.url,
       reconnectDelay: 2000,
       onConnect: this.stompOnConnect,
       onStompError: this.stompOnError,
-      connectHeaders: {
-        ...(this.authToken && {Authorization: `Bearer ${this.authToken}`}),
-      },
     });
     this.stompClient.activate();
   };
@@ -50,7 +42,6 @@ export class StompWrapper {
   };
 
   stompOnError = (error: IFrame) => {
-    console.debug('error', error);
     if (error.headers.message.includes('401')) {
       this.onError();
     }

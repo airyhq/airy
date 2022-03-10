@@ -21,6 +21,7 @@ import {usePrevious} from '../../../../services/hooks/usePrevious';
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
   resendMessage?: (resend: boolean) => void;
+  failedMessageId?: (messageId: string) => void;
 };
 
 const mapDispatchToProps = {
@@ -139,6 +140,7 @@ const MessageList = (props: MessageListProps) => {
 
   const handleResendFailedMessage = (resend: boolean) => {
     props.resendMessage(resend);
+    props.failedMessageId(messages[messages.length - 1].id);
   };
 
   return (

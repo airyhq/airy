@@ -20,3 +20,4 @@ export * from './MetadataUpsertRequestPayload';
 export * from './SetStateConversationRequestPayload';
 export * from './UpdateContactRequestPayload';
 export * from './UploadFileRequestPayload';
+export * from './ResendMessagesRequestPayload';

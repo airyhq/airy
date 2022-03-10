@@ -62,14 +62,14 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
 
   const MessageInfo = () => (
     <span className={styles.infoMessage}>
-      {deliveryState === DeliveryState.delivered ? <MessageFailed /> : <MessageSuccessfull />}
+      {deliveryState === DeliveryState.pending ? <MessageFailed /> : <MessageSuccessfull />}
     </span>
   );
 
   const MemberMessage = () => (
     <div className={styles.member}>
       <div className={styles.errorFailedMessageContainer}>
-        {deliveryState === DeliveryState.delivered && <ErrorMessageIcon height={24} width={24} />}
+        {deliveryState === DeliveryState.pending && <ErrorMessageIcon height={24} width={24} />}
         <div className={styles.memberContent}>{children}</div>
       </div>
       <MessageInfo />

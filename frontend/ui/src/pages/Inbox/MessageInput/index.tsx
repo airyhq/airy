@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {sendMessages} from '../../../actions/messages';
+import {resendMessages, sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
 import {getOutboundMapper} from 'render';
@@ -24,7 +24,7 @@ import {getAllSupportedAttachmentsForSource} from '../../../services/types/attac
 import {AudioRecording} from './AudioRecording';
 import styles from './index.module.scss';
 
-const mapDispatchToProps = {sendMessages};
+const mapDispatchToProps = {sendMessages, resendMessages};
 
 const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
@@ -41,6 +41,7 @@ type Props = {
   setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
   setDragAndDropDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   resendFailedMessage: boolean;
+  failedMessageId: string;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -180,7 +181,7 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   useEffect(() => {
-    resendFailedMessage && sendMessage();
+    resendFailedMessage && resendMessages({messageId: props.failedMessageId});
   }, [resendFailedMessage]);
 
   const uploadFile = (file: File) => {
@@ -300,10 +301,6 @@ const MessageInput = (props: Props) => {
         setBlockSpam(false);
         removeElementFromInput();
       });
-      console.log('content: ', messages[messages.length - 1].content);
-      console.log('content2: ', messages[messages.length].content);
-
-      resendFailedMessage && sendMessages(messages[messages.length - 1].content);
     }
   };
 

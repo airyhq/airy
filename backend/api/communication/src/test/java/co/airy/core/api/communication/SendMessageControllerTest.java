@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
@@ -99,7 +100,7 @@ public class SendMessageControllerTest {
 
     @Test
     @Order(1)
-    void canSendTextMessages() throws Exception {
+    void canSendMessage() throws Exception {
         final String messagePayload = "{\"text\":\"answeris42\"}";
         final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
                         "\"message\":%s}",
@@ -107,7 +108,7 @@ public class SendMessageControllerTest {
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}")
+                                "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk()),
                 "Could not find conversation"
         );
@@ -131,8 +132,23 @@ public class SendMessageControllerTest {
             fail("message not present");
         }
 
-        final Message message = maybeMessage.get();
+        Message message = maybeMessage.get();
         assertThat(message.getContent(), equalTo(messagePayload));
+
+        // Test resend
+        final String resendRequestPayload = "{\"message_id\":\"" + message.getId() + "\"}";
+
+        // Message is not in failed state
+        webTestHelper.post("/messages.resend", resendRequestPayload)
+                .andExpect(status().isConflict());
+
+        message.setDeliveryState(DeliveryState.FAILED);
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message));
+
+        retryOnException(() -> {
+            webTestHelper.post("/messages.resend", resendRequestPayload)
+                    .andExpect(status().isOk());
+        }, "Could not resend message");
     }
 
 
@@ -186,7 +202,7 @@ public class SendMessageControllerTest {
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}")
+                                "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk()),
                 "Could not find conversation"
         );

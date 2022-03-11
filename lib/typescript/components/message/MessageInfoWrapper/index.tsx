@@ -3,7 +3,6 @@ import {Avatar} from '../Avatar';
 import {Contact, DeliveryState} from 'model';
 import styles from './index.module.scss';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
-import {resendMessages} from '../../../../../frontend/ui/src/actions/messages';
 
 type MessageInfoWrapperProps = {
   children: ReactNode;
@@ -89,8 +88,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
         )}
         <div
           className={styles.contactContent}
-          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}
-        >
+          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}>
           {children}
         </div>
         {decoration}

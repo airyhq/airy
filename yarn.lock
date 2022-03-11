@@ -2980,12 +2980,19 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dotenv-defaults@^2.0.1:
+dotenv-defaults@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/dotenv-defaults/-/dotenv-defaults-2.0.2.tgz#6b3ec2e4319aafb70940abda72d3856770ee77ac"
   integrity sha512-iOIzovWfsUHU91L5i8bJce3NYK5JXeAwH50Jh6+ARUdLiiGlYWfGw6UkzsYqaXZH/hjE/eCd/PlfM/qqyK0AMg==
   dependencies:
     dotenv "^8.2.0"
+
+dotenv-webpack@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/dotenv-webpack/-/dotenv-webpack-7.1.0.tgz#211fefac6bf500bf3bb66b286e1b12a23a2a70c0"
+  integrity sha512-+aUOe+nqgLerA/n611oyC15fY79BIkGm2fOxJAcHDonMZ7AtDpnzv/Oe591eHAenIE0t6w03UyxDnLs/YUxx5Q==
+  dependencies:
+    dotenv-defaults "^2.0.2"
 
 dotenv@^8.2.0:
   version "8.6.0"
@@ -6900,14 +6907,6 @@ webpack-dev-server@^4.7.4:
     strip-ansi "^7.0.0"
     webpack-dev-middleware "^5.3.1"
     ws "^8.4.2"
-
-webpack-dotenv@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/webpack-dotenv/-/webpack-dotenv-0.0.2.tgz#b2733adf143d8f8668a59850a959b39ad583024e"
-  integrity sha512-iRo3HY6GwAAhfYk5hchHgu59fCxi8P7QAMFrmmyYYftgn71XmJ2gVrIpEHzmZggb/B65DrA0rKUtMMdZAVZDwg==
-  dependencies:
-    dotenv "^8.2.0"
-    dotenv-defaults "^2.0.1"
 
 webpack-merge@^5.7.3:
   version "5.8.0"

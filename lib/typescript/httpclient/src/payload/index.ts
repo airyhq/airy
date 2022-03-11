@@ -21,3 +21,5 @@ export * from './SetStateConversationRequestPayload';
 export * from './UpdateContactRequestPayload';
 export * from './UploadFileRequestPayload';
 export * from './ResendMessageRequestPayload';
+export * from './ListContactsRequestPayload';
+export * from './GetContactsInfoRequestPayload';

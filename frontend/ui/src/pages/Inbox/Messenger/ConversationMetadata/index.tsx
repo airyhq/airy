@@ -4,7 +4,7 @@ import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions';
-import {updateContact} from '../../../../actions';
+import {updateContact, getContactsInfo} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -59,8 +59,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setDisplayName(conversation.metadata.contact.displayName);
   }, [conversation.id]);
 
+  //contacts.info(convId)
+  //call contacts.info >> add it in Redux 
   useEffect(() => {
     listTags();
+    getContactsInfo(conversation.id);
   }, []);
 
   const showAddTags = () => {

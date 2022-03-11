@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {resendMessages, sendMessages} from '../../../actions/messages';
+import {sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
 import {getOutboundMapper} from 'render';
@@ -24,7 +24,7 @@ import {getAllSupportedAttachmentsForSource} from '../../../services/types/attac
 import {AudioRecording} from './AudioRecording';
 import styles from './index.module.scss';
 
-const mapDispatchToProps = {sendMessages, resendMessages};
+const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
@@ -40,8 +40,6 @@ type Props = {
   draggedAndDroppedFile: File;
   setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
   setDragAndDropDisabled: React.Dispatch<React.SetStateAction<boolean>>;
-  resendFailedMessage: boolean;
-  failedMessageId: string;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -67,7 +65,6 @@ const MessageInput = (props: Props) => {
     setDraggedAndDroppedFile,
     setDragAndDropDisabled,
     config,
-    resendFailedMessage,
   } = props;
 
   const conversation = useCurrentConversation();
@@ -179,10 +176,6 @@ const MessageInput = (props: Props) => {
       }
     }
   }, [channelConnected]);
-
-  useEffect(() => {
-    resendFailedMessage && resendMessages({messageId: props.failedMessageId});
-  }, [resendFailedMessage]);
 
   const uploadFile = (file: File) => {
     if (file) {
@@ -467,7 +460,8 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}>
+            dataCy={cySuggestionsButton}
+          >
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -573,7 +567,8 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={(input.trim().length == 0 && !canSendMessage()) || blockSpam}
-            data-cy={cyMessageSendButton}>
+            data-cy={cyMessageSendButton}
+          >
             <div className={styles.sendButtonText}>
               <PaperPlane />
             </div>
@@ -582,7 +577,8 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
+      >
         {'Shift + Enter to add line'}
       </div>
     </div>

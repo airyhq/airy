@@ -3,6 +3,7 @@ import {Avatar} from '../Avatar';
 import {Contact, DeliveryState} from 'model';
 import styles from './index.module.scss';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
+import {resendMessages} from '../../../../../frontend/ui/src/actions/messages';
 
 type MessageInfoWrapperProps = {
   children: ReactNode;
@@ -14,7 +15,8 @@ type MessageInfoWrapperProps = {
   decoration?: ReactNode;
   senderName?: string;
   deliveryState?: string;
-  resendFailedMessage: (resend: boolean) => void;
+  messageId?: string;
+  resendFailedMessage?: (resend: boolean, messageId: string) => void;
 };
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
@@ -28,6 +30,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
     decoration,
     senderName,
     deliveryState,
+    messageId,
     resendFailedMessage,
   } = props;
 
@@ -35,9 +38,9 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
   const senderIdentity = sentAt ? ` - sent by ${senderName}` : `sent by ${senderName}`;
 
   const handleResendFailedMessage = () => {
-    resendFailedMessage(true);
+    resendFailedMessage(true, messageId);
     setTimeout(() => {
-      resendFailedMessage(false);
+      resendFailedMessage(false, messageId);
     }, 1000);
   };
 
@@ -62,14 +65,14 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
 
   const MessageInfo = () => (
     <span className={styles.infoMessage}>
-      {deliveryState === DeliveryState.pending ? <MessageFailed /> : <MessageSuccessfull />}
+      {deliveryState === DeliveryState.failed ? <MessageFailed /> : <MessageSuccessfull />}
     </span>
   );
 
   const MemberMessage = () => (
     <div className={styles.member}>
       <div className={styles.errorFailedMessageContainer}>
-        {deliveryState === DeliveryState.pending && <ErrorMessageIcon height={24} width={24} />}
+        {deliveryState === DeliveryState.failed && <ErrorMessageIcon height={24} width={24} />}
         <div className={styles.memberContent}>{children}</div>
       </div>
       <MessageInfo />
@@ -86,7 +89,8 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
         )}
         <div
           className={styles.contactContent}
-          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}>
+          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}
+        >
           {children}
         </div>
         {decoration}

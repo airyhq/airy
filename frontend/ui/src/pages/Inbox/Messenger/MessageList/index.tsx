@@ -1,16 +1,13 @@
-import React, {useEffect, createRef, useState} from 'react';
+import React, {useEffect, createRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {isEqual} from 'lodash-es';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-
 import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
-
-import {listMessages, listPreviousMessages} from '../../../../actions/messages';
-
+import {listMessages, listPreviousMessages, resendMessages} from '../../../../actions/messages';
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
@@ -20,19 +17,18 @@ import {usePrevious} from '../../../../services/hooks/usePrevious';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
-  resendMessage?: (resend: boolean) => void;
-  failedMessageId?: (messageId: string) => void;
 };
 
 const mapDispatchToProps = {
   listMessages,
   listPreviousMessages,
+  resendMessages,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, showSuggestedReplies} = props;
+  const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessages} = props;
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
   if (!conversation) {
@@ -138,9 +134,8 @@ const MessageList = (props: MessageListProps) => {
     showSuggestedReplies(message.metadata.suggestions);
   };
 
-  const handleResendFailedMessage = (resend: boolean) => {
-    props.resendMessage(resend);
-    props.failedMessageId(messages[messages.length - 1].id);
+  const handleFailedMessage = (resend: boolean, messageId: string) => {
+    resend && resendMessages({messageId});
   };
 
   return (
@@ -175,7 +170,9 @@ const MessageList = (props: MessageListProps) => {
               decoration={messageDecoration}
               senderName={message?.sender?.name}
               deliveryState={message?.deliveryState}
-              resendFailedMessage={handleResendFailedMessage}>
+              messageId={message.id}
+              resendFailedMessage={handleFailedMessage}
+            >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />
             </MessageInfoWrapper>

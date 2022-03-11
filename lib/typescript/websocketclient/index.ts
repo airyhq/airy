@@ -13,7 +13,7 @@ type CallbackMap = {
 };
 
 // https: -> wss: and http: -> ws:
-const protocol = location.protocol.replace('http', 'ws');
+const getProtocol = (url: URL) => url.protocol.replace('http', 'ws');
 
 export class WebSocketClient {
   public readonly apiUrlConfig?: string;
@@ -23,10 +23,10 @@ export class WebSocketClient {
 
   constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
     this.callbackMap = callbackMap;
-    const apiWsUrl = apiUrl
-      ? `${protocol}//${new URL(apiUrl).host}/ws.communication`
-      : `${protocol}//${location.host}/ws.communication`;
-    this.apiUrlConfig = apiWsUrl;
+    const url = new URL(apiUrl);
+    // Infer websocket tls based on api url protocol
+    const protocol = getProtocol(url);
+    this.apiUrlConfig = `${protocol}//${url.host}/ws.communication`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,

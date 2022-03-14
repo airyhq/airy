@@ -14,7 +14,6 @@ start() {
     create_issue
     create_release_branch
     update_release_version
-    rename_draft_release
     commit_version
 }
 
@@ -38,6 +37,7 @@ create_release_branch() {
 
 finish() {
     release_number=$1
+    rename_draft_release
     commit_changelog
     echo -e "Finishing release ${release_number}\n"
     merge_main

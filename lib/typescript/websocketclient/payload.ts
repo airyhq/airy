@@ -29,10 +29,15 @@ export interface MessageUpdatedPayload extends Event {
       delivery_state: DeliveryState;
       from_contact: boolean;
       sent_at: Date;
+      source: string;
+      sender: {
+        id: string;
+        name: string;
+        avatar_url: string;
+      };
     };
   };
 }
-
 export interface ChannelUpdatedPayload extends Event {
   type: 'channel.updated';
   payload: {

@@ -31,8 +31,6 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
   const conversation = useCurrentConversation();
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
-  const [resendFailedMessage, setResendFailedMessage] = useState(false);
-  const [failedMessageId, setFailedMessageId] = useState('');
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
   const source = conversation?.channel?.source;
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
@@ -132,14 +130,6 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
     }
   };
 
-  const handleResendFailedMessage = (resend: boolean) => {
-    setResendFailedMessage(resend);
-  };
-
-  const handleFailedMessageId = (messageId: string) => {
-    setFailedMessageId(messageId);
-  };
-
   return (
     <>
       <div
@@ -168,11 +158,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
             {conversation && (
               <>
                 <ConversationHeader />
-                <MessageList
-                  showSuggestedReplies={showSuggestedReplies}
-                  resendMessage={handleResendFailedMessage}
-                  failedMessageId={handleFailedMessageId}
-                />
+                <MessageList showSuggestedReplies={showSuggestedReplies} />
                 <MessageInput
                   suggestions={suggestions}
                   showSuggestedReplies={showSuggestedReplies}
@@ -181,8 +167,6 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
                   draggedAndDroppedFile={draggedAndDroppedFile}
                   setDraggedAndDroppedFile={setDraggedAndDroppedFile}
                   setDragAndDropDisabled={setDragAndDropDisabled}
-                  resendFailedMessage={resendFailedMessage}
-                  failedMessageId={failedMessageId}
                 />
               </>
             )}

@@ -25,7 +25,7 @@
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",
     "react-dom": "17.0.2",
-    "react-i18next": "^11.15.6",
+    "react-i18next": "^11.15.7",
     "react-markdown": "^8.0.0",
     "react-modal": "^3.14.4",
     "react-redux": "7.2.6",

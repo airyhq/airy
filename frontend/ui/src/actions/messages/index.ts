@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {Message} from 'model';
-import {PaginatedResponse, ResendMessagesRequestPayload, SendMessagesRequestPayload} from 'httpclient/src';
+import {PaginatedResponse, ResendMessageRequestPayload, SendMessagesRequestPayload} from 'httpclient/src';
 import {HttpClientInstance} from '../../httpClient';
 import {StateModel} from '../../reducers';
 import {updateMessagesPaginationDataAction, loadingConversationAction} from '../conversations';
@@ -61,9 +61,9 @@ export function sendMessages(messagePayload: SendMessagesRequestPayload) {
   };
 }
 
-export function resendMessages(messagePayload: ResendMessagesRequestPayload) {
+export function resendMessage(messagePayload: ResendMessageRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.resendMessages(messagePayload).then(() => {
+    return HttpClientInstance.resendMessage(messagePayload).then(() => {
       dispatch(
         updatedMessagesAction({
           messageId: messagePayload.messageId,

@@ -1,4 +1,4 @@
-import {DeliveryState, Metadata, MetadataEvent, Tag} from 'model';
+import {DeliveryState, Metadata, MetadataEvent, Source, Tag} from 'model';
 
 interface Event {
   type: 'message.created' | 'message.updated' | 'channel.updated' | 'metadata.updated' | 'tag.updated';
@@ -29,11 +29,11 @@ export interface MessageUpdatedPayload extends Event {
       delivery_state: DeliveryState;
       from_contact: boolean;
       sent_at: Date;
-      source: string;
+      source: Source;
       sender: {
         id: string;
-        name: string;
-        avatar_url: string;
+        name?: string;
+        avatar_url?: string;
       };
     };
   };

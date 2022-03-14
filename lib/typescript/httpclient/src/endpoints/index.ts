@@ -25,4 +25,4 @@ export * from './metadataUpsert';
 export * from './setStateConversation';
 export * from './updateContact';
 export * from './uploadFile';
-export * from './resendMessages';
+export * from './resendMessage';

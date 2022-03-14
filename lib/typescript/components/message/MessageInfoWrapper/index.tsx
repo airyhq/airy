@@ -15,7 +15,7 @@ type MessageInfoWrapperProps = {
   senderName?: string;
   deliveryState?: string;
   messageId?: string;
-  resendFailedMessage?: (resend: boolean, messageId: string) => void;
+  onResendFailedMessage?: (resend: boolean, messageId: string) => void;
 };
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
@@ -30,24 +30,21 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
     senderName,
     deliveryState,
     messageId,
-    resendFailedMessage,
+    onResendFailedMessage,
   } = props;
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
   const senderIdentity = sentAt ? ` - sent by ${senderName}` : `sent by ${senderName}`;
 
-  const handleResendFailedMessage = () => {
-    resendFailedMessage(true, messageId);
-    setTimeout(() => {
-      resendFailedMessage(false, messageId);
-    }, 1000);
-  };
-
   const MessageFailed = () => {
     return (
       <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <p>Failed to send!</p>
-        <button className={styles.messageFailedButton} type="button" onClick={handleResendFailedMessage}>
+        <button
+          className={styles.messageFailedButton}
+          type="button"
+          onClick={() => onResendFailedMessage(true, messageId)}
+        >
           Retry
         </button>
       </div>

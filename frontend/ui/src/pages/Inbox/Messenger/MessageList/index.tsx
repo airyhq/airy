@@ -7,7 +7,7 @@ import {cyMessageList} from 'handles';
 import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
-import {listMessages, listPreviousMessages, resendMessages} from '../../../../actions/messages';
+import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
@@ -22,13 +22,13 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 const mapDispatchToProps = {
   listMessages,
   listPreviousMessages,
-  resendMessages,
+  resendMessage,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessages} = props;
+  const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessage} = props;
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
   if (!conversation) {
@@ -135,7 +135,7 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const handleFailedMessage = (resend: boolean, messageId: string) => {
-    resend && resendMessages({messageId});
+    resend && resendMessage({messageId});
   };
 
   return (
@@ -171,7 +171,7 @@ const MessageList = (props: MessageListProps) => {
               senderName={message?.sender?.name}
               deliveryState={message?.deliveryState}
               messageId={message.id}
-              resendFailedMessage={handleFailedMessage}
+              onResendFailedMessage={handleFailedMessage}
             >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />

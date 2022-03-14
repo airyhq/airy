@@ -23,7 +23,8 @@ import {
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
   ListContactsRequestPayload,
-  GetContactsInfoRequestPayload
+  GetContactsInfoRequestPayload,
+  UpdateContactInfoRequestPayload
 } from './payload';
 import {
   listChannelsDef,
@@ -57,8 +58,13 @@ import {
   resendMessageDef,
 =======
   listContactsDef,
+<<<<<<< HEAD
   getContactsInfoDef
 >>>>>>> 4bfaf200 (contacts wip)
+=======
+  getContactsInfoDef, 
+  updateContactInfoDef
+>>>>>>> 5c907529 (contacts wip)
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -225,7 +231,10 @@ export class HttpClient {
 
   public listContacts = this.getRequest<ListContactsRequestPayload>(listContactsDef);
 
+  //rename getContactInfo
   public getContactsInfo = this.getRequest<GetContactsInfoRequestPayload>(getContactsInfoDef);
+
+  public updateContactInfo = this.getRequest<UpdateContactInfoRequestPayload>(updateContactInfoDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

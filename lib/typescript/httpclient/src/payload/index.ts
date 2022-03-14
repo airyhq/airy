@@ -23,3 +23,4 @@ export * from './UploadFileRequestPayload';
 export * from './ResendMessageRequestPayload';
 export * from './ListContactsRequestPayload';
 export * from './GetContactsInfoRequestPayload';
+export * from './UpdateContactInfoRequestPayload';

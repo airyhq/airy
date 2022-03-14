@@ -10,6 +10,7 @@ import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel} from '../../../../reducers';
 import {useAnimation} from '../../../../assets/animations';
+import ContactDetails from './ContactDetails';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
@@ -59,11 +60,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setDisplayName(conversation.metadata.contact.displayName);
   }, [conversation.id]);
 
-  //contacts.info(convId)
-  //call contacts.info >> add it in Redux 
   useEffect(() => {
     listTags();
-    getContactsInfo(conversation.id);
   }, []);
 
   const showAddTags = () => {
@@ -252,6 +250,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 </>
               )}
             </div>
+            <ContactDetails conversationId={conversation.id}/>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

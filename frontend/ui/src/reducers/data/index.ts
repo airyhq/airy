@@ -12,6 +12,7 @@ import config, {Config} from './config';
 import channels, {ChannelsState} from './channels';
 import messages, {Messages} from './messages';
 import templates from './templates';
+import contacts, { Contacts } from './contacts';
 
 export * from './channels';
 export * from './conversations';
@@ -21,6 +22,7 @@ export * from './config';
 export * from './tags';
 export * from './templates';
 export * from './user';
+export * from './contacts';
 
 export type DataState = {
   user: User;
@@ -31,6 +33,7 @@ export type DataState = {
   channels: ChannelsState;
   config: Config;
   templates: Templates;
+  contacts: Contacts;
 };
 
 const reducers: Reducer = combineReducers<DataState>({
@@ -42,6 +45,7 @@ const reducers: Reducer = combineReducers<DataState>({
   channels,
   config,
   templates,
+  contacts
 });
 
 export default reducers;

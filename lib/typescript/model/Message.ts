@@ -12,9 +12,9 @@ export enum MessageType {
 }
 
 export enum DeliveryState {
-  pending = 'PENDING',
-  failed = 'FAILED',
-  delivered = 'DELIVERED',
+  pending = 'pending',
+  failed = 'failed',
+  delivered = 'delivered',
 }
 
 export interface Message {

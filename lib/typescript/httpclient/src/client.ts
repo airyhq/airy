@@ -21,6 +21,7 @@ import {
   UpdateContactRequestPayload,
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
+  ResendMessageRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -50,6 +51,7 @@ import {
   setStateConversationDef,
   updateContactDef,
   uploadFileDef,
+  resendMessageDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -185,6 +187,8 @@ export class HttpClient {
   public readConversations = this.getRequest<string>(readConversationsDef);
 
   public listMessages = this.getRequest<ListMessagesRequestPayload, PaginatedResponse<Message>>(listMessagesDef);
+
+  public resendMessage = this.getRequest<ResendMessageRequestPayload>(resendMessageDef);
 
   public listTags = this.getRequest<void, Tag[]>(listTagsDef);
 

@@ -1,13 +1,14 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {Message} from 'model';
-import {PaginatedResponse, SendMessagesRequestPayload} from 'httpclient/src';
+import {PaginatedResponse, ResendMessageRequestPayload, SendMessagesRequestPayload} from 'httpclient/src';
 import {HttpClientInstance} from '../../httpClient';
 import {StateModel} from '../../reducers';
 import {updateMessagesPaginationDataAction, loadingConversationAction} from '../conversations';
 
 const MESSAGES_LOADING = '@@messages/LOADING';
 const MESSAGES_ADDED = '@@messages/ADDED';
+const MESSAGES_UPDATED = '@@messages/UPDATED';
 
 export const loadingMessagesAction = createAction(
   MESSAGES_LOADING,
@@ -18,6 +19,11 @@ export const addMessagesAction = createAction(
   MESSAGES_ADDED,
   (messagesInfo: {conversationId: string; messages: Message[]}) => messagesInfo
 )<{conversationId: string; messages: Message[]}>();
+
+export const updatedMessagesAction = createAction(
+  MESSAGES_UPDATED,
+  (messagesInfo: {messageId: string}) => messagesInfo
+)<{messageId: string}>();
 
 export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
@@ -48,6 +54,19 @@ export function sendMessages(messagePayload: SendMessagesRequestPayload) {
         addMessagesAction({
           conversationId: messagePayload.conversationId,
           messages: [response],
+        })
+      );
+      return Promise.resolve(true);
+    });
+  };
+}
+
+export function resendMessage(messagePayload: ResendMessageRequestPayload) {
+  return async (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.resendMessage(messagePayload).then(() => {
+      dispatch(
+        updatedMessagesAction({
+          messageId: messagePayload.messageId,
         })
       );
       return Promise.resolve(true);

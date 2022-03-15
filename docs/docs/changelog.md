@@ -69,6 +69,7 @@ You can download the Airy CLI for your operating system from the following links
 #### Upgrade notes
 
 This release introduces a change in the structure of the `airy.yaml` file. The `host` setting is no longer present in the `ingress-controller` section and is moved to the `global` section. For more information refer to the [configuration page](https://airy.co/docs/core/getting-started/installation/configuration).
+
 ## 0.40.0
 
 #### 🚀 Features

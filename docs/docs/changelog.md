@@ -5,23 +5,22 @@ sidebar_label: 📝 Changelog
 
 ## 0.41.0
 
+#### Changes
+
+- [[#2627](https://github.com/airyhq/airy/issues/2627)] remove debug log [[#2914](https://github.com/airyhq/airy/pull/2914)]
+- [[#2723](https://github.com/airyhq/airy/issues/2723)] Improvement of the ingress helm chart [[#2782](https://github.com/airyhq/airy/pull/2782)]
+
 #### 🚀 Features
 
 - [[#2892](https://github.com/airyhq/airy/issues/2892)] Failed message indicator [[#2923](https://github.com/airyhq/airy/pull/2923)]
 - [[#2918](https://github.com/airyhq/airy/issues/2918)] Resend messages [[#2919](https://github.com/airyhq/airy/pull/2919)]
-- [[#2744](https://github.com/airyhq/airy/issues/2744)] Support recording voice messages from airy inbox UI [[#2895](https://github.com/airyhq/airy/pull/2895)]
-- [[#2627](https://github.com/airyhq/airy/issues/2627)] Prevent 404 responses for the messages send endpoint [[#2896](https://github.com/airyhq/airy/pull/2896)]
+- [[#2744](https://github.com/airyhq/airy/issues/2744)] support recording voice messages from airy inbox UI [[#2895](https://github.com/airyhq/airy/pull/2895)]
+- [[#2627](https://github.com/airyhq/airy/issues/2627)] prevent 404 responses for the messages send endpoint [[#2896](https://github.com/airyhq/airy/pull/2896)]
 
 #### 🐛 Bug Fixes
 
 - [[#2929](https://github.com/airyhq/airy/issues/2929)] Rename draft release on finish [[#2929](https://github.com/airyhq/airy/pull/2929)]
 - [[#2920](https://github.com/airyhq/airy/issues/2920)] UI fixes [[#2921](https://github.com/airyhq/airy/pull/2921)]
-
-#### 🧰 Enhancements
-
-- [[#2627](https://github.com/airyhq/airy/issues/2627)] Remove debug log [[#2914](https://github.com/airyhq/airy/pull/2914)]
-- [[#2723](https://github.com/airyhq/airy/issues/2723)] Improvement of the ingress helm chart [[#2782](https://github.com/airyhq/airy/pull/2782)]
-- [[#2774](https://github.com/airyhq/airy/issues/2774)] Fix: Point staging from UI local [[#2924](https://github.com/airyhq/airy/pull/2924)]
 
 #### 📚 Documentation
 
@@ -31,6 +30,7 @@ sidebar_label: 📝 Changelog
 
 - Bump eslint-plugin-react from 7.29.3 to 7.29.4 [[#2926](https://github.com/airyhq/airy/pull/2926)]
 - Bump react-i18next from 11.15.6 to 11.15.7 [[#2925](https://github.com/airyhq/airy/pull/2925)]
+- [[#2774](https://github.com/airyhq/airy/issues/2774)] Fix: point staging from UI local [[#2924](https://github.com/airyhq/airy/pull/2924)]
 - Point custom instance from UI local [[#2879](https://github.com/airyhq/airy/pull/2879)]
 - Bump react-router-dom from 6.2.1 to 6.2.2 [[#2917](https://github.com/airyhq/airy/pull/2917)]
 - Bump @types/react from 17.0.39 to 17.0.40 [[#2916](https://github.com/airyhq/airy/pull/2916)]
@@ -62,13 +62,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.41.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.41.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.41.0/windows/amd64/airy.exe)
-
-#### Upgrade notes
-
-This release introduces a change in the structure of the `airy.yaml` file. The `host` setting is no longer present in the `ingress-controller` section and is moved to the `global` section. For more information refer to the [configuration page](https://airy.co/docs/core/getting-started/installation/configuration).
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.40.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.40.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.40.1/windows/amd64/airy.exe)
 
 ## 0.40.0
 
@@ -1158,3 +1154,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.21.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.21.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.21.0/windows/amd64/airy.exe)
+

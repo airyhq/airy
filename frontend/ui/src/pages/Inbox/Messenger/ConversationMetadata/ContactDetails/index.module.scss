@@ -4,5 +4,16 @@
 .container {
     display:flex;
     flex-direction:column;
+    position:relative;
+}
 
+.details {
+    display:flex;
+}
+
+//move this to Metadata component
+.editIcon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }

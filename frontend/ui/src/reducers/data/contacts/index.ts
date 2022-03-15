@@ -28,6 +28,15 @@ const contactsReducer = (state= initialState, action: Action) => {
             }
            
         }
+        case(getType(actions.updateContactsInfoAction)):
+            return {
+                ...state,
+                all: {
+                    ...state.all,
+                    [action.payload.conversationId]: {...state.all[action.payload.conversationId], ...action.payload.updatedContactsInfo}
+                } 
+            }
+
         default:
             return state;
     }

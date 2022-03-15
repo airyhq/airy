@@ -226,10 +226,13 @@ Configure your DNS so that your desired hostname points to the IP address of Loa
 Create an `airy.yaml` file with the following configuration:
 
 ```sh
-ingress-controller:
+global:
   host: awesomechat.airy.co
+  ingress:
+    letsencrypt: true
+ingress-controller:
   https: true
-  letsencryptEmail: "sre@airy.co"
+  letsencryptEmail: "mymail@myhostname.com"
 ```
 
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:

@@ -1,7 +1,15 @@
 package workspace
 
+type IngressGlobalConf struct {
+	Lertsencrypt bool `yaml:"letsencrypt,omitempty"`
+}
+
+type GlobalConf struct {
+	Host              string            `yaml:"host,omitempty"`
+	IngressGlobalConf IngressGlobalConf `yaml:"ingress,omitempty"`
+}
+
 type IngressConf struct {
-	Host                    string            `yaml:"host,omitempty"`
 	NgrokEnabled            bool              `yaml:"ngrokEnabled"`
 	Https                   bool              `yaml:"https,omitempty"`
 	HttpsTermination        string            `yaml:"httpsTermination,omitempty"`
@@ -19,6 +27,7 @@ type SecurityConf struct {
 type ComponentsConf map[string]map[string]string
 
 type AiryConf struct {
+	Global     GlobalConf                `yaml:"global"`
 	Ingress    IngressConf               `yaml:"ingress"`
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]ComponentsConf `yaml:"components,omitempty"`

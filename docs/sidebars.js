@@ -88,7 +88,13 @@ module.exports = {
       ],
     },
     {
-      '📚 Guides': ['guides/contributing', 'guides/analytics-demo', 'guides/monitoring', 'guides/backup'],
+      '📚 Guides': [
+        'guides/contributing',
+        'guides/analytics-demo',
+        'guides/monitoring',
+        'guides/backup',
+        'guides/component-reset',
+      ],
     },
     'changelog',
   ],

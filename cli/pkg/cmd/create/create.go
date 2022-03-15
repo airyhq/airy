@@ -126,10 +126,10 @@ func create(cmd *cobra.Command, args []string) {
 			fmt.Printf("\t\t %s:\t %s", "Host", host)
 			fmt.Println()
 		case "API_HOST":
-			fmt.Printf("\t\t %s:\t %s", "API host", host)
+			fmt.Printf("\t\t %s:\t %s", "API", host)
 			fmt.Println()
 		case "NGROK":
-			fmt.Printf("\t\t %s:\t %s", "NGROK host", host)
+			fmt.Printf("\t\t %s:\t %s", "NGROK", host)
 			fmt.Println()
 		}
 	}

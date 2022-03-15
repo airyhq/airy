@@ -4,13 +4,10 @@ import {isEqual} from 'lodash-es';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-
 import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
-
-import {listMessages, listPreviousMessages} from '../../../../actions/messages';
-
+import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
@@ -25,12 +22,13 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 const mapDispatchToProps = {
   listMessages,
   listPreviousMessages,
+  resendMessage,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, showSuggestedReplies} = props;
+  const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessage} = props;
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
   if (!conversation) {
@@ -136,6 +134,10 @@ const MessageList = (props: MessageListProps) => {
     showSuggestedReplies(message.metadata.suggestions);
   };
 
+  const handleFailedMessage = (resend: boolean, messageId: string) => {
+    resend && resendMessage({messageId});
+  };
+
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages?.map((message: Message, index: number) => {
@@ -167,6 +169,9 @@ const MessageList = (props: MessageListProps) => {
               isChatPlugin={false}
               decoration={messageDecoration}
               senderName={message?.sender?.name}
+              deliveryState={message?.deliveryState}
+              messageId={message.id}
+              onResendFailedMessage={handleFailedMessage}
             >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />
@@ -180,10 +185,10 @@ const MessageList = (props: MessageListProps) => {
 
 const arePropsEqual = (prevProps, nextProps) => {
   if (
-    prevProps.history.location.pathname === nextProps.history.location.pathname &&
+    prevProps.history?.location?.pathname === nextProps.history?.location?.pathname &&
     prevProps.conversation?.id === nextProps.conversation?.id &&
-    prevProps.history.location.key === nextProps.history.location.key &&
-    prevProps.location.key !== nextProps.location.key
+    prevProps.history?.location?.key === nextProps.history?.location?.key &&
+    prevProps.location?.key !== nextProps.location?.key
   ) {
     return true;
   }

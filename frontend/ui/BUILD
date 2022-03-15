@@ -30,6 +30,7 @@ ts_web_library(
         "@npm//@types/react-dom",
         "@npm//@types/react-redux",
         "@npm//@types/lodash-es",
+        "@npm//@types/dom-mediacapture-record",
         "@npm//lodash-es",
         "@npm//react",
         "@npm//react-router-dom",
@@ -39,6 +40,7 @@ ts_web_library(
         "@npm//typesafe-actions",
         "@npm//camelcase-keys",
         "@npm//react-color",
+        "@npm//audio-recorder-polyfill",
     ],
 )
 

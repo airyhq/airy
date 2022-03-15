@@ -79,7 +79,14 @@ to see learn how to send text, media, and many more message types.
 }
 ```
 
-**Sample response**
+**Sample response (202)**
+Because of the nature of being an asynchronous system, sometimes the conversation is not ready at the time of
+sending the message. The status code `202` indicates that this is the case and also does not include a response body.
+In case the conversation was eventually not found error metadata will be delivered asynchronously using the
+[webhook](api/webhook.md) and [websocket](api/websocket.md).
+
+**Sample response (200)**
+The conversation was found and the message is pending to be delivered.
 
 ```json5
 {
@@ -104,6 +111,32 @@ to see learn how to send text, media, and many more message types.
   }
 }
 ```
+
+## Resend
+
+`POST /messages.resend`
+
+In case a message was failed to send (`"state": "failed"`), this endpoint can be used to resend it.
+
+**Sample request**
+
+```json5
+{
+  "message_id": "message uuid"
+}
+```
+
+**Sample response (409)**
+
+```json
+{
+  "error": "Message is not in a failed state"
+}
+```
+
+**Sample response (200)**
+
+Message was marked as pending and will be retried by the responsible source.
 
 ### Starting a conversation
 

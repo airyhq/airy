@@ -19,6 +19,9 @@ node_modules/
 yarn-error.log
 package-lock.json
 
+# Web development
+.env
+
 # Terraform
 .terraform
 *.tfstate

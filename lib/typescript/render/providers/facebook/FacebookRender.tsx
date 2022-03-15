@@ -1,6 +1,7 @@
 import React from 'react';
 import {RenderPropsUnion} from '../../props';
-import {Text, Image, Video, Audio, File} from '../../components';
+import {Text, Image, Video, File} from '../../components';
+import {AudioClip} from 'components';
 import {QuickReplies} from './components/QuickReplies';
 import {
   AttachmentUnion,
@@ -46,7 +47,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Video videoUrl={content.videoUrl} />;
 
     case 'audio':
-      return <Audio audioUrl={content.audioUrl} />;
+      return <AudioClip audioUrl={content.audioUrl} />;
 
     case 'file':
       return <File fileUrl={content.fileUrl} />;

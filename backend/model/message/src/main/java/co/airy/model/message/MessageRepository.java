@@ -16,6 +16,12 @@ public class MessageRepository {
         return message;
     }
 
+    public static Message markMessageForResend(Message message) {
+        message.setUpdatedAt(null);
+        message.setDeliveryState(DeliveryState.PENDING);
+        return message;
+    }
+
     public static boolean isNewMessage(Message message) {
         return message.getUpdatedAt() == null;
     }

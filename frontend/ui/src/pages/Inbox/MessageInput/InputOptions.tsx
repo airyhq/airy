@@ -161,7 +161,7 @@ export const InputOptions = (props: Props) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${audioRecordingCanceled ? styles.alignBottom : styles.alignCenter}`}>
       {errorPopUp && (
         <div className={styles.fileSizeErrorPopUp}>
           <ErrorPopUp message={errorPopUp} closeHandler={closeFileErrorPopUp} />

@@ -68,7 +68,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
   const MemberMessage = () => (
     <div className={styles.member}>
       <div className={styles.errorFailedMessageContainer}>
-        {deliveryState === DeliveryState.failed && <ErrorMessageIcon height={24} width={24} />}
+        {deliveryState === DeliveryState.failed && <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />}
         <div className={styles.memberContent}>{children}</div>
       </div>
       <MessageInfo />

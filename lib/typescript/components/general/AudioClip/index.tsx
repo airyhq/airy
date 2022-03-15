@@ -52,6 +52,7 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const audioElement = useRef(null);
 
   const totalBars = 20;
+  const defaultFreq = new Array(20).fill(6);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -60,15 +61,19 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
 
     const visualizeAudio = async (canvasContext: CanvasRenderingContext2D) => {
       try {
-        const audioBuffer = await decodeAudioStream(audioUrl, abortController);
+        const filteredData = await decodeAudioStream(audioUrl, abortController);
+        console.log('filteredData', typeof filteredData)
 
-        setDuration(audioBuffer.duration);
-        const formattedDuration = formatAudioTime(audioBuffer.duration);
-        setFormattedDuration(formattedDuration);
+        if(filteredData instanceof Error){
+          drawAudioSampleBars(defaultFreq, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
+        } else {
+          drawAudioSampleBars(filteredData, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
+        }
 
-        const filteredData = filterData(audioBuffer, totalBars);
-        drawAudioSampleBars(filteredData, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
+
       } catch (error) {
+        console.log('error', error);
+
         return error;
       }
     };
@@ -140,13 +145,20 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     }
   };
 
+  const getDuration = () => {
+    setDuration(audioElement.current.duration)
+    const formattedDur = formatAudioTime(audioElement.current.duration);
+    setFormattedDuration(formattedDur);
+    console.log('audioElement.duration', audioElement.current.duration);
+  }
+
   return (
     <div className={styles.audioContainer}>
       <button type="button" onClick={toggleAudio}>
         {!isPlaying ? <PlayIcon /> : <PauseIcon />}
       </button>
 
-      <audio ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
+      <audio onLoadedMetadata={getDuration} preload="metadata" ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
 
       <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
 

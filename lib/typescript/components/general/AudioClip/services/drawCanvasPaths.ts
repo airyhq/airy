@@ -92,8 +92,8 @@ export const drawAudioSampleBars = (
   barsSamplesPaths: CanvasWaveformPaths,
   setCanvasContext: React.Dispatch<React.SetStateAction<null | CanvasRenderingContext2D>>
 ) => {
-  const width = Math.round(canvas.current.offsetWidth / freqData.length);
-  const canvasOffsetHeight = canvas.current.offsetHeight;
+  const width = Math.round(canvas?.current?.offsetWidth / freqData.length);
+  const canvasOffsetHeight = canvas?.current?.offsetHeight;
 
   let x: number;
 

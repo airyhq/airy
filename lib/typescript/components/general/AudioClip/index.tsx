@@ -2,11 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {
   formatAudioTime,
   decodeAudioStream,
-  filterData,
   drawAudioSampleBars,
   setUpCanvas,
   colorNextBarsGrey,
   colorPlaybackBarsWhite,
+  generateRandomFrequencies,
 } from './services';
 import {ReactComponent as PlayIcon} from 'assets/images/icons/playAudioClip.svg';
 import {ReactComponent as PauseIcon} from 'assets/images/icons/pauseAudioClip.svg';
@@ -47,12 +47,12 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   const [formattedDuration, setFormattedDuration] = useState('00:00');
   const [currentTime, setCurrentTime] = useState(0);
   const [canvasContext, setCanvasContext] = useState<null | CanvasRenderingContext2D>(null);
+  const [error, setError] = useState(false);
 
   const canvas = useRef(null);
   const audioElement = useRef(null);
 
   const totalBars = 20;
-  const defaultFreq = new Array(20).fill(6);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -60,22 +60,16 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     const context: CanvasRenderingContext2D = canvas.current.getContext('2d');
 
     const visualizeAudio = async (canvasContext: CanvasRenderingContext2D) => {
-      try {
-        const filteredData = await decodeAudioStream(audioUrl, abortController);
-        console.log('filteredData', typeof filteredData)
+      const fetchRequestData = await decodeAudioStream(audioUrl, abortController);
+      let audioFrequencies;
 
-        if(filteredData instanceof Error){
-          drawAudioSampleBars(defaultFreq, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
-        } else {
-          drawAudioSampleBars(filteredData, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
-        }
-
-
-      } catch (error) {
-        console.log('error', error);
-
-        return error;
+      if (Array.isArray(fetchRequestData)) {
+        audioFrequencies = fetchRequestData;
+      } else {
+        audioFrequencies = generateRandomFrequencies();
       }
+
+      drawAudioSampleBars(audioFrequencies, canvasContext, canvas, barsSamplesPaths, setCanvasContext);
     };
 
     if (isMounted) {
@@ -113,8 +107,19 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
     if (audioElement.current.currentTime === audioElement.current.duration) {
       colorPlaybackBarsWhite(19, 0, canvasContext, barsSamplesPaths, setCount);
     }
-    audioElement.current.play();
-    setIsPlaying(true);
+
+    const playPromise = audioElement.current.play();
+
+    if (playPromise) {
+      playPromise
+        .then(() => {
+          audioElement.current.play();
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          setError(true);
+        });
+    }
   };
 
   const toggleAudio = () => {
@@ -146,23 +151,34 @@ export const AudioClip = ({audioUrl}: AudioRenderProps) => {
   };
 
   const getDuration = () => {
-    setDuration(audioElement.current.duration)
+    setDuration(audioElement.current.duration);
     const formattedDur = formatAudioTime(audioElement.current.duration);
     setFormattedDuration(formattedDur);
-    console.log('audioElement.duration', audioElement.current.duration);
-  }
+  };
 
   return (
     <div className={styles.audioContainer}>
-      <button type="button" onClick={toggleAudio}>
-        {!isPlaying ? <PlayIcon /> : <PauseIcon />}
-      </button>
+      {!error && (
+        <button type="button" onClick={toggleAudio}>
+          {!isPlaying ? <PlayIcon /> : <PauseIcon />}
+        </button>
+      )}
 
-      <audio onLoadedMetadata={getDuration} preload="metadata" ref={audioElement} src={audioUrl} onTimeUpdate={getCurrentDuration}></audio>
+      <audio
+        onLoadedMetadata={getDuration}
+        preload="metadata"
+        ref={audioElement}
+        src={audioUrl}
+        onTimeUpdate={getCurrentDuration}
+      ></audio>
 
-      <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
+      {!error ? (
+        <canvas ref={canvas} onClick={e => navigateAudioTrack(e)}></canvas>
+      ) : (
+        <span> could not load audio</span>
+      )}
 
-      {formattedDuration && (
+      {!error && (
         <span className={styles.audioTime}>
           {currentTime !== 0 ? formatAudioTime(audioElement?.current.currentTime) : formattedDuration}
         </span>

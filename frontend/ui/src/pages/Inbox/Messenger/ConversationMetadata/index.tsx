@@ -62,6 +62,10 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [editingCanceled, setEditingCanceled] = useState(false);
 
   useEffect(() => {
+    console.log('editingOn', editingOn);
+  }, [editingOn])
+
+  useEffect(() => {
     setShowEditDisplayName(false);
     setDisplayName(conversation.metadata.contact.displayName);
   }, [conversation.id]);

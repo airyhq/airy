@@ -34,9 +34,25 @@
     display:flex;
 }
 
+.detailName {
+    font-weight:bold;
+    margin-right: 3px;
+}
+
+.expandable {
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+}
+
 .saveButtonContainer {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-top: 16px;
 }
+
+.arrowIcon {
+    margin-right:6px;
+}
+

@@ -9,7 +9,8 @@ export const decodeAudioStream = async (audioUrl: string, abortController: Abort
   try {
     const readableStream = await fetch(audioUrl, {signal: abortController.signal});
     const arrayBuffer = await readableStream.arrayBuffer();
-    return await audioContext.decodeAudioData(arrayBuffer);
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    return filterData(audioBuffer, 20);
   } catch (error) {
     return error;
   }

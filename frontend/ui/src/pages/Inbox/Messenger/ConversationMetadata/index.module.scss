@@ -13,6 +13,7 @@
   padding: 16px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  position:relative;
 }
 
 .contact {
@@ -166,3 +167,13 @@
 .fadeOutAnimation {
   animation: fadeOutTranslateXLeft 500ms ease;
 }
+
+.editIcon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor:pointer;
+}
+
+
+// var(--color-text-gray);

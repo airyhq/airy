@@ -19,7 +19,7 @@ export type Contacts = {
 const contactsReducer = (state= initialState, action: Action) => {
     switch(action.type){
         case(getType(actions.getContactsInfoAction)):
-        console.log('action', action);
+        console.log('GET action.payload', action.payload);
             return {
             ...state, 
             all: {
@@ -29,6 +29,7 @@ const contactsReducer = (state= initialState, action: Action) => {
            
         }
         case(getType(actions.updateContactsInfoAction)):
+        console.log(' UPDATE action.payload', action.payload);
             return {
                 ...state,
                 all: {

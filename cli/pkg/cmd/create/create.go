@@ -144,10 +144,9 @@ func create(cmd *cobra.Command, args []string) {
 		fmt.Println("⚙️  Applying config from airy.yaml")
 		config.ApplyConfig(workspacePath)
 	}
-
 	airyAnalytics.Track(analytics.Track{
-		AnonymousId: "AiryUser",
-		Event:       "installation_succesful"})
+		UserId: coreConfig["CORE_ID"],
+		Event:  "installation_succesful"})
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
 }

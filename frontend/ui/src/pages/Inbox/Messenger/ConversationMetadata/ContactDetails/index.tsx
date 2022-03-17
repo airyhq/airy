@@ -64,7 +64,6 @@ const ContactDetails = (props: ContactInfoProps) => {
 
   useEffect(() => {
     if (conversationId && contacts && contacts[conversationId]) {
-      console.log('FILL CONTACT INFO // NEW OR EXISTING');
       fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
       setUpExpandableForContact();
     }
@@ -76,7 +75,6 @@ const ContactDetails = (props: ContactInfoProps) => {
 
   useEffect(() => {
     if (editingCanceled) {
-      console.log('EDITING CANCELED: FILL CONTACT INFO // NEW OR EXISTING');
       fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
       setExpanded(false);
     }

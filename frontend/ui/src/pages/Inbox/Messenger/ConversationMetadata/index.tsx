@@ -71,10 +71,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
 
   useEffect(() => {
-    console.log('editingOn', editingOn);
-  }, [editingOn]);
-
-  useEffect(() => {
     setShowEditDisplayName(false);
     setDisplayName(conversation.metadata.contact.displayName);
   }, [conversation.id]);
@@ -155,7 +151,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const getUpdatedInfo = requestpayload => {
-    console.log('getUpdatedInfo requestpayload', requestpayload);
     setUpdateInfoTrigger(false);
     setEditingOn(false);
     updateContactsInfo(conversation.id, {...requestpayload});

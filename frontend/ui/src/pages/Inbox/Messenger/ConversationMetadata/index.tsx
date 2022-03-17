@@ -18,7 +18,7 @@ import {Button, Input, LinkButton} from 'components';
 import {ReactComponent as EditPencilIcon} from 'assets/images/icons/editPencil.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
-import {ReactComponent as EditIcon} from 'assets/images/icons/edit.svg';
+import {ReactComponent as EditIcon} from 'assets/images/icons/pen.svg';
 import {ReactComponent as CancelIcon} from 'assets/images/icons/cancelCross.svg';
 
 import {
@@ -43,13 +43,21 @@ const mapDispatchToProps = {
   addTagToConversation,
   removeTagFromConversation,
   updateContact,
-  updateContactsInfo
+  updateContactsInfo,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact, updateContactsInfo} = props;
+  const {
+    tags,
+    createTag,
+    listTags,
+    addTagToConversation,
+    removeTagFromConversation,
+    updateContact,
+    updateContactsInfo,
+  } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -60,10 +68,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [editingOn, setEditingOn] = useState(false);
   const [updateInfoTrigger, setUpdateInfoTrigger] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
+  const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
 
   useEffect(() => {
     console.log('editingOn', editingOn);
-  }, [editingOn])
+  }, [editingOn]);
 
   useEffect(() => {
     setShowEditDisplayName(false);
@@ -145,24 +154,26 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setShowEditDisplayName(!showEditDisplayName);
   };
 
-  const getUpdatedInfo = (requestpayload) => {
+  const getUpdatedInfo = requestpayload => {
     console.log('getUpdatedInfo requestpayload', requestpayload);
     setUpdateInfoTrigger(false);
-    setEditingOn(false)
+    setEditingOn(false);
     updateContactsInfo(conversation.id, {...requestpayload});
+  };
 
-  }
+  const cancelContactsInfoEdit = () => {
+    setEditingCanceled(true);
+    setEditingOn(false);
+  };
 
-const cancelContactsInfoEdit = () => {
-  setEditingCanceled(true);
- setEditingOn(false);
-}
+  const editContactDetails = () => {
+    setEditingCanceled(false);
+    setEditingOn(true);
+  };
 
-const editContactDetails = () => {
-  setEditingCanceled(false);
-  setEditingOn(true);
-
-}
+  const getIsExpanded = (isExpanded: boolean) => {
+    setIsContactDetailsExpanded(isExpanded);
+  };
 
   const renderTagsDialog = () => {
     const filteredTags = getFilteredTags();
@@ -228,8 +239,13 @@ const editContactDetails = () => {
   const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
-      {!editingOn && <EditIcon fill="#737373" className={styles.editIcon} onClick={editContactDetails} />}
-      {editingOn && <CancelIcon fill="#737373" className={styles.editIcon} onClick={cancelContactsInfoEdit} />}
+      {!editingOn && (
+        <EditIcon
+          className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
+          onClick={editContactDetails}
+        />
+      )}
+      {editingOn && <CancelIcon className={styles.editIcon} onClick={cancelContactsInfoEdit} />}
       {conversation && (
         <div className={styles.metaPanel}>
           <div className={styles.contact}>
@@ -281,7 +297,15 @@ const editContactDetails = () => {
                 </>
               )}
             </div>
-            <ContactDetails conversationId={conversation.id} editingOn={editingOn} updateInfoTrigger={updateInfoTrigger} setUpdateInfoTrigger={setUpdateInfoTrigger} getUpdatedInfo={getUpdatedInfo} editingCanceled={editingCanceled}/>
+            <ContactDetails
+              conversationId={conversation.id}
+              editingOn={editingOn}
+              updateInfoTrigger={updateInfoTrigger}
+              setUpdateInfoTrigger={setUpdateInfoTrigger}
+              getUpdatedInfo={getUpdatedInfo}
+              editingCanceled={editingCanceled}
+              getIsExpanded={getIsExpanded}
+            />
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

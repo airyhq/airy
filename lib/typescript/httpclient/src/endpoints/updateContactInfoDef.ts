@@ -6,9 +6,9 @@ export const updateContactInfoDef = {
     ...request,
     display_name: request?.displayName,
     organization_name: request?.organizationName,
-    address:{
+    address: {
       address_line1: request?.address?.addressLine1,
-      city:request?.address?.city
-    }
+      city: request?.address?.city,
+    },
   }),
 };

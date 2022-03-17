@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template, ContactInfo} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -23,8 +23,8 @@ import {
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
   ListContactsRequestPayload,
-  GetContactsInfoRequestPayload,
-  UpdateContactInfoRequestPayload
+  GetContactInfoRequestPayload,
+  UpdateContactInfoRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -54,17 +54,10 @@ import {
   setStateConversationDef,
   updateContactDef,
   uploadFileDef,
-<<<<<<< HEAD
   resendMessageDef,
-=======
   listContactsDef,
-<<<<<<< HEAD
-  getContactsInfoDef
->>>>>>> 4bfaf200 (contacts wip)
-=======
-  getContactsInfoDef, 
-  updateContactInfoDef
->>>>>>> 5c907529 (contacts wip)
+  getContactInfoDef,
+  updateContactInfoDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -231,8 +224,7 @@ export class HttpClient {
 
   public listContacts = this.getRequest<ListContactsRequestPayload>(listContactsDef);
 
-  //rename getContactInfo
-  public getContactsInfo = this.getRequest<GetContactsInfoRequestPayload>(getContactsInfoDef);
+  public getContactInfo = this.getRequest<GetContactInfoRequestPayload, ContactInfo>(getContactInfoDef);
 
   public updateContactInfo = this.getRequest<UpdateContactInfoRequestPayload>(updateContactInfoDef);
 

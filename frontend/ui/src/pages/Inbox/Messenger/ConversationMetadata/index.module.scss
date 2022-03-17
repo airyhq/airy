@@ -13,7 +13,7 @@
   padding: 16px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  position:relative;
+  position: relative;
 }
 
 .contact {
@@ -172,8 +172,13 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  cursor:pointer;
+  cursor: pointer;
 }
 
+.iconBlue {
+  fill: var(--color-airy-blue);
+}
 
-// var(--color-text-gray);
+.iconGrey {
+  fill: var(--color-text-gray);
+}

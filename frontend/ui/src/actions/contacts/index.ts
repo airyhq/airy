@@ -10,26 +10,27 @@ const CONTACTS_UPDATE = '@@contacts/UPDATE';
 export const getContactsInfoAction = createAction(
   CONTACTS_INFO,
   (conversationId: string, contactsInfo: ContactInfo) => ({conversationId, contactsInfo})
-)<{conversationId: string,  contactsInfo: ContactInfo}>();
+)<{conversationId: string; contactsInfo: ContactInfo}>();
 
 export const updateContactsInfoAction = createAction(
   CONTACTS_UPDATE,
-  (conversationId: string, updatedContactsInfo: UpdateContactInfoRequestPayload) => ({conversationId, updatedContactsInfo})
-)<{conversationId: string,  updatedContactsInfo: UpdateContactInfoRequestPayload}>();
+  (conversationId: string, updatedContactsInfo: UpdateContactInfoRequestPayload) => ({
+    conversationId,
+    updatedContactsInfo,
+  })
+)<{conversationId: string; updatedContactsInfo: UpdateContactInfoRequestPayload}>();
 
 export const getContactsInfo = (conversationId: string) => async (dispatch: Dispatch<any>) => {
-  HttpClientInstance.getContactsInfo({conversationId: conversationId}).then((response:any) => {
-    console.log('RESPONSE', response);
+  HttpClientInstance.getContactInfo({conversationId: conversationId}).then((response: ContactInfo) => {
     dispatch(getContactsInfoAction(conversationId, response));
     return Promise.resolve(true);
-  })
-}
+  });
+};
 
-export const updateContactsInfo = (conversationId: string, updateContactsInfoRequestPayload: UpdateContactInfoRequestPayload) => async (dispatch:Dispatch<any>) => {
-  console.log('UPDATE REQUEST', conversationId);
-  HttpClientInstance.updateContactInfo(updateContactsInfoRequestPayload).then(() => {
-    console.log('ACTION DISPATCHED')
-    dispatch(updateContactsInfoAction(conversationId, updateContactsInfoRequestPayload))
-
-  })
-}
+export const updateContactsInfo =
+  (conversationId: string, updateContactsInfoRequestPayload: UpdateContactInfoRequestPayload) =>
+  async (dispatch: Dispatch<any>) => {
+    HttpClientInstance.updateContactInfo(updateContactsInfoRequestPayload).then(() => {
+      dispatch(updateContactsInfoAction(conversationId, updateContactsInfoRequestPayload));
+    });
+  };

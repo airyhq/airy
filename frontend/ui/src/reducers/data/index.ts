@@ -12,7 +12,7 @@ import config, {Config} from './config';
 import channels, {ChannelsState} from './channels';
 import messages, {Messages} from './messages';
 import templates from './templates';
-import contacts, { Contacts } from './contacts';
+import contacts, {Contacts} from './contacts';
 
 export * from './channels';
 export * from './conversations';
@@ -45,7 +45,7 @@ const reducers: Reducer = combineReducers<DataState>({
   channels,
   config,
   templates,
-  contacts
+  contacts,
 });
 
 export default reducers;

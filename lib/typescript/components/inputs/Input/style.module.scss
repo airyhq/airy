@@ -25,6 +25,26 @@
   }
 }
 
+.noStyling {
+  display: inline;
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: var(--color-text-contrast);
+  overflow: hidden;
+
+  &::placeholder {
+    color: var(--color-text-gray);
+  }
+
+  &:focus-within {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+}
+
 .inputInvalid {
   .inputTitle {
     color: var(--color-red-alert);

@@ -27,5 +27,5 @@ export * from './updateContact';
 export * from './uploadFile';
 export * from './resendMessage';
 export * from './listContacts';
-export * from './getContactsInfoDef';
+export * from './getContactInfoDef';
 export * from './updateContactInfoDef';

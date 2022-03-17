@@ -11,29 +11,29 @@ export const getInfoDetailsPayload = (
     id: contactId,
   };
 
-  if (email !== 'email') {
+  if (email && email !== 'email') {
     if (!infoDetails.via) infoDetails.via = {};
     infoDetails.via.email = email;
   }
 
-  if (phone !== 'phone') {
+  if (phone && phone !== 'phone') {
     infoDetails.via = {};
     infoDetails.via.phone = phone;
   }
 
-  if (title !== 'title') infoDetails.title = title;
+  if (title && title !== 'title') infoDetails.title = title;
 
-  if (address !== 'address') {
+  if (address && address !== 'address') {
     infoDetails.address = {};
     infoDetails.address.addressLine1 = address;
   }
 
-  if (city !== 'city') {
+  if (city && city !== 'city') {
     if (!infoDetails.address) infoDetails.address = {};
     infoDetails.address.city = city;
   }
 
-  if (organization !== 'company name') infoDetails.organizationName = organization;
+  if (organization && organization !== 'company name') infoDetails.organizationName = organization;
 
   return infoDetails;
 };

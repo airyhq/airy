@@ -1,58 +1,60 @@
 @import 'assets/scss/colors.scss';
-@import 'assets/scss/fonts.scss'; 
+@import 'assets/scss/fonts.scss';
 
 .container {
-    display:flex;
-    flex-direction:column;
-    position:relative;
-}
-
-.container span {
-    @include font-s;
-    line-height: 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  @include font-s;
+  line-height: 26px;
 }
 
 .borderBlue {
-    border-top:none;
-    border-left:none;
-    border-right:none;
-    border-bottom:1px solid var(--color-airy-blue);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid var(--color-airy-blue);
 }
 
 .container h1 {
-    font-size:14px;
-    font-weight:bold;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .container input {
-    outline:none;
-    border:none;
-    padding-bottom: 5px;
+  outline: none;
+  border: none;
+  padding-bottom: 5px;
 }
 
 .details {
-    display:flex;
+  display: flex;
 }
 
 .detailName {
-    font-weight:bold;
-    margin-right: 3px;
+  font-weight: bold;
+  margin-right: 3px;
 }
 
 .expandable {
-    display:flex;
-    align-items:center;
-    cursor:pointer;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .saveButtonContainer {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .arrowIcon {
-    margin-right:6px;
+  margin-right: 6px;
 }
 
+.infoIcon {
+  width: 12px;
+  margin-right: 6px;
+  fill: var(--color-text-contrast);
+}

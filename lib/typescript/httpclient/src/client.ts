@@ -22,7 +22,6 @@ import {
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
-  ListContactsRequestPayload,
   GetContactInfoRequestPayload,
   UpdateContactInfoRequestPayload,
 } from './payload';
@@ -55,7 +54,6 @@ import {
   updateContactDef,
   uploadFileDef,
   resendMessageDef,
-  listContactsDef,
   getContactInfoDef,
   updateContactInfoDef,
 } from './endpoints';
@@ -221,8 +219,6 @@ export class HttpClient {
   public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
 
   public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
-
-  public listContacts = this.getRequest<ListContactsRequestPayload>(listContactsDef);
 
   public getContactInfo = this.getRequest<GetContactInfoRequestPayload, ContactInfo>(getContactInfoDef);
 

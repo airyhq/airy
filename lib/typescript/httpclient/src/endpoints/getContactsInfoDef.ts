@@ -3,8 +3,8 @@ const camelcaseKeys = require('camelcase-keys');
 
 export const getContactsInfoDef = {
   endpoint: 'contacts.info',
-  mapRequest: conversationId => ({
-    conversation_id: conversationId,
+  mapRequest: request => ({
+    conversation_id: request.conversationId,
   }),
   mapResponse: response => camelcaseKeys(response, {deep: true, stopPaths: ['conversations']}),
 };

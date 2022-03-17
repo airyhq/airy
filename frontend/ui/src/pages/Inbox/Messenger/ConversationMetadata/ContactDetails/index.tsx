@@ -2,7 +2,9 @@ import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {getContactsInfo, updateContactsInfo} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
+import { getInfoDetailsPayload, fillContactInfo } from './util';
 import {UpdateContactInfoRequestPayload} from 'httpclient/src';
+import {ContactInfoPoint} from './ContactInfoPoint';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {Button} from 'components';
 import styles from './index.module.scss';
@@ -47,18 +49,10 @@ const ContactDetails = (props: ContactInfoProps) => {
   const [address, setAddress] = useState('address');
   const [city, setCity] = useState('city');
   const [organization, setOrganization] = useState('company name');
-  const [newContactCollapsed, setNewContactCollapsed] = useState(true);
-  const [existingContactCollapsed, setExistingContactCollapsed] = useState(false);
+  const [newContactCollapsed, setNewContactCollapsed] = useState(false);
+  const [existingContactCollapsed, setExistingContactCollapsed] = useState(true);
   const [expanded, setExpanded] = useState(false);
-
-  //collapsed default new Contact: only Email // see all(6)
-  //collapsed existing Contact: email / phone / title // see all(3)
-
-  useEffect(() => {
-    console.log('newContactCollapsed', newContactCollapsed);
-    console.log('existingContactCollapsed', existingContactCollapsed);
-    console.log('expanded', expanded);
-  }, [newContactCollapsed]);
+  const totalInfoPoints = 6;
 
   useEffect(() => {
     getContactsInfo(conversationId);
@@ -66,130 +60,84 @@ const ContactDetails = (props: ContactInfoProps) => {
   }, [conversationId]);
 
   useEffect(() => {
-    console.log('editingCanceled', editingCanceled);
-    console.log('EDITING RESET');
-    //refactor this in one func
-    const email = contacts[conversationId]?.via?.email;
-    const phone = contacts[conversationId]?.via?.phone;
-    const title = contacts[conversationId]?.title;
-    const address = contacts[conversationId]?.address?.addressLine1;
-    const city = contacts[conversationId]?.address?.city;
-    const organizationName = contacts[conversationId]?.organizationName;
-    console.log('title', title);
-
-    email ? setEmail(email) : setEmail('email');
-    phone ? setPhone(phone) : setPhone('phone');
-    title ? setTitle(title) : setTitle('title');
-    address ? setAddress(address) : setAddress('address');
-    city ? setCity(city) : setCity('city');
-    organizationName ? setOrganization(organizationName) : setOrganization('company name');
-    address ? setAddress(address) : setAddress('address');
-
-    //if any of these fields was edited, it means that the contact is not new
-  }, [editingCanceled]);
-
-  useEffect(() => {
-    if (contacts && contacts[conversationId]) {
-      console.log('EDITING RESET');
-      //const {organizationName, title, via:{email, phone}, address: {addressLine1, city}} = contacts[conversationId];
-      const email = contacts[conversationId]?.via?.email;
-      const phone = contacts[conversationId]?.via?.phone;
-      const title = contacts[conversationId]?.title;
-      const address = contacts[conversationId]?.address?.addressLine1;
-      const city = contacts[conversationId]?.address?.city;
-      const organizationName = contacts[conversationId]?.organizationName;
-
-      email ? setEmail(email) : setEmail('email');
-      phone ? setPhone(phone) : setPhone('phone');
-      title ? setTitle(title) : setTitle('title');
-      address ? setAddress(address) : setAddress('address');
-      city ? setCity(city) : setCity('city');
-      organizationName ? setOrganization(organizationName) : setOrganization('company name');
-      address ? setAddress(address) : setAddress('address');
-
-      if (phone || title) {
-        setExistingContactCollapsed(true);
-        setNewContactCollapsed(false);
-      } else {
-        setNewContactCollapsed(true);
-        setExistingContactCollapsed(false);
-      }
+    if (conversationId && contacts && contacts[conversationId]) {
+      console.log('FILL CONTACT INFO // NEW OR EXISTING');
+      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
+      setUpExpandableForContact();
     }
   }, [contacts, conversationId]);
 
   useEffect(() => {
-    console.log('editingOn', editingOn);
+    if (editingOn) removeDefaultTextWhenEditing();
+  }, [editingOn]);
+
+  useEffect(() => {
+    if (editingCanceled) {
+      console.log('EDITING CANCELED: FILL CONTACT INFO // NEW OR EXISTING');
+      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
+      setExpanded(false);
+    }
+  }, [editingCanceled]);
+
+  useEffect(() => {
     if (updateInfoTrigger) {
-      const infoDetails: any = {
-        id: contacts[conversationId].id,
-      };
-
-      if (title !== 'title') infoDetails.title = title;
-      if (organization !== 'company name') infoDetails.organizationName = organization;
-      if (phone !== 'phone') {
-        infoDetails.via = {};
-        infoDetails.via.phone = phone;
-      }
-      if (email !== 'email') {
-        if (!infoDetails.via) infoDetails.via = {};
-        infoDetails.via.email = email;
-      }
-      if (address !== 'address') {
-        infoDetails.address = {};
-        infoDetails.address.addressLine1 = address;
-      }
-      if (city !== 'city') {
-        if (!infoDetails.address) infoDetails.address = {};
-        infoDetails.address.city = city;
-      }
-
-      console.log('infoDetails', infoDetails);
-
-      getUpdatedInfo(infoDetails);
+      const infoDetailsPayload = getInfoDetailsPayload(contacts[conversationId].id, email, phone, title, address, city, organization);
+      getUpdatedInfo(infoDetailsPayload);
     }
   }, [updateInfoTrigger]);
 
-  //figure out if one contact is filled:
-  //by default display_name and avatar image in conversation.metadata.contact
+  const removeDefaultTextWhenEditing = () => {
+    if (email === 'email') setEmail('');
+    if (phone === 'phone') setPhone('');
+    if (title === 'title') setTitle('');
+    if (address === 'address') setAddress('');
+    if (city === 'city') setCity('');
+    if (organization === 'company name') setOrganization('');
+  }
 
-  const expandContact = () => {
+  const isExistingContact = () => {
     const phone = contacts[conversationId]?.via?.phone;
     const title = contacts[conversationId]?.title;
-    setExpanded(true);
+    console.log('isExistingContact', phone || title);
+    return (phone || title);
+  }
 
-    if (phone || title) {
-      setExistingContactCollapsed(false);
-    } else {
+  const setUpExpandableForContact = () => {
+    if (isExistingContact()) {
+      setExistingContactCollapsed(true);
       setNewContactCollapsed(false);
+    } else {
+      setNewContactCollapsed(true);
+      setExistingContactCollapsed(false);
     }
   };
 
-  const collapseInfo = () => {
+  const toggleExpandableContent = () => {
     const phone = contacts[conversationId]?.via?.phone;
     const title = contacts[conversationId]?.title;
-    setExpanded(false);
+    const isExistingContact = phone || title;
+    setExpanded(!expanded);
 
-    if (phone || title) {
-      setExistingContactCollapsed(true);
+    if (isExistingContact) {
+      setExistingContactCollapsed(!existingContactCollapsed);
     } else {
-      setNewContactCollapsed(true);
+      setNewContactCollapsed(!newContactCollapsed);
     }
+  };
+
+  const saveUpdatedInfo = () => {
+    setUpdateInfoTrigger(true);
+    setExpanded(false);
+    setUpExpandableForContact();
   };
 
   return (
     <section className={styles.container}>
       <h1>Contact</h1>
-      <span className={editingOn ? styles.borderBlue : ''}>
-        <span className={styles.detailName}>Email:</span>
-        {!editingOn ? (
-          email
-        ) : (
-          <input type="text" autoFocus placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-        )}
-      </span>
+      <ContactInfoPoint editingOn={editingOn} setEmail={setEmail} infoName="email" />
       {newContactCollapsed && !expanded && !editingOn && (
-        <div className={styles.expandable} onClick={expandContact}>
-          <ArrowRight className={styles.arrowIcon} /> <span> See all (6)</span>
+        <div className={styles.expandable} onClick={toggleExpandableContent}>
+          <ArrowRight className={styles.arrowIcon} /> <span> See all ({totalInfoPoints - 1})</span>
         </div>
       )}
       {(!newContactCollapsed || editingOn) && (
@@ -199,7 +147,17 @@ const ContactDetails = (props: ContactInfoProps) => {
             {!editingOn ? (
               phone
             ) : (
-              <input type="text" autoFocus placeholder="phone" value={phone} onChange={e => setPhone(e.target.value)} />
+              <label htmlFor="phone">
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  name="phone"
+                  autoComplete="new-off"
+                  placeholder="phone"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                />
+              </label>
             )}
           </span>
           <span className={editingOn ? styles.borderBlue : ''}>
@@ -207,29 +165,41 @@ const ContactDetails = (props: ContactInfoProps) => {
             {!editingOn ? (
               title
             ) : (
-              <input type="text" autoFocus placeholder="title" value={title} onChange={e => setTitle(e.target.value)} />
+              <label htmlFor="title">
+                <input
+                  type="text"
+                  name="title"
+                  autoComplete="new-off"
+                  placeholder="title"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                />
+              </label>
             )}
           </span>
           {!newContactCollapsed && existingContactCollapsed && !expanded && !editingOn && (
-            <div className={styles.expandable} onClick={expandContact}>
+            <div className={styles.expandable} onClick={toggleExpandableContent}>
               <ArrowRight className={styles.arrowIcon} />
-              <span> See all (3)</span>
+              <span> See all ({totalInfoPoints - 3})</span>
             </div>
           )}
-          {(expanded || editingOn) &&  (
+          {(expanded || editingOn) && (
             <>
               <span className={editingOn ? styles.borderBlue : ''}>
                 <span className={styles.detailName}>Address:</span>
                 {!editingOn ? (
                   address
                 ) : (
-                  <input
-                    type="text"
-                    autoFocus
-                    placeholder="address"
-                    value={address}
-                    onChange={e => setAddress(e.target.value)}
-                  />
+                  <label htmlFor="address">
+                    <input
+                      type="text"
+                      name="address"
+                      autoComplete="new-off"
+                      placeholder="address"
+                      value={address}
+                      onChange={e => setAddress(e.target.value)}
+                    />
+                  </label>
                 )}
               </span>
               <span className={editingOn ? styles.borderBlue : ''}>
@@ -237,13 +207,16 @@ const ContactDetails = (props: ContactInfoProps) => {
                 {!editingOn ? (
                   city
                 ) : (
-                  <input
-                    type="text"
-                    autoFocus
-                    placeholder="city"
-                    value={city}
-                    onChange={e => setCity(e.target.value)}
-                  />
+                  <label htmlFor="city">
+                    <input
+                      type="text"
+                      name="city"
+                      autoComplete="new-off"
+                      placeholder="city"
+                      value={city}
+                      onChange={e => setCity(e.target.value)}
+                    />
+                  </label>
                 )}
               </span>
               <span className={editingOn ? styles.borderBlue : ''}>
@@ -251,17 +224,20 @@ const ContactDetails = (props: ContactInfoProps) => {
                 {!editingOn ? (
                   organization
                 ) : (
-                  <input
-                    type="text"
-                    autoFocus
-                    placeholder="company name"
-                    value={organization}
-                    onChange={e => setOrganization(e.target.value)}
-                  />
+                  <label htmlFor="organization">
+                    <input
+                      type="text"
+                      name="organization"
+                      autoComplete="new-off"
+                      placeholder="company name"
+                      value={organization}
+                      onChange={e => setOrganization(e.target.value)}
+                    />
+                  </label>
                 )}
               </span>
               {!editingOn && expanded && !editingOn && (
-                <div className={styles.expandable} onClick={collapseInfo}>
+                <div className={styles.expandable} onClick={toggleExpandableContent}>
                   <ArrowRight className={styles.arrowIcon} />
                   <span> See less</span>
                 </div>
@@ -273,7 +249,7 @@ const ContactDetails = (props: ContactInfoProps) => {
 
       {editingOn && (
         <div className={styles.saveButtonContainer}>
-          <Button type="submit" styleVariant="outline-big" onClick={() => setUpdateInfoTrigger(true)}>
+          <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
             Save
           </Button>
         </div>

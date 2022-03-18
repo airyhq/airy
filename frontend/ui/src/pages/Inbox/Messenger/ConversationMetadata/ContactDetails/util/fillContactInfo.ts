@@ -1,7 +1,8 @@
+import {UpdateContactInfoRequestPayload} from 'httpclient/src';
 import {ContactInfo} from 'model';
 
 export const fillContactInfo = (
-  conversationContact: ContactInfo,
+  conversationContact: ContactInfo | UpdateContactInfoRequestPayload,
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   setPhone: React.Dispatch<React.SetStateAction<string>>,
   setTitle: React.Dispatch<React.SetStateAction<string>>,

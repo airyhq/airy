@@ -4,6 +4,7 @@ import {getContactsInfo, updateContactsInfo} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactInfoRequestPayload} from 'httpclient/src';
+import {ContactInfo} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
 import {Button} from 'components';
@@ -25,9 +26,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type ContactInfoProps = {
   conversationId: string;
   editingOn: boolean;
-  getUpdatedInfo: (updatedInfo: UpdateContactInfoRequestPayload) => void;
-  updateInfoTrigger: boolean;
-  setUpdateInfoTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+  getUpdatedInfo: () => void;
   editingCanceled: boolean;
   getIsExpanded: (isExpanded: boolean) => void;
 } & ConnectedProps<typeof connector>;
@@ -39,23 +38,27 @@ const ContactDetails = (props: ContactInfoProps) => {
     getUpdatedInfo,
     contacts,
     editingOn,
-    updateInfoTrigger,
-    setUpdateInfoTrigger,
+    updateContactsInfo,
     editingCanceled,
     getIsExpanded,
   } = props;
 
+  const existingContact = contacts[conversationId]?.via?.phone || contacts[conversationId]?.title;
   const [email, setEmail] = useState('email');
   const [phone, setPhone] = useState('phone');
   const [title, setTitle] = useState('title');
   const [address, setAddress] = useState('address');
   const [city, setCity] = useState('city');
   const [organization, setOrganization] = useState('company name');
-  const [newContactCollapsed, setNewContactCollapsed] = useState(false);
-  const [existingContactCollapsed, setExistingContactCollapsed] = useState(true);
+  const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
+  const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [expanded, setExpanded] = useState(false);
   const totalInfoPoints = 6;
-  const remainingInfoPoints = newContactCollapsed ? totalInfoPoints - 1 : totalInfoPoints - 3;
+  const visibleInfoPointsnewContact = 1;
+  const visibleInfoPointsExistingContact = 3;
+  const remainingInfoPoints = newContactCollapsed
+    ? totalInfoPoints - visibleInfoPointsnewContact
+    : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
     getContactsInfo(conversationId);
@@ -65,7 +68,7 @@ const ContactDetails = (props: ContactInfoProps) => {
   useEffect(() => {
     if (conversationId && contacts && contacts[conversationId]) {
       fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
-      setUpExpandableForContact();
+      updateContactType(contacts[conversationId]);
     }
   }, [contacts, conversationId]);
 
@@ -80,21 +83,6 @@ const ContactDetails = (props: ContactInfoProps) => {
     }
   }, [editingCanceled]);
 
-  useEffect(() => {
-    if (updateInfoTrigger) {
-      const infoDetailsPayload = getInfoDetailsPayload(
-        contacts[conversationId].id,
-        email,
-        phone,
-        title,
-        address,
-        city,
-        organization
-      );
-      getUpdatedInfo(infoDetailsPayload);
-    }
-  }, [updateInfoTrigger]);
-
   const removeDefaultTextWhenEditing = () => {
     if (email === 'email') setEmail('');
     if (phone === 'phone') setPhone('');
@@ -104,14 +92,14 @@ const ContactDetails = (props: ContactInfoProps) => {
     if (organization === 'company name') setOrganization('');
   };
 
-  const isExistingContact = () => {
-    const phone = contacts[conversationId]?.via?.phone;
-    const title = contacts[conversationId]?.title;
+  const isExistingContact = (contactInfo: UpdateContactInfoRequestPayload | ContactInfo) => {
+    const phone = contactInfo?.via?.phone;
+    const title = contactInfo?.title;
     return phone || title;
   };
 
-  const setUpExpandableForContact = () => {
-    if (isExistingContact()) {
+  const updateContactType = (contactInfo: UpdateContactInfoRequestPayload | ContactInfo) => {
+    if (isExistingContact(contactInfo)) {
       setExistingContactCollapsed(true);
       setNewContactCollapsed(false);
     } else {
@@ -121,7 +109,7 @@ const ContactDetails = (props: ContactInfoProps) => {
   };
 
   const toggleExpandableContent = () => {
-    if (isExistingContact()) {
+    if (isExistingContact(contacts[conversationId])) {
       setExistingContactCollapsed(!existingContactCollapsed);
     } else {
       setNewContactCollapsed(!newContactCollapsed);
@@ -131,9 +119,21 @@ const ContactDetails = (props: ContactInfoProps) => {
   };
 
   const saveUpdatedInfo = () => {
-    setUpdateInfoTrigger(true);
+    const infoDetailsPayload = getInfoDetailsPayload(
+      contacts[conversationId].id,
+      email,
+      phone,
+      title,
+      address,
+      city,
+      organization
+    );
+    updateContactsInfo(conversationId, {...infoDetailsPayload});
+    updateContactType(infoDetailsPayload);
+    getUpdatedInfo();
+    fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
     setExpanded(false);
-    setUpExpandableForContact();
+    getIsExpanded(false);
   };
 
   return (

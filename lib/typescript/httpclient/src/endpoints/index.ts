@@ -26,6 +26,5 @@ export * from './setStateConversation';
 export * from './updateContact';
 export * from './uploadFile';
 export * from './resendMessage';
-export * from './listContacts';
 export * from './getContactInfoDef';
 export * from './updateContactInfoDef';

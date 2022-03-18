@@ -49,15 +49,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {
-    tags,
-    createTag,
-    listTags,
-    addTagToConversation,
-    removeTagFromConversation,
-    updateContact,
-    updateContactsInfo,
-  } = props;
+  const {tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -66,7 +58,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
   const [fade, setFade] = useState(true);
   const [editingOn, setEditingOn] = useState(false);
-  const [updateInfoTrigger, setUpdateInfoTrigger] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
 
@@ -150,10 +141,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     setShowEditDisplayName(!showEditDisplayName);
   };
 
-  const getUpdatedInfo = requestpayload => {
-    setUpdateInfoTrigger(false);
+  const getUpdatedInfo = () => {
     setEditingOn(false);
-    updateContactsInfo(conversation.id, {...requestpayload});
   };
 
   const cancelContactsInfoEdit = () => {
@@ -295,8 +284,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <ContactDetails
               conversationId={conversation.id}
               editingOn={editingOn}
-              updateInfoTrigger={updateInfoTrigger}
-              setUpdateInfoTrigger={setUpdateInfoTrigger}
               getUpdatedInfo={getUpdatedInfo}
               editingCanceled={editingCanceled}
               getIsExpanded={getIsExpanded}

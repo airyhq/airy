@@ -32,5 +32,6 @@ export const updateContactsInfo =
   async (dispatch: Dispatch<any>) => {
     HttpClientInstance.updateContactInfo(updateContactsInfoRequestPayload).then(() => {
       dispatch(updateContactsInfoAction(conversationId, updateContactsInfoRequestPayload));
+      return Promise.resolve(true);
     });
   };

@@ -24,6 +24,9 @@
   border-right: none;
   border-bottom: 1px solid var(--color-airy-blue);
   margin-bottom: 7px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .container legend {
@@ -34,7 +37,8 @@
 .container input {
   outline: none;
   border: none;
-  padding-bottom: 5px;
+  padding: 0;
+  @include font-s;
 }
 
 .details {

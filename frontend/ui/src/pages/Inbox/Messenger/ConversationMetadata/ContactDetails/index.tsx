@@ -137,10 +137,9 @@ const ContactDetails = (props: ContactInfoProps) => {
   };
 
   return (
-    <section className={styles.container}>
-      <h1>Contact</h1>
-
-      <form autoComplete='off'>
+    <form autoComplete="off" className={styles.container}>
+      <fieldset>
+        <legend>Contact</legend>
         <ContactInfoPoint email={email} editingOn={editingOn} setEmail={setEmail} infoName="email" />
 
         {(!newContactCollapsed || editingOn) && (
@@ -162,22 +161,22 @@ const ContactDetails = (props: ContactInfoProps) => {
             )}
           </>
         )}
+      </fieldset>
 
-        {editingOn ? (
-          <div className={styles.saveButtonContainer}>
-            <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
-              Save
-            </Button>
-          </div>
-        ) : (
-          <Expandable
-            toggleExpandableContent={toggleExpandableContent}
-            infoPointsNum={remainingInfoPoints}
-            collapse={!!expanded}
-          />
-        )}
-      </form>
-    </section>
+      {editingOn ? (
+        <div className={styles.saveButtonContainer}>
+          <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
+            Save
+          </Button>
+        </div>
+      ) : (
+        <Expandable
+          toggleExpandableContent={toggleExpandableContent}
+          infoPointsNum={remainingInfoPoints}
+          collapse={!!expanded}
+        />
+      )}
+    </form>
   );
 };
 

@@ -227,9 +227,12 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         <EditIcon
           className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
           onClick={editContactDetails}
+          aria-label="edit contact"
         />
       )}
-      {editingOn && <CancelIcon className={styles.editIcon} onClick={cancelContactsInfoEdit} />}
+      {editingOn && (
+        <CancelIcon className={styles.editIcon} onClick={cancelContactsInfoEdit} aria-label="cancel contact editing" />
+      )}
       {conversation && (
         <div className={styles.metaPanel}>
           <div className={styles.contact}>

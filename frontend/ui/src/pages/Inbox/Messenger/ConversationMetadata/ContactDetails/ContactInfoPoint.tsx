@@ -45,7 +45,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const infoValue = email ?? phone ?? title ?? address ?? city ?? organization;
   const capitalizedInfoName = infoName.charAt(0).toUpperCase() + infoName.slice(1);
   const autoFocus = infoName === 'email' ? true : false;
-  const pattern = infoName === 'phone' ? "[0-9]" : infoName === 'address' ? "[a-zA-Z0-9-]+" : "[A-Za-z]";
+  const pattern = infoName === 'phone' ? '[0-9]' : infoName === 'address' ? '[a-zA-Z0-9-]+' : '[A-Za-z]';
 
   const getMaxLength = () => {
     switch (infoName) {
@@ -64,7 +64,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
       default:
         return null;
     }
-  }
+  };
 
   const Icon = () => {
     switch (infoName) {
@@ -85,9 +85,9 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regPhone = new RegExp('^[0-9]+$|^$|^\$');
+    const regPhone = new RegExp('^[0-9]+$|^$|^$');
 
-    if(infoName === 'phone' && !regPhone.test(e.target.value)){
+    if (infoName === 'phone' && !regPhone.test(e.target.value)) {
       return;
     }
 
@@ -115,8 +115,8 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     }
   };
 
-  //change div 
-  //span 
+  //change div
+  //span
   //span
 
   return (

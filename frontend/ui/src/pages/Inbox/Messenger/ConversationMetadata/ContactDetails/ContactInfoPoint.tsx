@@ -4,7 +4,6 @@ import {ReactComponent as Phone} from 'assets/images/icons/phone.svg';
 import {ReactComponent as Pencil} from 'assets/images/icons/pencil.svg';
 import {ReactComponent as Home} from 'assets/images/icons/home.svg';
 import {ReactComponent as Suitcase} from 'assets/images/icons/suitcase.svg';
-
 import styles from './index.module.scss';
 
 interface ContactInfoPointProps {
@@ -46,6 +45,26 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const infoValue = email ?? phone ?? title ?? address ?? city ?? organization;
   const capitalizedInfoName = infoName.charAt(0).toUpperCase() + infoName.slice(1);
   const autoFocus = infoName === 'email' ? true : false;
+  const pattern = infoName === 'phone' ? "[0-9]" : infoName === 'address' ? "[a-zA-Z0-9-]+" : "[A-Za-z]";
+
+  const getMaxLength = () => {
+    switch (infoName) {
+      case 'email':
+        return 50;
+      case 'phone':
+        return 15;
+      case 'title':
+        return 25;
+      case 'address':
+        return 50;
+      case 'city':
+        return 30;
+      case 'organization':
+        return 45;
+      default:
+        return null;
+    }
+  }
 
   const Icon = () => {
     switch (infoName) {
@@ -66,6 +85,12 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const regPhone = new RegExp('^[0-9]+$|^$|^\$');
+
+    if(infoName === 'phone' && !regPhone.test(e.target.value)){
+      return;
+    }
+
     switch (infoName) {
       case 'email':
         setEmail(e.target.value);
@@ -90,13 +115,17 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     }
   };
 
+  //change div 
+  //span 
+  //span
+
   return (
     <>
-      <span className={editingOn ? styles.borderBlue : ''}>
+      <div className={`${styles.infoPointContainer} ${editingOn ? styles.borderBlue : ''}`}>
         <Icon />
         <span className={styles.detailName}>{capitalizedInfoName}:</span>
         {!editingOn ? (
-          infoValue
+          <span className={styles.infoName}>{infoValue}</span>
         ) : (
           <label htmlFor={infoName}>
             <input
@@ -108,10 +137,12 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
               placeholder={infoName}
               value={infoValue}
               onChange={handleChange}
+              pattern={pattern}
+              maxLength={getMaxLength()}
             />
           </label>
         )}
-      </span>
+      </div>
     </>
   );
 };

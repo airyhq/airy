@@ -139,41 +139,44 @@ const ContactDetails = (props: ContactInfoProps) => {
   return (
     <section className={styles.container}>
       <h1>Contact</h1>
-      <ContactInfoPoint email={email} editingOn={editingOn} setEmail={setEmail} infoName="email" />
 
-      {(!newContactCollapsed || editingOn) && (
-        <>
-          <ContactInfoPoint editingOn={editingOn} phone={phone} setPhone={setPhone} infoName="phone" />
-          <ContactInfoPoint editingOn={editingOn} title={title} setTitle={setTitle} infoName="title" />
+      <form autoComplete='off'>
+        <ContactInfoPoint email={email} editingOn={editingOn} setEmail={setEmail} infoName="email" />
 
-          {(expanded || editingOn) && (
-            <>
-              <ContactInfoPoint editingOn={editingOn} address={address} setAddress={setAddress} infoName="address" />
-              <ContactInfoPoint editingOn={editingOn} city={city} setCity={setCity} infoName="city" />
-              <ContactInfoPoint
-                editingOn={editingOn}
-                organization={organization}
-                setOrganization={setOrganization}
-                infoName="organization"
-              />
-            </>
-          )}
-        </>
-      )}
+        {(!newContactCollapsed || editingOn) && (
+          <>
+            <ContactInfoPoint editingOn={editingOn} phone={phone} setPhone={setPhone} infoName="phone" />
+            <ContactInfoPoint editingOn={editingOn} title={title} setTitle={setTitle} infoName="title" />
 
-      {editingOn ? (
-        <div className={styles.saveButtonContainer}>
-          <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
-            Save
-          </Button>
-        </div>
-      ) : (
-        <Expandable
-          toggleExpandableContent={toggleExpandableContent}
-          infoPointsNum={remainingInfoPoints}
-          collapse={!!expanded}
-        />
-      )}
+            {(expanded || editingOn) && (
+              <>
+                <ContactInfoPoint editingOn={editingOn} address={address} setAddress={setAddress} infoName="address" />
+                <ContactInfoPoint editingOn={editingOn} city={city} setCity={setCity} infoName="city" />
+                <ContactInfoPoint
+                  editingOn={editingOn}
+                  organization={organization}
+                  setOrganization={setOrganization}
+                  infoName="organization"
+                />
+              </>
+            )}
+          </>
+        )}
+
+        {editingOn ? (
+          <div className={styles.saveButtonContainer}>
+            <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
+              Save
+            </Button>
+          </div>
+        ) : (
+          <Expandable
+            toggleExpandableContent={toggleExpandableContent}
+            infoPointsNum={remainingInfoPoints}
+            collapse={!!expanded}
+          />
+        )}
+      </form>
     </section>
   );
 };

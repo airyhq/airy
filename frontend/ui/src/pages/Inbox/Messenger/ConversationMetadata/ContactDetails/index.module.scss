@@ -6,7 +6,20 @@
   flex-direction: column;
   position: relative;
   @include font-s;
-  line-height: 26px;
+}
+
+.container form {
+  display:flex;
+  flex-direction:column;
+}
+
+.infoPointContainer {
+  line-height: 1.3;
+  margin-bottom: 13px;
+}
+
+.infoName {
+  word-break: break-all;
 }
 
 .borderBlue {
@@ -19,6 +32,7 @@
 .container h1 {
   font-size: 14px;
   font-weight: bold;
+  margin-bottom:13px;
 }
 
 .container input {

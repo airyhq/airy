@@ -20,7 +20,7 @@ export const updateContactsInfoAction = createAction(
   })
 )<{conversationId: string; updatedContactsInfo: UpdateContactInfoRequestPayload}>();
 
-export const getContactsInfo = (conversationId: string) => async (dispatch: Dispatch<any>) => {
+export const getContactsInfo = (conversationId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.getContactInfo({conversationId: conversationId}).then((response: ContactInfo) => {
     dispatch(getContactsInfoAction(conversationId, response));
     return Promise.resolve(true);
@@ -29,7 +29,7 @@ export const getContactsInfo = (conversationId: string) => async (dispatch: Disp
 
 export const updateContactsInfo =
   (conversationId: string, updateContactsInfoRequestPayload: UpdateContactInfoRequestPayload) =>
-  async (dispatch: Dispatch<any>) => {
+  (dispatch: Dispatch<any>) => {
     HttpClientInstance.updateContactInfo(updateContactsInfoRequestPayload).then(() => {
       dispatch(updateContactsInfoAction(conversationId, updateContactsInfoRequestPayload));
       return Promise.resolve(true);

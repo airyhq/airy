@@ -45,18 +45,16 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const infoValue = email ?? phone ?? title ?? address ?? city ?? organization;
   const capitalizedInfoName = infoName.charAt(0).toUpperCase() + infoName.slice(1);
   const autoFocus = infoName === 'email' ? true : false;
-  const pattern = infoName === 'phone' ? '[0-9]' : infoName === 'address' ? '[a-zA-Z0-9-]+' : '[A-Za-z]';
 
   const getMaxLength = () => {
     switch (infoName) {
       case 'email':
+      case 'address':
         return 50;
       case 'phone':
         return 15;
       case 'title':
         return 25;
-      case 'address':
-        return 50;
       case 'city':
         return 30;
       case 'organization':
@@ -115,10 +113,6 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     }
   };
 
-  //change div
-  //span
-  //span
-
   return (
     <>
       <div className={`${styles.infoPointContainer} ${editingOn ? styles.borderBlue : ''}`}>
@@ -137,7 +131,6 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
               placeholder={infoName}
               value={infoValue}
               onChange={handleChange}
-              pattern={pattern}
               maxLength={getMaxLength()}
             />
           </label>

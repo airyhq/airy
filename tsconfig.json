@@ -6,5 +6,6 @@
   "include": [
     "./frontend/**/*",
     "./lib/typescript/**/*"
-  ]
+  ],
+  "rootDirs": ["."]
 }

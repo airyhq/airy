@@ -8,7 +8,7 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 
 check_pkg(name = "buildifier")
 
-module_deps = [
+ts_deps = [
     "//lib/typescript/assets",
     "//lib/typescript/components",
     "//lib/typescript/types",
@@ -24,11 +24,8 @@ module_deps = [
 
 ts_web_library(
     name = "app",
-    deps = module_deps + [
+    deps = ts_deps + [
         "@npm//@types/node",
-        "@npm//@types/react",
-        "@npm//@types/react-dom",
-        "@npm//@types/react-redux",
         "@npm//@types/lodash-es",
         "@npm//@types/dom-mediacapture-record",
         "@npm//lodash-es",
@@ -46,15 +43,14 @@ ts_web_library(
 
 web_app(
     name = "bundle",
-    app_lib = ":app",
     dev_index = "development.html",
     entry = "frontend/ui/src/index",
     index = ":index.html",
-    module_deps = module_deps,
     output = {
         "publicPath": "/ui/",
     },
     static_assets = "//frontend/ui/public",
+    ts_deps = [":app"] + ts_deps,
 )
 
 pkg_tar(

@@ -6,14 +6,13 @@ load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 
 package(default_visibility = ["//visibility:public"])
 
-module_deps = [
+ts_deps = [
     "//lib/typescript/model",
-    "//lib/typescript/types",
 ]
 
 ts_web_library(
     name = "httpclient",
-    deps = module_deps + [
+    deps = ts_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",
         "@npm//isomorphic-fetch",
@@ -23,33 +22,31 @@ ts_web_library(
 
 web_library(
     name = "dist_browser",
-    app_lib = ":httpclient",
     entry = "lib/typescript/httpclient/src/index.js",
-    module_deps = module_deps,
     output = {
         "library": "@airyhq/http-client",
         "globalObject": "this",
         "libraryTarget": "umd",
         "filename": "browser.js",
     },
+    ts_deps = [":httpclient"] + ts_deps,
 )
 
 web_library(
     name = "dist_node",
-    app_lib = ":httpclient",
     entry = "lib/typescript/httpclient/src/index.js",
     externals = {
         "camelcase-keys": "camelcase-keys",
         "isomorphic-fetch": "isomorphic-fetch",
         "form-data": "form-data",
     },
-    module_deps = module_deps,
     output = {
         "library": "@airyhq/http-client",
         "globalObject": "this",
         "libraryTarget": "umd",
         "filename": "node.js",
     },
+    ts_deps = [":httpclient"] + ts_deps,
 )
 
 genrule(

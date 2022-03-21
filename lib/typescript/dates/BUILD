@@ -6,9 +6,6 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "dates",
-    deps = [
-        "//lib/typescript/types",
-    ],
 )
 
 check_pkg(name = "buildifier")

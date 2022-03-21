@@ -1,4 +1,4 @@
-module_deps = [
+ts_deps = [
     "//lib/typescript/assets",
     "//lib/typescript/components",
     "//lib/typescript/types",

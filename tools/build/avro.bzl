@@ -23,10 +23,6 @@ def _new_generator_command(ctx, src_dir, gen_dir):
 
 def _impl(ctx):
     src_dirs = [f.path for f in ctx.files.srcs]
-    native.filegroup(
-        name = "_data",
-        srcs = ctx.file.srcs,
-    )
 
     gen_dir = "{out}-tmp".format(
         out = ctx.outputs.codegen.path,

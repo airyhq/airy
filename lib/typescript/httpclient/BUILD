@@ -20,6 +20,12 @@ ts_web_library(
     ],
 )
 
+filegroup(
+    name = "types",
+    srcs = [":httpclient"],
+    output_group = "types",
+)
+
 web_library(
     name = "dist_browser",
     entry = "lib/typescript/httpclient/src/index.js",
@@ -57,6 +63,7 @@ genrule(
         ":dist_browser",
         ":dist_node",
         ":httpclient",
+        ":types",
     ],
     outs = ["httpclient_lib"],
     cmd = """

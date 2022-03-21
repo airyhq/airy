@@ -13,6 +13,12 @@ ts_web_library(
     deps = ts_deps + npm_deps,
 )
 
+filegroup(
+    name = "types",
+    srcs = [":chat-plugin"],
+    output_group = "types",
+)
+
 web_library(
     name = "dist",
     entry = "frontend/chat-plugin/lib/index.js",
@@ -46,6 +52,7 @@ genrule(
         "README.md",
         ":dist",
         ":chat-plugin",
+        ":types",
     ],
     outs = ["chat-plugin_npm_lib"],
     cmd = """

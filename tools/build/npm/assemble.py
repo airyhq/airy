@@ -34,8 +34,6 @@ parser.add_argument('--version_file', help="Version file")
 parser.add_argument('--output', help="Output archive")
 
 args = parser.parse_args()
-import pwd
-print("whoami", pwd.getpwuid(os.getuid()))
 
 with open(args.version_file) as version_file:
     version = version_file.read().strip()
@@ -65,13 +63,11 @@ for root, dirs, files in os.walk(new_package_root):
     for f in files:
         os.chmod(os.path.join(root, f), 0o755)
 
-print("whoami", pwd.getpwuid(os.getuid()))
-print("new_package_root", new_package_root)
-
 subprocess.check_call([
     'npm',
     'pack'
 ], env={
+    'NPM_CONFIG_CACHE': tempfile.mktemp(),
     'PATH': ':'.join([
         '/usr/bin/',
         '/bin/',

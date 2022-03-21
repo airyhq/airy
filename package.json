@@ -63,7 +63,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "minimist": "^1.2.5",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.0",
     "react-hot-loader": "^4.13.0",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",

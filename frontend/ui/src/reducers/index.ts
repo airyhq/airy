@@ -1,4 +1,4 @@
-import _, {CombinedState, combineReducers} from 'redux';
+import {CombinedState, combineReducers} from 'redux';
 
 import data, {DataState} from './data';
 export * from './data';

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
@@ -119,8 +119,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                         key={id}
                         onClick={() => {
                           selectTemplate(template);
-                        }}
-                      >
+                        }}>
                         <div className={styles.templatePreviewName}>{template.name}</div>
                         <SourceMessage message={template} source={template.source} contentType="template" />
                       </div>

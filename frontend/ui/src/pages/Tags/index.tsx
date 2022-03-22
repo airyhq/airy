@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {SettingsModal, LinkButton, Button, SearchField, Input} from 'components';
 import {cyTagsSearchField, cyTagsTable} from 'handles';
@@ -130,8 +130,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
         <SettingsModal
           style={{maxWidth: '480px'}}
           title="Are you sure you want to permanently delete this tag?"
-          close={this.closeModal}
-        >
+          close={this.closeModal}>
           <div className={styles.confirmDelete}>
             <p>
               You&#39;re about to permanently delete <strong>&#34;{this.state.modal.tagName}&#34;</strong> from your
@@ -159,8 +158,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
               <Button
                 styleVariant="warning"
                 onClick={this.confirmDelete}
-                dataCy={cyTagsTableRowDisplayDeleteModalButton}
-              >
+                dataCy={cyTagsTableRowDisplayDeleteModalButton}>
                 Delete
               </Button>
             </div>

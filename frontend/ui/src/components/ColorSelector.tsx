@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../reducers';
-import {Settings} from '../reducers/data/settings';
 
 import styles from './ColorSelector.module.scss';
 
@@ -12,22 +11,21 @@ import {
   cyTagsDialogColorSelectorPurple,
 } from 'handles';
 
+const mapStateToProps = (state: StateModel) => ({
+  tagConfig: state.data.config.tagConfig,
+});
+
+const connector = connect(mapStateToProps);
+
 type ColorSelectorProps = {
   handleUpdate: (event: React.ChangeEvent<HTMLInputElement>) => void;
   color: string;
   editing?: boolean;
   id?: string;
-};
+} & ConnectedProps<typeof connector>;
 
-type ColorSelectorState = {
-  settings: Settings;
-};
-
-const ColorSelector = ({handleUpdate, color, editing, id, settings}: ColorSelectorProps & ColorSelectorState) => {
-  const getColorValue = useCallback(
-    (color: string) => (settings && settings.colors[color].deflt) || '1578D4',
-    [settings]
-  );
+const ColorSelector = ({handleUpdate, color, editing, id, tagConfig}: ColorSelectorProps) => {
+  const getColorValue = useCallback((color: string) => tagConfig.colors[color]?.default ?? '1578D4', [tagConfig]);
   const dataCyTagsDialogColorSelectorBlue = cyTagsDialogColorSelectorBlue;
   const dataCyTagsDialogColorSelectorRed = cyTagsDialogColorSelectorRed;
   const dataCyTagsDialogColorSelectorGreen = cyTagsDialogColorSelectorGreen;
@@ -99,10 +97,4 @@ const ColorSelector = ({handleUpdate, color, editing, id, settings}: ColorSelect
   );
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    settings: state.data.settings,
-  };
-};
-
-export default connect(mapStateToProps)(ColorSelector);
+export default connector(ColorSelector);

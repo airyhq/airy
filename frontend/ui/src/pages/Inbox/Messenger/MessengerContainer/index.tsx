@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
@@ -139,8 +139,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
         onDrop={e => handleFileDrop(e)}
         onDragLeave={e => handleDragLeave(e)}
         onMouseOut={() => setIsFileDragged(false)}
-        onMouseLeave={() => setIsFileDragged(false)}
-      >
+        onMouseLeave={() => setIsFileDragged(false)}>
         {!dragAndDropDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>

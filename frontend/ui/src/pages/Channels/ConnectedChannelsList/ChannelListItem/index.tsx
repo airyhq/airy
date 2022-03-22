@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {disconnectChannel} from '../../../../actions/channel';
 
@@ -66,8 +66,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                 navigate(`/channels/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
-              }
-            >
+              }>
               Edit
             </Button>
             <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>

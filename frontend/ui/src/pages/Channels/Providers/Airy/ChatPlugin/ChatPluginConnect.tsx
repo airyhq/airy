@@ -1,5 +1,5 @@
 import React from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {apiHostUrl} from '../../../../../httpClient';
@@ -88,8 +88,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                 type="button"
                 onClick={() => {
                   disconnectChannel(channel);
-                }}
-              >
+                }}>
                 Delete
               </LinkButton>
             </div>

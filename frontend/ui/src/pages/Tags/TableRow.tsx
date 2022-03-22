@@ -1,13 +1,12 @@
 import React, {useState, useCallback} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
-import {updateTag} from '../../actions/tags';
+import {updateTag} from '../../actions';
 
 import {Button, LinkButton} from 'components';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'model';
-import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
 
 import {ReactComponent as EditPencilIcon} from 'assets/images/icons/editPencil.svg';
@@ -19,12 +18,16 @@ import {cyTagsTableRowDisplayDeleteModal} from 'handles';
 
 type TableRowProps = {
   tag: TagModel;
-  settings: Settings;
   showModal(label: string, id: string, name: string): void;
 } & ConnectedProps<typeof connector>;
 
 const TableRowComponent = (props: TableRowProps) => {
-  const {tag, updateTag, settings, showModal} = props;
+  const {
+    tag,
+    updateTag,
+    config: {tagConfig},
+    showModal,
+  } = props;
 
   const [tagState, setTagState] = useState({
     edit: false,
@@ -87,9 +90,8 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 
   const getColorValue = useCallback(
-    (color: string) =>
-      (settings && settings.colors && settings.colors[color] && settings.colors[color].deflt) || '1578D4',
-    [settings]
+    (color: string) => (tagConfig.colors[color] && tagConfig.colors[color].default) || '1578D4',
+    [tagConfig]
   );
 
   const isEditing = tagState.edit && tagState.id === tag.id;
@@ -145,8 +147,7 @@ const TableRowComponent = (props: TableRowProps) => {
             type="button"
             className={styles.actionButton}
             onClick={deleteClicked}
-            data-cy={cyTagsTableRowDisplayDeleteModal}
-          >
+            data-cy={cyTagsTableRowDisplayDeleteModal}>
             <TrashIcon className={styles.actionSVG} title="Delete tag" />
           </button>
         </div>
@@ -155,11 +156,9 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    settings: state.data.settings,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  config: state.data.config,
+});
 
 const mapDispatchToProps = {
   updateTag,

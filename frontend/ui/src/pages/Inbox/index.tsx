@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {fetchConversations} from '../../actions/conversations';
 import {listChannels} from '../../actions/channel';

@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -88,10 +87,8 @@ public class ClientConfigControllerTest {
                         withSuccess("{\"status\": \"DOWN\"}", MediaType.APPLICATION_JSON)
                 );
 
-        final String[] content = {""};
-
-        retryOnException(() -> {
-            MvcResult res = webTestHelper.post("/client.config", "{}")
+        retryOnException(() ->
+            webTestHelper.post("/client.config", "{}")
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.services.*", hasSize(1)))
                     .andExpect(jsonPath("$.services", hasKey("api-communication")))
@@ -99,22 +96,15 @@ public class ClientConfigControllerTest {
                     .andExpect(jsonPath("$.services.*.healthy", everyItem(is(false))))
                     .andExpect(jsonPath("$.tag_config.*", hasSize(1)))
                     .andExpect(jsonPath("$.tag_config", hasKey("colors")))
-                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag_green")))
-                    .andExpect(jsonPath("$.tag_config.colors.tag_green.*", hasSize(5)))
-                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag_blue")))
-                    .andExpect(jsonPath("$.tag_config.colors.tag_blue.*", hasSize(5)))
-                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag_red")))
-                    .andExpect(jsonPath("$.tag_config.colors.tag_red.*", hasSize(5)))
-                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag_purple")))
-                    .andExpect(jsonPath("$.tag_config.colors.tag_purple.*", hasSize(5)))
-                    .andReturn();
-                    content[0] = res.getResponse().getContentAsString();
-                },
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-green")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-green.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-blue")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-blue.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-red")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-red.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-purple")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-purple.*", hasSize(5))),
                 "client.config call failed for services");
-
-        System.out.println("Looking at content");
-        System.out.println(content[0]);
-
         mockServer.verify();
     }
 }

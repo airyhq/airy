@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
 import {SourceMessagePreview} from 'render';
@@ -56,8 +56,7 @@ const ClosedStateButton = ({eventHandler}: StateButtonsProps) => {
     <div className={styles.closedStateButton} title="Set to open">
       <button
         onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
-        data-cy={cyClosedStateButton}
-      >
+        data-cy={cyClosedStateButton}>
         <Checkmark />
       </button>
     </div>
@@ -108,8 +107,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''
-          }`}
-        >
+          }`}>
           <div className={styles.profileImage}>
             <Avatar contact={participant} />
           </div>

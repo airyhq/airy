@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {debounce} from 'lodash-es';
 
 import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';

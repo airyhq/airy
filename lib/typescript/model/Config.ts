@@ -1,10 +1,19 @@
 import {User} from './User';
-import {Settings} from "../../../frontend/ui/src/reducers";
 
 export interface Config {
   services: {[key: string]: {enabled: boolean; healthy: boolean; component: string}};
-  tagConfig?: Settings;
+  tagConfig?: {
+    colors: {[id: string]: ColorSettings};
+  };
   userProfile?: User;
+}
+
+export interface ColorSettings {
+  default: string;
+  background: string;
+  font: string;
+  position: number;
+  border: string;
 }
 
 export const getComponents = (config: Config) => {

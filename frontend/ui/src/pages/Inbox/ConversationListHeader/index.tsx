@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
@@ -109,8 +109,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
           title="Filter"
           id="filterButton"
           className={`${isFilterActive() ? styles.activeFilters : styles.filterButton}`}
-          onClick={toggleFilter}
-        >
+          onClick={toggleFilter}>
           <FilterIcon />
         </button>
         {isFilterOpen && (

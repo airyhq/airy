@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import _, {useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 

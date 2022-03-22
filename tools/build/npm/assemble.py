@@ -67,6 +67,7 @@ subprocess.check_call([
     'npm',
     'pack'
 ], env={
+    'NPM_CONFIG_CACHE': tempfile.mktemp(),
     'PATH': ':'.join([
         '/usr/bin/',
         '/bin/',

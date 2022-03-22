@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "7be57ca7d9b8b716e8ca8c8af0d5d6945e4a6d06",
+    commit = "575b54eb3fb5fdff8e4a0b0a11f86e389fdffffc",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1647017998 +0100",
+    shallow_since = "1647854875 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -134,6 +134,9 @@ load(
 _go_image_repos()
 
 ### Frontend build tooling
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 

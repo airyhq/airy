@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {omit, sortBy} from 'lodash-es';
 import {SearchField, LinkButton, Button} from 'components';
-import {Tag as TagModel, Channel} from 'model';
-import {listTags} from '../../../actions/tags';
-import {setFilter} from '../../../actions/conversationsFilter';
+import {Tag as TagModel, Channel, prettifySource} from 'model';
+import {listTags} from '../../../actions';
+import {setFilter} from '../../../actions';
 import {ConversationFilter, StateModel} from '../../../reducers';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
@@ -13,7 +13,6 @@ import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkma
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 import ChannelAvatar from '../../../components/ChannelAvatar';
-import {prettifySource} from '../../../../../../lib/typescript/model';
 import {SourceIcon} from '../../../components/SourceIcon';
 
 function mapStateToProps(state: StateModel) {

@@ -1,6 +1,7 @@
 {
   "extends": "../../bazel.tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true
   }
 }

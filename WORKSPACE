@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "575b54eb3fb5fdff8e4a0b0a11f86e389fdffffc",
+    commit = "589c212ed21bf2ebe01d72c5920c03ebf8967bf2",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1647854875 +0100",
+    shallow_since = "1647947114 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -26,6 +26,7 @@ load("//:repositories.bzl", "excluded_artifacts", jvm_deps = "airy_jvm_deps")
 maven_install(
     artifacts = airy_jvm_deps + jvm_deps,
     excluded_artifacts = excluded_artifacts,
+    fail_if_repin_required = True,
     maven_install_json = "//:maven_install.json",
     repositories = [
         "https://packages.confluent.io/maven",

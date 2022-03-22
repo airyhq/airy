@@ -147,7 +147,8 @@ const TableRowComponent = (props: TableRowProps) => {
             type="button"
             className={styles.actionButton}
             onClick={deleteClicked}
-            data-cy={cyTagsTableRowDisplayDeleteModal}>
+            data-cy={cyTagsTableRowDisplayDeleteModal}
+          >
             <TrashIcon className={styles.actionSVG} title="Delete tag" />
           </button>
         </div>

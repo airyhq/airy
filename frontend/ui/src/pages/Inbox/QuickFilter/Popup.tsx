@@ -125,7 +125,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     <DialogCustomizable
       close={closeCallback}
       style={{marginTop: '20px', left: '0px', marginLeft: '215px'}}
-      coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}>
+      coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}
+    >
       <div id="dialogContent" className={styles.content}>
         <div className={styles.filterColumn}>
           <div className={styles.filterStateContainer}>
@@ -134,12 +135,14 @@ const PopUpFilter = (props: PopUpFilterProps) => {
               <div className={styles.filterRow}>
                 <button
                   className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={toggleReadOnly}>
+                  onClick={toggleReadOnly}
+                >
                   Read Only
                 </button>
                 <button
                   className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={toggleUnreadOnly}>
+                  onClick={toggleUnreadOnly}
+                >
                   Unread Only
                 </button>
               </div>
@@ -155,7 +158,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       ? styles.filterButton
                       : styles.filterButtonSelected
                   }
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, true)}>
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, true)}
+                >
                   <div className={styles.openIconButton} />
                   Open
                 </button>
@@ -165,7 +169,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       ? styles.filterButton
                       : styles.filterButtonSelected
                   }
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, false)}>
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, false)}
+                >
                   <div className={styles.checkmarkCircleIcon}>
                     <CheckmarkCircleIcon />
                   </div>
@@ -221,7 +226,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                     className={`${styles.sourceEntry} ${
                       isChannelSelected(filter.byChannels, channel) ? styles.sourceSelected : ''
                     }`}
-                    onClick={() => toggleChannel(channel.id)}>
+                    onClick={() => toggleChannel(channel.id)}
+                  >
                     {isChannelSelected(filter.byChannels, channel) ? (
                       <div className={styles.checkmarkIcon}>
                         <CheckmarkIcon aria-hidden />
@@ -248,7 +254,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                     className={`${styles.sourceEntry} ${
                       isSourceSelected(filter.bySources, source) ? styles.sourceSelected : ''
                     }`}
-                    onClick={() => toggleSource(source)}>
+                    onClick={() => toggleSource(source)}
+                  >
                     {isSourceSelected(filter.bySources, source) ? (
                       <div className={styles.checkmarkIcon}>
                         <CheckmarkIcon aria-hidden />

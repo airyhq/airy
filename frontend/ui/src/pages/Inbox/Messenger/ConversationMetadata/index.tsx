@@ -228,7 +228,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                         className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                         onClick={saveEditDisplayName}
                         disabled={displayName.length === 0}
-                        data-cy={cyEditDisplayNameCheckmark}>
+                        data-cy={cyEditDisplayNameCheckmark}
+                      >
                         <CheckmarkCircleIcon />
                       </button>
                     </div>

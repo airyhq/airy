@@ -170,7 +170,8 @@ const MessageList = (props: MessageListProps) => {
               senderName={message?.sender?.name}
               deliveryState={message?.deliveryState}
               messageId={message.id}
-              onResendFailedMessage={handleFailedMessage}>
+              onResendFailedMessage={handleFailedMessage}
+            >
               <SourceMessage source={source} message={message} contentType="message" />
               <Reaction message={message} />
             </MessageInfoWrapper>

@@ -119,7 +119,8 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                         key={id}
                         onClick={() => {
                           selectTemplate(template);
-                        }}>
+                        }}
+                      >
                         <div className={styles.templatePreviewName}>{template.name}</div>
                         <SourceMessage message={template} source={template.source} contentType="template" />
                       </div>

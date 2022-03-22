@@ -46,7 +46,8 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, config: {tagCon
     <div className={styles.tag} onClick={onClick}>
       <div
         className={`${styles.tagInner} ${onClick ? styles.clickable : ''} ${removeTag ? styles.isRemovable : ''}`}
-        style={tagStyle}>
+        style={tagStyle}
+      >
         <span className={`${expanded === true ? styles.tagNameExpanded : styles.tagName}`}>{tag.name}</span>
         {removeTag && (
           <span className={styles.removeTag} onClick={removeTag}>

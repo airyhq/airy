@@ -1,5 +1,5 @@
-import _, {Dispatch} from 'redux';
-import _typesafe, {createAction} from 'typesafe-actions';
+import {Dispatch} from 'redux';
+import {createAction} from 'typesafe-actions';
 
 import {Template} from 'model';
 import {ListTemplatesRequestPayload} from 'httpclient/src';

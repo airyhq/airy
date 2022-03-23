@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions';

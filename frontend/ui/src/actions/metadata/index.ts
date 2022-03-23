@@ -1,4 +1,4 @@
-import _typesafe, {createAction} from 'typesafe-actions';
+import {createAction} from 'typesafe-actions';
 import {MetadataEvent} from 'model';
 
 const SET_METADATA = '@@metadata/SET_METADATA';

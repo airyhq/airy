@@ -1,5 +1,5 @@
 import React from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {apiHostUrl} from '../../../../../httpClient';

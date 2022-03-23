@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';

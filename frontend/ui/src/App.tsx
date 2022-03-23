@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {Route, Routes, Navigate} from 'react-router-dom';
 
 import TopBar from './components/TopBar';
@@ -9,7 +9,6 @@ import Tags from './pages/Tags';
 import NotFound from './pages/NotFound';
 import {Sidebar} from './components/Sidebar';
 import AiryWebSocket from './components/AiryWebsocket';
-import {fakeSettingsAPICall} from './actions';
 
 import {INBOX_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
@@ -25,7 +24,6 @@ import InstagramConnect from './pages/Channels/Providers/Instagram/InstagramConn
 import MainPage from './pages/Channels/MainPage';
 
 const mapDispatchToProps = {
-  fakeSettingsAPICall,
   getClientConfig,
 };
 
@@ -33,7 +31,6 @@ const connector = connect(null, mapDispatchToProps);
 
 const App = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
-    props.fakeSettingsAPICall();
     props.getClientConfig();
   }, []);
 

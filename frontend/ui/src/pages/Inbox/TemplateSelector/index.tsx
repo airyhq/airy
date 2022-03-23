@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';

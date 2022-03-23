@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {disconnectChannel} from '../../../../actions/channel';
 

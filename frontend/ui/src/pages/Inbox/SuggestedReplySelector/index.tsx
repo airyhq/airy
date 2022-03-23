@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {SourceMessage} from 'render';
 import {Carousel, ListenOutsideClick} from 'components';
 import styles from './index.module.scss';

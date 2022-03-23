@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux';
-import _typesafe, {createAction} from 'typesafe-actions';
+import {createAction} from 'typesafe-actions';
 import {Message} from 'model';
 import {PaginatedResponse, ResendMessageRequestPayload, SendMessagesRequestPayload} from 'httpclient/src';
 import {HttpClientInstance} from '../../httpClient';

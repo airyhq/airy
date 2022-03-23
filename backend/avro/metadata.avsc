@@ -3,9 +3,41 @@
   "name": "Metadata",
   "type": "record",
   "fields": [
-    {"name": "subject", "type": "string"},
-    {"name": "key", "type": "string"},
-    {"name": "value", "type": "string"},
-    {"name": "timestamp", "type": "long", "logicalType": "timestamp-millis"}
+    {
+      "name": "subject",
+      "type": "string"
+    },
+    {
+      "name": "key",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    },
+    {
+      "name": "valueType",
+      "type": {
+        "doc": "Defines how the value stored in the value field should be parsed back",
+        "name": "ValueType",
+        "type": "enum",
+        "symbols": [
+          "text",
+          "array",
+          "object",
+          "number",
+          "bool",
+          "nullValue"
+        ]
+      },
+      "default": "text"
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
   ]
 }

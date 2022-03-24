@@ -55,4 +55,4 @@ We don't aim to perfectly map granular JSON updates to this data model, so here 
 developing against airy metadata:
 
 - JSON arrays are stored as a single value. So concurrent writes to the same key will overwrite each other.
-- All numbers are parsed back with Java Double precision 
+- All numbers are parsed back with Java Double precision

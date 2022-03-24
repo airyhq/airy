@@ -48,7 +48,7 @@ public class ObjectMapperTest {
     void canResolveConflictsByTime() {
         final Metadata oldMetadata = newConversationMetadata("id", "contact.address.line_1", "Mission Street");
         final Metadata newMetadata = newConversationMetadata("id", "contact.address", "Anklamer Str.");
-        newMetadata.setTimestamp(oldMetadata.getTimestamp().plus(Duration.ofSeconds(1)));
+        newMetadata.setTimestamp(oldMetadata.getTimestamp() + 1000);
 
         // Purposefully switching the list order
         final List<Metadata> metadata = new ArrayList<>(Arrays.asList(

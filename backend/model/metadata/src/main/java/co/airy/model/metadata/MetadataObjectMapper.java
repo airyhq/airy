@@ -108,7 +108,7 @@ public class MetadataObjectMapper {
                                 .setKey(keyValuePair.getKey())
                                 .setValue(keyValuePair.getValue())
                                 .setValueType(keyValuePair.getValueType())
-                                .setTimestamp(creationTime)
+                                .setTimestamp(creationTime.toEpochMilli())
                                 .build()
                 )).collect(Collectors.toList());
     }

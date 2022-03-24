@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class MetadataMap extends HashMap<String, Metadata> implements Serializab
     // Convenience methods for aggregating on Metadata in Kafka Streams
     public static MetadataMap adder(String key, Metadata metadata, MetadataMap aggregate) {
         aggregate.put(metadata.getKey(), metadata);
-        aggregate.setUpdatedAt(metadata.getTimestamp().toEpochMilli());
+        aggregate.setUpdatedAt(metadata.getTimestamp());
         return aggregate;
     }
 
@@ -39,8 +40,7 @@ public class MetadataMap extends HashMap<String, Metadata> implements Serializab
                 .orElseGet(() -> values()
                         .stream()
                         .map(Metadata::getTimestamp)
-                        .mapToLong(Instant::toEpochMilli)
-                        .max().orElse(0L));
+                        .max(Comparator.naturalOrder()).orElse(0L));
     }
 
     public Integer getMetadataNumericValue(String key, Integer parseExceptionDefault) {

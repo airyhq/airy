@@ -16,7 +16,7 @@ public class MetadataRepository {
                 .setSubject(new Subject("conversation", conversationId).toString())
                 .setKey(key)
                 .setValue(value)
-                .setTimestamp(Instant.now())
+                .setTimestamp(Instant.now().toEpochMilli())
                 .build();
     }
 
@@ -25,7 +25,7 @@ public class MetadataRepository {
                 .setSubject(new Subject("channel", channelId).toString())
                 .setKey(key)
                 .setValue(value)
-                .setTimestamp(Instant.now())
+                .setTimestamp(Instant.now().toEpochMilli())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class MetadataRepository {
                 .setSubject(new Subject("message", messageId).toString())
                 .setKey(key)
                 .setValue(value)
-                .setTimestamp(Instant.now())
+                .setTimestamp(Instant.now().toEpochMilli())
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class MetadataRepository {
                 .setSubject(new Subject("conversation", conversationId).toString())
                 .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId))
                 .setValue("")
-                .setTimestamp(Instant.now())
+                .setTimestamp(Instant.now().toEpochMilli())
                 .build();
     }
 

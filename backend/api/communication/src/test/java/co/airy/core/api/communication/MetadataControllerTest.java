@@ -92,15 +92,8 @@ public class MetadataControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone")))
                         .andExpect(jsonPath("$.last_message.metadata.user_data.assignees").value(containsInAnyOrder("Alice", "Bob")))
-                        .andExpect(jsonPath("$.last_message.metadata.user_data.seq", is(42))),
+                        .andExpect(jsonPath("$.last_message.metadata.user_data.seq", is(42.0))),
                 "Conversations list metadata is not present"
         );
-    }
-
-    @Test
-    void failsOnNonStringFieldValues() throws Exception {
-        webTestHelper.post("/metadata.upsert",
-                "{\"subject\": \"channel\", \"id\": \"" + channel.getId() + "\", \"data\": {\"sentFrom\": 123}}")
-                .andExpect(status().isBadRequest());
     }
 }

@@ -3,14 +3,11 @@ title: Metadata
 sidebar_label: Metadata
 ---
 
-Refer to our [metadata design](concepts/metadata.md) document for more
-information.
+Refer to our [metadata design](concepts/metadata.md) document for more information.
 
 ## Upsert
 
-This endpoint takes a `data` object and upserts the metadata for the `id`. The
-data may only contain values of type string or object values (i.e. no lists or
-numbers).
+This endpoint takes a `data` object and upserts the metadata for the `id`. Arrays may only contain one data type.
 
 `POST /metadata.upsert`
 
@@ -26,5 +23,4 @@ numbers).
 }
 ```
 
-The endpoint returns status code `200` if the operation was successful, and
-`400` if not.
+The endpoint returns status code `200` if the operation was successful, and `400` if not.

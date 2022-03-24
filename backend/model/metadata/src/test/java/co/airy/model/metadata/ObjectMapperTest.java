@@ -1,10 +1,12 @@
 package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.ValueType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,18 +23,25 @@ public class ObjectMapperTest {
 
     @Test
     void canCreateJsonPayload() {
-        final List<Metadata> metadata = new ArrayList<>(Arrays.asList(
-                newConversationMetadata("id", "contact.address.line_1", "Mission Street"),
-                newConversationMetadata("id", "contact.displayName", "Grace"),
-                newConversationMetadata("id", "tags.1234", ""),
-                newConversationMetadata("id", "unread_count", "10")
-        ));
+        final Metadata metadata1 = newConversationMetadata("id", "contact.address.line_1", "Mission Street");
+        final Metadata metadata2 = newConversationMetadata("id", "contact.displayName", "Grace");
+        final Metadata metadata3 = newConversationMetadata("id", "tags", "{\"foo\":[\"bar\"]}");
+        metadata3.setValueType(ValueType.object);
+        final Metadata metadata4 = newConversationMetadata("id", "unread", "10");
+        metadata4.setValueType(ValueType.number);
+        final Metadata metadata5 = newConversationMetadata("id", "sizes", "[5,\"XL\"]");
+        metadata5.setValueType(ValueType.array);
+        final Metadata metadata6 = newConversationMetadata("id", "friends", "null");
+        metadata6.setValueType(ValueType.nullValue);
 
-        final JsonNode payload = getMetadataPayload(metadata);
+        final JsonNode payload = getMetadataPayload(new ArrayList<>(List.of(metadata1, metadata2, metadata3, metadata4, metadata5, metadata6)));
         assertThat(payload.get("contact").get("address").get("line_1").textValue(), equalTo("Mission Street"));
         assertThat(payload.get("contact").get("displayName").textValue(), equalTo("Grace"));
-        assertThat(payload.get("tags").get("1234").textValue(), equalTo(""));
-        assertThat(payload.get("unread_count").intValue(), equalTo(10));
+        assertThat(payload.get("tags").get("foo").get(0).textValue(), equalTo("bar"));
+        assertThat(payload.get("unread").intValue(), equalTo(10));
+        assertThat(payload.get("sizes").get(0).intValue(), equalTo(5));
+        assertThat(payload.get("sizes").get(1).textValue(), equalTo("XL"));
+        assertTrue(payload.get("friends").isNull());
     }
 
     @Test
@@ -57,19 +66,20 @@ public class ObjectMapperTest {
         final String updateJson = "{" +
                 "  \"contact\": {" +
                 "    \"displayName\": \"Grace\"," +
+                "    \"age\":42," +
+                "    \"is_happy\":true," +
+                "    \"friends\":null," +
                 "    \"address\": {" +
                 "      \"line_1\": \"Mission Street\"" +
                 "    }" +
                 "  }," +
-                "  \"tags\": {" +
-                "    \"1234\": \"\"" +
-                "  }" +
+                "  \"tags\":[1,2,\"3\"]" +
                 "}";
         final JsonNode node = new ObjectMapper().readTree(updateJson);
 
         final List<Metadata> metadataList = getMetadataFromJson(new Subject("conversation", "id"), node);
 
-        assertThat(metadataList, hasSize(3));
+        assertThat(metadataList, hasSize(6));
         assertTrue(metadataList.stream().anyMatch((metadata ->
                 metadata.getKey().equals("contact.displayName") && metadata.getValue().equals("Grace")
         )));
@@ -77,7 +87,13 @@ public class ObjectMapperTest {
                 metadata.getKey().equals("contact.address.line_1") && metadata.getValue().equals("Mission Street")
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals("tags.1234") && metadata.getValue().equals("")
+                metadata.getKey().equals("contact.age") && metadata.getValue().equals("42") && metadata.getValueType().equals(ValueType.number)
+        )));
+        assertTrue(metadataList.stream().anyMatch((metadata ->
+                metadata.getKey().equals("contact.is_happy") && metadata.getValue().equals("true") && metadata.getValueType().equals(ValueType.bool)
+        )));
+        assertTrue(metadataList.stream().anyMatch((metadata ->
+                metadata.getKey().equals("contact.friends") && metadata.getValue().equals("null") && metadata.getValueType().equals(ValueType.nullValue)
         )));
     }
 }

@@ -27,6 +27,7 @@ import static co.airy.core.api.communication.util.TestConversation.generateRecor
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,9 +78,10 @@ public class MetadataControllerTest {
         kafkaTestHelper.produceRecords(producerRecords);
         final String messageId = producerRecords.get(0).key();
 
+        // Test object, number, and list metadata
         retryOnException(
                 () -> webTestHelper.post("/metadata.upsert",
-                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}")
+                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"seq\":42, \"sentFrom\": \"iPhone\",\"assignees\": [\"Alice\",\"Bob\"]}}")
                         .andExpect(status().isNoContent()),
                 "Error upserting metadata"
         );
@@ -88,15 +90,10 @@ public class MetadataControllerTest {
                 () -> webTestHelper.post("/conversations.info",
                         "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone"))),
+                        .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone")))
+                        .andExpect(jsonPath("$.last_message.metadata.user_data.assignees").value(containsInAnyOrder("Alice", "Bob")))
+                        .andExpect(jsonPath("$.last_message.metadata.user_data.seq", is(42.0))),
                 "Conversations list metadata is not present"
         );
-    }
-
-    @Test
-    void failsOnNonStringFieldValues() throws Exception {
-        webTestHelper.post("/metadata.upsert",
-                "{\"subject\": \"channel\", \"id\": \"" + channel.getId() + "\", \"data\": {\"sentFrom\": 123}}")
-                .andExpect(status().isBadRequest());
     }
 }

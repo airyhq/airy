@@ -1,0 +1,173 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: $navigation;
+  height: 72px;
+  background-color: white;
+  box-shadow: 0 3px 8px 0 var(--color-light-gray);
+  position: fixed;
+  overflow: visible;
+  top: 0;
+  width: 100%;
+}
+
+.airyLogo {
+  margin: 20px 24px;
+}
+
+.airyLogoSvg {
+  width: 86px;
+  height: 32px;
+}
+
+.menuArea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 32px;
+}
+
+.dropDown {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 8px 0;
+  transition: 0.2s all ease-in-out;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-background-blue);
+  }
+}
+
+.dropHint {
+  width: 16px;
+  svg {
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
+}
+
+.dropHintOpen {
+  margin-bottom: 0;
+  transform: rotate(180deg);
+}
+
+.accountDetails {
+  padding-right: 12px;
+}
+
+.accountName {
+  font-weight: 900;
+}
+
+.accountHint {
+  @include font-s;
+  color: var(--color-text-gray);
+}
+
+.menuItem {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.dropdownContainer {
+  position: absolute;
+  background-color: white;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+  top: 68px;
+  overflow: hidden;
+  right: 0;
+  white-space: nowrap;
+}
+
+.dropdownLine {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-background-gray);
+  padding: 16px;
+
+  color: var(--color-text-gray);
+  text-decoration: none;
+  font-weight: 400;
+
+  &:hover {
+    background-color: var(--color-background-blue);
+    color: var(--color-airy-blue);
+    text-decoration: underline;
+
+    .dropdownIcon {
+      svg {
+        path {
+          fill: var(--color-airy-blue);
+        }
+      }
+    }
+  }
+}
+
+.dropdownIcon {
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: 4px;
+  width: 24px;
+
+  svg {
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
+}
+
+.dropdownLastLine {
+  @include font-s;
+  border-top: 1px solid var(--color-light-gray);
+  padding: 16px 32px;
+  text-align: center;
+  color: var(--color-text-gray);
+}
+
+.dropdownLastLink {
+  color: var(--color-text-gray);
+  font-weight: 400;
+
+  &:not(:last-child) {
+    padding-right: 4px;
+  }
+
+  &:hover {
+    color: var(--color-airy-blue);
+    text-decoration: underline;
+  }
+}
+
+.help {
+  @include font-m;
+  margin-right: 16px;
+  border: 1px solid var(--color-text-gray);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-gray);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-airy-blue);
+    background-color: var(--color-background-blue);
+    border: 1px solid var(--color-airy-blue);
+    box-shadow: 0px 0px 0px 3px var(--color-background-blue);
+  }
+}

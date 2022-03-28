@@ -31,7 +31,7 @@ const contactsReducer = (state = initialState, action: Action) => {
           ...state.all,
           [action.payload.conversationId]: {
             ...state.all[action.payload.conversationId],
-            ...action.payload.updatedContactDetails,
+            ...action.payload.updatedContact,
           },
         },
       };

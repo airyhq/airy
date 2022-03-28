@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template, ContactInfo} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -18,7 +18,7 @@ import {
   PaginatedResponse,
   MetadataUpsertRequestPayload,
   SetStateConversationRequestPayload,
-  UpdateContactRequestPayload,
+  UpdateConversationContactInfoRequestPayload,
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
@@ -216,11 +216,13 @@ export class HttpClient {
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
-  public updateConversationContactInfo = this.getRequest<UpdateContactRequestPayload>(updateConversationContactInfoDef);
+  public updateConversationContactInfo = this.getRequest<UpdateConversationContactInfoRequestPayload>(
+    updateConversationContactInfoDef
+  );
 
   public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
 
-  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, ContactInfo>(getContactDetailsDef);
+  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload>(getContactDetailsDef);
 
   public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
 

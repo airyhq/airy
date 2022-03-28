@@ -14,11 +14,11 @@ export const getContactDetailsAction = createAction(CONTACT_INFO, (conversationI
 
 export const updateContactDetailsAction = createAction(
   CONTACT_UPDATE,
-  (conversationId: string, updatedContactDetails: UpdateContactDetailsRequestPayload) => ({
+  (conversationId: string, updatedContact: UpdateContactDetailsRequestPayload) => ({
     conversationId,
-    updatedContactDetails,
+    updatedContact,
   })
-)<{conversationId: string; updatedContactDetails: UpdateContactDetailsRequestPayload}>();
+)<{conversationId: string; updatedContact: UpdateContactDetailsRequestPayload}>();
 
 export const getContactDetails = (conversationId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.getContactDetails({conversationId: conversationId}).then((response: Contact) => {
@@ -28,10 +28,10 @@ export const getContactDetails = (conversationId: string) => (dispatch: Dispatch
 };
 
 export const updateContactDetails =
-  (conversationId: string, updateContactsInfoRequestPayload: UpdateContactDetailsRequestPayload) =>
+  (conversationId: string, updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) =>
   (dispatch: Dispatch<any>) => {
-    HttpClientInstance.updateContactDetails(updateContactsInfoRequestPayload).then(() => {
-      dispatch(updateContactDetailsAction(conversationId, updateContactsInfoRequestPayload));
+    HttpClientInstance.updateContactDetails(updateContactDetailsRequestPayload).then(() => {
+      dispatch(updateContactDetailsAction(conversationId, updateContactDetailsRequestPayload));
       return Promise.resolve(true);
     });
   };

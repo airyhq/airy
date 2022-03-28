@@ -18,7 +18,7 @@ export * from './UntagConversationRequestPayload';
 export * from './UpdateChannelRequestPayload';
 export * from './MetadataUpsertRequestPayload';
 export * from './SetStateConversationRequestPayload';
-export * from './UpdateContactRequestPayload';
+export * from './UpdateConversationContactInfoRequestPayload';
 export * from './UploadFileRequestPayload';
 export * from './ResendMessageRequestPayload';
 export * from './GetContactDetailsRequestPayload';

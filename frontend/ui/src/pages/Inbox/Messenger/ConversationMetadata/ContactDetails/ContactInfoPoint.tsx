@@ -124,8 +124,9 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
           <label htmlFor={infoName}>
             <input
               type={type}
-              inputMode={type}
+              id={infoName}
               name={infoName}
+              inputMode={type}
               autoComplete="off"
               autoFocus={autoFocus}
               placeholder={infoName}

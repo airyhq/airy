@@ -13,11 +13,10 @@ public class SchemaRegistryTestServer {
     private Server restServer;
     private String url;
 
-    public SchemaRegistryTestServer(int port, String zookeeperConnectionUrl, String brokersList) {
+    public SchemaRegistryTestServer(int port, String brokersList) {
         prop = new Properties();
         prop.put(SchemaRegistryConfig.KAFKASTORE_SECURITY_PROTOCOL_CONFIG, SecurityProtocol.PLAINTEXT.name);
         prop.put(SchemaRegistryConfig.LISTENERS_CONFIG, "http://localhost:" + port);
-        prop.put(SchemaRegistryConfig.KAFKASTORE_CONNECTION_URL_CONFIG, zookeeperConnectionUrl);
         prop.put(SchemaRegistryConfig.KAFKASTORE_BOOTSTRAP_SERVERS_CONFIG, brokersList);
         prop.put(SchemaRegistryConfig.KAFKASTORE_TOPIC_CONFIG, "_schemas");
         prop.put(SchemaRegistryConfig.SCHEMA_COMPATIBILITY_CONFIG, CompatibilityLevel.NONE.name);

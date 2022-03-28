@@ -16,8 +16,6 @@ public class KafkaTestServer implements AutoCloseable {
 
     private KafkaConfig brokerConfig;
 
-    private ZookeeperTestServer zookeeperTestServer;
-
     private boolean isManagingZookeeper = true;
 
     private final Properties overrideBrokerProperties = new Properties();
@@ -32,14 +30,8 @@ public class KafkaTestServer implements AutoCloseable {
         this.overrideBrokerProperties.putAll(overrideBrokerProperties);
     }
 
-    KafkaTestServer(Properties overrideBrokerProperties, ZookeeperTestServer zookeeperTestServer) {
+    KafkaTestServer(Properties overrideBrokerProperties) {
         this(overrideBrokerProperties);
-
-        if (zookeeperTestServer != null) {
-            isManagingZookeeper = false;
-        }
-
-        this.zookeeperTestServer = zookeeperTestServer;
     }
 
     public String getKafkaConnectString() {
@@ -54,21 +46,11 @@ public class KafkaTestServer implements AutoCloseable {
     }
 
     public void start() {
-        if (zookeeperTestServer == null) {
-            zookeeperTestServer = new ZookeeperTestServer();
-        }
-
-        if (isManagingZookeeper) {
-            zookeeperTestServer.restart();
-        } else {
-            zookeeperTestServer.start();
-        }
 
         if (broker == null) {
             final Properties brokerProperties = new Properties();
             brokerProperties.putAll(overrideBrokerProperties);
 
-            brokerProperties.setProperty("zookeeper.connect", zookeeperTestServer.getConnectString());
 
             if (brokerProperties.getProperty("log.dir") == null) {
                 brokerProperties.setProperty("log.dir", FileHelper.createTempDirectory().getAbsolutePath());
@@ -77,7 +59,6 @@ public class KafkaTestServer implements AutoCloseable {
             brokerProperties.setProperty("host.name", getConfiguredHostname());
 
             brokerProperties.setProperty("auto.create.topics.enable", "true");
-            brokerProperties.setProperty("zookeeper.session.timeout.ms", "30000");
             brokerProperties.setProperty("broker.id", "1");
             brokerProperties.setProperty("auto.offset.reset", "latest");
 
@@ -116,10 +97,6 @@ public class KafkaTestServer implements AutoCloseable {
     public void close() {
         if (broker != null) {
             broker.shutdown();
-        }
-
-        if (zookeeperTestServer != null && isManagingZookeeper) {
-            zookeeperTestServer.stop();
         }
     }
 

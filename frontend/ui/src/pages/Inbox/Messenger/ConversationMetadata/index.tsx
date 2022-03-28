@@ -68,7 +68,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
 
-  const isContactsEnabled = isComponentHealthy(config, 'integration-source-api');
+  const isContactsEnabled = isComponentHealthy(config, 'api-contacts');
 
   useEffect(() => {
     setShowEditDisplayName(false);
@@ -232,16 +232,24 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
-      {!isEditing && (
-        <EditIcon
-          className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
-          onClick={editContactDetails}
-          aria-label="edit contact"
-        />
+      {isContactsEnabled && (
+        <>
+          {!isEditing ? (
+            <EditIcon
+              className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
+              onClick={editContactDetails}
+              aria-label="edit contact"
+            />
+          ) : (
+            <CancelIcon
+              className={styles.editIcon}
+              onClick={cancelContactsInfoEdit}
+              aria-label="cancel contact editing"
+            />
+          )}
+        </>
       )}
-      {isEditing && (
-        <CancelIcon className={styles.editIcon} onClick={cancelContactsInfoEdit} aria-label="cancel contact editing" />
-      )}
+
       {conversation && (
         <div className={styles.metaPanel}>
           <div className={styles.contact}>

@@ -1,0 +1,68 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 8px;
+  overflow-y: hidden;
+  margin-top: 88px;
+  z-index: $navigation;
+  width: 80px;
+  height: auto;
+  background-color: white;
+}
+
+.linkSection {
+  flex-grow: 1;
+}
+
+.align {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  text-decoration: none;
+  font-weight: 400;
+  color: var(--color-text-gray);
+
+  span {
+    @include font-s;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  svg path {
+    fill: var(--color-text-gray);
+  }
+
+  &:hover {
+    svg path {
+      fill: var(--color-airy-blue);
+    }
+  }
+}
+
+.linkExternal {
+  @extend .link;
+  svg {
+    margin-left: 15px;
+  }
+}
+
+.link.active {
+  color: var(--color-airy-blue);
+
+  svg path {
+    fill: var(--color-airy-blue);
+  }
+}

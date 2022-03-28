@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {getContactsInfo, updateContactsInfo} from '../../../../../actions';
+import {getContactDetails, updateContactDetails} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
-import {UpdateContactInfoRequestPayload} from 'httpclient/src';
-import {ContactInfo} from 'model';
+import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
+import {Contact} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
 import {Button} from 'components';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
-  getContactsInfo,
-  updateContactsInfo,
+  getContactDetails,
+  updateContactDetails,
 };
 
 const mapStateToProps = (state: StateModel) => {
@@ -34,11 +34,11 @@ type ContactDetailsProps = {
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
     conversationId,
-    getContactsInfo,
+    getContactDetails,
+    updateContactDetails,
     getUpdatedInfo,
     contacts,
     isEditing,
-    updateContactsInfo,
     editingCanceled,
     getIsExpanded,
   } = props;
@@ -61,7 +61,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
-    getContactsInfo(conversationId);
+    getContactDetails(conversationId);
     setExpanded(false);
   }, [conversationId]);
 
@@ -92,14 +92,14 @@ const ContactDetails = (props: ContactDetailsProps) => {
     if (organization === 'company name') setOrganization('');
   };
 
-  const isExistingContact = (contactInfo: UpdateContactInfoRequestPayload | ContactInfo) => {
-    const phone = contactInfo?.via?.phone;
-    const title = contactInfo?.title;
+  const isExistingContact = (contact: UpdateContactDetailsRequestPayload | Contact) => {
+    const phone = contact?.via?.phone;
+    const title = contact?.title;
     return phone || title;
   };
 
-  const updateContactType = (contactInfo: UpdateContactInfoRequestPayload | ContactInfo) => {
-    if (isExistingContact(contactInfo)) {
+  const updateContactType = (contact: UpdateContactDetailsRequestPayload | Contact) => {
+    if (isExistingContact(contact)) {
       setExistingContactCollapsed(true);
       setNewContactCollapsed(false);
     } else {
@@ -128,7 +128,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
       city,
       organization
     );
-    updateContactsInfo(conversationId, {...infoDetailsPayload});
+    updateContactDetails(conversationId, {...infoDetailsPayload});
     updateContactType(infoDetailsPayload);
     getUpdatedInfo();
     fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);

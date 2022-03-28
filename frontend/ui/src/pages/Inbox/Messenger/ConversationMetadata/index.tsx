@@ -3,8 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions';
-import {addTagToConversation, removeTagFromConversation} from '../../../../actions';
-import {updateContact, updateContactsInfo} from '../../../../actions';
+import {addTagToConversation, removeTagFromConversation, updateConversationContactInfo} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -43,14 +42,21 @@ const mapDispatchToProps = {
   listTags,
   addTagToConversation,
   removeTagFromConversation,
-  updateContact,
-  updateContactsInfo,
+  updateConversationContactInfo,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {config, tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
+  const {
+    config,
+    tags,
+    createTag,
+    listTags,
+    addTagToConversation,
+    removeTagFromConversation,
+    updateConversationContactInfo,
+  } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -131,7 +137,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const saveEditDisplayName = () => {
-    updateContact(conversation.id, displayName);
+    updateConversationContactInfo(conversation.id, displayName);
     setShowEditDisplayName(!saveEditDisplayName);
   };
 

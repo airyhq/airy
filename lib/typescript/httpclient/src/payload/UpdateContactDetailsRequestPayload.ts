@@ -1,4 +1,4 @@
-export interface UpdateContactInfoRequestPayload {
+export interface UpdateContactDetailsRequestPayload {
   id: string;
   displayName?: string;
   title?: string;

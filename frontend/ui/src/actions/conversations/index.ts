@@ -58,7 +58,7 @@ export const setStateConversationAction = createAction(
   (conversationId: string, state: string) => ({conversationId, state})
 )<{conversationId: string; state: string}>();
 
-export const updateContactAction = createAction(
+export const updateConversationContactInfoAction = createAction(
   CONVERSATION_UPDATE_CONTACT,
   (conversationId: string, displayName: string) => ({
     conversationId,
@@ -147,8 +147,9 @@ export const removeTagFromConversation = (conversationId: string, tagId: string)
   );
 };
 
-export const updateContact = (conversationId: string, displayName: string) => (dispatch: Dispatch<any>) => {
-  HttpClientInstance.updateContact({conversationId, displayName}).then(() =>
-    dispatch(updateContactAction(conversationId, displayName))
-  );
-};
+export const updateConversationContactInfo =
+  (conversationId: string, displayName: string) => (dispatch: Dispatch<any>) => {
+    HttpClientInstance.updateConversationContactInfo({conversationId, displayName}).then(() =>
+      dispatch(updateConversationContactInfoAction(conversationId, displayName))
+    );
+  };

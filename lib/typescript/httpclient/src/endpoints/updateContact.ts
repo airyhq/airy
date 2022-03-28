@@ -1,6 +1,6 @@
 import {UpdateContactRequestPayload} from '../payload';
 
-export const updateContactDef = {
+export const updateConversationContactInfoDef = {
   endpoint: 'conversations.update-contact',
   mapRequest: (request: UpdateContactRequestPayload) => ({
     conversation_id: request.conversationId,

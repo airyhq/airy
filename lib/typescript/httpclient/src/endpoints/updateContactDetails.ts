@@ -1,8 +1,8 @@
-import {UpdateContactInfoRequestPayload} from '../payload';
+import {UpdateContactDetailsRequestPayload} from '../payload';
 
-export const updateContactInfoDef = {
+export const updateContactDetailsDef = {
   endpoint: 'contacts.update',
-  mapRequest: (request: UpdateContactInfoRequestPayload) => ({
+  mapRequest: (request: UpdateContactDetailsRequestPayload) => ({
     ...request,
     display_name: request?.displayName,
     organization_name: request?.organizationName,

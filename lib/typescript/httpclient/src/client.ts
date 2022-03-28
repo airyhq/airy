@@ -22,8 +22,8 @@ import {
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
-  GetContactInfoRequestPayload,
-  UpdateContactInfoRequestPayload,
+  GetContactDetailsRequestPayload,
+  UpdateContactDetailsRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -51,11 +51,11 @@ import {
   listTemplatesDef,
   metadataUpsertDef,
   setStateConversationDef,
-  updateContactDef,
+  updateConversationContactInfoDef,
   uploadFileDef,
   resendMessageDef,
-  getContactInfoDef,
-  updateContactInfoDef,
+  getContactDetailsDef,
+  updateContactDetailsDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -216,13 +216,13 @@ export class HttpClient {
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
-  public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
+  public updateConversationContactInfo = this.getRequest<UpdateContactRequestPayload>(updateConversationContactInfoDef);
 
   public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
 
-  public getContactInfo = this.getRequest<GetContactInfoRequestPayload, ContactInfo>(getContactInfoDef);
+  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, ContactInfo>(getContactDetailsDef);
 
-  public updateContactInfo = this.getRequest<UpdateContactInfoRequestPayload>(updateContactInfoDef);
+  public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

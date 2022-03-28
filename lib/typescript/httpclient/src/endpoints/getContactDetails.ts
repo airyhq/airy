@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-export const getContactInfoDef = {
+export const getContactDetailsDef = {
   endpoint: 'contacts.info',
   mapRequest: request => ({
     conversation_id: request.conversationId,

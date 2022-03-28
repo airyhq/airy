@@ -23,7 +23,7 @@ export * from './updateChannel';
 export * from './listTemplates';
 export * from './metadataUpsert';
 export * from './setStateConversation';
-export * from './updateContact';
+export * from './updateConversationContactInfo';
 export * from './uploadFile';
 export * from './resendMessage';
 export * from './getContactDetails';

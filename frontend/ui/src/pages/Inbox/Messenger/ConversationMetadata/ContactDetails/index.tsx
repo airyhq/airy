@@ -54,10 +54,10 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [expanded, setExpanded] = useState(false);
   const totalInfoPoints = 6;
-  const visibleInfoPointsnewContact = 1;
+  const visibleInfoPointsNewContact = 1;
   const visibleInfoPointsExistingContact = 3;
   const remainingInfoPoints = newContactCollapsed
-    ? totalInfoPoints - visibleInfoPointsnewContact
+    ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
@@ -92,13 +92,13 @@ const ContactDetails = (props: ContactDetailsProps) => {
     if (organization === 'company name') setOrganization('');
   };
 
-  const isExistingContact = (contact: UpdateContactDetailsRequestPayload | Contact) => {
+  const isExistingContact = (contact: Contact | UpdateContactDetailsRequestPayload) => {
     const phone = contact?.via?.phone;
     const title = contact?.title;
     return phone || title;
   };
 
-  const updateContactType = (contact: UpdateContactDetailsRequestPayload | Contact) => {
+  const updateContactType = (contact: Contact | UpdateContactDetailsRequestPayload) => {
     if (isExistingContact(contact)) {
       setExistingContactCollapsed(true);
       setNewContactCollapsed(false);

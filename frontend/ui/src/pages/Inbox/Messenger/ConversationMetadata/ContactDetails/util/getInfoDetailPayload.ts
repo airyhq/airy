@@ -1,4 +1,4 @@
-import {UpdateContactInfoRequestPayload} from 'httpclient/src';
+import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
 
 export const getInfoDetailsPayload = (
   contactId: string,
@@ -9,33 +9,33 @@ export const getInfoDetailsPayload = (
   city: string,
   organization: string
 ) => {
-  const infoDetails: UpdateContactInfoRequestPayload = {
+  const updatedContact: UpdateContactDetailsRequestPayload = {
     id: contactId,
   };
 
   if (email !== 'email') {
-    infoDetails.via = {};
-    infoDetails.via.email = email;
+    updatedContact.via = {};
+    updatedContact.via.email = email;
   }
 
   if (phone !== 'phone') {
-    if (!infoDetails.via) infoDetails.via = {};
-    infoDetails.via.phone = phone;
+    if (!updatedContact.via) updatedContact.via = {};
+    updatedContact.via.phone = phone;
   }
 
-  if (title !== 'title') infoDetails.title = title;
+  if (title !== 'title') updatedContact.title = title;
 
   if (address !== 'address') {
-    infoDetails.address = {};
-    infoDetails.address.addressLine1 = address;
+    updatedContact.address = {};
+    updatedContact.address.addressLine1 = address;
   }
 
   if (city !== 'city') {
-    if (!infoDetails.address) infoDetails.address = {};
-    infoDetails.address.city = city;
+    if (!updatedContact.address) updatedContact.address = {};
+    updatedContact.address.city = city;
   }
 
-  if (organization !== 'company name') infoDetails.organizationName = organization;
+  if (organization !== 'company name') updatedContact.organizationName = organization;
 
-  return infoDetails;
+  return updatedContact;
 };

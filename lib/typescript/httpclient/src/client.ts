@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template, Contact} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -222,7 +222,7 @@ export class HttpClient {
 
   public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
 
-  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload>(getContactDetailsDef);
+  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, Contact>(getContactDetailsDef);
 
   public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
 

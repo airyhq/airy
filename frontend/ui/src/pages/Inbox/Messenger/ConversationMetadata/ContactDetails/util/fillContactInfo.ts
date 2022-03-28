@@ -1,8 +1,8 @@
-import {UpdateContactInfoRequestPayload} from 'httpclient/src';
-import {ContactInfo} from 'model';
+import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
+import {Contact} from 'model';
 
 export const fillContactInfo = (
-  conversationContact: ContactInfo | UpdateContactInfoRequestPayload,
+  contact: Contact | UpdateContactDetailsRequestPayload,
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   setPhone: React.Dispatch<React.SetStateAction<string>>,
   setTitle: React.Dispatch<React.SetStateAction<string>>,
@@ -10,12 +10,12 @@ export const fillContactInfo = (
   setCity: React.Dispatch<React.SetStateAction<string>>,
   setOrganization: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  const email = conversationContact?.via?.email;
-  const phone = conversationContact?.via?.phone;
-  const title = conversationContact?.title;
-  const address = conversationContact?.address?.addressLine1;
-  const city = conversationContact?.address?.city;
-  const organizationName = conversationContact?.organizationName;
+  const email = contact?.via?.email;
+  const phone = contact?.via?.phone;
+  const title = contact?.title;
+  const address = contact?.address?.addressLine1;
+  const city = contact?.address?.city;
+  const organizationName = contact?.organizationName;
 
   email ? setEmail(email) : setEmail('email');
   phone ? setPhone(phone) : setPhone('phone');

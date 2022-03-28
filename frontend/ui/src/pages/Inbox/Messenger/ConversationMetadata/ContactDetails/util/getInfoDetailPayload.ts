@@ -13,29 +13,29 @@ export const getInfoDetailsPayload = (
     id: contactId,
   };
 
-  if (email && email !== 'email') {
+  if (email !== 'email') {
     infoDetails.via = {};
     infoDetails.via.email = email;
   }
 
-  if (phone && phone !== 'phone') {
+  if (phone !== 'phone') {
     if (!infoDetails.via) infoDetails.via = {};
     infoDetails.via.phone = phone;
   }
 
-  if (title && title !== 'title') infoDetails.title = title;
+  if (title !== 'title') infoDetails.title = title;
 
-  if (address && address !== 'address') {
+  if (address !== 'address') {
     infoDetails.address = {};
     infoDetails.address.addressLine1 = address;
   }
 
-  if (city && city !== 'city') {
+  if (city !== 'city') {
     if (!infoDetails.address) infoDetails.address = {};
     infoDetails.address.city = city;
   }
 
-  if (organization && organization !== 'company name') infoDetails.organizationName = organization;
+  if (organization !== 'company name') infoDetails.organizationName = organization;
 
   return infoDetails;
 };

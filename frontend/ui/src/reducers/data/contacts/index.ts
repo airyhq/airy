@@ -1,5 +1,5 @@
 import {ActionType, getType} from 'typesafe-actions';
-import {ContactInfo} from 'model';
+import {Contact} from 'model';
 import * as actions from '../../../actions/contacts';
 
 type Action = ActionType<typeof actions>;
@@ -10,7 +10,7 @@ const initialState = {
 
 export type Contacts = {
   all: {
-    [conversationId: string]: ContactInfo;
+    [conversationId: string]: Contact;
   };
 };
 

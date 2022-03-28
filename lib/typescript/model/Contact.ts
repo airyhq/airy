@@ -1,11 +1,6 @@
 import {Source} from './Source';
 
 export interface Contact {
-  displayName: string;
-  avatarUrl?: string;
-}
-
-export interface ContactInfo {
   id: string;
   displayName: string;
   avatarUrl: string;

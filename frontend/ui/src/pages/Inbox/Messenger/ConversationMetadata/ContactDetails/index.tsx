@@ -23,21 +23,21 @@ const mapStateToProps = (state: StateModel) => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ContactInfoProps = {
+type ContactDetailsProps = {
   conversationId: string;
-  editingOn: boolean;
+  isEditing: boolean;
   getUpdatedInfo: () => void;
   editingCanceled: boolean;
   getIsExpanded: (isExpanded: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
-const ContactDetails = (props: ContactInfoProps) => {
+const ContactDetails = (props: ContactDetailsProps) => {
   const {
     conversationId,
     getContactsInfo,
     getUpdatedInfo,
     contacts,
-    editingOn,
+    isEditing,
     updateContactsInfo,
     editingCanceled,
     getIsExpanded,
@@ -73,8 +73,8 @@ const ContactDetails = (props: ContactInfoProps) => {
   }, [contacts, conversationId]);
 
   useEffect(() => {
-    if (editingOn) removeDefaultTextWhenEditing();
-  }, [editingOn]);
+    if (isEditing) removeDefaultTextWhenEditing();
+  }, [isEditing]);
 
   useEffect(() => {
     if (editingCanceled) {
@@ -140,19 +140,19 @@ const ContactDetails = (props: ContactInfoProps) => {
     <form autoComplete="off" className={styles.container}>
       <fieldset>
         <legend>Contact</legend>
-        <ContactInfoPoint email={email} editingOn={editingOn} setEmail={setEmail} infoName="email" />
+        <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName="email" />
 
-        {(!newContactCollapsed || editingOn) && (
+        {(!newContactCollapsed || isEditing) && (
           <>
-            <ContactInfoPoint editingOn={editingOn} phone={phone} setPhone={setPhone} infoName="phone" />
-            <ContactInfoPoint editingOn={editingOn} title={title} setTitle={setTitle} infoName="title" />
+            <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName="phone" />
+            <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName="title" />
 
-            {(expanded || editingOn) && (
+            {(expanded || isEditing) && (
               <>
-                <ContactInfoPoint editingOn={editingOn} address={address} setAddress={setAddress} infoName="address" />
-                <ContactInfoPoint editingOn={editingOn} city={city} setCity={setCity} infoName="city" />
+                <ContactInfoPoint isEditing={isEditing} address={address} setAddress={setAddress} infoName="address" />
+                <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName="city" />
                 <ContactInfoPoint
-                  editingOn={editingOn}
+                  isEditing={isEditing}
                   organization={organization}
                   setOrganization={setOrganization}
                   infoName="organization"
@@ -163,7 +163,7 @@ const ContactDetails = (props: ContactInfoProps) => {
         )}
       </fieldset>
 
-      {editingOn ? (
+      {isEditing ? (
         <div className={styles.saveButtonContainer}>
           <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
             Save

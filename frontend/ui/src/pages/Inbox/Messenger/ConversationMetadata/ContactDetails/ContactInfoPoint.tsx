@@ -7,7 +7,7 @@ import {ReactComponent as Suitcase} from 'assets/images/icons/suitcase.svg';
 import styles from './index.module.scss';
 
 interface ContactInfoPointProps {
-  editingOn: boolean;
+  isEditing: boolean;
   infoName: string;
   email?: string;
   setEmail?: React.Dispatch<React.SetStateAction<string>>;
@@ -25,7 +25,7 @@ interface ContactInfoPointProps {
 
 export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const {
-    editingOn,
+    isEditing,
     infoName,
     email,
     setEmail,
@@ -115,10 +115,10 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
 
   return (
     <>
-      <div className={`${styles.infoPointContainer} ${editingOn ? styles.borderBlue : ''}`}>
+      <div className={`${styles.infoPointContainer} ${isEditing ? styles.borderBlue : ''}`}>
         <Icon />
         <span className={styles.detailName}>{capitalizedInfoName}:</span>
-        {!editingOn ? (
+        {!isEditing ? (
           <span className={styles.infoName}>{infoValue}</span>
         ) : (
           <label htmlFor={infoName}>

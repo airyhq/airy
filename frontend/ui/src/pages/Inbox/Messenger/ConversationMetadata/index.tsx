@@ -8,7 +8,7 @@ import {updateContact, updateContactsInfo} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
-import {StateModel} from '../../../../reducers';
+import {StateModel, isComponentHealthy} from '../../../../reducers';
 import {useAnimation} from '../../../../assets/animations';
 import ContactDetails from './ContactDetails';
 
@@ -35,6 +35,7 @@ import {useCurrentConversation} from '../../../../selectors/conversations';
 
 const mapStateToProps = (state: StateModel) => ({
   tags: state.data.tags.all,
+  config: state.data.config,
 });
 
 const mapDispatchToProps = {
@@ -49,7 +50,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
+  const {config, tags, createTag, listTags, addTagToConversation, removeTagFromConversation, updateContact} = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -57,9 +58,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
   const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
   const [fade, setFade] = useState(true);
-  const [editingOn, setEditingOn] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
+
+  const isContactsEnabled = isComponentHealthy(config, 'integration-source-api');
 
   useEffect(() => {
     setShowEditDisplayName(false);
@@ -142,17 +145,17 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const getUpdatedInfo = () => {
-    setEditingOn(false);
+    setIsEditing(false);
   };
 
   const cancelContactsInfoEdit = () => {
     setEditingCanceled(true);
-    setEditingOn(false);
+    setIsEditing(false);
   };
 
   const editContactDetails = () => {
     setEditingCanceled(false);
-    setEditingOn(true);
+    setIsEditing(true);
   };
 
   const getIsExpanded = (isExpanded: boolean) => {
@@ -223,14 +226,14 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
-      {!editingOn && (
+      {!isEditing && (
         <EditIcon
           className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
           onClick={editContactDetails}
           aria-label="edit contact"
         />
       )}
-      {editingOn && (
+      {isEditing && (
         <CancelIcon className={styles.editIcon} onClick={cancelContactsInfoEdit} aria-label="cancel contact editing" />
       )}
       {conversation && (
@@ -284,13 +287,15 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 </>
               )}
             </div>
-            <ContactDetails
-              conversationId={conversation.id}
-              editingOn={editingOn}
-              getUpdatedInfo={getUpdatedInfo}
-              editingCanceled={editingCanceled}
-              getIsExpanded={getIsExpanded}
-            />
+            {isContactsEnabled && (
+              <ContactDetails
+                conversationId={conversation.id}
+                isEditing={isEditing}
+                getUpdatedInfo={getUpdatedInfo}
+                editingCanceled={editingCanceled}
+                getIsExpanded={getIsExpanded}
+              />
+            )}
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

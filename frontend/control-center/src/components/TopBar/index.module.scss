@@ -17,11 +17,18 @@
 }
 
 .airyLogo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin: 20px 24px;
+  h1 {
+    @include font-base;
+    margin-left: 7px;
+  }
 }
 
 .airyLogoSvg {
-  width: 86px;
+  width: 32px;
   height: 32px;
 }
 

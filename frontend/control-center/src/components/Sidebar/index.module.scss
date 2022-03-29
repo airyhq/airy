@@ -5,10 +5,11 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border-top-right-radius: 8px;
   overflow-y: hidden;
   margin-top: 88px;
-  width: 80px;
+  width: 175px;
   height: 100%;
   background-color: white;
   position: fixed;
@@ -23,21 +24,27 @@
   justify-content: center;
   margin-top: 24px;
   margin-bottom: 32px;
+  width: 164px;
+  height: 42px;
+  background-color: var(--color-blue-white);
+  border-radius: 10px;
 }
 
 .link {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   transition: 0.5s;
   text-decoration: none;
   font-weight: 400;
+  width: 100%;
   color: var(--color-text-gray);
+  margin-left: 8px;
 
   span {
     @include font-s;
-    margin: 0;
+    margin-left: 11px;
     padding: 0;
     text-align: center;
   }

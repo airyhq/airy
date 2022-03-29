@@ -83,7 +83,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regPhone = new RegExp('^[0-9]+$|^$|^$');
+    const regPhone = new RegExp('[^a-zA-Z]+$|^$');
 
     if (infoName === 'phone' && !regPhone.test(e.target.value)) {
       return;

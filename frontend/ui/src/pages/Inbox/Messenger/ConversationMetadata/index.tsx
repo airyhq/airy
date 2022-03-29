@@ -242,11 +242,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
               onClick={editContactDetails}
               data-cy={cyEditContactIcon}
             >
-              <EditIcon aria-label="edit contact" alt="edit contact" />
+              <EditIcon aria-label="edit contact" />
             </button>
           ) : (
             <button className={styles.editIcon} onClick={cancelContactsInfoEdit} data-cy={cyCancelEditContactIcon}>
-              <CancelIcon aria-label="cancel contact edit" alt="cancel contact edit" />
+              <CancelIcon aria-label="cancel contact edit" />
             </button>
           )}
         </>

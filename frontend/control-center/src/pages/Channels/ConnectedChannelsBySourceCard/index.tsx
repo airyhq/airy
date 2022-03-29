@@ -34,7 +34,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
           <div className={styles.connectedChannel} data-cy={sourceInfo.dataCyChannelList}>
             {channels.slice(0, sourceInfo.channelsToShow).map((channel: Channel) => {
               return (
-                <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                <li key={channel.id} className={styles.channelListEntry}>
                   <button className={styles.connectedChannelData}>
                     <ChannelAvatar channel={channel} style={{width: '20px', height: '20px', marginRight: '4px'}} />
                     <div className={styles.connectedChannelName}>

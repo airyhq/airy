@@ -1,0 +1,51 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
+
+.connectorCard {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  width: 230px;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 10px;
+  background-color: var(--color-background-blue);
+  margin-bottom: 28px;
+  margin-right: 36px;
+  &:hover {
+    cursor: pointer;
+    border: 2px solid var(--color-airy-blue);
+  }
+}
+
+.connectorLogo {
+  margin-left: 16px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.connectorLogoInstagram {
+  margin-left: 16px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.connectorTitle {
+  height: 24px;
+  width: 190px;
+  color: var(--color-text-contrast);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 24px;
+}

@@ -6,7 +6,7 @@ import org.rocksdb.Options;
 
 import java.util.Map;
 
-public class CustomRocksDbConfig implements RocksDBConfigSetter {
+public abstract class CustomRocksDbConfig implements RocksDBConfigSetter {
 
     @Override
     public void setConfig(String storeName, Options options, Map<String, Object> configs) {

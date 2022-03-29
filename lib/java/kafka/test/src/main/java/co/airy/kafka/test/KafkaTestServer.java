@@ -16,22 +16,14 @@ public class KafkaTestServer implements AutoCloseable {
 
     private KafkaConfig brokerConfig;
 
-    private boolean isManagingZookeeper = true;
-
     private final Properties overrideBrokerProperties = new Properties();
 
     private final List<String> listenersConnectString = new ArrayList<>();
 
-    private KafkaTestServer(Properties overrideBrokerProperties) throws IllegalArgumentException {
+    KafkaTestServer(Properties overrideBrokerProperties) throws IllegalArgumentException {
         if (overrideBrokerProperties == null) {
             throw new IllegalArgumentException("Cannot pass null overrideBrokerProperties argument.");
         }
-
-        this.overrideBrokerProperties.putAll(overrideBrokerProperties);
-    }
-
-    KafkaTestServer(Properties overrideBrokerProperties) {
-        this(overrideBrokerProperties);
     }
 
     public String getKafkaConnectString() {
@@ -50,6 +42,7 @@ public class KafkaTestServer implements AutoCloseable {
         if (broker == null) {
             final Properties brokerProperties = new Properties();
             brokerProperties.putAll(overrideBrokerProperties);
+            brokerProperties.setProperty("zookeeper.connect", "zk");
 
 
             if (brokerProperties.getProperty("log.dir") == null) {

@@ -7,17 +7,13 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.Serializer;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StoreQueryParameters;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.errors.InvalidStateStoreException;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.errors.StreamsException;
 import org.apache.kafka.streams.processor.StateRestoreListener;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.apache.kafka.streams.state.StreamsMetadata;
 import org.slf4j.Logger;
 
 import java.net.ServerSocket;
@@ -283,8 +279,8 @@ public class KafkaStreamsWrapper {
         return streams.state();
     }
 
-    <K> StreamsMetadata metadataForKey(String store, K key, Serializer<K> serializer) {
-        return streams.metadataForKey(store, key, serializer);
+    <K> KeyQueryMetadata keyQueryMetadata(String store, K key, Serializer<K> serializer) {
+        return streams.queryMetadataForKey(store, key, serializer);
     }
 
     private static final class LoggingStateRestoreListener implements StateRestoreListener {

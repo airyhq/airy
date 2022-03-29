@@ -27,11 +27,6 @@ public class SharedKafkaTestResource implements BeforeAllCallback, AfterAllCallb
         kafkaTestCluster.createTopic(topicName, partitions, replicationFactor);
     }
 
-    public String getZookeeperConnectString() {
-        validateState(true, "Cannot access Zookeeper before service has been started.");
-        return kafkaTestCluster.getZookeeperConnectString();
-    }
-
     public String getKafkaConnectString() {
         validateState(true, "Cannot access Kafka before service has been started.");
         return kafkaTestCluster.getKafkaConnectString();

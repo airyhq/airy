@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class KafkaTestCluster implements AutoCloseable {
     private final Clock clock = Clock.systemUTC();
 
-    private final ZookeeperTestServer zkTestServer = new ZookeeperTestServer();
 
     private final int numberOfBrokers;
 
@@ -39,7 +38,6 @@ public class KafkaTestCluster implements AutoCloseable {
     }
 
     public void start() throws Exception {
-        zkTestServer.start();
 
         if (brokers.isEmpty()) {
             for (int brokerId = 1; brokerId <= numberOfBrokers; brokerId++) {
@@ -49,7 +47,7 @@ public class KafkaTestCluster implements AutoCloseable {
 
                 brokerProperties.put("broker.id", String.valueOf(brokerId));
 
-                brokers.add(new KafkaTestServer(brokerProperties, zkTestServer));
+                brokers.add(new KafkaTestServer(brokerProperties));
             }
         }
 
@@ -69,16 +67,10 @@ public class KafkaTestCluster implements AutoCloseable {
         return brokers.stream().map(KafkaTestServer::getKafkaConnectString).collect(Collectors.joining(","));
     }
 
-    public String getZookeeperConnectString() {
-        return zkTestServer.getConnectString();
-    }
-
     public void stop() {
         for (KafkaTestServer kafkaBroker : brokers) {
             kafkaBroker.stop();
         }
-
-        zkTestServer.stop();
     }
 
     @Override

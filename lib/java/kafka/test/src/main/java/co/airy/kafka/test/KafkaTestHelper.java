@@ -38,7 +38,7 @@ public class KafkaTestHelper {
 
     public KafkaTestHelper(SharedKafkaTestResource sharedKafkaTestResource, Topic... topics) {
         this.topics = Arrays.asList(topics);
-        this.schemaRegistryTestServer = new SchemaRegistryTestServer(SocketUtils.findAvailableTcpPort(), sharedKafkaTestResource.getZookeeperConnectString(), sharedKafkaTestResource.getKafkaConnectString());
+        this.schemaRegistryTestServer = new SchemaRegistryTestServer(SocketUtils.findAvailableTcpPort(), sharedKafkaTestResource.getKafkaConnectString());
         this.sharedKafkaTestResource = sharedKafkaTestResource;
     }
 

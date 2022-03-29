@@ -1,7 +1,7 @@
 package co.airy.kafka.streams;
 
 import org.apache.kafka.common.serialization.Serializer;
-import org.apache.kafka.streams.state.StreamsMetadata;
+import org.apache.kafka.streams.KeyQueryMetadata;
 
 public class MetadataService {
     private final KafkaStreamsWrapper streams;
@@ -15,7 +15,7 @@ public class MetadataService {
                                                             final Serializer<K> serializer) {
         // Get metadata for the instances of this Kafka KafkaStreamsWrapper application hosting the store and
         // potentially the value for key
-        final StreamsMetadata metadata = streams.metadataForKey(store, key, serializer);
+        final KeyQueryMetadata metadata = streams.keyQueryMetadata(store, key, serializer);
         if (metadata == null) {
             throw new StoreNotFoundException(store);
         }
@@ -24,11 +24,11 @@ public class MetadataService {
             throw new StoreNotReadyException(store);
         }
 
-        return new HostStoreInfo(metadata.host(), metadata.port());
+        return new HostStoreInfo(metadata.activeHost().host(), metadata.activeHost().port());
     }
 
-    private boolean notReady(final StreamsMetadata metadata) {
-        return StreamsMetadata.NOT_AVAILABLE.host().equals(metadata.host()) && StreamsMetadata.NOT_AVAILABLE.port() == metadata.port();
+    private boolean notReady(final KeyQueryMetadata metadata) {
+        return KeyQueryMetadata.NOT_AVAILABLE.activeHost().equals(metadata.activeHost()) && KeyQueryMetadata.NOT_AVAILABLE.activeHost().port() == metadata.activeHost().port();
     }
 }
 

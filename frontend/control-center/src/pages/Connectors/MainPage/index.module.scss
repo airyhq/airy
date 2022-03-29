@@ -1,0 +1,33 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.connectorsWrapper {
+  background: white;
+  border-radius: 10px;
+  padding: 32px;
+  margin: 88px 1.5em 0 191px;
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.connectorsHeadline {
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);
+  margin-bottom: 14px;
+}
+
+.connectorsHeadlineText {
+  @include font-xl;
+  font-weight: 900;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

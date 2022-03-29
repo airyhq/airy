@@ -1,10 +1,14 @@
-import {Contact} from './Contact';
 import {Message} from './Message';
 import {Metadata} from './Metadata';
 import {Channel} from './Channel';
 
+export interface ContactInfo {
+  displayName: string;
+  avatarUrl?: string;
+}
+
 export type ConversationMetadata = Metadata & {
-  contact: Contact;
+  contact: ContactInfo;
   unreadCount: number;
   tags: {
     [tagId: string]: string;

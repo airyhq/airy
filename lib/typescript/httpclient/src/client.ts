@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template, Contact} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -18,10 +18,12 @@ import {
   PaginatedResponse,
   MetadataUpsertRequestPayload,
   SetStateConversationRequestPayload,
-  UpdateContactRequestPayload,
+  UpdateConversationContactInfoRequestPayload,
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
   ResendMessageRequestPayload,
+  GetContactDetailsRequestPayload,
+  UpdateContactDetailsRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -49,9 +51,11 @@ import {
   listTemplatesDef,
   metadataUpsertDef,
   setStateConversationDef,
-  updateContactDef,
+  updateConversationContactInfoDef,
   uploadFileDef,
   resendMessageDef,
+  getContactDetailsDef,
+  updateContactDetailsDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -212,9 +216,15 @@ export class HttpClient {
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
-  public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
+  public updateConversationContactInfo = this.getRequest<UpdateConversationContactInfoRequestPayload>(
+    updateConversationContactInfoDef
+  );
 
   public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
+
+  public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, Contact>(getContactDetailsDef);
+
+  public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

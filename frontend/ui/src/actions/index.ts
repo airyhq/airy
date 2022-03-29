@@ -4,3 +4,4 @@ export * from './conversations';
 export * from './conversationsFilter';
 export * from './tags';
 export * from './templates';
+export * from './contacts';

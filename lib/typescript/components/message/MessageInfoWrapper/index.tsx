@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Avatar} from '../Avatar';
-import {Contact, DeliveryState} from 'model';
+import {ContactInfo, DeliveryState} from 'model';
 import styles from './index.module.scss';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
 
@@ -9,7 +9,7 @@ type MessageInfoWrapperProps = {
   lastInGroup?: boolean;
   isChatPlugin: boolean;
   fromContact?: boolean;
-  contact?: Contact;
+  contact?: ContactInfo;
   sentAt?: string;
   decoration?: ReactNode;
   senderName?: string;

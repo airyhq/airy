@@ -4,7 +4,7 @@ import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/logo/airyPrimaryRgb.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/logo/airyLogo.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
@@ -45,6 +45,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
         <AiryLogo className={styles.airyLogoSvg} />
+        <h1>Control Center</h1>
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>

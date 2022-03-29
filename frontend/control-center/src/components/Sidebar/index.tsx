@@ -19,7 +19,7 @@ export const Sidebar = () => {
         <div className={styles.align}>
           <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
             <PlugIcon width={'24px'} height={'24px'} />
-            <span className={styles.iconText}>Channels</span>
+            <span className={styles.iconText}>Connectors</span>
           </Link>
         </div>
       </div>

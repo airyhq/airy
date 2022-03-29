@@ -9,6 +9,7 @@ import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
 import {Button} from 'components';
 import styles from './index.module.scss';
+import {cyContactSaveButton} from 'handles';
 
 const mapDispatchToProps = {
   getContactDetails,
@@ -165,7 +166,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
       {isEditing ? (
         <div className={styles.saveButtonContainer}>
-          <Button type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
+          <Button dataCy={cyContactSaveButton} type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
             Save
           </Button>
         </div>

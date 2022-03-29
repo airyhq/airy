@@ -7,6 +7,7 @@ import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import {store} from './store';
 import './index.scss';
+import './assets/scss/reset.scss';
 
 const render = async () => {
   const App = (await import('./App')).default;

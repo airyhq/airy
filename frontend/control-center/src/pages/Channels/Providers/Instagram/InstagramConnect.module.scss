@@ -9,7 +9,7 @@
   padding-top: 88px;
   width: 100%;
   padding: 32px;
-  margin: 88px 1.5em 0 16px;
+  margin: 88px 1.5em 0 96px;
   min-height: calc(100vh - 170px);
 }
 
@@ -20,6 +20,7 @@
 }
 
 .backButton {
+  display: block;
   margin-bottom: 16px;
   cursor: pointer;
   text-decoration: none;
@@ -29,8 +30,37 @@
 }
 
 .backIcon {
+  height: 13px;
+  width: 17px;
   path {
     fill: var(--color-airy-blue);
   }
   margin-right: 8px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
+  width: 474px;
+  margin-top: 16px;
+
+  label {
+    margin-top: 24px;
+  }
+
+  input {
+    @include font-base;
+  }
+}
+
+.subtitle {
+  display: flex;
+  flex-direction: column;
+  @include font-s;
+  color: var(--color-airy-blue);
+  img {
+    width: 17px;
+    height: 13px;
+  }
 }

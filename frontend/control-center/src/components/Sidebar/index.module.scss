@@ -8,10 +8,10 @@
   border-top-right-radius: 8px;
   overflow-y: hidden;
   margin-top: 88px;
-  z-index: $navigation;
   width: 80px;
-  height: auto;
+  height: 100%;
   background-color: white;
+  position: fixed;
 }
 
 .linkSection {

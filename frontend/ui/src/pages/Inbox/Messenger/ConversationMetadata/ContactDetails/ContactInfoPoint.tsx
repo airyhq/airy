@@ -1,9 +1,9 @@
 import React from 'react';
-import {ReactComponent as Email} from 'assets/images/icons/email.svg';
-import {ReactComponent as Phone} from 'assets/images/icons/phone.svg';
-import {ReactComponent as Pencil} from 'assets/images/icons/pencil.svg';
-import {ReactComponent as Home} from 'assets/images/icons/home.svg';
-import {ReactComponent as Suitcase} from 'assets/images/icons/suitcase.svg';
+import {ReactComponent as EmailIcon} from 'assets/images/icons/email.svg';
+import {ReactComponent as PhoneIcon} from 'assets/images/icons/phone.svg';
+import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
+import {ReactComponent as HomeIcon} from 'assets/images/icons/home.svg';
+import {ReactComponent as SuitcaseIcon} from 'assets/images/icons/suitcase.svg';
 import styles from './index.module.scss';
 
 interface ContactInfoPointProps {
@@ -67,16 +67,16 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const Icon = () => {
     switch (infoName) {
       case 'email':
-        return <Email className={styles.infoIcon} />;
+        return <EmailIcon className={styles.infoIcon} />;
       case 'phone':
-        return <Phone className={styles.infoIcon} />;
+        return <PhoneIcon className={styles.infoIcon} />;
       case 'title':
-        return <Pencil className={styles.infoIcon} />;
+        return <PencilIcon className={styles.infoIcon} />;
       case 'address':
       case 'city':
-        return <Home className={styles.infoIcon} />;
+        return <HomeIcon className={styles.infoIcon} />;
       case 'organization':
-        return <Suitcase className={styles.infoIcon} />;
+        return <SuitcaseIcon className={styles.infoIcon} />;
       default:
         return null;
     }

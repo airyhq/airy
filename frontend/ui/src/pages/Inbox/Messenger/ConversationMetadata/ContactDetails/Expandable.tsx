@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
+import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
 import styles from './index.module.scss';
 
 interface ExpandableProps {
@@ -13,7 +13,7 @@ export const Expandable = (props: ExpandableProps) => {
 
   return (
     <div className={styles.expandable} onClick={toggleExpandableContent}>
-      <ArrowRight className={styles.arrowIcon} />{' '}
+      <ArrowRightIcon className={styles.arrowIcon} />{' '}
       {!collapse ? <span> See all ({infoPointsNum})</span> : <span> See less</span>}
     </div>
   );

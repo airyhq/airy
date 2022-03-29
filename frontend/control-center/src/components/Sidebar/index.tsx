@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link, matchPath, useLocation} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useMatch} from 'react-router';
 
 import {ReactComponent as PlugIcon} from 'assets/images/icons/gitMerge.svg';
 
@@ -8,9 +9,8 @@ import {CHANNELS_ROUTE} from '../../routes/routes';
 import styles from './index.module.scss';
 
 export const Sidebar = () => {
-  const location = useLocation();
   const isActive = (route: string) => {
-    return !!matchPath(location.pathname, route);
+    return useMatch(`${route}/*`);
   };
 
   return (

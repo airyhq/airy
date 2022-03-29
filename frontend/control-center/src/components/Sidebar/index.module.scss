@@ -46,6 +46,7 @@
   }
 
   &:hover {
+    color: var(--color-airy-blue);
     svg path {
       fill: var(--color-airy-blue);
     }

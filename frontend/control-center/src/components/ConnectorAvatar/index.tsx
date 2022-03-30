@@ -5,6 +5,8 @@ import {ReactComponent as SmsAvatar} from 'assets/images/icons/twilioSmsCCLogo.s
 import {ReactComponent as FacebookAvatar} from 'assets/images/icons/facebookMessengerCCLogo.svg';
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyCCLogo.svg';
 import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramCCLogo.svg';
+import {ReactComponent as TwilioAvatar} from 'assets/images/icons/twilioCCLogo.svg';
+import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberCCLogo.svg';
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
@@ -24,6 +26,27 @@ const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source
   }
 };
 
+export const getConnectorAvatar = (source: string) => {
+  switch (source) {
+    case Source.facebook:
+      return <FacebookAvatar />;
+    case Source.google:
+      return <GoogleAvatar />;
+    case Source.twilioSMS:
+      return <SmsAvatar />;
+    case Source.twilioWhatsApp:
+      return <WhatsappAvatar />;
+    case 'twilio':
+      return <TwilioAvatar />;
+    case Source.instagram:
+      return <InstagramAvatar />;
+    case Source.viber:
+      return <ViberAvatar />;
+    default:
+      return <AiryAvatar />;
+  }
+};
+
 const ConnectorAvatar = (props: ConnectorAvatarProps) => {
   const {channel, imageUrl, style} = props;
 
@@ -37,26 +60,9 @@ const ConnectorAvatar = (props: ConnectorAvatarProps) => {
     );
   };
 
-  const getConnectorAvatar = (channel: Channel) => {
-    switch (channel.source) {
-      case Source.facebook:
-        return <FacebookAvatar />;
-      case Source.google:
-        return <GoogleAvatar />;
-      case Source.twilioSMS:
-        return <SmsAvatar />;
-      case Source.twilioWhatsApp:
-        return <WhatsappAvatar />;
-      case Source.instagram:
-        return <InstagramAvatar />;
-      default:
-        return <AiryAvatar />;
-    }
-  };
-
   return (
     <div className={styles.image} style={style}>
-      {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getConnectorAvatar(channel)}
+      {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getConnectorAvatar(channel.source)}
     </div>
   );
 };

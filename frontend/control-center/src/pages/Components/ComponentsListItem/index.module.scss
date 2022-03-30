@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  align-items: center;
+  background: white;
+  height: 50px;
+  border-left: 1px solid var(--color-light-gray);
+  border-right: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-light-gray);
+
+  :first-child {
+    margin-left: 24px;
+    width: 20%;
+    svg {
+      margin-left: 36px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  :not(:first-child, :last-child) {
+    width: 35%;
+    margin-left: 24px;
+  }
+  :last-child {
+    width: 40%;
+    margin-left: 24px;
+    svg {
+      margin-left: 0px;
+      height: 20px;
+      width: 20px;
+    }
+    p {
+      margin-left: 8px;
+    }
+  }
+}
+
+.container:last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.icons {
+  height: 20px;
+  width: 20px;
+}
+
+.componentName {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

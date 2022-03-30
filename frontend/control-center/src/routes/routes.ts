@@ -7,3 +7,4 @@ export const CONNECTORS_TWILIO_SMS_ROUTE = '/connectors/twilio.sms';
 export const CONNECTORS_TWILIO_WHATSAPP_ROUTE = '/connectors/twilio.whatsapp';
 export const CONNECTORS_GOOGLE_ROUTE = '/connectors/google';
 export const CONNECTORS_INSTAGRAM_ROUTE = '/connectors/instagram';
+export const COMPONENTS_ROUTE = '/components';

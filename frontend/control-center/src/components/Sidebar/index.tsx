@@ -2,9 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
 
-import {ReactComponent as PlugIcon} from 'assets/images/icons/gitMerge.svg';
+import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
+import {ReactComponent as ComponentsIcon} from 'assets/images/icons/componentsIcon.svg';
 
-import {CONNECTORS_ROUTE} from '../../routes/routes';
+import {CONNECTORS_ROUTE, COMPONENTS_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 
@@ -16,10 +17,16 @@ export const Sidebar = () => {
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
-        <div className={styles.align}>
+        <div className={`${styles.align} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
           <Link to={CONNECTORS_ROUTE} className={`${styles.link} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
-            <PlugIcon width={'24px'} height={'24px'} />
+            <ConnectorsIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Connectors</span>
+          </Link>
+        </div>
+        <div className={`${styles.align} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
+          <Link to={COMPONENTS_ROUTE} className={`${styles.link} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
+            <ComponentsIcon width={'24px'} height={'24px'} />
+            <span className={styles.iconText}>Components</span>
           </Link>
         </div>
       </div>

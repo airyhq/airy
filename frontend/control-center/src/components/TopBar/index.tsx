@@ -18,6 +18,7 @@ const mapStateToProps = (state: StateModel) => ({
 });
 
 const logoutUrl = `${env.API_HOST}/logout`;
+const inboxUrl = `${env.API_HOST}/ui/`;
 
 const connector = connect(mapStateToProps);
 
@@ -97,6 +98,12 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
             {isAccountDropdownOn && (
               <ListenOutsideClick onOuterClick={hideAccountDropdown}>
                 <div className={styles.dropdownContainer}>
+                  <a href={inboxUrl} className={styles.dropdownLine}>
+                    <span className={styles.dropdownIconInbox}>
+                      <AiryLogo />
+                    </span>
+                    <span>Inbox</span>
+                  </a>
                   <a href={logoutUrl} className={styles.dropdownLine}>
                     <span className={styles.dropdownIcon}>
                       <LogoutIcon />

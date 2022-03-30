@@ -50,9 +50,12 @@ const Components = (props: ConnectedProps<typeof connector>) => {
         </div>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(config.components).map((component, index) => (
-          <ComponentListItem key={index} healthy={component[1].healthy} serviceName={component[0]} />
-        ))}
+        {Object.entries(config.components).map(
+          (component, index) =>
+            component[1].enabled && (
+              <ComponentListItem key={index} healthy={component[1].healthy} serviceName={component[0]} />
+            )
+        )}
       </div>
     </div>
   );

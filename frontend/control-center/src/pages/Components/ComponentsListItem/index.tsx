@@ -43,6 +43,9 @@ export const ComponentListItem = (props: ComponentsListProps) => {
     if (serviceName.includes('instagram')) {
       setConnectorSource(Source.instagram);
       setConnectorSourceName('Instagram');
+    } else {
+      const string = serviceName.replaceAll('-', ' ');
+      setConnectorSourceName(string);
     }
   }, []);
 

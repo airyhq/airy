@@ -153,6 +153,7 @@ public class Contact implements Serializable {
         public static String CONVERSATIONS = "conversations";
         public static String METADATA = "metadata";
         public static String MERGE_HISTORY = "mergeHistory";
+        public static final String LANGUAGE = "language";
 
         public static String ADDRESS = "address";
 

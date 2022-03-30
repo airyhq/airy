@@ -39,7 +39,6 @@ describe('Display and edit the contact details of a conversation', () => {
 
     cy.get(`[data-cy=${cyContactPhone}]`).contains('phone');
     cy.get(`[data-cy=${cyContactTitle}]`).contains('title');
-
     cy.get(`[data-cy=${cyContactAddress}]`).contains('address');
     cy.get(`[data-cy=${cyContactCity}]`).contains('city');
     cy.get(`[data-cy=${cyContactOrganization}]`).contains('company name');

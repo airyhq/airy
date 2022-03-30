@@ -4,7 +4,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
 import {StateModel} from '../../../reducers';
-import {allChannels} from '../../../selectors/channels';
+import {allConnectors} from '../../../selectors/connectors';
 
 import {Channel, Source} from 'model';
 import ConnectorsListItem from './ConnectorsListItem';
@@ -30,7 +30,7 @@ const ConnectedConnectorsList = () => {
   const {source} = useParams();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
-    return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
+    return Object.values(allConnectors(state)).filter((channel: Channel) => channel.source === source);
   });
 
   const [name, setName] = useState('');

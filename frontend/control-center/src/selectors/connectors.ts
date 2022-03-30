@@ -5,16 +5,16 @@ import {useSelector} from 'react-redux';
 
 // Filter out channels that only have metadata
 // I.e. Websocket channels don't necessarily have a name so we wait for the metadata
-export const allChannels = (state: StateModel) =>
-  pickBy(state.data.channels, ({id, metadata, ...restChannel}) => Object.keys(restChannel).length > 1);
+export const allConnectors = (state: StateModel) =>
+  pickBy(state.data.connectors, ({id, metadata, ...restChannel}) => Object.keys(restChannel).length > 1);
 
-export const allChannelsConnected = (state: StateModel) =>
+export const allConnectorsConnected = (state: StateModel) =>
   pickBy(
-    state.data.channels,
+    state.data.connectors,
     ({id, metadata, ...restChannel}) => Object.keys(restChannel).length > 1 && restChannel.connected
   );
 
-export const useCurrentChannel = () => {
+export const useCurrentConnector = () => {
   const {channelId} = useParams();
-  return useSelector((state: StateModel) => state.data.channels[channelId]);
+  return useSelector((state: StateModel) => state.data.connectors[channelId]);
 };

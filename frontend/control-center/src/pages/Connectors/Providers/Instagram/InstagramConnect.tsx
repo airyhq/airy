@@ -10,7 +10,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 import styles from './InstagramConnect.module.scss';
 
 import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
-import {useCurrentChannel} from '../../../../selectors/channels';
+import {useCurrentConnector} from '../../../../selectors/connectors';
 import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
@@ -21,7 +21,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectInstagramChannel} = props;
-  const channel = useCurrentChannel();
+  const channel = useCurrentConnector();
   const navigate = useNavigate();
   const [id, setId] = useState(channel?.metadata?.pageId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');

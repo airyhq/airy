@@ -3,21 +3,22 @@ import {User} from 'model';
 
 import user from './user';
 import config, {Config} from './config';
-import channels, {ChannelsState} from './channels';
+// import channels, {ChannelsState} from './channels';
+import connectors, {ConnectorsState} from './connectors';
 
-export * from './channels';
+export * from './connectors';
 export * from './config';
 export * from './user';
 
 export type DataState = {
   user: User;
-  channels: ChannelsState;
+  connectors: ConnectorsState;
   config: Config;
 };
 
 const reducers: Reducer = combineReducers<DataState>({
   user,
-  channels,
+  connectors,
   config,
 });
 

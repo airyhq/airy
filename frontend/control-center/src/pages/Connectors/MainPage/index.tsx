@@ -41,7 +41,7 @@ import {
 import {StateModel} from '../../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {allChannelsConnected} from '../../../selectors/channels';
+import {allConnectorsConnected} from '../../../selectors/connectors';
 
 export type SourceInfo = {
   type: Source;
@@ -139,7 +139,7 @@ const SourcesInfo: SourceInfo[] = [
 ];
 
 const MainPage = () => {
-  const connectors = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const connectors = useSelector((state: StateModel) => Object.values(allConnectorsConnected(state)));
   const config = useSelector((state: StateModel) => state.data.config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 

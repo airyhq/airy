@@ -2,4 +2,4 @@ apiVersion: v2
 appVersion: "1.0"
 description: A kafka helm chart for Airy Platform
 name: kafka
-version: 2.7.0
+version: 3.1.0

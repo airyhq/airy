@@ -87,8 +87,6 @@ spec:
           value: "{{ .Values.firstListenerPort }}"
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
-        - name: KAFKA_ZOOKEEPER_CONNECT
-          value: {{ include "kafka.zookeeper.service-name" . | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
           value: {{ $value | quote }}
@@ -107,16 +105,6 @@ spec:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       initContainers:
-      - name: wait
-        image: "{{ .Values.global.busyboxImage }}"
-        imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
-        env:
-        - name: SERVICE_URL
-          value: {{ include "kafka.zookeeper.service-name" . | quote }}
-        volumeMounts:
-        - name: kafka-helper-scripts
-          mountPath: /opt/provisioning
       - name: fix-permissions
         image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent

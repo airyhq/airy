@@ -28,6 +28,8 @@ import {
   cyDisplayName,
   cyDisplayNameInput,
   cyEditDisplayNameCheckmark,
+  cyEditContactIcon,
+  cyCancelEditContactIcon,
 } from 'handles';
 import {difference} from 'lodash-es';
 import {useCurrentConversation} from '../../../../selectors/conversations';
@@ -235,17 +237,17 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
       {isContactsEnabled && (
         <>
           {!isEditing ? (
-            <EditIcon
+            <button
               className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
               onClick={editContactDetails}
-              aria-label="edit contact"
-            />
+              data-cy={cyEditContactIcon}
+            >
+              <EditIcon aria-label="edit contact" />
+            </button>
           ) : (
-            <CancelIcon
-              className={styles.editIcon}
-              onClick={cancelContactsInfoEdit}
-              aria-label="cancel contact editing"
-            />
+            <button className={styles.editIcon} onClick={cancelContactsInfoEdit} data-cy={cyCancelEditContactIcon}>
+              <CancelIcon aria-label="cancel contact edit" />
+            </button>
           )}
         </>
       )}

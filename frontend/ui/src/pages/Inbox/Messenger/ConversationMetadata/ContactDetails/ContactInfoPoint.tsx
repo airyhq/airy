@@ -4,6 +4,14 @@ import {ReactComponent as PhoneIcon} from 'assets/images/icons/phone.svg';
 import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
 import {ReactComponent as HomeIcon} from 'assets/images/icons/home.svg';
 import {ReactComponent as SuitcaseIcon} from 'assets/images/icons/suitcase.svg';
+import {
+  cyContactEmail,
+  cyContactPhone,
+  cyContactTitle,
+  cyContactAddress,
+  cyContactCity,
+  cyContactOrganization,
+} from 'handles';
 import styles from './index.module.scss';
 
 interface ContactInfoPointProps {
@@ -46,6 +54,25 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   const capitalizedInfoName = infoName.charAt(0).toUpperCase() + infoName.slice(1);
   const autoFocus = infoName === 'email' ? true : false;
 
+  const getDataCy = () => {
+    switch (infoName) {
+      case 'email':
+        return cyContactEmail;
+      case 'phone':
+        return cyContactPhone;
+      case 'title':
+        return cyContactTitle;
+      case 'address':
+        return cyContactAddress;
+      case 'city':
+        return cyContactCity;
+      case 'organization':
+        return cyContactOrganization;
+      default:
+        return null;
+    }
+  };
+
   const getMaxLength = () => {
     switch (infoName) {
       case 'email':
@@ -83,7 +110,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regPhone = new RegExp('^[0-9]+$|^$|^$');
+    const regPhone = new RegExp('[^a-zA-Z]+$|^$');
 
     if (infoName === 'phone' && !regPhone.test(e.target.value)) {
       return;
@@ -119,7 +146,9 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
         <Icon />
         <span className={styles.detailName}>{capitalizedInfoName}:</span>
         {!isEditing ? (
-          <span className={styles.infoName}>{infoValue}</span>
+          <span className={styles.infoName} data-cy={getDataCy()}>
+            {infoValue}
+          </span>
         ) : (
           <label htmlFor={infoName}>
             <input
@@ -133,6 +162,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
               value={infoValue}
               onChange={handleChange}
               maxLength={getMaxLength()}
+              data-cy={getDataCy()}
             />
           </label>
         )}

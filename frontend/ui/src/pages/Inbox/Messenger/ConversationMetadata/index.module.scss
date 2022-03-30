@@ -172,13 +172,19 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  border: none;
+  background: transparent;
   cursor: pointer;
 }
 
 .iconBlue {
-  fill: var(--color-airy-blue);
+  svg {
+    fill: var(--color-airy-blue);
+  }
 }
 
 .iconGrey {
-  fill: var(--color-text-gray);
+  svg {
+    fill: var(--color-text-gray);
+  }
 }

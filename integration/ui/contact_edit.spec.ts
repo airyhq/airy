@@ -13,13 +13,39 @@ import {
 } from 'handles';
 
 describe('Display and edit the contact details of a conversation', () => {
-  it('edits and saves contact details', () => {
+  before(() => {
     cy.visit('/ui/');
     cy.url().should('include', '/inbox');
     cy.get(`[data-cy=${cyConversationList}]`).first().click();
+  });
 
+  beforeEach(() => {
     cy.get(`[data-cy=${cyEditContactIcon}]`).click();
+  });
 
+  it('displays default values if there is no information', () => {
+    cy.get(`[data-cy=${cyContactEmail}]`).clear();
+    cy.get(`[data-cy=${cyContactPhone}]`).clear();
+    cy.get(`[data-cy=${cyContactTitle}]`).clear();
+    cy.get(`[data-cy=${cyContactAddress}]`).clear();
+    cy.get(`[data-cy=${cyContactCity}]`).clear();
+    cy.get(`[data-cy=${cyContactOrganization}]`).clear();
+
+    cy.get(`[data-cy=${cyContactSaveButton}]`).click();
+
+    cy.get(`[data-cy=${cyContactEmail}]`).contains('email');
+
+    cy.get(`[data-cy=${cyContactExtendable}]`).click();
+
+    cy.get(`[data-cy=${cyContactPhone}]`).contains('phone');
+    cy.get(`[data-cy=${cyContactTitle}]`).contains('title');
+
+    cy.get(`[data-cy=${cyContactAddress}]`).contains('address');
+    cy.get(`[data-cy=${cyContactCity}]`).contains('city');
+    cy.get(`[data-cy=${cyContactOrganization}]`).contains('company name');
+  });
+
+  it('edits and saves contact details', () => {
     cy.get(`[data-cy=${cyContactEmail}]`).clear().type('name@email.com');
     cy.get(`[data-cy=${cyContactPhone}]`).clear().type('+49 30 901820');
     cy.get(`[data-cy=${cyContactTitle}]`).clear().type('Mr.');
@@ -40,12 +66,6 @@ describe('Display and edit the contact details of a conversation', () => {
   });
 
   it('cancels the contact edit', () => {
-    cy.visit('/ui/');
-    cy.url().should('include', '/inbox');
-    cy.get(`[data-cy=${cyConversationList}]`).first().click();
-
-    cy.get(`[data-cy=${cyEditContactIcon}]`).click();
-
     cy.get(`[data-cy=${cyContactEmail}]`).clear().type('anotherName@email.com');
     cy.get(`[data-cy=${cyContactPhone}]`).clear().type('123');
     cy.get(`[data-cy=${cyContactTitle}]`).clear().type('Mrs.');

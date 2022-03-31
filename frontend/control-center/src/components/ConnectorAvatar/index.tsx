@@ -1,10 +1,10 @@
 import React, {CSSProperties, SyntheticEvent} from 'react';
-import {ReactComponent as GoogleAvatar} from 'assets/images/icons/googleCCLogo.svg';
-import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsappCCLogo.svg';
-import {ReactComponent as SmsAvatar} from 'assets/images/icons/twilioSmsCCLogo.svg';
-import {ReactComponent as FacebookAvatar} from 'assets/images/icons/facebookMessengerCCLogo.svg';
-import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyCCLogo.svg';
-import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramCCLogo.svg';
+import {ReactComponent as GoogleAvatar} from 'assets/images/icons/googleLogo.svg';
+import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsappLogoFilled.svg';
+import {ReactComponent as SmsAvatar} from 'assets/images/icons/phoneIcon.svg';
+import {ReactComponent as FacebookAvatar} from 'assets/images/icons/facebookMessengerLogoBlue.svg';
+import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyLogo.svg';
+import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramLogoFilled.svg';
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 

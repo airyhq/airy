@@ -3,12 +3,12 @@ import React, {useEffect} from 'react';
 import {Channel, Source} from 'model';
 import ConnectorCard from './ConnectorCard';
 
-import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyCCLogo.svg';
-import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerCCLogo.svg';
-import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/twilioSmsCCLogo.svg';
-import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsappCCLogo.svg';
-import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleCCLogo.svg';
-import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramCCLogo.svg';
+import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyLogo.svg';
+import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerLogoBlue.svg';
+import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/phoneIcon.svg';
+import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsappLogoFilled.svg';
+import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 
 import styles from './index.module.scss';
 import {

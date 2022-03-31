@@ -29,8 +29,6 @@ const fallbackTagConfig = {
 };
 
 export const Tag = ({tag, expanded, variant, onClick, removeTag, config: {tagConfig}}: TagProps): JSX.Element => {
-  console.debug('tagConfig', tagConfig);
-  console.debug('tag', tag);
   const tagColor = (tagConfig && tagConfig.colors[tag.color]) || fallbackTagConfig;
 
   const tagStyle =

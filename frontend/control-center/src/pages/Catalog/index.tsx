@@ -1,11 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Channel, Source} from 'model';
-import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
-import {InstagramRequirementsDialog} from '../Providers/Instagram/InstagramRequirementsDialog';
-import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
-import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
-import ConnectorCard from '../ConnectorCard';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyCCLogo.svg';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerCCLogo.svg';
@@ -37,11 +32,17 @@ import {
   CONNECTORS_CHAT_PLUGIN_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-} from '../../../routes/routes';
-import {StateModel} from '../../../reducers';
+} from '../../routes/routes';
+import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {allConnectorsConnected} from '../../../selectors/connectors';
+import {allConnectorsConnected} from '../../selectors/connectors';
+import ConnectorCard from '../Connectors/ConnectorCard';
+import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
+import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
+import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
+import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
+import {setPageTitle} from '../../services/pageTitle';
 
 export type SourceInfo = {
   type: Source;
@@ -138,10 +139,14 @@ const SourcesInfo: SourceInfo[] = [
   },
 ];
 
-const MainPage = () => {
+const Catalog = () => {
   const connectors = useSelector((state: StateModel) => Object.values(allConnectorsConnected(state)));
   const config = useSelector((state: StateModel) => state.data.config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
+
+  useEffect(() => {
+    setPageTitle('Catalog');
+  }, []);
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -163,35 +168,36 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.connectorsWrapper}>
-      <div className={styles.connectorsHeadline}>
+    <div className={styles.catalogWrapper}>
+      <div className={styles.catalogHeadline}>
         <div>
-          <h1 className={styles.connectorsHeadlineText}>Connectors</h1>
+          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
         </div>
       </div>
 
       <div className={styles.wrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-        {SourcesInfo.map((infoItem: SourceInfo) => (
-          <div style={{display: 'flex'}} key={infoItem.type}>
-            <ConnectorCard
-              sourceInfo={infoItem}
-              addConnectorAction={() => {
-                if (channelsBySource(infoItem.type).length > 0) {
-                  return navigate(infoItem.connectorsListRoute);
-                }
-                if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                  navigate(infoItem.newConnectorRoute);
-                } else {
-                  setDisplayDialogFromSource(infoItem.type);
-                }
-              }}
-            />
-          </div>
-        ))}
+        {SourcesInfo.map((infoItem: SourceInfo) => {
+          return (
+            channelsBySource(infoItem.type).length === 0 && (
+              <div style={{display: 'flex'}} key={infoItem.type}>
+                <ConnectorCard
+                  sourceInfo={infoItem}
+                  addConnectorAction={() => {
+                    if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
+                      navigate(infoItem.newConnectorRoute);
+                    } else {
+                      setDisplayDialogFromSource(infoItem.type);
+                    }
+                  }}
+                />
+              </div>
+            )
+          );
+        })}
       </div>
     </div>
   );
 };
 
-export default MainPage;
+export default Catalog;

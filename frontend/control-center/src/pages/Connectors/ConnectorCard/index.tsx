@@ -1,5 +1,5 @@
 import React from 'react';
-import {SourceInfo} from '../MainPage';
+import {SourceInfo} from '..';
 import styles from './index.module.scss';
 
 type SourceDescriptionCardProps = {

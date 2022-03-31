@@ -1,7 +1,7 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.connectorsWrapper {
+.catalogWrapper {
   background: white;
   border-radius: 10px;
   padding: 32px;
@@ -9,9 +9,10 @@
   height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
+  width: 100%;
 }
 
-.connectorsHeadline {
+.catalogHeadline {
   @include font-xl;
   font-weight: 900;
   letter-spacing: 0;
@@ -21,7 +22,7 @@
   margin-bottom: 14px;
 }
 
-.connectorsHeadlineText {
+.catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
 }

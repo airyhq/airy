@@ -12,13 +12,13 @@ import TLDR from "@site/src/components/TLDR";
 
 Airy UI displays a conversation's contact details on the right side of the [Inbox](inbox).
 
-You also can get contact information via the [Contact info API](api/endpoints/contacts#get-contact) or the [List contacts API](api/endpoints/contacts#list-contacts).
+You also can get contact information via the [Contact info API](api/endpoints/contacts.md#get-contact) or the [List contacts API](api/endpoints/contacts.md#list-contacts).
 
 <img alt="Contacts" src={useBaseUrl('img/ui/contacts.png')} />
 
 ## Edit
 
-When editing a contact's details, you can change the email, phone number, address, city, title, and organization.
+When editing a contact's details, you can change the email, phone number, title, address, city, and organization.
 
 This can also be done via the [Update contact API](api/endpoints/contacts.md#update-contact).
 

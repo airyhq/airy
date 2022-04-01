@@ -75,7 +75,7 @@ All request fields are optional, but an empty payload will not be accepted.
 
 **(201) Success Response Payload**
 
-import ContactResponsePayload from './contacts-response-payload.md'
+import ContactResponsePayload from './contacts-response-payload.mdx'
 
 <ContactResponsePayload />
 

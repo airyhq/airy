@@ -21,6 +21,11 @@ variable "resources_yaml" {
   description = "Resource requests and limits for the components"
 }
 
+variable "prerequisite_properties_yaml" {
+  description = "Properties passed to prerequisites like the Kafka brokers"
+  default = ""
+}
+
 variable "core_version" {
   description = "Version of the Airy Core instance"
   type        = string

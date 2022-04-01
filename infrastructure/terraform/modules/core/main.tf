@@ -23,7 +23,8 @@ resource "helm_release" "airy_core" {
   timeout = "600"
   values = [
     var.values_yaml,
-    var.resources_yaml
+    var.resources_yaml,
+    var.prerequisite_properties_yaml
   ]
 
   namespace = var.namespace

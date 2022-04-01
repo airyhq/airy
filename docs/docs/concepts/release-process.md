@@ -26,6 +26,7 @@ Once a release day comes, we execute the following steps:
 - We test the release using `./airy create --provider=minikube`. Note that:
   - Any additional hot-fix is committed directly to the release branch
   - You must wait for all the images to be pushed via CI
+- We create the draft release which is used for the Changelog `./scripts/release.sh changelog x.y.z`.
 - Once we're satisfied with the release, we publish the release:
   - We clean up the draft release. If the upgrade to the new version requires manual steps, we detail them.
   - We run `./scripts/release.sh finish x.y.z`

@@ -140,15 +140,35 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     }
   };
 
+  const InfoValue = () => {
+    if (infoName === 'email' && infoValue !== 'email') {
+      return (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cy={getDataCy()}
+          className={styles.email}
+          href={`mailto:${infoValue}`}
+        >
+          {infoValue}
+        </a>
+      );
+    }
+
+    return (
+      <span className={styles.infoName} data-cy={getDataCy()}>
+        {infoValue}
+      </span>
+    );
+  };
+
   return (
     <>
       <div className={`${styles.infoPointContainer} ${isEditing ? styles.borderBlue : ''}`}>
         <Icon />
         <span className={styles.detailName}>{capitalizedInfoName}:</span>
         {!isEditing ? (
-          <span className={styles.infoName} data-cy={getDataCy()}>
-            {infoValue}
-          </span>
+          <InfoValue />
         ) : (
           <label htmlFor={infoName}>
             <input

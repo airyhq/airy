@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckedIcon.svg';
+import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
 import styles from './index.module.scss';
 import {Source} from 'model';
 import {getConnectorAvatar} from '../../../components/ConnectorAvatar';

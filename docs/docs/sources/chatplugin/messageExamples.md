@@ -34,12 +34,15 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url": "https://xxxxxxxx.jpg"
+            }
+        }
+    }
 }
 ```
 
@@ -52,15 +55,23 @@ the `<head>` section:
 
 ```json
 {
-   "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
-   "message":{
-      "attachments":[
-         {
-            "type":"video",
-            "videoUrl":"https://res.cloudinary.com/dzyccx5om/video/upload/v1612949675/mov_bbb_bfucrc.mp4"
-         }
-      ]
-   }
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "attachments": [
+            {
+                "type": "image",
+                "payload": {
+                    "url": "https://xxxxxxxx.jpg"
+                }
+            },
+            {
+                "type": "image",
+                "payload": {
+                    "url": "https://xxxxxxxx.jpg"
+                }
+            }
+        ]
+    }
 }
 ```
 
@@ -73,12 +84,15 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "attachment": {
+            "type": "video",
+            "payload": {
+                "url": "https://xxxxxxxx.mp4"
+            }
+        }
+    }
 }
 ```
 
@@ -91,12 +105,15 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "attachment": {
+            "type": "file",
+            "payload": {
+                "url": "https://xxxxxxxx.pdf"
+            }
+        }
+    }
 }
 ```
 
@@ -109,12 +126,15 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "attachment": {
+            "type": "audio",
+            "payload": {
+                "url": "https://xxxxxxxx.mp3"
+            }
+        }
+    }
 }
 ```
 
@@ -129,8 +149,8 @@ the `<head>` section:
 {
    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
    "message":{
-      "text":"https://google.fr",
-      "fallback":"some string without markdown",
+      "text":"xxx",
+      "fallback":"xxx",
       "containsRichText":"true"
    }
 }
@@ -145,12 +165,40 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
+        "richCard": {
+            "standaloneCard": {
+                "cardContent": {
+                    "title": "Hello, world!",
+                    "description": "Sent with Business Messages.",
+                    "media": {
+                        "height": "TALL",
+                        "contentInfo": {
+                            "altText": "Google logo",
+                            "fileUrl": "https://xxxxxxxx.png",
+                            "forceRefresh": "false"
+                        }
+                    },
+                    "suggestions": [
+                        {
+                            "reply": {
+                                "text": "Suggestion #1",
+                                "postbackData": "suggestion_1"
+                            }
+                        },
+                        {
+                            "reply": {
+                                "text": "Suggestion #2",
+                                "postbackData": "suggestion_2"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
 }
 ```
 
@@ -167,55 +215,55 @@ the `<head>` section:
 
 ```json
 {
-  "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
-  "message": {
-    "fallback": "Card #1\n #1\n\nCard #2\n\n\nReply with \"Card #1\" or \"Card #2\"",
-    "richCard": {
-      "carouselCard": {
-        "cardWidth": "MEDIUM",
-        "cardContents": [
-          {
-            "title": "Card #1",
-            "description": "The description for card #1",
-            "suggestions": [
-              {
-                "reply": {
-                  "text": "Card #1",
-                  "postbackData": "card_1"
-                }
-              }
-            ],
-            "media": {
-              "height": "MEDIUM",
-              "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/237/200",
-                "forceRefresh": "false"
-              }
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "fallback": "xxx",
+        "richCard": {
+            "carouselCard": {
+                "cardWidth": "MEDIUM",
+                "cardContents": [
+                    {
+                        "title": "Card #1",
+                        "description": "The description for card #1",
+                        "suggestions": [
+                            {
+                                "reply": {
+                                    "text": "Card #1",
+                                    "postbackData": "card_1"
+                                }
+                            }
+                        ],
+                        "media": {
+                            "height": "MEDIUM",
+                            "contentInfo": {
+                                "fileUrl": "https://xxxxxxxx.png",
+                                "forceRefresh": "false"
+                            }
+                        }
+                    },
+                    {
+                        "title": "Card #2",
+                        "description": "The description for card #2",
+                        "suggestions": [
+                            {
+                                "reply": {
+                                    "text": "Card #2",
+                                    "postbackData": "card_2"
+                                }
+                            }
+                        ],
+                        "media": {
+                            "height": "MEDIUM",
+                            "contentInfo": {
+                                "fileUrl": "https://picsum.photos/id/238/200",
+                                "forceRefresh": "false"
+                            }
+                        }
+                    }
+                ]
             }
-          },
-          {
-            "title": "Card #2",
-            "description": "The description for card #2",
-            "suggestions": [
-              {
-                "reply": {
-                  "text": "Card #2",
-                  "postbackData": "card_2"
-                }
-              }
-            ],
-            "media": {
-              "height": "MEDIUM",
-              "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/238/200",
-                "forceRefresh": "false"
-              }
-            }
-          }
-        ]
-      }
+        }
     }
-  }
 }
 ```
 
@@ -228,14 +276,20 @@ the `<head>` section:
 <td> quickReplies </td>
 <td>
 
+  type: 'quickReplies';
+  text?: string;
+  attachment?: AttachmentUnion;
+  quickReplies: QuickReply[];
+
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "type": "quickReplies",
+        "text": "xxx",
+        "attachment": "xxx",
+        "quickReplies": "xxx"
+    }
 }
 ```
 
@@ -248,12 +302,12 @@ the `<head>` section:
 
 ```json
 {
-  "id": 10,
-  "username": "alanpartridge",
-  "email": "alan@alan.com",
-  "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-  "created_at": "2015-02-14T20:45:26.433Z",
-  "updated_at": "2015-02-14T20:45:26.540Z"
+    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "message": {
+        "type": "suggestionResponse",
+        "text": "xxx",
+        "postbackData": "xxx"
+    }
 }
 ```
 

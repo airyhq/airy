@@ -6,13 +6,14 @@ sidebar_label: Contacts
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
 
-<TLDR>Airy UI allows you to get and edit contacts' information for personnalized interactions.</TLDR>
+<TLDR>Airy UI allows you to get and edit contacts' information for personalized interactions.
+</TLDR>
 
 ## Get contact details
 
 Airy UI displays a conversation's contact details on the right side of the [Inbox](inbox).
 
-You also can get contact information via the [Contact info API](api/endpoints/contacts.md#get-contact) or the [List contacts API](api/endpoints/contacts.md#list-contacts).
+You also can get a contact's information via the [Contact info API](api/endpoints/contacts.md#get-contact) or the [List contacts API](api/endpoints/contacts.md#list-contacts).
 
 <img alt="Contacts" src={useBaseUrl('img/ui/contacts.png')} />
 

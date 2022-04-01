@@ -8,6 +8,7 @@ import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import HighVoltageSVG from "@site/static/icons/highVoltage.svg";
 import ElectricPlugSVG from "@site/static/icons/electricPlug.svg";
+import PackageSVG from "@site/static/icons/package.svg";
 import FishingPoleSVG from "@site/static/icons/fishingPole.svg";
 import HammerAndWrenchSVG from "@site/static/icons/hammerAndWrench.svg";
 

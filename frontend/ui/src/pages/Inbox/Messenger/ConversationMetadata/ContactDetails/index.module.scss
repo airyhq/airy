@@ -24,7 +24,8 @@
   word-break: break-all;
 }
 
-.email,
+.email:link,
+.email:visited,
 .email:hover,
 .email:active {
   word-break: break-all;
@@ -50,6 +51,7 @@
   outline: none;
   border: none;
   padding: 0;
+  margin: 0;
   @include font-s;
 }
 
@@ -83,4 +85,5 @@
   width: 12px;
   margin-right: 6px;
   fill: var(--color-text-contrast);
+  overflow: visible;
 }

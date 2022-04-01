@@ -77,15 +77,13 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     switch (infoName) {
       case 'email':
       case 'address':
-        return 50;
+      case 'city':
+        return 30;
       case 'phone':
         return 15;
       case 'title':
-        return 25;
-      case 'city':
-        return 30;
       case 'organization':
-        return 45;
+        return 20;
       default:
         return null;
     }

@@ -47,35 +47,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <td> text </td>
 </tr>
 <tr>
-<td> images </td>
-<td>
-
-```json
-{
-    "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
-    "message": {
-        "attachments": [
-            {
-                "type": "image",
-                "payload": {
-                    "url": "https://xxxxxxxx.jpg"
-                }
-            },
-            {
-                "type": "image",
-                "payload": {
-                    "url": "https://xxxxxxxx.jpg"
-                }
-            }
-        ]
-    }
-}
-```
-
-</td>
-<td> text </td>
-</tr>
-<tr>
 <td> video </td>
 <td>
 
@@ -173,7 +144,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
                     "media": {
                         "height": "TALL",
                         "contentInfo": {
-                            "altText": "xxxx logo",
+                            "altText": "xxxx",
                             "fileUrl": "https://xxxxxxxx.png",
                             "forceRefresh": "false"
                         }

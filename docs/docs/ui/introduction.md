@@ -17,7 +17,7 @@ Not every message can be handled by code, which is why Airy comes with different
 
 While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI offers all of the UI interfaces you need internally for a messaging platform.
 
-Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations from all of your [sources](sources/introduction.md). You can organize your conversations with features such as [Filters, Search](inbox) and [Tags](tags), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
+Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations from all of your [sources](sources/introduction.md). You can organize your conversations with features such as [Filters, Search](inbox) and [Tags](tags), view and edit [contacts](contacts), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
 
 <ButtonBoxList>
     <ButtonBox
@@ -57,10 +57,12 @@ Airy UI comes with an open-source, customizable [inbox](inbox), filled with the 
     />
 </ButtonBoxList>
 
-Get a glimpse of the Airy UI with screenshots of the Inbox, Tags, and suggested replies:
+Get a glimpse of the Airy UI with screenshots of the Inbox, Tags, Contacts, and suggested replies:
 
-<img alt="Button Template Example" src={useBaseUrl('img/ui/FacebookButtonTemplate.png')} />
+<img alt="Demo Inbox" src={useBaseUrl('img/ui/FacebookButtonTemplate.png')} />
 
 <img alt="Demo Tags"src={useBaseUrl('img/ui/tags-ui.png')} />
 
-<img alt="Demo Tags"src={useBaseUrl('img/ui/suggested-replies.png')} />
+<img alt="Demo suggested replies"src={useBaseUrl('img/ui/suggested-replies.png')} />
+
+<img alt="Demo Contacts"src={useBaseUrl('img/ui/contactsEdit.png')} />

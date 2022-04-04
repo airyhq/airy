@@ -8,6 +8,14 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>Airy UI allows you to view and edit contacts for personalized interactions.</TLDR>
 
+:::note
+
+This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
+
+Viewing and editing contacts in the Airy UI is only possible when this feature is enabled.
+
+:::
+
 ## Get contact details
 
 Airy UI displays conversations' contact details on the right side of the [Inbox](inbox).

@@ -69,7 +69,7 @@ gazelle_dependencies()
 
 git_repository(
     name = "com_google_protobuf",
-    commit = "09745575a923640154bcf307fba8aedff47f240a",
+    commit = "3be07ab3208ba34835091d4166d023926e302965",
     remote = "https://github.com/protocolbuffers/protobuf",
     shallow_since = "1558721209 -0700",
 )

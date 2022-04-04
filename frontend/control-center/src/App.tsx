@@ -5,18 +5,18 @@ import {Sidebar} from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE} from './routes/routes';
-import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
-import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedConnectorsList from './pages/Connectors/ConnectedConnectorsList';
-import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
-import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
-import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
+import {CATALOG_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE} from './routes/routes';
+import FacebookConnect from './pages/Channels/Providers/Facebook/Messenger/FacebookConnect';
+import ChatPluginConnect from './pages/Channels/Providers/Airy/ChatPlugin/ChatPluginConnect';
+import ConnectedChannelsList from './pages/Channels/ConnectedChannelsList';
+import TwilioSmsConnect from './pages/Channels/Providers/Twilio/SMS/TwilioSmsConnect';
+import TwilioWhatsappConnect from './pages/Channels/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
+import GoogleConnect from './pages/Channels/Providers/Google/GoogleConnect';
+import InstagramConnect from './pages/Channels/Providers/Instagram/InstagramConnect';
 import NotFound from './pages/NotFound';
-import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
+import ChannelsOutlet from './pages/Channels/ChannelsOutlet';
 import Catalog from './pages/Catalog';
-import Connectors from './pages/Connectors';
+import Channels from './pages/Channels';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -35,16 +35,16 @@ const App = (props: ConnectedProps<typeof connector>) => {
         <TopBar isAdmin={true} />
         <Sidebar />
         <Routes>
-          <Route path={ROOT_ROUTE} element={<Navigate to={CONNECTORS_ROUTE} replace />} />
-          <Route path={`${CONNECTORS_ROUTE}/*`} element={<ConnectorsOutlet />}>
+          <Route path={ROOT_ROUTE} element={<Navigate to={CHANNELS_ROUTE} replace />} />
+          <Route path={`${CHANNELS_ROUTE}/*`} element={<ChannelsOutlet />}>
             <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
             <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedConnectorsList />} />
+            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
             <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
             <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
             <Route path={`google/:channelId`} element={<GoogleConnect />} />
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-            <Route index element={<Connectors />} />
+            <Route index element={<Channels />} />
           </Route>
           <Route element={<NotFound />} />
           <Route path={`${CATALOG_ROUTE}/*`} element={<Catalog />} />

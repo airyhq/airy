@@ -5,7 +5,7 @@ import {useMatch} from 'react-router';
 import {ReactComponent as PlugIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
 
-import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../routes/routes';
+import {CATALOG_ROUTE, CHANNELS_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 
@@ -18,7 +18,7 @@ export const Sidebar = () => {
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
         <div className={styles.align}>
-          <Link to={CONNECTORS_ROUTE} className={`${styles.link} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
+          <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
             <PlugIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Connectors</span>
           </Link>

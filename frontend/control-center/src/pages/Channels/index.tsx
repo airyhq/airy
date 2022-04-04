@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import {Channel, Source} from 'model';
+import ChannelCard from './ChannelCard';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyLogo.svg';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerLogoBlue.svg';
@@ -34,14 +35,10 @@ import {
   CHANNELS_INSTAGRAM_ROUTE,
 } from '../../routes/routes';
 import {StateModel} from '../../reducers';
-import {useSelector} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {allChannelsConnected} from '../../selectors/channels';
-import ChannelCard from '../Channels/ChannelCard';
-import {FacebookMessengerRequirementsDialog} from '../Channels/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
-import {GoogleBusinessMessagesRequirementsDialog} from '../Channels/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
-import {TwilioRequirementsDialog} from '../Channels/Providers/Twilio/TwilioRequirementsDialog';
-import {InstagramRequirementsDialog} from '../Channels/Providers/Instagram/InstagramRequirementsDialog';
+import {listChannels} from '../../actions/channel';
 import {setPageTitle} from '../../services/pageTitle';
 
 export type SourceInfo = {
@@ -139,56 +136,45 @@ const SourcesInfo: SourceInfo[] = [
   },
 ];
 
-const Catalog = () => {
+const mapDispatchToProps = {
+  listChannels,
+};
+
+const mapStateToProps = (state: StateModel) => ({
+  channels: Object.values(allChannelsConnected(state)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const Channels = (props: ConnectedProps<typeof connector>) => {
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
-  const config = useSelector((state: StateModel) => state.data.config);
-  const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
-
-  useEffect(() => {
-    setPageTitle('Catalog');
-  }, []);
-
-  const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
-    switch (source) {
-      case Source.facebook:
-        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.google:
-        return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.twilioSMS:
-      case Source.twilioWhatsApp:
-        return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.instagram:
-        return <InstagramRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-    }
-
-    return null;
-  };
-
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (props.channels.length === 0) {
+      props.listChannels();
+    }
+    setPageTitle('Connectors');
+  }, [props.channels.length]);
+
   return (
-    <div className={styles.catalogWrapper}>
-      <div className={styles.catalogHeadline}>
+    <div className={styles.channelsWrapper}>
+      <div className={styles.channelsHeadline}>
         <div>
-          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
+          <h1 className={styles.channelsHeadlineText}>Connectors</h1>
         </div>
       </div>
 
       <div className={styles.wrapper}>
-        {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
         {SourcesInfo.map((infoItem: SourceInfo) => {
           return (
-            channelsBySource(infoItem.type).length === 0 && (
+            channelsBySource(infoItem.type).length > 0 && (
               <div style={{display: 'flex'}} key={infoItem.type}>
                 <ChannelCard
                   sourceInfo={infoItem}
                   addChannelAction={() => {
-                    if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                      navigate(infoItem.newChannelRoute);
-                    } else {
-                      setDisplayDialogFromSource(infoItem.type);
-                    }
+                    navigate(infoItem.channelsListRoute);
                   }}
                 />
               </div>
@@ -200,4 +186,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default connector(Channels);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
+import {ReactComponent as ArrowDownIcon} from 'assets/images/icons/arrowDown.svg';
 import styles from './index.module.scss';
 import {cyContactExtendable} from 'handles';
 
@@ -14,7 +15,11 @@ export const Expandable = (props: ExpandableProps) => {
 
   return (
     <div className={styles.expandable} onClick={toggleExpandableContent} data-cy={cyContactExtendable}>
-      <ArrowRightIcon className={styles.arrowIcon} />{' '}
+      {!collapse ? (
+        <ArrowRightIcon className={styles.arrowIcon} />
+      ) : (
+        <ArrowDownIcon className={`${styles.arrowIcon} ${styles.downIcon}`} />
+      )}
       {!collapse ? <span> See all ({infoPointsNum})</span> : <span> See less</span>}
     </div>
   );

@@ -5,28 +5,50 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  justify-content: center;
   @include font-s;
   margin-top: 6px;
 }
 
 .infoPointContainer {
-  line-height: 1.3;
   margin-bottom: 13px;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  display: flex;
+  border-bottom: 1px solid transparent;
+  line-height: 1.3;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+}
+
+.textContainer {
+  display: flex;
+  align-items: flex-end;
 }
 
 .infoName {
   word-break: break-all;
 }
 
+.infoLink:link,
+.infoLink:visited,
+.infoLink:hover,
+.infoLink:active {
+  word-break: break-all;
+  color: var(--color-airy-blue);
+  text-decoration: underline;
+}
+
 .borderBlue {
-  border-top: none;
-  border-left: none;
-  border-right: none;
   border-bottom: 1px solid var(--color-airy-blue);
-  margin-bottom: 7px;
-  padding-bottom: 5px;
-  display: flex;
-  align-items: center;
 }
 
 .container legend {
@@ -34,10 +56,16 @@
   margin-bottom: 15px;
 }
 
+.container label {
+  padding: 0;
+  margin: 0;
+}
+
 .container input {
   outline: none;
   border: none;
   padding: 0;
+  margin: 0;
   @include font-s;
 }
 
@@ -67,8 +95,14 @@
   margin-right: 6px;
 }
 
+.downIcon {
+  width: 14px;
+  height: 9px;
+}
+
 .infoIcon {
   width: 12px;
   margin-right: 6px;
   fill: var(--color-text-contrast);
+  overflow: visible;
 }

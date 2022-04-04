@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "589c212ed21bf2ebe01d72c5920c03ebf8967bf2",
+    commit = "5b4e9de139e7b03bf7429ae013e7209a3306e0cc",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1647947114 +0100",
+    shallow_since = "1649063292 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -78,13 +78,6 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
-git_repository(
-    name = "com_google_protobuf",
-    commit = "09745575a923640154bcf307fba8aedff47f240a",
-    remote = "https://github.com/protocolbuffers/protobuf",
-    shallow_since = "1558721209 -0700",
-)
-
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
@@ -93,9 +86,9 @@ protobuf_deps()
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "59d5b42ac315e7eadffa944e86e90c2990110a1c8075f1cd145f487e999d22b3",
-    strip_prefix = "rules_docker-0.17.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.17.0/rules_docker-v0.17.0.tar.gz"],
+    sha256 = "85ffff62a4c22a74dbd98d05da6cf40f497344b3dbf1e1ab0a37ab2a1a6ca014",
+    strip_prefix = "rules_docker-0.23.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.23.0/rules_docker-v0.23.0.tar.gz"],
 )
 
 load(
@@ -164,9 +157,9 @@ yarn_install(
 
 git_repository(
     name = "com_github_atlassian_bazel_tools",
-    commit = "e45e55f213b6804115eed1b6eb4ffc3bcf7a0cc4",
+    commit = "aefb11464b6b83590e4154a98c29171092ca290f",
     remote = "https://github.com/ash2k/bazel-tools.git",
-    shallow_since = "1614900742 +1100",
+    shallow_since = "1644872739 +1100",
 )
 
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")

@@ -5,9 +5,6 @@ sidebar_label: Message Types
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-To install the Chat Plugin UI on your website add the following script tag to
-the `<head>` section:
-
 <table>
 <tr>
 <td> Message Type </td> <td> Payload </td> <td> Preview </td>
@@ -167,7 +164,7 @@ the `<head>` section:
 {
     "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
     "message": {
-        "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
+        "fallback": "xxxxx",
         "richCard": {
             "standaloneCard": {
                 "cardContent": {
@@ -176,7 +173,7 @@ the `<head>` section:
                     "media": {
                         "height": "TALL",
                         "contentInfo": {
-                            "altText": "Google logo",
+                            "altText": "xxxx logo",
                             "fileUrl": "https://xxxxxxxx.png",
                             "forceRefresh": "false"
                         }
@@ -255,7 +252,7 @@ the `<head>` section:
                         "media": {
                             "height": "MEDIUM",
                             "contentInfo": {
-                                "fileUrl": "https://picsum.photos/id/238/200",
+                                "fileUrl": "https://xxxxxxxx.png",
                                 "forceRefresh": "false"
                             }
                         }
@@ -315,18 +312,3 @@ the `<head>` section:
 <td> text </td>
 </tr>
 </table>
-
-You must replace `CHANNEL_ID` with the channel ID obtained when
-[connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
-of your Chat Plugin server. When using the local minikube environment
-`SCRIPT_HOST` must be set to `airy.core`.
-
-:::note
-
-`airy.core` is not publicly accessible. The setup will only work for local web pages.
-
-:::
-
-To test the setup, replace the `CHANNEL_ID` in the URL
-`http://airy.core/chatplugin/ui/example?channel_id=CHANNEL_ID` and open it in your
-browser.

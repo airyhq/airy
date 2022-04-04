@@ -59,17 +59,17 @@ module.exports = {
             'api/endpoints/tags',
             'api/endpoints/templates',
             'api/endpoints/users',
+            'api/endpoints/contacts',
           ],
         },
         'api/httpClient',
         'api/websocket',
         'api/webhook',
         'api/source',
-        'api/contacts',
       ],
     },
     {
-      '💎 UI': ['ui/introduction', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/suggestedReplies'],
+      '💎 UI': ['ui/introduction', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/contacts', 'ui/suggestedReplies'],
     },
     {
       '🛠️ Integrations': [

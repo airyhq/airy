@@ -9,6 +9,8 @@ import GearSVG from "@site/static/icons/gear.svg";
 import DesktopComputerSVG from "@site/static/icons/desktopComputer.svg";
 import LabelSVG from "@site/static/icons/label.svg";
 import CommentBubbleSVG from "@site/static/icons/commentBubble.svg";
+import ChannelsUI from "@site/static/icons/channelsUi.svg";
+import ContactsSVG from "@site/static/icons/contacts.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Not every message can be handled by code, which is why Airy comes with different UIs ready for you and your team to use.
@@ -26,12 +28,26 @@ Airy UI comes with an open-source, customizable [inbox](inbox), filled with the 
         link='ui/inbox'
     />
     <ButtonBox
+        icon={<ChannelsUI />}
+        title='Channels'
+        iconInvertible={true}
+        description="Connect channels' sources easily in the UI"
+        link='ui/channels'
+    />
+    <ButtonBox
         icon={<LabelSVG />}
         iconInvertible={true}
         title='Tags'
         description='Tag your conversations for easy filtering, searching & segmenting'
         link='ui/tags'
-    />    
+    />   
+        <ButtonBox
+        icon={<ContactsSVG />}
+        iconInvertible={true}
+        title='Contacts'
+        description='View and edit contacts for personalized interactions'
+        link='ui/contacts'
+    /> 
     <ButtonBox
         icon={<CommentBubbleSVG />}
         iconInvertible={true}

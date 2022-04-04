@@ -6,16 +6,16 @@ import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {COMPONENTS_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE} from './routes/routes';
-import Connectors from './pages/Connectors';
+import Channels from './pages/Channels';
 import Components from './pages/Components';
-import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
-import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
-import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
-import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
-import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
-import MainPage from './pages/Connectors/MainPage';
+import FacebookConnect from './pages/Channels/Providers/Facebook/Messenger/FacebookConnect';
+import ChatPluginConnect from './pages/Channels/Providers/Airy/ChatPlugin/ChatPluginConnect';
+import ConnectedChannelsList from './pages/Channels/ConnectedChannelsList';
+import TwilioSmsConnect from './pages/Channels/Providers/Twilio/SMS/TwilioSmsConnect';
+import TwilioWhatsappConnect from './pages/Channels/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
+import GoogleConnect from './pages/Channels/Providers/Google/GoogleConnect';
+import InstagramConnect from './pages/Channels/Providers/Instagram/InstagramConnect';
+import MainPage from './pages/Channels/MainPage';
 import NotFound from './pages/NotFound';
 
 const mapDispatchToProps = {
@@ -36,7 +36,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
         <Sidebar />
         <Routes>
           <Route path={ROOT_ROUTE} element={<Navigate to={CHANNELS_ROUTE} replace />} />
-          <Route path={`${CHANNELS_ROUTE}/*`} element={<Connectors />}>
+          <Route path={`${CHANNELS_ROUTE}/*`} element={<Channels />}>
             <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
             <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
             <Route path={`connected/:source`} element={<ConnectedChannelsList />} />

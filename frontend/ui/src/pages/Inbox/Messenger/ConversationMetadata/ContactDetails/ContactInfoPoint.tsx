@@ -1,17 +1,6 @@
-import React from 'react';
-import {ReactComponent as EmailIcon} from 'assets/images/icons/email.svg';
-import {ReactComponent as PhoneIcon} from 'assets/images/icons/phone.svg';
-import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
-import {ReactComponent as HomeIcon} from 'assets/images/icons/home.svg';
-import {ReactComponent as SuitcaseIcon} from 'assets/images/icons/suitcase.svg';
-import {
-  cyContactEmail,
-  cyContactPhone,
-  cyContactTitle,
-  cyContactAddress,
-  cyContactCity,
-  cyContactOrganization,
-} from 'handles';
+import React, {useEffect, useState} from 'react';
+import {getMaxInfoCharacterLength, getDataCy} from './util';
+import {ContactIcon} from './ContactIcon';
 import styles from './index.module.scss';
 
 interface ContactInfoPointProps {
@@ -49,63 +38,20 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     setOrganization,
   } = props;
 
+  const [text, setText] = useState('');
   const type = infoName === 'email' ? 'email' : infoName === 'phone' ? 'tel' : 'text';
   const infoValue = email ?? phone ?? title ?? address ?? city ?? organization;
   const capitalizedInfoName = infoName.charAt(0).toUpperCase() + infoName.slice(1);
   const autoFocus = infoName === 'email' ? true : false;
 
-  const getDataCy = () => {
-    switch (infoName) {
-      case 'email':
-        return cyContactEmail;
-      case 'phone':
-        return cyContactPhone;
-      case 'title':
-        return cyContactTitle;
-      case 'address':
-        return cyContactAddress;
-      case 'city':
-        return cyContactCity;
-      case 'organization':
-        return cyContactOrganization;
-      default:
-        return null;
-    }
+  const getDisplayedtext = () => {
+    const maxDisplayedLength = getMaxInfoCharacterLength();
+    return infoValue.length > maxDisplayedLength ? infoValue.slice(0, maxDisplayedLength) + '...' : infoValue;
   };
 
-  const getMaxLength = () => {
-    switch (infoName) {
-      case 'email':
-      case 'address':
-      case 'city':
-        return 30;
-      case 'phone':
-        return 15;
-      case 'title':
-      case 'organization':
-        return 20;
-      default:
-        return null;
-    }
-  };
-
-  const Icon = () => {
-    switch (infoName) {
-      case 'email':
-        return <EmailIcon className={styles.infoIcon} />;
-      case 'phone':
-        return <PhoneIcon className={styles.infoIcon} />;
-      case 'title':
-        return <PencilIcon className={styles.infoIcon} />;
-      case 'address':
-      case 'city':
-        return <HomeIcon className={styles.infoIcon} />;
-      case 'organization':
-        return <SuitcaseIcon className={styles.infoIcon} />;
-      default:
-        return null;
-    }
-  };
+  useEffect(() => {
+    setText(getDisplayedtext());
+  }, [infoValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regPhone = new RegExp('[^a-zA-Z]+$|^$');
@@ -144,27 +90,57 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          data-cy={getDataCy()}
-          className={styles.email}
+          data-cy={getDataCy(infoName)}
+          className={styles.infoLink}
           href={`mailto:${infoValue}`}
+          onMouseEnter={() => setText(infoValue)}
+          onMouseLeave={() => setText(getDisplayedtext())}
         >
-          {infoValue}
+          {text}
+        </a>
+      );
+    }
+
+    if (infoName === 'address' && infoValue !== 'address') {
+      return (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cy={getDataCy(infoName)}
+          className={styles.infoLink}
+          href={`http://maps.google.com/?q='${infoValue}`}
+          onMouseEnter={() => setText(infoValue)}
+          onMouseLeave={() => setText(getDisplayedtext())}
+        >
+          {text}
         </a>
       );
     }
 
     return (
-      <span className={styles.infoName} data-cy={getDataCy()}>
-        {infoValue}
-      </span>
+      <div className={styles.textContainer}>
+        <span
+          className={styles.infoName}
+          data-cy={getDataCy(infoName)}
+          onMouseEnter={() => setText(infoValue)}
+          onMouseLeave={() => setText(getDisplayedtext())}
+        >
+          {text}
+        </span>
+      </div>
     );
   };
 
   return (
     <>
       <div className={`${styles.infoPointContainer} ${isEditing ? styles.borderBlue : ''}`}>
-        <Icon />
-        <span className={styles.detailName}>{capitalizedInfoName}:</span>
+        <div className={styles.iconWrapper}>
+          <div className={styles.iconContainer}>
+            {ContactIcon(infoName)}
+            <span className={styles.detailName}>{capitalizedInfoName}:</span>
+          </div>
+        </div>
+
         {!isEditing ? (
           <InfoValue />
         ) : (
@@ -179,8 +155,8 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
               placeholder={infoName}
               value={infoValue}
               onChange={handleChange}
-              maxLength={getMaxLength()}
-              data-cy={getDataCy()}
+              maxLength={getMaxInfoCharacterLength(infoName)}
+              data-cy={getDataCy(infoName)}
             />
           </label>
         )}

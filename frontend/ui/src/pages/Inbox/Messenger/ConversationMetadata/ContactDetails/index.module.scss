@@ -15,19 +15,33 @@
   margin-bottom: 7px;
   padding-bottom: 5px;
   display: flex;
-  align-items: center;
   border-bottom: 1px solid transparent;
   line-height: 1.3;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+}
+
+.textContainer {
+  display: flex;
+  align-items: flex-end;
 }
 
 .infoName {
   word-break: break-all;
 }
 
-.email:link,
-.email:visited,
-.email:hover,
-.email:active {
+.infoLink:link,
+.infoLink:visited,
+.infoLink:hover,
+.infoLink:active {
   word-break: break-all;
   color: var(--color-airy-blue);
   text-decoration: underline;
@@ -79,6 +93,11 @@
 
 .arrowIcon {
   margin-right: 6px;
+}
+
+.downIcon {
+  width: 14px;
+  height: 9px;
 }
 
 .infoIcon {

@@ -4,10 +4,10 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
 import {StateModel} from '../../../reducers';
-import {allConnectors} from '../../../selectors/connectors';
+import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
-import ConnectorsListItem from './ConnectorsListItem';
+import ConnectorsListItem from './ChannelsListItem';
 import {SearchField} from 'components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
@@ -17,20 +17,20 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import styles from './index.module.scss';
 import {cyChannelsFormBackButton} from 'handles';
 import {
-  CONNECTORS_FACEBOOK_ROUTE,
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_ROUTE,
-  CONNECTORS_TWILIO_SMS_ROUTE,
-  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
-  CONNECTORS_GOOGLE_ROUTE,
-  CONNECTORS_INSTAGRAM_ROUTE,
+  CHANNELS_FACEBOOK_ROUTE,
+  CHANNELS_CHAT_PLUGIN_ROUTE,
+  CHANNELS_ROUTE,
+  CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
+  CHANNELS_GOOGLE_ROUTE,
+  CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
-const ConnectedConnectorsList = () => {
+const ConnectedChannelsList = () => {
   const {source} = useParams();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
-    return Object.values(allConnectors(state)).filter((channel: Channel) => channel.source === source);
+    return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
   const [name, setName] = useState('');
@@ -50,27 +50,27 @@ const ConnectedConnectorsList = () => {
     switch (source) {
       case Source.facebook:
         setName('Facebook Messenger');
-        setPath(CONNECTORS_FACEBOOK_ROUTE + '/new');
+        setPath(CHANNELS_FACEBOOK_ROUTE + '/new');
         break;
       case Source.google:
         setName('Google Business Messages');
-        setPath(CONNECTORS_GOOGLE_ROUTE + '/new_account');
+        setPath(CHANNELS_GOOGLE_ROUTE + '/new_account');
         break;
       case Source.twilioSMS:
         setName('Twilio SMS');
-        setPath(CONNECTORS_TWILIO_SMS_ROUTE + '/new_account');
+        setPath(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
         break;
       case Source.twilioWhatsApp:
         setName('Twilio Whatsapp');
-        setPath(CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account');
+        setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;
       case Source.chatPlugin:
         setName('Chat Plugin');
-        setPath(CONNECTORS_CHAT_PLUGIN_ROUTE + '/new');
+        setPath(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         break;
       case Source.instagram:
         setName('Instagram');
-        setPath(CONNECTORS_INSTAGRAM_ROUTE + '/new');
+        setPath(CHANNELS_INSTAGRAM_ROUTE + '/new');
         break;
     }
   };
@@ -111,9 +111,9 @@ const ConnectedConnectorsList = () => {
         </div>
       </div>
 
-      <Link to={CONNECTORS_ROUTE} className={styles.backButton} data-cy={cyChannelsFormBackButton}>
+      <Link to={CHANNELS_ROUTE} className={styles.backButton} data-cy={cyChannelsFormBackButton}>
         <ArrowLeftIcon className={styles.backIcon} />
-        Back to connectors
+        Back to channels
       </Link>
 
       <div className={styles.channelsList}>
@@ -136,4 +136,4 @@ const ConnectedConnectorsList = () => {
   );
 };
 
-export default ConnectedConnectorsList;
+export default ConnectedChannelsList;

@@ -9,8 +9,8 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './FacebookConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
-import {useCurrentConnector} from '../../../../../selectors/connectors';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {useCurrentChannel} from '../../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
@@ -21,7 +21,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectFacebookChannel} = props;
-  const channel = useCurrentConnector();
+  const channel = useCurrentChannel();
   const navigate = useNavigate();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
@@ -56,7 +56,7 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectFacebookChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/facebook', {replace: true});
+        navigate(CHANNELS_CONNECTED_ROUTE + '/facebook', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');

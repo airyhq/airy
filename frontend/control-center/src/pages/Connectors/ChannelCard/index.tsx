@@ -7,7 +7,7 @@ type SourceDescriptionCardProps = {
   addConnectorAction: () => void;
 };
 
-const ConnectorCard = (props: SourceDescriptionCardProps) => {
+const ChannelCard = (props: SourceDescriptionCardProps) => {
   const {sourceInfo, addConnectorAction} = props;
 
   return (
@@ -18,4 +18,4 @@ const ConnectorCard = (props: SourceDescriptionCardProps) => {
   );
 };
 
-export default ConnectorCard;
+export default ChannelCard;

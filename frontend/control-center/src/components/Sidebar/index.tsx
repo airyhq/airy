@@ -5,7 +5,7 @@ import {useMatch} from 'react-router';
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as ComponentsIcon} from 'assets/images/icons/componentsIcon.svg';
 
-import {CONNECTORS_ROUTE, COMPONENTS_ROUTE} from '../../routes/routes';
+import {CHANNELS_ROUTE, COMPONENTS_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 
@@ -17,8 +17,8 @@ export const Sidebar = () => {
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
-        <div className={`${styles.align} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
-          <Link to={CONNECTORS_ROUTE} className={`${styles.link} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
+        <div className={`${styles.align} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
+          <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
             <ConnectorsIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Connectors</span>
           </Link>

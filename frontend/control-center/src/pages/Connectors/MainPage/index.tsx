@@ -5,7 +5,7 @@ import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messeng
 import {InstagramRequirementsDialog} from '../Providers/Instagram/InstagramRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
-import ConnectorCard from '../ConnectorCard';
+import ChannelCard from '../ChannelCard';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyCCLogo.svg';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerCCLogo.svg';
@@ -30,26 +30,26 @@ import {
   cyChannelsInstagramList,
 } from 'handles';
 import {
-  CONNECTORS_FACEBOOK_ROUTE,
-  CONNECTORS_TWILIO_SMS_ROUTE,
-  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
-  CONNECTORS_CONNECTED_ROUTE,
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_GOOGLE_ROUTE,
-  CONNECTORS_INSTAGRAM_ROUTE,
+  CHANNELS_FACEBOOK_ROUTE,
+  CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
+  CHANNELS_CONNECTED_ROUTE,
+  CHANNELS_CHAT_PLUGIN_ROUTE,
+  CHANNELS_GOOGLE_ROUTE,
+  CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {StateModel} from '../../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {allConnectorsConnected} from '../../../selectors/connectors';
+import {allChannelsConnected} from '../../../selectors/channels';
 
 export type SourceInfo = {
   type: Source;
   title: string;
   description: string;
   image: JSX.Element;
-  newConnectorRoute: string;
-  connectorsListRoute: string;
+  newChannelRoute: string;
+  channelsListRoute: string;
   configKey: string;
   channelsToShow: number;
   itemInfoString: string;
@@ -63,8 +63,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Airy Live Chat',
     description: 'Best of class browser messenger',
     image: <AiryAvatarIcon />,
-    newConnectorRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',
+    newChannelRoute: CHANNELS_CHAT_PLUGIN_ROUTE + '/new',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/chatplugin',
     configKey: 'sources-chat-plugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -76,8 +76,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Messenger',
     description: 'Connect multiple Facebook pages',
     image: <MessengerAvatarIcon />,
-    newConnectorRoute: CONNECTORS_FACEBOOK_ROUTE + '/new',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/facebook',
+    newChannelRoute: CHANNELS_FACEBOOK_ROUTE + '/new',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/facebook',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -89,8 +89,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'SMS',
     description: 'Deliver SMS with ease',
     image: <SMSAvatarIcon />,
-    newConnectorRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new_account',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',
+    newChannelRoute: CHANNELS_TWILIO_SMS_ROUTE + '/new_account',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.sms/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -102,8 +102,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'WhatsApp',
     description: 'World #1 chat app',
     image: <WhatsAppAvatarIcon />,
-    newConnectorRoute: CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+    newChannelRoute: CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -115,8 +115,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
-    newConnectorRoute: CONNECTORS_GOOGLE_ROUTE + '/new_account',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/google',
+    newChannelRoute: CHANNELS_GOOGLE_ROUTE + '/new_account',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/google',
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -128,8 +128,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Instagram',
     description: 'Connect multiple Instagram pages',
     image: <InstagramIcon />,
-    newConnectorRoute: CONNECTORS_INSTAGRAM_ROUTE + '/new',
-    connectorsListRoute: CONNECTORS_CONNECTED_ROUTE + '/instagram',
+    newChannelRoute: CHANNELS_INSTAGRAM_ROUTE + '/new',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/instagram',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -139,7 +139,7 @@ const SourcesInfo: SourceInfo[] = [
 ];
 
 const MainPage = () => {
-  const connectors = useSelector((state: StateModel) => Object.values(allConnectorsConnected(state)));
+  const connectors = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const config = useSelector((state: StateModel) => state.data.config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 
@@ -174,14 +174,14 @@ const MainPage = () => {
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
         {SourcesInfo.map((infoItem: SourceInfo) => (
           <div style={{display: 'flex'}} key={infoItem.type}>
-            <ConnectorCard
+            <ChannelCard
               sourceInfo={infoItem}
               addConnectorAction={() => {
                 if (channelsBySource(infoItem.type).length > 0) {
-                  return navigate(infoItem.connectorsListRoute);
+                  return navigate(infoItem.channelsListRoute);
                 }
                 if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                  navigate(infoItem.newConnectorRoute);
+                  navigate(infoItem.newChannelRoute);
                 } else {
                   setDisplayDialogFromSource(infoItem.type);
                 }

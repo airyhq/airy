@@ -22,7 +22,7 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const ConnectorListItem = (props: ChannelListItemProps) => {
+const ChannelListItem = (props: ChannelListItemProps) => {
   const {channel} = props;
   const navigate = useNavigate();
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
@@ -63,7 +63,7 @@ const ConnectorListItem = (props: ChannelListItemProps) => {
               styleVariant="link"
               type="button"
               onClick={() =>
-                navigate(`/connectors/${channel.source}/${channel.id}`, {
+                navigate(`/channels/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
               }
@@ -78,14 +78,10 @@ const ConnectorListItem = (props: ChannelListItemProps) => {
       </div>
 
       {deletePopupVisible && (
-        <SettingsModal
-          style={{maxWidth: '420px'}}
-          title="Confirm Connector Disconnection"
-          close={togglePopupVisibility}
-        >
+        <SettingsModal style={{maxWidth: '420px'}} title="Confirm Channel Disconnection" close={togglePopupVisibility}>
           <div className={styles.disconnectModal}>
             <p>
-              You are about to disconnect a connector. You will not receive any new messages in Airy or be able to send
+              You are about to disconnect a channel. You will not receive any new messages in Airy or be able to send
               messages anymore.
             </p>
             <p>
@@ -98,7 +94,7 @@ const ConnectorListItem = (props: ChannelListItemProps) => {
                 Cancel
               </Button>
               <Button styleVariant="warning" type="submit" onClick={disconnectConnector}>
-                Disconnect Connector
+                Disconnect Channel
               </Button>
             </div>
           </div>
@@ -108,4 +104,4 @@ const ConnectorListItem = (props: ChannelListItemProps) => {
   );
 };
 
-export default connector(ConnectorListItem);
+export default connector(ChannelListItem);

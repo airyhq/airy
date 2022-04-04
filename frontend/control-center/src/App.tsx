@@ -5,12 +5,12 @@ import {Sidebar} from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {COMPONENTS_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE} from './routes/routes';
+import {COMPONENTS_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE} from './routes/routes';
 import Connectors from './pages/Connectors';
 import Components from './pages/Components';
 import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedConnectorsList from './pages/Connectors/ConnectedConnectorsList';
+import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
 import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
@@ -35,11 +35,11 @@ const App = (props: ConnectedProps<typeof connector>) => {
         <TopBar isAdmin={true} />
         <Sidebar />
         <Routes>
-          <Route path={ROOT_ROUTE} element={<Navigate to={CONNECTORS_ROUTE} replace />} />
-          <Route path={`${CONNECTORS_ROUTE}/*`} element={<Connectors />}>
+          <Route path={ROOT_ROUTE} element={<Navigate to={CHANNELS_ROUTE} replace />} />
+          <Route path={`${CHANNELS_ROUTE}/*`} element={<Connectors />}>
             <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
             <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedConnectorsList />} />
+            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
             <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
             <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
             <Route path={`google/:channelId`} element={<GoogleConnect />} />

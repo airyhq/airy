@@ -3,7 +3,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
 import styles from './index.module.scss';
 import {Source} from 'model';
-import {getConnectorAvatar} from '../../../components/ConnectorAvatar';
+import {getChannelAvatar} from '../../../components/ChannelAvatar';
 
 type ComponentsListProps = {
   healthy: boolean;
@@ -54,7 +54,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
       <div className={styles.icons}>{healthy ? <CheckmarkIcon /> : <UncheckedIcon />}</div>
       <p>{serviceName}</p>
       <div className={styles.componentName}>
-        {getConnectorAvatar(connectorSource)}
+        {getChannelAvatar(connectorSource)}
         <p>{connectorSourceName}</p>
       </div>
     </div>

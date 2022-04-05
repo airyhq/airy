@@ -10,7 +10,7 @@ import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberLogoFilled
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
-type ConnectorAvatarProps = {
+type ChannelAvatarProps = {
   channel: Channel;
   style?: CSSProperties;
   imageUrl?: string;
@@ -26,7 +26,7 @@ const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source
   }
 };
 
-export const getConnectorAvatar = (source: string) => {
+export const getChannelAvatar = (source: string) => {
   switch (source) {
     case Source.facebook:
       return <FacebookAvatar />;
@@ -47,7 +47,7 @@ export const getConnectorAvatar = (source: string) => {
   }
 };
 
-const ConnectorAvatar = (props: ConnectorAvatarProps) => {
+const ChannelAvatar = (props: ChannelAvatarProps) => {
   const {channel, imageUrl, style} = props;
 
   const getCustomLogo = (channel: Channel) => {
@@ -62,9 +62,9 @@ const ConnectorAvatar = (props: ConnectorAvatarProps) => {
 
   return (
     <div className={styles.image} style={style}>
-      {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getConnectorAvatar(channel.source)}
+      {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getChannelAvatar(channel.source)}
     </div>
   );
 };
 
-export default ConnectorAvatar;
+export default ChannelAvatar;

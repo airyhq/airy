@@ -4,7 +4,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
 import {StateModel} from '../../../reducers';
-import {allConnectors} from '../../../selectors/connectors';
+import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
 import ChannelsListItem from './ChannelsListItem';
@@ -26,11 +26,11 @@ import {
   CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
-const ConnectedConnectorsList = () => {
+const ConnectedChannelsList = () => {
   const {source} = useParams();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
-    return Object.values(allConnectors(state)).filter((channel: Channel) => channel.source === source);
+    return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
   const [name, setName] = useState('');
@@ -113,7 +113,7 @@ const ConnectedConnectorsList = () => {
 
       <Link to={CHANNELS_ROUTE} className={styles.backButton} data-cy={cyChannelsFormBackButton}>
         <ArrowLeftIcon className={styles.backIcon} />
-        Back to connectors
+        Back to channels
       </Link>
 
       <div className={styles.channelsList}>
@@ -136,4 +136,4 @@ const ConnectedConnectorsList = () => {
   );
 };
 
-export default ConnectedConnectorsList;
+export default ConnectedChannelsList;

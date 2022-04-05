@@ -6,20 +6,20 @@ import {merge, omitBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 
-export interface ConnectorsState {
+export interface ChannelsState {
   [channelId: string]: Channel;
 }
 
-const cleanUpConnectorPayload = (channel: Channel): Channel => {
+const cleanUpChannelPayload = (channel: Channel): Channel => {
   channel.sourceChannelId = channel.sourceChannelId.replace('whatsapp:', '');
   return channel;
 };
 
-const setChannel = (state: ConnectorsState, channel: Channel) => {
+const setChannel = (state: ChannelsState, channel: Channel) => {
   if (channel.metadata != null) {
     return {
       ...state,
-      [channel.id]: cleanUpConnectorPayload(channel),
+      [channel.id]: cleanUpChannelPayload(channel),
     };
   }
 
@@ -34,7 +34,7 @@ const setChannel = (state: ConnectorsState, channel: Channel) => {
   };
 };
 
-const connectorsReducer = (state = {}, action: Action): ConnectorsState => {
+const channelsReducer = (state = {}, action: Action): ChannelsState => {
   switch (action.type) {
     case getType(metadataActions.setMetadataAction):
       if (action.payload.subject !== 'channel') {
@@ -65,4 +65,4 @@ const connectorsReducer = (state = {}, action: Action): ConnectorsState => {
   }
 };
 
-export default connectorsReducer;
+export default channelsReducer;

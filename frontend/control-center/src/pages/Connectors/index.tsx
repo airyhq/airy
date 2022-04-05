@@ -4,7 +4,7 @@ import {Outlet} from 'react-router-dom';
 
 import {listChannels} from '../../actions';
 import {StateModel} from '../../reducers';
-import {allConnectorsConnected} from '../../selectors/connectors';
+import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 
 const mapDispatchToProps = {
@@ -12,7 +12,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allConnectorsConnected(state)),
+  channels: Object.values(allChannelsConnected(state)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -4,7 +4,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
-import {allConnectors} from '../../../../../selectors/connectors';
+import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
 import {Button, LinkButton, InfoButton} from 'components';
@@ -18,7 +18,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -27,7 +27,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allConnectors(state)),
+  channels: Object.values(allChannels(state)),
   config: state.data.config,
 });
 
@@ -46,13 +46,13 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }),
       })
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+        navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
       });
   };
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+      navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
     });
   };
 
@@ -62,7 +62,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     }
   };
 
-  const openNewPage = () => navigate(CONNECTORS_CHAT_PLUGIN_ROUTE + '/new');
+  const openNewPage = () => navigate(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
 
   const OverviewSection = () => (
     <div className={styles.overview}>
@@ -81,7 +81,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.listChannelName}>{channel.metadata?.name}</div>
             <div className={styles.listButtons}>
-              <Link className={styles.listButtonEdit} to={`${CONNECTORS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
+              <Link className={styles.listButtonEdit} to={`${CHANNELS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
                 Edit
               </Link>
               <LinkButton

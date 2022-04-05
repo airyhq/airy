@@ -17,7 +17,7 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const Connectors = (props: ConnectedProps<typeof connector>) => {
+const Channels = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     if (props.channels.length === 0) {
       props.listChannels();
@@ -28,4 +28,4 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   return <Outlet />;
 };
 
-export default connector(Connectors);
+export default connector(Channels);

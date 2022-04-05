@@ -71,7 +71,7 @@ avro_gen = rule(
             providers = [java_common.JavaRuntimeInfo],
         ),
         "_avro_tools": attr.label(
-            cfg = "host",
+            cfg = "exec",
             default = Label("@maven//:org_apache_avro_avro_tools"),
             allow_single_file = True,
         ),

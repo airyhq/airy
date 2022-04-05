@@ -22,11 +22,9 @@
 .align {
   display: flex;
   justify-content: center;
-  margin-top: 24px;
-  margin-bottom: 32px;
+  margin-top: 11px;
   width: 164px;
   height: 42px;
-  background-color: var(--color-blue-white);
   border-radius: 10px;
 }
 
@@ -69,8 +67,13 @@
 
 .link.active {
   color: var(--color-airy-blue);
+  padding-left: 10px;
 
   svg path {
     fill: var(--color-airy-blue);
   }
+}
+
+.align.active {
+  background-color: var(--color-blue-white);
 }

@@ -39,7 +39,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route path={`${CHANNELS_ROUTE}/*`} element={<ChannelsOutlet />}>
             <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
             <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
+            <Route path={`connected/:source`} element={<ConnectedConnectorsList />} />
             <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
             <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
             <Route path={`google/:channelId`} element={<GoogleConnect />} />

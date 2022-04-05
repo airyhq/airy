@@ -1,6 +1,5 @@
 import React, {useEffect, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {isEqual} from 'lodash-es';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
 import {Message, Suggestions} from 'model';
@@ -10,9 +9,11 @@ import {listMessages, listPreviousMessages, resendMessage} from '../../../../act
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
-import {MessageInfoWrapper, Reaction} from 'components';
+import {Reaction, MessageInfoWrapper} from 'components';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
+import {MessageInfo} from './MessageInfo';
+import {Avatar} from 'components';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
@@ -153,46 +154,52 @@ const MessageList = (props: MessageListProps) => {
           </button>
         ) : null;
 
+        const isChatPlugin = false;
+
+        const isContact = isChatPlugin ? !message.fromContact : message.fromContact;
+
         return (
-          <div key={message.id} id={`message-item-${message.id}`}>
-            {hasDateChanged(prevMessage, message) && (
-              <div key={`date-${message.id}`} className={styles.dateHeader}>
-                {formatDateOfMessage(message)}
-              </div>
-            )}
-            <MessageInfoWrapper
-              fromContact={message.fromContact}
-              contact={contact}
+          <>
+            <div
+              key={message.id}
+              id={`message-item-${message.id}`}
+              style={{
+                display: isContact && sentAt ? 'flex' : '',
+                marginLeft: lastInGroup === false && isChatPlugin === false ? '48px' : '',
+              }}
+            >
+              {hasDateChanged(prevMessage, message) && (
+                <div key={`date-${message.id}`} className={styles.dateHeader}>
+                  {formatDateOfMessage(message)}
+                </div>
+              )}
+              {isContact && sentAt && lastInGroup && (
+                <div className={styles.avatar}>
+                  <Avatar contact={contact} />
+                </div>
+              )}
+              <MessageInfoWrapper
+                fromContact={message.fromContact}
+                contact={contact}
+                isChatPlugin={false}
+                decoration={messageDecoration}
+              >
+                <SourceMessage source={source} message={message} contentType="message" />
+                <Reaction message={message} />
+              </MessageInfoWrapper>
+            </div>
+            <MessageInfo
+              isContact={isContact}
               sentAt={sentAt}
-              lastInGroup={lastInGroup}
-              isChatPlugin={false}
-              decoration={messageDecoration}
-              senderName={message?.sender?.name}
               deliveryState={message?.deliveryState}
               messageId={message.id}
-              onResendFailedMessage={handleFailedMessage}
-            >
-              <SourceMessage source={source} message={message} contentType="message" />
-              <Reaction message={message} />
-            </MessageInfoWrapper>
-          </div>
+              senderName={message?.sender?.name}
+            />
+          </>
         );
       })}
     </div>
   );
 };
 
-const arePropsEqual = (prevProps, nextProps) => {
-  if (
-    prevProps.history?.location?.pathname === nextProps.history?.location?.pathname &&
-    prevProps.conversation?.id === nextProps.conversation?.id &&
-    prevProps.history?.location?.key === nextProps.history?.location?.key &&
-    prevProps.location?.key !== nextProps.location?.key
-  ) {
-    return true;
-  }
-
-  return isEqual(prevProps, nextProps);
-};
-
-export default connector(React.memo(MessageList, arePropsEqual));
+export default connector(MessageList);

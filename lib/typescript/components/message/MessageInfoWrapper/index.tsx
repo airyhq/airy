@@ -3,9 +3,10 @@ import {Avatar} from '../Avatar';
 import {ContactInfo, DeliveryState} from 'model';
 import styles from './index.module.scss';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
+import {isEqual} from 'lodash-es';
 
 type MessageInfoWrapperProps = {
-  children: ReactNode;
+  children?: ReactNode;
   lastInGroup?: boolean;
   isChatPlugin: boolean;
   fromContact?: boolean;
@@ -18,7 +19,7 @@ type MessageInfoWrapperProps = {
   onResendFailedMessage?: (resend: boolean, messageId: string) => void;
 };
 
-export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
+const MessageInfoWrapperComponent = (props: MessageInfoWrapperProps) => {
   const {
     sentAt,
     contact,
@@ -73,29 +74,27 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
         )}
         <div className={styles.memberContent}>{children}</div>
       </div>
-      <MessageInfo />
     </div>
   );
 
   const ContactMessage = () => (
     <>
       <div className={styles.contact}>
-        {sentAt && (
-          <div className={styles.avatar}>
-            <Avatar contact={contact} />
-          </div>
-        )}
-        <div
-          className={styles.contactContent}
-          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}
-        >
-          {children}
-        </div>
+        <div className={styles.contactContent}>{children}</div>
         {decoration}
       </div>
-      <MessageInfo />
     </>
   );
 
   return <>{isContact ? <ContactMessage /> : <MemberMessage />}</>;
 };
+
+const arePropsEqual = (prevProps, nextProps) => {
+  if (prevProps.messageId === nextProps.messageId) return true;
+
+  return isEqual(prevProps, nextProps);
+};
+
+const MessageInfoWrapper = React.memo(MessageInfoWrapperComponent, arePropsEqual);
+
+export {MessageInfoWrapper};

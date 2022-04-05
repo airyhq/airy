@@ -13,7 +13,7 @@ const fallbackAvatarImage = (event: SyntheticEvent<HTMLImageElement, Event>) => 
   event.currentTarget.alt = 'fallback avatar';
 };
 
-const AvatarComponent = ({contact}: AvatarProps) => (
+export const Avatar = ({contact}: AvatarProps) => (
   <img
     alt={contact?.displayName || 'Unknown contact'}
     className={styles.avatarImage}
@@ -21,9 +21,3 @@ const AvatarComponent = ({contact}: AvatarProps) => (
     onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackAvatarImage(event)}
   />
 );
-
-const areEqual = (prevProps, nextProps) => {
-  return prevProps.contact.avatarUrl === nextProps.contact.avatarUrl;
-};
-
-export const Avatar = React.memo(AvatarComponent, areEqual);

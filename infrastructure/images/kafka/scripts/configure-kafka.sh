@@ -13,11 +13,8 @@ ADVERTISED_LISTENERS=$(echo "${AIRY_ADVERTISED_LISTENERS}" | \
 # Insert runtime configuration
 { 
   echo "broker.id=${BROKER_ID}"
-  echo "listeners=${LISTENERS},CONTROLLER://:19092"
+  echo "listeners=${LISTENERS}"
   echo "advertised.listeners=${ADVERTISED_LISTENERS}"
-  echo "message.max.bytes=10485760"
-  echo "max.message.bytes=10485760"
-  echo "controller.quorum.voters=0@localhost:19092"
 } >> /etc/kafka/server.properties
  
 # Insert all other KAFKA_* env variables as settings
@@ -32,7 +29,3 @@ done
 
 echo "Printing out the broker configuration"
 cat /etc/kafka/server.properties
-
-CLUSTER_ID=$(/opt/kafka/bin/kafka-storage.sh random-uuid)
-/opt/kafka/bin/kafka-storage.sh format -t "${CLUSTER_ID}" -c /etc/kafka/server.properties --ignore-formatted
-chown -R 1000 /opt/kafka/

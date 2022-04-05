@@ -1,0 +1,123 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.componentsWrapper {
+  background: var(--color-blue-white);
+  border-radius: 10px;
+  padding: 32px;
+  width: 100%;
+  margin: 88px 1.5em 0 191px;
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.componentsHeadline {
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);
+  margin-bottom: 14px;
+}
+
+.componentsHeadlineText {
+  @include font-xl;
+  font-weight: 900;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-airy-blue);
+  border: 1px solide var(--color-airy-blue);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+  h2:first-of-type {
+    width: 20%;
+  }
+  div h2:last-of-type {
+    margin-left: 0px;
+    button {
+      margin-right: 20px;
+    }
+  }
+  h2:last-of-type {
+    width: 35%;
+  }
+
+  h2 {
+    @include font-base;
+    color: white;
+    font-weight: bold;
+    margin-left: 24px;
+  }
+}
+
+.listHeaderButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  margin-left: 24px;
+
+  button {
+    margin-right: 20px;
+  }
+}
+
+.refreshButton {
+  right: 60px;
+  top: 180px;
+  transition: 0.5s;
+  border: none;
+  outline: none;
+  height: 20px;
+  width: 20px;
+  padding: 0px;
+  background: transparent;
+  svg {
+    fill: white;
+  }
+}
+
+@keyframes spinAnimationRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes spinAnimationOutRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+.spinAnimationIn {
+  height: 20px;
+  width: 20px;
+  animation: spinAnimationRefresh 1500ms ease;
+}
+
+.spinAnimationOut {
+  height: 20px;
+  width: 20px;
+  animation: spinAnimationOutRefresh 1500ms ease;
+}

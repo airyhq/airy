@@ -6,12 +6,17 @@ sidebar_label: Message Types
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <table>
+<thead>
 <tr>
-<td> Message Type </td> <td> Payload </td> <td> Preview </td>
-</tr>
+<th>Payload</th><th>Preview</th></tr>
+</thead>
+<tbody>
 <tr>
-<td> text </td>
 <td>
+<br/>
+Text
+<br/>
+<br/>
 
 ```json
 {
@@ -23,11 +28,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> image </td>
 <td>
+<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/textMessagePreview.png')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+Image
+<br/>
+<br/>
 
 ```json
 {
@@ -44,11 +56,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> video </td>
 <td>
+<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/ImageMessagePreview.png')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+Video
+<br/>
+<br/>
 
 ```json
 {
@@ -65,11 +84,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> file </td>
 <td>
+<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/videoMessagePreview.png')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+File
+<br/>
+<br/>
 
 ```json
 {
@@ -86,11 +112,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> audio </td>
 <td>
+<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/fileMessagePreview.png')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+Audio
+<br/>
+<br/>
 
 ```json
 {
@@ -107,11 +140,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> richText </td>
 <td>
+<img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+RichText
+<br/>
+<br/>
 
 ```json
 {
@@ -125,11 +165,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
-</tr>
-<tr>
-<td> richCard </td>
 <td>
+<img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} />
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>
+<br/>
+RichCard
+<br/>
+<br/>
 
 ```json
 {
@@ -172,14 +219,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 </td>
 <td>
-
 <img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} />
-
 </td>
 </tr>
+</tbody>
+<tbody>
 <tr>
-<td> richCardCarousel </td>
 <td>
+<br/>
+RichCardCarousel
+<br/>
+<br/>
 
 ```json
 {
@@ -240,14 +290,14 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/richCardCarouselChatpluginExample.gif')} />
 </td>
 </tr>
+</tbody>
+<tbody>
 <tr>
-<td> quickReplies </td>
 <td>
-
-  type: 'quickReplies';
-  text?: string;
-  attachment?: AttachmentUnion;
-  quickReplies: QuickReply[];
+<br/>
+QuickReplies
+<br/>
+<br/>
 
 ```json
 {
@@ -262,11 +312,16 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
+<td>text</td>
 </tr>
+</tbody>
+<tbody>
 <tr>
-<td> suggestionResponse </td>
 <td>
+<br/>
+SuggestionReponse
+<br/>
+<br/>
 
 ```json
 {
@@ -280,6 +335,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 </td>
-<td> text </td>
+<td>text</td>
 </tr>
+</tbody>
 </table>

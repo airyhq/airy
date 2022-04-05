@@ -12,40 +12,40 @@ type ComponentsListProps = {
 
 export const ComponentListItem = (props: ComponentsListProps) => {
   const {healthy, serviceName} = props;
-  const [connectorSource, setConnectorSource] = useState('');
-  const [connectorSourceName, setConnectorSourceName] = useState('');
+  const [channelSource, setChannnelSource] = useState('');
+  const [channelSourceName, setChannelSourceName] = useState('');
 
   useEffect(() => {
     if (serviceName.includes('twilio')) {
-      setConnectorSource('twilio');
-      setConnectorSourceName('Twilio');
+      setChannnelSource('twilio');
+      setChannelSourceName('Twilio');
     }
     if (serviceName.includes('google')) {
-      setConnectorSource(Source.google);
-      setConnectorSourceName('Google');
+      setChannnelSource(Source.google);
+      setChannelSourceName('Google');
     }
     if (serviceName.includes('viber')) {
-      setConnectorSource(Source.viber);
-      setConnectorSourceName('Viber');
+      setChannnelSource(Source.viber);
+      setChannelSourceName('Viber');
     }
     if (serviceName.includes('facebook')) {
-      setConnectorSource(Source.facebook);
-      setConnectorSourceName('Facebook');
+      setChannnelSource(Source.facebook);
+      setChannelSourceName('Facebook');
     }
     if (serviceName.includes('frontend')) {
-      setConnectorSource(Source.chatPlugin);
-      setConnectorSourceName('Airy Inbox');
+      setChannnelSource(Source.chatPlugin);
+      setChannelSourceName('Airy Inbox');
     }
     if (serviceName.includes('chat-plugin')) {
-      setConnectorSource(Source.chatPlugin);
-      setConnectorSourceName('Chat Plugin');
+      setChannnelSource(Source.chatPlugin);
+      setChannelSourceName('Chat Plugin');
     }
     if (serviceName.includes('instagram')) {
-      setConnectorSource(Source.instagram);
-      setConnectorSourceName('Instagram');
+      setChannnelSource(Source.instagram);
+      setChannelSourceName('Instagram');
     } else {
       const string = serviceName.replaceAll('-', ' ');
-      setConnectorSourceName(string);
+      setChannelSourceName(string);
     }
   }, []);
 
@@ -54,8 +54,8 @@ export const ComponentListItem = (props: ComponentsListProps) => {
       <div className={styles.icons}>{healthy ? <CheckmarkIcon /> : <UncheckedIcon />}</div>
       <p>{serviceName}</p>
       <div className={styles.componentName}>
-        {getChannelAvatar(connectorSource)}
-        <p>{connectorSourceName}</p>
+        {getChannelAvatar(channelSource)}
+        <p>{channelSourceName}</p>
       </div>
     </div>
   );

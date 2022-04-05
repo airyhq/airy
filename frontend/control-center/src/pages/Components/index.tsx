@@ -5,6 +5,7 @@ import {StateModel} from '../../reducers';
 import {ComponentListItem} from './ComponentsListItem';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
+import {setPageTitle} from '../../services/pageTitle';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -15,6 +16,10 @@ const connector = connect(null, mapDispatchToProps);
 const Components = (props: ConnectedProps<typeof connector>) => {
   const config = useSelector((state: StateModel) => state.data.config);
   const [spinAnim, setSpinAnim] = useState(true);
+
+  useEffect(() => {
+    setPageTitle('Components');
+  }, []);
 
   useEffect(() => {
     props.getClientConfig();

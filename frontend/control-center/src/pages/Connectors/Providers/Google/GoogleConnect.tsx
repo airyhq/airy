@@ -10,7 +10,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 import styles from './GoogleConnect.module.scss';
 
 import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
-import {useCurrentChannel} from '../../../../selectors/channels';
+import {useCurrentConnector} from '../../../../selectors/connectors';
 import {useNavigate} from 'react-router-dom';
 
 const mapDispatchToProps = {
@@ -21,7 +21,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectGoogleChannel} = props;
-  const channel = useCurrentChannel();
+  const channel = useCurrentConnector();
   const navigate = useNavigate();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');

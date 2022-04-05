@@ -4,7 +4,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
-import {allChannels} from '../../../../../selectors/channels';
+import {allConnectors} from '../../../../../selectors/connectors';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
 import {Button, LinkButton, InfoButton} from 'components';
@@ -27,7 +27,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannels(state)),
+  channels: Object.values(allConnectors(state)),
   config: state.data.config,
 });
 

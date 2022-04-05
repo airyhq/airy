@@ -4,7 +4,7 @@ import {Outlet} from 'react-router-dom';
 
 import {listChannels} from '../../actions';
 import {StateModel} from '../../reducers';
-import {allChannelsConnected} from '../../selectors/channels';
+import {allConnectorsConnected} from '../../selectors/connectors';
 import {setPageTitle} from '../../services/pageTitle';
 
 const mapDispatchToProps = {
@@ -12,12 +12,12 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannelsConnected(state)),
+  channels: Object.values(allConnectorsConnected(state)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const Channels = (props: ConnectedProps<typeof connector>) => {
+const Connectors = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     if (props.channels.length === 0) {
       props.listChannels();
@@ -28,4 +28,4 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
   return <Outlet />;
 };
 
-export default connector(Channels);
+export default connector(Connectors);

@@ -2,12 +2,20 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
-  width: 100%;
   display: flex;
   align-items: center;
+  margin-top: -14px;
+  background-color: green;
+}
+
+.alignLeft {
   justify-content: flex-end;
   padding-right: 8px;
-  margin-top: -14px;
+}
+
+.alignRight {
+  justify-content: flex-start;
+  padding-left: 8px;
 }
 
 .emojiWrapper {
@@ -16,4 +24,5 @@
   width: 24px;
   height: 24px;
   padding-left: 4px;
+  z-index: 1;
 }

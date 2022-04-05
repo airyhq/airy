@@ -1,0 +1,39 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  background-color: lightblue;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin: 6px 8px 0 0;
+  flex-shrink: 0;
+  background-color: red;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.contactContainer {
+  align-items: flex-start;
+  background-color: purple;
+}
+
+.memberContainer {
+  align-items: flex-end;
+  background-color: pink;
+}
+
+.infoMessage {
+  @include font-s;
+  color: var(--color-text-gray);
+  margin-bottom: 5px;
+  padding-left: 50px;
+  display: block;
+}

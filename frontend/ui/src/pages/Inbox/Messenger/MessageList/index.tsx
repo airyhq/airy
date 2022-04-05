@@ -2,18 +2,15 @@ import React, {useEffect, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-import {Message, Suggestions} from 'model';
-import {SourceMessage} from 'render';
-import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
+import {Message, Suggestions, Source} from 'model';
+import {MessageWrapper} from 'components';
 import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
-import styles from './index.module.scss';
-import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
-import {Reaction, MessageInfoWrapper} from 'components';
+import {formatDateOfMessage} from '../../../../services/format/date';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
-import {MessageInfo} from './MessageInfo';
-import {Avatar} from 'components';
+import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
+import styles from './index.module.scss';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
@@ -138,6 +135,15 @@ const MessageList = (props: MessageListProps) => {
     resend && resendMessage({messageId});
   };
 
+  const getSourceType = (source: string): Source => {
+    if (source === 'facebook') return Source.facebook;
+    if (source === 'google') return Source.google;
+    if (source === 'chatplugin') return Source.chatPlugin;
+    if (source === 'twilio.whatsapp') return Source.twilioWhatsApp;
+    if (source === 'instagram') return Source.instagram;
+    if (source === 'viber') return Source.viber;
+  };
+
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages?.map((message: Message, index: number) => {
@@ -154,48 +160,25 @@ const MessageList = (props: MessageListProps) => {
           </button>
         ) : null;
 
-        const isChatPlugin = false;
-
-        const isContact = isChatPlugin ? !message.fromContact : message.fromContact;
-
         return (
-          <>
-            <div
-              key={message.id}
-              id={`message-item-${message.id}`}
-              style={{
-                display: isContact && sentAt ? 'flex' : '',
-                marginLeft: lastInGroup === false && isChatPlugin === false ? '48px' : '',
-              }}
-            >
-              {hasDateChanged(prevMessage, message) && (
-                <div key={`date-${message.id}`} className={styles.dateHeader}>
-                  {formatDateOfMessage(message)}
-                </div>
-              )}
-              {isContact && sentAt && lastInGroup && (
-                <div className={styles.avatar}>
-                  <Avatar contact={contact} />
-                </div>
-              )}
-              <MessageInfoWrapper
-                fromContact={message.fromContact}
-                contact={contact}
-                isChatPlugin={false}
-                decoration={messageDecoration}
-              >
-                <SourceMessage source={source} message={message} contentType="message" />
-                <Reaction message={message} />
-              </MessageInfoWrapper>
-            </div>
-            <MessageInfo
-              isContact={isContact}
+          <div key={message.id} id={`message-item-${message.id}`}>
+            {hasDateChanged(prevMessage, message) && (
+              <div key={`date-${message.id}`} className={styles.dateHeader}>
+                {formatDateOfMessage(message)}
+              </div>
+            )}
+            <MessageWrapper
+              contentType={'message'}
+              message={message}
+              source={getSourceType(source)}
+              messageDecoration={messageDecoration}
+              lastInGroup={lastInGroup}
               sentAt={sentAt}
-              deliveryState={message?.deliveryState}
-              messageId={message.id}
-              senderName={message?.sender?.name}
+              isChatPlugin={false}
+              contact={contact}
+              handleFailedMessage={handleFailedMessage}
             />
-          </>
+          </div>
         );
       })}
     </div>

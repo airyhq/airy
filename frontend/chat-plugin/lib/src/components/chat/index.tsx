@@ -18,8 +18,9 @@ import {AiryChatPluginConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 
-import {SourceMessage, CommandUnion} from 'render';
-import {MessageInfoWrapper} from 'components';
+import {CommandUnion} from 'render';
+import {MessageWrapper} from 'components';
+import {Source} from 'model';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
@@ -279,19 +280,17 @@ const Chat = ({config, ...props}: Props) => {
                           props.airyMessageProp
                             ? () => props.airyMessageProp(ctrl)
                             : () => (
-                                <MessageInfoWrapper
-                                  fromContact={message.fromContact}
-                                  isChatPlugin={true}
-                                  lastInGroup={lastInGroup}
-                                >
-                                  <SourceMessage
+                                <div>
+                                  <MessageWrapper
+                                    isChatPlugin={true}
+                                    lastInGroup={lastInGroup}
                                     contentType="message"
                                     message={message}
-                                    source="chatplugin"
+                                    source={Source.chatPlugin}
                                     invertSides={true}
                                     commandCallback={commandCallback}
                                   />
-                                </MessageInfoWrapper>
+                                </div>
                               )
                         }
                       />

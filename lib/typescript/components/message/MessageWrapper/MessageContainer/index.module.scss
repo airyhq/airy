@@ -1,0 +1,34 @@
+.messageReactionErrorContainer {
+  width: auto;
+  background-color: orange;
+}
+
+.messageError {
+  display: flex;
+  align-items: center;
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.memberContent {
+  overflow-x: hidden;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.contact {
+  display: flex;
+  align-items: flex-start;
+}
+
+.contactContent {
+  overflow-x: hidden;
+  max-width: 100%;
+}

@@ -32,6 +32,7 @@ module.exports = {
             'sources/chatplugin/demo',
             'sources/chatplugin/quickstart',
             'sources/chatplugin/installation',
+            'sources/chatplugin/messageExamples',
             'sources/chatplugin/customization',
           ],
         },

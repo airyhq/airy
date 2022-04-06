@@ -6,17 +6,18 @@ sidebar_label: Message Types
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <table>
-<thead>
-<tr>
-<th>Payload</th><th>Preview</th></tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<br/>
-Text
-<br/>
-<br/>
+    <thead>
+        <tr>
+            <th>Payload</th><th>Preview</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <br/>
+                Text
+                <br/>
+                <br/>
 
 ```json
 {
@@ -57,7 +58,7 @@ Image
 
 </td>
 <td>
-<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/ImageMessagePreview.png')} />
+<img alt="Image Message Preview" src={useBaseUrl('img/sources/chatplugin/ImageMessagePreview.png')} />
 </td>
 </tr>
 </tbody>
@@ -85,7 +86,7 @@ Video
 
 </td>
 <td>
-<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/videoMessagePreview.png')} />
+<img alt="Video Message Preview" src={useBaseUrl('img/sources/chatplugin/videoMessagePreview.png')} />
 </td>
 </tr>
 </tbody>
@@ -113,7 +114,7 @@ File
 
 </td>
 <td>
-<img alt="Text Message Preview" src={useBaseUrl('img/sources/chatplugin/fileMessagePreview.png')} />
+<img alt="File Message Preview" src={useBaseUrl('img/sources/chatplugin/fileMessagePreview.png')} />
 </td>
 </tr>
 </tbody>
@@ -141,7 +142,7 @@ Audio
 
 </td>
 <td>
-<img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} />
+<img alt="Audio Message Preview" src={useBaseUrl('img/sources/chatplugin/AudioMessagePreview.png')} />
 </td>
 </tr>
 </tbody>
@@ -166,7 +167,7 @@ RichText
 
 </td>
 <td>
-<img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} />
+<img alt="RichText Message Preview" src={useBaseUrl('img/sources/chatplugin/RichTextMessagePreview.png')} />
 </td>
 </tr>
 </tbody>
@@ -302,24 +303,36 @@ QuickReplies
 ```json
 {
     "conversation_id": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx",
+    "messaging_type": "RESPONSE",
     "message": {
-        "type": "quickReplies",
-        "text": "xxx",
-        "attachment": "xxx",
-        "quickReplies": "xxx"
+        "text": "Pick a color:",
+        "quick_replies": [
+            {
+                "content_type": "text",
+                "title": "xxx",
+                "payload": "<POSTBACK_PAYLOAD>",
+                "image_url": "https://xxxxxxxx.png"
+            },
+            {
+                "content_type": "text",
+                "title": "xxx",
+                "payload": "<POSTBACK_PAYLOAD>",
+                "image_url": "https://xxxxxxxx.png"
+            }
+        ]
     }
 }
 ```
 
 </td>
-<td>text</td>
+<img alt="QuickReplies Message Preview" src={useBaseUrl('img/sources/chatplugin/quickRepliesMessagePreview.png')} />
 </tr>
 </tbody>
 <tbody>
 <tr>
 <td>
 <br/>
-SuggestionReponse
+SuggestionResponse
 <br/>
 <br/>
 
@@ -335,7 +348,7 @@ SuggestionReponse
 ```
 
 </td>
-<td>text</td>
+<img alt="QuickReplies Message Preview" src={useBaseUrl('img/sources/chatplugin/suggestionResponseMessagePreview.png')} />
 </tr>
 </tbody>
 </table>

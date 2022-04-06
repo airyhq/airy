@@ -3,3 +3,6 @@
 build/
 bazel-*
 **/*/.docusaurus
+**/*/sources/chatplugin/messageExamples.md
+
+

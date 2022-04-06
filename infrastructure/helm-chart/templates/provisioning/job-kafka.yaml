@@ -12,6 +12,11 @@ spec:
         image: "{{ .Values.provisioning.kafka.image }}:{{ .Values.provisioning.kafka.imageTag }}"
         command: ["/bin/sh", "/opt/provisioning/create-topics.sh"]
         env:
+        - name: ZOOKEEPER
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: ZOOKEEPER
         - name: REPLICAS
           valueFrom:
             configMapKeyRef:

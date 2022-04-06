@@ -1,21 +1,21 @@
 import React, {ReactNode} from 'react';
+import {Source, ContactInfo, Message} from 'model';
+import {CommandUnion, ContentType} from 'render';
 import {MessageContainer} from './MessageContainer';
 import {MessageInfo} from '../MessageInfo';
 import {Avatar} from '../Avatar';
 import styles from './index.module.scss';
-import {Source, ContactInfo, Message} from 'model';
-import {CommandUnion} from 'render';
 
 interface MessageWrapperProps {
   message: Message;
+  contentType: ContentType;
   source: Source;
-  decoration?: ReactNode;
   lastInGroup: boolean;
-  sentAt?: string;
   isChatPlugin: boolean;
+  sentAt?: string;
+  decoration?: ReactNode;
   contact?: ContactInfo;
   handleFailedMessage?: (resend: boolean, messageId: string) => void;
-  contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
   invertSides?: boolean;
   commandCallback?: (command: CommandUnion) => void;
 }
@@ -23,14 +23,14 @@ interface MessageWrapperProps {
 export const MessageWrapper = (props: MessageWrapperProps) => {
   const {
     message,
+    contentType,
     source,
-    decoration,
     lastInGroup,
-    sentAt,
     isChatPlugin,
+    sentAt,
+    decoration,
     contact,
     handleFailedMessage,
-    contentType,
     invertSides,
     commandCallback,
   } = props;
@@ -40,7 +40,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
   return (
     <>
       <div
-        className={styles.wrapper}
+        className={styles.messageWrapper}
         style={{marginLeft: lastInGroup === false && isChatPlugin === false ? '48px' : ''}}
       >
         {isContact && sentAt && lastInGroup && (

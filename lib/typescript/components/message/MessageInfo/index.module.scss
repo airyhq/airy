@@ -1,31 +1,27 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.failedMessage {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.contact {
-  display: flex;
-  justify-content: flex-start;
-  // background-color: yellow;
-}
-
-.member {
-  display: flex;
-  justify-content: flex-end;
-  // background-color: yellow;
-}
-
 .infoMessage {
   @include font-s;
   color: var(--color-text-gray);
   margin-bottom: 5px;
   padding-left: 50px;
-  //background-color:lightseagreen;
-  // display: block;
+}
+
+.contact {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.member {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.failedMessage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .messageFailedButton {
@@ -46,11 +42,4 @@
   &:active {
     color: var(--color-airy-blue-pressed);
   }
-}
-
-.errorFailedMessageContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 }

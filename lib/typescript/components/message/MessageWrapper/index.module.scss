@@ -1,7 +1,7 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.wrapper {
+.messageWrapper {
   display: flex;
 }
 
@@ -24,12 +24,4 @@
 
 .memberContainer {
   align-items: flex-end;
-}
-
-.infoMessage {
-  @include font-s;
-  color: var(--color-text-gray);
-  margin-bottom: 5px;
-  padding-left: 50px;
-  display: block;
 }

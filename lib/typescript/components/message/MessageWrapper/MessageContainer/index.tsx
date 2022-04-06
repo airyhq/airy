@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {SourceMessage, CommandUnion} from 'render';
+import {SourceMessage, CommandUnion, ContentType} from 'render';
 import {DeliveryState, Source, Message} from 'model';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
 import {Reaction} from '../../Reaction';
@@ -9,7 +9,7 @@ interface MessageContainerProps {
   message: Message;
   source: Source;
   isChatPlugin: boolean;
-  contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
+  contentType: ContentType;
   isContact: boolean;
   decoration: ReactNode;
   invertSides?: any;

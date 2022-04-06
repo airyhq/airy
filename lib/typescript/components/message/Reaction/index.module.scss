@@ -4,6 +4,7 @@
 .wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-top: -14px;
   background-color: green;
 }
@@ -19,10 +20,13 @@
 }
 
 .emojiWrapper {
-  border-radius: 100%;
-  background-color: var(--color-light-gray);
   width: 24px;
   height: 24px;
-  padding-left: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: var(--color-light-gray);
   z-index: 1;
 }

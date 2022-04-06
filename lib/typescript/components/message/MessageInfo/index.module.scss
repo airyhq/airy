@@ -10,13 +10,13 @@
 .contact {
   display: flex;
   justify-content: flex-start;
-  background-color: yellow;
+  // background-color: yellow;
 }
 
 .member {
   display: flex;
   justify-content: flex-end;
-  background-color: yellow;
+  // background-color: yellow;
 }
 
 .infoMessage {
@@ -53,8 +53,4 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
-
-.failedMessageIcon {
-  margin-top: 5px;
 }

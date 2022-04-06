@@ -3,7 +3,6 @@
 
 .wrapper {
   display: flex;
-  background-color: lightblue;
 }
 
 .avatar {
@@ -11,7 +10,6 @@
   height: 40px;
   margin: 6px 8px 0 0;
   flex-shrink: 0;
-  background-color: red;
 }
 
 .container {
@@ -22,12 +20,10 @@
 
 .contactContainer {
   align-items: flex-start;
-  background-color: purple;
 }
 
 .memberContainer {
   align-items: flex-end;
-  background-color: pink;
 }
 
 .infoMessage {

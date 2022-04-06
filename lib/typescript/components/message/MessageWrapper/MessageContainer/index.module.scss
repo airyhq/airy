@@ -1,9 +1,8 @@
-.messageReactionErrorContainer {
+.messageContainer {
   width: auto;
-  background-color: orange;
 }
 
-.messageError {
+.messageContent {
   display: flex;
   align-items: center;
 }
@@ -31,4 +30,8 @@
 .contactContent {
   overflow-x: hidden;
   max-width: 100%;
+}
+
+.failedMessageIcon {
+  margin-left: 5px;
 }

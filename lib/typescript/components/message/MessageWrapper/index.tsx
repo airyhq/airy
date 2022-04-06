@@ -1,29 +1,30 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {MessageContainer} from './MessageContainer';
 import {MessageInfo} from '../MessageInfo';
 import {Avatar} from '../Avatar';
 import styles from './index.module.scss';
-import {Source} from 'model';
+import {Source, ContactInfo, Message} from 'model';
+import {CommandUnion} from 'render';
 
 interface MessageWrapperProps {
-  message: any;
+  message: Message;
   source: Source;
-  messageDecoration?: any;
+  decoration?: ReactNode;
   lastInGroup: boolean;
   sentAt?: string;
   isChatPlugin: boolean;
-  contact?: any;
-  handleFailedMessage?: any;
+  contact?: ContactInfo;
+  handleFailedMessage?: (resend: boolean, messageId: string) => void;
   contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
-  invertSides?: any;
-  commandCallback?: any;
+  invertSides?: boolean;
+  commandCallback?: (command: CommandUnion) => void;
 }
 
 export const MessageWrapper = (props: MessageWrapperProps) => {
   const {
     message,
     source,
-    messageDecoration,
+    decoration,
     lastInGroup,
     sentAt,
     isChatPlugin,
@@ -51,12 +52,12 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
           <MessageContainer
             message={message}
             source={source}
-            isContact={isContact}
-            messageDecoration={messageDecoration}
             isChatPlugin={isChatPlugin}
             contentType={contentType}
             invertSides={invertSides}
             commandCallback={commandCallback}
+            isContact={isContact}
+            decoration={decoration}
           />
         </div>
       </div>

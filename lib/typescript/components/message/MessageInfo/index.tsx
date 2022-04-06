@@ -37,7 +37,7 @@ export const MessageInfo = (props: MessageInfoProps) => {
   return (
     <div className={`${styles.infoMessage} ${isContact ? styles.contact : styles.member}`}>
       <span>
-        {deliveryState === DeliveryState.failed ? (
+        {deliveryState === DeliveryState.failed && isContact ? (
           <MessageFailed messageId={messageId} handleFailedMessage={handleFailedMessage} />
         ) : (
           <MessageSuccessfull sentAt={sentAt} senderName={senderName} senderIdentity={senderIdentity} />

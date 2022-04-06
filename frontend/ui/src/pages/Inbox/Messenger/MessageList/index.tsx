@@ -2,11 +2,11 @@ import React, {useEffect, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-import {Message, Suggestions, Source} from 'model';
+import {Message, Suggestions} from 'model';
 import {MessageWrapper} from 'components';
 import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
-import {formatDateOfMessage} from '../../../../services/format/date';
+import {formatDateOfMessage, getSourceType} from '../../../../services';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
@@ -135,15 +135,6 @@ const MessageList = (props: MessageListProps) => {
     resend && resendMessage({messageId});
   };
 
-  const getSourceType = (source: string): Source => {
-    if (source === 'facebook') return Source.facebook;
-    if (source === 'google') return Source.google;
-    if (source === 'chatplugin') return Source.chatPlugin;
-    if (source === 'twilio.whatsapp') return Source.twilioWhatsApp;
-    if (source === 'instagram') return Source.instagram;
-    if (source === 'viber') return Source.viber;
-  };
-
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages?.map((message: Message, index: number) => {
@@ -171,7 +162,7 @@ const MessageList = (props: MessageListProps) => {
               contentType={'message'}
               message={message}
               source={getSourceType(source)}
-              messageDecoration={messageDecoration}
+              decoration={messageDecoration}
               lastInGroup={lastInGroup}
               sentAt={sentAt}
               isChatPlugin={false}

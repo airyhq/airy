@@ -280,17 +280,15 @@ const Chat = ({config, ...props}: Props) => {
                           props.airyMessageProp
                             ? () => props.airyMessageProp(ctrl)
                             : () => (
-                                <div>
-                                  <MessageWrapper
-                                    isChatPlugin={true}
-                                    lastInGroup={lastInGroup}
-                                    contentType="message"
-                                    message={message}
-                                    source={Source.chatPlugin}
-                                    invertSides={true}
-                                    commandCallback={commandCallback}
-                                  />
-                                </div>
+                                <MessageWrapper
+                                  message={message}
+                                  source={Source.chatPlugin}
+                                  commandCallback={commandCallback}
+                                  isChatPlugin={true}
+                                  contentType={'message'}
+                                  lastInGroup={lastInGroup}
+                                  invertSides={true}
+                                />
                               )
                         }
                       />

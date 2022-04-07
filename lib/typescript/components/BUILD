@@ -7,8 +7,8 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "components",
     deps = [
+        "//lib/typescript/core",
         "//lib/typescript/model",
-        "//lib/typescript/render",
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",

@@ -5,17 +5,20 @@ load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
-    name = "components",
+    name = "render",
     deps = [
+        "//lib/typescript/assets",
+        "//lib/typescript/components",
+        "//lib/typescript/dates",
         "//lib/typescript/model",
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",
-        "@npm//lodash-es",
+        "@npm//@types/resize-observer-browser",
+        "@npm//linkify-react",
+        "@npm//linkifyjs",
         "@npm//react",
-        "@npm//react-autosize-textarea",
-        "@npm//react-modal",
-        "@npm//react-router-dom",
+        "@npm//react-markdown",
     ],
 )
 

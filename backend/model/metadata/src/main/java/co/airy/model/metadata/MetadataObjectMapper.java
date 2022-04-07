@@ -66,7 +66,7 @@ public class MetadataObjectMapper {
     }
 
     private static void setValue(ObjectNode node, MetadataNode metadataNode) {
-        if (metadataNode.getValueType().equals(ValueType.text)) {
+        if (metadataNode.getValueType() == null || metadataNode.getValueType().equals(ValueType.text)) {
             node.put(metadataNode.getKey(), metadataNode.getValue());
         } else if(metadataNode.getValueType().equals(ValueType.number)) {
             node.put(metadataNode.getKey(), Double.parseDouble(metadataNode.getValue()));

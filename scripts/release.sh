@@ -136,6 +136,9 @@ case $1 in
 "start")
     start "$2"
     ;;
+"changelog")
+    changelog "$2"
+    ;;
 "finish")
     finish "$2"
     ;;

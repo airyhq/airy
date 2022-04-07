@@ -7,6 +7,9 @@
   padding: 0;
   background-color: white;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
   color: var(--color-airy-blue);
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -121,6 +121,7 @@ func (p *provider) PostInstallation(providerConfig map[string]string, namespace 
 	if err != nil {
 		return err
 	}
+	coreId = strings.Trim(coreId, "'")
 
 	p.analytics.Track(analytics.Identify{
 		UserId: coreId,
@@ -130,7 +131,7 @@ func (p *provider) PostInstallation(providerConfig map[string]string, namespace 
 	},
 	)
 
-	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
+	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", coreId)
 
 	configMap.Data["NGROK"] = ngrokEndpoint
 	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {

@@ -78,7 +78,7 @@ public class Connector {
 
             return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n Api Exception: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Failed to send a \n SendMessageRequest: %s \n Api Exception: %s \n", sendMessageRequest, e.getMessage()), e);
             final ArrayList<KeyValue<String, SpecificRecordBase>> results = new ArrayList<>();
             final Metadata error = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.ERROR, e.getMessage());
             results.add(KeyValue.pair(getId(error).toString(), error));
@@ -90,7 +90,7 @@ public class Connector {
             updateDeliveryState(message, DeliveryState.FAILED);
             return results;
         } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+            log.error(String.format("Failed to send a \n SendMessageRequest: %s", sendMessageRequest), e);
             final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.ERROR, e.getMessage());
             updateDeliveryState(message, DeliveryState.FAILED);
             return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));

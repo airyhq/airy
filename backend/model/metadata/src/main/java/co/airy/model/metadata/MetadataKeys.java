@@ -9,6 +9,7 @@ public class MetadataKeys {
         public static final String TAGS = "tags";
         public static final String UNREAD_COUNT = "unread_count";
         public static final String STATE = "state";
+        public static final String LANGUAGE = "language";
 
         public static final String CONTACT = "contact";
 
@@ -46,6 +47,7 @@ public class MetadataKeys {
     public static class MessageKeys {
         public static final String SUGGESTIONS = "suggestions";
         public static final String ERROR = "error";
+        public static final String LANGUAGE = "language";
 
         public static class Source {
             public static final String ID = "source.id";

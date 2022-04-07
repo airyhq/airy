@@ -21,15 +21,16 @@
 }
 
 .audioButtons {
+  height: 28px;
   width: 28px;
-  height: 24px;
+  background: var(--color-airy-blue);
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-airy-blue);
-  border-radius: 50%;
-  border: none;
+  padding: 0;
   cursor: pointer;
+  border: none;
 
   svg {
     path {
@@ -41,6 +42,12 @@
 .cancelButton {
   margin-left: 18px;
   margin-right: 6px;
+
+  svg {
+    path {
+      stroke: white;
+    }
+  }
 }
 
 .pauseButton {

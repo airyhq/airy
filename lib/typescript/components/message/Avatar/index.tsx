@@ -1,9 +1,9 @@
 import React, {SyntheticEvent} from 'react';
-import {Contact} from 'model';
+import {ContactInfo} from 'model';
 import styles from './index.module.scss';
 
 type AvatarProps = {
-  contact?: Contact;
+  contact?: ContactInfo;
 };
 
 const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';

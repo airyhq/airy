@@ -3,19 +3,24 @@ load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 load("//tools/lint:web.bzl", "web_lint")
-load("//frontend/chat-plugin:deps.bzl", "module_deps", "npm_deps")
+load("//frontend/chat-plugin:deps.bzl", "npm_deps", "ts_deps")
 
 package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "chat-plugin",
     tsconfig = "//frontend/chat-plugin:widget_tsconfig",
-    deps = module_deps + npm_deps,
+    deps = ts_deps + npm_deps,
+)
+
+filegroup(
+    name = "types",
+    srcs = [":chat-plugin"],
+    output_group = "types",
 )
 
 web_library(
     name = "dist",
-    app_lib = ":chat-plugin",
     entry = "frontend/chat-plugin/lib/index.js",
     # Externals will not be included in the output bundle
     # Therefore they must be declared as dependencies in the package.json so that
@@ -31,13 +36,13 @@ web_library(
         "camelcase-keys": "camelcase-keys",
         "emoji-mart": "emoji-mart",
     },
-    module_deps = module_deps,
     output = {
         "library": "@airyhq/chat-plugin",
         "libraryTarget": "umd",
         "filename": "index.js",
         "uniqueName": "airy-chat-plugin",
     },
+    ts_deps = [":chat-plugin"] + ts_deps,
 )
 
 genrule(
@@ -47,6 +52,7 @@ genrule(
         "README.md",
         ":dist",
         ":chat-plugin",
+        ":types",
     ],
     outs = ["chat-plugin_npm_lib"],
     cmd = """

@@ -30,6 +30,7 @@ import static co.airy.core.api.communication.util.Topics.applicationCommunicatio
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,7 +76,7 @@ class UnreadCountTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
-        final int unreadMessages = 3;
+        final Integer unreadMessages = 3;
 
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, unreadMessages));
 
@@ -98,7 +99,7 @@ class UnreadCountTest {
 
         retryOnException(() -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
+                        .andExpect(jsonPath("$.metadata.unread_count", is(3.0))),
                 "Conversation not showing unread count");
 
         webTestHelper.post("/conversations.mark-read", payload).andExpect(status().isNoContent());
@@ -106,7 +107,7 @@ class UnreadCountTest {
         retryOnException(
                 () -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(0))),
+                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(0.0))),
                 "Conversation unread count did not reset");
     }
 }

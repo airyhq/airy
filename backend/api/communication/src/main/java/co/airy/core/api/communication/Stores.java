@@ -5,6 +5,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.User;
+import co.airy.avro.communication.ValueType;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
@@ -127,6 +128,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .map((conversationId, unreadCountState) -> {
                     final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.UNREAD_COUNT,
                             unreadCountState.getUnreadCount().toString());
+                    metadata.setValueType(ValueType.number);
                     return KeyValue.pair(getId(metadata).toString(), metadata);
                 })
                 .to(applicationCommunicationMetadata);

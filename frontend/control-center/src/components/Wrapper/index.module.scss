@@ -1,0 +1,23 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.App {
+  text-align: center;
+  flex-grow: 1;
+  font-family: 'Lato', sans-serif;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--color-background-gray);
+  overflow: visible;
+}
+
+.Content {
+  width: auto;
+  background: white;
+  padding: 32px;
+  margin: 88px 2.5em 5em 7.5em;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: visible;
+  min-height: calc(100vh - 170px);
+}

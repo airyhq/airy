@@ -8,6 +8,12 @@
   line-height: 16px;
 }
 
+@mixin font-s-bold {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 @mixin font-base {
   font-family: 'Lato', sans-serif;
   font-size: 16px;

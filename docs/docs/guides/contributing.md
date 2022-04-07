@@ -55,7 +55,7 @@ We use language specific linters:
 - [prettier](https://prettier.io/) for TypeScript, JavaScript and SCSS
 - [CheckStyle](https://checkstyle.sourceforge.io/) for Java
 
-Java, buildifier and prettier are ran as test targets for each package, so you can run:
+Java, buildifier, and prettier are run as test targets for each package, so you can run:
 
 ```shell script
 bazel test //my/package:checkstyle
@@ -71,13 +71,13 @@ bazel run //:fix
 
 to try fixing issues automatically (not supported for checkstyle).
 
-### Managing dependencies
+### Managing Java dependencies
 
-If you add, remove, or change a dependency from the maven_install, you must
+If you add, remove, or change a dependency from the `repositories.bzl`, you must
 re-pin dependencies using the following command:
 
 ```sh
-bazel run @unpinned_maven//:pin
+REPIN=1 bazel run @unpinned_maven//:pin
 ```
 
 ### Exploring the code base

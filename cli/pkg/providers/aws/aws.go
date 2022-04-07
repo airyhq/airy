@@ -69,7 +69,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 
 	id := RandString(8)
 	p.analytics.Track(analytics.Identify{
-		UserId: id,
+		AnonymousId: id,
 		Traits: analytics.NewTraits().
 			Set("provider", "AWS"),
 	})

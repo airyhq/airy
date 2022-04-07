@@ -9,7 +9,6 @@ import co.airy.core.sources.api.services.SourceToken;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.model.metadata.MetadataObjectMapper;
-import co.airy.model.metadata.MetadataRepository;
 import co.airy.model.metadata.Subject;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -37,11 +36,6 @@ public class WebhookController {
     private final SourceToken sourceToken;
     private final KafkaProducer<String, SpecificRecord> producer;
     private final List<String> allowedMetadataNamespaces = List.of("conversation", "message");
-
-    public static Map<String, MetadataRepository.MetadataConstructor> metadataConstructorMap = Map.of(
-            "conversation", MetadataRepository::newConversationMetadata,
-            "message", MetadataRepository::newMessageMetadata
-    );
 
     public WebhookController(SourceToken sourceToken, KafkaProducer<String, SpecificRecord> producer) {
         this.sourceToken = sourceToken;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
 import {Message, Channel, MetadataEvent, Tag} from 'model';
 import camelcaseKeys from 'camelcase-keys';

@@ -4,9 +4,7 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   height: 100%;
-  margin-bottom: 10px;
   padding-right: 6px;
 
   .emoji {
@@ -14,6 +12,15 @@
     top: 2px;
     position: relative;
   }
+}
+
+.alignBottom {
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.alignCenter {
+  align-items: center;
 }
 
 .emojiDrawer {
@@ -55,7 +62,9 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   cursor: pointer;
   background: transparent;
   border: none;

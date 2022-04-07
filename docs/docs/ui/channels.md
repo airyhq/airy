@@ -1,6 +1,6 @@
 ---
-title: Channels UI
-sidebar_label: Channels UI
+title: Channels
+sidebar_label: Channels
 ---
 
 import TLDR from "@site/src/components/TLDR";
@@ -15,15 +15,6 @@ import ChannelsUI from "@site/static/icons/channelsUi.svg";
 Use the Channels UI to connect your sources simply and directly with a UI.
 
 </TLDR>
-
-<ButtonBox
-icon={<ChannelsUI />}
-title='Channels'
-iconInvertible={true}
-description='With the Channels UI you can connect your sources via UI'
-link='http://airy.core/ui/channels'
-/>
-<br/>
 
 **Sample**
 

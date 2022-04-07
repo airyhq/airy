@@ -5,14 +5,14 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/lint:web.bzl", "web_lint")
 load("//tools/build:container_release.bzl", "container_release")
-load("//frontend/chat-plugin:deps.bzl", "module_deps", "npm_deps")
+load("//frontend/chat-plugin:deps.bzl", "npm_deps", "ts_deps")
 
 package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "lib",
     tsconfig = "//frontend/chat-plugin:widget_tsconfig",
-    deps = ["//frontend/chat-plugin/lib:chat-plugin"] + module_deps + npm_deps,
+    deps = ["//frontend/chat-plugin/lib:chat-plugin"] + ts_deps + npm_deps,
 )
 
 web_library(
@@ -21,9 +21,7 @@ web_library(
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":lib",
     entry = "frontend/chat-plugin/image/index",
-    module_deps = ["//frontend/chat-plugin/lib:chat-plugin"] + module_deps,
     output = {
         "libraryExport": "AiryWidget",
         # Automatically detects script host and uses it for further loading
@@ -31,6 +29,10 @@ web_library(
         "publicPath": "auto",
         "filename": "s.js",
     },
+    ts_deps = [
+        "//frontend/chat-plugin/lib:chat-plugin",
+        ":lib",
+    ] + ts_deps,
 )
 
 pkg_tar(

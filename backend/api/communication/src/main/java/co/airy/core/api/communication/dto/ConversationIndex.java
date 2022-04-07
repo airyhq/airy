@@ -31,7 +31,7 @@ public class ConversationIndex implements Serializable {
 
     public static ConversationIndex fromConversation(Conversation conversation) {
         final List<MetadataNode> metadataNodes = conversation.getMetadataMap().values().stream()
-                .map((record) -> new MetadataNode(record.getKey(), record.getValue()))
+                .map((record) -> new MetadataNode(record.getKey(), record.getValue(), record.getValueType()))
                 .collect(Collectors.toList());
 
         return ConversationIndex.builder()

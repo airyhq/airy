@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "7be57ca7d9b8b716e8ca8c8af0d5d6945e4a6d06",
+    commit = "594a0ec552998293674edff959ce8c782683faef",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1647017998 +0100",
+    shallow_since = "1649147253 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -26,6 +26,7 @@ load("//:repositories.bzl", "excluded_artifacts", jvm_deps = "airy_jvm_deps")
 maven_install(
     artifacts = airy_jvm_deps + jvm_deps,
     excluded_artifacts = excluded_artifacts,
+    fail_if_repin_required = True,
     maven_install_json = "//:maven_install.json",
     repositories = [
         "https://packages.confluent.io/maven",
@@ -49,6 +50,17 @@ http_archive(
     ],
 )
 
+http_archive(
+    name = "zlib",
+    build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
+    sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
+    strip_prefix = "zlib-1.2.11",
+    urls = [
+        "https://mirror.bazel.build/zlib.net/zlib-1.2.11.tar.gz",
+        "https://zlib.net/zlib-1.2.11.tar.gz",
+    ],
+)
+
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
@@ -66,13 +78,6 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
-git_repository(
-    name = "com_google_protobuf",
-    commit = "09745575a923640154bcf307fba8aedff47f240a",
-    remote = "https://github.com/protocolbuffers/protobuf",
-    shallow_since = "1558721209 -0700",
-)
-
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
@@ -81,9 +86,9 @@ protobuf_deps()
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "59d5b42ac315e7eadffa944e86e90c2990110a1c8075f1cd145f487e999d22b3",
-    strip_prefix = "rules_docker-0.17.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.17.0/rules_docker-v0.17.0.tar.gz"],
+    sha256 = "85ffff62a4c22a74dbd98d05da6cf40f497344b3dbf1e1ab0a37ab2a1a6ca014",
+    strip_prefix = "rules_docker-0.23.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.23.0/rules_docker-v0.23.0.tar.gz"],
 )
 
 load(
@@ -134,6 +139,9 @@ load(
 _go_image_repos()
 
 ### Frontend build tooling
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 
@@ -148,13 +156,13 @@ yarn_install(
 ### Bazel tooling
 
 git_repository(
-    name = "com_github_atlassian_bazel_tools",
-    commit = "e45e55f213b6804115eed1b6eb4ffc3bcf7a0cc4",
+    name = "com_github_ash2k_bazel_tools",
+    commit = "aefb11464b6b83590e4154a98c29171092ca290f",
     remote = "https://github.com/ash2k/bazel-tools.git",
-    shallow_since = "1614900742 +1100",
+    shallow_since = "1644872739 +1100",
 )
 
-load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
+load("@com_github_ash2k_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
 

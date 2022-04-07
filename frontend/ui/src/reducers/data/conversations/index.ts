@@ -221,7 +221,7 @@ function allReducer(
         },
       };
 
-    case getType(actions.updateContactAction): {
+    case getType(actions.updateConversationContactInfoAction): {
       return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
 

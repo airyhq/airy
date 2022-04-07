@@ -1,5 +1,5 @@
-import _typesafe, {createAction} from 'typesafe-actions';
-import _, {Dispatch} from 'redux';
+import {createAction} from 'typesafe-actions';
+import {Dispatch} from 'redux';
 
 import {Channel} from 'model';
 

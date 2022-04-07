@@ -1,7 +1,6 @@
 import React, {useEffect, createRef} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {isEqual} from 'lodash-es';
-import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
 import {Message, Suggestions} from 'model';

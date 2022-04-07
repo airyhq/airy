@@ -68,10 +68,10 @@ assemble_npm = rule(
         "_assemble_script": attr.label(
             default = "//tools/build/npm:assemble",
             executable = True,
-            cfg = "host",
+            cfg = "exec",
         ),
         "_npm": attr.label(
-            default = Label("@nodejs//:npm"),
+            default = Label("@nodejs_host//:npm"),
             allow_files = True,
         ),
     },
@@ -129,7 +129,7 @@ deploy_npm = rule(
             default = "//tools/build/npm/templates:deploy.py",
         ),
         "_npm": attr.label(
-            default = Label("@nodejs//:npm"),
+            default = Label("@nodejs_host//:npm"),
             allow_files = True,
         ),
     },

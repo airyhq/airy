@@ -1,5 +1,4 @@
 /// <reference types="react" />
-/// <reference types="react-dom" />
 
 declare module '*.gif' {
   const src: string;

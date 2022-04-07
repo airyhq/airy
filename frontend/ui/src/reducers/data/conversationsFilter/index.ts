@@ -151,7 +151,7 @@ export default function conversationFilteredReducer(
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
-    case getType(actions.updateContactAction): {
+    case getType(actions.updateConversationContactInfoAction): {
       return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
     default:

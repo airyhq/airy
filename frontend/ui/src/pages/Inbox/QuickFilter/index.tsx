@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import _, {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 
 import {ConversationFilter, StateModel} from '../../../reducers';
 

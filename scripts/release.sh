@@ -35,6 +35,19 @@ create_release_branch() {
     echo -e "Created branch release/${release_number}\n"
 }
 
+changelog() {
+    release_number=$1
+    echo -e "Creating the release drafter for the changelog (version ${release_number})\n"
+    create_release_drafter
+}
+
+create_release_drafter() {
+    command git checkout release/"${release_number}"
+    git pull origin release/"${release_number}"
+    command git checkout -b changelog/"${release_number}"
+    command git push origin changelog/"${release_number}"    
+}
+
 finish() {
     release_number=$1
     rename_draft_release
@@ -122,6 +135,9 @@ fi
 case $1 in
 "start")
     start "$2"
+    ;;
+"changelog")
+    changelog "$2"
     ;;
 "finish")
     finish "$2"

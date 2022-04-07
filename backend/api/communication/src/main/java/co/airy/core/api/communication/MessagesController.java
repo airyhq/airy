@@ -1,6 +1,7 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.ValueType;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
 import co.airy.core.api.communication.payload.MessageSuggestRepliesRequestPayload;
@@ -86,6 +87,7 @@ public class MessagesController {
                 final Metadata metadata = newMessageMetadata(messageId,
                         String.format("%s.%s.content", SUGGESTIONS, entry.getKey()),
                         objectMapper.writeValueAsString(entry.getValue().getContent()));
+                metadata.setValueType(ValueType.object);
                 container.getMetadataMap().put(metadata.getKey(), metadata);
                 stores.storeMetadata(metadata);
             }

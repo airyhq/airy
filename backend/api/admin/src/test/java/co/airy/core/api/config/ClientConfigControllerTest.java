@@ -74,7 +74,7 @@ public class ClientConfigControllerTest {
     }
 
     @Test
-    public void canReturnConfig() throws Exception {
+    public void canReturnConfigServices() throws Exception {
         mockServer.expect(once(), requestTo(new URI("http://airy-controller.default/services")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(
@@ -87,14 +87,24 @@ public class ClientConfigControllerTest {
                         withSuccess("{\"status\": \"DOWN\"}", MediaType.APPLICATION_JSON)
                 );
 
-        retryOnException(() -> webTestHelper.post("/client.config", "{}")
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.services.*", hasSize(1)))
-                        .andExpect(jsonPath("$.services", hasKey("api-communication")))
-                        .andExpect(jsonPath("$.services.*.enabled", everyItem(is(true))))
-                        .andExpect(jsonPath("$.services.*.healthy", everyItem(is(false)))),
-                "client.config call failed");
-
+        retryOnException(() ->
+            webTestHelper.post("/client.config", "{}")
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.services.*", hasSize(1)))
+                    .andExpect(jsonPath("$.services", hasKey("api-communication")))
+                    .andExpect(jsonPath("$.services.*.enabled", everyItem(is(true))))
+                    .andExpect(jsonPath("$.services.*.healthy", everyItem(is(false))))
+                    .andExpect(jsonPath("$.tag_config.*", hasSize(1)))
+                    .andExpect(jsonPath("$.tag_config", hasKey("colors")))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-green")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-green.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-blue")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-blue.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-red")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-red.*", hasSize(5)))
+                    .andExpect(jsonPath("$.tag_config.colors", hasKey("tag-purple")))
+                    .andExpect(jsonPath("$.tag_config.colors.tag-purple.*", hasSize(5))),
+                "client.config call failed for services");
         mockServer.verify();
     }
 }

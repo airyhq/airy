@@ -7,7 +7,6 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "model",
     deps = [
-        "//lib/typescript/types",
         "@npm//@types/node",
     ],
 )

@@ -12,7 +12,6 @@ const fallbackAvatarImage = (event: SyntheticEvent<HTMLImageElement, Event>) => 
   event.currentTarget.src = fallbackAvatar;
   event.currentTarget.alt = 'fallback avatar';
 };
-
 export const Avatar = ({contact}: AvatarProps) => (
   <img
     alt={contact?.displayName || 'Unknown contact'}

@@ -21,8 +21,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
   const propsToUse = 'invertSides' in props ? invertedProps : defaultProps;
 
-  console.log('props', props);
-
   switch (content.type) {
     case 'text':
       return <Text {...propsToUse} text={content.text} />;

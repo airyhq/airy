@@ -12,7 +12,7 @@ interface MessageContainerProps {
   contentType: ContentType;
   isContact: boolean;
   decoration: ReactNode;
-  invertSides?: any;
+  invertSides?: boolean;
   commandCallback?: (command: CommandUnion) => void;
 }
 

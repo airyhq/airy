@@ -1,5 +1,15 @@
 .messageContainer {
   width: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.contactContainer {
+  align-items: flex-start;
+}
+
+.memberContainer {
+  align-items: flex-end;
 }
 
 .messageContent {

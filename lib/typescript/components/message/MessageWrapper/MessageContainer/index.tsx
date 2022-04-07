@@ -8,7 +8,6 @@ import styles from './index.module.scss';
 interface MessageContainerProps {
   message: Message;
   source: Source;
-  isChatPlugin: boolean;
   contentType: ContentType;
   isContact: boolean;
   decoration: ReactNode;
@@ -17,21 +16,25 @@ interface MessageContainerProps {
 }
 
 export const MessageContainer = (props: MessageContainerProps) => {
-  const {isContact, message, source, isChatPlugin, contentType, invertSides, commandCallback, decoration} = props;
-  const chatPluginProps = isChatPlugin ? {invertSides: invertSides, commandCallback: commandCallback} : {};
+  const {isContact, message, source, contentType, invertSides, commandCallback, decoration} = props;
+  const chatPluginProps =
+    invertSides && commandCallback ? {invertSides: invertSides, commandCallback: commandCallback} : {};
 
   return (
-    <div className={styles.messageContainer}>
+    <div className={`${styles.messageContainer} ${isContact ? styles.contactContainer : styles.memberContainer}`}>
       <div className={styles.messageContent}>
+        {message.deliveryState === DeliveryState.failed && !isContact && (
+          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
+        )}
         <div className={`${isContact ? styles.contact : styles.member}`}>
           <div className={`${isContact ? styles.contactContent : styles.memberContent}`}>
-            <SourceMessage source={source} message={message} contentType={contentType} {...chatPluginProps} />
+            <SourceMessage source={source as Source} message={message} contentType={contentType} {...chatPluginProps} />
           </div>
         </div>
-        {decoration}
         {message.deliveryState === DeliveryState.failed && isContact && (
           <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
         )}
+        {decoration}
       </div>
       <Reaction message={message} isContact={isContact} />
     </div>

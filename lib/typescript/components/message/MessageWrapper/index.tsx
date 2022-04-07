@@ -11,7 +11,6 @@ interface MessageWrapperProps {
   contentType: ContentType;
   source: Source;
   lastInGroup: boolean;
-  isChatPlugin: boolean;
   sentAt?: string;
   decoration?: ReactNode;
   contact?: ContactInfo;
@@ -26,7 +25,6 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
     contentType,
     source,
     lastInGroup,
-    isChatPlugin,
     sentAt,
     decoration,
     contact,
@@ -35,14 +33,13 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
     commandCallback,
   } = props;
 
+  const isChatPlugin = invertSides && commandCallback;
+
   const isContact = isChatPlugin ? !message.fromContact : message.fromContact;
 
   return (
     <>
-      <div
-        className={styles.messageWrapper}
-        style={{marginLeft: lastInGroup === false && isChatPlugin === false ? '48px' : ''}}
-      >
+      <div className={styles.messageWrapper} style={{marginLeft: !lastInGroup && !isChatPlugin ? '48px' : ''}}>
         {isContact && sentAt && lastInGroup && (
           <div className={styles.avatar}>
             <Avatar contact={contact} />
@@ -52,7 +49,6 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
           <MessageContainer
             message={message}
             source={source}
-            isChatPlugin={isChatPlugin}
             contentType={contentType}
             invertSides={invertSides}
             commandCallback={commandCallback}

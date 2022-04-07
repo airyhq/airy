@@ -6,17 +6,16 @@
   align-items: center;
   justify-content: center;
   margin-top: -14px;
-  background-color: green;
 }
 
 .alignLeft {
   justify-content: flex-end;
-  padding-right: 8px;
+  padding-right: 4px;
 }
 
 .alignRight {
   justify-content: flex-start;
-  padding-left: 8px;
+  padding-left: 4px;
 }
 
 .emojiWrapper {

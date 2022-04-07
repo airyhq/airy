@@ -17,11 +17,11 @@ export const Image = ({imageUrl, altText, images, text, fromContact}: ImageRende
     <div className={styles.wrapper}>
       {images ? (
         <div className={styles.imagesContainer}>
-          {images.map(image => (
+          {images.map((image, index) => (
             <ImageWithFallback
               className={`${styles.messageListItemImageBlock} ${styles.images}`}
               src={image.imageUrl}
-              key={image.imageUrl}
+              key={image.imageUrl + index}
             />
           ))}
         </div>

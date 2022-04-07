@@ -283,10 +283,9 @@ const Chat = ({config, ...props}: Props) => {
                                 <MessageWrapper
                                   message={message}
                                   source={Source.chatPlugin}
-                                  commandCallback={commandCallback}
-                                  isChatPlugin={true}
                                   contentType={'message'}
                                   lastInGroup={lastInGroup}
+                                  commandCallback={commandCallback}
                                   invertSides={true}
                                 />
                               )

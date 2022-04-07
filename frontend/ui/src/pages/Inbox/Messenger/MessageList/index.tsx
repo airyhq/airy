@@ -2,11 +2,11 @@ import React, {useEffect, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-import {Message, Suggestions} from 'model';
+import {Message, Suggestions, Source} from 'model';
 import {MessageWrapper} from 'components';
 import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
-import {formatDateOfMessage, getSourceType} from '../../../../services';
+import {formatDateOfMessage} from '../../../../services';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
@@ -161,11 +161,10 @@ const MessageList = (props: MessageListProps) => {
             <MessageWrapper
               contentType={'message'}
               message={message}
-              source={getSourceType(source)}
+              source={source as Source}
               decoration={messageDecoration}
               lastInGroup={lastInGroup}
               sentAt={sentAt}
-              isChatPlugin={false}
               contact={contact}
               handleFailedMessage={handleFailedMessage}
             />

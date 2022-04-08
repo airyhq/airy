@@ -51,10 +51,11 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
             deliveryState={deliveryState}
             isContact={isContact}
             decoration={decoration}
-            children={children}
             isChatPlugin={isChatPlugin}
             messageReaction={messageReaction}
-          />
+          >
+            {children}
+          </MessageContainer>
         </div>
       </div>
       {handleFailedMessage && (

@@ -16,6 +16,8 @@ Here are the ways you can create tags:
 - Your users can create them manually directly in conversations
 - They can be created in the Tag Manager
 
+The tags configuration served by the [client.config endpoint](/api/endpoints/client-config) is used for the tags' default styling.
+
 ## Create
 
 When you create a tag, you can choose a color to visually identify it better in the inbox.

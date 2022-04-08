@@ -10,9 +10,11 @@ check_pkg(name = "buildifier")
 
 ts_deps = [
     "//lib/typescript/assets",
+    "//lib/typescript/components",
     "//lib/typescript/types",
     "//lib/typescript/model",
     "//lib/typescript/httpclient",
+    "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
     "//frontend/ui/handles",

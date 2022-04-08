@@ -10,6 +10,7 @@ import {formatDateOfMessage} from '../../../../services';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
+import {SourceMessage} from 'render';
 import styles from './index.module.scss';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
@@ -159,15 +160,20 @@ const MessageList = (props: MessageListProps) => {
               </div>
             )}
             <MessageWrapper
-              contentType={'message'}
-              message={message}
-              source={source as Source}
-              decoration={messageDecoration}
+              fromContact={message.fromContact}
+              deliveryState={message.deliveryState}
+              senderName={message?.sender?.name}
+              messageId={message.id}
               lastInGroup={lastInGroup}
               sentAt={sentAt}
               contact={contact}
               handleFailedMessage={handleFailedMessage}
-            />
+              isChatPlugin={false}
+              decoration={messageDecoration}
+              messageReaction={message?.metadata?.reaction?.emoji}
+            >
+              <SourceMessage source={source as Source} message={message} contentType={'message'} />
+            </MessageWrapper>
           </div>
         );
       })}

@@ -1,41 +1,42 @@
 import React, {ReactNode} from 'react';
-import {Source, ContactInfo, Message} from 'model';
-import {CommandUnion, ContentType} from 'render';
-import {MessageContainer} from './MessageContainer';
+import {ContactInfo, DeliveryState} from 'model';
 import {MessageInfo} from '../MessageInfo';
+import {MessageContainer} from './MessageContainer';
 import {Avatar} from '../Avatar';
 import styles from './index.module.scss';
 
 interface MessageWrapperProps {
-  message: Message;
-  contentType: ContentType;
-  source: Source;
   lastInGroup: boolean;
+  isChatPlugin: boolean;
+  children: ReactNode;
+  fromContact: boolean;
+  deliveryState?: DeliveryState;
+  messageId?: string;
+  senderName?: string;
   sentAt?: string;
-  decoration?: ReactNode;
   contact?: ContactInfo;
   handleFailedMessage?: (resend: boolean, messageId: string) => void;
-  invertSides?: boolean;
-  commandCallback?: (command: CommandUnion) => void;
+  messageReaction?: string;
+  decoration?: ReactNode;
 }
 
 export const MessageWrapper = (props: MessageWrapperProps) => {
   const {
-    message,
-    contentType,
-    source,
-    lastInGroup,
-    sentAt,
+    deliveryState,
+    senderName,
+    messageId,
+    fromContact,
     decoration,
+    lastInGroup,
+    isChatPlugin,
+    children,
+    sentAt,
     contact,
     handleFailedMessage,
-    invertSides,
-    commandCallback,
+    messageReaction,
   } = props;
 
-  const isChatPlugin = invertSides && commandCallback;
-
-  const isContact = isChatPlugin ? !message.fromContact : message.fromContact;
+  const isContact = isChatPlugin ? !fromContact : fromContact;
 
   return (
     <>
@@ -47,24 +48,25 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
         )}
         <div className={`${styles.container} ${isContact ? styles.contactContainer : styles.memberContainer}`}>
           <MessageContainer
-            message={message}
-            source={source}
-            contentType={contentType}
-            invertSides={invertSides}
-            commandCallback={commandCallback}
+            deliveryState={deliveryState}
             isContact={isContact}
             decoration={decoration}
+            children={children}
+            isChatPlugin={isChatPlugin}
+            messageReaction={messageReaction}
           />
         </div>
       </div>
-      <MessageInfo
-        isContact={isContact}
-        sentAt={sentAt}
-        deliveryState={message.deliveryState}
-        messageId={message.id}
-        senderName={message?.sender?.name}
-        handleFailedMessage={handleFailedMessage}
-      />
+      {handleFailedMessage && (
+        <MessageInfo
+          isContact={isContact}
+          sentAt={sentAt}
+          deliveryState={deliveryState}
+          messageId={messageId}
+          senderName={senderName}
+          handleFailedMessage={handleFailedMessage}
+        />
+      )}
     </>
   );
 };

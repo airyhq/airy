@@ -1,42 +1,38 @@
 import React, {ReactNode} from 'react';
-import {SourceMessage, CommandUnion, ContentType} from 'render';
-import {DeliveryState, Source, Message} from 'model';
+import {DeliveryState} from 'model';
 import {ReactComponent as ErrorMessageIcon} from 'assets/images/icons/errorMessage.svg';
 import {Reaction} from '../../Reaction';
 import styles from './index.module.scss';
 
 interface MessageContainerProps {
-  message: Message;
-  source: Source;
-  contentType: ContentType;
+  deliveryState: DeliveryState;
   isContact: boolean;
   decoration: ReactNode;
-  invertSides?: boolean;
-  commandCallback?: (command: CommandUnion) => void;
+  children: ReactNode;
+  isChatPlugin: boolean;
+  messageReaction: string;
 }
 
 export const MessageContainer = (props: MessageContainerProps) => {
-  const {isContact, message, source, contentType, invertSides, commandCallback, decoration} = props;
-  const chatPluginProps =
-    invertSides && commandCallback ? {invertSides: invertSides, commandCallback: commandCallback} : {};
+  const {messageReaction, isContact, deliveryState, decoration, children, isChatPlugin} = props;
+  const failedMessage = deliveryState === DeliveryState.failed;
 
   return (
     <div className={`${styles.messageContainer} ${isContact ? styles.contactContainer : styles.memberContainer}`}>
       <div className={styles.messageContent}>
-        {message.deliveryState === DeliveryState.failed && !isContact && (
+        {failedMessage && !isContact && !isChatPlugin && (
           <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
         )}
+        {decoration && !isContact && decoration}
         <div className={`${isContact ? styles.contact : styles.member}`}>
-          <div className={`${isContact ? styles.contactContent : styles.memberContent}`}>
-            <SourceMessage source={source as Source} message={message} contentType={contentType} {...chatPluginProps} />
-          </div>
+          <div className={`${isContact ? styles.contactContent : styles.memberContent}`}>{children}</div>
         </div>
-        {message.deliveryState === DeliveryState.failed && isContact && (
+        {decoration && isContact && decoration}
+        {failedMessage && isContact && !isChatPlugin && (
           <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
         )}
-        {decoration}
       </div>
-      <Reaction message={message} isContact={isContact} />
+      <Reaction messageReaction={messageReaction} isContact={isContact} />
     </div>
   );
 };

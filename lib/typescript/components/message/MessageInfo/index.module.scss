@@ -24,6 +24,10 @@
   align-items: center;
 }
 
+.failedMessage p {
+  margin: 0;
+}
+
 .messageFailedButton {
   text-decoration: none;
   line-height: 16px;

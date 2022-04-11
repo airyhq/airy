@@ -77,3 +77,13 @@
 .align.active {
   background-color: var(--color-blue-white);
 }
+
+.version {
+  position: absolute;
+  left: 8px;
+  bottom: 96px;
+  font-size: 10px;
+  line-height: 10px;
+  font-family: 'Lato', sans-serif;
+  color: var(--color-text-gray);
+}

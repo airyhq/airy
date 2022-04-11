@@ -20,6 +20,10 @@ const mapStateToProps = (state: StateModel) => ({
 const logoutUrl = `${env.API_HOST}/logout`;
 const inboxUrl = `${env.API_HOST}/ui/`;
 
+const version = '0.41.0';
+const updateAvailable = true;
+const latestVersion = '0.42.0';
+
 const connector = connect(mapStateToProps);
 
 const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
@@ -110,6 +114,22 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                     </span>
                     <span>Logout</span>
                   </a>
+                  <div className={styles.dropDownVersionContainer}>
+                    <a
+                      id={styles.dropDownLink}
+                      href="https://airy.co/docs/core/changelog"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Release notes
+                    </a>
+                    <h1>Version {version}</h1>
+                    {updateAvailable && (
+                      <a href="https://airy.co/docs/core/changelog" target="_blank" rel="noopener noreferrer">
+                        Version {latestVersion} available
+                      </a>
+                    )}
+                  </div>
                 </div>
               </ListenOutsideClick>
             )}

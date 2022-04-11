@@ -9,7 +9,7 @@ The `services` property in the response gives the status of the instance’s com
 
 [Authentication is disabled by default in Airy Core](/api/introduction), thus the `user_profile` property in the response is by default `null`. If the instance features authentification, the `user_profile` property will include information about the user that is currently logged in.
 
-The `tags` property in the response represents the configuration for [tags](/ui/tags). The [UI](/ui/introduction) uses these settings for the [tags](/ui/tags)' default styling.
+The `tag_config` property in the response represents the configuration for [tags](/ui/tags). The [UI](/ui/introduction) uses these settings for the [tags](/ui/tags)' default styling.
 
 `POST /client.config`
 

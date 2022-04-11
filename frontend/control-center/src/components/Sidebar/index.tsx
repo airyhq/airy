@@ -14,6 +14,8 @@ export const Sidebar = () => {
     return useMatch(`${route}/*`);
   };
 
+  const version = '0.41.0';
+
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
@@ -36,6 +38,7 @@ export const Sidebar = () => {
           </Link>
         </div>
       </div>
+      <span className={styles.version}>Version {version}</span>
     </nav>
   );
 };

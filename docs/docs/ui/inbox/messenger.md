@@ -1,6 +1,6 @@
 ---
-title: Inbox
-sidebar_label: Inbox
+title: Messenger
+sidebar_label: Messenger
 ---
 
 import ButtonBox from "@site/src/components/ButtonBox";
@@ -10,11 +10,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-Airy’s Inbox gives you a UI for all of your conversations.
+Airy’s Inbox gives you an UI for all of your conversations.
 
 See all conversations from the sources you connected, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
 
-The inbox supports not only text messages but a variety of different message types.
+The inbox supports not only text messages but also a variety of different message types.
 
 :::warning
 

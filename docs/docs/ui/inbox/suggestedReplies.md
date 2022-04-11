@@ -30,7 +30,7 @@ link='api/endpoints/messages#suggest-replies'
 
 <br />
 
-import SuggestReplies from '../api/endpoints/suggest-replies.mdx'
+import SuggestReplies from '../../api/endpoints/suggest-replies.mdx'
 
 <SuggestReplies />
 

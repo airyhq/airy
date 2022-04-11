@@ -15,7 +15,7 @@ We support two ways of customizing your Airy Chat Plugin. For most use cases the
 
 After setting up your [first source](/sources/chatplugin/quickstart#step-1-set-up-your-first-source) you can customize your Airy Chat Plugin to your needs.
 
-On your instance's [Airy Core UI](http://airy.core/ui/channels), click on the button displaying a + icon next to the Airy Live Chat channel.
+On your instance's [Control Center](/ui/control-center), navigate to the [Catalog](/ui/control-center/catalog) on the left sidebar and select the Airy Live Chat connector.
 
 <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/channelListChatplugin.png')} />
 <br/>

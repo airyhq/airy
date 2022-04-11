@@ -26,7 +26,7 @@ One of the crucial features Airy Core provides is the ability to process
 conversational data from a variety of sources such as Facebook Messenger, Google
 Business Messages, Twilio.WhatsApp or Twilio.SMS.
 
-You can connect sources through API requests or using our [Channels UI](/ui/channels). Our Sources guides cover both options, step-by-step.
+You can connect sources through API requests or using our [Connectors UI](/ui/control-center/connectors). Our Sources guides cover both options, step-by-step.
 
 It's important to understand the difference between a [source](/getting-started/glossary/#source) and a [channel](/getting-started/glossary/#channel). A channel represents a connection between a source and your Airy Core instance: multiple channels can thus use the same source for different [conversations](/getting-started/glossary/#conversation).
 
@@ -36,10 +36,10 @@ You can connect as many [channels](/getting-started/glossary/#channel) as you wa
 
 <ButtonBox
 icon={<ChannelsUI />}
-title='Channels'
+title='Connectors'
 iconInvertible={true}
-description='With the Channels UI you can connect your sources via UI'
-link='http://airy.core/ui/channels'
+description='With the Control Center UI you can connect your connectors via UI'
+link='http://airy.core/ui/control-center/introduction'
 />
 
 ## Sources guides

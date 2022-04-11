@@ -62,7 +62,7 @@ Enter a display name and optionally an image URL in the respective fields. The d
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect-form.png')} />
 
-An Airy's Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Channels UI](/ui/channels). Next, click on the button showing the connected channels.
+An Airy's Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Control Center UI](/ui/control-center). Next, click on the button showing the connected channels.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-list.png')} />
 

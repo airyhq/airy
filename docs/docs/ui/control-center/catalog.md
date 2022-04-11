@@ -1,26 +1,14 @@
 ---
-title: Channels
-sidebar_label: Channels
+title: Catalog
+sidebar_label: Catalog
 ---
 
-import TLDR from "@site/src/components/TLDR";
-import ButtonBox from "@site/src/components/ButtonBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ChannelsUI from "@site/static/icons/channelsUi.svg";
 
-## Introduction
+The Catalog section of the Control Center lists the available [connectors](/sources/introduction) you can connect to your Airy Core app. You can choose which connector you want
+to add and configure it easily.
 
-<TLDR>
-
-Use the Channels UI to connect your sources simply and directly with a UI.
-
-</TLDR>
-
-**Sample**
-
-<img alt="Connect Channel Example" src={useBaseUrl('img/ui/connectChannelExample.gif')} />
-
-<br/>
+Once a connector is successfully connected, it will appear in the [Connectors](connectors) list.
 
 ## Configuration
 

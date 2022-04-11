@@ -3384,9 +3384,9 @@ human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz"
 
-i18next@^21.6.14:
-  version "21.6.14"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-21.6.14.tgz"
+i18next@^21.6.15:
+  version "21.6.15"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.6.15.tgz#077e5798dbbd53d3aaa8ad66193758bd19836dbe"
   dependencies:
     "@babel/runtime" "^7.17.2"
 

@@ -4,8 +4,9 @@ import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/logo/airyPrimaryRgb.svg';
+import {ReactComponent as AiryLogoWithText} from 'assets/images/logo/airyPrimaryRgb.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/logo/airyLogo.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
 
@@ -17,6 +18,7 @@ const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
 });
 
+const controlCenterUrl = `${env.API_HOST}/control-center`;
 const logoutUrl = `${env.API_HOST}/logout`;
 
 const connector = connect(mapStateToProps);
@@ -44,7 +46,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   return (
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
-        <AiryLogo className={styles.airyLogoSvg} />
+        <AiryLogoWithText className={styles.airyLogoSvg} />
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>
@@ -92,10 +94,15 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                 </span>
               </div>
             </div>
-
             {isAccountDropdownOn && (
               <ListenOutsideClick onOuterClick={hideAccountDropdown}>
                 <div className={styles.dropdownContainer}>
+                  <a href={controlCenterUrl} className={styles.dropdownLine}>
+                    <span className={styles.dropdownIconControlCenter}>
+                      <AiryLogo />
+                    </span>
+                    <span>Control-Center</span>
+                  </a>
                   <a href={logoutUrl} className={styles.dropdownLine}>
                     <span className={styles.dropdownIcon}>
                       <LogoutIcon />

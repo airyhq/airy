@@ -63,6 +63,6 @@ Get a glimpse of the Airy UI with screenshots of the Inbox, Tags, Contacts, and 
 
 <img alt="Demo Tags"src={useBaseUrl('img/ui/tags-ui.png')} />
 
-<img alt="Demo suggested replies"src={useBaseUrl('img/ui/suggested-replies.png')} />
-
 <img alt="Demo Contacts"src={useBaseUrl('img/ui/contactsEdit.png')} />
+
+<img alt="Demo suggested replies"src={useBaseUrl('img/ui/suggested-replies.png')} />

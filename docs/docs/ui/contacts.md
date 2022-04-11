@@ -12,7 +12,7 @@ import TLDR from "@site/src/components/TLDR";
 
 This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
 
-Viewing and editing contacts in the Airy UI is only possible when this feature is enabled.
+The configuration served by the [client.config endpoint](/api/endpoints/client-config) is used for enabling this feature in the UI. Thus, viewing and editing contacts in the Airy UI is only possible when this feature is enabled in the [airy.yaml configuration file](getting-started/installation/configuration.md).
 
 :::
 

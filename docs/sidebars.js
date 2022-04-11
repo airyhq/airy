@@ -61,6 +61,7 @@ module.exports = {
             'api/endpoints/templates',
             'api/endpoints/users',
             'api/endpoints/contacts',
+            'api/endpoints/client-config',
           ],
         },
         'api/httpClient',

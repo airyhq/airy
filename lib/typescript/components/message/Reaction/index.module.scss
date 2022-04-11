@@ -2,18 +2,30 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
-  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 8px;
+  justify-content: center;
   margin-top: -14px;
 }
 
+.alignLeft {
+  justify-content: flex-end;
+  padding-right: 4px;
+}
+
+.alignRight {
+  justify-content: flex-start;
+  padding-left: 4px;
+}
+
 .emojiWrapper {
-  border-radius: 100%;
-  background-color: var(--color-light-gray);
   width: 24px;
   height: 24px;
-  padding-left: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: var(--color-light-gray);
+  z-index: 1;
 }

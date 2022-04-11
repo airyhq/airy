@@ -1,18 +1,17 @@
 import React, {useEffect, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {isEqual} from 'lodash-es';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
-import {Message, Suggestions} from 'model';
-import {SourceMessage} from 'render';
-import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
+import {Message, Suggestions, Source} from 'model';
+import {MessageWrapper} from 'components';
 import {listMessages, listPreviousMessages, resendMessage} from '../../../../actions/messages';
-import styles from './index.module.scss';
-import {formatDateOfMessage} from '../../../../services/format/date';
 import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
-import {MessageInfoWrapper, Reaction} from 'components';
+import {formatDateOfMessage} from '../../../../services';
 import {formatTime, isSameDay} from 'dates';
 import {usePrevious} from '../../../../services/hooks/usePrevious';
+import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
+import {SourceMessage} from 'render';
+import styles from './index.module.scss';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
@@ -160,21 +159,21 @@ const MessageList = (props: MessageListProps) => {
                 {formatDateOfMessage(message)}
               </div>
             )}
-            <MessageInfoWrapper
+            <MessageWrapper
               fromContact={message.fromContact}
-              contact={contact}
-              sentAt={sentAt}
+              deliveryState={message.deliveryState}
+              senderName={message?.sender?.name}
+              messageId={message.id}
               lastInGroup={lastInGroup}
+              sentAt={sentAt}
+              contact={contact}
+              handleFailedMessage={handleFailedMessage}
               isChatPlugin={false}
               decoration={messageDecoration}
-              senderName={message?.sender?.name}
-              deliveryState={message?.deliveryState}
-              messageId={message.id}
-              onResendFailedMessage={handleFailedMessage}
+              messageReaction={message?.metadata?.reaction?.emoji}
             >
-              <SourceMessage source={source} message={message} contentType="message" />
-              <Reaction message={message} />
-            </MessageInfoWrapper>
+              <SourceMessage source={source as Source} message={message} contentType={'message'} />
+            </MessageWrapper>
           </div>
         );
       })}
@@ -182,17 +181,4 @@ const MessageList = (props: MessageListProps) => {
   );
 };
 
-const arePropsEqual = (prevProps, nextProps) => {
-  if (
-    prevProps.history?.location?.pathname === nextProps.history?.location?.pathname &&
-    prevProps.conversation?.id === nextProps.conversation?.id &&
-    prevProps.history?.location?.key === nextProps.history?.location?.key &&
-    prevProps.location?.key !== nextProps.location?.key
-  ) {
-    return true;
-  }
-
-  return isEqual(prevProps, nextProps);
-};
-
-export default connector(React.memo(MessageList, arePropsEqual));
+export default connector(MessageList);

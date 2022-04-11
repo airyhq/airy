@@ -1,0 +1,49 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.infoMessage {
+  @include font-s;
+  color: var(--color-text-gray);
+  margin-bottom: 5px;
+  padding-left: 50px;
+}
+
+.contact {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.member {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.failedMessage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.failedMessage p {
+  margin: 0;
+}
+
+.messageFailedButton {
+  text-decoration: none;
+  line-height: 16px;
+  margin-left: 4px;
+  padding: 0px;
+  @include font-base;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  background: transparent;
+  color: var(--color-airy-blue);
+  cursor: pointer;
+  &:hover {
+    color: var(--color-airy-blue-hover);
+  }
+  &:active {
+    color: var(--color-airy-blue-pressed);
+  }
+}

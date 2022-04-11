@@ -1,0 +1,27 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.messageWrapper {
+  display: flex;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin: 6px 8px 0 0;
+  flex-shrink: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.contactContainer {
+  align-items: flex-start;
+}
+
+.memberContainer {
+  align-items: flex-end;
+}

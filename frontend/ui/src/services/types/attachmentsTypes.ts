@@ -1,12 +1,20 @@
 import {attachmentsExtensions} from 'render';
+import {Source} from 'model';
+
+const getAttachmentFiles = (source: string) => {
+  const formattedSource = source as Source;
+
+  const image = attachmentsExtensions[formattedSource + 'ImageExtensions'];
+  const video = attachmentsExtensions[formattedSource + 'VideoExtensions'];
+  const audio = attachmentsExtensions[formattedSource + 'AudioExtensions'];
+  const docs = attachmentsExtensions[formattedSource + 'FileExtensions'];
+
+  return {imageFiles: image, videoFiles: video, audioFiles: audio, docsFiles: docs};
+};
 
 export const getAllSupportedAttachmentsForSource = (source: string) => {
-  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
-
-  const imageFiles = attachmentsExtensions[source + 'ImageExtensions'];
-  const videoFiles = attachmentsExtensions[source + 'VideoExtensions'];
-  const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
-  const docsFiles = attachmentsExtensions[source + 'FileExtensions'];
+  const files = getAttachmentFiles(source);
+  const {imageFiles, videoFiles, audioFiles, docsFiles} = files;
 
   const supportedDocsFiles = docsFiles ? docsFiles.join(', ') : '';
   const supportedAudioFiles =
@@ -20,12 +28,8 @@ export const getAllSupportedAttachmentsForSource = (source: string) => {
 };
 
 export const getInputAcceptedFilesForSource = (source: string) => {
-  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
-
-  const imageFiles = attachmentsExtensions[source + 'ImageExtensions'];
-  const videoFiles = attachmentsExtensions[source + 'VideoExtensions'];
-  const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
-  const docsFiles = attachmentsExtensions[source + 'FileExtensions'];
+  const files = getAttachmentFiles(source);
+  const {imageFiles, videoFiles, audioFiles, docsFiles} = files;
 
   if (!imageFiles && !videoFiles && !audioFiles && !docsFiles) {
     return null;
@@ -42,9 +46,8 @@ export const getInputAcceptedFilesForSource = (source: string) => {
 };
 
 export const supportsAudioRecordingMp3 = (source: string) => {
-  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
-
-  const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
+  const files = getAttachmentFiles(source);
+  const {audioFiles} = files;
 
   return audioFiles && audioFiles.includes('mp3');
 };

@@ -874,19 +874,19 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@bazel/typescript@5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.3.1.tgz#f996abebfa57a29a170a83d0c84780286f06cb72"
+"@bazel/typescript@5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.4.0.tgz#0a24e8d47152728f71b26b73adc3913645e5309e"
   dependencies:
-    "@bazel/worker" "5.3.1"
+    "@bazel/worker" "5.4.0"
     protobufjs "6.8.8"
     semver "5.6.0"
     source-map-support "0.5.9"
     tsutils "3.21.0"
 
-"@bazel/worker@5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.3.1.tgz#87d850fdfc22cde24f380961f66daa5cbfd4acf7"
+"@bazel/worker@5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.4.0.tgz#ce50e34951ccf7233b651f0be665bbd43d7ed7f1"
   dependencies:
     google-protobuf "^3.6.1"
 

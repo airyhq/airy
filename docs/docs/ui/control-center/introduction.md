@@ -35,3 +35,9 @@ The Control Center serves as a technical dashboard: it provides an overview of a
         link='ui/control-center/catalog'
     />
 </ButtonBoxList>
+
+<br />
+
+Screenshots of the Control Center:
+<img alt="Control Center"src={useBaseUrl('img/ui/controlCenter.png')} />
+<img alt="Control Center Connectors"src={useBaseUrl('img/ui/controlCenterConnectors.png')} />

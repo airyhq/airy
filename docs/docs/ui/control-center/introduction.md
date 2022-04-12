@@ -17,14 +17,14 @@ The Control Center serves as a technical dashboard: it provides an overview of a
         icon={<ComponentsSVG />}
         iconInvertible={true}
         title='Components'
-        description="Get an overview of the components' status"
+        description="Get an overview of your app's components and their status"
         link='ui/control-center/components'
     />
     <ButtonBox
         icon={<ConnectorsSVG />}
         title='Connectors'
         iconInvertible={true}
-        description="View your app's current connectors"
+        description="View and manage your app's connectors"
         link='ui/control-center/connectors'
     />
      <ButtonBox

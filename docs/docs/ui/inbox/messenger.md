@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Airy’s Inbox features a messenger that centralizes all your conversations.
 
-You can view, interact, and manage multiple conversations, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
+You can view, interact with, and manage multiple conversations instantly, regardless of whether they come via the [Airy Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
 
 The messenger supports not only text messages but also a variety of different message types.
 

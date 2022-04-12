@@ -25,7 +25,7 @@ The Inbox features a [Messenger](messenger), filled with the conversations from 
         icon={<DesktopComputerSVG />}
         iconInvertible={true}
         title='Messenger'
-        description='See all your conversations and chat with your contacts'
+        description='View your conversations & send and receive messages'
         link='ui/inbox/messenger'
     />
         <ButtonBox

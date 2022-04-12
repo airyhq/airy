@@ -8,7 +8,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>Tags are words, or combinations of words, that you can use to add more context to conversations and contacts.</TLDR>
 
-Tags provide you with an unlimited amount of flexibility to manage and customize your conversational workflow.
+Tags provide an unlimited amount of flexibility to manage and customize conversational workflow.
 
 Here are the ways you can create tags:
 
@@ -20,21 +20,21 @@ The tags configuration served by the [client.config endpoint](/api/endpoints/cli
 
 ## Create
 
-When you create a tag, you can choose a color to visually identify it better in the inbox.
+When you create a tag, you can choose a color to visually identify it in the Inbox.
 This can also be done via the [Create Tags API](api/endpoints/tags.md#create).
 
-<img alt="Create Tags"src={useBaseUrl('img/ui/create_tags.gif')} />
+<img alt="Create Tags"src={useBaseUrl('img/ui/tagsCreate.png')} />
 
 ## Edit
 
 When editing tags, you can change the name and the color of each tag.
 This can also be done via the [Edit Tags API](api/endpoints/tags.md#update).
 
-<img alt="Edit Tags"src={useBaseUrl('img/ui/edit_tags.gif')} />
+<img alt="Edit Tags"src={useBaseUrl('img/ui/tagsEdit.png')} />
 
 ## Delete
 
-Deleting tags deletes them completely.
+Deleting a tag means removing it from all corresponding contacts. A tag can not be used once it has been deleted.
 This can also be done via the [Delete Tags API](api/endpoints/tags.md#delete).
 
-<img alt="Delete Tags"src={useBaseUrl('img/ui/delete_tags.gif')} />
+<img alt="Delete Tags"src={useBaseUrl('img/ui/tagsDelete.png')} />

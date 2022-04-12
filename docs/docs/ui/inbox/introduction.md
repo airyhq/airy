@@ -13,7 +13,7 @@ import ChannelsUI from "@site/static/icons/channelsUi.svg";
 import ContactsSVG from "@site/static/icons/contacts.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Airy UI comes with an open-source, customizable [Inbox](inbox), filled with the conversations from all of your [sources](sources/introduction.md). You can organize your conversations with features such as [Filters, Search](inbox) and [Tags](tags), view and edit [contacts](contacts), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
+The Inbox features a [Messenger](messenger), filled with the conversations from all of your [connectors](sources/introduction.md). You can chat, organize your conversations with features such as [Filters, Search](messenger#search-and-filter) and [Tags](tags), view and edit [contacts](contacts), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
 
 <ButtonBoxList>
     <ButtonBox
@@ -23,6 +23,13 @@ Airy UI comes with an open-source, customizable [Inbox](inbox), filled with the 
         description='See all your conversations and chat with your contacts'
         link='ui/inbox/messenger'
     />
+        <ButtonBox
+        icon={<CommentBubbleSVG />}
+        iconInvertible={true}
+        title='Suggested Replies'
+        description='Add suggested replies to your messages'
+        link='ui/inbox/suggestedReplies'
+    />
     <ButtonBox
         icon={<LabelSVG />}
         iconInvertible={true}
@@ -30,13 +37,6 @@ Airy UI comes with an open-source, customizable [Inbox](inbox), filled with the 
         description='Tag your conversations for easy filtering, searching & segmenting'
         link='ui/inbox/tags'
     />    
-    <ButtonBox
-        icon={<CommentBubbleSVG />}
-        iconInvertible={true}
-        title='Suggested Replies'
-        description='Add suggested replies to your messages'
-        link='ui/inbox/suggestedReplies'
-    />
     <ButtonBox
         icon={<ContactsSVG />}
         iconInvertible={true}

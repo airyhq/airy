@@ -18,26 +18,29 @@ While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat 
 
 Airy UI comes with two open-source, customizable separate UIs: the [Inbox](inbox/introduction) and the [Control Center](control-center/introduction).
 
-The [Inbox](inbox/introduction) displays all your conversations with
-instant messaging and features to search, filter, and organize your data.
+In the [Inbox](inbox/introduction), you can view, interact, and organize all your conversations with instant messaging, search, filtering, and tags.
 
-The [Control Center](control-center/introduction) provides an overview of an instance's [components](control-center/components) and lets you add and manage [connectors](control-center/connectors) easily.
+The [Control Center](control-center/introduction) provides a technical overview of an instance's [components](control-center/components) and enables you to manage [connectors](control-center/connectors) easily.
 
 <ButtonBoxList>
     <ButtonBox
         icon={<ChatSVG />}
         iconInvertible={true}
         title='Inbox'
-        description='One inbox to see all your conversations & interact with them'
+        description='One inbox to view, interact, and organize all your conversations'
         link='ui/inbox/introduction'
     />
     <ButtonBox
         icon={<ToggleSwitchSVG />}
         title='Control Center'
         iconInvertible={true}
-        description="Get a technical overview of your app and add connectors easily"
+        description="Get a technical overview of your app and manage connectors easily"
         link='ui/control-center/introduction'
     />
 </ButtonBoxList>
 
 Get a glimpse of the Airy UI with screenshots of the Inbox and the Control Center:
+
+<img alt="Inbox"src={useBaseUrl('img/ui/inbox.png')} />
+
+<img alt="Control Center"src={useBaseUrl('img/ui/controlCenter.png')} />

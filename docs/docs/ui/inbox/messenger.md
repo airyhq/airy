@@ -10,11 +10,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-Airy’s Inbox gives you an UI for all of your conversations.
+Airy’s Inbox features a messenger that centralizes all your conversations.
 
-See all conversations from the sources you connected, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
+You can view, interact, and manage multiple conversations, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
 
-The inbox supports not only text messages but also a variety of different message types.
+The messenger supports not only text messages but also a variety of different message types.
 
 :::warning
 
@@ -28,7 +28,7 @@ As this is suitable **only for testing purposes**, we advise you to refer to our
 
 **Send & Receive Messages**
 
-You and your team members can use the inbox to receive and send messages from different sources.
+You and your team members can use the Inbox to receive and send messages from different sources.
 Each of these sources have different character limits.
 
 **Facebook Templates**
@@ -38,7 +38,7 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
 
 **Sample Button Template Message**
 
-<img alt="Button Template Example" src={useBaseUrl('img/ui/FacebookButtonTemplate.png')} />
+<img alt="Button Template Example" src={useBaseUrl('img/ui/templateButtonFacebook.png')} />
 
 **Sample request**
 
@@ -50,22 +50,22 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
       "type": "template",
       "payload": {
         "template_type": "button",
-        "text": "What do you want to do next?",
+        "text": "We have the right hat for everyone.",
         "buttons": [
           {
             "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "Visit Messenger"
+            "url": "https://companyWebsite.com",
+            "title": "View website"
           },
           {
             "type": "web_url",
             "url": "https://www.messenger.com",
-            "title": "Visit Website"
+            "title": "Start chatting"
           },
           {
             "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "Test Button"
+            "url": "https://companyWebsite.com/info",
+            "title": "Practical information"
           }
         ]
       }
@@ -208,19 +208,20 @@ The inbox enables you to search by:
 icon={<PriceTag />}
 title='Tags'
 description='Tag your conversations for easy filtering, searching & segmenting'
-link='ui/tags'
+link='ui/inbox/tags'
 />
 <br/>
 
 **Filter**
 
-Filtering enables you to only show conversations in the inbox according to the
-filter currently set.
+Filtering enables you to only show conversations according to the filter currently set.
 
-The inbox can filter by:
+The Inbox can filter by:
 
 - Read/Unread Conversations
-- Sources
+- State (Open/Close)
+- Source
+- Channel
 - Tags
 
-<img alt="Filter Inbox" src={useBaseUrl('img/ui/FilteringInbox.gif')} />
+<img alt="Filter Inbox" src={useBaseUrl('img/ui/filteringInbox.gif')} />

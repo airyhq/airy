@@ -93,9 +93,10 @@
 
 .dropdownLine {
   display: flex;
+  width: 180px;
   align-items: center;
   border-bottom: 1px solid var(--color-background-gray);
-  padding: 16px;
+  padding: 12px;
 
   color: var(--color-text-gray);
   text-decoration: none;
@@ -126,6 +127,19 @@
     path {
       fill: var(--color-text-gray);
     }
+  }
+}
+
+.dropdownIconControlCenter {
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: 4px;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    height: 100%;
+    width: 100%;
   }
 }
 

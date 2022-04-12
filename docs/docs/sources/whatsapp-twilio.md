@@ -78,9 +78,9 @@ import ConnectTwilioWhatsApp from '../api/endpoints/connect-twilioWhatsApp.mdx'
 
 ## Connect a Twilio.WhatsApp source via the UI
 
-You can connect a Twilio.WhatsApp source via your Airy Core instance UI.
+You can connect a Twilio.WhatsApp source via your Airy Core instance [UI](/ui/overview).
 
-On your instance's Airy Core Control Center UI, click on 'Connectors' on the left sidebar menu and select the WhatsApp channel. Add your Twilio phone number in the Twilio Phone Number field. You can optionally add a name and an image.
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Connectors' on the left sidebar menu and select the WhatsApp channel. Add your Twilio phone number in the Twilio Phone Number field. You can optionally add a name and an image.
 
 ```
 http://localhost:8080/control-center/connectors

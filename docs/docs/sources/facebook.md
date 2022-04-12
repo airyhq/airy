@@ -219,9 +219,9 @@ If you encounter errors, please follow this debugging advice:
 
 ### Connect a Facebook source via the UI
 
-You can connect a Facebook source via your Airy Core instance UI.
+You can connect a Facebook source via your Airy Core instance [UI](/ui/overview).
 
-On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image.
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image.
 
 <img alt="Facebook connect" src={useBaseUrl('img/sources/facebook/facebook_ui.png')} />
 

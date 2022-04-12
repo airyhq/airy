@@ -32,7 +32,7 @@ It's important to understand the difference between a [source](/getting-started/
 
 Connecting a [channel](/getting-started/glossary/#channel) allows the possibility of starting a [conversation](/getting-started/glossary/#conversation) between a [source](/getting-started/glossary/#source) and your Airy Core instance. Once a [channel](/getting-started/glossary/#channel) has been connected, your Airy Core instance will start ingesting [messages](/getting-started/glossary/#message) and create new [conversations](/getting-started/glossary/#conversation) accordingly.
 
-You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source). The [Inbox UI](/ui/inbox) displays all of your [conversations](/getting-started/glossary/#conversation) from all of your [sources](/getting-started/glossary/#source).
+You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source). The [Inbox UI](/ui/inbox/introduction) displays all of your [conversations](/getting-started/glossary/#conversation) from all of your [sources](/getting-started/glossary/#source).
 
 <ButtonBox
 icon={<ChannelsUI />}

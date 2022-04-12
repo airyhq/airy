@@ -158,9 +158,13 @@ Success! You are now ready to connect an Instagram Account to your Airy Core ins
 <br />
 <br />
 
-## Step 6: Connect an Instagram channel via API request
+## Step 6: Connect an Instagram channel via API request or the UI
 
-The next step is to send a request to the [channels endpoint](/api/endpoints/channels#instagram) to connect an instagram account to your instance.
+The next step is to connect the Instagram channel: this can be done via API request or the [Control Center UI](/ui/control-center/introduction). We are covering both in this section.
+
+## Connect an Instagram channel via API request
+
+To connect an Instagram channel via API request, send a request to the [channels endpoint](/api/endpoints/channels#instagram) to connect an instagram account to your instance.
 
 <ButtonBox
 icon={<BoltSVG />}
@@ -184,6 +188,22 @@ Troubleshooting:
 - Verify your webhook integration (refer back to step 2). Make sure your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Instagram' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Instagram' subscription and not 'User' (which is the default).
 
 :::
+
+## Connect an Instagram channel via the UI
+
+You can also connect an Instagram source via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
+
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and click on the 'Instagram' button.
+
+This will open a page with a form to connect the source. Add your Page ID, Token, and ID of your Instagram Account. You can optionally add a name and an image. Next, click on the button 'Connect Page'.
+
+<img alt="Instagram connect form" src={useBaseUrl('img/sources/instagram/instagramConnect.png')} />
+
+Upon successful connection, the Instagram channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by clicking on the 'Instagram' button in the list.
+
+<img alt="Control Center connectors with Instagram" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 
 ## Step 7: Send a message to Instagram
 

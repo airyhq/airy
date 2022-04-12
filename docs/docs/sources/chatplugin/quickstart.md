@@ -50,11 +50,7 @@ the next steps, so note it down.
 
 Alternatively, you can connect an Airy's Live Chat Plugin channel via the [UI](/ui/overview).
 
-On your instance's [Control Center](/ui/control-center/introduction), click on the 'Connectors' icon on the left sidebar menu and select Airy Live Chat. Then, click on the button displaying a + icon next to the Airy Live Chat channel.
-
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel.png')} />
-
-Next, click on the blue button "Connect Airy Live Chat".
+On your instance's [Control Center](/ui/control-center/introduction), click on the 'Connectors' icon on the left sidebar menu and select Airy Live Chat. Then, click on the button "Connect Airy Live Chat".
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect.png')} />
 
@@ -62,11 +58,11 @@ Enter a display name and optionally an image URL in the respective fields. The d
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect-form.png')} />
 
-An Airy's Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Control Center UI](/ui/control-center/introduction). Next, click on the button showing the connected channels.
+An Airy's Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Connectors](/ui/control-center/connectors) page in the [Control Center UI](/ui/control-center/introduction).
 
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-list.png')} />
+<img alt="Control Center connectors" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 
-This will bring you to a page where you can edit or disconnect each channel. Click on 'Edit'.
+Click on the Airy Live Chat Button. This will bring you to a page where you can edit or disconnect all Airy Live Chat Plugin channels. Select the channel you just connected and click on 'Edit'.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-connected.png')} />
 

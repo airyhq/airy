@@ -95,7 +95,7 @@ Once the verification process has been completed, Google's Business Messages wil
 
 </SuccessBox>
 
-## Connecting Google's Business Messages to your Airy Core instance
+## Connect Google's Business Messages to your Airy Core instance via API request
 
 After the configuration, you can connect a Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
 
@@ -111,6 +111,22 @@ link='api/endpoints/channels#google'
 import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
 <ConnectGoogle />
+
+## Connect Google's Business Messages to your Airy Core instance via the UI
+
+You can also connect a Google's Business Messages source via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
+
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and click on the 'Google's Business Messages' button.
+
+This will open a page with a form to connect the source. Add your Agent ID and Name. You can optionally add an image URL. Next, click on the button 'Connect Page'.
+
+<img alt="Google Business Messages connect form" src={useBaseUrl('img/sources/google/googleConnect.png')} />
+
+Upon successful connection, the Google's Business Messages channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by clicking on the 'Google's Business Messages' button in the list.
+
+<img alt="Control Center connectors with Instagram" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 
 ## Send messages from Google's Business Messages source
 

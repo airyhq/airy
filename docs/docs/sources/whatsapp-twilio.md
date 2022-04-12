@@ -6,6 +6,7 @@ sidebar_label: WhatsApp Business API
 import TLDR from "@site/src/components/TLDR";
 import SuccessBox from "@site/src/components/SuccessBox";
 import ButtonBox from "@site/src/components/ButtonBox";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <TLDR>
 
@@ -80,13 +81,17 @@ import ConnectTwilioWhatsApp from '../api/endpoints/connect-twilioWhatsApp.mdx'
 
 You can connect a Twilio.WhatsApp source via your Airy Core instance [UI](/ui/overview).
 
-On your instance's [Control Center](/ui/control-center/introduction), click on 'Connectors' on the left sidebar menu and select the WhatsApp channel. Add your Twilio phone number in the Twilio Phone Number field. You can optionally add a name and an image.
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and click on the 'WhatsApp' button.
 
-```
-http://localhost:8080/control-center/connectors
-```
+This will open a page with a form to connect the source. Add your Twilio phone number in the Twilio Phone Number field. You can optionally add a name and an image. Next, click on the button 'Connect Whatsapp Number'.
 
-Your twilio.whatsApp channel will appear as connected in the UI.
+<img alt="WhatsApp connect form" src={useBaseUrl('img/sources/twilio/whatsAppConnect.png')} />
+
+Upon successful connection, your twilio.whatsApp channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by clicking on the 'WhatsApp' button in the list.
+
+<img alt="Control Center connectors" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 
 ## Send and receive messages with the Inbox UI
 

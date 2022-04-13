@@ -24,10 +24,13 @@ You also can get a contact's information via the [Contacts info API](api/endpoin
 
 <img alt="Inbox with contact info" src={useBaseUrl('img/ui/inbox.png')} />
 
-## Edit
+## Edit contact details
 
-When editing contact details, you can change the email, phone number, title, address, city, and organization.
-
-This can also be done via the [Update contacts API](api/endpoints/contacts.md#update-contact).
+When editing contact details, you can change the email, phone number, title, address, city, and organization. This can also be done via the [Update contacts API](api/endpoints/contacts.md#update-contact).
 
 <img alt="Contacts edit"src={useBaseUrl('img/ui/contactsEdit.gif')} />
+
+<br />
+<br />
+
+Note that a contact's name (displayed right under the avatar image) is edited separately: hover on the name and click on the pen icon that appears.

@@ -20,7 +20,7 @@ Airy UI comes with two open-source, customizable separate UIs: the [Inbox](inbox
 
 The [Inbox](inbox/introduction) offers [instant messaging](inbox/messenger) along with [search, filtering](inbox/messenger#search-and-filter) and [tags](inbox/tags) to organize your conversations.
 
-The [Control Center](control-center/introduction) provides a technical overview of an Airy Core app's [components](control-center/components) in addition to enabling you to manage [connectors](control-center/connectors) easily.
+The [Control Center](control-center/introduction) provides a technical dashboard to manage your Airy Core app.
 
 <ButtonBoxList>
     <ButtonBox
@@ -41,6 +41,6 @@ The [Control Center](control-center/introduction) provides a technical overview 
 
 Get a glimpse of the Airy UI with screenshots of the Inbox and the Control Center:
 
-<img alt="Inbox"src={useBaseUrl('img/ui/inbox.png')} />
+<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessengerDemo.png')} />
 
 <img alt="Control Center"src={useBaseUrl('img/ui/controlCenter.png')} />

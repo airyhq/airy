@@ -110,35 +110,9 @@ Update a channel's name or image URL.
 
 ### Airy Live Chat Plugin
 
-Connects a Chat Plugin source to Airy Core.
+import ConnectChatPlugin from './connect-chatPlugin.mdx'
 
-```
-POST /channels.chatplugin.connect
-```
-
-- `name` is a unique identifier of your choice.
-
-```json5
-{
-  "name": "website-identifier-42",
-  "image_url": "http://example.org/plugin_icon.jpeg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "1f679227-76c2-4302-bb12-703b2adb0f66",
-  "source": "chatplugin",
-  "source_channel_id": "website-identifier-42",
-  "metadata": {
-    "name": "website-identifier-42",
-    "image_url": "http://example.org/plugin_icon.jpeg" // optional
-  },
-  "connected": true
-}
-```
+<ConnectChatPlugin />
 
 ### Facebook
 

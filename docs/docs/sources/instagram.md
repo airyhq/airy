@@ -49,7 +49,7 @@ To connect an instagram account we have to complete the following steps:
 - [Step 3: Enable the Instagram Graph API](#step-3-enable-the-instagram-graph-api)
 - [Step 4: Obtain the Page token](#step-4-obtain-the-page-token)
 - [Step 5: Get the Instagram account ID](#step-5-get-the-instagram-account-id)
-- [Step 6: Connect an Instagram channel via API request](#step-6-connect-an-instagram-channel-via-api-request)
+- [Step 6: Connect an Instagram channel](#step-6-connect-an-instagram-channel)
 - [Step 7: Send a message to Instagram](#step-7-send-a-message-to-instagram)
 
 ### Step 1: Find the App ID and Secret
@@ -158,9 +158,11 @@ Success! You are now ready to connect an Instagram Account to your Airy Core ins
 <br />
 <br />
 
-## Step 6: Connect an Instagram channel via API request or the UI
+## Step 6: Connect an Instagram channel
 
-The next step is to connect the Instagram channel: this can be done via API request or the [Control Center UI](/ui/control-center/introduction). We are covering both in this section.
+import ConnectChannelOptions from "./connectChannelOptions.mdx"
+
+<ConnectChannelOptions />
 
 ## Connect an Instagram channel via API request
 
@@ -191,13 +193,21 @@ Troubleshooting:
 
 ## Connect an Instagram channel via the UI
 
-You can also connect an Instagram source via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
+You can also connect an Instagram channel via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
 
-On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and click on the 'Instagram' button.
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and select 'Instagram'.
 
-This will open a page with a form to connect the source. Add your Page ID, Token, and ID of your Instagram Account. You can optionally add a name and an image. Next, click on the button 'Connect Page'.
+This will open a page with a form.
 
 <img alt="Instagram connect form" src={useBaseUrl('img/sources/instagram/instagramConnect.png')} />
+
+Add your Page ID, Token, and the ID of your Instagram account.
+
+<ConnectFormOptional />
+
+import ConnectFormOptional from './connectFormOptional.mdx'
+
+Next, click on the 'Save' button.
 
 Upon successful connection, the Instagram channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
 

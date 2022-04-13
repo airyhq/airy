@@ -8,6 +8,7 @@
   overflow: hidden;
   position: relative;
   max-width: inherit;
+  width: 100%;
 }
 
 .carouselChildren {
@@ -15,6 +16,7 @@
   flex-direction: row;
   overflow: hidden;
   max-width: 100%;
+  width: 100%;
 }
 
 .buttonScroll {

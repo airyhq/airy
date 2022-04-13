@@ -33,4 +33,4 @@ When editing contact details, you can change the email, phone number, title, add
 <br />
 <br />
 
-Note that a contact's name (displayed right under the avatar image) is edited separately: hover on the name and click on the pen icon that appears.
+Note that a contact's name (displayed right under the avatar image) is edited separately: hover over it to edit it.

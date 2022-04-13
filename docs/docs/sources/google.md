@@ -130,7 +130,7 @@ This will open a page with a form.
 
 Add your Agent ID and Name. You can optionally add an image URL, which will be used as the conversation's icon in the [Inbox UI's messenger](/ui/inbox/messenger). A fallback image will be used if you do not enter a valid image URL.
 
-Upon successful connection, the Google's Business Messages channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+Upon successful connection, Google's Business Messages will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
 
 You can edit its configuration at any time by selecting 'Google Business Messages' in the list.
 

@@ -209,9 +209,9 @@ import ConnectFormOptional from './connectFormOptional.mdx'
 
 Next, click on the 'Save' button.
 
-Upon successful connection, the Instagram channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+Upon successful connection, Instagram will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
 
-You can edit its configuration at any time by clicking on the 'Instagram' button in the list.
+You can edit its configuration at any time by selecting 'Instagram' in the list.
 
 <img alt="Control Center connectors with Instagram" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 

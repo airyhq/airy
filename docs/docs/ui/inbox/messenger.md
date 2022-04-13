@@ -14,7 +14,7 @@ Airy’s Inbox features a messenger that centralizes all your conversations and 
 
 You can view, interact with, and manage multiple conversations, regardless of whether they come via the [Airy Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source. [Search and filter](#search-and-filter) through your conversations and use [tags](tags) to customize your workflow.
 
-<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessengerDemo.png')} />
+<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessenger.png')} />
 
 <br />
 <br />

@@ -12,8 +12,8 @@ A connector is listed in the [Connectors](connectors) page once it has been succ
 ## Example
 
 The screenshots below come from a sample Airy Core app. Its Control Center UI show that the app is already connected to the [Airy Live Chat](/sources/chatplugin/quickstart), [Facebook Messenger](/sources/facebook), [WhatsApp](/sources/whatsapp-twilio), [Google Business Messages](/sources/google), and [Instagram](/sources/instagram) connectors. The [SMS](/sources/sms-twilio) connector is listed in the Catalog: it hasn't been added to the app yet and is available to connect.
-<img alt="Control Center Connectors"src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
-<img alt="Control Center Catalog"src={useBaseUrl('img/ui/controlCenterCatalog.png')} />
+<img alt="Control Center Connectors Example"src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
+<img alt="Control Center Catalog Example"src={useBaseUrl('img/ui/controlCenterCatalogExample.png')} />
 
 ## Configuration
 

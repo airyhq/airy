@@ -39,8 +39,12 @@ The [Control Center](control-center/introduction) provides a technical dashboard
     />
 </ButtonBoxList>
 
-Get a glimpse of the Airy UI with screenshots of the Inbox and the Control Center:
+Screenshot of the [Inbox](inbox/introduction):
+<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessenger.png')} />
 
-<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessengerDemo.png')} />
+<br />
+<br />
+<br />
 
-<img alt="Control Center"src={useBaseUrl('img/ui/controlCenter.png')} />
+Screenshot of the [Control Center](control-center/introduction):
+<img alt="Control Center Demo"src={useBaseUrl('img/ui/controlCenterComponents.png')} />

@@ -39,6 +39,6 @@ The Control Center serves as a technical dashboard: it provides a graphical over
 <br />
 
 Screenshots of the Control Center UI:
-<img alt="Control Center Components Demo"src={useBaseUrl('img/ui/controlCenter.png')} />
+<img alt="Control Center Components Demo"src={useBaseUrl('img/ui/controlCenterComponents.png')} />
 <img alt="Control Center Connectors Demo "src={useBaseUrl('img/ui/controlCenterConnectorsDemo.png')} />
 <img alt="Control Center Catalog Demo"src={useBaseUrl('img/ui/controlCenterCatalogDemo.png')} />

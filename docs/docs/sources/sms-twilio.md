@@ -96,9 +96,9 @@ Add your Twilio phone number in the Twilio Phone Number field.
 
 import ConnectFormOptional from './connectFormOptional.mdx'
 
-Upon successful connection, your Twilio SMS channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+Upon successful connection, Twilio SMS will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
 
-You can edit its configuration at any time by clicking on the 'SMS' button in the list.
+You can edit its configuration at any time by selecting 'SMS' in the list.
 
 ## Step 3: Send and receive messages with the Inbox UI
 

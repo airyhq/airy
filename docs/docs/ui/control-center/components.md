@@ -9,4 +9,4 @@ The Components section of the [Control Center](/ui/control-center/introduction) 
 
 The data displayed in this comprehensible table is served by the [client.config endpoint](/api/endpoints/client-config).
 
-<img alt="Control Center"src={useBaseUrl('img/ui/controlCenter.png')} />
+<img alt="Control Center"src={useBaseUrl('img/ui/controlCenterComponents.png')} />

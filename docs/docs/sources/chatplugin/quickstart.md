@@ -37,12 +37,9 @@ link='/getting-started/installation/introduction'
 
 ## Step 1: Set up your first source
 
-There are 2 options to connect an Airy Live Chat Plugin source to your instance:
+import ConnectChannelOptions from "../connectChannelOptions.mdx"
 
-- you can connect the source via an API request (using curl or platforms such as Postman)
-- you can connect the source via the UI
-
-We cover both options in this document.
+<ConnectChannelOptions />
 
 ## Connect Airy Live Chat Plugin via API request
 
@@ -89,7 +86,7 @@ import ConnectFormOptional from '../connectFormOptional.mdx'
 
 Next, click on the 'Save' button.
 
-Upon successful connection, an Airy Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Connectors](/ui/control-center/connectors) page in the [Control Center UI](/ui/control-center/introduction).
+Upon successful connection, Airy Live Chat Plugin will appear as connected in the [Connectors](/ui/control-center/connectors) page in the [Control Center UI](/ui/control-center/introduction).
 
 <img alt="Control Center connectors" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 

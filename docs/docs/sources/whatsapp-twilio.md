@@ -90,9 +90,9 @@ Add your Twilio phone number in the respective field.
 
 import ConnectFormOptional from './connectFormOptional.mdx'
 
-Upon successful connection, your Twilio.WhatsApp channel will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+Upon successful connection, Twilio.WhatsApp will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
 
-You can edit its configuration at any time by clicking on the 'WhatsApp' button in the list.
+You can edit its configuration at any time by selecting 'WhatsApp' in the list.
 
 <img alt="Control Center connectors" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 

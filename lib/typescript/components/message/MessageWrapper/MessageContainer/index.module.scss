@@ -19,6 +19,13 @@
   width: 100%;
 }
 
+.notice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+}
+
 .member {
   display: flex;
   justify-content: flex-end;

@@ -15,40 +15,29 @@ interface MessageContainerProps {
 
 export const MessageContainer = (props: MessageContainerProps) => {
   const {messageReaction, isContact, deliveryState, decoration, children, isChatPlugin} = props;
-  const failedMessage = true;
+  const failedMessage = deliveryState === DeliveryState.failed;
 
-  //deliveryState === DeliveryState.failed;
+  const Notice = () => {
+    return (
+      <div className={styles.notice}>
+        {decoration && isContact && decoration}
+        {failedMessage && !isChatPlugin && (
+          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className={`${styles.messageContainer} ${isContact ? styles.contactContainer : styles.memberContainer}`}>
       <div className={`${styles.messageContent} ${isContact ? styles.contact : styles.member}`}>
-        <div className={`${isContact ? styles.contact : styles.member}`}>
-          {!isContact && (
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink'}}>
-              {decoration && isContact && decoration}
-              {failedMessage && !isChatPlugin && (
-                <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
-              )}
-            </div>
-          )}
+        {!isContact && <Notice />}
 
-          <div className={`${isContact ? styles.contactContent : styles.memberContent}`}>{children}</div>
+        {children}
 
-          {isContact && (
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink'}}>
-              {decoration && isContact && decoration}
-              {failedMessage && !isChatPlugin && (
-                <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
-              )}
-            </div>
-          )}
-        </div>
-        {/* //{decoration && isContact && decoration} */}
-        {/* {failedMessage && isContact && !isChatPlugin && (
-          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
-        )} */}
+        {isContact && <Notice />}
       </div>
-      <Reaction messageReaction={'❤️'} isContact={isContact} />
+      <Reaction messageReaction={messageReaction} isContact={isContact} />
     </div>
   );
 };

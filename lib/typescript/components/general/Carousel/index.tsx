@@ -73,11 +73,6 @@ export const Carousel = ({children}) => {
 
   const moveRight = useCallback(
     throttle(() => {
-      console.log(
-        'RIGHT',
-        carouselChildren.current.scrollLeft + getScrollBy(),
-        maximumScrollRight(carouselChildren.current)
-      );
       carouselChildren.current.scroll({
         left: Math.max(
           carouselChildren.current.scrollLeft + getScrollBy(),

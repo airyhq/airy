@@ -146,7 +146,9 @@ const MessageList = (props: MessageListProps) => {
 
         const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
 
-        const messageDecoration = hasSuggestions(message) ? (
+        //true
+
+        const messageDecoration = true ? (
           <button type="button" className={styles.suggestionWrapper} onClick={() => showSuggestions(message)}>
             <LightBulbIcon className={styles.suggestionIcon} title="Show suggestions" />
           </button>

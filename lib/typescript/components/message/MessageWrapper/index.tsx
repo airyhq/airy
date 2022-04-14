@@ -43,7 +43,10 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
 
   return (
     <>
-      <div className={styles.messageWrapper}>
+      <div
+        className={styles.messageWrapper}
+        style={{marginLeft: !lastInGroup && !isChatPlugin && isContact ? '48px' : ''}}
+      >
         {isContact && sentAt && lastInGroup && (
           <div className={styles.avatar}>
             <Avatar contact={contact} />

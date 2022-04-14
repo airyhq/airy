@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  //background-color:yellow;
 }
 
 .contactContainer {
@@ -20,15 +21,14 @@
 
 .member {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
+  justify-content: flex-end;
+  width: inherit;
 }
 
 .memberContent {
   overflow-x: hidden;
   max-width: 100%;
-  width: 100%;
+  width: auto;
   display: flex;
   align-items: flex-end;
   flex-direction: column;
@@ -37,14 +37,14 @@
 
 .contact {
   display: flex;
-  align-items: flex-start;
-  width: 100%;
+  justify-content: flex-start;
+  width: inherit;
 }
 
 .contactContent {
   overflow-x: hidden;
   max-width: 100%;
-  width: 100%;
+  width: auto;
 }
 
 .failedMessageIcon {

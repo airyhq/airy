@@ -38,9 +38,6 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
 
-  //fix marginLeft?
-  //style={false ? {marginLeft: '48px'} : {}}
-
   return (
     <>
       <div

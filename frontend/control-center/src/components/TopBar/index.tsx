@@ -18,7 +18,7 @@ const mapStateToProps = (state: StateModel) => ({
 });
 
 const logoutUrl = `${env.API_HOST}/logout`;
-const inboxUrl = `${env.API_HOST}/ui/`;
+const inboxUrl = `${env.API_HOST}/inbox/`;
 
 const connector = connect(mapStateToProps);
 

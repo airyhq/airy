@@ -47,7 +47,7 @@ web_app(
     entry = "frontend/ui/src/index",
     index = ":index.html",
     output = {
-        "publicPath": "/ui/",
+        "publicPath": "/inbox/",
     },
     static_assets = "//frontend/ui/public",
     ts_deps = [":app"] + ts_deps,

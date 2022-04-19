@@ -15,7 +15,7 @@ interface MessageWrapperProps {
   senderName?: string;
   sentAt?: string;
   contact?: ContactInfo;
-  handleFailedMessage?: (resend: boolean, messageId: string) => void;
+  handleFailedMessage?: (messageId: string) => void;
   messageReaction?: string;
   decoration?: ReactNode;
 }
@@ -38,9 +38,6 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
 
   const [failedMessageResent, setFailedMessageResent] = useState(false);
   const isContact = isChatPlugin ? !fromContact : fromContact;
-
-  //keep resend in state
-
   return (
     <>
       <div

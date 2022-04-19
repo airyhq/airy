@@ -8,7 +8,7 @@ interface MessageInfoProps {
   messageId: string;
   sentAt: string;
   senderName: string;
-  handleFailedMessage: (resend: boolean, messageId: string) => void;
+  handleFailedMessage: (messageId: string) => void;
   setFailedMessageResent: React.Dispatch<React.SetStateAction<boolean>>;
   failedMessageResent: boolean;
 }
@@ -21,6 +21,7 @@ const MessageFailed = ({messageId, handleFailedMessage, setFailedMessageResent})
       setFailedMessageResent(false);
     }, 2000);
   };
+
   return (
     <div className={styles.failedMessage}>
       <p>Failed to send!</p>

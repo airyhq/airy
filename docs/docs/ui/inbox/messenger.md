@@ -138,7 +138,7 @@ link='sources/chatplugin/overview'
 
 **Sample Rich Card Carousel Message**
 
-<img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/RichCardCarousel.gif')} />
+<img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/richCardCarousel.gif')} />
 
 **Sample request**
 
@@ -165,7 +165,7 @@ link='sources/chatplugin/overview'
             "media": {
               "height": "MEDIUM",
               "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/237/200",
+                "fileUrl": "https://picsum.photos/200",
                 "forceRefresh": "false"
               }
             }
@@ -184,7 +184,45 @@ link='sources/chatplugin/overview'
             "media": {
               "height": "MEDIUM",
               "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/238/200",
+                "fileUrl": "https://picsum.photos/200",
+                "forceRefresh": "false"
+              }
+            }
+          },
+          {
+            "title": "Card #3",
+            "description": "The description for card #3",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #3",
+                  "postbackData": "card_3"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/200",
+                "forceRefresh": "false"
+              }
+            }
+          },
+          {
+            "title": "Card #4",
+            "description": "The description for card #4",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #4",
+                  "postbackData": "card_4"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/200",
                 "forceRefresh": "false"
               }
             }

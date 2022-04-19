@@ -63,7 +63,9 @@ export const MessageInfo = (props: MessageInfoProps) => {
             setFailedMessageResent={setFailedMessageResent}
           />
         ) : (
-          <MessageSuccessfull sentAt={sentAt} senderName={senderName} senderIdentity={senderIdentity} />
+          !failedMessageResent && (
+            <MessageSuccessfull sentAt={sentAt} senderName={senderName} senderIdentity={senderIdentity} />
+          )
         )}
       </span>
     </div>

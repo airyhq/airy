@@ -132,8 +132,8 @@ const MessageList = (props: MessageListProps) => {
     showSuggestedReplies(message.metadata.suggestions);
   };
 
-  const handleFailedMessage = (resend: boolean, messageId: string) => {
-    resend && resendMessage({messageId});
+  const handleFailedMessage = (messageId: string) => {
+    resendMessage({messageId});
   };
 
   return (

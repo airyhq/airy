@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {useState, ReactNode} from 'react';
 import {ContactInfo, DeliveryState} from 'model';
 import {MessageInfo} from '../MessageInfo';
 import {MessageContainer} from './MessageContainer';
@@ -36,7 +36,10 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
     messageReaction,
   } = props;
 
+  const [failedMessageResent, setFailedMessageResent] = useState(false);
   const isContact = isChatPlugin ? !fromContact : fromContact;
+
+  //keep resend in state
 
   return (
     <>
@@ -56,6 +59,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
             decoration={decoration}
             isChatPlugin={isChatPlugin}
             messageReaction={messageReaction}
+            failedMessageResent={failedMessageResent}
           >
             {children}
           </MessageContainer>
@@ -69,6 +73,8 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
           messageId={messageId}
           senderName={senderName}
           handleFailedMessage={handleFailedMessage}
+          failedMessageResent={failedMessageResent}
+          setFailedMessageResent={setFailedMessageResent}
         />
       )}
     </>

@@ -1,4 +1,4 @@
-import React, {useEffect, createRef} from 'react';
+import React, {useEffect, useState, createRef} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {cyMessageList} from 'handles';
@@ -27,6 +27,8 @@ const connector = connect(null, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
   const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessage} = props;
+  const [resentMessage, setResentMessage] = useState<boolean>(false);
+
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
   if (!conversation) {
@@ -49,7 +51,12 @@ const MessageList = (props: MessageListProps) => {
     if (!messages || messages.length === 0) {
       conversationId && listMessages(conversationId);
     }
-    scrollBottom();
+
+    if (resentMessage && conversationId !== prevCurrentConversationId) setResentMessage(false);
+
+    if (!resentMessage) {
+      scrollBottom();
+    }
   }, [conversationId, messages]);
 
   useEffect(() => {
@@ -132,8 +139,9 @@ const MessageList = (props: MessageListProps) => {
     showSuggestedReplies(message.metadata.suggestions);
   };
 
-  const handleFailedMessage = (resend: boolean, messageId: string) => {
-    resend && resendMessage({messageId});
+  const handleFailedMessage = (messageId: string) => {
+    resendMessage({messageId});
+    setResentMessage(true);
   };
 
   return (

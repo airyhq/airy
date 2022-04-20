@@ -11,26 +11,32 @@ interface MessageContainerProps {
   children: ReactNode;
   isChatPlugin: boolean;
   messageReaction: string;
+  failedMessageResent: boolean;
 }
 
 export const MessageContainer = (props: MessageContainerProps) => {
-  const {messageReaction, isContact, deliveryState, decoration, children, isChatPlugin} = props;
+  const {messageReaction, isContact, deliveryState, decoration, children, isChatPlugin, failedMessageResent} = props;
   const failedMessage = deliveryState === DeliveryState.failed;
+
+  const Notice = () => {
+    return (
+      <div className={styles.notice}>
+        {decoration && isContact && decoration}
+        {failedMessage && !isChatPlugin && !failedMessageResent && (
+          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className={`${styles.messageContainer} ${isContact ? styles.contactContainer : styles.memberContainer}`}>
-      <div className={styles.messageContent}>
-        {failedMessage && !isContact && !isChatPlugin && (
-          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
-        )}
-        {decoration && !isContact && decoration}
-        <div className={`${isContact ? styles.contact : styles.member}`}>
-          <div className={`${isContact ? styles.contactContent : styles.memberContent}`}>{children}</div>
-        </div>
-        {decoration && isContact && decoration}
-        {failedMessage && isContact && !isChatPlugin && (
-          <ErrorMessageIcon className={styles.failedMessageIcon} height={24} width={24} />
-        )}
+      <div className={`${styles.messageContent} ${isContact ? styles.contact : styles.member}`}>
+        {!isContact && <Notice />}
+
+        {children}
+
+        {isContact && <Notice />}
       </div>
       <Reaction messageReaction={messageReaction} isContact={isContact} />
     </div>

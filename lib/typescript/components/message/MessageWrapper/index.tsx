@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {useState, ReactNode} from 'react';
 import {ContactInfo, DeliveryState} from 'model';
 import {MessageInfo} from '../MessageInfo';
 import {MessageContainer} from './MessageContainer';
@@ -15,7 +15,7 @@ interface MessageWrapperProps {
   senderName?: string;
   sentAt?: string;
   contact?: ContactInfo;
-  handleFailedMessage?: (resend: boolean, messageId: string) => void;
+  handleFailedMessage?: (messageId: string) => void;
   messageReaction?: string;
   decoration?: ReactNode;
 }
@@ -36,11 +36,14 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
     messageReaction,
   } = props;
 
+  const [failedMessageResent, setFailedMessageResent] = useState(false);
   const isContact = isChatPlugin ? !fromContact : fromContact;
-
   return (
     <>
-      <div className={styles.messageWrapper} style={{marginLeft: !lastInGroup && !isChatPlugin ? '48px' : ''}}>
+      <div
+        className={styles.messageWrapper}
+        style={{marginLeft: !lastInGroup && !isChatPlugin && isContact ? '48px' : ''}}
+      >
         {isContact && sentAt && lastInGroup && (
           <div className={styles.avatar}>
             <Avatar contact={contact} />
@@ -53,6 +56,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
             decoration={decoration}
             isChatPlugin={isChatPlugin}
             messageReaction={messageReaction}
+            failedMessageResent={failedMessageResent}
           >
             {children}
           </MessageContainer>
@@ -66,6 +70,8 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
           messageId={messageId}
           senderName={senderName}
           handleFailedMessage={handleFailedMessage}
+          failedMessageResent={failedMessageResent}
+          setFailedMessageResent={setFailedMessageResent}
         />
       )}
     </>

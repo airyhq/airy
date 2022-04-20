@@ -8,14 +8,24 @@ interface MessageInfoProps {
   messageId: string;
   sentAt: string;
   senderName: string;
-  handleFailedMessage: (resend: boolean, messageId: string) => void;
+  handleFailedMessage: (messageId: string) => void;
+  setFailedMessageResent: React.Dispatch<React.SetStateAction<boolean>>;
+  failedMessageResent: boolean;
 }
 
-const MessageFailed = ({messageId, handleFailedMessage}) => {
+const MessageFailed = ({messageId, handleFailedMessage, setFailedMessageResent}) => {
+  const resendMessage = async () => {
+    setFailedMessageResent(true);
+    handleFailedMessage(messageId);
+    setTimeout(() => {
+      setFailedMessageResent(false);
+    }, 2000);
+  };
+
   return (
     <div className={styles.failedMessage}>
       <p>Failed to send!</p>
-      <button className={styles.messageFailedButton} type="button" onClick={() => handleFailedMessage(true, messageId)}>
+      <button className={styles.messageFailedButton} type="button" onClick={resendMessage}>
         Retry
       </button>
     </div>
@@ -31,16 +41,31 @@ const MessageSuccessfull = ({sentAt, senderName, senderIdentity}) => {
 };
 
 export const MessageInfo = (props: MessageInfoProps) => {
-  const {isContact, deliveryState, messageId, sentAt, senderName, handleFailedMessage} = props;
+  const {
+    isContact,
+    deliveryState,
+    messageId,
+    sentAt,
+    senderName,
+    handleFailedMessage,
+    setFailedMessageResent,
+    failedMessageResent,
+  } = props;
   const senderIdentity = sentAt ? ` - sent by ${senderName}` : `sent by ${senderName}`;
 
   return (
     <div className={`${styles.infoMessage} ${isContact ? styles.contact : styles.member}`}>
       <span>
-        {deliveryState === DeliveryState.failed ? (
-          <MessageFailed messageId={messageId} handleFailedMessage={handleFailedMessage} />
+        {deliveryState === DeliveryState.failed && !failedMessageResent ? (
+          <MessageFailed
+            messageId={messageId}
+            handleFailedMessage={handleFailedMessage}
+            setFailedMessageResent={setFailedMessageResent}
+          />
         ) : (
-          <MessageSuccessfull sentAt={sentAt} senderName={senderName} senderIdentity={senderIdentity} />
+          !failedMessageResent && (
+            <MessageSuccessfull sentAt={sentAt} senderName={senderName} senderIdentity={senderIdentity} />
+          )
         )}
       </span>
     </div>

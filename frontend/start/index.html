@@ -3,10 +3,11 @@
   <head>
     <title>Airy Start Page</title>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="/start/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#000000" />        
-    <link rel="manifest" href="/start/manifest.json" />    
+    <meta name="theme-color" content="#000000" />   
+    <link rel="manifest" href="/manifest.json" />         
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>    
     <style>        
       html, body {            
         background-color: white;
@@ -23,21 +24,72 @@
         flex-direction: column;
         align-items: center;
       }
-      #logo {
-        width: 250px;
-        height: 250px;
+      #headerLogo {
+        width: 200px;
+        height: 70px;
+        margin: 80px 0;
       }
       #content {
         display: flex;
         position: relative;
-        top: 200px;        
       }
       #box {
-        width: 250px;
-        height: 250px;
-        border: 1px solid black;
+        width: 360px;
+        height: 360px;
+        margin: 0 40px;
+        border: 2px solid #CAD5DB;
+        border-radius: 8px;        
+        text-align: center;
+        cursor: pointer;
+      }
+      #box:hover {
+        border: 2px solid #1578D4;
+      }
+      #boxTitle {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 31px;
+        line-height: 37px;
+        text-align: center;
+        color: #212428;
+        margin: 32px 0 56px 0;
+      }
+      #boxContent {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 200;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: center;
+        color: #212428;
+        margin: 12px 0 56px 0;
+      }      
+      #boxButton {
+        width: 213px;
+        height: 48px;
+        left: 319px;
+        top: 495px;
+        background-color: #1578D4;
+        color: white;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
       }
     </style>
+    <script>
+      function redirectToInbox() {        
+        window.open(`${window.location.host}/inbox`,"_self");
+      }
+      function redirectToControlCenter(i) {
+        window.open(`${window.location.host}/control-center`,"_self");
+      }
+      </script>
   </head>
   <body>
     <noscript>
@@ -45,10 +97,28 @@
     </noscript>
     <div id="root">
       <div id="container">
-        <img id="logo" src="airyPrimaryRgb.png" alt="Airy" />
+        <div id="headerLogo">
+          <svg viewBox="0 0 403.9 152" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" d="M71.5.1C34.3 2.4 3.8 32 .5 69.2c-1.1 13 1 25.4 5.7 36.4.5 1.3.7 2.7.4 4L0 139c0 .2.1.3.2.3l28.3-2.5c1.2-.1 2.5.3 3.5 1.1 12.7 9.1 28.3 14.4 45.1 14.2 41.8-.5 75.7-35.5 75.1-77.3-.7-43-37-77.3-80.7-74.7z" fill="#4bb3fd" fill-rule="evenodd"/><path d="m242.8 119.7-12.7-30.4h-41l-12.6 30.4h-12L205 23.8h10l40.3 95.9zm-16.2-40.1L214.7 50c-1.5-3.7-3.1-8.3-4.8-13.8-1 4.2-2.5 8.8-4.4 13.8l-12.1 29.6zm49.1 40.1h-10.6V48.3h10.6zm47.4-72.8c3.2 0 6 .3 8.5.8l-1.5 10c-2.9-.7-5.5-1-7.8-1-5.8 0-10.7 2.3-14.8 7s-6.1 10.5-6.1 17.5v38.4h-10.8V48.2h9.7v9.5s3.4-5.6 9.3-8c5.8-2.4 9-2.8 13.5-2.8zm14 1.4h11.6l15.6 40.8c3.4 9.3 5.5 16 6.4 20.2h.5c.6-2.2 1.7-6 3.5-11.4s7.7-21.9 17.6-49.6h11.6l-30.6 81.5c-3 8.1-6.6 13.8-10.6 17.1-4 3.4-9 5.1-14.9 5.1-3.3 0-6.5-.4-9.7-1.1v-8.7c2.4.5 5 .8 8 .8 7.4 0 12.7-4.2 15.8-12.5l4-10.2zm-66.6-9.2c-4.2 0-7.6-3.4-7.6-7.6s3.4-7.6 7.6-7.6 7.6 3.4 7.6 7.6-3.5 7.6-7.6 7.6z" fill="#133c55"/><path d="m123.6 109.8-25.7 10.4-34.5-85.9 25.7-10.4zM72.8 70.5 42.5 82.7 60.6 40zm20.7 51.4L44 87.5l30.7-12.3zm-35.3-18.3-29.6 11.9 10.7-25.1z" fill="#fff"/>
+          </svg>
+        </div>        
         <div id="content">
-          <div id="box">Control Center</div>
-          <div id="box">Inbox</div>
+          <div id="box" onclick="redirectToControlCenter()">
+            <div id="boxTitle">Control Center</div>
+            <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M28.2 10.6034C28.2 15.1424 31.8825 18.822 36.425 18.822C40.9675 18.822 44.65 15.1424 44.65 10.6034C44.65 6.03787 40.9757 2.36648 36.4433 2.36648C31.8809 2.37536 28.2 6.06056 28.2 10.6034ZM29.8064 2.35286L10.5773 2.36649C6.03088 2.37536 2.35 6.06055 2.35 10.6034C2.35 15.1424 6.03246 18.822 10.575 18.822H29.7776C27.3818 16.8848 25.85 13.9229 25.85 10.6034C25.85 7.26849 27.3936 4.29322 29.8064 2.35286ZM36.6454 0.0206122C42.393 0.138597 47 4.8151 47 10.5668C47 16.4393 42.2654 21.1702 36.425 21.1702H10.575C4.73459 21.1702 0 16.4393 0 10.6034C0 4.76548 4.73022 0.0297204 10.5741 0.0183274L36.4242 3.02064e-07C36.4998 -5.33066e-05 36.5737 0.00702951 36.6454 0.0206122ZM10.3546 25.8505C10.4263 25.8369 10.5002 25.8298 10.5758 25.8298L36.4258 25.8482C42.2698 25.8596 47 30.5953 47 36.4332C47 42.2691 42.2654 47 36.425 47H10.575C4.73459 47 0 42.2691 0 36.3966C0 30.6449 4.60695 25.9684 10.3546 25.8505ZM18.8 36.4333C18.8 31.8904 15.1191 28.2052 10.5567 28.1963C6.02426 28.1963 2.35 31.8677 2.35 36.4332C2.35 40.9722 6.03246 44.6518 10.575 44.6518C15.1175 44.6518 18.8 40.9722 18.8 36.4333ZM17.1936 28.1827C19.6064 30.1231 21.15 33.0983 21.15 36.4333C21.15 39.7527 19.6182 42.7146 17.2224 44.6518H36.425C40.9675 44.6518 44.65 40.9722 44.65 36.4332C44.65 31.8904 40.9691 28.2052 36.4227 28.1963L17.1936 28.1827Z" fill="#1578D4"/>
+            </svg>
+            <div id="boxContent">Manage your Airy instance</div>
+            <button id="boxButton">Sign In</button>
+          </div>
+          <div id="box" onclick="redirectToInbox()">
+            <div id="boxTitle">Inbox</div>
+            <svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.66499 33.2511C10.0026 33.1546 10.3651 33.2017 10.6669 33.3812C13.2052 34.8907 16.1046 35.6989 19.1254 35.6989C28.2789 35.6989 35.6994 28.2783 35.6994 19.1244C35.6994 9.97058 28.2789 2.54992 19.1254 2.54992C9.97183 2.54992 2.55141 9.97058 2.55141 19.1244C2.55141 22.1453 3.35956 25.0448 4.86906 27.5832C5.04855 27.885 5.0956 28.2475 4.99914 28.5851L3.1328 35.1175L9.66499 33.2511ZM37.4299 13.5693C45.4114 15.9869 50.9984 23.3784 50.9984 31.874C50.9984 35.1667 50.1641 38.34 48.6007 41.1525L50.9494 49.3732C51.2242 50.335 50.335 51.2242 49.3733 50.9494L41.1528 48.6006C38.3404 50.1641 35.1672 50.9984 31.8746 50.9984C23.3874 50.9984 15.9921 45.4209 13.5704 37.4293C12.2775 37.0375 11.0304 36.5088 9.84721 35.851L1.62673 38.1998C0.664992 38.4746 -0.224167 37.5854 0.0506159 36.6236L2.39932 28.4029C0.835913 25.5904 0.00156198 22.4171 0.00156198 19.1244C0.00156198 8.56229 8.56359 0 19.1254 0C27.7552 0 35.05 5.71639 37.4299 13.5693ZM38.07 16.4951C38.1881 17.3546 38.2492 18.2324 38.2492 19.1244C38.2492 29.6865 29.6872 38.2488 19.1254 38.2488C18.2388 38.2488 17.3608 38.1883 16.4963 38.0694C18.9831 44.2477 25.0181 48.4485 31.8746 48.4485C34.8954 48.4485 37.7948 47.6403 40.3331 46.1308C40.6349 45.9513 40.9974 45.9042 41.335 46.0007L47.8672 47.8671L46.0009 41.3347C45.9044 40.9971 45.9514 40.6346 46.1309 40.3328C47.6404 37.7944 48.4486 34.8949 48.4486 31.874C48.4486 25.0113 44.2412 18.9791 38.07 16.4951Z" fill="#1578D4"/>
+            </svg>              
+            <div id="boxContent">Reply to conversations</div>
+            <button id="boxButton">Sign In</button>
+          </div>
         </div>
       </div>        
     </div>

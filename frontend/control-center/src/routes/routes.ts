@@ -9,3 +9,4 @@ export const CHANNELS_GOOGLE_ROUTE = '/channels/google';
 export const CHANNELS_INSTAGRAM_ROUTE = '/channels/instagram';
 export const CATALOG_ROUTE = '/catalog';
 export const COMPONENTS_ROUTE = '/components';
+export const WEBHOOKS_ROUTE = '/webhooks';

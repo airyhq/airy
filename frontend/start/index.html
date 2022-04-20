@@ -3,23 +3,54 @@
   <head>
     <title>Airy Start Page</title>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="/ui/favicon.ico" />
+    <link rel="shortcut icon" href="/start/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#000000" />
-
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
-    -->
+    <meta name="theme-color" content="#000000" />        
     <link rel="manifest" href="/start/manifest.json" />    
+    <style>        
+      html, body {            
+        background-color: white;
+        height: 100%;
+        width: 100%;
+      }    
+      #root {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+      } 
+      #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #logo {
+        width: 250px;
+        height: 250px;
+      }
+      #content {
+        display: flex;
+        position: relative;
+        top: 200px;        
+      }
+      #box {
+        width: 250px;
+        height: 250px;
+        border: 1px solid black;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root">
-        <button>Control Center</button>
-        <button>Inbox</button>
+      <div id="container">
+        <img id="logo" src="airyPrimaryRgb.png" alt="Airy" />
+        <div id="content">
+          <div id="box">Control Center</div>
+          <div id="box">Inbox</div>
+        </div>
+      </div>        
     </div>
   </body>
 </html>

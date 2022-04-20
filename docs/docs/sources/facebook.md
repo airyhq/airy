@@ -235,6 +235,12 @@ import ConnectFormOptional from './connectFormOptional.mdx'
 
 Next, click on the 'Save' button.
 
+Upon successful connection, Facebook will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by selecting 'Facebook' in the list.
+
+<img alt="Control Center connectors with Instagram" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
+
 ## Step 5: Send messages from a Facebook channel
 
 Now, send a message to your Facebook page through Facebook Messenger.

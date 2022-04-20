@@ -6,6 +6,7 @@ export interface Config {
     colors: {[id: string]: ColorSettings};
   };
   userProfile?: User;
+  clusterVersion: string;
 }
 
 export interface ColorSettings {

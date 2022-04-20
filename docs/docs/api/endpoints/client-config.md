@@ -23,6 +23,7 @@ The `tag_config` property in the response represents the configuration for [tags
 
 ```json5
 {
+  "cluster_version": "0.42.0",
   "services": {
     "frontend-ui": {
       "enabled": true,

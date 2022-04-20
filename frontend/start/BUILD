@@ -8,22 +8,10 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 
 check_pkg(name = "buildifier")
 
-web_app(
-    name = "bundle",
-    dev_index = "index.html",
-    entry = "frontend/start/src/index",
-    index = ":index.html",
-    output = {
-        "publicPath": "/",
-    },
-    static_assets = "//frontend/start/public",
-)
-
 pkg_tar(
     name = "bundle_tar",
-    srcs = [":bundle"],
+    srcs = ["index.html", "favicon.ico", "manifest.json"],
     package_dir = "/usr/share/nginx/html/",
-    strip_prefix = "./bundle",
 )
 
 pkg_tar(

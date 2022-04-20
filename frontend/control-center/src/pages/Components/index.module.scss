@@ -44,7 +44,8 @@
   align-items: center;
   justify-content: flex-start;
   h2:first-of-type {
-    width: 20%;
+    width: 40%;
+    margin-left: 8%;
   }
   div h2:last-of-type {
     margin-left: 0px;
@@ -53,14 +54,13 @@
     }
   }
   h2:last-of-type {
-    width: 35%;
+    width: 20%;
   }
 
   h2 {
     @include font-base;
     color: white;
     font-weight: bold;
-    margin-left: 24px;
   }
 }
 

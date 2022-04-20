@@ -1,0 +1,90 @@
+.wrapper {
+  background: white;
+  border-left: 1px solid var(--color-light-gray);
+  border-right: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-light-gray);
+  background-color:lightblue;
+  width:100%;
+}
+
+.wrapperExpanded {
+  display: inline-block;
+  padding: 10px;
+  height:max-content;
+}
+
+.wrapperCollapsed {
+  height:50px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  background-color:yellow;
+  width:100%;
+  
+  svg {
+    width: 20px;
+  }
+}
+
+.serviceName {
+  margin-left: 20%;
+  font-size:13px;
+  color:#737373;
+}
+
+.container:last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.healthyStatus {
+width: 20%;
+    background-color: orange;
+    display:flex;
+    justify-content: center;
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.enabled {
+  width: 40%;
+  background-color: turquoise;
+}
+
+.arrowDownIcon {
+  width: 15px;
+}
+
+.componentName {
+  display: flex;
+  align-items: center;
+  background-color:lightpink;
+  width:40%;
+}
+
+.componentName button {
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  margin-left: 4%;
+  display:flex;
+  align-items:center;
+
+  svg {
+    width:20Px;
+  }
+}
+
+.toggle {
+  background-color: #EFEFEF;
+  width: 32px;
+  height:14px;
+}
+
+.channelSourceName {
+  margin-left:10px;
+}

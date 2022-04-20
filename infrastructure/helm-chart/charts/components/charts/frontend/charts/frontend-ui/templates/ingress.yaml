@@ -13,7 +13,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /ui(/|$)(.*)
+          - path: /inbox(/|$)(.*)
             pathType: Prefix
             backend:
               service:
@@ -27,39 +27,6 @@ spec:
   - hosts:
     - {{ .Values.global.host }}
     secretName: airy-core-ui
- {{- end }}
-{{- end }}
-  ingressClassName: nginx
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: 'airy-core-redirect'
-  annotations:
-    nginx.ingress.kubernetes.io/permanent-redirect: /ui
-  {{- if .Values.global.ingress.letsencrypt }}
-    cert-manager.io/cluster-issuer: 'letsencrypt'
-  {{- end }}
-  labels:
-    core.airy.co/managed: "true"
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /$
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-ui
-                port:
-                  number: 80
-{{- if .Values.global.host }}
-      host: {{ .Values.global.host }}
- {{- if .Values.global.ingress.letsencrypt }}
-  tls:
-  - hosts:
-    - {{ .Values.global.host }}
-    secretName: airy-core-redirect
  {{- end }}
 {{- end }}
   ingressClassName: nginx

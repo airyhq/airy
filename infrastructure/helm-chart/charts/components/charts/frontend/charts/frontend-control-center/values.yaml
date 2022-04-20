@@ -1,0 +1,5 @@
+component: frontend-control-center
+mandatory: false
+enabled: true
+image: frontend/control-center
+resources: {}

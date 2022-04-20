@@ -14,7 +14,7 @@ web_app(
     entry = "frontend/start/src/index",
     index = ":index.html",
     output = {
-        "publicPath": "auto",
+        "publicPath": "/",
     },
     static_assets = "//frontend/start/public",
 )

@@ -63,8 +63,15 @@
 }
 
 .dropHintOpen {
+  transition: 500ms ease;
   margin-bottom: 0;
   transform: rotate(180deg);
+}
+
+.dropHintClose {
+  transition: 500ms ease;
+  margin-bottom: 0;
+  transform: rotate(0deg);
 }
 
 .accountDetails {

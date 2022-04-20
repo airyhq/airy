@@ -12,8 +12,10 @@ const ChannelCard = (props: SourceDescriptionCardProps) => {
 
   return (
     <div className={styles.channelCard} onClick={addChannelAction}>
-      <div className={styles.channelLogo}>{sourceInfo.image}</div>
-      <p className={styles.channelTitle}>{sourceInfo.title}</p>
+      <div className={styles.channelLogoTitleContainer}>
+        <div className={styles.channelLogo}>{sourceInfo.image}</div>
+        <p className={styles.channelTitle}>{sourceInfo.title}</p>
+      </div>
     </div>
   );
 };

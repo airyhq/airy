@@ -4,9 +4,9 @@
 
 .channelCard {
   display: flex;
-  align-items: center;
-  height: 64px;
-  width: 230px;
+  align-items: flex-end;
+  height: 120px;
+  width: 328px;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
@@ -14,38 +14,52 @@
   margin-right: 36px;
   &:hover {
     cursor: pointer;
-    border: 2px solid var(--color-airy-blue);
   }
 }
 
 .channelLogo {
-  margin-left: 16px;
-  margin-right: 10px;
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 }
 
 .channelLogoInstagram {
-  margin-left: 16px;
   margin-right: 10px;
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   svg {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
   }
 }
 
 .channelTitle {
-  height: 24px;
-  width: 190px;
+  @include font-l;
   color: var(--color-text-contrast);
-  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 24px;
+  width: 100%;
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.channelLogoTitleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0 0 18px 18px;
+  height: 120px;
+  width: 328px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  &:hover {
+    margin: -1px;
+    border: 2px solid var(--color-airy-blue);
+  }
 }

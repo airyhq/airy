@@ -88,7 +88,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
               <div className={styles.accountDetails}>
                 <div className={styles.accountName}>{props.user.name}</div>
               </div>
-              <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
+              <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : styles.dropHintClose}`}>
                 <span className={styles.chevronDown}>
                   <ChevronDownIcon />
                 </span>

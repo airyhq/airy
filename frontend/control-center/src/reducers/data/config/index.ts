@@ -24,7 +24,7 @@ export default function configReducer(state = defaultState, action: Action): Con
         ...state,
         // Aggregate services on their component name
         components: getComponents(action.payload),
-        clusterVersion: getClusterVersion(action.payload) || 'nothing',
+        clusterVersion: getClusterVersion(action.payload) || 'unknown',
       };
     default:
       return state;

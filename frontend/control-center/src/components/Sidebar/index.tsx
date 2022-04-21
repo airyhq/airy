@@ -8,13 +8,21 @@ import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg
 import {ReactComponent as ComponentsIcon} from 'assets/images/icons/componentsIcon.svg';
 
 import styles from './index.module.scss';
+import {StateModel} from '../../reducers';
+import {connect, ConnectedProps} from 'react-redux';
 
-export const Sidebar = () => {
+type SideBarProps = {} & ConnectedProps<typeof connector>;
+
+const mapStateToProps = (state: StateModel) => ({
+  version: state.data.config.clusterVersion,
+});
+
+const connector = connect(mapStateToProps);
+
+const Sidebar = (props: SideBarProps) => {
   const isActive = (route: string) => {
     return useMatch(`${route}/*`);
   };
-
-  const version = '0.41.0';
 
   return (
     <nav className={styles.wrapper}>
@@ -38,7 +46,9 @@ export const Sidebar = () => {
           </Link>
         </div>
       </div>
-      <span className={styles.version}>Version {version}</span>
+      <span className={styles.version}>Version {props.version}</span>
     </nav>
   );
 };
+
+export default connector(Sidebar);

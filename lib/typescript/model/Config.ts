@@ -31,3 +31,7 @@ export const getComponents = (config: Config) => {
     };
   }, {});
 };
+
+export const getClusterVersion = (config: Config) => {
+  return config.clusterVersion;
+};

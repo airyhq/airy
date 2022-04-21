@@ -16,6 +16,7 @@ interface TopBarProps {
 
 const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
+  version: state.data.config.clusterVersion,
 });
 
 const controlCenterUrl = `${env.API_HOST}/control-center`;
@@ -109,6 +110,17 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                     </span>
                     <span>Logout</span>
                   </a>
+                  <div className={styles.dropDownVersionContainer}>
+                    <a
+                      id={styles.dropDownLink}
+                      href="https://airy.co/docs/core/changelog"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Release notes
+                    </a>
+                    <h1>Version {props.version}</h1>
+                  </div>
                 </div>
               </ListenOutsideClick>
             )}

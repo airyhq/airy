@@ -15,14 +15,11 @@ interface TopBarProps {
 
 const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
+  version: state.data.config.clusterVersion,
 });
 
 const logoutUrl = `${env.API_HOST}/logout`;
 const inboxUrl = `${env.API_HOST}/ui/`;
-
-const version = '0.41.0';
-const updateAvailable = true;
-const latestVersion = '0.42.0';
 
 const connector = connect(mapStateToProps);
 
@@ -123,12 +120,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                     >
                       Release notes
                     </a>
-                    <h1>Version {version}</h1>
-                    {updateAvailable && (
-                      <a href="https://airy.co/docs/core/changelog" target="_blank" rel="noopener noreferrer">
-                        Version {latestVersion} available
-                      </a>
-                    )}
+                    <h1>Version {props.version}</h1>
                   </div>
                 </div>
               </ListenOutsideClick>

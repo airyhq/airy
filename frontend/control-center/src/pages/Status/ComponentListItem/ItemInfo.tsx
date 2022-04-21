@@ -15,13 +15,14 @@ type ComponentInfoProps = {
   isComponent: boolean;
   isExpanded: boolean;
   setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  enabled?: boolean;
 };
 
 export const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, setIsExpanded} = props;
+  const {healthy, itemName, isComponent, isExpanded, setIsExpanded, enabled} = props;
   const [channelSource, setChannnelSource] = useState('');
   const [componentName, setComponentName] = useState('');
-  const [componentEnabled, setComponentEnabled] = useState(false);
+  const [componentEnabled, setComponentEnabled] = useState(enabled);
 
   useEffect(() => {
     if (itemName.includes('twilio')) {

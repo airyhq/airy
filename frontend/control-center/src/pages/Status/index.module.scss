@@ -2,12 +2,12 @@
 @import 'assets/scss/colors.scss';
 
 .statusWrapper {
+  width: 100%;
+  height: calc(100vh - 88px);
+  padding: 28px 18px;
+  margin: 88px 1.5em 0 191px;
   background: var(--color-blue-white);
   border-radius: 10px;
-  padding: 28px 18px;
-  width: 100%;
-  margin: 88px 1.5em 0 191px;
-  height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -21,12 +21,6 @@ h1 {
   color: var(--color-text-contrast);
   margin-bottom: 14px;
 }
-
-// .wrapper {
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// }
 
 .listHeader {
   display: flex;

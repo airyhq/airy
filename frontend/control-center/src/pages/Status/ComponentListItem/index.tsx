@@ -6,10 +6,11 @@ type ComponentsListProps = {
   healthy: boolean;
   componentName: string;
   services: {name: string; healthy: boolean}[];
+  enabled: boolean;
 };
 
 export const ComponentListItem = (props: ComponentsListProps) => {
-  const {healthy, componentName, services} = props;
+  const {healthy, componentName, enabled, services} = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -20,6 +21,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
         isComponent
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
+        enabled={enabled}
       />
 
       {isExpanded && (

@@ -1,10 +1,10 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.componentsWrapper {
+.statusWrapper {
   background: var(--color-blue-white);
   border-radius: 10px;
-  padding: 32px;
+  padding: 28px 18px;
   width: 100%;
   margin: 88px 1.5em 0 191px;
   height: calc(100vh - 88px);
@@ -12,7 +12,7 @@
   overflow-x: hidden;
 }
 
-.componentsHeadline {
+h1 {
   @include font-xl;
   font-weight: 900;
   letter-spacing: 0;
@@ -22,16 +22,11 @@
   margin-bottom: 14px;
 }
 
-.componentsHeadlineText {
-  @include font-xl;
-  font-weight: 900;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
+// .wrapper {
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+// }
 
 .listHeader {
   display: flex;
@@ -59,7 +54,12 @@
 .listHeader h2:nth-child(2) {
   width: 20%;
   text-align: center;
-  //background: orange;
+}
+
+.listHeader h2:nth-child(3) {
+  width: 35%;
+  display: flex;
+  justify-content: center;
 }
 
 .listHeaderButtonContainer {
@@ -80,8 +80,6 @@
 }
 
 .refreshButton {
-  right: 60px;
-  top: 180px;
   transition: 0.5s;
   border: none;
   outline: none;

@@ -13,14 +13,12 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const Components = (props: ConnectedProps<typeof connector>) => {
+const Status = (props: ConnectedProps<typeof connector>) => {
   const config = useSelector((state: StateModel) => state.data.config);
   const [spinAnim, setSpinAnim] = useState(true);
 
-  console.log(config && Object.entries(config.components));
-
   useEffect(() => {
-    setPageTitle('Components');
+    setPageTitle('Status');
   }, []);
 
   useEffect(() => {
@@ -38,23 +36,18 @@ const Components = (props: ConnectedProps<typeof connector>) => {
   };
 
   return (
-    <div className={styles.componentsWrapper}>
-      <div className={styles.componentsHeadline}>
-        <div>
-          <h1 className={styles.componentsHeadlineText}>Component Status</h1>
-        </div>
-      </div>
+    <section className={styles.statusWrapper}>
+      <h1>Status</h1>
       <div className={styles.listHeader}>
         <h2>Component Name</h2>
         <h2>Health Status</h2>
-        <div className={styles.listHeaderButtonContainer}>
-          <h2>Enabled</h2>
-          <button onClick={handleRefresh} className={styles.refreshButton}>
-            <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
-              <RefreshIcon />
-            </div>
-          </button>
-        </div>
+
+        <h2>Enabled</h2>
+        <button onClick={handleRefresh} className={styles.refreshButton}>
+          <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
+            <RefreshIcon />
+          </div>
+        </button>
       </div>
       <div className={styles.listItems}>
         {Object.entries(config.components).map(
@@ -69,8 +62,8 @@ const Components = (props: ConnectedProps<typeof connector>) => {
             )
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default connector(Components);
+export default connector(Status);

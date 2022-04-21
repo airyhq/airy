@@ -3,6 +3,7 @@ label {
   padding: 0;
   display: flex;
   align-items: center;
+  width: auto;
 }
 
 .switch {
@@ -13,13 +14,11 @@ label {
 .big {
   width: 48px;
   height: 24px;
-  margin-right: 8px;
 }
 
 .small {
   width: 30px;
   height: 15px;
-  margin-right: 4px;
 }
 
 .switch input {
@@ -30,13 +29,15 @@ label {
 
 .slider {
   position: absolute;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   transition: 0.4s;
   border-radius: 50px;
+  cursor: pointer;
 }
 
 .sliderBlue {
@@ -60,14 +61,12 @@ label {
   height: 16px;
   width: 16px;
   left: 4px;
-  bottom: 3px;
 }
 
 .sliderSmall:before {
   height: 11px;
   width: 11px;
   left: 2px;
-  bottom: 1.5px;
 }
 
 .sliderBlue:before {

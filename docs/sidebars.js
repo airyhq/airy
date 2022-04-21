@@ -42,7 +42,7 @@ module.exports = {
         'sources/whatsapp-twilio',
         'sources/sms-twilio',
         'sources/viber',
-        'ui/channels',
+        'ui/control-center/connectors',
       ],
     },
     {
@@ -71,7 +71,26 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['ui/introduction', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/contacts', 'ui/suggestedReplies'],
+      '💎 UI': [
+        'ui/overview',
+        {
+          Inbox: [
+            'ui/inbox/introduction',
+            'ui/inbox/messenger',
+            'ui/inbox/suggestedReplies',
+            'ui/inbox/tags',
+            'ui/inbox/contacts',
+          ],
+        },
+        {
+          'Control Center': [
+            'ui/control-center/introduction',
+            'ui/control-center/components',
+            'ui/control-center/connectors',
+            'ui/control-center/catalog',
+          ],
+        },
+      ],
     },
     {
       '🛠️ Integrations': [

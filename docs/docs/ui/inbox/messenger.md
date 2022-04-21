@@ -1,6 +1,6 @@
 ---
-title: Inbox
-sidebar_label: Inbox
+title: Messenger
+sidebar_label: Messenger
 ---
 
 import ButtonBox from "@site/src/components/ButtonBox";
@@ -10,11 +10,14 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-Airy’s Inbox gives you a UI for all of your conversations.
+Airy’s Inbox features a messenger that centralizes all your conversations and supports [many types of content in messages](#message-types) such as text, image, video, voice recording, template and more.
 
-See all conversations from the sources you connected, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
+You can view, interact with, and manage multiple conversations, regardless of whether they come via the [Airy Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source. [Search and filter](#search-and-filter) through your conversations and use [tags](tags) to customize your workflow.
 
-The inbox supports not only text messages but a variety of different message types.
+<img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessenger.png')} />
+
+<br />
+<br />
 
 :::warning
 
@@ -28,7 +31,7 @@ As this is suitable **only for testing purposes**, we advise you to refer to our
 
 **Send & Receive Messages**
 
-You and your team members can use the inbox to receive and send messages from different sources.
+You and your team members can use the Inbox to receive and send messages from different sources.
 Each of these sources have different character limits.
 
 **Facebook Templates**
@@ -38,7 +41,7 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
 
 **Sample Button Template Message**
 
-<img alt="Button Template Example" src={useBaseUrl('img/ui/FacebookButtonTemplate.png')} />
+<img alt="Button Template Example" src={useBaseUrl('img/ui/templateButtonFacebook.png')} />
 
 **Sample request**
 
@@ -50,22 +53,22 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
       "type": "template",
       "payload": {
         "template_type": "button",
-        "text": "What do you want to do next?",
+        "text": "We have the right hat for everyone.",
         "buttons": [
           {
             "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "Visit Messenger"
+            "url": "https://companyWebsite.com",
+            "title": "View website"
           },
           {
             "type": "web_url",
             "url": "https://www.messenger.com",
-            "title": "Visit Website"
+            "title": "Start chatting"
           },
           {
             "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "Test Button"
+            "url": "https://companyWebsite.com/info",
+            "title": "Practical information"
           }
         ]
       }
@@ -135,7 +138,7 @@ link='sources/chatplugin/overview'
 
 **Sample Rich Card Carousel Message**
 
-<img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/RichCardCarousel.gif')} />
+<img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/richCardCarousel.gif')} />
 
 **Sample request**
 
@@ -162,7 +165,7 @@ link='sources/chatplugin/overview'
             "media": {
               "height": "MEDIUM",
               "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/237/200",
+                "fileUrl": "https://picsum.photos/200",
                 "forceRefresh": "false"
               }
             }
@@ -181,7 +184,45 @@ link='sources/chatplugin/overview'
             "media": {
               "height": "MEDIUM",
               "contentInfo": {
-                "fileUrl": "https://picsum.photos/id/238/200",
+                "fileUrl": "https://picsum.photos/200",
+                "forceRefresh": "false"
+              }
+            }
+          },
+          {
+            "title": "Card #3",
+            "description": "The description for card #3",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #3",
+                  "postbackData": "card_3"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/200",
+                "forceRefresh": "false"
+              }
+            }
+          },
+          {
+            "title": "Card #4",
+            "description": "The description for card #4",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #4",
+                  "postbackData": "card_4"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/200",
                 "forceRefresh": "false"
               }
             }
@@ -208,19 +249,20 @@ The inbox enables you to search by:
 icon={<PriceTag />}
 title='Tags'
 description='Tag your conversations for easy filtering, searching & segmenting'
-link='ui/tags'
+link='ui/inbox/tags'
 />
 <br/>
 
 **Filter**
 
-Filtering enables you to only show conversations in the inbox according to the
-filter currently set.
+Filtering enables you to only show conversations according to the filter currently set.
 
-The inbox can filter by:
+The Inbox can filter by:
 
 - Read/Unread Conversations
-- Sources
+- State (Open/Close)
+- Source
+- Channel
 - Tags
 
-<img alt="Filter Inbox" src={useBaseUrl('img/ui/FilteringInbox.gif')} />
+<img alt="Filter Inbox" src={useBaseUrl('img/ui/filteringInbox.gif')} />

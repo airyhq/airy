@@ -42,19 +42,19 @@ Google's Business Messages requires the following configuration:
   - [Step 1: Registration](#step-1-registration)
   - [Step 2: Editing of the yaml file in Airy Core](#step-2-editing-of-the-yaml-file-in-airy-core)
   - [Step 3: Verification by Google](#step-3-verification-by-google)
-- [Connecting Google's Business Messages to your Airy Core instance](#connecting-googles-business-messages-to-your-airy-core-instance)
-- [Send messages from Google's Business Messages source](#send-messages-from-googles-business-messages-source)
+  - [Step 4: Connect Google's Business Messages to your Airy Core instance](#step-4-connect-googles-business-messages-to-your-airy-core-instance)
+  - [Step 5: Send messages from Google's Business Messages channel](#step-5-send-messages-from-a-googles-business-messages-channel)
 
 Let's proceed step by step.
 
-### Step 1: Registration
+## Step 1: Registration
 
 You first need to be registered with Google's Business Messages before
 configuring this source. Refer to [Google's Business Messages
 guides](https://developers.google.com/business-communications/business-messages/guides)
 to find more information about this source and the registration process.
 
-### Step 2: Editing of the yaml file in Airy Core
+## Step 2: Editing of the yaml file in Airy Core
 
 Once you are registered, head over to your Google Service Account and create a key in json format.
 
@@ -63,7 +63,7 @@ Once you are registered, head over to your Google Service Account and create a k
 Copy the Google Service Account key file provided by Google to
 your `airy.yaml` file as a one line string next to `saFile:` (below `components/sources/google`).
 
-### Step 3: Verification by Google
+## Step 3: Verification by Google
 
 As a security measure, every request sent by Google is signed and verified
 against your partner key. You must also set the value for `partnerKey:` to your partner key,
@@ -95,9 +95,15 @@ Once the verification process has been completed, Google's Business Messages wil
 
 </SuccessBox>
 
-## Connecting Google's Business Messages to your Airy Core instance
+## Step 4: Connect Google's Business Messages to your Airy Core instance
 
-After the configuration, you can connect a Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
+import ConnectChannelOptions from "./connectChannelOptions.mdx"
+
+<ConnectChannelOptions />
+
+### Connect Google's Business Messages via API request
+
+After the configuration, you can connect a Google's Business Messages channel to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
 
 <ButtonBox
 icon={<BoltSVG />}
@@ -112,7 +118,25 @@ import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
 <ConnectGoogle />
 
-## Send messages from Google's Business Messages source
+### Connect Google's Business Messages via the UI
+
+You can also connect a Google's Business Messages channel via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
+
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and select 'Google Business Messages'.
+
+This will open a page with a form.
+
+<img alt="Google Business Messages connect form" src={useBaseUrl('img/sources/google/googleConnect.png')} />
+
+Add your Agent ID and Name. You can optionally add an image URL, which will be used as the conversation's icon in the [Inbox UI's messenger](/ui/inbox/messenger). A fallback image will be used if you do not enter a valid image URL.
+
+Upon successful connection, Google's Business Messages will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by selecting 'Google Business Messages' in the list.
+
+<img alt="Control Center connectors with Instagram" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
+
+## Step 5: Send messages from a Google's Business Messages channel
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 

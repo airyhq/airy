@@ -24,6 +24,8 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
+  const version = '0.41.0';
+
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
@@ -46,7 +48,7 @@ const Sidebar = (props: SideBarProps) => {
           </Link>
         </div>
       </div>
-      <span className={styles.version}>Version {props.version}</span>
+      <span className={styles.version}>Version {version}</span>
     </nav>
   );
 };

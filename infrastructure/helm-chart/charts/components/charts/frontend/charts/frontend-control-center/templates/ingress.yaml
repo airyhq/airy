@@ -36,7 +36,7 @@ apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core-redirect'
   annotations:
-    nginx.ingress.kubernetes.io/permanent-redirect: /control-center
+    nginx.ingress.kubernetes.io/permanent-redirect: /control-center/start.html
   {{- if .Values.global.ingress.letsencrypt }}
     cert-manager.io/cluster-issuer: 'letsencrypt'
   {{- end }}

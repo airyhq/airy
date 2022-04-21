@@ -17,7 +17,7 @@ ts_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
-    "//frontend/ui/handles",
+    "//frontend/inbox/handles",
     "//frontend/chat-plugin/handles:chat-plugin-handles",
     "//frontend/chat-plugin/lib:chat-plugin",
 ]
@@ -44,12 +44,12 @@ ts_web_library(
 web_app(
     name = "bundle",
     dev_index = "development.html",
-    entry = "frontend/ui/src/index",
+    entry = "frontend/inbox/src/index",
     index = ":index.html",
     output = {
         "publicPath": "/inbox/",
     },
-    static_assets = "//frontend/ui/public",
+    static_assets = "//frontend/inbox/public",
     ts_deps = [":app"] + ts_deps,
 )
 
@@ -78,7 +78,7 @@ container_image(
 
 container_release(
     registry = "ghcr.io/airyhq/frontend",
-    repository = "ui",
+    repository = "inbox",
 )
 
 web_lint()

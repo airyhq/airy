@@ -8,7 +8,7 @@ nodejs_binary(
     data = [
         ":cypress.json",
         "//integration/chat-plugin",
-        "//integration/ui",
+        "//integration/inbox",
         "@npm//cypress",
     ],
     entry_point = {
@@ -25,7 +25,7 @@ nodejs_binary(
     data = [
         ":cypress.json",
         "//integration/chat-plugin",
-        "//integration/ui",
+        "//integration/inbox",
         "@npm//cypress",
     ],
     entry_point = {

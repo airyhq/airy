@@ -1,5 +1,5 @@
-component: frontend-ui
+component: frontend-inbox
 mandatory: false
 enabled: true
-image: frontend/ui
+image: frontend/inbox
 resources: {}

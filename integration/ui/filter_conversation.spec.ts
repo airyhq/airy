@@ -12,7 +12,7 @@ import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {
-    cy.visit('/ui/channels');
+    cy.visit('/inbox/channels');
     cy.wait(500);
 
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
@@ -21,11 +21,11 @@ describe('Filter conversation', () => {
 
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
 
-    cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.visit('/chatplugin/inbox/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
-    cy.visit('/ui/');
+    cy.visit('/inbox/');
 
     cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('gte', 1);
     cy.wait(500);

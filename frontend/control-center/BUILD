@@ -17,7 +17,7 @@ ts_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
-    "//frontend/ui/handles",
+    "//frontend/inbox/handles",
     "//frontend/chat-plugin/handles:chat-plugin-handles",
     "//frontend/chat-plugin/lib:chat-plugin",
 ]

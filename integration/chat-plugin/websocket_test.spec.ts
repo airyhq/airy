@@ -8,7 +8,7 @@ import {
 
 describe('Websocket test', () => {
   it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
-    cy.visit('/ui/channels');
+    cy.visit('/inbox/channels');
     cy.wait(500);
     cy.url().should('include', '/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();

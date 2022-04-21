@@ -6,6 +6,7 @@ import {ReactComponent as ArrowDown} from 'assets/images/icons/arrowDown.svg';
 import styles from './index.module.scss';
 import {Source} from 'model';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {Toggle} from 'components';
 
 type ComponentsListProps = {
   healthy: boolean;
@@ -17,7 +18,9 @@ export const ComponentListItem = (props: ComponentsListProps) => {
   const {healthy, componentName, services} = props;
   const [channelSource, setChannnelSource] = useState('');
   const [channelSourceName, setChannelSourceName] = useState('');
+  const [serviceName, setServiceName] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [componentEnabled, setComponentEnabled] = useState(false);
 
   console.log('props', props);
 
@@ -59,30 +62,60 @@ export const ComponentListItem = (props: ComponentsListProps) => {
       return;
     }
 
-    const string = componentName.replaceAll('-', ' ');
-    setChannelSourceName(string);
+    if (componentName.includes('zendesk')) {
+      setChannnelSource(Source.zendesk);
+
+      if (!componentName.includes('enterprise')) {
+        setChannelSourceName('Zendesk');
+        return;
+      }
+    }
+
+    if (componentName.includes('dialogflow')) {
+      setChannnelSource(Source.dialogflow);
+    }
+
+    const formattedName = componentName.replaceAll('-', ' ');
+    const capitalizedFormattedName = capitalizeTitle(formattedName);
+    setChannelSourceName(capitalizedFormattedName);
   }, []);
+
+  //move this to service
+  const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const capitalizeTitle = (str: string) => {
+    return str.split(' ').map(capitalize).join(' ');
+  };
 
   //on expand: container height: auto
 
+  // const formatServiceName = (name: string) => {
+  //   return name.replaceAll('-', ' ');
+  // }
+
   const toggleExpanded = () => {
-    setExpanded(!expanded)
-  }
+    setExpanded(!expanded);
+  };
 
   return (
     <section className={`${styles.wrapper} ${expanded ? styles.wrapperExpanded : styles.wrapperCollapsed}`}>
-      
       <div className={styles.container}>
         <div className={styles.componentName}>
           <button onClick={toggleExpanded}>
-            {!expanded ? <ArrowRight className={styles.icons} /> : <ArrowDown className={styles.arrowDownIcon} />}
+            {!expanded ? <ArrowRight /> : <ArrowDown className={styles.arrowDownIcon} />}
           </button>
-          {getChannelAvatar(channelSource)}
+          <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
           <p className={styles.channelSourceName}>{channelSourceName}</p>
         </div>
 
-        <div className={styles.healthyStatus}>{healthy ? <CheckmarkIcon /> : <UncheckedIcon />}</div>
-        <div className={styles.enabled}><div className={styles.toggle}></div></div> 
+        <div className={styles.healthyStatus}>
+          {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
+        </div>
+        <div className={styles.enabled}>
+          <Toggle value={componentEnabled} size="small" updateValue={setComponentEnabled} variant="green" />
+        </div>
       </div>
 
       {expanded && (
@@ -92,7 +125,13 @@ export const ComponentListItem = (props: ComponentsListProps) => {
               <div className={styles.componentName}>
                 <p className={styles.serviceName}>{service.name}</p>
               </div>
-              <div className={styles.healthyStatus}>{service.healthy ? <CheckmarkIcon /> : <UncheckedIcon />}</div>
+              <div className={styles.healthyStatus}>
+                {service.healthy ? (
+                  <CheckmarkIcon className={styles.icons} />
+                ) : (
+                  <UncheckedIcon className={styles.icons} />
+                )}
+              </div>
             </div>
           ))}
         </>

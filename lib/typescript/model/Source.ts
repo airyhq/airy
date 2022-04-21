@@ -7,6 +7,7 @@ export enum Source {
   instagram = 'instagram',
   viber = 'viber',
   zendesk = 'zendesk',
+  dialogflow = 'dialogflow',
 }
 
 export const prettifySource = (source: string) =>

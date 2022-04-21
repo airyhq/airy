@@ -43,25 +43,23 @@
   height: 50px;
   align-items: center;
   justify-content: flex-start;
-  h2:first-of-type {
-    width: 40%;
-    margin-left: 8%;
-  }
-  div h2:last-of-type {
-    margin-left: 0px;
-    button {
-      margin-right: 20px;
-    }
-  }
-  h2:last-of-type {
-    width: 20%;
-  }
 
   h2 {
     @include font-base;
     color: white;
     font-weight: bold;
   }
+
+  h2:first-of-type {
+    width: 40%;
+    padding-left: 6%;
+  }
+}
+
+.listHeader h2:nth-child(2) {
+  width: 20%;
+  text-align: center;
+  //background: orange;
 }
 
 .listHeaderButtonContainer {
@@ -70,7 +68,11 @@
   justify-content: space-between;
   align-items: center;
   width: 40%;
-  margin-left: 24px;
+
+  h2:first-of-type {
+    width: 90%;
+    text-align: center;
+  }
 
   button {
     margin-right: 20px;
@@ -121,4 +123,9 @@
   height: 20px;
   width: 20px;
   animation: spinAnimationOutRefresh 1500ms ease;
+}
+
+.listItems section:last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }

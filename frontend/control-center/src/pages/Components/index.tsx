@@ -60,7 +60,12 @@ const Components = (props: ConnectedProps<typeof connector>) => {
         {Object.entries(config.components).map(
           (component, index) =>
             component[1].enabled && (
-              <ComponentListItem key={index} healthy={component[1].healthy} services={component[1].services} componentName={component[0]} />
+              <ComponentListItem
+                key={index}
+                healthy={component[1].healthy}
+                services={component[1].services}
+                componentName={component[0]}
+              />
             )
         )}
       </div>

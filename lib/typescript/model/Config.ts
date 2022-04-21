@@ -29,7 +29,9 @@ export const getComponents = (config: Config) => {
         enabled,
         // A component is only healthy if all its services are healthy
         healthy: agg[component] ? agg[component].healthy && healthy : healthy,
-        services: agg[component] ? [...agg[component].services, {name: key, healthy: healthy}] : [{name: key, healthy: healthy}],
+        services: agg[component]
+          ? [...agg[component].services, {name: key, healthy: healthy}]
+          : [{name: key, healthy: healthy}],
       },
     };
   }, {});

@@ -1,9 +1,25 @@
+label {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
 .switch {
   position: relative;
   display: inline-block;
+}
+
+.big {
   width: 48px;
   height: 24px;
   margin-right: 8px;
+}
+
+.small {
+  width: 30px;
+  height: 15px;
+  margin-right: 4px;
 }
 
 .switch input {
@@ -19,38 +35,80 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--color-background-blue);
   transition: 0.4s;
-  border-radius: 24px;
+  border-radius: 50px;
+}
+
+.sliderBlue {
+  background-color: var(--color-background-blue);
   border: 1px solid var(--color-airy-blue);
+}
+
+.sliderGreen {
+  background: #efefef;
+  box-shadow: inset 0px 6px 8px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slider:before {
   position: absolute;
   content: '';
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 3px;
-  background-color: var(--color-airy-blue);
   transition: 0.4s;
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.sliderBig:before {
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 3px;
+}
+
+.sliderSmall:before {
+  height: 11px;
+  width: 11px;
+  left: 2px;
+  bottom: 1.5px;
+}
+
+.sliderBlue:before {
   background-color: var(--color-airy-blue);
 }
 
-input:focus + .slider {
+.sliderGreen:before {
+  background: linear-gradient(180deg, #ffffff 0%, #e8eaea 100%);
+}
+
+input:checked + .sliderBlue {
+  background-color: var(--color-airy-blue);
+}
+
+input:checked + .sliderGreen {
+  background-color: #0da36b;
+}
+
+input:focus + .sliderBlue {
   box-shadow: 0 0 0 2pt Highlight;
 }
 @media (-webkit-min-device-pixel-ratio: 0) {
-  input:focus + .slider {
+  input:focus + .sliderBlue {
     box-shadow: 0 0 0 2pt -webkit-focus-ring-color;
   }
 }
 
 input:checked + .slider:before {
+  background-color: white;
+}
+
+input:checked + .sliderGreen:before {
+  background: #efefef;
+}
+
+input:checked + .sliderBig:before {
   transform: translateX(24px);
   background-color: white;
+}
+
+input:checked + .sliderSmall:before {
+  transform: translateX(15px);
+  background: #efefef;
 }

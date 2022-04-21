@@ -3,11 +3,11 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {ReactComponent as ArrowDown} from 'assets/images/icons/arrowDown.svg';
-import styles from './index.module.scss';
-import {Source} from 'model';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {capitalizeTitle} from '../../../services';
 import {Toggle} from 'components';
+import {Source} from 'model';
+import styles from './index.module.scss';
 
 type ComponentInfoProps = {
   healthy: boolean;

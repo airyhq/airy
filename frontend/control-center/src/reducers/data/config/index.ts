@@ -1,11 +1,12 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/config';
-import {getComponents} from 'model';
+import {getClusterVersion, getComponents} from 'model';
 
 type Action = ActionType<typeof actions>;
 
 export type Config = {
   components: {[key: string]: {enabled: boolean; healthy: boolean}};
+  clusterVersion: string;
 };
 
 export const isComponentHealthy = (config: Config, component: string): boolean =>
@@ -13,6 +14,7 @@ export const isComponentHealthy = (config: Config, component: string): boolean =
 
 const defaultState = {
   components: {},
+  clusterVersion: '',
 };
 
 export default function configReducer(state = defaultState, action: Action): Config {
@@ -22,6 +24,7 @@ export default function configReducer(state = defaultState, action: Action): Con
         ...state,
         // Aggregate services on their component name
         components: getComponents(action.payload),
+        clusterVersion: getClusterVersion(action.payload) || 'unknown',
       };
     default:
       return state;

@@ -1,0 +1,5 @@
+component: frontend-inbox
+mandatory: false
+enabled: true
+image: frontend/inbox
+resources: {}

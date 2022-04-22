@@ -1,7 +1,7 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: 'airy-core-ui'
+  name: 'airy-core-inbox'
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
  {{- if .Values.global.ingress.letsencrypt }}
@@ -17,7 +17,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-ui
+                name: frontend-inbox
                 port:
                   number: 80
 {{- if .Values.global.host }}
@@ -26,7 +26,7 @@ spec:
   tls:
   - hosts:
     - {{ .Values.global.host }}
-    secretName: airy-core-ui
+    secretName: airy-core-inbox
  {{- end }}
 {{- end }}
   ingressClassName: nginx

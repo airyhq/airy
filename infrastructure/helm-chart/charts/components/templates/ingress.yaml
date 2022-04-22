@@ -224,7 +224,7 @@ spec:
   tls:
   - hosts:
     - {{ .Values.global.host }}
-    secretName: airy-core-ui
+    secretName: airy-core-inbox
  {{- end }}
 {{- end }}
   ingressClassName: nginx

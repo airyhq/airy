@@ -49,8 +49,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
                       ConfigProvider configProvider,
-                      @Value("${oidc.logoutSuccessUrl:/control-center/}") String logoutSuccessUrl,
-                      @Value("${oidc.loginSuccessUrl:/control-center/}") String loginSuccessUrl
+                      @Value("${oidc.logoutSuccessUrl:/}") String logoutSuccessUrl,
+                      @Value("${oidc.loginSuccessUrl:/}") String loginSuccessUrl
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;

@@ -1,0 +1,74 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+    @include font-base;
+    display: flex;
+    align-items: flex-start;
+    background: white;
+    height: 'auto';
+    border-bottom: 1px solid var(--color-light-gray);
+    margin-top: 30px;
+
+    span {
+        width: 40%;
+        color:var(--color-text-contrast);
+        text-decoration: underline;
+    }
+
+    p {
+        width: 25%;
+        color: var(--color-text-gray);
+    }
+
+    div:not(:last-child) {
+        margin-bottom: 3px;
+    }
+
+    input:first-child {
+        width: 40%;
+    }
+
+    input:not(:first-child, :last-child) {
+        width: 25%;
+    }
+    input {
+        width: 25%;
+    }
+  }
+
+  .eventsContainer {
+      @include font-base;
+      display: flex;
+      flex-direction: column;
+      width: 25%;
+      p {
+          margin-bottom: 22px;
+      }
+      input {
+          @include font-base;
+          margin-bottom: 22px;
+      }
+  }
+
+  .statusContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+    svg path {
+        fill: var(--color-text-gray);
+      }
+  }
+
+  .pensilIcon {
+      cursor: pointer;
+  }
+
+  .inputs {
+    width: 100%;
+    border: none;
+    font-size: 16px;
+  }

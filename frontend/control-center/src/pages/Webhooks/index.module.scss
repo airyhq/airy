@@ -12,6 +12,13 @@
   width: 100%;
 }
 
+.headlineContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%
+}
+
 .webhooksHeadline {
   @include font-xl;
   font-weight: 900;
@@ -31,4 +38,29 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+
+  h2 {
+    @include font-base;
+    color: var(--color-text-gray);
+    font-weight: bold;
+    width: 25%
+  }
+
+  h2:first-child {
+    width: 40%;
+  }
+
+  h2:last-child {
+    width: 10%;
+  }
+
+
 }

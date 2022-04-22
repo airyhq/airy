@@ -24,6 +24,9 @@ import {
   ResendMessageRequestPayload,
   GetContactDetailsRequestPayload,
   UpdateContactDetailsRequestPayload,
+  UnsubscribeWebhookRequestPayload,
+  SubscribeWebhookRequestPayload,
+  UpdateWebhookRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -49,6 +52,7 @@ import {
   sendMessagesDef,
   getConfigDef,
   listTemplatesDef,
+  listWebhooksDef,
   metadataUpsertDef,
   setStateConversationDef,
   updateConversationContactInfoDef,
@@ -56,9 +60,13 @@ import {
   resendMessageDef,
   getContactDetailsDef,
   updateContactDetailsDef,
+  unsubscribeWebhookDef,
+  subscribeWebhookDef,
+  updateWebhookDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
+import {Webhook} from 'model/Webhook';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -212,6 +220,8 @@ export class HttpClient {
 
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
+  public listWebhooks = this.getRequest<void, Webhook[]>(listWebhooksDef);
+
   public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
@@ -225,6 +235,12 @@ export class HttpClient {
   public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, Contact>(getContactDetailsDef);
 
   public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
+
+  public subscribeWebhook = this.getRequest<SubscribeWebhookRequestPayload>(subscribeWebhookDef);
+
+  public unsubscribeWebhook = this.getRequest<UnsubscribeWebhookRequestPayload>(unsubscribeWebhookDef);
+
+  public updateWebhook = this.getRequest<UpdateWebhookRequestPayload>(updateWebhookDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

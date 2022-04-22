@@ -5,8 +5,8 @@ import {useMatch} from 'react-router';
 import {CATALOG_ROUTE, CHANNELS_ROUTE, COMPONENTS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
-import {ReactComponent as ComponentsIcon} from 'assets/images/icons/componentsIcon.svg';
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
+import {ReactComponent as StatusIcon} from 'assets/images/icons/statusIcon.svg';
 
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
@@ -30,25 +30,25 @@ const Sidebar = (props: SideBarProps) => {
       <div className={styles.linkSection}>
         <div className={`${styles.align} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
           <Link to={COMPONENTS_ROUTE} className={`${styles.link} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
-            <ComponentsIcon width={'24px'} height={'24px'} />
-            <span className={styles.iconText}>Components</span>
+            <StatusIcon width={'20px'} height={'20px'} />
+            <span className={styles.iconText}>Status</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
           <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
-            <ConnectorsIcon width={'24px'} height={'24px'} />
+            <ConnectorsIcon width={'20px'} height={'20px'} />
             <span className={styles.iconText}>Connectors</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>
           <Link to={CATALOG_ROUTE} className={`${styles.link} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>
-            <CatalogIcon width={'20px'} height={'20px'} />
+            <CatalogIcon width={'18px'} height={'18px'} />
             <span className={styles.iconText}>Catalog</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''}`}>
           <Link to={WEBHOOKS_ROUTE} className={`${styles.link} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''}`}>
-            <WebhooksIcon width={'24px'} height={'24px'} />
+            <WebhooksIcon width={'20px'} height={'20px'} />
             <span className={styles.iconText}>Webhooks</span>
           </Link>
         </div>

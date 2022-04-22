@@ -17,8 +17,8 @@ import NotFound from './pages/NotFound';
 import ChannelsOutlet from './pages/Channels/ChannelsOutlet';
 import Catalog from './pages/Catalog';
 import Channels from './pages/Channels';
-import Components from './pages/Components';
 import Webhooks from './pages/Webhooks';
+import Status from './pages/Status';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -50,8 +50,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
           </Route>
           <Route element={<NotFound />} />
           <Route path={`${CATALOG_ROUTE}/*`} element={<Catalog />} />
-          <Route path={`${COMPONENTS_ROUTE}/*`} element={<Components />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
+          <Route path={`${COMPONENTS_ROUTE}/*`} element={<Status />}></Route>
         </Routes>
       </div>
     </div>

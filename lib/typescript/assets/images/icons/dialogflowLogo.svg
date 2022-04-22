@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="20" viewBox="0 0 16 20">
+  <defs>
+    <clipPath id="f">
+      <path d="M0 0h16v20H0z"/>
+    </clipPath>
+    <clipPath id="g">
+      <path d="M0 0h16v20H0z"/>
+    </clipPath>
+    <clipPath id="h">
+      <path d="M0 0h16v20H0z"/>
+    </clipPath>
+    <clipPath id="i">
+      <path d="M0 0h16v20H0z"/>
+    </clipPath>
+    <image id="b" width="16" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAABmJLR0QA/wD/AP+gvaeTAAAAsElEQVQ4jWNgGAWM//+UTmFg6BMjT3vFS8b/f9j+MTD8ZSTPALZ/TORrhgAmSjSPGgA3gP83+dp5/zAx/C+dTr4B2TMZGBgYGP7/fuD0//fGC///MP8nCv+edu3/n1IvFLP+r2Jm/v+LOQ2/Zv8X/38xp/1fxcyM01HYNYr9/P+7feL/d8z8BH2F6VzPzf9/NCsRHSwIjYfP/P+tYEe0RrgBvy+e/P+rPvY/AzNRmQwATiOW7opYdVEAAAAASUVORK5CYII="/>
+    <image id="c" width="16" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAABmJLR0QA/wD/AP+gvaeTAAAAtElEQVQ4je2QMQ4BURRF358vE8MSFJJZAp2EXRBbsABqYhUqhc4q0CmFWilaiTEx782/CgnhzySTmUbhJLd7J7n3ESUA0gr3Sw88P4AXe4jugrRKurXlSDfB1w1E4yO824IHrXTxNqxB+jOIF1vyK66B6CXCdv0tnhtVcDiB+EG6+B0/AGOM07SiwNGalNfJtM+qrVYK4hqiONuDLFzj5JefOEVkIqIS0eiYXy+bogX+/PkRHoY9hnoNfi5WAAAAAElFTkSuQmCC"/>
+    <image id="d" width="16" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAABmJLR0QA/wD/AP+gvaeTAAAARklEQVQ4jWNgGAWM//9YzGf4/0iGPN3Kjxn//2H7x8Dwl5E8+9n+MZGvGQKYKNHMwMDAwMLAUHaPfO0c/yh1wCgYBYMEAACyNw46VTMvfAAAAABJRU5ErkJggg=="/>
+    <image id="e" width="16" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAABmJLR0QA/wD/AP+gvaeTAAAASUlEQVQ4jWNgGAWM/3+famdg7BPCqYBlRTp+A/6w/WNg+MuI2wDccgwMDAxM+DQTA5go0czAwMDAwsBg/h6/kmOU2jEKRsFQAABg0wz1K7pi6gAAAABJRU5ErkJggg=="/>
+    <mask id="k">
+      <g filter="url(#a)">
+        <use xlink:href="#b"/>
+      </g>
+    </mask>
+    <mask id="m">
+      <g filter="url(#a)">
+        <use xlink:href="#c"/>
+      </g>
+    </mask>
+    <mask id="o">
+      <g filter="url(#a)">
+        <use xlink:href="#d"/>
+      </g>
+    </mask>
+    <mask id="q">
+      <g filter="url(#a)">
+        <use xlink:href="#e"/>
+      </g>
+    </mask>
+    <g id="j" clip-path="url(#f)">
+      <path style="stroke:none;fill-rule:nonzero;fill:#ef6c00;fill-opacity:1" d="M15.992 4.348 8 8.878l-8-4.53v9.062l4 2.266v4.535l11.992-6.8Zm0 0"/>
+    </g>
+    <g id="l" clip-path="url(#g)">
+      <path style="stroke:none;fill-rule:nonzero;fill:#ff9800;fill-opacity:1" d="M8 8.879 0 4.348 8-.184l7.992 4.532Zm0 0"/>
+    </g>
+    <g id="n" clip-path="url(#h)">
+      <path style="stroke:none;fill-rule:nonzero;fill:#ff9800;fill-opacity:1" d="M7.855 8.742.051 4.316 0 4.348l8 4.53 7.992-4.53-.187-.11Zm0 0"/>
+    </g>
+    <g id="p" clip-path="url(#i)">
+      <path style="stroke:none;fill-rule:nonzero;fill:#ff9800;fill-opacity:1" d="M8 8.938v-.06L.05 4.376 0 4.402Zm0 0"/>
+    </g>
+    <filter id="a" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%">
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <use xlink:href="#j" mask="url(#k)"/>
+  <use xlink:href="#l" mask="url(#m)"/>
+  <use xlink:href="#n" mask="url(#o)"/>
+  <use xlink:href="#p" mask="url(#q)"/>
+</svg>

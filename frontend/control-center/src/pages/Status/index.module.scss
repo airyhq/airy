@@ -1,18 +1,18 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.componentsWrapper {
+.statusWrapper {
+  width: 100%;
+  height: calc(100vh - 88px);
+  padding: 28px 18px;
+  margin: 88px 1.5em 0 191px;
   background: var(--color-blue-white);
   border-radius: 10px;
-  padding: 32px;
-  width: 100%;
-  margin: 88px 1.5em 0 191px;
-  height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.componentsHeadline {
+h1 {
   @include font-xl;
   font-weight: 900;
   letter-spacing: 0;
@@ -20,17 +20,6 @@
   justify-content: space-between;
   color: var(--color-text-contrast);
   margin-bottom: 14px;
-}
-
-.componentsHeadlineText {
-  @include font-xl;
-  font-weight: 900;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 }
 
 .listHeader {
@@ -43,25 +32,28 @@
   height: 50px;
   align-items: center;
   justify-content: flex-start;
-  h2:first-of-type {
-    width: 20%;
-  }
-  div h2:last-of-type {
-    margin-left: 0px;
-    button {
-      margin-right: 20px;
-    }
-  }
-  h2:last-of-type {
-    width: 35%;
-  }
 
   h2 {
     @include font-base;
     color: white;
     font-weight: bold;
-    margin-left: 24px;
   }
+
+  h2:first-of-type {
+    width: 40%;
+    padding-left: 6%;
+  }
+}
+
+.listHeader h2:nth-child(2) {
+  width: 20%;
+  text-align: center;
+}
+
+.listHeader h2:nth-child(3) {
+  width: 35%;
+  display: flex;
+  justify-content: center;
 }
 
 .listHeaderButtonContainer {
@@ -70,7 +62,11 @@
   justify-content: space-between;
   align-items: center;
   width: 40%;
-  margin-left: 24px;
+
+  h2:first-of-type {
+    width: 90%;
+    text-align: center;
+  }
 
   button {
     margin-right: 20px;
@@ -78,8 +74,6 @@
 }
 
 .refreshButton {
-  right: 60px;
-  top: 180px;
   transition: 0.5s;
   border: none;
   outline: none;
@@ -121,4 +115,9 @@
   height: 20px;
   width: 20px;
   animation: spinAnimationOutRefresh 1500ms ease;
+}
+
+.listItems section:last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }

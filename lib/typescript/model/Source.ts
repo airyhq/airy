@@ -6,6 +6,8 @@ export enum Source {
   twilioWhatsApp = 'twilio.whatsapp',
   instagram = 'instagram',
   viber = 'viber',
+  zendesk = 'zendesk',
+  dialogflow = 'dialogflow',
 }
 
 export const prettifySource = (source: string) =>

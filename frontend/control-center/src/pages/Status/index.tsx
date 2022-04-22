@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers';
-import {ComponentListItem} from './ComponentsListItem';
+import {ComponentListItem} from './ComponentListItem';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 import {setPageTitle} from '../../services/pageTitle';
@@ -13,12 +13,12 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const Components = (props: ConnectedProps<typeof connector>) => {
+const Status = (props: ConnectedProps<typeof connector>) => {
   const config = useSelector((state: StateModel) => state.data.config);
   const [spinAnim, setSpinAnim] = useState(true);
 
   useEffect(() => {
-    setPageTitle('Components');
+    setPageTitle('Status');
   }, []);
 
   useEffect(() => {
@@ -36,34 +36,32 @@ const Components = (props: ConnectedProps<typeof connector>) => {
   };
 
   return (
-    <div className={styles.componentsWrapper}>
-      <div className={styles.componentsHeadline}>
-        <div>
-          <h1 className={styles.componentsHeadlineText}>Component Status</h1>
-        </div>
-      </div>
+    <section className={styles.statusWrapper}>
+      <h1>Status</h1>
       <div className={styles.listHeader}>
+        <h2>Component Name</h2>
         <h2>Health Status</h2>
-        <h2>Service</h2>
-        <div className={styles.listHeaderButtonContainer}>
-          <h2>Component Name</h2>
-          <button onClick={handleRefresh} className={styles.refreshButton}>
-            <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
-              <RefreshIcon />
-            </div>
-          </button>
-        </div>
+
+        <h2>Enabled</h2>
+        <button onClick={handleRefresh} className={styles.refreshButton}>
+          <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
+            <RefreshIcon />
+          </div>
+        </button>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(config.components).map(
-          (component, index) =>
-            component[1].enabled && (
-              <ComponentListItem key={index} healthy={component[1].healthy} serviceName={component[0]} />
-            )
-        )}
+        {Object.entries(config.components).map((component, index) => (
+          <ComponentListItem
+            key={index}
+            healthy={component[1].healthy}
+            enabled={component[1].enabled}
+            services={component[1].services}
+            componentName={component[0]}
+          />
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default connector(Components);
+export default connector(Status);

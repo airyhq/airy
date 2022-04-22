@@ -23,3 +23,7 @@ export * from './UploadFileRequestPayload';
 export * from './ResendMessageRequestPayload';
 export * from './GetContactDetailsRequestPayload';
 export * from './UpdateContactDetailsRequestPayload';
+export * from './ListWebhooksRequestPayload';
+export * from './SubscribeWebhookRequestPayload';
+export * from './UnsubscribeWebhookRequestPayload';
+export * from './UpdateWebhookRequestPayload';

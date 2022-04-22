@@ -37,7 +37,7 @@
 }
 
 .channelTitle {
-  @include font-l;
+  @include font-m;
   color: var(--color-text-contrast);
   font-weight: 600;
   letter-spacing: 0;

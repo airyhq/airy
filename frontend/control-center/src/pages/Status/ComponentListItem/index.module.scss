@@ -8,16 +8,17 @@
   border-bottom: 1px solid var(--color-light-gray);
   width: 100%;
   padding: 12px 0 24px 0;
+  display: flex;
+  flex-direction:column;
+  transition: all 0.5s ease;
+  padding-bottom:20Px;
 }
 
 .wrapperExpanded {
   display: inline-block;
-  height: auto;
 }
 
-.wrapperCollapsed {
-  height: 50px;
-}
+
 
 .container {
   width: 100%;
@@ -27,6 +28,13 @@
 
 .expandedContainer {
   margin-top: 20px;
+  overflow:hidden;
+  opacity:0;
+  transition: opacity 0.3s ease 0.2s;
+}
+
+.expandedContainerShown {
+  opacity:1;
 }
 
 .name {
@@ -59,11 +67,19 @@
   color: var(--color-text-gray);
 }
 
+@keyframes fadeInName {
+  0%    { opacity: 0; }
+  100%  { opacity: 1; }
+}
+
 .serviceName {
   margin-left: 25%;
   @include font-s;
   color: var(--color-text-gray);
+
 }
+
+
 
 .healthyStatus {
   width: 20%;

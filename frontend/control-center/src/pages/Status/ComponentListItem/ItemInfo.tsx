@@ -24,6 +24,7 @@ export const ItemInfo = (props: ComponentInfoProps) => {
   const [componentName, setComponentName] = useState('');
   const [componentEnabled, setComponentEnabled] = useState(enabled);
 
+
   useEffect(() => {
     if (itemName.includes('twilio')) {
       setChannnelSource('twilio');
@@ -85,7 +86,7 @@ export const ItemInfo = (props: ComponentInfoProps) => {
   };
 
   return (
-    <div className={`${styles.container} ${!isComponent ? styles.expandedContainer : ''}`}>
+    <div className={`${styles.container} ${!isComponent ? styles.expandedContainer : ''}  ${!isComponent && isExpanded ? styles.expandedContainerShown : ''}`}>
       <div className={styles.name}>
         {isComponent && (
           <>

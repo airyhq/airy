@@ -49,7 +49,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		return kube.KubeCtx{}, err
 	}
 
-	if err := p.startCluster(); err != nil {
+	if err := p.startCluster(providerConfig); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
@@ -68,8 +68,13 @@ func checkInstallation() error {
 	return err
 }
 
-func (p *provider) startCluster() error {
-	args := []string{"start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535", "--driver=virtualbox"}
+func (p *provider) startCluster(providerConfig map[string]string) error {
+	minikubeDriver := providerConfig["driver"]
+	if minikubeDriver == "" {
+		minikubeDriver = "docker"
+	}
+	driverArg := "--driver=" + minikubeDriver
+	args := []string{"start", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535", driverArg}
 	// Prevent minikube download progress bar from polluting the output
 	_, err := runGetOutput(append(args, "--download-only")...)
 	if err != nil {

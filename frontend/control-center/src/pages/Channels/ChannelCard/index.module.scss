@@ -58,9 +58,8 @@
   display: flex;
   justify-content: center;
   border-radius: 10px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   &:hover {
-    margin: -1px;
     border: 2px solid var(--color-airy-blue);
   }
 }

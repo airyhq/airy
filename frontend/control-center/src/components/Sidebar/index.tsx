@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
 
-import {CATALOG_ROUTE, CHANNELS_ROUTE, COMPONENTS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
+import {CATALOG_ROUTE, CHANNELS_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
@@ -28,8 +28,8 @@ const Sidebar = (props: SideBarProps) => {
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
-        <div className={`${styles.align} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
-          <Link to={COMPONENTS_ROUTE} className={`${styles.link} ${isActive(COMPONENTS_ROUTE) ? styles.active : ''}`}>
+        <div className={`${styles.align} ${isActive(STATUS_ROUTE) ? styles.active : ''}`}>
+          <Link to={STATUS_ROUTE} className={`${styles.link} ${isActive(STATUS_ROUTE) ? styles.active : ''}`}>
             <StatusIcon width={'20px'} height={'20px'} />
             <span className={styles.iconText}>Status</span>
           </Link>

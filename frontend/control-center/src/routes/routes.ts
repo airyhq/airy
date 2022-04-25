@@ -8,5 +8,5 @@ export const CHANNELS_TWILIO_WHATSAPP_ROUTE = '/channels/twilio.whatsapp';
 export const CHANNELS_GOOGLE_ROUTE = '/channels/google';
 export const CHANNELS_INSTAGRAM_ROUTE = '/channels/instagram';
 export const CATALOG_ROUTE = '/catalog';
-export const COMPONENTS_ROUTE = '/components';
+export const STATUS_ROUTE = '/status';
 export const WEBHOOKS_ROUTE = '/webhooks';

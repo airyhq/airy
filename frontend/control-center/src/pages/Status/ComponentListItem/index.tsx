@@ -28,7 +28,9 @@ export const ComponentListItem = (props: ComponentsListProps) => {
   return (
     <section
       className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`}
-      ref={wrapper} style={{height: wrapperHeight}}>
+      ref={wrapper}
+      style={{height: wrapperHeight}}
+    >
       <ItemInfo
         healthy={healthy}
         itemName={componentName}

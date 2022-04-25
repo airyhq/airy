@@ -2,7 +2,7 @@ load("@com_github_airyhq_bazel_tools//helm:helm.bzl", lib_helm_push = "helm_push
 
 def helm_push(chart):
     lib_helm_push(
-        name = "push_testing",
+        name = "helm_push_testing",
         repository_url = "https://testing.helm.airy.co",
         repository_name = "airy",
         auth = "none",
@@ -11,7 +11,7 @@ def helm_push(chart):
     )
 
     lib_helm_push(
-        name = "push_release",
+        name = "helm_push",
         repository_url = "https://helm.airy.co",
         repository_name = "airy",
         auth = "basic",
@@ -21,7 +21,7 @@ def helm_push(chart):
 
 def helm_push_version(chart, version):
     lib_helm_push(
-        name = "push_testing",
+        name = "helm_push_testing",
         repository_url = "https://testing.helm.airy.co",
         repository_name = "airy",
         auth = "none",
@@ -31,7 +31,7 @@ def helm_push_version(chart, version):
     )
 
     lib_helm_push(
-        name = "push_release",
+        name = "helm_push",
         repository_url = "https://helm.airy.co",
         repository_name = "airy",
         auth = "basic",

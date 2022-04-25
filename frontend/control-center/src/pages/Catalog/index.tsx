@@ -183,7 +183,7 @@ const Catalog = () => {
         </div>
       </div>
 
-      <div className={styles.wrapper}>
+      <div className={styles.listWrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
 
         {notInstalledConnectors.length > 0 && (

@@ -12,25 +12,21 @@ type ComponentsListProps = {
 export const ComponentListItem = (props: ComponentsListProps) => {
   const {healthy, componentName, enabled, services} = props;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [wrapperHeight, setWrapperHeight] = useState('50Px');
   const wrapper = useRef(null);
+  const paddingWrapper = 20;
 
   useEffect(() => {
     if (wrapper && wrapper.current) {
       if (isExpanded) {
-        setWrapperHeight(`${wrapper.current.scrollHeight + 20}px`);
+        wrapper.current.style.height = `${wrapper.current.scrollHeight + paddingWrapper}px`;
       } else {
-        setWrapperHeight(`50px`);
+        wrapper.current.style.height = '50px';
       }
     }
   }, [isExpanded]);
 
   return (
-    <section
-      className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`}
-      ref={wrapper}
-      style={{height: wrapperHeight}}
-    >
+    <section className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`} ref={wrapper}>
       <ItemInfo
         healthy={healthy}
         itemName={componentName}

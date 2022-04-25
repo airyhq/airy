@@ -75,12 +75,14 @@ jobs:
       - name: Publish helm charts to S3
         if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
-          ./scripts/upload-helm-charts.sh
+          ./scripts/push-helm-charts.sh
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION : ${{ secrets.AWS_REGION }}
           GITHUB_BRANCH: ${{ github.ref }}
+          HELM_REPO_USERNAME: ${{ secrets.HELM_REPO_USERNAME }}
+          HELM_REPO_PASSWORD: ${{ secrets.HELM_REPO_PASSWORD }}
 
       - name: Publish http-client library to npm
         if: ${{ startsWith(github.ref, 'refs/heads/main') }}

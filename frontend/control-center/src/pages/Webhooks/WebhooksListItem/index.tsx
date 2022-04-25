@@ -4,6 +4,8 @@ import styles from './index.module.scss';
 import {Switch} from '../../../components/Switch';
 import {connect, ConnectedProps} from 'react-redux';
 import {subscribeWebhook, unsubscribeWebhook, updateWebhook} from '../../../actions/webhook';
+import {SettingsModal} from 'components';
+import NewSubscription from '../NewSubscription';
 
 type WebhooksListItemProps = {
   id: string;
@@ -16,6 +18,7 @@ type WebhooksListItemProps = {
   status?: string;
   signatureKey?: string;
   switchId?: string;
+  newWebhook: boolean;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -39,13 +42,19 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     subscribeWebhook,
     unsubscribeWebhook,
     updateWebhook,
+    newWebhook,
   } = props;
   const [subscribed, setSubscribed] = useState(status);
-  const [newUrl, setNewUrl] = useState(url);
-  const [newName, setNewName] = useState(name);
-  const [newEvents, setNewEvents] = useState([events]);
-  const [newSignatureKey, setNewSignatureKey] = useState(signatureKey);
   const [editModeOn, setEditModeOn] = useState(false);
+  const [messageCreated, setMessageCreated] = useState(false);
+  const [messageUpdated, setMessageUpdated] = useState(false);
+  const [conversationCreated, setConversationCreated] = useState(false);
+  const [conversationUpdated, setConversationUpdated] = useState(false);
+
+  useEffect(() => {
+    checkEvents();
+    newWebhook && setEditModeOn(true);
+  }, [newWebhook]);
 
   const handleToggle = () => {
     status === 'Subscribed'
@@ -53,47 +62,31 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       : (subscribeWebhook({url}), setSubscribed('Subscribed'));
   };
 
-  console.log('name', name);
-  console.log('url', url);
-  console.log('events', events);
-
-  const eventss = ['Message.Created', 'Message.Updated', 'Conversation.Updated', 'Channel.Updated'];
-
-  const handleOnChange = (event, name) => {
-    name === 'url' && setNewUrl(event.target.value);
-    name === 'name' && setNewName(event.target.value);
-    name === 'events' && setNewEvents(event.target.value);
+  const saveChanges = () => {
+    // updateWebhook({url}: UpdateWebhookRequestPayload)
   };
 
-  console.log('NEWURL: ', newUrl);
-  console.log('NEWNAME: ', newName);
+  const cancelChanges = () => {
+    console.log('NOW');
+
+    setEditModeOn(false);
+  };
+
+  const checkEvents = () => {
+    events &&
+      (events.includes('message.created') && setMessageCreated(true),
+      events.includes('message.updated') && setMessageUpdated(true),
+      events.includes('conversation.created') && setConversationCreated(true),
+      events.includes('conversation.updated') && setConversationUpdated(true));
+  };
 
   return (
     <div className={styles.container}>
-      {editModeOn ? (
-        <>
-          <input className={styles.inputs} placeholder={url} onChange={event => handleOnChange(event, 'url')}></input>
-          <input className={styles.inputs} placeholder={name} onChange={event => handleOnChange(event, 'name')}></input>
-          <div className={styles.eventsContainer} style={{width: '25%'}}>
-            {eventss &&
-              eventss.map((event, index) => (
-                <input
-                  className={styles.inputs}
-                  placeholder={event}
-                  onChange={event => handleOnChange(event, 'events')} style={{width: '100%'}}></input>
-              ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <span>{url}</span>
-          <p>21u8932gggggggg</p>
-          <div className={styles.eventsContainer}>
-            <>{eventss && eventss.map((event, index) => <p key={index}>{event}</p>)}</>
-          </div>
-        </>
-      )}
-
+      <span>{url}</span>
+      <p>{name}</p>
+      <div className={styles.eventsContainer}>
+        <>{events && events.map((event, index) => <p key={index}>{event}</p>)}</>
+      </div>
       <div className={styles.statusContainer} style={{width: '10%'}}>
         <Switch
           id={switchId}
@@ -109,6 +102,19 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           <PensilIcon height={12} width={12} />
         </div>
       </div>
+
+      {editModeOn && (
+        <SettingsModal close={cancelChanges} title="Subscribe Webhook" className={styles.subscribePopup}>
+          <NewSubscription
+            name={name}
+            url={url}
+            messageCreated={messageCreated}
+            messageUpdated={messageUpdated}
+            conversationCreated={conversationCreated}
+            conversationUpdated={conversationUpdated}
+          />
+        </SettingsModal>
+      )}
     </div>
   );
 };

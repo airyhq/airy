@@ -1,6 +1,6 @@
 import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {listWebhooks} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
@@ -22,6 +22,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Webhooks = (props: WebhooksProps) => {
   const {listWebhooks, webhooks} = props;
+  const [newWebhook, setNewWebook] = useState(false);
 
   useEffect(() => {
     setPageTitle('Webhooks');
@@ -36,7 +37,7 @@ const Webhooks = (props: WebhooksProps) => {
       <div className={styles.webhooksHeadline}>
         <div className={styles.headlineContainer}>
           <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-          <Button onClick={() => {}} style={{fontSize: 13, width: '176px', height: '40px'}}>
+          <Button onClick={() => setNewWebook(true)} style={{fontSize: 13, width: '176px', height: '40px'}}>
             Subscribe Webhook
           </Button>
         </div>
@@ -50,7 +51,13 @@ const Webhooks = (props: WebhooksProps) => {
       <div>
         {webhooks &&
           Object.values(webhooks).map((webhook: Webhook, index) => (
-            <WebhooksListItem id={webhook.id} url={webhook.url} switchId={`${index}`} key={index} />
+            <WebhooksListItem
+              id={webhook.id}
+              url={webhook.url}
+              switchId={`${index}`}
+              key={index}
+              newWebhook={newWebhook}
+            />
           ))}
       </div>
     </div>

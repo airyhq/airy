@@ -71,7 +71,7 @@
         "./*"
       ],
       "handles": [
-        "./frontend/ui/handles"
+        "./frontend/inbox/handles"
       ],
       "chat-plugin-handles": [
         "./frontend/chat-plugin/handles"

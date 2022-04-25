@@ -33,7 +33,7 @@ from the repository:
 $ bazel run //cli -- create --provider=minikube
 ```
 
-When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/ui:bundle_server`
+When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/inbox:bundle_server`
 Then open `http://localhost:8080/` in a web browser to access the Airy Demo UI
 
 ### Authentication
@@ -50,7 +50,7 @@ To start the app in development mode, run these commands:
 
 ```
 $ yarn
-$ ./scripts/web-dev.sh //frontend/ui:bundle_server
+$ ./scripts/web-dev.sh //frontend/inbox:bundle_server
 ```
 
 After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.
@@ -59,5 +59,5 @@ The web server does not perform Typescript type checking. To do so you can eithe
 or start another process:
 
 ```
-$ ibazel build //frontend/ui:app
+$ ibazel build //frontend/inbox:app
 ```

@@ -33,7 +33,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: wait-for-frontend-ui
+  name: wait-for-frontend-inbox
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
@@ -51,7 +51,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
-          value: frontend-ui:80
+          value: frontend-inbox:80
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-ui
+  name: frontend-inbox
   labels:
-    app: frontend-ui
+    app: frontend-inbox
     type: frontend
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
@@ -14,7 +14,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-ui
+      app: frontend-inbox
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend-ui
+        app: frontend-inbox
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:

@@ -2,21 +2,20 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
+  width: 100%;
+  padding: 12px 0 24px 0;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
   background: white;
   border-left: 1px solid var(--color-light-gray);
   border-right: 1px solid var(--color-light-gray);
   border-bottom: 1px solid var(--color-light-gray);
-  width: 100%;
-  padding: 12px 0 24px 0;
+  transition: all 0.5s ease;
 }
 
 .wrapperExpanded {
   display: inline-block;
-  height: auto;
-}
-
-.wrapperCollapsed {
-  height: 50px;
 }
 
 .container {
@@ -27,6 +26,13 @@
 
 .expandedContainer {
   margin-top: 20px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+}
+
+.expandedContainerShown {
+  opacity: 1;
 }
 
 .name {

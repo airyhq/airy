@@ -12,7 +12,7 @@
   overflow-x: hidden;
 }
 
-h1 {
+.statusWrapper h1 {
   @include font-xl;
   font-weight: 900;
   letter-spacing: 0;

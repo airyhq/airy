@@ -38,7 +38,7 @@ export const getChannelAvatar = (source: string) => {
       return <SmsAvatar />;
     case Source.twilioWhatsApp:
       return <WhatsappAvatar />;
-    case 'twilio':
+    case Source.twilio:
       return <TwilioAvatar />;
     case Source.instagram:
       return <InstagramAvatar />;

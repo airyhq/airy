@@ -2,6 +2,12 @@
   --font: 'Lato';
 }
 
+@mixin font-xs {
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  line-height: 13.2px;
+}
+
 @mixin font-s {
   font-family: 'Lato', sans-serif;
   font-size: 13px;
@@ -60,6 +66,10 @@
   font-family: 'Lato', sans-serif;
   font-size: 76px;
   line-height: 82px;
+}
+
+.font-xs {
+  @include font-xs;
 }
 
 .font-s {

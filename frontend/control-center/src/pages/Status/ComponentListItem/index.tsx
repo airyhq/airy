@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {ItemInfo} from './ItemInfo';
 import styles from './index.module.scss';
 
@@ -12,9 +12,21 @@ type ComponentsListProps = {
 export const ComponentListItem = (props: ComponentsListProps) => {
   const {healthy, componentName, enabled, services} = props;
   const [isExpanded, setIsExpanded] = useState(false);
+  const wrapper = useRef(null);
+  const paddingWrapper = 20;
+
+  useEffect(() => {
+    if (wrapper && wrapper.current) {
+      if (isExpanded) {
+        wrapper.current.style.height = `${wrapper.current.scrollHeight + paddingWrapper}px`;
+      } else {
+        wrapper.current.style.height = '50px';
+      }
+    }
+  }, [isExpanded]);
 
   return (
-    <section className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : styles.wrapperCollapsed}`}>
+    <section className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`} ref={wrapper}>
       <ItemInfo
         healthy={healthy}
         itemName={componentName}
@@ -24,20 +36,16 @@ export const ComponentListItem = (props: ComponentsListProps) => {
         enabled={enabled}
       />
 
-      {isExpanded && (
-        <>
-          {services.map((service, index) => (
-            <ItemInfo
-              healthy={service.healthy}
-              itemName={service.name}
-              isComponent={false}
-              isExpanded={isExpanded}
-              setIsExpanded={setIsExpanded}
-              key={index}
-            />
-          ))}
-        </>
-      )}
+      {services.map((service, index) => (
+        <ItemInfo
+          healthy={service.healthy}
+          itemName={service.name}
+          isComponent={false}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          key={index}
+        />
+      ))}
     </section>
   );
 };

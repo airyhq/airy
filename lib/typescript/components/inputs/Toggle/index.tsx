@@ -14,7 +14,7 @@ export const Toggle = ({value, text, updateValue, variant, size}: ToggleType) =>
     updateValue(event.target.checked);
   };
   return (
-    <label>
+    <label className={styles.toggleLabel}>
       <span className={`${styles.switch} ${size === 'small' ? styles.small : styles.big}`}>
         <input type="checkbox" onChange={onCheckboxChange} checked={value} />
         <span

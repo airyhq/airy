@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {CATALOG_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, COMPONENTS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
+import {CATALOG_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import FacebookConnect from './pages/Channels/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Channels/Providers/Airy/ChatPlugin/ChatPluginConnect';
 import ConnectedChannelsList from './pages/Channels/ConnectedChannelsList';
@@ -51,7 +51,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route element={<NotFound />} />
           <Route path={`${CATALOG_ROUTE}/*`} element={<Catalog />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
-          <Route path={`${COMPONENTS_ROUTE}/*`} element={<Status />}></Route>
+          <Route path={`${STATUS_ROUTE}/*`} element={<Status />}></Route>
         </Routes>
       </div>
     </div>

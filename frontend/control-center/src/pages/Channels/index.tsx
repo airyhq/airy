@@ -172,6 +172,7 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
             channelsBySource(infoItem.type).length > 0 && (
               <div style={{display: 'flex'}} key={infoItem.type}>
                 <ChannelCard
+                  installed
                   sourceInfo={infoItem}
                   addChannelAction={() => {
                     navigate(infoItem.channelsListRoute);

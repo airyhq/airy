@@ -5,16 +5,27 @@ import styles from './index.module.scss';
 type SourceDescriptionCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
+  installed: boolean;
 };
 
 const ChannelCard = (props: SourceDescriptionCardProps) => {
-  const {sourceInfo, addChannelAction} = props;
+  const {sourceInfo, addChannelAction, installed} = props;
 
   return (
-    <div className={styles.channelCard} onClick={addChannelAction}>
-      <div className={styles.channelLogoTitleContainer}>
+    <div
+      className={`${styles.channelCard} ${installed ? styles.installed : styles.notInstalled}`}
+      onClick={addChannelAction}
+    >
+      <div
+        className={`${styles.channelLogoTitleContainer} ${
+          installed ? styles.channelLogoTitleContainerInstalled : styles.channelLogoTitleContainerNotInstalled
+        }`}
+      >
         <div className={styles.channelLogo}>{sourceInfo.image}</div>
-        <p className={styles.channelTitle}>{sourceInfo.title}</p>
+        <div className={styles.textDetails}>
+          <h1>{sourceInfo.title}</h1>
+          {!installed && <p>{sourceInfo.description}</p>}
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 
-import {Channel, Source} from 'model';
-
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyLogo.svg';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/facebookMessengerLogoBlue.svg';
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/phoneIcon.svg';
@@ -35,14 +33,14 @@ import {
 } from '../../routes/routes';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
 import {allChannelsConnected} from '../../selectors/channels';
-import ChannelCard from '../Channels/ChannelCard';
 import {FacebookMessengerRequirementsDialog} from '../Channels/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Channels/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Channels/Providers/Twilio/TwilioRequirementsDialog';
 import {InstagramRequirementsDialog} from '../Channels/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
+import {CatalogItemList} from './CatalogItemList';
+import {Channel, Source} from 'model';
 
 export type SourceInfo = {
   type: Source;
@@ -141,11 +139,22 @@ const SourcesInfo: SourceInfo[] = [
 
 const Catalog = () => {
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
-  const config = useSelector((state: StateModel) => state.data.config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
+  const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
+  const [installedConnectors, setInstalledConnectors] = useState([]);
 
   useEffect(() => {
     setPageTitle('Catalog');
+  }, []);
+
+  useEffect(() => {
+    SourcesInfo.map((infoItem: SourceInfo) => {
+      if (channelsBySource(infoItem.type).length === 0) {
+        setNotInstalledConnectors(prevArr => [...prevArr, infoItem]);
+      } else {
+        setInstalledConnectors(prevArr => [...prevArr, infoItem]);
+      }
+    });
   }, []);
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
@@ -165,7 +174,6 @@ const Catalog = () => {
   };
 
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
-  const navigate = useNavigate();
 
   return (
     <div className={styles.catalogWrapper}>
@@ -177,24 +185,22 @@ const Catalog = () => {
 
       <div className={styles.wrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-        {SourcesInfo.map((infoItem: SourceInfo) => {
-          return (
-            channelsBySource(infoItem.type).length === 0 && (
-              <div style={{display: 'flex'}} key={infoItem.type}>
-                <ChannelCard
-                  sourceInfo={infoItem}
-                  addChannelAction={() => {
-                    if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                      navigate(infoItem.newChannelRoute);
-                    } else {
-                      setDisplayDialogFromSource(infoItem.type);
-                    }
-                  }}
-                />
-              </div>
-            )
-          );
-        })}
+
+        {notInstalledConnectors.length > 0 && (
+          <CatalogItemList
+            list={notInstalledConnectors}
+            installedConnectors={false}
+            setDisplayDialogFromSource={setDisplayDialogFromSource}
+          />
+        )}
+
+        {installedConnectors.length > 0 && (
+          <CatalogItemList
+            list={installedConnectors}
+            installedConnectors
+            setDisplayDialogFromSource={setDisplayDialogFromSource}
+          />
+        )}
       </div>
     </div>
   );

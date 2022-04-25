@@ -3,27 +3,25 @@
 @import 'assets/scss/z-index.scss';
 
 .channelCard {
+  width: 230px;
+  margin-bottom: 28px;
+  margin-right: 36px;
   display: flex;
-  align-items: flex-end;
-  height: 120px;
-  width: 328px;
+  align-items: center;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
-  margin-bottom: 28px;
-  margin-right: 36px;
   &:hover {
     cursor: pointer;
   }
 }
 
-.channelLogo {
-  height: 40px;
-  width: 40px;
-  svg {
-    width: 40px;
-    height: 40px;
-  }
+.notInstalled {
+  height: 96px;
+}
+
+.installed {
+  height: 64px;
 }
 
 .channelLogoInstagram {
@@ -36,30 +34,62 @@
   }
 }
 
-.channelTitle {
-  @include font-l;
-  color: var(--color-text-contrast);
-  font-weight: 600;
-  letter-spacing: 0;
-  width: 100%;
-  margin-top: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.textDetails {
+  width: 60%;
+  margin-left: 10px;
+  h1 {
+    @include font-s;
+    color: var(--color-text-contrast);
+    font-weight: 600;
+    letter-spacing: 0;
+    max-width: 90%;
+  }
+
+  p {
+    @include font-xs;
+    margin: 5px 0 0 0;
+    color: var(--color-text-gray);
+    max-width: 90%;
+  }
 }
 
 .channelLogoTitleContainer {
+  width: 230px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 0 0 18px 18px;
-  height: 120px;
-  width: 328px;
+  justify-content: center;
   border-radius: 10px;
   border: 1px solid transparent;
   &:hover {
     margin: -1px;
     border: 2px solid var(--color-airy-blue);
+  }
+}
+
+.channelLogoTitleContainerInstalled {
+  height: 64px;
+  align-items: center;
+
+  .channelLogo {
+    height: 30px;
+    width: 30px;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.channelLogoTitleContainerNotInstalled {
+  height: 96px;
+  align-items: flex-start;
+  padding-top: 18px;
+
+  .channelLogo {
+    height: 40px;
+    width: 40px;
+    svg {
+      width: 40px;
+      height: 40px;
+    }
   }
 }

@@ -36,7 +36,7 @@ apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core-redirect'
   annotations:
-    nginx.ingress.kubernetes.io/permanent-redirect: /control-center/start.html
+    nginx.ingress.kubernetes.io/rewrite-target: /start.html
   {{- if .Values.global.ingress.letsencrypt }}
     cert-manager.io/cluster-issuer: 'letsencrypt'
   {{- end }}
@@ -47,6 +47,13 @@ spec:
     - http:
         paths:
           - path: /$
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-control-center
+                port:
+                  number: 80
+          - path: /ui
             pathType: Prefix
             backend:
               service:

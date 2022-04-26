@@ -27,10 +27,8 @@ export const listWebhooks = () => async (dispatch: Dispatch<any>) => {
 };
 
 export const subscribeWebhook = (request: SubscribeWebhookRequestPayload) => async (dispatch: Dispatch<any>) => {
-  console.log('CRASHED');
-
   return HttpClientInstance.subscribeWebhook(request).then((response: any) => {
-    console.log('RESOIOIOISO: ', response);
+    console.log('111111: ', response);
 
     dispatch(enableWebhook(response));
     return Promise.resolve(true);
@@ -38,10 +36,12 @@ export const subscribeWebhook = (request: SubscribeWebhookRequestPayload) => asy
 };
 
 export const unsubscribeWebhook = (request: UnsubscribeWebhookRequestPayload) => async (dispatch: Dispatch<any>) => {
-  console.log('CRASHED');
+  console.log('HEREHRE');
 
   return HttpClientInstance.unsubscribeWebhook(request).then((response: any) => {
-    console.log('RESOIOIOISO: ', response);
+    console.log('REQUEST: ', request);
+
+    console.log('2222222: ', response);
 
     dispatch(disableWebhook(response));
     return Promise.resolve(true);

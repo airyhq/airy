@@ -5,7 +5,8 @@ import {Switch} from '../../../components/Switch';
 import {connect, ConnectedProps} from 'react-redux';
 import {subscribeWebhook, unsubscribeWebhook, updateWebhook} from '../../../actions/webhook';
 import {SettingsModal} from 'components';
-import NewSubscription from '../NewSubscription';
+import NewSubscription from '../NewSubscriptionModal';
+import {UnsubscribeModal} from '../UnsubscribeModal';
 
 type WebhooksListItemProps = {
   id: string;
@@ -44,32 +45,35 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     updateWebhook,
     newWebhook,
   } = props;
-  const [subscribed, setSubscribed] = useState(status);
+  const [subscribed, setSubscribed] = useState(status || 'Subscribed');
+  // const [subscribed, setSubscribed] = useState(status || 'Unsubscribed');
   const [editModeOn, setEditModeOn] = useState(false);
+  const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
   const [messageCreated, setMessageCreated] = useState(false);
   const [messageUpdated, setMessageUpdated] = useState(false);
   const [conversationCreated, setConversationCreated] = useState(false);
   const [conversationUpdated, setConversationUpdated] = useState(false);
+  const [webhookUnsubscribe, setWebhookUnsubscribe] = useState(false);
+  const [webhookUpdate, setWebhookUpdate] = useState(false);
 
   useEffect(() => {
     checkEvents();
     newWebhook && setEditModeOn(true);
-  }, [newWebhook]);
+  }, []);
 
-  const handleToggle = () => {
-    status === 'Subscribed'
-      ? (unsubscribeWebhook({url}), setSubscribed('Unsubscribed'))
-      : (subscribeWebhook({url}), setSubscribed('Subscribed'));
-  };
+  // const handleToggle = () => {
+  //   status === 'Subscribed'
+  //     ? (unsubscribeWebhook({url}), setSubscribed('Unsubscribed'))
+  //     : (subscribeWebhook({url}), setSubscribed('Subscribed'));
+  // };
 
   const saveChanges = () => {
     // updateWebhook({url}: UpdateWebhookRequestPayload)
   };
 
   const cancelChanges = () => {
-    console.log('NOW');
-
     setEditModeOn(false);
+    setShowUnsubscribeModal(false);
   };
 
   const checkEvents = () => {
@@ -78,6 +82,29 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       events.includes('message.updated') && setMessageUpdated(true),
       events.includes('conversation.created') && setConversationCreated(true),
       events.includes('conversation.updated') && setConversationUpdated(true));
+  };
+
+  const handleUnsubscribe = () => {
+    console.log('371289: ', subscribed);
+
+    subscribed === 'Subscribed' ? setShowUnsubscribeModal(true) : subscribeWebhook({url: url}).then(() => {});
+  };
+
+  const unsubscribeWebhookConfirm = (unsubscribe: boolean) => {
+    setWebhookUnsubscribe(unsubscribe);
+    unsubscribeWebhook({url: url})
+      .then(() => {
+        setShowUnsubscribeModal(false);
+        setSubscribed('Unsubscribed');
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+  };
+
+  const updateWebhookConfirm = (update: boolean) => {
+    setWebhookUpdate(update);
+    props.updateWebhook({id: id, url: url, name: name, events: events});
   };
 
   return (
@@ -91,7 +118,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         <Switch
           id={switchId}
           isActive={subscribed === 'Subscribed' ? true : false}
-          toggleActive={handleToggle}
+          toggleActive={handleUnsubscribe}
           onColor="#EFEFEF"
         />
         <div
@@ -112,6 +139,17 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             messageUpdated={messageUpdated}
             conversationCreated={conversationCreated}
             conversationUpdated={conversationUpdated}
+            newWebhook={newWebhook}
+            setUpdateWebhook={updateWebhookConfirm}
+          />
+        </SettingsModal>
+      )}
+      {showUnsubscribeModal && (
+        <SettingsModal close={cancelChanges} title="" className={styles.subscribePopup}>
+          <UnsubscribeModal
+            setUnsubscribe={unsubscribeWebhookConfirm}
+            setCancelUnsubscribe={cancelChanges}
+            webhookUrl={url}
           />
         </SettingsModal>
       )}

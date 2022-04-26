@@ -55,11 +55,13 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   const [conversationUpdated, setConversationUpdated] = useState(false);
   const [webhookUnsubscribe, setWebhookUnsubscribe] = useState(false);
   const [webhookUpdate, setWebhookUpdate] = useState(false);
+  const [isNewWebhook, setIsNewWebhook] = useState(newWebhook || false);
 
   useEffect(() => {
     checkEvents();
-    newWebhook && setEditModeOn(true);
-  }, []);
+    console.log('sdjadsijdsiaojdasoidjas', isNewWebhook);
+    newWebhook && setIsNewWebhook(true);
+  }, [newWebhook]);
 
   // const handleToggle = () => {
   //   status === 'Subscribed'
@@ -73,6 +75,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
 
   const cancelChanges = () => {
     setEditModeOn(false);
+    setIsNewWebhook(false);
     setShowUnsubscribeModal(false);
   };
 
@@ -102,9 +105,34 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       });
   };
 
-  const updateWebhookConfirm = (update: boolean) => {
-    setWebhookUpdate(update);
-    props.updateWebhook({id: id, url: url, name: name, events: events});
+  const editWebhook = () => {
+    setIsNewWebhook(false);
+    setEditModeOn(!editModeOn);
+  };
+
+  const updateWebhookConfirm = (update: boolean, url: string, name?: string, events?: string[]) => {
+    update &&
+      props
+        .updateWebhook({id: id, url: url, name: name, events: events})
+        .then(() => {
+          console.log('UPDATED');
+        })
+        .catch((error: Error) => {
+          console.error(error);
+        });
+  };
+
+  const subscribeWebhookConfirm = (url: string, name?: string, events?: string[]) => {
+    console.log('SUBSCRIBECONFIRM');
+
+    props
+      .subscribeWebhook({url: url, name: name, events: events})
+      .then(() => {
+        setSubscribed('Subscribed');
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -121,16 +149,12 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           toggleActive={handleUnsubscribe}
           onColor="#EFEFEF"
         />
-        <div
-          className={styles.pensilIcon}
-          onClick={() => {
-            setEditModeOn(!editModeOn);
-          }}>
+        <div className={styles.pensilIcon} onClick={editWebhook}>
           <PensilIcon height={12} width={12} />
         </div>
       </div>
 
-      {editModeOn && (
+      {(editModeOn || isNewWebhook) && (
         <SettingsModal close={cancelChanges} title="Subscribe Webhook" className={styles.subscribePopup}>
           <NewSubscription
             name={name}
@@ -141,6 +165,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             conversationUpdated={conversationUpdated}
             newWebhook={newWebhook}
             setUpdateWebhook={updateWebhookConfirm}
+            setSubscribeWebhook={subscribeWebhookConfirm}
           />
         </SettingsModal>
       )}

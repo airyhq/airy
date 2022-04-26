@@ -9,10 +9,21 @@ type NewSubscriptionProps = {
   messageUpdated?: boolean;
   conversationCreated?: boolean;
   conversationUpdated?: boolean;
+  newWebhook: boolean;
+  setUpdateWebhook: (update: boolean) => void;
 };
 
 const NewSubscription = (props: NewSubscriptionProps) => {
-  const {name, url, messageCreated, messageUpdated, conversationCreated, conversationUpdated} = props;
+  const {
+    name,
+    url,
+    messageCreated,
+    messageUpdated,
+    conversationCreated,
+    conversationUpdated,
+    newWebhook,
+    setUpdateWebhook,
+  } = props;
   const [newUrl, setNewUrl] = useState(url);
   const [newName, setNewName] = useState(name);
   const [messageCreatedChecked, setMessageCreatedChecked] = useState(messageCreated);
@@ -44,12 +55,13 @@ const NewSubscription = (props: NewSubscriptionProps) => {
         break;
       }
     }
-    console.log(events);
 
     return events;
   };
 
-  const updateWebsocket = () => {};
+  const updateHook = () => {
+    setUpdateWebhook(true);
+  };
 
   return (
     <form className={styles.formContainer}>
@@ -103,7 +115,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
             checked={conversationUpdatedChecked}
             onChange={() => handleChecked('conversation.updated')}
           />
-          <label htmlFor="message.created">
+          <label htmlFor="conversation.updated">
             <span>Conversation.Updated</span>
           </label>
         </div>
@@ -124,11 +136,11 @@ const NewSubscription = (props: NewSubscriptionProps) => {
         </div>
       </div>
       <Button
-        onClick={() => {}}
+        onClick={newWebhook ? subscribeToNewWebhook() : updateWebhook()}
         style={{alignSelf: 'center', width: '213px', height: '48px', borderRadius: '10px'}}
         disabled={newUrl === ''}
         type="submit">
-        Confirm
+        {newWebhook ? 'Confirm' : 'Update'}
       </Button>
     </form>
   );

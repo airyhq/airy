@@ -1,0 +1,35 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include font-xxl;
+    width: 100%;
+    color: var(--color-text-gray);
+    background: white;
+
+    h1 {
+        color: var(--color-text-contrast);
+        font-weight: 800;
+        margin-top: 50px;
+        margin-bottom: 16px;
+    }
+    p {
+        color: var(--color-text-contrast);
+        font-weight: 400;
+        margin-bottom: 50px;
+        max-width: 50%;
+        text-align: center;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    button {
+        @include font-base;
+        margin: 0 12px;
+    }
+}

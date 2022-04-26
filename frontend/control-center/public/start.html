@@ -7,25 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="theme-color" content="#000000" />
   <link rel="manifest" href="/manifest.json" />
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
   <style>
-      html, body {
-          background-color: white;
-          height: 100%;
-          width: 100%;
-      }
-
-      .root {
-          background-color: white;
-          height: 100%;
-          width: 100%;
+      html, body, .root {
+        background-color: white;
+        width: max-content;        
+        height: max-content;
       }
 
       .container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-      }
+        position: absolute;
+        right: 0;
+        left: 0;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;          
+      }      
 
       .headerLogo {
           width: 200px;
@@ -66,7 +67,7 @@
       .boxContent {
           font-family: 'Lato';
           font-style: normal;
-          font-weight: 200;
+          font-weight: 400;
           font-size: 20px;
           line-height: 24px;
           text-align: center;
@@ -90,6 +91,55 @@
           border-radius: 10px;
           cursor: pointer;
       }
+
+      @media only screen and (max-device-width: 820px) and (max-device-width: 1200px) {
+        .headerLogo {
+          width: 150px;
+          height: 50px;
+          margin: 30px 0;
+        }
+
+        .container {
+          width: 100%;
+          width: -moz-available;          /* WebKit-based browsers will ignore this. */
+          width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+          width: fill-available;
+          left: auto;
+          right: auto;        
+        }
+
+        .content {          
+          flex-direction: column;          
+        }
+
+        .box {
+          width: auto;
+          height: auto;
+          margin: 12px 12px;
+          padding: 8px;
+        }
+
+        .boxTitle {                    
+          font-size: 31px;
+          line-height: 37px;          
+          margin: 0 0 16px 0;
+        }
+
+        .boxContent {          
+          font-size: 20px;
+          line-height: 24px;
+          margin: 12px 0 16px 0;
+        }
+
+        .boxButton {
+          width: 213px;
+          height: 48px;
+          left: 319px;
+          top: 495px;                              
+          font-size: 16px;
+          line-height: 19px;                    
+        }
+      }
   </style>
 </head>
 <body>
@@ -112,7 +162,7 @@
       </svg>
     </div>
     <div class="content">
-      <a href="/control-center">
+      <a style="text-decoration: none;" href="/control-center">
         <div class="box">
           <div class="boxTitle">Control Center</div>
           <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +174,7 @@
           <button class="boxButton">Sign In</button>
         </div>
       </a>
-      <a href="/inbox">
+      <a style="text-decoration: none;" href="/inbox">
         <div class="box">
           <div class="boxTitle">Inbox</div>
           <svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">

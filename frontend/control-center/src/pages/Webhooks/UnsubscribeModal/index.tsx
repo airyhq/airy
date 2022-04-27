@@ -25,9 +25,7 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
     <div className={styles.container}>
       <ErrorMessage height={140} width={140} />
       <h1>Unsubscribe Webhook</h1>
-      <p>
-        Are you sure you want to unsubsribe to {webhookUrl}?
-      </p>
+      <p>Are you sure you want to unsubsribe to {webhookUrl}?</p>
       <div className={styles.buttonContainer}>
         <Button
           onClick={handleConfirm}

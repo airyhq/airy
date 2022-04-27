@@ -1,34 +1,53 @@
 import {Button} from 'components/cta/Button';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './index.module.scss';
 
 type NewSubscriptionProps = {
   name?: string;
   url?: string;
+  events?: string[];
+  headers: {
+    'X-Custom-Header': string;
+  };
+  signatureKey: string;
   messageCreated?: boolean;
   messageUpdated?: boolean;
   conversationCreated?: boolean;
   conversationUpdated?: boolean;
   newWebhook: boolean;
-  setUpdateWebhook: (update: boolean, url: string, name?: string, events?: string[]) => void;
-  setSubscribeWebhook: (url: string, name?: string, events?: string[]) => void;
+  setNewWebook: (newWebook: boolean) => void;
+  setUpdateWebhook: (
+    update: boolean,
+    url: string,
+    name?: string,
+    events?: string[],
+    headers?: {},
+    signatureKey?: string
+  ) => void;
+  setSubscribeWebhook: (url: string, name?: string, events?: string[], headers?: {}, signatureKey?: string) => void;
 };
 
 const NewSubscription = (props: NewSubscriptionProps) => {
   const {
     name,
     url,
+    events,
+    headers,
+    signatureKey,
     messageCreated,
     messageUpdated,
     conversationCreated,
     conversationUpdated,
     newWebhook,
+    setNewWebook,
     setUpdateWebhook,
     setSubscribeWebhook,
   } = props;
-  const [newUrl, setNewUrl] = useState(url);
-  const [newName, setNewName] = useState(name);
-  let [newEvents, setNewEvents] = useState([]);
+  const [newUrl, setNewUrl] = useState(newWebhook ? '' : url);
+  const [newName, setNewName] = useState(name || '');
+  const [newEvents, setNewEvents] = useState(events || []);
+  const [newHeaders, setNewHeaders] = useState(headers || '');
+  const [newSignatureKey, setNewSignatureKey] = useState(signatureKey || '');
   const [messageCreatedChecked, setMessageCreatedChecked] = useState(messageCreated);
   const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(messageUpdated);
   const [conversationCreatedChecked, setConversationCreatedChecked] = useState(conversationCreated);
@@ -38,30 +57,30 @@ const NewSubscription = (props: NewSubscriptionProps) => {
     switch (event) {
       case 'message.created': {
         // setMessageCreatedChecked(!messageCreatedChecked);
-        !messageCreatedChecked
-          ? !newEvents.includes(event) && newEvents.push(...'message.created')
-          : (newEvents = newEvents.filter(item => item !== event));
+        !newEvents.includes(event)
+          ? (setNewEvents([...newEvents, 'message.created']), console.log('new one'))
+          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
         break;
       }
       case 'message.updated': {
         setMessageUpdatedChecked(!messageUpdatedChecked);
-        !messageUpdatedChecked
-          ? !newEvents.includes(event) && newEvents.push(...'message.updated')
-          : (newEvents = newEvents.filter(item => item !== event));
+        !newEvents.includes(event)
+          ? (setNewEvents([...newEvents, 'message.updated']), console.log('new one'))
+          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
         break;
       }
       case 'conversation.created': {
         setConversationCreatedChecked(!conversationCreatedChecked);
-        !conversationCreatedChecked
-          ? !newEvents.includes(event) && newEvents.push(...'conversation.created')
-          : (newEvents = newEvents.filter(item => item !== event));
+        !newEvents.includes(event)
+          ? (setNewEvents([...newEvents, 'conversation.created']), console.log('new one'))
+          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
         break;
       }
       case 'conversation.updated': {
         setConversationUpdatedChecked(!conversationUpdatedChecked);
-        !conversationUpdatedChecked
-          ? !newEvents.includes(event) && newEvents.push(...'conversation.updated')
-          : (newEvents = newEvents.filter(item => item !== event));
+        !newEvents.includes(event)
+          ? (setNewEvents([...newEvents, 'conversation.updated']), console.log('new one'))
+          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
         break;
       }
     }
@@ -72,19 +91,13 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   };
 
   const updateWebhook = () => {
-    setUpdateWebhook(true, newUrl, newName, newEvents);
+    setUpdateWebhook(true, newUrl, newName, newEvents, newHeaders, newSignatureKey);
   };
 
   const subscribeToNewWebhook = () => {
-    setSubscribeWebhook(newUrl, newName, newEvents);
+    setSubscribeWebhook(newUrl, newName, newEvents, newHeaders, newSignatureKey);
+    setNewWebook(false);
   };
-  // const updateWebhook = (url: string, name?: string, events?: string[]) => {
-  //   setUpdateWebhook(true, url, name, events);
-  // };
-
-  // const subscribeToNewWebhook = (url: string, name?: string, events?: string[]) => {
-  //   setSubscribeWebhook(url, name, events);
-  // };
 
   return (
     <form className={styles.formContainer}>
@@ -94,7 +107,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           <input placeholder={name || 'Name'} value={newName} onChange={event => setNewName(event.target.value)} />
           <input
             placeholder={newWebhook ? 'URL' : url}
-            value={newWebhook ? '' : newUrl}
+            value={newUrl}
             onChange={event => setNewUrl(event.target.value)}
             required={true}
           />
@@ -146,15 +159,14 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           <div className={styles.headerKeyItem}>
             <span>(Customer Header)*</span>
             <input
+              // value={newHeaders['X-Custom-Header']}
+              onChange={event => setNewEvents['X-Custom-Header'](event.target.value)}
               placeholder="Lorem Ipsum is simply dummy textgggg of the printing and typesetting industry. Lorem Ipsum has been the
               industrys standard dummy text ever since the 1500s"></input>
           </div>
           <div className={styles.headerKeyItem}>
             <span>*Sign key</span>
-            <p>
-              Lorem Ipsum is simply duggggmmy text of the printing and typesetting industry. Lorem Ipsum has been the
-              industry's standard dummy text ever since the 1500s
-            </p>
+            <input value={newSignatureKey} onChange={event => setNewSignatureKey(event.target.value)} />
           </div>
         </div>
       </div>

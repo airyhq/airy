@@ -6,6 +6,5 @@ export interface UpdateWebhookRequestPayload {
   headers?: {
     'X-Custom-Header': string;
   };
-  status?: string;
   signatureKey?: string;
 }

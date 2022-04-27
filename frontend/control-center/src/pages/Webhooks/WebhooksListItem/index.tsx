@@ -20,6 +20,7 @@ type WebhooksListItemProps = {
   signatureKey?: string;
   switchId?: string;
   newWebhook: boolean;
+  setNewWebhook?: (isNewWebhook: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -31,22 +32,8 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const WebhooksListItem = (props: WebhooksListItemProps) => {
-  const {
-    id,
-    name,
-    url,
-    events,
-    headers,
-    status,
-    signatureKey,
-    switchId,
-    subscribeWebhook,
-    unsubscribeWebhook,
-    updateWebhook,
-    newWebhook,
-  } = props;
+  const {id, name, url, events, headers, status, signatureKey, switchId, newWebhook} = props;
   const [subscribed, setSubscribed] = useState(status || 'Subscribed');
-  // const [subscribed, setSubscribed] = useState(status || 'Unsubscribed');
   const [editModeOn, setEditModeOn] = useState(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
   const [messageCreated, setMessageCreated] = useState(false);
@@ -55,23 +42,14 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   const [conversationUpdated, setConversationUpdated] = useState(false);
   const [webhookUnsubscribe, setWebhookUnsubscribe] = useState(false);
   const [webhookUpdate, setWebhookUpdate] = useState(false);
-  const [isNewWebhook, setIsNewWebhook] = useState(newWebhook || false);
+  const [isNewWebhook, setIsNewWebhook] = useState(newWebhook);
 
   useEffect(() => {
+    console.log('11111', isNewWebhook);
+
     checkEvents();
-    console.log('sdjadsijdsiaojdasoidjas', isNewWebhook);
     newWebhook && setIsNewWebhook(true);
-  }, [newWebhook]);
-
-  // const handleToggle = () => {
-  //   status === 'Subscribed'
-  //     ? (unsubscribeWebhook({url}), setSubscribed('Unsubscribed'))
-  //     : (subscribeWebhook({url}), setSubscribed('Subscribed'));
-  // };
-
-  const saveChanges = () => {
-    // updateWebhook({url}: UpdateWebhookRequestPayload)
-  };
+  }, [newWebhook, isNewWebhook, setIsNewWebhook]);
 
   const cancelChanges = () => {
     setEditModeOn(false);
@@ -88,14 +66,21 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   };
 
   const handleUnsubscribe = () => {
-    console.log('371289: ', subscribed);
-
-    subscribed === 'Subscribed' ? setShowUnsubscribeModal(true) : subscribeWebhook({url: url}).then(() => {});
+    subscribed === 'Subscribed'
+      ? setShowUnsubscribeModal(true)
+      : props.subscribeWebhook({
+          url: url,
+          name: name,
+          events: events,
+          headers: headers,
+          signatureKey: signatureKey,
+        });
   };
 
   const unsubscribeWebhookConfirm = (unsubscribe: boolean) => {
     setWebhookUnsubscribe(unsubscribe);
-    unsubscribeWebhook({url: url})
+    props
+      .unsubscribeWebhook({id: id, url: url})
       .then(() => {
         setShowUnsubscribeModal(false);
         setSubscribed('Unsubscribed');
@@ -110,21 +95,24 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     setEditModeOn(!editModeOn);
   };
 
-  const updateWebhookConfirm = (update: boolean, url: string, name?: string, events?: string[]) => {
+  const updateWebhookConfirm = (
+    update: boolean,
+    url: string,
+    name?: string,
+    events?: string[],
+    headers?: {},
+    signatureKey?: string
+  ) => {
     update &&
       props
-        .updateWebhook({id: id, url: url, name: name, events: events})
-        .then(() => {
-          console.log('UPDATED');
-        })
+        .updateWebhook({id: id, url: url, name: name, events: events, signatureKey: signatureKey})
+        .then(() => {})
         .catch((error: Error) => {
           console.error(error);
         });
   };
 
   const subscribeWebhookConfirm = (url: string, name?: string, events?: string[]) => {
-    console.log('SUBSCRIBECONFIRM');
-
     props
       .subscribeWebhook({url: url, name: name, events: events})
       .then(() => {
@@ -133,6 +121,10 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       .catch((error: Error) => {
         console.error(error);
       });
+  };
+
+  const handleSetNewWebhook = (newWebhook: boolean) => {
+    setIsNewWebhook(newWebhook);
   };
 
   return (
@@ -159,11 +151,14 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           <NewSubscription
             name={name}
             url={url}
+            headers={headers}
+            signatureKey={signatureKey}
             messageCreated={messageCreated}
             messageUpdated={messageUpdated}
             conversationCreated={conversationCreated}
             conversationUpdated={conversationUpdated}
             newWebhook={newWebhook}
+            setNewWebook={handleSetNewWebhook}
             setUpdateWebhook={updateWebhookConfirm}
             setSubscribeWebhook={subscribeWebhookConfirm}
           />

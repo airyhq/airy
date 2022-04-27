@@ -29,8 +29,8 @@ const Webhooks = (props: WebhooksProps) => {
   }, []);
 
   useEffect(() => {
-    listWebhooks();
-  }, []);
+    Object.keys(webhooks).length === 0 && listWebhooks();
+  }, [webhooks]);
 
   return (
     <div className={styles.webhooksWrapper}>
@@ -56,6 +56,7 @@ const Webhooks = (props: WebhooksProps) => {
               url={webhook.url}
               switchId={`${index}`}
               key={index}
+              status={webhook.status}
               newWebhook={newWebhook}
             />
           ))}

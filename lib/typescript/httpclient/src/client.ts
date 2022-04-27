@@ -236,11 +236,11 @@ export class HttpClient {
 
   public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
 
-  public subscribeWebhook = this.getRequest<SubscribeWebhookRequestPayload>(subscribeWebhookDef);
+  public subscribeWebhook = this.getRequest<SubscribeWebhookRequestPayload, Webhook>(subscribeWebhookDef);
 
-  public unsubscribeWebhook = this.getRequest<UnsubscribeWebhookRequestPayload>(unsubscribeWebhookDef);
+  public unsubscribeWebhook = this.getRequest<UnsubscribeWebhookRequestPayload, Webhook>(unsubscribeWebhookDef);
 
-  public updateWebhook = this.getRequest<UpdateWebhookRequestPayload>(updateWebhookDef);
+  public updateWebhook = this.getRequest<UpdateWebhookRequestPayload, Webhook>(updateWebhookDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

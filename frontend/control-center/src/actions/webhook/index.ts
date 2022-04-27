@@ -27,8 +27,8 @@ export const listWebhooks = () => async (dispatch: Dispatch<any>) => {
 };
 
 export const subscribeWebhook = (request: SubscribeWebhookRequestPayload) => async (dispatch: Dispatch<any>) => {
-  return HttpClientInstance.subscribeWebhook(request).then((response: any) => {
-    console.log('111111: ', response);
+  return HttpClientInstance.subscribeWebhook(request).then((response: Webhook) => {
+    console.log('response: ', response);
 
     dispatch(enableWebhook(response));
     return Promise.resolve(true);
@@ -36,12 +36,8 @@ export const subscribeWebhook = (request: SubscribeWebhookRequestPayload) => asy
 };
 
 export const unsubscribeWebhook = (request: UnsubscribeWebhookRequestPayload) => async (dispatch: Dispatch<any>) => {
-  console.log('HEREHRE');
-
-  return HttpClientInstance.unsubscribeWebhook(request).then((response: any) => {
-    console.log('REQUEST: ', request);
-
-    console.log('2222222: ', response);
+  return HttpClientInstance.unsubscribeWebhook(request).then((response: Webhook) => {
+    console.log('response: ', response);
 
     dispatch(disableWebhook(response));
     return Promise.resolve(true);
@@ -49,12 +45,12 @@ export const unsubscribeWebhook = (request: UnsubscribeWebhookRequestPayload) =>
 };
 
 export const updateWebhook = (request: UpdateWebhookRequestPayload) => async (dispatch: Dispatch<any>) => {
-  console.log('CRASHED');
+  console.log('REQUEST: ', request);
 
-  return HttpClientInstance.updateWebhook(request).then((response: any) => {
-    console.log('RESOIOIOISO: ', response);
+  return HttpClientInstance.updateWebhook(request).then((response: Webhook) => {
+    console.log('response: ', response);
 
-    dispatch(disableWebhook(response));
+    dispatch(changeWebhook(response));
     return Promise.resolve(true);
   });
 };

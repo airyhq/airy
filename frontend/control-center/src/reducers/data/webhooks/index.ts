@@ -19,6 +19,8 @@ const webhookReducer: any = (state = {}, action: Action): Webhook | {} => {
         ...action.payload,
       };
     case getType(actions.changeWebhook):
+      console.log('ACTION PAYLOAD: ', action.payload);
+      console.log('ACTION: ', action);
       return {
         ...action.payload,
       };

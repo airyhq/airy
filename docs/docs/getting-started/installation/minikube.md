@@ -18,16 +18,11 @@ your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
 First install minikube using [their documentation](https://kubernetes.io/de/docs/tasks/tools/install-minikube/). Minikube version v1.19.0 or higher is required.
 
-Next you also need to install the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new minikube cluster on your system and install Airy core on it:
+Next you also need to install the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new
+minikube cluster on your system and install Airy core on it:
 
 ```bash
 airy create --provider=minikube my-airy
-```
-
-The minikube provider uses the `docker` driver by default. You can overwrite this with the `--provider-config` option, for example:
-
-```
-airy create --provider=minikube --provider-config driver=virtualbox my-airy
 ```
 
 This will execute the following actions:

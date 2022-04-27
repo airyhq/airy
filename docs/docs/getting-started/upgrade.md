@@ -72,7 +72,7 @@ If you used Helm to deploy `Airy Core`, you can upgrade with the `helm upgrade` 
 
 ```sh
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
-helm upgrade airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --values ./airy.yaml
+helm upgrade airy https://helm.airy.co/charts/airy-${VERSION}.tgz --values ./airy.yaml
 ```
 
 ## Cleanup the upgrade

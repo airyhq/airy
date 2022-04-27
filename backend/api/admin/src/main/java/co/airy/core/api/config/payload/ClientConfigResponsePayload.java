@@ -18,4 +18,5 @@ public class ClientConfigResponsePayload {
     private Map<String, ServiceInfo> services;
     private UserProfile userProfile;
     private JsonNode tagConfig;
+    private String clusterVersion;
 }

@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "594a0ec552998293674edff959ce8c782683faef",
+    commit = "340e636d2ad91b8d9c03bb3c6d829b6d845f498e",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1649147253 +0200",
+    shallow_since = "1650889500 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -86,9 +86,9 @@ protobuf_deps()
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "85ffff62a4c22a74dbd98d05da6cf40f497344b3dbf1e1ab0a37ab2a1a6ca014",
-    strip_prefix = "rules_docker-0.23.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.23.0/rules_docker-v0.23.0.tar.gz"],
+    sha256 = "59536e6ae64359b716ba9c46c39183403b01eabfbd57578e84398b4829ca499a",
+    strip_prefix = "rules_docker-0.22.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.22.0/rules_docker-v0.22.0.tar.gz"],
 )
 
 load(
@@ -183,3 +183,10 @@ http_archive(
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()
+
+### Helm
+load("@com_github_airyhq_bazel_tools//helm:helm.bzl", "helm_tool")
+
+helm_tool(
+    name = "helm_binary",
+)

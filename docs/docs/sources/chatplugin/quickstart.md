@@ -7,6 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import RocketSVG from "@site/static/icons/rocket.svg";
+import BoltSVG from "@site/static/icons/bolt.svg";
 
 <TLDR>
 
@@ -16,11 +17,10 @@ conversations, and consume directly from Kafka**
 </TLDR>
 
 We are going to use Airy's Live Chat Plugin as our first source. We then use the
-plugin to send messages, and check them out in the [UI](/ui/introduction),
+plugin to send messages, and check them out in the [Inbox UI](/ui/inbox/introduction),
 your terminal and directly in Apache Kafka.
 
-Airy's Live Chat Plugin can be connected both through API request and the
-[UI](/ui/introduction). This document covers both options.
+Airy's Live Chat Plugin can be connected both through API request (using curl or platforms such as Postman) and the [Control Center UI](/ui/control-center/introduction). This document covers both options.
 
 - [Step 1: Set up your first source](#step-1-set-up-your-first-source)
 - [Step 2: Send messages via the Chat Plugin](#step-2-send-messages-via-the-chat-plugin)
@@ -30,11 +30,33 @@ Airy's Live Chat Plugin can be connected both through API request and the
 <ButtonBox
 icon={<RocketSVG />}
 title='Did you already install the Airy CLI?'
-description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
+description='To get going with the Quickstart, you must install Airy first.
+Once the CLI is up and running you are good to go.'
 link='/getting-started/installation/introduction'
 />
 
 ## Step 1: Set up your first source
+
+import ConnectChannelOptions from "../connectChannelOptions.mdx"
+
+<ConnectChannelOptions />
+
+## Connect Airy Live Chat Plugin via API request
+
+You can use curl or a platform such as Postman to send a request to the [Channels endpoint](/api/endpoints/channels#google).
+
+<ButtonBox
+icon={<BoltSVG />}
+title='Channels endpoint'
+description="Connect an Airy Live Chat Plugin channel to your Airy Core instance through the Channels endpoint"
+link='api/endpoints/channels#google'
+/>
+
+<br />
+
+import ConnectChatPlugin from '../../api/endpoints/connect-chatPlugin.mdx'
+
+<ConnectChatPlugin />
 
 ```shell script
 curl -H "Content-Type: application/json" -d \
@@ -48,27 +70,35 @@ curl -H "Content-Type: application/json" -d \
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
 
-Alternatively, you can connect an Airy's Live Chat Plugin channel via the [UI](/ui/introduction).
+## Connect Airy Live Chat Plugin via the UI
 
-On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a + icon next to the Airy Live Chat channel.
+Alternatively, you can connect Airy's Live Chat Plugin channel via the [Control Center UI](/ui/control-center/introduction).
 
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel.png')} />
+On your instance's [Control Center](/ui/control-center/introduction), click on the 'Catalog' icon on the left sidebar menu and select 'Airy Live Chat'.
 
-Next, click on the blue button "Connect Airy Live Chat".
+This will open a page with a form.
 
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect.png')} />
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatpluginConnectForm.png')} />
 
-Enter a display name and optionally an image URL in the respective fields. The display name will be used as the [conversation](/getting-started/glossary/#conversation)'s name while the image URL will be used as its icon in the [Inbox UI](/ui/inbox). A fallback image will be used if you do not enter a valid image URL. Click on the Save button.
+<ConnectFormOptional />
 
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect-form.png')} />
+import ConnectFormOptional from '../connectFormOptional.mdx'
 
-An Airy's Live Chat Plugin [channel](/getting-started/glossary/#channel) will appear as connected in the [Channels UI](/ui/channels). Next, click on the button showing the connected channels.
+Next, click on the 'Save' button.
 
-<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-list.png')} />
+Upon successful connection, Airy Live Chat Plugin will appear as connected in the [Connectors](/ui/control-center/connectors) page in the [Control Center UI](/ui/control-center/introduction).
 
-This will bring you to a page where you can edit or disconnect each channel. Click on 'Edit'.
+<img alt="Control Center connectors" src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
+
+On the [Connectors](/ui/control-center/connectors) page, select 'Airy Live Chat'.
+
+This will bring you to a page where you can edit or disconnect all Airy Live Chat Plugin channels that have been connected.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-connected.png')} />
+
+Select the channel you just connected and click on 'Edit'.
+
+This will bring you to a page where you can manage the installation and settings of the channel.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-id.png')} />
 
@@ -102,11 +132,11 @@ created. it should return the message you have just sent.
 curl -XPOST http://airy.core/conversations.list | jq .
 ```
 
-The [Inbox UI](/ui/inbox) lists all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).
+The [Inbox UI](/ui/inbox/introduction) lists all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).
 
-The screenshot below shows a conversation list in the [Inbox UI](/ui/inbox). In this example, all the [conversations](/getting-started/glossary/#conversation) have been created by connecting an Airy Live Chat [channel](/getting-started/glossary/#channel) to an Airy Core instance.
+The screenshot below shows a conversation list in the [Inbox UI's messenger](/ui/inbox/messenger). In this example, all the [conversations](/getting-started/glossary/#conversation) have been created by connecting an Airy Live Chat [channel](/getting-started/glossary/#channel) to an Airy Core instance.
 
-Each time you connect a new [channel](/getting-started/glossary/#channel), a new [conversation](/getting-started/glossary/#conversation) is created and added in the [Inbox UI](/ui/inbox). You can then use it to respond to [messages](/getting-started/glossary/#message).
+Each time you connect a new [channel](/getting-started/glossary/#channel), a new [conversation](/getting-started/glossary/#conversation) is created and added in the [Inbox UI's messenger](/ui/inbox/messenger). You can then use it to respond to [messages](/getting-started/glossary/#message).
 
 <img alt="conversations list UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-conversations.png')} />
 

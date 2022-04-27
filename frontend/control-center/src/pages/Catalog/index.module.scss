@@ -19,7 +19,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--color-text-contrast);
-  margin-bottom: 14px;
+  margin-bottom: 36px;
 }
 
 .catalogHeadlineText {
@@ -27,8 +27,25 @@
   font-weight: 900;
 }
 
-.wrapper {
+.listWrapper {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.connectorContainer {
+  width: 100%;
+  border-top: 1px solid var(--color-light-gray);
+  padding-top: 14px;
+
+  h2 {
+    @include font-l;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+}
+
+.connectorList {
+  display: flex;
   flex-wrap: wrap;
 }

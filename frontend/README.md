@@ -1,7 +1,5 @@
 <p align="center">
-    <a href="https://airy.co/">
-    <img width="350" src="./assets/airyPrimaryRgb.svg" alt="Airy Logo" />
-    </a>
+  <img src="https://global-uploads.webflow.com/5e9d5014fb5d85233d05fa23/5ea6ab4327484b79bdb4cea4_airy_primary_rgb.svg" alt="Airy-logo" width="350">
 </p>
 
 # Frontend

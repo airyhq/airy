@@ -81,7 +81,7 @@ Once the storage is restored, transform your `airy.yaml` file to be compatible w
 echo "global:" > helm .yaml
 cat airy.yaml | sed 's/^/  /' >> helm.yaml
 export AIRY_VERSION="0.30.0"
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${AIRY_VERSION}-alpha.tgz --values ./helm.yaml --timeout 10m0s
+helm install airy https://helm.airy.co/charts/airy-${AIRY_VERSION}-alpha.tgz --values ./helm.yaml --timeout 10m0s
 ```
 
 Apply your `airy.yaml` configuration.

@@ -209,8 +209,8 @@ export KUBECONFIG=./kube.conf
 Deploy Airy Core with the latest version. You can also configure a specific version.
 
 ```sh
-VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --timeout 10m
+helm repo add airy https://helm.airy.co
+helm install airy airy/airy --timeout 10m
 ```
 
 By default `Airy Core` creates only a HTTP listener and when running in cloud environment it is recommended to setup an encrypted connection.
@@ -238,7 +238,7 @@ ingress-controller:
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:
 
 ```sh
-helm upgrade airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --values ./airy.yaml
+helm upgrade airy airy/airy --values ./airy.yaml
 ```
 
 After that you should be able to access your `Airy Core` instance through HTTPS, in this example on https://awesomechat.airy.co.
@@ -252,8 +252,7 @@ Deploying `Airy Core` with Helm gives flexibility to customize your installation
 If you wish to deploy `Airy Core` to a separate namespace, you need to specify the `--namespace` flag to Helm.
 
 ```sh
-VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/${VERSION}.tgz --timeout 10m --namespace airy
+helm install airy airy/airy --timeout 10m --namespace airy
 ```
 
 ### Kafka
@@ -275,7 +274,7 @@ config:
 Run the following command to create the `Airy` platform without the bundled installation of Kafka, Zookeeper and the Schema registry.
 
 ```sh
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${VERSION}.tgz  --set prerequisites.kafka.enabled=false --values ./airy.yaml
+helm install airy airy/airy --timeout 10m --set prerequisites.kafka.enabled=false --values ./airy.yaml
 ```
 
 ### Beanstalkd
@@ -285,13 +284,13 @@ The default installation creates its own [Beanstalkd](https://beanstalkd.github.
 Run the following command to create the `Airy` platform without the bundled Beanstalkd installation.
 
 ```sh
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${VERSION}.tgz  --set prerequisites.beanstalkd.enabled=false --values ./airy.yaml
+helm install airy airy/airy --timeout 10m --set prerequisites.beanstalkd.enabled=false --values ./airy.yaml
 ```
 
 If you wish to omit both Beanstalkd and Kafka, you can use the following command:
 
 ```sh
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${VERSION}.tgz  --set prerequisites.enabled=false --values ./airy.yaml
+helm install airy airy/airy --timeout 10m --set prerequisites.enabled=false --values ./airy.yaml
 ```
 
 ### Ingress controller
@@ -299,7 +298,7 @@ helm install airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${
 The default installation creates its own NGinx Kubernetes ingress controller, in the `kube-system` namespace. If you prefer to use your own Kubernetes ingress controller, run the following command to create `Airy` without the bundled one:
 
 ```sh
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${VERSION}.tgz  --set ingress-controller.enabled=false --values ./airy.yaml
+helm install airy airy/airy --timeout 10m --set ingress-controller.enabled=false --values ./airy.yaml
 ```
 
 The `Airy` platform comes with defined ingress resources. Feel free to customize them in accordance with your ingress controller.
@@ -316,7 +315,7 @@ done
 
 The resources for the Airy Helm chart are located under `infrastructure/helm-chart`. You can customize the charts and package or deploy the charts directly to your Kubernetes cluster.
 
-As a reference you can use the script that we use to package and publish the Helm charts, which is located under `scripts/upload-helm-charts.sh`.
+As a reference you can use the script that we use to package and publish the Helm charts using Bazel, which is located under `scripts/push-helm-charts.sh`.
 
 ### Container registry
 
@@ -324,7 +323,7 @@ If you wish to build the docker images yourself and store them in your own `Cont
 
 ```sh
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/${VERSION}.tgz --timeout 10m --set global.containerRegistry=my-docker-registry
+helm install airy airy/airy --timeout 10m --set global.containerRegistry=my-docker-registry
 ```
 
 ## Workspace setup

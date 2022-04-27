@@ -76,7 +76,7 @@ data "template_file" "values_yaml" {
 
 resource "helm_release" "airy_core" {
   name  = "airy-release"
-  chart = "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${replace(file("${path.module}/../../../../VERSION"), "\n", "")}.tgz"
+  chart = "https://helm.airy.co/charts/airy-${replace(file("${path.module}/../../../../VERSION"), "\n", "")}.tgz"
 
   timeout = "600"
   values = [

@@ -24,7 +24,7 @@ function openConversation() {
 
 describe('toggles the state of a conversation, accurately changing the Open and Closed state buttons in the ConversationList and Messenger', () => {
   it('toggles the state of a conversation', () => {
-    cy.visit('/ui/');
+    cy.visit('/inbox/');
     cy.url().should('include', '/inbox');
 
     cy.get(`[data-cy=${cyConversationListItemInfo}]`).then(conversationListItemInfo => {

@@ -27,10 +27,10 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
     {(text || fallback) && <Text text={text ?? fallback} fromContact={fromContact} />}
 
     <div className={styles.suggestionsContainer}>
-      {(suggestions as SuggestionsUnion[]).map(elem => {
+      {(suggestions as SuggestionsUnion[]).map((elem, index) => {
         if ('reply' in elem) {
           return (
-            <button type="button" key={elem.reply.text} className={styles.replyButton}>
+            <button type="button" key={elem.reply.text + index} className={styles.replyButton}>
               <h1 key={elem.reply.text} className={styles.title}>
                 {elem.reply.text}
               </h1>

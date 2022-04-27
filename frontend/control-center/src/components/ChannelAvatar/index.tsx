@@ -7,6 +7,8 @@ import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyLogo.svg';
 import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as TwilioAvatar} from 'assets/images/icons/twilioLogo.svg';
 import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberLogoFilled.svg';
+import {ReactComponent as ZendeskAvatar} from 'assets/images/icons/zendeskLogo.svg';
+import {ReactComponent as DialogflowAvatar} from 'assets/images/icons/dialogflowLogo.svg';
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
@@ -36,12 +38,16 @@ export const getChannelAvatar = (source: string) => {
       return <SmsAvatar />;
     case Source.twilioWhatsApp:
       return <WhatsappAvatar />;
-    case 'twilio':
+    case Source.twilio:
       return <TwilioAvatar />;
     case Source.instagram:
       return <InstagramAvatar />;
     case Source.viber:
       return <ViberAvatar />;
+    case Source.zendesk:
+      return <ZendeskAvatar />;
+    case Source.dialogflow:
+      return <DialogflowAvatar />;
     default:
       return <AiryAvatar />;
   }

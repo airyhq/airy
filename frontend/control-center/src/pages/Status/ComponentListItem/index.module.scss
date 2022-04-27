@@ -1,0 +1,92 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  width: 100%;
+  padding: 12px 0 24px 0;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-left: 1px solid var(--color-light-gray);
+  border-right: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-light-gray);
+  transition: all 0.5s ease;
+}
+
+.wrapperExpanded {
+  display: inline-block;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.expandedContainer {
+  margin-top: 20px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+}
+
+.expandedContainerShown {
+  opacity: 1;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  width: 40%;
+
+  button {
+    width: 30px;
+    margin-left: 4%;
+    margin-right: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.arrowDownIcon {
+  width: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.componentName {
+  margin-left: 10px;
+  @include font-base;
+  color: var(--color-text-gray);
+}
+
+.serviceName {
+  margin-left: 25%;
+  @include font-s;
+  color: var(--color-text-gray);
+}
+
+.healthyStatus {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+}
+
+.icons {
+  width: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.enabled {
+  width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

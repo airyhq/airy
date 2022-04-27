@@ -3,6 +3,61 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.43.0
+
+#### 🚀 Features
+
+- [[#1279](https://github.com/airyhq/airy/issues/1279)] Helm template on local chart with bazel [[#2922](https://github.com/airyhq/airy/pull/2922)]
+- [[#3052](https://github.com/airyhq/airy/issues/3052)] Change path to /inbox [[#3055](https://github.com/airyhq/airy/pull/3055)]
+- [[#3031](https://github.com/airyhq/airy/issues/3031)] Component status [[#3056](https://github.com/airyhq/airy/pull/3056)]
+- [[#3016](https://github.com/airyhq/airy/issues/3016)] Display version Inbox and Control-Center [[#3051](https://github.com/airyhq/airy/pull/3051)]
+- [[#2941](https://github.com/airyhq/airy/issues/2941)] New routing for frontend [[#3048](https://github.com/airyhq/airy/pull/3048)]
+- [[#3032](https://github.com/airyhq/airy/issues/3032)] Redesigned connectors [[#3049](https://github.com/airyhq/airy/pull/3049)]
+- [[#3023](https://github.com/airyhq/airy/issues/3023)] Return cluster version on client.config endpoint [[#3047](https://github.com/airyhq/airy/pull/3047)]
+- [[#2968](https://github.com/airyhq/airy/issues/2968)] Deploy the control center [[#3029](https://github.com/airyhq/airy/pull/3029)]
+- [[#3014](https://github.com/airyhq/airy/issues/3014)] Added navigation to Control-Center from Inbox [[#3017](https://github.com/airyhq/airy/pull/3017)]
+
+#### 🐛 Bug Fixes
+
+- [[#3027](https://github.com/airyhq/airy/issues/3027)] Carousel template bug [[#3034](https://github.com/airyhq/airy/pull/3034)]
+- [[#3079](https://github.com/airyhq/airy/issues/3079)] Fix start redirect [[#3080](https://github.com/airyhq/airy/pull/3080)]
+- [[#3075](https://github.com/airyhq/airy/issues/3075)] Fix Styling in start page [[#3076](https://github.com/airyhq/airy/pull/3076)]
+- [[#1297](https://github.com/airyhq/airy/issues/1297)] Update filter in release scripts [[#3070](https://github.com/airyhq/airy/pull/3070)]
+- [[#3058](https://github.com/airyhq/airy/issues/3058)] Components status follow up [[#3059](https://github.com/airyhq/airy/pull/3059)]
+- [[#2941](https://github.com/airyhq/airy/issues/2941)] Move start in the control-center app [[#3053](https://github.com/airyhq/airy/pull/3053)]
+- [[#2900](https://github.com/airyhq/airy/issues/2900)] Rendering bug in messages list [[#3002](https://github.com/airyhq/airy/pull/3002)]
+
+#### 📚 Documentation
+
+- [[#3005](https://github.com/airyhq/airy/issues/3005)] Control center docs [[#3025](https://github.com/airyhq/airy/pull/3025)]
+- [[#2974](https://github.com/airyhq/airy/issues/2974)] Add client config endpoint  [[#3008](https://github.com/airyhq/airy/pull/3008)]
+
+#### 🧰 Maintenance
+
+- Bump Bazel to 5.1.1 [[#3054](https://github.com/airyhq/airy/pull/3054)]
+- Bump async from 2.6.3 to 2.6.4 in /docs [[#3042](https://github.com/airyhq/airy/pull/3042)]
+- Bump async from 2.6.3 to 2.6.4 [[#3041](https://github.com/airyhq/airy/pull/3041)]
+- Bump react-i18next from 11.16.5 to 11.16.6 [[#3043](https://github.com/airyhq/airy/pull/3043)]
+- Bump core-js from 3.21.1 to 3.22.0 [[#3044](https://github.com/airyhq/airy/pull/3044)]
+- Bump @types/node from 17.0.23 to 17.0.24 [[#3036](https://github.com/airyhq/airy/pull/3036)]
+- Bump cypress from 9.5.3 to 9.5.4 [[#3038](https://github.com/airyhq/airy/pull/3038)]
+- Bump i18next from 21.6.15 to 21.6.16 [[#3037](https://github.com/airyhq/airy/pull/3037)]
+- Bump webpack-dev-server from 4.7.4 to 4.8.1 [[#3020](https://github.com/airyhq/airy/pull/3020)]
+- Bump i18next from 21.6.14 to 21.6.15 [[#3019](https://github.com/airyhq/airy/pull/3019)]
+- Bump @bazel/typescript from 5.3.1 to 5.4.0 [[#3013](https://github.com/airyhq/airy/pull/3013)]
+- Bump react-i18next from 11.16.2 to 11.16.5 [[#3009](https://github.com/airyhq/airy/pull/3009)]
+- Bump @babel/core from 7.17.8 to 7.17.9 [[#3010](https://github.com/airyhq/airy/pull/3010)]
+- Bump webpack from 5.71.0 to 5.72.0 [[#3011](https://github.com/airyhq/airy/pull/3011)]
+- Bump sass from 1.49.11 to 1.50.0 [[#3012](https://github.com/airyhq/airy/pull/3012)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.43.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.43.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.43.0/windows/amd64/airy.exe)
+
 ## 0.42.0
 
 #### Changes
@@ -1126,46 +1181,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.23.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.23.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.23.0/windows/amd64/airy.exe)
-
-## 0.22.0
-
-#### 🚀 Features
-
-- [[#1743](https://github.com/airyhq/airy/issues/1743)] Return proper status code for unauthorized access [[#1785](https://github.com/airyhq/airy/pull/1785)]
-
-#### 🐛 Bug Fixes
-
-- [[#1743](https://github.com/airyhq/airy/issues/1743)] Permit public auth pages [[#1786](https://github.com/airyhq/airy/pull/1786)]
-- [[#1768](https://github.com/airyhq/airy/issues/1768)] Bad calls to conversations info when opening inbox [[#1775](https://github.com/airyhq/airy/pull/1775)]
-- [[#1764](https://github.com/airyhq/airy/issues/1764)] Filter fixed + state header bar toggle fix [[#1774](https://github.com/airyhq/airy/pull/1774)]
-
-#### 🧰 Maintenance
-
-- Bump prettier from 2.2.1 to 2.3.0 [[#1759](https://github.com/airyhq/airy/pull/1759)]
-- Bump webpack-bundle-analyzer from 4.4.1 to 4.4.2 [[#1800](https://github.com/airyhq/airy/pull/1800)]
-- Bump @typescript-eslint/parser from 4.23.0 to 4.24.0 [[#1801](https://github.com/airyhq/airy/pull/1801)]
-- Bump @babel/core from 7.14.2 to 7.14.3 [[#1802](https://github.com/airyhq/airy/pull/1802)]
-- Bump @typescript-eslint/eslint-plugin from 4.23.0 to 4.24.0 [[#1803](https://github.com/airyhq/airy/pull/1803)]
-- Bump sass from 1.32.12 to 1.32.13 [[#1793](https://github.com/airyhq/airy/pull/1793)]
-- Bump @bazel/typescript from 3.4.2 to 3.5.0 [[#1776](https://github.com/airyhq/airy/pull/1776)]
-- Bump @types/node from 15.0.2 to 15.3.0 [[#1796](https://github.com/airyhq/airy/pull/1796)]
-- Bump terser-webpack-plugin from 5.1.1 to 5.1.2 [[#1795](https://github.com/airyhq/airy/pull/1795)]
-- Bump @typescript-eslint/parser from 4.22.1 to 4.23.0 [[#1779](https://github.com/airyhq/airy/pull/1779)]
-- Bump @babel/core from 7.14.0 to 7.14.2 [[#1794](https://github.com/airyhq/airy/pull/1794)]
-- Bump cypress from 7.2.0 to 7.3.0 [[#1780](https://github.com/airyhq/airy/pull/1780)]
-- Bump sass-loader from 11.0.1 to 11.1.1 [[#1790](https://github.com/airyhq/airy/pull/1790)]
-- Bump @babel/preset-env from 7.14.1 to 7.14.2 [[#1792](https://github.com/airyhq/airy/pull/1792)]
-- Bump @types/react-dom from 16.9.2 to 17.0.5 [[#1789](https://github.com/airyhq/airy/pull/1789)]
-- Bump core-js from 3.12.0 to 3.12.1 [[#1758](https://github.com/airyhq/airy/pull/1758)]
-- Bump eslint from 7.25.0 to 7.26.0 [[#1760](https://github.com/airyhq/airy/pull/1760)]
-- Bump @typescript-eslint/eslint-plugin from 4.22.1 to 4.23.0 [[#1769](https://github.com/airyhq/airy/pull/1769)]
-- Bump webpack from 5.36.2 to 5.37.0 [[#1770](https://github.com/airyhq/airy/pull/1770)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.22.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.22.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.22.0/windows/amd64/airy.exe)
 

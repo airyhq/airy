@@ -1,0 +1,44 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.dateHeader {
+  @include font-s;
+  margin: 8px auto;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-gray);
+  width: max-content;
+}
+
+.suggestionWrapper {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: white;
+
+  &:hover {
+    .suggestionIcon {
+      path {
+        fill: var(--color-airy-blue);
+      }
+    }
+  }
+}
+
+.suggestionIcon {
+  height: 16px;
+  width: 16px;
+  path {
+    fill: var(--color-text-gray);
+  }
+}

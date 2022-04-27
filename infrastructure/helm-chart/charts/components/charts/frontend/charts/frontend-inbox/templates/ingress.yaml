@@ -1,0 +1,32 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-inbox'
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+ {{- if .Values.global.ingress.letsencrypt }}
+    cert-manager.io/cluster-issuer: 'letsencrypt'
+ {{- end }}
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /inbox(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-inbox
+                port:
+                  number: 80
+{{- if .Values.global.host }}
+      host: {{ .Values.global.host }}
+ {{- if .Values.global.ingress.letsencrypt }}
+  tls:
+  - hosts:
+    - {{ .Values.global.host }}
+    secretName: airy-core-inbox
+ {{- end }}
+{{- end }}
+  ingressClassName: nginx

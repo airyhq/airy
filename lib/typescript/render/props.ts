@@ -20,9 +20,10 @@ export interface QuickReplyCommand extends Command {
 }
 
 export type CommandUnion = SuggestedReplyCommand | QuickReplyCommand;
+export type ContentType = 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
 
 interface RenderProps {
-  contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
+  contentType: ContentType;
   message: {
     content: Content;
     fromContact?: boolean;

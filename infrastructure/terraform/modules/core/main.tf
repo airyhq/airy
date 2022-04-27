@@ -18,7 +18,7 @@ locals {
 
 resource "helm_release" "airy_core" {
   name  = "airy-release"
-  chart = "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${local.core_version}.tgz"
+  chart = "https://helm.airy.co/charts/airy-${local.core_version}.tgz"
 
   timeout = "600"
   values = [

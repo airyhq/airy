@@ -35,11 +35,11 @@ You need to add configuration in your airy.yaml file and apply it to activate it
 
 :::
 
-## Configuration
-
 import TwilioConfig from './twilio-config.mdx'
 
 <TwilioConfig />
+
+## Step 1: Configuration
 
 import TwilioSources from './twilio-sources.mdx'
 
@@ -51,18 +51,15 @@ Success! You are now ready to connect a Twilio.SMS source to your Airy Core inst
 
 </SuccessBox>
 
-### Connect a Twilio provider to your instance
+## Step 2: Connect a Twilio provider to your instance
 
-There are 2 options to connect a Twilio.SMS source to your instance:
+import ConnectChannelOptions from "./connectChannelOptions.mdx"
 
-- you can connect the source via an API request (using curl or platforms such as Postman)
-- you can connect the source via the UI
+<ConnectChannelOptions />
 
-We cover both options in this document.
+## Connect Twilio.SMS via API request
 
-## Connect a Twilio.SMS source via API request
-
-You connect connect a Twilio.SMS source by sending a request to the Channels endpoint.
+You connect connect a Twilio.SMS channel by sending a request to the Channels endpoint.
 
 <ButtonBox
 icon={() => <BoltSVG />}
@@ -77,29 +74,39 @@ link='api/endpoints/channels#sms'
 
 import ConnectTwilioSms from '../api/endpoints/connect-twilioSms.mdx'
 
-## Connect a Twilio.SMS source via the UI
+## Connect Twilio.SMS via the UI
 
-You can connect a Twilio.SMS source via your Airy Core instance UI.
-
-On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the SMS channel. Add your Twilio phone number in the Twilio Phone Number field. You can optionally add a name and an image.
-
-<img alt="TwilioSMS connect" src={useBaseUrl('img/sources/twilioSMS/twilioSMS_ui.png')} />
-
-Your twilio.sms channel will appear as connected in the UI.
+You can connect a Twilio.SMS channel via your Airy Core instance [Control Center UI](/ui/control-center/introduction).
 
 Make sure the variables have been successfully applied to your instance, otherwise you won't be able to connect the Twilio SMS channel through the UI.
 
-import ApplyVariablesNote from './applyVariables-note.mdx'
-
 <ApplyVariablesNote />
 
-## Send and receive messages with the Inbox UI
+import ApplyVariablesNote from './applyVariables-note.mdx'
+
+On your instance's [Control Center](/ui/control-center/introduction), click on 'Catalog' on the left sidebar menu and select 'SMS'.
+
+This will open a page with a form.
+
+<img alt="TwilioSMS connect" src={useBaseUrl('img/sources/twilio/twilioSMS_ui.png')} />
+
+Add your Twilio phone number in the Twilio Phone Number field.
+
+<ConnectFormOptional />
+
+import ConnectFormOptional from './connectFormOptional.mdx'
+
+Upon successful connection, Twilio SMS will appear as connected in the [Connectors](/ui/control-center/connectors) page in your app's [Control Center](/ui/control-center/introduction).
+
+You can edit its configuration at any time by selecting 'SMS' in the list.
+
+## Step 3: Send and receive messages with the Inbox UI
 
 After connecting the source to your instance, it's time to create a conversation between your
 Airy Core instance, and a Twilio.SMS source.
 
 Send a text message (SMS) from a mobile phone to the Twilio phone number you have used.
-This will create a conversation: a Twilio.SMS conversation will appear in the UI with the text message you have sent.
+This will create a conversation: a Twilio.SMS conversation will appear instantly in the [Inbox UI's messenger](/ui/inbox/messenger) with the text message you have sent.
 
 import DebuggingTwilio from './debugging-twilio.mdx'
 

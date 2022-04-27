@@ -47,6 +47,10 @@ export const Carousel = ({children}) => {
     while (currentChild < element.children.length && currentPosX < rightCutOf) {
       currentChild += 1;
       maxScroll = currentPosX;
+
+      if (!element.children[currentChild]) {
+        currentChild = element.children.length - 1;
+      }
       currentPosX += getElementWidth(element.children[currentChild] as HTMLElement);
     }
 
@@ -74,6 +78,7 @@ export const Carousel = ({children}) => {
           carouselChildren.current.scrollLeft + getScrollBy(),
           maximumScrollRight(carouselChildren.current)
         ),
+
         behavior: 'smooth',
       });
     }, 1000),

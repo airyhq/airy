@@ -58,7 +58,7 @@ Airy Core contains the following core components:
     iconInvertible={true}
     title='UI: From an inbox to dashboards'
     description="Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use."
-    link='/ui/introduction'
+    link='/ui/inbox/introduction'
 />
 <ButtonBox
     icon={<GearSVG />}

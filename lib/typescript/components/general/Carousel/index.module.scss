@@ -8,13 +8,15 @@
   overflow: hidden;
   position: relative;
   max-width: inherit;
+  width: 100%;
 }
 
 .carouselChildren {
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  max-width: 100%;
+  width: inherit;
+  width: 100%;
 }
 
 .buttonScroll {
@@ -62,9 +64,4 @@
 
 .scrollButton {
   width: 24px;
-}
-
-.messageTime {
-  @include font-s;
-  color: var(--color-text-gray);
 }

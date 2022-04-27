@@ -104,6 +104,8 @@ def springboot(name, main_class, deps, srcs, resources = []):
 
         resources.append(merged_log4j)
 
+    resources.append("//:VERSION")
+
     # SUBRULE 1: COMPILE THE SPRING BOOT APPLICATION
     java_binary(
         name = appcompile_rule,

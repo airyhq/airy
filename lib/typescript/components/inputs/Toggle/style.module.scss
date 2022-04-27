@@ -1,9 +1,24 @@
+.toggleLabel {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  width: auto;
+}
+
 .switch {
   position: relative;
   display: inline-block;
+}
+
+.big {
   width: 48px;
   height: 24px;
-  margin-right: 8px;
+}
+
+.small {
+  width: 30px;
+  height: 15px;
 }
 
 .switch input {
@@ -14,43 +29,83 @@
 
 .slider {
   position: absolute;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--color-background-blue);
   transition: 0.4s;
-  border-radius: 24px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.sliderBlue {
+  background-color: var(--color-background-blue);
   border: 1px solid var(--color-airy-blue);
+}
+
+.sliderGreen {
+  background: var(--color-light-greyish-white);
+  box-shadow: inset 0px 6px 8px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slider:before {
   position: absolute;
   content: '';
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 3px;
-  background-color: var(--color-airy-blue);
   transition: 0.4s;
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.sliderBig:before {
+  height: 16px;
+  width: 16px;
+  left: 4px;
+}
+
+.sliderSmall:before {
+  height: 11px;
+  width: 11px;
+  left: 2px;
+}
+
+.sliderBlue:before {
   background-color: var(--color-airy-blue);
 }
 
-input:focus + .slider {
+.sliderGreen:before {
+  background: linear-gradient(180deg, white 0%, var(--color-greyish-white) 100%);
+}
+
+input:checked + .sliderBlue {
+  background-color: var(--color-airy-blue);
+}
+
+input:checked + .sliderGreen {
+  background-color: var(--color-soft-green);
+}
+
+input:focus + .sliderBlue {
   box-shadow: 0 0 0 2pt Highlight;
 }
 @media (-webkit-min-device-pixel-ratio: 0) {
-  input:focus + .slider {
+  input:focus + .sliderBlue {
     box-shadow: 0 0 0 2pt -webkit-focus-ring-color;
   }
 }
 
 input:checked + .slider:before {
-  transform: translateX(24px);
   background-color: white;
+}
+
+input:checked + .sliderGreen:before {
+  background: var(--color-light-greyish-white);
+}
+
+input:checked + .sliderBig:before {
+  transform: translateX(24px);
+}
+
+input:checked + .sliderSmall:before {
+  transform: translateX(15px);
 }

@@ -1,0 +1,58 @@
+.messageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contactContainer {
+  align-items: flex-start;
+}
+
+.memberContainer {
+  align-items: flex-end;
+}
+
+.messageContent {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.notice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.member {
+  display: flex;
+  justify-content: flex-end;
+  width: inherit;
+}
+
+.memberContent {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: auto;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.contact {
+  display: flex;
+  justify-content: flex-start;
+  width: inherit;
+}
+
+.contactContent {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: auto;
+}
+
+.failedMessageIcon {
+  margin-left: 5px;
+}

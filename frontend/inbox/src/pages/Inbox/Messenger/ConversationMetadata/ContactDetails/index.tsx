@@ -4,10 +4,12 @@ import {getContactDetails, updateContactDetails} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
-import {Contact} from 'model';
+import {Contact, Source} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
-import {Button} from 'components';
+import {Button, ConnectorAvatar} from 'components';
+import {Link} from 'react-router-dom';
+import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 
@@ -53,6 +55,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const [organization, setOrganization] = useState('company name');
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
+  const [conversationsForContact, setConversationsForContact] = useState([]);
+  const [areOthersConversationForContact, setAreOthersConversationForContact] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const totalInfoPoints = 6;
   const visibleInfoPointsNewContact = 1;
@@ -70,8 +74,13 @@ const ContactDetails = (props: ContactDetailsProps) => {
     if (conversationId && contacts && contacts[conversationId]) {
       fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
       updateContactType(contacts[conversationId]);
+      setConversationsForContact(formatConversationsForContact(contacts[conversationId].conversations));
     }
   }, [contacts, conversationId]);
+
+  useEffect(() => {
+    console.log('contactConversations', conversationsForContact);
+  }, [conversationsForContact]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -83,6 +92,18 @@ const ContactDetails = (props: ContactDetailsProps) => {
       setExpanded(false);
     }
   }, [editingCanceled]);
+
+  const formatConversationsForContact = (convObj: any) => {
+    const conversationsForContactArr = [];
+    for (const property in convObj) {
+      if (property !== conversationId) setAreOthersConversationForContact(false);
+      const obj: any = {};
+      obj.id = property;
+      obj.connector = convObj[property];
+      conversationsForContactArr.push(obj);
+    }
+    return conversationsForContactArr;
+  };
 
   const removeDefaultTextWhenEditing = () => {
     if (email === 'email') setEmail('');
@@ -138,47 +159,71 @@ const ContactDetails = (props: ContactDetailsProps) => {
   };
 
   return (
-    <form autoComplete="off" className={styles.container}>
-      <fieldset>
-        <legend>Contact</legend>
-        <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName="email" />
+    <>
+      <form autoComplete="off" className={styles.container}>
+        <fieldset>
+          <legend>Contact</legend>
+          <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName="email" />
 
-        {(!newContactCollapsed || isEditing) && (
-          <>
-            <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName="phone" />
-            <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName="title" />
+          {(!newContactCollapsed || isEditing) && (
+            <>
+              <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName="phone" />
+              <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName="title" />
 
-            {(expanded || isEditing) && (
-              <>
-                <ContactInfoPoint isEditing={isEditing} address={address} setAddress={setAddress} infoName="address" />
-                <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName="city" />
-                <ContactInfoPoint
-                  isEditing={isEditing}
-                  organization={organization}
-                  setOrganization={setOrganization}
-                  infoName="organization"
-                />
-              </>
-            )}
-          </>
+              {(expanded || isEditing) && (
+                <>
+                  <ContactInfoPoint
+                    isEditing={isEditing}
+                    address={address}
+                    setAddress={setAddress}
+                    infoName="address"
+                  />
+                  <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName="city" />
+                  <ContactInfoPoint
+                    isEditing={isEditing}
+                    organization={organization}
+                    setOrganization={setOrganization}
+                    infoName="organization"
+                  />
+                </>
+              )}
+            </>
+          )}
+        </fieldset>
+
+        {isEditing ? (
+          <div className={styles.saveButtonContainer}>
+            <Button dataCy={cyContactSaveButton} type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
+              Save
+            </Button>
+          </div>
+        ) : (
+          <Expandable
+            toggleExpandableContent={toggleExpandableContent}
+            infoPointsNum={remainingInfoPoints}
+            collapse={!!expanded}
+          />
         )}
-      </fieldset>
+      </form>
 
-      {isEditing ? (
-        <div className={styles.saveButtonContainer}>
-          <Button dataCy={cyContactSaveButton} type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
-            Save
-          </Button>
+      {areOthersConversationForContact && (
+        <div className={styles.contactConversationList}>
+          <span>Other available conversations for this contact:</span>
+          {conversationsForContact.map((conversationInfo: {[key: string]: string}) => {
+            if (conversationInfo.id) {
+              <button>
+                <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
+                  <ConnectorAvatar source={conversationInfo.source as Source} />
+                </Link>
+              </button>;
+            }
+          })}
         </div>
-      ) : (
-        <Expandable
-          toggleExpandableContent={toggleExpandableContent}
-          infoPointsNum={remainingInfoPoints}
-          collapse={!!expanded}
-        />
       )}
-    </form>
+    </>
   );
 };
+
+//conversationInfo.id !== conversationId
 
 export default connector(ContactDetails);

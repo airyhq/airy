@@ -14,4 +14,5 @@ public class WebhookListPayload {
     private String url;
     private Map<String, String> headers;
     private List<String> events;
+    private String status;
 }

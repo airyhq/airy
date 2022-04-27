@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class WebhookUpdatePayload {
     private URL url;
+    private String name;
     private Map<String, String> headers = new HashMap<>();
     private List<EventType> events = new ArrayList<>();
     private String signatureKey;

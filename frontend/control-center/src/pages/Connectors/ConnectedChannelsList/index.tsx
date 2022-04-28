@@ -24,7 +24,6 @@ import {
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
-import { setPageTitle } from '../../../services';
 
 const ConnectedChannelsList = () => {
   const {source} = useParams();
@@ -45,10 +44,6 @@ const ConnectedChannelsList = () => {
   useEffect(() => {
     getInfo();
   }, [source, channels]);
-
-  useEffect(() => {
-    setPageTitle(name);
-  }, [name])
 
   const getInfo = () => {
     switch (source) {
@@ -116,9 +111,9 @@ const ConnectedChannelsList = () => {
       </div>
 
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          Back
-        </LinkButton>
+        <ArrowLeftIcon className={styles.backIcon} />
+        Back
+      </LinkButton>
 
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (

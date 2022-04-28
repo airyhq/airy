@@ -20,7 +20,6 @@ import CatalogOutlet from './pages/Catalog/CatalogOutlet';
 import Connectors from './pages/Connectors';
 import Webhooks from './pages/Webhooks';
 import Status from './pages/Status';
-import {Test} from './Test';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -52,7 +51,6 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route index element={<Connectors />} />
           </Route>
 
-          <Route element={<NotFound />} />
           <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>
             <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
             <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
@@ -63,9 +61,10 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
             <Route index element={<Catalog />} />
           </Route>
+
+          <Route element={<NotFound />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
-          <Route path={`${STATUS_ROUTE}/*`} element={<Status />} />
-          <Route index element={<Status />} />
+          <Route path={`${STATUS_ROUTE}`} element={<Status />} />
         </Routes>
       </div>
     </div>

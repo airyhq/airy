@@ -2,14 +2,13 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("@com_github_airyhq_bazel_tools//helm:helm.bzl", "helm_template_test")
 load("//tools/build:helm.bzl", "helm_push")
 
-
 filegroup(
     name = "files",
-    visibility = ["//visibility:public"],
     srcs = glob(
         ["**/*"],
-        exclude = [ "BUILD" ],
+        exclude = ["BUILD"],
     ),
+    visibility = ["//visibility:public"],
 )
 
 pkg_tar(

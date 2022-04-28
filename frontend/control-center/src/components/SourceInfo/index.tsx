@@ -7,147 +7,63 @@ import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {
-    cyChannelsChatPluginAddButton,
-    cyChannelsChatPluginList,
-    cyChannelsFacebookAddButton,
-    cyChannelsFacebookList,
-    cyChannelsGoogleAddButton,
-    cyChannelsGoogleList,
-    cyChannelsTwilioSmsAddButton,
-    cyChannelsTwilioSmsList,
-    cyChannelsTwilioWhatsappAddButton,
-    cyChannelsTwilioWhatsappList,
-    cyChannelsInstagramAddButton,
-    cyChannelsInstagramList,
-  } from 'handles';
-  import {
-    CATALOG_FACEBOOK_ROUTE,
-    CATALOG_TWILIO_SMS_ROUTE,
-    CATALOG_TWILIO_WHATSAPP_ROUTE,
-    CONNECTORS_CONNECTED_ROUTE,
-    CATALOG_CHAT_PLUGIN_ROUTE,
-    CATALOG_GOOGLE_ROUTE,
-    CATALOG_INSTAGRAM_ROUTE,
-    CATALOG_CONNECTED_ROUTE,
-    CONNECTORS_FACEBOOK_ROUTE,
-    CONNECTORS_TWILIO_SMS_ROUTE,
-    CONNECTORS_TWILIO_WHATSAPP_ROUTE,
-    CONNECTORS_CHAT_PLUGIN_ROUTE,
-    CONNECTORS_GOOGLE_ROUTE,
-    CONNECTORS_INSTAGRAM_ROUTE,
-  } from '../../routes/routes';
-
+  cyChannelsChatPluginAddButton,
+  cyChannelsChatPluginList,
+  cyChannelsFacebookAddButton,
+  cyChannelsFacebookList,
+  cyChannelsGoogleAddButton,
+  cyChannelsGoogleList,
+  cyChannelsTwilioSmsAddButton,
+  cyChannelsTwilioSmsList,
+  cyChannelsTwilioWhatsappAddButton,
+  cyChannelsTwilioWhatsappList,
+  cyChannelsInstagramAddButton,
+  cyChannelsInstagramList,
+} from 'handles';
+import {
+  CATALOG_FACEBOOK_ROUTE,
+  CATALOG_TWILIO_SMS_ROUTE,
+  CATALOG_TWILIO_WHATSAPP_ROUTE,
+  CONNECTORS_CONNECTED_ROUTE,
+  CATALOG_CHAT_PLUGIN_ROUTE,
+  CATALOG_GOOGLE_ROUTE,
+  CATALOG_INSTAGRAM_ROUTE,
+  CATALOG_CONNECTED_ROUTE,
+  CONNECTORS_FACEBOOK_ROUTE,
+  CONNECTORS_TWILIO_SMS_ROUTE,
+  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
+  CONNECTORS_CHAT_PLUGIN_ROUTE,
+  CONNECTORS_GOOGLE_ROUTE,
+  CONNECTORS_INSTAGRAM_ROUTE,
+} from '../../routes/routes';
 
 export type SourceInfo = {
-    type: Source;
-    title: string;
-    description: string;
-    image: JSX.Element;
-    newChannelRoute: string;
-    channelsListRoute: string;
-    configKey: string;
-    channelsToShow: number;
-    itemInfoString: string;
-    dataCyAddChannelButton: string;
-    dataCyChannelList: string;
-  };
+  type: Source;
+  title: string;
+  description: string;
+  image: JSX.Element;
+  newChannelRoute: string;
+  channelsListRoute: string;
+  configKey: string;
+  channelsToShow: number;
+  itemInfoString: string;
+  dataCyAddChannelButton: string;
+  dataCyChannelList: string;
+};
 
+export const getSourcesInfo = (page: string): SourceInfo[] => {
+  const connectorsPage = page === 'Connectors';
 
-  const getSourcesInfo = (page: string):SourceInfo[] => {
-
-    return [
-        {
-          type: Source.chatPlugin,
-          title: 'Airy Live Chat',
-          description: 'Best of class browser messenger',
-          image: <AiryAvatarIcon />,
-          newChannelRoute: CATALOG_CHAT_PLUGIN_ROUTE + '/new',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/chatplugin',
-          configKey: 'sources-chat-plugin',
-          channelsToShow: 4,
-          itemInfoString: 'channels',
-          dataCyAddChannelButton: cyChannelsChatPluginAddButton,
-          dataCyChannelList: cyChannelsChatPluginList,
-        },
-        {
-          type: Source.facebook,
-          title: 'Messenger',
-          description: 'Connect multiple Facebook pages',
-          image: <MessengerAvatarIcon />,
-          newChannelRoute: CATALOG_FACEBOOK_ROUTE + '/new',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/facebook',
-          configKey: 'sources-facebook',
-          channelsToShow: 4,
-          itemInfoString: 'channels',
-          dataCyAddChannelButton: cyChannelsFacebookAddButton,
-          dataCyChannelList: cyChannelsFacebookList,
-        },
-        {
-          type: Source.twilioSMS,
-          title: 'SMS',
-          description: 'Deliver SMS with ease',
-          image: <SMSAvatarIcon />,
-          newChannelRoute: CATALOG_TWILIO_SMS_ROUTE + '/new_account',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
-          configKey: 'sources-twilio',
-          channelsToShow: 2,
-          itemInfoString: 'phones',
-          dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
-          dataCyChannelList: cyChannelsTwilioSmsList,
-        },
-        {
-          type: Source.twilioWhatsApp,
-          title: 'WhatsApp',
-          description: 'World #1 chat app',
-          image: <WhatsAppAvatarIcon />,
-          newChannelRoute: CATALOG_TWILIO_WHATSAPP_ROUTE + '/new_account',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
-          configKey: 'sources-twilio',
-          channelsToShow: 2,
-          itemInfoString: 'phones',
-          dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
-          dataCyChannelList: cyChannelsTwilioWhatsappList,
-        },
-        {
-          type: Source.google,
-          title: 'Google Business Messages',
-          description: 'Be there when people search',
-          image: <GoogleAvatarIcon />,
-          newChannelRoute: CATALOG_GOOGLE_ROUTE + '/new_account',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/google',
-          configKey: 'sources-google',
-          channelsToShow: 4,
-          itemInfoString: 'channels',
-          dataCyAddChannelButton: cyChannelsGoogleAddButton,
-          dataCyChannelList: cyChannelsGoogleList,
-        },
-        {
-          type: Source.instagram,
-          title: 'Instagram',
-          description: 'Connect multiple Instagram pages',
-          image: <InstagramIcon />,
-          newChannelRoute: CATALOG_INSTAGRAM_ROUTE + '/new',
-          channelsListRoute: CATALOG_CONNECTED_ROUTE + '/instagram',
-          configKey: 'sources-facebook',
-          channelsToShow: 4,
-          itemInfoString: 'channels',
-          dataCyAddChannelButton: cyChannelsInstagramAddButton,
-          dataCyChannelList: cyChannelsInstagramList,
-        },
-      ];
-
-
-  }
-
-
-  const SourcesInfo: SourceInfo[] = [
+  return [
     {
       type: Source.chatPlugin,
       title: 'Airy Live Chat',
       description: 'Best of class browser messenger',
       image: <AiryAvatarIcon />,
-      newChannelRoute: CATALOG_CHAT_PLUGIN_ROUTE + '/new',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/chatplugin',
+      newChannelRoute: connectorsPage ? CONNECTORS_CHAT_PLUGIN_ROUTE + '/new' : CATALOG_CHAT_PLUGIN_ROUTE + '/new',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
+        : CATALOG_CONNECTED_ROUTE + '/chatplugin',
       configKey: 'sources-chat-plugin',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -159,8 +75,10 @@ export type SourceInfo = {
       title: 'Messenger',
       description: 'Connect multiple Facebook pages',
       image: <MessengerAvatarIcon />,
-      newChannelRoute: CATALOG_FACEBOOK_ROUTE + '/new',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/facebook',
+      newChannelRoute: connectorsPage ? CONNECTORS_FACEBOOK_ROUTE + '/new' : CATALOG_FACEBOOK_ROUTE + '/new',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/facebook'
+        : CATALOG_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -172,8 +90,12 @@ export type SourceInfo = {
       title: 'SMS',
       description: 'Deliver SMS with ease',
       image: <SMSAvatarIcon />,
-      newChannelRoute: CATALOG_TWILIO_SMS_ROUTE + '/new_account',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
+      newChannelRoute: connectorsPage
+        ? CONNECTORS_TWILIO_SMS_ROUTE + '/new_account'
+        : CATALOG_TWILIO_SMS_ROUTE + '/new_account',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#'
+        : CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
       configKey: 'sources-twilio',
       channelsToShow: 2,
       itemInfoString: 'phones',
@@ -185,8 +107,12 @@ export type SourceInfo = {
       title: 'WhatsApp',
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
-      newChannelRoute: CATALOG_TWILIO_WHATSAPP_ROUTE + '/new_account',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+      newChannelRoute: connectorsPage
+        ? CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account'
+        : CATALOG_TWILIO_WHATSAPP_ROUTE + '/new_account',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
+        : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
       channelsToShow: 2,
       itemInfoString: 'phones',
@@ -198,8 +124,10 @@ export type SourceInfo = {
       title: 'Google Business Messages',
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
-      newChannelRoute: CATALOG_GOOGLE_ROUTE + '/new_account',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/google',
+      newChannelRoute: connectorsPage
+        ? CONNECTORS_GOOGLE_ROUTE + '/new_account'
+        : CATALOG_GOOGLE_ROUTE + '/new_account',
+      channelsListRoute: connectorsPage ? CONNECTORS_CONNECTED_ROUTE + '/google' : CATALOG_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -211,8 +139,10 @@ export type SourceInfo = {
       title: 'Instagram',
       description: 'Connect multiple Instagram pages',
       image: <InstagramIcon />,
-      newChannelRoute: CATALOG_INSTAGRAM_ROUTE + '/new',
-      channelsListRoute: CATALOG_CONNECTED_ROUTE + '/instagram',
+      newChannelRoute: connectorsPage ? CONNECTORS_INSTAGRAM_ROUTE + '/new' : CATALOG_INSTAGRAM_ROUTE + '/new',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/instagram'
+        : CATALOG_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -220,3 +150,4 @@ export type SourceInfo = {
       dataCyChannelList: cyChannelsInstagramList,
     },
   ];
+};

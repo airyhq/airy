@@ -1,5 +1,5 @@
 import React from 'react';
-import {SourceInfo} from '..';
+import {SourceInfo} from '../../../components/SourceInfo';
 import styles from './index.module.scss';
 
 type SourceDescriptionCardProps = {

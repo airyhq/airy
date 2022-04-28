@@ -3,7 +3,7 @@ import ChannelCard from '../Connectors/ChannelCard';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {SourceInfo} from './index';
+import {SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 
 interface CatalogItemListProps {

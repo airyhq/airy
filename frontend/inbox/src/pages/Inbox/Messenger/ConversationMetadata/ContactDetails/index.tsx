@@ -34,6 +34,11 @@ type ContactDetailsProps = {
   getIsExpanded: (isExpanded: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
+interface ConversationInfoForContact {
+  id: string;
+  connector: string;
+}
+
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
     conversationId,
@@ -68,6 +73,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
   useEffect(() => {
     getContactDetails(conversationId);
     setExpanded(false);
+    setAreOthersConversationForContact(false);
+    setConversationsForContact([]);
   }, [conversationId]);
 
   useEffect(() => {
@@ -77,10 +84,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
       setConversationsForContact(formatConversationsForContact(contacts[conversationId].conversations));
     }
   }, [contacts, conversationId]);
-
-  useEffect(() => {
-    console.log('contactConversations', conversationsForContact);
-  }, [conversationsForContact]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -93,15 +96,17 @@ const ContactDetails = (props: ContactDetailsProps) => {
     }
   }, [editingCanceled]);
 
-  const formatConversationsForContact = (convObj: any) => {
+  const formatConversationsForContact = (convObj: {[key: string]: string}) => {
     const conversationsForContactArr = [];
-    for (const property in convObj) {
-      if (property !== conversationId) setAreOthersConversationForContact(false);
-      const obj: any = {};
-      obj.id = property;
-      obj.connector = convObj[property];
-      conversationsForContactArr.push(obj);
+
+    for (const idProperty in convObj) {
+      if (idProperty !== conversationId) setAreOthersConversationForContact(true);
+      const convInfo = {} as ConversationInfoForContact;
+      convInfo.id = idProperty;
+      convInfo.connector = convObj[idProperty];
+      conversationsForContactArr.push(convInfo);
     }
+
     return conversationsForContactArr;
   };
 
@@ -208,22 +213,21 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
       {areOthersConversationForContact && (
         <div className={styles.contactConversationList}>
-          <span>Other available conversations for this contact:</span>
-          {conversationsForContact.map((conversationInfo: {[key: string]: string}) => {
-            if (conversationInfo.id) {
-              <button>
-                <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
-                  <ConnectorAvatar source={conversationInfo.source as Source} />
-                </Link>
-              </button>;
-            }
-          })}
+          <span>Other conversations for this contact:</span>
+          <div className={styles.iconsContainer}>
+            {conversationsForContact &&
+              conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
+                <button type="button" key={conversationInfo.id}>
+                  <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
+                    <ConnectorAvatar source={conversationInfo.connector as Source} />
+                  </Link>
+                </button>
+              ))}
+          </div>
         </div>
       )}
     </>
   );
 };
-
-//conversationInfo.id !== conversationId
 
 export default connector(ContactDetails);

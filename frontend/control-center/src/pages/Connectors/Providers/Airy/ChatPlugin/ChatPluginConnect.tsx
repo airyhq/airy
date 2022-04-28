@@ -18,7 +18,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -46,13 +46,13 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }),
       })
       .then(() => {
-        navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+        navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
       });
   };
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CHANNELS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+      navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
     });
   };
 
@@ -62,7 +62,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     }
   };
 
-  const openNewPage = () => navigate(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
+  const openNewPage = () => navigate(CONNECTORS_CHAT_PLUGIN_ROUTE + '/new');
 
   const OverviewSection = () => (
     <div className={styles.overview}>
@@ -81,7 +81,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.listChannelName}>{channel.metadata?.name}</div>
             <div className={styles.listButtons}>
-              <Link className={styles.listButtonEdit} to={`${CHANNELS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
+              <Link className={styles.listButtonEdit} to={`${CONNECTORS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
                 Edit
               </Link>
               <LinkButton
@@ -100,6 +100,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   );
 
   const PageContent = () => {
+    console.log('PAGE CONTENT - channelId', channelId);
     if (channelId === 'new') {
       return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }

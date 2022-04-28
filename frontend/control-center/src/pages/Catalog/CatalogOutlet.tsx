@@ -1,8 +1,8 @@
 import React from 'react';
 import {Outlet} from 'react-router-dom';
 
-const ChannelsOutlet = () => {
+const CatalogOutlet = () => {
   return <Outlet />;
 };
 
-export default ChannelsOutlet;
+export default CatalogOutlet;

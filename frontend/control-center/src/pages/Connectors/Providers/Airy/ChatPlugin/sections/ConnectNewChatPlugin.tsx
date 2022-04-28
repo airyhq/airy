@@ -7,7 +7,7 @@ import styles from './ConnectNewChatPlugin.module.scss';
 import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
 
 interface ConnectNewChatPluginProps {
-  createNewConnection(displayName: string, imageUrl?: string): void;
+  createNewConnection?: (displayName: string, imageUrl?: string) => void;
 }
 
 export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPluginProps) => {

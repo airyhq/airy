@@ -23,21 +23,22 @@ import {
   cyChannelsInstagramList,
 } from 'handles';
 import {
-  CHANNELS_FACEBOOK_ROUTE,
-  CHANNELS_TWILIO_SMS_ROUTE,
-  CHANNELS_TWILIO_WHATSAPP_ROUTE,
-  CHANNELS_CONNECTED_ROUTE,
-  CHANNELS_CHAT_PLUGIN_ROUTE,
-  CHANNELS_GOOGLE_ROUTE,
-  CHANNELS_INSTAGRAM_ROUTE,
+  CATALOG_FACEBOOK_ROUTE,
+  CATALOG_TWILIO_SMS_ROUTE,
+  CATALOG_TWILIO_WHATSAPP_ROUTE,
+  CONNECTORS_CONNECTED_ROUTE,
+  CATALOG_CHAT_PLUGIN_ROUTE,
+  CATALOG_GOOGLE_ROUTE,
+  CATALOG_INSTAGRAM_ROUTE,
+  CATALOG_CONNECTED_ROUTE
 } from '../../routes/routes';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {allChannelsConnected} from '../../selectors/channels';
-import {FacebookMessengerRequirementsDialog} from '../Channels/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
-import {GoogleBusinessMessagesRequirementsDialog} from '../Channels/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
-import {TwilioRequirementsDialog} from '../Channels/Providers/Twilio/TwilioRequirementsDialog';
-import {InstagramRequirementsDialog} from '../Channels/Providers/Instagram/InstagramRequirementsDialog';
+import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
+import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
+import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
+import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
 import {Channel, Source} from 'model';
@@ -62,8 +63,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Airy Live Chat',
     description: 'Best of class browser messenger',
     image: <AiryAvatarIcon />,
-    newChannelRoute: CHANNELS_CHAT_PLUGIN_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/chatplugin',
+    newChannelRoute: CATALOG_CHAT_PLUGIN_ROUTE + '/new',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/chatplugin',
     configKey: 'sources-chat-plugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -75,8 +76,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Messenger',
     description: 'Connect multiple Facebook pages',
     image: <MessengerAvatarIcon />,
-    newChannelRoute: CHANNELS_FACEBOOK_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/facebook',
+    newChannelRoute: CATALOG_FACEBOOK_ROUTE + '/new',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/facebook',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -88,8 +89,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'SMS',
     description: 'Deliver SMS with ease',
     image: <SMSAvatarIcon />,
-    newChannelRoute: CHANNELS_TWILIO_SMS_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.sms/#',
+    newChannelRoute: CATALOG_TWILIO_SMS_ROUTE + '/new_account',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -101,8 +102,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'WhatsApp',
     description: 'World #1 chat app',
     image: <WhatsAppAvatarIcon />,
-    newChannelRoute: CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+    newChannelRoute: CATALOG_TWILIO_WHATSAPP_ROUTE + '/new_account',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -114,8 +115,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
-    newChannelRoute: CHANNELS_GOOGLE_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/google',
+    newChannelRoute: CATALOG_GOOGLE_ROUTE + '/new_account',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/google',
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -127,8 +128,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Instagram',
     description: 'Connect multiple Instagram pages',
     image: <InstagramIcon />,
-    newChannelRoute: CHANNELS_INSTAGRAM_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/instagram',
+    newChannelRoute: CATALOG_INSTAGRAM_ROUTE + '/new',
+    channelsListRoute: CATALOG_CONNECTED_ROUTE + '/instagram',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',

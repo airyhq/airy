@@ -63,7 +63,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
               styleVariant="link"
               type="button"
               onClick={() =>
-                navigate(`/channels/${channel.source}/${channel.id}`, {
+                navigate(`/connectors/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
               }

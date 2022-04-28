@@ -26,13 +26,13 @@ import {
   cyChannelsInstagramList,
 } from 'handles';
 import {
-  CHANNELS_FACEBOOK_ROUTE,
-  CHANNELS_TWILIO_SMS_ROUTE,
-  CHANNELS_TWILIO_WHATSAPP_ROUTE,
-  CHANNELS_CONNECTED_ROUTE,
-  CHANNELS_CHAT_PLUGIN_ROUTE,
-  CHANNELS_GOOGLE_ROUTE,
-  CHANNELS_INSTAGRAM_ROUTE,
+  CONNECTORS_FACEBOOK_ROUTE,
+  CONNECTORS_TWILIO_SMS_ROUTE,
+  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
+  CONNECTORS_CONNECTED_ROUTE,
+  CONNECTORS_CHAT_PLUGIN_ROUTE,
+  CONNECTORS_GOOGLE_ROUTE,
+  CONNECTORS_INSTAGRAM_ROUTE,
 } from '../../routes/routes';
 import {StateModel} from '../../reducers';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
@@ -55,14 +55,15 @@ export type SourceInfo = {
   dataCyChannelList: string;
 };
 
+//move this to services?
 const SourcesInfo: SourceInfo[] = [
   {
     type: Source.chatPlugin,
     title: 'Airy Live Chat',
     description: 'Best of class browser messenger',
     image: <AiryAvatarIcon />,
-    newChannelRoute: CHANNELS_CHAT_PLUGIN_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/chatplugin',
+    newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',
     configKey: 'sources-chat-plugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -74,8 +75,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Messenger',
     description: 'Connect multiple Facebook pages',
     image: <MessengerAvatarIcon />,
-    newChannelRoute: CHANNELS_FACEBOOK_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/facebook',
+    newChannelRoute: CONNECTORS_FACEBOOK_ROUTE + '/new',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/facebook',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -87,8 +88,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'SMS',
     description: 'Deliver SMS with ease',
     image: <SMSAvatarIcon />,
-    newChannelRoute: CHANNELS_TWILIO_SMS_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.sms/#',
+    newChannelRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new_account',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -100,8 +101,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'WhatsApp',
     description: 'World #1 chat app',
     image: <WhatsAppAvatarIcon />,
-    newChannelRoute: CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+    newChannelRoute: CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
@@ -113,8 +114,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
-    newChannelRoute: CHANNELS_GOOGLE_ROUTE + '/new_account',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/google',
+    newChannelRoute: CONNECTORS_GOOGLE_ROUTE + '/new_account',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/google',
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -126,8 +127,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Instagram',
     description: 'Connect multiple Instagram pages',
     image: <InstagramIcon />,
-    newChannelRoute: CHANNELS_INSTAGRAM_ROUTE + '/new',
-    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/instagram',
+    newChannelRoute: CONNECTORS_INSTAGRAM_ROUTE + '/new',
+    channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/instagram',
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -146,7 +147,7 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const Channels = (props: ConnectedProps<typeof connector>) => {
+const Connectors = (props: ConnectedProps<typeof connector>) => {
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const navigate = useNavigate();
@@ -187,4 +188,4 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
   );
 };
 
-export default connector(Channels);
+export default connector(Connectors);

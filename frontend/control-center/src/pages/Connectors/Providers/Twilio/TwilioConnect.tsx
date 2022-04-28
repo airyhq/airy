@@ -9,7 +9,7 @@ import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './TwilioConnect.module.scss';
 
-import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useNavigate} from 'react-router-dom';
 
 type TwilioConnectProps = {
@@ -55,7 +55,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
 
     if (source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload).then(() => {
-        navigate(CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`, {
+        navigate(CONNECTORS_CONNECTED_ROUTE + `/twilio.whatsapp/#`, {
           replace: true,
           state: {source: 'twilio.whatsapp'},
         });
@@ -63,7 +63,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     }
     if (source === Source.twilioSMS) {
       connectTwilioSms(connectPayload).then(() => {
-        navigate(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`, {replace: true, state: {source: 'twilio.sms'}});
+        navigate(CONNECTORS_CONNECTED_ROUTE + `/twilio.sms/#`, {replace: true, state: {source: 'twilio.sms'}});
       });
     }
   };

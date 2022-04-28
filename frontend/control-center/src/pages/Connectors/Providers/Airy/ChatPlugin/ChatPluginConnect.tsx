@@ -100,7 +100,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   );
 
   const PageContent = () => {
-    console.log('PAGE CONTENT - channelId', channelId);
     if (channelId === 'new') {
       return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }

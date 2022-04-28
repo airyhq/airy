@@ -149,6 +149,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook")
+                                .setName("webhook name")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -157,6 +158,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook-2")
+                                .setName("webhook name 2")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -165,6 +167,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook-2")
+                                .setName("webhook name 2")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Unsubscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -174,7 +177,7 @@ public class WebhooksControllerTest {
 
         retryOnException(() -> webTestHelper.post("/webhooks.list")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(lessThanOrEqualTo(2)))),
+                        .andExpect(jsonPath("$.data", hasSize(lessThanOrEqualTo(4)))),
                 "list did not return all results"
         );
     }

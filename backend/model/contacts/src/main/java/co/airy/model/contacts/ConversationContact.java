@@ -1,4 +1,4 @@
-package co.airy.core.contacts.dto;
+package co.airy.model.contacts;
 
 import co.airy.model.conversation.Conversation;
 import co.airy.model.metadata.dto.MetadataMap;

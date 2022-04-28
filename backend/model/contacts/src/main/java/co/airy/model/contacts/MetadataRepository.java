@@ -1,4 +1,4 @@
-package co.airy.core.contacts;
+package co.airy.model.contacts;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.Subject;

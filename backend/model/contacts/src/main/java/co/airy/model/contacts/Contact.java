@@ -1,4 +1,4 @@
-package co.airy.core.contacts.dto;
+package co.airy.model.contacts;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.log.AiryLoggerFactory;
@@ -27,19 +27,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.ADDRESS;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.AVATAR_URL;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.CREATED_AT;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.DISPLAY_NAME;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.GENDER;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.LOCALE;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.ORGANIZATION_NAME;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.MERGE_HISTORY;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.TIMEZONE;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.TITLE;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.VIA;
+import static co.airy.model.contacts.MetadataRepository.newContactMetadata;
+import static co.airy.model.contacts.Contact.MetadataKeys.ADDRESS;
+import static co.airy.model.contacts.Contact.MetadataKeys.AVATAR_URL;
+import static co.airy.model.contacts.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.model.contacts.Contact.MetadataKeys.CREATED_AT;
+import static co.airy.model.contacts.Contact.MetadataKeys.DISPLAY_NAME;
+import static co.airy.model.contacts.Contact.MetadataKeys.GENDER;
+import static co.airy.model.contacts.Contact.MetadataKeys.LOCALE;
+import static co.airy.model.contacts.Contact.MetadataKeys.ORGANIZATION_NAME;
+import static co.airy.model.contacts.Contact.MetadataKeys.MERGE_HISTORY;
+import static co.airy.model.contacts.Contact.MetadataKeys.TIMEZONE;
+import static co.airy.model.contacts.Contact.MetadataKeys.TITLE;
+import static co.airy.model.contacts.Contact.MetadataKeys.VIA;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static java.util.stream.Collectors.toMap;
 

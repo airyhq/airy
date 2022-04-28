@@ -1,6 +1,6 @@
 package co.airy.core.contacts;
 
-import co.airy.core.contacts.dto.Contact;
+import co.airy.model.contacts.Contact;
 import co.airy.core.contacts.util.TestContact;
 import co.airy.core.contacts.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;

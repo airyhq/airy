@@ -1,6 +1,6 @@
 package co.airy.core.contacts.util;
 
-import co.airy.core.contacts.dto.Contact;
+import co.airy.model.contacts.Contact;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;

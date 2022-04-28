@@ -32,27 +32,27 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const WebhooksListItem = (props: WebhooksListItemProps) => {
-  const {id, name, url, events, headers, status, signatureKey, switchId, newWebhook} = props;
+  const {id, name, url, events, headers, status, signatureKey, switchId, newWebhook, setNewWebhook} = props;
   const [subscribed, setSubscribed] = useState(status || 'Subscribed');
   const [editModeOn, setEditModeOn] = useState(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
   const [messageCreated, setMessageCreated] = useState(false);
   const [messageUpdated, setMessageUpdated] = useState(false);
-  const [conversationCreated, setConversationCreated] = useState(false);
   const [conversationUpdated, setConversationUpdated] = useState(false);
+  const [channelUpdated, setChannelUpdated] = useState(false);
   const [webhookUnsubscribe, setWebhookUnsubscribe] = useState(false);
   const [webhookUpdate, setWebhookUpdate] = useState(false);
   const [isNewWebhook, setIsNewWebhook] = useState(newWebhook);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log('11111', isNewWebhook);
-
     checkEvents();
     newWebhook && setIsNewWebhook(true);
   }, [newWebhook, isNewWebhook, setIsNewWebhook]);
 
   const cancelChanges = () => {
     setEditModeOn(false);
+    setNewWebhook(false);
     setIsNewWebhook(false);
     setShowUnsubscribeModal(false);
   };
@@ -61,8 +61,8 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     events &&
       (events.includes('message.created') && setMessageCreated(true),
       events.includes('message.updated') && setMessageUpdated(true),
-      events.includes('conversation.created') && setConversationCreated(true),
-      events.includes('conversation.updated') && setConversationUpdated(true));
+      events.includes('conversation.updated') && setConversationUpdated(true),
+      events.includes('channel.updated') && setChannelUpdated(true));
   };
 
   const handleUnsubscribe = () => {
@@ -78,15 +78,18 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   };
 
   const unsubscribeWebhookConfirm = (unsubscribe: boolean) => {
+    setIsLoading(true);
     setWebhookUnsubscribe(unsubscribe);
     props
       .unsubscribeWebhook({id: id, url: url})
       .then(() => {
         setShowUnsubscribeModal(false);
         setSubscribed('Unsubscribed');
+        setIsLoading(false);
       })
       .catch((error: Error) => {
         console.error(error);
+        setIsLoading(false);
       });
   };
 
@@ -103,23 +106,30 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     headers?: {},
     signatureKey?: string
   ) => {
+    setIsLoading(true);
     update &&
       props
         .updateWebhook({id: id, url: url, name: name, events: events, signatureKey: signatureKey})
-        .then(() => {})
+        .then(() => {
+          setIsLoading(false);
+        })
         .catch((error: Error) => {
           console.error(error);
+          setIsLoading(false);
         });
   };
 
   const subscribeWebhookConfirm = (url: string, name?: string, events?: string[]) => {
+    setIsLoading(true);
     props
       .subscribeWebhook({url: url, name: name, events: events})
       .then(() => {
+        setIsLoading(false);
         setSubscribed('Subscribed');
       })
       .catch((error: Error) => {
         console.error(error);
+        setIsLoading(false);
       });
   };
 
@@ -132,7 +142,14 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       <span>{url}</span>
       <p>{name}</p>
       <div className={styles.eventsContainer}>
-        <>{events && events.map((event, index) => <p key={index}>{event}</p>)}</>
+        <>
+          {events &&
+            events.map((event, index) => (
+              <p key={index} style={{width: '100%'}}>
+                {event}
+              </p>
+            ))}
+        </>
       </div>
       <div className={styles.statusContainer} style={{width: '10%'}}>
         <Switch
@@ -155,12 +172,13 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             signatureKey={signatureKey}
             messageCreated={messageCreated}
             messageUpdated={messageUpdated}
-            conversationCreated={conversationCreated}
             conversationUpdated={conversationUpdated}
+            channelUpdated={channelUpdated}
             newWebhook={newWebhook}
             setNewWebook={handleSetNewWebhook}
             setUpdateWebhook={updateWebhookConfirm}
             setSubscribeWebhook={subscribeWebhookConfirm}
+            isLoading={isLoading}
           />
         </SettingsModal>
       )}
@@ -170,6 +188,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             setUnsubscribe={unsubscribeWebhookConfirm}
             setCancelUnsubscribe={cancelChanges}
             webhookUrl={url}
+            isLoading={isLoading}
           />
         </SettingsModal>
       )}

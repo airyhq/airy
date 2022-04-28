@@ -22,7 +22,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Webhooks = (props: WebhooksProps) => {
   const {listWebhooks, webhooks} = props;
-  const [newWebhook, setNewWebook] = useState(false);
+  const [newWebhook, setNewWebhook] = useState(false);
 
   useEffect(() => {
     setPageTitle('Webhooks');
@@ -32,12 +32,16 @@ const Webhooks = (props: WebhooksProps) => {
     Object.keys(webhooks).length === 0 && listWebhooks();
   }, [webhooks]);
 
+  const handleNewWebhook = (newWebhook: boolean) => {
+    setNewWebhook(newWebhook);
+  };
+
   return (
     <div className={styles.webhooksWrapper}>
       <div className={styles.webhooksHeadline}>
         <div className={styles.headlineContainer}>
           <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-          <Button onClick={() => setNewWebook(true)} style={{fontSize: 13, width: '176px', height: '40px'}}>
+          <Button onClick={() => setNewWebhook(true)} style={{fontSize: 13, width: '176px', height: '40px'}}>
             Subscribe Webhook
           </Button>
         </div>
@@ -58,6 +62,7 @@ const Webhooks = (props: WebhooksProps) => {
               key={index}
               status={webhook.status}
               newWebhook={newWebhook}
+              setNewWebhook={handleNewWebhook}
             />
           ))}
       </div>

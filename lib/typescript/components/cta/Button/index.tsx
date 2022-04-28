@@ -42,7 +42,8 @@ export const Button = ({children, onClick, type, styleVariant, style, disabled, 
       className={styleFor(styleVariant)}
       onClick={onClick}
       tabIndex={tabIndex}
-      data-cy={dataCy}>
+      data-cy={dataCy}
+    >
       {children}
     </button>
   );

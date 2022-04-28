@@ -22,7 +22,8 @@ export const SettingsModal = (props: SettingsModalProps) => {
       contentLabel={title}
       isOpen={true}
       shouldCloseOnOverlayClick={true}
-      onRequestClose={close}>
+      onRequestClose={close}
+    >
       <div style={style} className={className}>
         <ModalHeader title={title} close={close} />
         {children}

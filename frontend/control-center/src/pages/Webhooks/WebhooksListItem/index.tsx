@@ -44,6 +44,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   const [webhookUpdate, setWebhookUpdate] = useState(false);
   const [isNewWebhook, setIsNewWebhook] = useState(newWebhook);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
     checkEvents();
@@ -77,22 +78,6 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         });
   };
 
-  const unsubscribeWebhookConfirm = (unsubscribe: boolean) => {
-    setIsLoading(true);
-    setWebhookUnsubscribe(unsubscribe);
-    props
-      .unsubscribeWebhook({id: id, url: url})
-      .then(() => {
-        setShowUnsubscribeModal(false);
-        setSubscribed('Unsubscribed');
-        setIsLoading(false);
-      })
-      .catch((error: Error) => {
-        console.error(error);
-        setIsLoading(false);
-      });
-  };
-
   const editWebhook = () => {
     setIsNewWebhook(false);
     setEditModeOn(!editModeOn);
@@ -106,6 +91,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     headers?: {},
     signatureKey?: string
   ) => {
+    setErrorOccurred(false);
     setIsLoading(true);
     update &&
       props
@@ -115,11 +101,13 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         })
         .catch((error: Error) => {
           console.error(error);
+          setErrorOccurred(true);
           setIsLoading(false);
         });
   };
 
   const subscribeWebhookConfirm = (url: string, name?: string, events?: string[]) => {
+    setErrorOccurred(false);
     setIsLoading(true);
     props
       .subscribeWebhook({url: url, name: name, events: events})
@@ -129,6 +117,25 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       })
       .catch((error: Error) => {
         console.error(error);
+        setErrorOccurred(true);
+        setIsLoading(false);
+      });
+  };
+
+  const unsubscribeWebhookConfirm = (unsubscribe: boolean) => {
+    setErrorOccurred(false);
+    setIsLoading(true);
+    setWebhookUnsubscribe(unsubscribe);
+    props
+      .unsubscribeWebhook({id: id, url: url})
+      .then(() => {
+        setShowUnsubscribeModal(false);
+        setSubscribed('Unsubscribed');
+        setIsLoading(false);
+      })
+      .catch((error: Error) => {
+        console.error(error);
+        setErrorOccurred(true);
         setIsLoading(false);
       });
   };
@@ -179,6 +186,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             setUpdateWebhook={updateWebhookConfirm}
             setSubscribeWebhook={subscribeWebhookConfirm}
             isLoading={isLoading}
+            error={errorOccurred}
           />
         </SettingsModal>
       )}
@@ -189,6 +197,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             setCancelUnsubscribe={cancelChanges}
             webhookUrl={url}
             isLoading={isLoading}
+            error={errorOccurred}
           />
         </SettingsModal>
       )}

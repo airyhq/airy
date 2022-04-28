@@ -2,97 +2,106 @@
 @import 'assets/scss/fonts.scss';
 
 .formContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 
 .container {
-    @include font-base;
-    color: var(--color-text-gray);
-    height: 520px;
-    background: white;
+  @include font-base;
+  color: var(--color-text-gray);
+  height: 520px;
+  background: white;
 
-    h1 {
-        margin-top: 45px;
-        margin-bottom: 28px;
-        font-weight: 700;
-    }
+  h1 {
+    margin-top: 45px;
+    margin-bottom: 28px;
+    font-weight: 700;
+  }
 }
 
 .checkboxContainer {
-    display: flex;
-    align-items: center;
-    span {
-        cursor: pointer;
-        margin-right: 96px;
-    }
-    input {
-        cursor: pointer;
-        height: 16px;
-        width: 16px;
-    }
+  display: flex;
+  align-items: center;
+  span {
+    cursor: pointer;
+    margin-right: 96px;
+  }
+  input {
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+  }
 }
 
 .inputContainer {
-    display: flex;
-    
-    input {
-        border: none;
-        background: var(--color-background-gray);
-        padding: 6px;
-        border-radius: 8px;
-        margin-right: 32px;
-        height: 50px;
-        padding: 16px 21px;
-    }
+  display: flex;
 
-    input:last-child {
-        width: 400px;
-    }
+  input {
+    border: none;
+    background: var(--color-background-gray);
+    padding: 6px;
+    border-radius: 8px;
+    margin-right: 32px;
+    height: 50px;
+    padding: 16px 21px;
+  }
 
+  input:last-child {
+    width: 400px;
+  }
 }
 
 .headerKeyContainer {
-    display: flex;
-    flex-direction: row;
-    margin-top: 48px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 48px;
 
-    span {
-        color: black;
-        margin-bottom: 28px;
-        font-weight: 800;
-    }
+  span {
+    color: black;
+    margin-bottom: 28px;
+    font-weight: 800;
+  }
 
-    input {
-        width: 408px;
-        background: var(--color-background-gray);
-        border-radius: 6px;
-        color: var(--color-red-info);
-        padding: 17px 12px;
-        border: none;
-    }
+  input {
+    width: 408px;
+    background: var(--color-background-gray);
+    border-radius: 6px;
+    color: var(--color-red-info);
+    padding: 17px 12px;
+    border: none;
+  }
 }
 
 .headerKeyItem {
-    display: flex;
-    flex-direction: column;
-    margin-right: 42px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 42px;
+}
+
+.errorMessage {
+  @include font-base;
+  display: flex;
+  position: absolute;
+  bottom: 24px;
+  color: var(--color-red-alert);
+  font-size: 16px;
 }
 
 @keyframes spinAnimationRefresh {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(7200deg);
-    }
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .spinAnimation {
-      svg {
+  100% {
+    transform: rotate(7200deg);
+  }
+}
+
+.spinAnimation {
+  svg {
     height: 20px;
     width: 20px;
     animation: spinAnimationRefresh 40s linear;
-      }
   }
+}

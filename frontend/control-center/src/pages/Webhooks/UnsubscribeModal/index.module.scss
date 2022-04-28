@@ -2,52 +2,59 @@
 @import 'assets/scss/fonts.scss';
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    @include font-xxl;
-    width: 100%;
-    color: var(--color-text-gray);
-    background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include font-xxl;
+  width: 100%;
+  color: var(--color-text-gray);
+  background: white;
 
-    h1 {
-        color: var(--color-text-contrast);
-        font-weight: 800;
-        margin-top: 50px;
-        margin-bottom: 16px;
-    }
-    p {
-        color: var(--color-text-contrast);
-        font-weight: 400;
-        margin-bottom: 50px;
-        max-width: 75%;
-        line-break: anywhere;
-        text-align: center;
-    }
+  h1 {
+    color: var(--color-text-contrast);
+    font-weight: 800;
+    margin-top: 50px;
+    margin-bottom: 16px;
+  }
+  p {
+    color: var(--color-text-contrast);
+    font-weight: 400;
+    margin-bottom: 50px;
+    max-width: 75%;
+    line-break: anywhere;
+    text-align: center;
+  }
 }
 
 .buttonContainer {
-    display: flex;
-    align-items: center;
-    button {
-        @include font-base;
-        margin: 0 12px;
-    }
+  display: flex;
+  align-items: center;
+  button {
+    @include font-base;
+    margin: 0 12px;
+  }
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: 40px;
+  color: var(--color-red-alert);
+  font-size: 16px;
 }
 
 @keyframes spinAnimationRefresh {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(7200deg);
-    }
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .spinAnimation {
-      svg {
+  100% {
+    transform: rotate(7200deg);
+  }
+}
+
+.spinAnimation {
+  svg {
     height: 20px;
     width: 20px;
     animation: spinAnimationRefresh 40s linear;
-      }
   }
+}

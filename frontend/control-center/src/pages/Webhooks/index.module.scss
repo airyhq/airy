@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%
+  width: 100%;
 }
 
 .webhooksHeadline {
@@ -51,7 +51,7 @@
     @include font-base;
     color: var(--color-text-gray);
     font-weight: bold;
-    width: 25%
+    width: 25%;
   }
 
   h2:first-child {
@@ -61,6 +61,4 @@
   h2:last-child {
     width: 10%;
   }
-
-
 }

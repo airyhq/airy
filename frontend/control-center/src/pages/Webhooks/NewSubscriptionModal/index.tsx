@@ -18,6 +18,7 @@ type NewSubscriptionProps = {
   newWebhook: boolean;
   setNewWebook: (newWebook: boolean) => void;
   isLoading: boolean;
+  error: boolean;
   setUpdateWebhook: (
     update: boolean,
     url: string,
@@ -43,6 +44,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
     newWebhook,
     setNewWebook,
     isLoading,
+    error,
     setUpdateWebhook,
     setSubscribeWebhook,
   } = props;
@@ -186,9 +188,18 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           disabled={newUrl === '' || isLoading}
           type="button">
           {isLoading && <RefreshIcon height={24} width={24} />}
-          {isLoading ? (newWebhook ? 'Subscribing...' : 'Updating...') : newWebhook ? 'Confirm' : 'Update'}
+          {isLoading
+            ? newWebhook
+              ? 'Subscribing...'
+              : 'Updating...'
+            : error
+            ? 'Try again...'
+            : newWebhook
+            ? 'Confirm'
+            : 'Update'}
         </Button>
       </div>
+      {error && <span className={styles.errorMessage}>Unable to {newWebhook ? 'subscribe' : 'update'} Webhook</span>}
     </form>
   );
 };

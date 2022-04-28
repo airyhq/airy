@@ -8,6 +8,10 @@
       "type": "string"
     },
     {
+      "name": "name",
+      "type": "string"
+    },
+    {
       "name": "events",
       "type": {
         "type": "array",

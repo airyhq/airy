@@ -83,15 +83,16 @@ public class WebhooksControllerTest {
         webTestHelper.post("/webhooks.info", infoPayload).andExpect(status().isNotFound());
 
         final String url = "http://example.org/webhook";
+        final String name = "webhook name";
         final String xAuthHeader = "auth token";
         final EventType subscribeEvent = EventType.MESSAGE_CREATED;
         final EventType newSubscribeEvent = EventType.MESSAGE_UPDATED;
 
-        final String subscribePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\"]}",
-                webhookId, url, xAuthHeader, subscribeEvent.getEventType());
+        final String subscribePayload = String.format("{\"id\":\"%s\",\"name\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\"]}",
+                webhookId, name, url, xAuthHeader, subscribeEvent.getEventType());
 
-        final String updatePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\", \"%s\"]}",
-                webhookId, url, xAuthHeader, subscribeEvent.getEventType(), newSubscribeEvent.getEventType());
+        final String updatePayload = String.format("{\"id\":\"%s\",\"name\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\", \"%s\"]}",
+                webhookId, name, url, xAuthHeader, subscribeEvent.getEventType(), newSubscribeEvent.getEventType());
 
         when(serviceDiscovery.getComponent(Mockito.anyString())).thenCallRealMethod();
 
@@ -113,12 +114,14 @@ public class WebhooksControllerTest {
         webTestHelper.post("/webhooks.subscribe", subscribePayload)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(webhookId)))
+                .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
 
         retryOnException(() -> webTestHelper.post("/webhooks.update", updatePayload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(webhookId)))
+                        .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.url", equalTo(url)))
                         .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
                         .andExpect(jsonPath("$.events", hasSize(2))),
@@ -128,6 +131,7 @@ public class WebhooksControllerTest {
         retryOnException(() -> webTestHelper.post("/webhooks.info", infoPayload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(webhookId)))
+                        .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.url", equalTo(url)))
                         .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader))),
                 "Webhook was not stored"
@@ -145,6 +149,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook")
+                                .setName("webhook name")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -153,6 +158,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook-2")
+                                .setName("webhook name 2")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -161,6 +167,7 @@ public class WebhooksControllerTest {
                 new ProducerRecord<>(Topics.applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
                         Webhook.newBuilder()
                                 .setEndpoint("http://endpoint.com/webhook-2")
+                                .setName("webhook name 2")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Unsubscribed)
                                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -170,7 +177,7 @@ public class WebhooksControllerTest {
 
         retryOnException(() -> webTestHelper.post("/webhooks.list")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(lessThanOrEqualTo(2)))),
+                        .andExpect(jsonPath("$.data", hasSize(lessThanOrEqualTo(4)))),
                 "list did not return all results"
         );
     }

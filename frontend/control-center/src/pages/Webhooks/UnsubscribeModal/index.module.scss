@@ -20,7 +20,8 @@
         color: var(--color-text-contrast);
         font-weight: 400;
         margin-bottom: 50px;
-        max-width: 50%;
+        max-width: 75%;
+        line-break: anywhere;
         text-align: center;
     }
 }
@@ -33,3 +34,20 @@
         margin: 0 12px;
     }
 }
+
+@keyframes spinAnimationRefresh {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(7200deg);
+    }
+  }
+  
+  .spinAnimation {
+      svg {
+    height: 20px;
+    width: 20px;
+    animation: spinAnimationRefresh 40s linear;
+      }
+  }

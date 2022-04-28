@@ -14,11 +14,17 @@
         width: 40%;
         color:var(--color-text-contrast);
         text-decoration: underline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 8px;
     }
 
     p {
         width: 25%;
         color: var(--color-text-gray);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 8px;
     }
 
     div:not(:last-child) {

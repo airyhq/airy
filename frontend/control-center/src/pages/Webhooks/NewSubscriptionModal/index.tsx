@@ -1,5 +1,6 @@
 import {Button} from 'components/cta/Button';
 import React, {useState} from 'react';
+import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 
 type NewSubscriptionProps = {
@@ -12,10 +13,11 @@ type NewSubscriptionProps = {
   signatureKey: string;
   messageCreated?: boolean;
   messageUpdated?: boolean;
-  conversationCreated?: boolean;
   conversationUpdated?: boolean;
+  channelUpdated?: boolean;
   newWebhook: boolean;
   setNewWebook: (newWebook: boolean) => void;
+  isLoading: boolean;
   setUpdateWebhook: (
     update: boolean,
     url: string,
@@ -36,10 +38,11 @@ const NewSubscription = (props: NewSubscriptionProps) => {
     signatureKey,
     messageCreated,
     messageUpdated,
-    conversationCreated,
     conversationUpdated,
+    channelUpdated,
     newWebhook,
     setNewWebook,
+    isLoading,
     setUpdateWebhook,
     setSubscribeWebhook,
   } = props;
@@ -50,44 +53,42 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   const [newSignatureKey, setNewSignatureKey] = useState(signatureKey || '');
   const [messageCreatedChecked, setMessageCreatedChecked] = useState(messageCreated);
   const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(messageUpdated);
-  const [conversationCreatedChecked, setConversationCreatedChecked] = useState(conversationCreated);
   const [conversationUpdatedChecked, setConversationUpdatedChecked] = useState(conversationUpdated);
+  const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(channelUpdated);
 
   const handleChecked = (event: string) => {
     switch (event) {
       case 'message.created': {
-        // setMessageCreatedChecked(!messageCreatedChecked);
-        !newEvents.includes(event)
-          ? (setNewEvents([...newEvents, 'message.created']), console.log('new one'))
-          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
+        !messageCreatedChecked
+          ? setNewEvents([...newEvents, 'message.created'])
+          : setNewEvents(newEvents.filter(item => item !== event));
+        setMessageCreatedChecked(!messageCreatedChecked);
+        console.log('ABC');
+
         break;
       }
       case 'message.updated': {
+        !messageUpdatedChecked
+          ? setNewEvents([...newEvents, 'message.updated'])
+          : setNewEvents(newEvents.filter(item => item !== event));
         setMessageUpdatedChecked(!messageUpdatedChecked);
-        !newEvents.includes(event)
-          ? (setNewEvents([...newEvents, 'message.updated']), console.log('new one'))
-          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
-        break;
-      }
-      case 'conversation.created': {
-        setConversationCreatedChecked(!conversationCreatedChecked);
-        !newEvents.includes(event)
-          ? (setNewEvents([...newEvents, 'conversation.created']), console.log('new one'))
-          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
         break;
       }
       case 'conversation.updated': {
+        !conversationUpdatedChecked
+          ? setNewEvents([...newEvents, 'conversation.updated'])
+          : setNewEvents(newEvents.filter(item => item !== event));
         setConversationUpdatedChecked(!conversationUpdatedChecked);
-        !newEvents.includes(event)
-          ? (setNewEvents([...newEvents, 'conversation.updated']), console.log('new one'))
-          : (setNewEvents(newEvents.filter(item => item !== event)), console.log('removed one'));
+        break;
+      }
+      case 'channel.updated': {
+        !channelUpdatedChecked
+          ? setNewEvents([...newEvents, 'channel.updated'])
+          : setNewEvents(newEvents.filter(item => item !== event));
+        setChannelUpdatedChecked(!channelUpdatedChecked);
         break;
       }
     }
-
-    console.log('EVENTS: ', newEvents);
-
-    return newEvents;
   };
 
   const updateWebhook = () => {
@@ -136,16 +137,6 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           </label>
           <input
             type="checkbox"
-            id="conversation.created"
-            name="conversation.created"
-            checked={conversationCreatedChecked}
-            onChange={() => handleChecked('conversation.created')}
-          />
-          <label htmlFor="conversation.created">
-            <span>Conversation.Created</span>
-          </label>
-          <input
-            type="checkbox"
             id="conversation.updated"
             name="conversation.updated"
             checked={conversationUpdatedChecked}
@@ -153,6 +144,16 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           />
           <label htmlFor="conversation.updated">
             <span>Conversation.Updated</span>
+          </label>
+          <input
+            type="checkbox"
+            id="channel.updated"
+            name="channel.updated"
+            checked={channelUpdatedChecked}
+            onChange={() => handleChecked('channel.updated')}
+          />
+          <label htmlFor="channel.updated">
+            <span>Channel.Updated</span>
           </label>
         </div>
         <div className={styles.headerKeyContainer}>
@@ -170,13 +171,24 @@ const NewSubscription = (props: NewSubscriptionProps) => {
           </div>
         </div>
       </div>
-      <Button
-        onClick={newWebhook ? subscribeToNewWebhook : updateWebhook}
-        style={{alignSelf: 'center', width: '213px', height: '48px', borderRadius: '10px'}}
-        disabled={newUrl === ''}
-        type="button">
-        {newWebhook ? 'Confirm' : 'Update'}
-      </Button>
+      <div className={isLoading ? styles.spinAnimation : ''} style={{display: 'flex', alignSelf: 'center'}}>
+        <Button
+          onClick={newWebhook ? subscribeToNewWebhook : updateWebhook}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            alignSelf: 'center',
+            width: '213px',
+            height: '48px',
+            borderRadius: '10px',
+          }}
+          disabled={newUrl === '' || isLoading}
+          type="button">
+          {isLoading && <RefreshIcon height={24} width={24} />}
+          {isLoading ? (newWebhook ? 'Subscribing...' : 'Updating...') : newWebhook ? 'Confirm' : 'Update'}
+        </Button>
+      </div>
     </form>
   );
 };

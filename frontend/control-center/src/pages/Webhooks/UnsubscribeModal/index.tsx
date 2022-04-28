@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './index.module.scss';
 
 import {ReactComponent as ErrorMessage} from 'assets/images/icons/errorMessage.svg';
@@ -10,10 +10,11 @@ type UnsubscribeModalProps = {
   setCancelUnsubscribe: (cancel: boolean) => void;
   webhookUrl: string;
   isLoading: boolean;
+  error: boolean;
 };
 
 export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
-  const {setUnsubscribe, setCancelUnsubscribe, webhookUrl, isLoading} = props;
+  const {setUnsubscribe, setCancelUnsubscribe, webhookUrl, isLoading, error} = props;
 
   const handleConfirm = () => {
     setUnsubscribe(true);
@@ -28,7 +29,7 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
       <ErrorMessage height={140} width={140} />
       <h1>Unsubscribe Webhook</h1>
       <p>
-        Are you sure <br /> you want to unsubsribe to <br /> <br /> {webhookUrl}?
+        Are you sure <br /> you want to unsubsribe <br /> <br /> {webhookUrl}?
       </p>
       <div className={styles.buttonContainer}>
         <div className={isLoading ? styles.spinAnimation : ''} style={{display: 'flex'}}>
@@ -46,7 +47,7 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
             }}
             type="submit">
             {isLoading && <RefreshIcon height={24} width={24} />}
-            {isLoading ? 'Unsubscribing...' : 'Confirm'}
+            {isLoading ? 'Unsubscribing...' : error ? 'Try again...' : 'Confirm'}
           </Button>
           <Button
             onClick={handleCancel}
@@ -57,6 +58,7 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
           </Button>
         </div>
       </div>
+      {error && <span className={styles.errorMessage}>Unable to unsubscribe Webhook</span>}
     </div>
   );
 };

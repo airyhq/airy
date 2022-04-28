@@ -1,7 +1,7 @@
 export const setPageTitle = (title?: string) => {
   if (title?.length) {
-    document.title = `Airy UI - Control Center - ${title}`;
+    document.title = `Control Center - ${title}`;
   } else {
-    document.title = 'Airy UI - Control Center';
+    document.title = 'Control Center';
   }
 };

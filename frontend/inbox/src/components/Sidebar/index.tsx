@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, matchPath, useLocation} from 'react-router-dom';
+import {Link, useMatch} from 'react-router-dom';
 
 import {ReactComponent as InboxIcon} from 'assets/images/icons/inbox.svg';
 import {ReactComponent as TagIcon} from 'assets/images/icons/priceTag.svg';
@@ -9,9 +9,8 @@ import {INBOX_ROUTE, TAGS_ROUTE} from '../../routes/routes';
 import styles from './index.module.scss';
 
 export const Sidebar = () => {
-  const location = useLocation();
   const isActive = (route: string) => {
-    return !!matchPath(location.pathname, route);
+    return useMatch(`${route}/*`);
   };
 
   return (

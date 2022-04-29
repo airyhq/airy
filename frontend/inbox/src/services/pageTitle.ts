@@ -1,7 +1,7 @@
 export const setPageTitle = (title?: string) => {
   if (title?.length) {
-    document.title = `Airy UI - ${title}`;
+    document.title = `Inbox - ${title}`;
   } else {
-    document.title = 'Airy UI';
+    document.title = 'Inbox';
   }
 };

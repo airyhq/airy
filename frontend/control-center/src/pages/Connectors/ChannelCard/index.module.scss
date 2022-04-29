@@ -13,6 +13,7 @@
   background-color: var(--color-background-blue);
   &:hover {
     cursor: pointer;
+    border: 1px solid transparent;
   }
 }
 

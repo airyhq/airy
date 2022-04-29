@@ -26,6 +26,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
   const {channel} = props;
   const navigate = useNavigate();
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
+  const path = location.pathname.includes('connectors') ? 'connectors' : 'catalog';
 
   const togglePopupVisibility = () => {
     setDeletePopupVisible(!deletePopupVisible);
@@ -63,7 +64,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
               styleVariant="link"
               type="button"
               onClick={() =>
-                navigate(`/channels/${channel.source}/${channel.id}`, {
+                navigate(`/${path}/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
               }

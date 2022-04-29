@@ -1,9 +1,9 @@
 import React from 'react';
-import ChannelCard from '../Channels/ChannelCard';
+import ChannelCard from '../Connectors/ChannelCard';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {SourceInfo} from './index';
+import {SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 
 interface CatalogItemListProps {
@@ -15,6 +15,7 @@ interface CatalogItemListProps {
 export const CatalogItemList = (props: CatalogItemListProps) => {
   const {list, installedConnectors, setDisplayDialogFromSource} = props;
   const config = useSelector((state: StateModel) => state.data.config);
+
   const navigate = useNavigate();
 
   return (
@@ -29,7 +30,7 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
             sourceInfo={infoItem}
             addChannelAction={() => {
               if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                navigate(infoItem.newChannelRoute);
+                installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute);
               } else {
                 setDisplayDialogFromSource(infoItem.type);
               }

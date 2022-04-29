@@ -5,7 +5,7 @@ sidebar_label: Catalog
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-The Catalog page of the [Control Center](/ui/control-center/introduction) lists both the [connectors](/sources/introduction) that have been installed and not installed.
+The Catalog page of the [Control Center](/ui/control-center/introduction) lists both the [connectors](/sources/introduction) that have been installed and those that are not installed.
 
 In the Catalog 'Not Installed' list, you can choose which connector you want to add and configure it easily (see [Configuration](catalog#configuration) below).
 

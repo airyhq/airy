@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 The Control Center serves as the technical dashboard of your Airy Core app.
 
-It provides both a graphical overview and a way to manage your app's [components](/getting-started/components), [connectors](connectors), and [webhooks](/api/webhook) while its [catalog](catalog) enables you to choose and configure additional [connectors](connectors).
+It provides both a graphical overview and a way to manage your app's [components](/getting-started/components), [connectors](connectors), and [webhooks](/api/webhook). Its [catalog](catalog) enables you to choose and configure additional [connectors](connectors).
 
 <ButtonBoxList>
     <ButtonBox

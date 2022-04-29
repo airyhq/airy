@@ -79,9 +79,6 @@ public class WebhooksController {
         if (webhook == null) {
             return ResponseEntity.notFound().build();
         }
-        if (webhook.getStatus().equals(Status.Unsubscribed)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fromWebhook(webhook));
-        }
 
         if (payload.getUrl() != null) {
             webhook.setEndpoint(payload.getUrl().toString());
@@ -97,6 +94,14 @@ public class WebhooksController {
         }
         if (payload.getSignatureKey() != null) {
             webhook.setSignKey(payload.getSignatureKey());
+        }
+        if (payload.getStatus() != null) {
+            if (Status.Subscribed.toString().equals(payload.getStatus().toString())) {
+                webhook.setStatus(Status.Subscribed);
+            }
+            if (Status.Unsubscribed.toString().equals(payload.getStatus().toString())) {
+                webhook.setStatus(Status.Unsubscribed);
+            }
         }
 
         try {

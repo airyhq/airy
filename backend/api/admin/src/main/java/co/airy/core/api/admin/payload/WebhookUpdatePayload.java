@@ -22,6 +22,7 @@ public class WebhookUpdatePayload {
     private Map<String, String> headers = new HashMap<>();
     private List<EventType> events = new ArrayList<>();
     private String signatureKey;
+    private String status;
     @NotNull
     private UUID id;
 }

@@ -27,7 +27,7 @@ const TwilioWhatsappConnect = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (channelId !== 'new_account') {
+    if (channelId !== 'new') {
       channels.find((item: Channel) => {
         return item.id === channelId;
       });

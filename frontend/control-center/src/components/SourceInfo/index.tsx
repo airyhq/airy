@@ -90,9 +90,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'SMS',
       description: 'Deliver SMS with ease',
       image: <SMSAvatarIcon />,
-      newChannelRoute: connectorsPage
-        ? CONNECTORS_TWILIO_SMS_ROUTE + '/new_account'
-        : CATALOG_TWILIO_SMS_ROUTE + '/new_account',
+      newChannelRoute: connectorsPage ? CONNECTORS_TWILIO_SMS_ROUTE + '/new' : CATALOG_TWILIO_SMS_ROUTE + '/new',
       channelsListRoute: connectorsPage
         ? CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#'
         : CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
@@ -108,8 +106,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
       newChannelRoute: connectorsPage
-        ? CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account'
-        : CATALOG_TWILIO_WHATSAPP_ROUTE + '/new_account',
+        ? CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new'
+        : CATALOG_TWILIO_WHATSAPP_ROUTE + '/new',
       channelsListRoute: connectorsPage
         ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
         : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
@@ -124,9 +122,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Google Business Messages',
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
-      newChannelRoute: connectorsPage
-        ? CONNECTORS_GOOGLE_ROUTE + '/new_account'
-        : CATALOG_GOOGLE_ROUTE + '/new_account',
+      newChannelRoute: connectorsPage ? CONNECTORS_GOOGLE_ROUTE + '/new' : CATALOG_GOOGLE_ROUTE + '/new',
       channelsListRoute: connectorsPage ? CONNECTORS_CONNECTED_ROUTE + '/google' : CATALOG_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
       channelsToShow: 4,

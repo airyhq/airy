@@ -23,6 +23,12 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
+  CATALOG_FACEBOOK_ROUTE,
+  CATALOG_CHAT_PLUGIN_ROUTE,
+  CATALOG_TWILIO_SMS_ROUTE,
+  CATALOG_TWILIO_WHATSAPP_ROUTE,
+  CATALOG_GOOGLE_ROUTE,
+  CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
 const ConnectedChannelsList = () => {
@@ -46,30 +52,39 @@ const ConnectedChannelsList = () => {
   }, [source, channels]);
 
   const getInfo = () => {
+    let ROUTE;
     switch (source) {
       case Source.facebook:
         setName('Facebook Messenger');
-        setPath(CONNECTORS_FACEBOOK_ROUTE + '/new');
+        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName('Google Business Messages');
-        setPath(CONNECTORS_GOOGLE_ROUTE + '/new_account');
+        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName('Twilio SMS');
-        setPath(CONNECTORS_TWILIO_SMS_ROUTE + '/new_account');
+        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName('Twilio Whatsapp');
-        setPath(CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new_account');
+        ROUTE = location.pathname.includes('connectors')
+          ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
+          : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
         setName('Chat Plugin');
-        setPath(CONNECTORS_CHAT_PLUGIN_ROUTE + '/new');
+        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        setPath(ROUTE + '/new');
         break;
       case Source.instagram:
         setName('Instagram');
-        setPath(CONNECTORS_INSTAGRAM_ROUTE + '/new');
+        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        setPath(ROUTE + '/new');
         break;
     }
   };

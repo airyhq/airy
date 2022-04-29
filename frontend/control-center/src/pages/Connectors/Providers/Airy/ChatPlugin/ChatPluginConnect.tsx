@@ -18,7 +18,12 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {
+  CONNECTORS_CHAT_PLUGIN_ROUTE,
+  CONNECTORS_CONNECTED_ROUTE,
+  CATALOG_CONNECTED_ROUTE,
+  CATALOG_CHAT_PLUGIN_ROUTE,
+} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -36,6 +41,12 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const navigate = useNavigate();
+  const CONNECTED_ROUTE = location.pathname.includes('connectors')
+    ? CONNECTORS_CONNECTED_ROUTE
+    : CATALOG_CONNECTED_ROUTE;
+  const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
+    ? CONNECTORS_CHAT_PLUGIN_ROUTE
+    : CATALOG_CHAT_PLUGIN_ROUTE;
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -46,13 +57,13 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }),
       })
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+        navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
       });
   };
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CONNECTORS_CONNECTED_ROUTE + '/chatplugin', {replace: true});
+      navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
     });
   };
 
@@ -62,7 +73,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     }
   };
 
-  const openNewPage = () => navigate(CONNECTORS_CHAT_PLUGIN_ROUTE + '/new');
+  const openNewPage = () => navigate(CHAT_PLUGIN_ROUTE + '/new');
 
   const OverviewSection = () => (
     <div className={styles.overview}>

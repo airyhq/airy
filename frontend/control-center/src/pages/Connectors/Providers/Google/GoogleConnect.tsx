@@ -9,7 +9,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './GoogleConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 
@@ -28,6 +28,10 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const CONNECTED_ROUTE = location.pathname.includes('connectors')
+    ? CONNECTORS_CONNECTED_ROUTE
+    : CATALOG_CONNECTED_ROUTE;
 
   const buttonStatus = () => {
     return !(id.length > 5 && name.length > 0);
@@ -51,7 +55,7 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectGoogleChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/google', {replace: true});
+        navigate(CONNECTED_ROUTE + '/google', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');

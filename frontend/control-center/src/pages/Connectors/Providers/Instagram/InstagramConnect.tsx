@@ -9,7 +9,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './InstagramConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 
@@ -30,6 +30,10 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const CONNECTED_ROUTE = location.pathname.includes('connectors')
+    ? CONNECTORS_CONNECTED_ROUTE
+    : CATALOG_CONNECTED_ROUTE;
 
   const buttonStatus = () => {
     return !(id.length > 5 && token != '');
@@ -58,7 +62,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectInstagramChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/instagram', {replace: true});
+        navigate(CONNECTED_ROUTE + '/instagram', {replace: true});
       })
       .catch(() => {
         setErrorMessage('Please check entered value');

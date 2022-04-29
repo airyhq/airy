@@ -27,7 +27,7 @@ const TwilioSmsConnect = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (channelId !== 'new_account' && channelId?.length) {
+    if (channelId !== 'new' && channelId?.length) {
       channels.find((item: Channel) => {
         return item.id === channelId;
       });

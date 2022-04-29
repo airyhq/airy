@@ -220,8 +220,6 @@ export class HttpClient {
 
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
-  public listWebhooks = this.getRequest<void, Webhook[]>(listWebhooksDef);
-
   public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
@@ -235,6 +233,8 @@ export class HttpClient {
   public getContactDetails = this.getRequest<GetContactDetailsRequestPayload, Contact>(getContactDetailsDef);
 
   public updateContactDetails = this.getRequest<UpdateContactDetailsRequestPayload>(updateContactDetailsDef);
+
+  public listWebhooks = this.getRequest<void, Webhook[]>(listWebhooksDef);
 
   public subscribeWebhook = this.getRequest<SubscribeWebhookRequestPayload, Webhook>(subscribeWebhookDef);
 

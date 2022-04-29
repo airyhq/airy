@@ -1,5 +1,5 @@
 import {Button} from 'components/cta/Button';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 
@@ -7,19 +7,19 @@ type NewSubscriptionProps = {
   name?: string;
   url?: string;
   events?: string[];
-  headers: {
+  headers?: {
     'X-Custom-Header': string;
   };
-  signatureKey: string;
+  signatureKey?: string;
   messageCreated?: boolean;
   messageUpdated?: boolean;
   conversationUpdated?: boolean;
   channelUpdated?: boolean;
-  newWebhook: boolean;
-  setNewWebook: (newWebook: boolean) => void;
-  isLoading: boolean;
-  error: boolean;
-  setUpdateWebhook: (
+  newWebhook?: boolean;
+  setNewWebook?: (newWebook: boolean) => void;
+  isLoading?: boolean;
+  error?: boolean;
+  setUpdateWebhook?: (
     update: boolean,
     url: string,
     name?: string,
@@ -27,7 +27,7 @@ type NewSubscriptionProps = {
     headers?: {},
     signatureKey?: string
   ) => void;
-  setSubscribeWebhook: (url: string, name?: string, events?: string[], headers?: {}, signatureKey?: string) => void;
+  setSubscribeWebhook?: (url: string, name?: string, events?: string[], headers?: {}, signatureKey?: string) => void;
 };
 
 const NewSubscription = (props: NewSubscriptionProps) => {
@@ -61,33 +61,46 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   const handleChecked = (event: string) => {
     switch (event) {
       case 'message.created': {
-        !messageCreatedChecked
+        setMessageCreatedChecked(!messageCreatedChecked);
+        console.log('ME21i39021:', messageCreatedChecked);
+
+        messageCreatedChecked && setNewEvents([...newEvents, 'message.created']);
+
+        !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.created'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        setMessageCreatedChecked(!messageCreatedChecked);
-        console.log('ABC');
-
+        // setMessageCreatedChecked(!messageCreatedChecked);
+        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'message.updated': {
-        !messageUpdatedChecked
+        setMessageUpdatedChecked(!messageUpdatedChecked);
+        messageCreatedChecked && setNewEvents([...newEvents, 'message.updated']);
+        !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        setMessageUpdatedChecked(!messageUpdatedChecked);
+        // setMessageUpdatedChecked(!messageUpdatedChecked);
+        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'conversation.updated': {
-        !conversationUpdatedChecked
+        setConversationUpdatedChecked(!conversationUpdatedChecked);
+        messageCreatedChecked && setNewEvents([...newEvents, 'conversation.updated']);
+        !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'conversation.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        setConversationUpdatedChecked(!conversationUpdatedChecked);
+        // setConversationUpdatedChecked(!conversationUpdatedChecked);
+        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'channel.updated': {
-        !channelUpdatedChecked
+        setChannelUpdatedChecked(!channelUpdatedChecked);
+        messageCreatedChecked && setNewEvents([...newEvents, 'channel.updated']);
+        !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'channel.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        setChannelUpdatedChecked(!channelUpdatedChecked);
+        // setChannelUpdatedChecked(!channelUpdatedChecked);
+        console.log('ACFETRER:', newEvents);
         break;
       }
     }
@@ -112,6 +125,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
             placeholder={newWebhook ? 'URL' : url}
             value={newUrl}
             onChange={event => setNewUrl(event.target.value)}
+            autoFocus={newWebhook ? true : false}
             required={true}
           />
         </div>

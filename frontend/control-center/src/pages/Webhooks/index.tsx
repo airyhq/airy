@@ -11,7 +11,8 @@ import WebhooksListItem from './WebhooksListItem';
 type WebhooksProps = {} & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
-  webhooks: state.data.webhooks,
+  webhooks: Object.values(state.data.webhooks),
+  abc: state.data.webhooks,
 });
 
 const mapDispatchToProps = {
@@ -24,12 +25,15 @@ const Webhooks = (props: WebhooksProps) => {
   const {listWebhooks, webhooks} = props;
   const [newWebhook, setNewWebhook] = useState(false);
 
+  console.log('ABC:: ', props.abc);
+  console.log('WEBHOOKS:: ', webhooks);
+
   useEffect(() => {
     setPageTitle('Webhooks');
   }, []);
 
   useEffect(() => {
-    Object.keys(webhooks).length === 0 && listWebhooks();
+    webhooks.length === 0 && listWebhooks();
   }, [webhooks]);
 
   const handleNewWebhook = (newWebhook: boolean) => {
@@ -54,13 +58,15 @@ const Webhooks = (props: WebhooksProps) => {
       </div>
       <div>
         {webhooks &&
-          Object.values(webhooks).map((webhook: Webhook, index) => (
+          webhooks.map((webhook: Webhook, index) => (
             <WebhooksListItem
               id={webhook.id}
               url={webhook.url}
+              name={webhook.name}
+              events={webhook.events}
+              status={webhook.status}
               switchId={`${index}`}
               key={index}
-              status={webhook.status}
               newWebhook={newWebhook}
               setNewWebhook={handleNewWebhook}
             />

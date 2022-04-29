@@ -85,7 +85,7 @@ module.exports = {
         {
           'Control Center': [
             'ui/control-center/introduction',
-            'ui/control-center/components',
+            'ui/control-center/status',
             'ui/control-center/connectors',
             'ui/control-center/catalog',
           ],

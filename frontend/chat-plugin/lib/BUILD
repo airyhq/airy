@@ -9,6 +9,14 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "chat-plugin",
+    srcs = glob(
+        [
+            "**/*.json",
+            "**/*.ts",
+            "**/*.tsx",
+        ],
+        exclude = ["publish_package.json"],
+    ),
     tsconfig = "//frontend/chat-plugin:widget_tsconfig",
     deps = ts_deps + npm_deps,
 )
@@ -48,7 +56,7 @@ web_library(
 genrule(
     name = "npm_library",
     srcs = [
-        "package.json",
+        "publish_package.json",
         "README.md",
         ":dist",
         ":chat-plugin",
@@ -57,7 +65,8 @@ genrule(
     outs = ["chat-plugin_npm_lib"],
     cmd = """
     mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
-    && cp $(location :package.json) $(location :README.md) $(OUTS) \
+    && cp $(location :README.md) $(OUTS) \
+    && cp $(location :publish_package.json) $(OUTS)/package.json \
     && mv $(RULEDIR)/src $(OUTS) && mv $(RULEDIR)/index.d.ts $(OUTS)
 """,
 )

@@ -12,6 +12,14 @@ ts_deps = [
 
 ts_web_library(
     name = "httpclient",
+    srcs = glob(
+        [
+            "**/*.json",
+            "**/*.ts",
+            "**/*.tsx",
+        ],
+        exclude = ["publish_package.json"],
+    ),
     deps = ts_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",
@@ -58,7 +66,7 @@ web_library(
 genrule(
     name = "npm_library",
     srcs = [
-        "package.json",
+        "publish_package.json",
         "README.md",
         ":dist_browser",
         ":dist_node",
@@ -69,9 +77,11 @@ genrule(
     cmd = """
     mkdir -p $(OUTS)/dist && cp $(location :dist_browser)/browser.js $(OUTS)/dist \
     && cp $(location :dist_node)/node.js $(OUTS)/dist \
-    && cp $(location :package.json) $(location :README.md) $(OUTS) \
-    && mv $(RULEDIR)/src $(OUTS)
-""",
+    && mv $(RULEDIR)/src $(OUTS) \
+    && cp $(location :README.md) $(OUTS) \
+    && cp $(location :publish_package.json) $(OUTS)/package.json \
+    && ls $(OUTS) && cat $(OUTS)/package.json
+    """,
 )
 
 assemble_npm(

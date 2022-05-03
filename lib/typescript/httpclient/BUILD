@@ -12,7 +12,14 @@ ts_deps = [
 
 ts_web_library(
     name = "httpclient",
-    srcs = glob(["**/*.json", "**/*.ts", "**/*.tsx"], exclude = ["publish_package.json"]),
+    srcs = glob(
+        [
+            "**/*.json",
+            "**/*.ts",
+            "**/*.tsx",
+        ],
+        exclude = ["publish_package.json"],
+    ),
     deps = ts_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",

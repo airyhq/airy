@@ -9,7 +9,14 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "chat-plugin",
-    srcs = glob(["**/*.json", "**/*.ts", "**/*.tsx"], exclude = ["publish_package.json"]),
+    srcs = glob(
+        [
+            "**/*.json",
+            "**/*.ts",
+            "**/*.tsx",
+        ],
+        exclude = ["publish_package.json"],
+    ),
     tsconfig = "//frontend/chat-plugin:widget_tsconfig",
     deps = ts_deps + npm_deps,
 )

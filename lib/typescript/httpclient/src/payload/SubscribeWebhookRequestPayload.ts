@@ -1,5 +1,5 @@
 export interface SubscribeWebhookRequestPayload {
-  id?: string;
+  id: string;
   name?: string;
   url: string;
   events?: string[];

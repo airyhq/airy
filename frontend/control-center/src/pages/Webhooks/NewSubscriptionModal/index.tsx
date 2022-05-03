@@ -1,5 +1,5 @@
 import {Button} from 'components/cta/Button';
-import React, {useEffect, useState} from 'react';
+import React, {useState, KeyboardEvent, useRef} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 
@@ -53,54 +53,43 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   const [newEvents, setNewEvents] = useState(events || []);
   const [newHeaders, setNewHeaders] = useState(headers || '');
   const [newSignatureKey, setNewSignatureKey] = useState(signatureKey || '');
-  const [messageCreatedChecked, setMessageCreatedChecked] = useState(messageCreated);
-  const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(messageUpdated);
-  const [conversationUpdatedChecked, setConversationUpdatedChecked] = useState(conversationUpdated);
-  const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(channelUpdated);
+  const [messageCreatedChecked, setMessageCreatedChecked] = useState(false);
+  const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(false);
+  const [conversationUpdatedChecked, setConversationUpdatedChecked] = useState(false);
+  const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(false);
 
   const handleChecked = (event: string) => {
     switch (event) {
       case 'message.created': {
         setMessageCreatedChecked(!messageCreatedChecked);
-        console.log('ME21i39021:', messageCreatedChecked);
-
         messageCreatedChecked && setNewEvents([...newEvents, 'message.created']);
-
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.created'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        // setMessageCreatedChecked(!messageCreatedChecked);
-        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'message.updated': {
         setMessageUpdatedChecked(!messageUpdatedChecked);
-        messageCreatedChecked && setNewEvents([...newEvents, 'message.updated']);
+        messageUpdatedChecked && setNewEvents([...newEvents, 'message.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        // setMessageUpdatedChecked(!messageUpdatedChecked);
-        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'conversation.updated': {
         setConversationUpdatedChecked(!conversationUpdatedChecked);
-        messageCreatedChecked && setNewEvents([...newEvents, 'conversation.updated']);
+        conversationUpdatedChecked && setNewEvents([...newEvents, 'conversation.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'conversation.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        // setConversationUpdatedChecked(!conversationUpdatedChecked);
-        console.log('ACFETRER:', newEvents);
         break;
       }
       case 'channel.updated': {
         setChannelUpdatedChecked(!channelUpdatedChecked);
-        messageCreatedChecked && setNewEvents([...newEvents, 'channel.updated']);
+        channelUpdatedChecked && setNewEvents([...newEvents, 'channel.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'channel.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
-        // setChannelUpdatedChecked(!channelUpdatedChecked);
-        console.log('ACFETRER:', newEvents);
         break;
       }
     }
@@ -175,11 +164,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
         <div className={styles.headerKeyContainer}>
           <div className={styles.headerKeyItem}>
             <span>(Customer Header)*</span>
-            <input
-              // value={newHeaders['X-Custom-Header']}
-              onChange={event => setNewEvents['X-Custom-Header'](event.target.value)}
-              placeholder="Lorem Ipsum is simply dummy textgggg of the printing and typesetting industry. Lorem Ipsum has been the
-              industrys standard dummy text ever since the 1500s"></input>
+            <input value={newHeaders['']} onChange={event => setNewEvents([event.target.value])}></input>
           </div>
           <div className={styles.headerKeyItem}>
             <span>*Sign key</span>
@@ -200,7 +185,8 @@ const NewSubscription = (props: NewSubscriptionProps) => {
             borderRadius: '10px',
           }}
           disabled={newUrl === '' || isLoading}
-          type="button">
+          type="button"
+        >
           {isLoading && <RefreshIcon height={24} width={24} />}
           {isLoading
             ? newWebhook

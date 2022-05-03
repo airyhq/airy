@@ -21,6 +21,7 @@ type WebhooksListItemProps = {
   switchId?: string;
   newWebhook: boolean;
   setNewWebhook?: (isNewWebhook: boolean) => void;
+  setSuccessful?: (successful: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -61,7 +62,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       events.includes('channel.updated') && setChannelUpdated(true));
   };
 
-  const handleUnsubscribe = () => {
+  const handleSubscribeToggle = () => {
     subscribed === 'Subscribed'
       ? setShowUnsubscribeModal(true)
       : props
@@ -75,6 +76,10 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           })
           .then(() => {
             setSubscribed('Subscribed');
+            props.setSuccessful(true);
+            setTimeout(() => {
+              props.setSuccessful(false);
+            }, 5000);
           })
           .catch((error: Error) => {
             console.error(error);
@@ -94,8 +99,6 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     headers?: {},
     signatureKey?: string
   ) => {
-    console.log('INSIDE UPDATE: events', events);
-
     setErrorOccurred(false);
     setIsLoading(true);
     update &&
@@ -168,7 +171,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         <Switch
           id={switchId}
           isActive={subscribed === 'Subscribed' ? true : false}
-          toggleActive={handleUnsubscribe}
+          toggleActive={handleSubscribeToggle}
           onColor="#EFEFEF"
         />
         <div className={styles.pensilIcon} onClick={editWebhook}>

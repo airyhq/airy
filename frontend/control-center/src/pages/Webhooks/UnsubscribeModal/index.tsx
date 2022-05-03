@@ -45,7 +45,8 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
               height: '48px',
               borderRadius: '10px',
             }}
-            type="submit">
+            type="submit"
+          >
             {isLoading && <RefreshIcon height={24} width={24} />}
             {isLoading ? 'Unsubscribing...' : error ? 'Try again...' : 'Confirm'}
           </Button>
@@ -53,7 +54,8 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
             onClick={handleCancel}
             styleVariant="outline"
             style={{alignSelf: 'center', width: '213px', height: '48px', borderRadius: '10px'}}
-            type="reset">
+            type="reset"
+          >
             Cancel
           </Button>
         </div>

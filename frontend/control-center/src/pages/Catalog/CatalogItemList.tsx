@@ -1,5 +1,5 @@
 import React from 'react';
-import InfoCard, { InfoCardStyle } from '../Connectors/InfoCard';
+import InfoCard, {InfoCardStyle} from '../Connectors/InfoCard';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';

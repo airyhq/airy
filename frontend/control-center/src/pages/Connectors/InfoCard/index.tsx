@@ -15,20 +15,48 @@ type InfoCardProps = {
 };
 
 const InfoCard = (props: InfoCardProps) => {
-  const {sourceInfo, addChannelAction, installed, style} = props;  
+  const {sourceInfo, addChannelAction, installed, style} = props;
 
   return (
     <div
-      className={`${styles.channelCard} ${installed ? styles.installed : styles.notInstalled}`}
+      className={`
+        ${styles.channelCard} 
+        ${
+          style === InfoCardStyle.expanded
+            ? styles.isExpandedContainer
+            : installed
+            ? styles.installed
+            : styles.notInstalled
+        } 
+      `}
       onClick={addChannelAction}
     >
       <div
-        className={`${styles.channelLogoTitleContainer} ${
-          installed ? styles.channelLogoTitleContainerInstalled : styles.channelLogoTitleContainerNotInstalled
-        } ${style === InfoCardStyle.expanded && styles.isExpanded}`}
+        className={`
+          ${styles.channelLogoTitleContainer} 
+          ${
+            style === InfoCardStyle.expanded
+              ? styles.isExpandedContainer
+              : installed
+              ? styles.channelLogoTitleContainerInstalled
+              : styles.channelLogoTitleContainerNotInstalled
+          }          
+        `}
       >
-        <div className={styles.channelLogo}>{sourceInfo.image}</div>
-        <div className={styles.textDetails}>
+        <div
+          className={`
+          ${styles.channelLogo}
+          ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
+        `}
+        >
+          {sourceInfo.image}
+        </div>
+        <div
+          className={`
+          ${styles.textDetails}
+          ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
+        `}
+        >
           <h1>{sourceInfo.title}</h1>
           {!installed && <p>{sourceInfo.description}</p>}
         </div>

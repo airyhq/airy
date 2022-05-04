@@ -12,8 +12,7 @@
   border-radius: 10px;
   background-color: var(--color-background-blue);
   &:hover {
-    cursor: pointer;
-    border: 1px solid transparent;
+    border: 2px solid var(--color-airy-blue);
   }
 }
 
@@ -23,12 +22,6 @@
 
 .installed {
   height: 64px;
-}
-
-.isExpanded {
-  flex-direction: column;
-  align-items: start;
-  margin-left: 16px;
 }
 
 .channelLogoInstagram {
@@ -66,9 +59,6 @@
   justify-content: center;
   border-radius: 10px;
   border: 2px solid transparent;
-  &:hover {
-    border: 2px solid var(--color-airy-blue);
-  }
 }
 
 .channelLogoTitleContainerInstalled {
@@ -97,5 +87,35 @@
       width: 40px;
       height: 40px;
     }
+  }
+}
+
+.isExpandedCard {
+  height: 120px;
+  width: 340px;
+}
+
+.isExpandedContainer {
+  height: 120px;
+  width: 340px;
+  padding: 6px 0 0 0;
+  flex-direction: column;
+  align-items: start;
+}
+
+.isExpandedLogo {
+  min-width: 40px;
+  max-width: 100%;
+  margin: 0 18px;
+}
+
+.isExpandedDetails {
+  width: 100%;
+  margin-left: 18px;
+  h1 {
+    @include font-l;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

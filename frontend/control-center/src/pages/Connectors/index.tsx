@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel, Source} from 'model';
-import InfoCard, { InfoCardStyle } from './InfoCard';
+import InfoCard, {InfoCardStyle} from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels} from '../../actions/channel';

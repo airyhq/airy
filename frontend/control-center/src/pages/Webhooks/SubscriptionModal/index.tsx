@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 
-type NewSubscriptionProps = {
+type SubscriptionModalProps = {
   name?: string;
   url?: string;
   events?: string[];
@@ -35,7 +35,7 @@ type NewSubscriptionProps = {
   ) => void;
 };
 
-const NewSubscription = (props: NewSubscriptionProps) => {
+const SubscriptionModal = (props: SubscriptionModalProps) => {
   const {
     name,
     url,
@@ -180,8 +180,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
             borderRadius: '10px',
           }}
           disabled={newUrl.length < 4 || isLoading}
-          type="button"
-        >
+          type="button">
           {isLoading && <RefreshIcon height={24} width={24} />}
           {isLoading
             ? newWebhook
@@ -199,4 +198,4 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   );
 };
 
-export default NewSubscription;
+export default SubscriptionModal;

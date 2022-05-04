@@ -7,7 +7,7 @@ import {listWebhooks, subscribeWebhook} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import styles from './index.module.scss';
-import NewSubscription from './NewSubscriptionModal';
+import SubscriptionModal from './SubscriptionModal';
 import WebhooksListItem from './WebhooksListItem';
 
 type WebhooksProps = {} & ConnectedProps<typeof connector>;
@@ -85,8 +85,7 @@ const Webhooks = (props: WebhooksProps) => {
           zIndex: 9999,
           background: notifcationColor,
           borderRadius: '10px',
-        }}
-      >
+        }}>
         <span className={styles.successfullySubscribed}>{notificationText}</span>
       </div>
     );
@@ -96,8 +95,8 @@ const Webhooks = (props: WebhooksProps) => {
     <>
       {showSuccessNotification && <SuccessfulSubscribed />}
       {newWebhook && (
-        <SettingsModal close={() => setNewWebhook(false)} title="Subscribe Webhook" className={styles.subscribePopup}>
-          <NewSubscription
+        <SettingsModal close={() => setNewWebhook(false)} title="Subscribe Webhook" style={{fontSize: '40px'}}>
+          <SubscriptionModal
             newWebhook={true}
             name={''}
             url={''}

@@ -5,7 +5,7 @@ import {Switch} from '../../../components/Switch';
 import {connect, ConnectedProps} from 'react-redux';
 import {subscribeWebhook, unsubscribeWebhook, updateWebhook} from '../../../actions/webhook';
 import {SettingsModal} from 'components';
-import NewSubscription from '../NewSubscriptionModal';
+import SubscriptionModal from '../SubscriptionModal';
 import {UnsubscribeModal} from '../UnsubscribeModal';
 
 type WebhooksListItemProps = {
@@ -159,7 +159,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         <>
           {events &&
             events.map((event, index) => (
-              <p key={index} style={{width: '100%'}}>
+              <p key={index} style={{width: '100%', textTransform: 'capitalize'}}>
                 {event}
               </p>
             ))}
@@ -178,8 +178,8 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       </div>
 
       {editModeOn && (
-        <SettingsModal close={cancelChanges} title="Subscribe Webhook" className={styles.subscribePopup}>
-          <NewSubscription
+        <SettingsModal close={cancelChanges} title="Update Webhook" style={{fontSize: '40px'}}>
+          <SubscriptionModal
             name={name}
             url={url}
             headers={headers}
@@ -193,7 +193,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
         </SettingsModal>
       )}
       {showUnsubscribeModal && (
-        <SettingsModal close={cancelChanges} title="" className={styles.subscribePopup}>
+        <SettingsModal close={cancelChanges} title="">
           <UnsubscribeModal
             setUnsubscribe={unsubscribeWebhookConfirm}
             setCancelUnsubscribe={cancelChanges}

@@ -9,6 +9,7 @@
   height: 'auto';
   border-bottom: 1px solid var(--color-light-gray);
   margin-top: 30px;
+  padding-bottom: 30px;
 
   span {
     width: 40%;
@@ -51,6 +52,9 @@
   p {
     @include font-base;
     margin-bottom: 22px;
+  }
+  p:last-child{
+    margin-bottom: 0px;
   }
   input {
     @include font-base;
@@ -133,13 +137,4 @@
       }
     }
   }
-}
-
-.subscribePopup {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  width: 1118px;
-  height: 680px;
 }

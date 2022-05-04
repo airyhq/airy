@@ -110,7 +110,7 @@ const Webhooks = (props: WebhooksProps) => {
         <div className={styles.webhooksHeadline}>
           <div className={styles.headlineContainer}>
             <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-            <Button onClick={() => setNewWebhook(true)} style={{fontSize: 13, width: '176px', height: '40px'}}>
+            <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, width: '176px', height: '40px'}}>
               Subscribe Webhook
             </Button>
           </div>

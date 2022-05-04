@@ -32,7 +32,7 @@ type SubscriptionModalProps = {
 
 const isEventOn = (events: WebhooksEventType[] | undefined, event: WebhooksEventType): boolean => {
   return events?.includes(event);
-}
+};
 
 const SubscriptionModal = (props: SubscriptionModalProps) => {
   const {webhook, newWebhook, isLoading, error, setUpdateWebhook, setSubscribeWebhook} = props;
@@ -42,10 +42,18 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
   const [newEvents, setNewEvents] = useState(events || []);
   const [newHeaders, setNewHeaders] = useState(headers['X-Custom-Header'] || '');
   const [newSignatureKey, setNewSignatureKey] = useState(signatureKey || '');
-  const [messageCreatedChecked, setMessageCreatedChecked] = useState(isEventOn(events, WebhooksEventType.messageCreated));
-  const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(isEventOn(events, WebhooksEventType.messageUpdated));
-  const [conversationUpdatedChecked, setConversationUpdatedChecked] = useState(isEventOn(events, WebhooksEventType.conversationUpdated));
-  const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(isEventOn(events, WebhooksEventType.channelUpdated));  
+  const [messageCreatedChecked, setMessageCreatedChecked] = useState(
+    isEventOn(events, WebhooksEventType.messageCreated)
+  );
+  const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(
+    isEventOn(events, WebhooksEventType.messageUpdated)
+  );
+  const [conversationUpdatedChecked, setConversationUpdatedChecked] = useState(
+    isEventOn(events, WebhooksEventType.conversationUpdated)
+  );
+  const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(
+    isEventOn(events, WebhooksEventType.channelUpdated)
+  );
 
   const handleChecked = (event: WebhooksEventType) => {
     switch (event) {

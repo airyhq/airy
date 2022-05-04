@@ -25,6 +25,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 8px;
+    white-space: nowrap;
   }
 
   div:not(:last-child) {

@@ -3,7 +3,7 @@ import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {listWebhooks} from '../../actions/webhook';
+import {listWebhooks, subscribeWebhook} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import styles from './index.module.scss';
@@ -18,6 +18,7 @@ const mapStateToProps = (state: StateModel) => ({
 
 const mapDispatchToProps = {
   listWebhooks,
+  subscribeWebhook,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -25,7 +26,11 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const Webhooks = (props: WebhooksProps) => {
   const {listWebhooks, webhooks} = props;
   const [newWebhook, setNewWebhook] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorOccurred, setErrorOccurred] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [notificationText, setNotificatioNText] = useState('');
+  const [notifcationColor, setNotifcationColor] = useState('');
 
   useEffect(() => {
     setPageTitle('Webhooks');
@@ -35,12 +40,33 @@ const Webhooks = (props: WebhooksProps) => {
     webhooks.length === 0 && listWebhooks();
   }, [webhooks]);
 
-  const handleNewWebhook = (newWebhook: boolean) => {
-    setNewWebhook(newWebhook);
+  const handleNotification = (show: boolean, error: boolean) => {
+    error
+      ? (setNotificatioNText('Error occurred'), setNotifcationColor('#d51548'))
+      : (setNotificatioNText('Successfully Subscribed!'), setNotifcationColor('#0da36b'));
+    setShowSuccessNotification(show);
   };
 
-  const handleSuccessful = (successful: boolean) => {
-    setShowSuccessNotification(successful);
+  const subscribeWebhookConfirm = (
+    url: string,
+    name?: string,
+    events?: string[],
+    signatureKey?: string,
+    headers?: {'X-Custom-Header': string}
+  ) => {
+    setErrorOccurred(false);
+    setIsLoading(true);
+    props
+      .subscribeWebhook({url: url, name: name, events: events, signatureKey: signatureKey, headers: headers})
+      .then(() => {
+        setIsLoading(false);
+        setNewWebhook(false);
+      })
+      .catch((error: Error) => {
+        console.error(error);
+        setErrorOccurred(true);
+        setIsLoading(false);
+      });
   };
 
   const SuccessfulSubscribed = () => {
@@ -57,11 +83,11 @@ const Webhooks = (props: WebhooksProps) => {
           height: '40px',
           width: '240px',
           zIndex: 9999,
-          background: '#0da36b',
+          background: notifcationColor,
           borderRadius: '10px',
         }}
       >
-        <span className={styles.successfullySubscribed}>Successfully Subscribed!</span>
+        <span className={styles.successfullySubscribed}>{notificationText}</span>
       </div>
     );
   };
@@ -69,19 +95,20 @@ const Webhooks = (props: WebhooksProps) => {
   return (
     <>
       {showSuccessNotification && <SuccessfulSubscribed />}
-      {/* {newWebhook && (
+      {newWebhook && (
         <SettingsModal close={() => setNewWebhook(false)} title="Subscribe Webhook" className={styles.subscribePopup}>
           <NewSubscription
             newWebhook={true}
             name={''}
             url={''}
             signatureKey={''}
-            setSubscribeWebhook={}
-            // isLoading={isLoading}
-            // error={errorOccurred}
+            headers={{'X-Custom-Header': ''}}
+            setSubscribeWebhook={subscribeWebhookConfirm}
+            isLoading={isLoading}
+            error={errorOccurred}
           />
         </SettingsModal>
-      )} */}
+      )}
       <div className={styles.webhooksWrapper}>
         <div className={styles.webhooksHeadline}>
           <div className={styles.headlineContainer}>
@@ -105,12 +132,12 @@ const Webhooks = (props: WebhooksProps) => {
                 url={webhook.url}
                 name={webhook.name}
                 events={webhook.events}
+                headers={webhook.headers}
+                signatureKey={webhook.signatureKey}
                 status={webhook.status}
                 switchId={`${index}`}
                 key={index}
-                newWebhook={newWebhook}
-                setNewWebhook={handleNewWebhook}
-                setSuccessful={handleSuccessful}
+                setShowNotification={handleNotification}
               />
             ))}
         </div>

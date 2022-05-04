@@ -29,7 +29,7 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
       <ErrorMessage height={140} width={140} />
       <h1>Unsubscribe Webhook</h1>
       <p>
-        Are you sure <br /> you want to unsubsribe <br /> <br /> {webhookUrl}?
+        Are you sure <br /> you want to unsubscribe <br /> <br /> {webhookUrl}?
       </p>
       <div className={styles.buttonContainer}>
         <div className={isLoading ? styles.spinAnimation : ''} style={{display: 'flex'}}>

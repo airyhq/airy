@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './index.module.scss';
 
 import {ReactComponent as ErrorMessage} from 'assets/images/icons/errorMessage.svg';

@@ -1,5 +1,5 @@
 import {Button} from 'components/cta/Button';
-import React, {useState, KeyboardEvent, useRef} from 'react';
+import React, {useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 
@@ -7,16 +7,15 @@ type NewSubscriptionProps = {
   name?: string;
   url?: string;
   events?: string[];
+  signatureKey?: string;
   headers?: {
     'X-Custom-Header': string;
   };
-  signatureKey?: string;
   messageCreated?: boolean;
   messageUpdated?: boolean;
   conversationUpdated?: boolean;
   channelUpdated?: boolean;
   newWebhook?: boolean;
-  setNewWebook?: (newWebook: boolean) => void;
   isLoading?: boolean;
   error?: boolean;
   setUpdateWebhook?: (
@@ -24,10 +23,16 @@ type NewSubscriptionProps = {
     url: string,
     name?: string,
     events?: string[],
-    headers?: {},
-    signatureKey?: string
+    signatureKey?: string,
+    headers?: {'X-Custom-Header': string}
   ) => void;
-  setSubscribeWebhook?: (url: string, name?: string, events?: string[], headers?: {}, signatureKey?: string) => void;
+  setSubscribeWebhook?: (
+    url: string,
+    name?: string,
+    events?: string[],
+    signatureKey?: string,
+    headers?: {'X-Custom-Header': string}
+  ) => void;
 };
 
 const NewSubscription = (props: NewSubscriptionProps) => {
@@ -37,12 +42,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
     events,
     headers,
     signatureKey,
-    messageCreated,
-    messageUpdated,
-    conversationUpdated,
-    channelUpdated,
     newWebhook,
-    setNewWebook,
     isLoading,
     error,
     setUpdateWebhook,
@@ -51,7 +51,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   const [newUrl, setNewUrl] = useState(newWebhook ? '' : url);
   const [newName, setNewName] = useState(name || '');
   const [newEvents, setNewEvents] = useState(events || []);
-  const [newHeaders, setNewHeaders] = useState(headers || '');
+  const [newHeaders, setNewHeaders] = useState(headers['X-Custom-Header'] || '');
   const [newSignatureKey, setNewSignatureKey] = useState(signatureKey || '');
   const [messageCreatedChecked, setMessageCreatedChecked] = useState(false);
   const [messageUpdatedChecked, setMessageUpdatedChecked] = useState(false);
@@ -62,7 +62,6 @@ const NewSubscription = (props: NewSubscriptionProps) => {
     switch (event) {
       case 'message.created': {
         setMessageCreatedChecked(!messageCreatedChecked);
-        messageCreatedChecked && setNewEvents([...newEvents, 'message.created']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.created'])
           : setNewEvents(newEvents.filter(item => item !== event));
@@ -70,7 +69,6 @@ const NewSubscription = (props: NewSubscriptionProps) => {
       }
       case 'message.updated': {
         setMessageUpdatedChecked(!messageUpdatedChecked);
-        messageUpdatedChecked && setNewEvents([...newEvents, 'message.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'message.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
@@ -78,7 +76,6 @@ const NewSubscription = (props: NewSubscriptionProps) => {
       }
       case 'conversation.updated': {
         setConversationUpdatedChecked(!conversationUpdatedChecked);
-        conversationUpdatedChecked && setNewEvents([...newEvents, 'conversation.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'conversation.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
@@ -86,7 +83,6 @@ const NewSubscription = (props: NewSubscriptionProps) => {
       }
       case 'channel.updated': {
         setChannelUpdatedChecked(!channelUpdatedChecked);
-        channelUpdatedChecked && setNewEvents([...newEvents, 'channel.updated']);
         !newEvents.includes(event)
           ? setNewEvents([...newEvents, 'channel.updated'])
           : setNewEvents(newEvents.filter(item => item !== event));
@@ -96,12 +92,11 @@ const NewSubscription = (props: NewSubscriptionProps) => {
   };
 
   const updateWebhook = () => {
-    setUpdateWebhook(true, newUrl, newName, newEvents, newHeaders, newSignatureKey);
+    setUpdateWebhook(true, newUrl, newName, newEvents, newSignatureKey, {'X-Custom-Header': newHeaders});
   };
 
   const subscribeToNewWebhook = () => {
-    setSubscribeWebhook(newUrl, newName, newEvents, newHeaders, newSignatureKey);
-    setNewWebook(false);
+    setSubscribeWebhook(newUrl, newName, newEvents, newSignatureKey, {'X-Custom-Header': newHeaders});
   };
 
   return (
@@ -164,7 +159,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
         <div className={styles.headerKeyContainer}>
           <div className={styles.headerKeyItem}>
             <span>(Customer Header)*</span>
-            <input value={newHeaders['']} onChange={event => setNewEvents([event.target.value])}></input>
+            <input value={newHeaders} onChange={event => setNewHeaders(event.target.value)}></input>
           </div>
           <div className={styles.headerKeyItem}>
             <span>*Sign key</span>
@@ -184,7 +179,7 @@ const NewSubscription = (props: NewSubscriptionProps) => {
             height: '48px',
             borderRadius: '10px',
           }}
-          disabled={newUrl === '' || isLoading}
+          disabled={newUrl.length < 4 || isLoading}
           type="button"
         >
           {isLoading && <RefreshIcon height={24} width={24} />}

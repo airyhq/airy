@@ -25,7 +25,7 @@ export const SettingsModal = (props: SettingsModalProps) => {
       onRequestClose={close}
     >
       <div style={style} className={className}>
-        <ModalHeader title={title} close={close} style={style}/>
+        <ModalHeader title={title} close={close} style={style} />
         {children}
       </div>
     </Modal>

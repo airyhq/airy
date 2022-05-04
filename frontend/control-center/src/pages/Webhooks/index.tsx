@@ -57,7 +57,7 @@ const Webhooks = (props: WebhooksProps) => {
     setErrorOccurred(false);
     setIsLoading(true);
     props
-      .subscribeWebhook({url: url, name: name, events: events, signatureKey: signatureKey, headers: headers})
+      .subscribeWebhook({url, name, events, signatureKey, headers})
       .then(() => {
         setIsLoading(false);
         setNewWebhook(false);
@@ -85,7 +85,8 @@ const Webhooks = (props: WebhooksProps) => {
           zIndex: 9999,
           background: notifcationColor,
           borderRadius: '10px',
-        }}>
+        }}
+      >
         <span className={styles.successfullySubscribed}>{notificationText}</span>
       </div>
     );
@@ -98,10 +99,7 @@ const Webhooks = (props: WebhooksProps) => {
         <SettingsModal close={() => setNewWebhook(false)} title="Subscribe Webhook" style={{fontSize: '40px'}}>
           <SubscriptionModal
             newWebhook={true}
-            name={''}
-            url={''}
-            signatureKey={''}
-            headers={{'X-Custom-Header': ''}}
+            webhook={{id: '', url: '', signatureKey: '', events: [], headers: {'X-Custom-Header': ''}}}
             setSubscribeWebhook={subscribeWebhookConfirm}
             isLoading={isLoading}
             error={errorOccurred}
@@ -127,13 +125,7 @@ const Webhooks = (props: WebhooksProps) => {
           {webhooks &&
             webhooks.map((webhook: Webhook, index) => (
               <WebhooksListItem
-                id={webhook.id}
-                url={webhook.url}
-                name={webhook.name}
-                events={webhook.events}
-                headers={webhook.headers}
-                signatureKey={webhook.signatureKey}
-                status={webhook.status}
+                webhook={webhook}
                 switchId={`${index}`}
                 key={index}
                 setShowNotification={handleNotification}

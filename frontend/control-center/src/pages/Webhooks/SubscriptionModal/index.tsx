@@ -2,15 +2,10 @@ import {Button} from 'components/cta/Button';
 import React, {useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
+import {Webhook} from 'model/Webhook';
 
 type SubscriptionModalProps = {
-  name?: string;
-  url?: string;
-  events?: string[];
-  signatureKey?: string;
-  headers?: {
-    'X-Custom-Header': string;
-  };
+  webhook: Webhook;
   messageCreated?: boolean;
   messageUpdated?: boolean;
   conversationUpdated?: boolean;
@@ -36,18 +31,8 @@ type SubscriptionModalProps = {
 };
 
 const SubscriptionModal = (props: SubscriptionModalProps) => {
-  const {
-    name,
-    url,
-    events,
-    headers,
-    signatureKey,
-    newWebhook,
-    isLoading,
-    error,
-    setUpdateWebhook,
-    setSubscribeWebhook,
-  } = props;
+  const {webhook, newWebhook, isLoading, error, setUpdateWebhook, setSubscribeWebhook} = props;
+  const {name, url, events, headers, signatureKey} = webhook;
   const [newUrl, setNewUrl] = useState(newWebhook ? '' : url);
   const [newName, setNewName] = useState(name || '');
   const [newEvents, setNewEvents] = useState(events || []);
@@ -180,7 +165,8 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
             borderRadius: '10px',
           }}
           disabled={newUrl.length < 4 || isLoading}
-          type="button">
+          type="button"
+        >
           {isLoading && <RefreshIcon height={24} width={24} />}
           {isLoading
             ? newWebhook

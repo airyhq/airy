@@ -7,17 +7,10 @@ import {subscribeWebhook, unsubscribeWebhook, updateWebhook} from '../../../acti
 import {SettingsModal} from 'components';
 import SubscriptionModal from '../SubscriptionModal';
 import {UnsubscribeModal} from '../UnsubscribeModal';
+import {Webhook} from 'model/Webhook';
 
 type WebhooksListItemProps = {
-  id: string;
-  name?: string;
-  url: string;
-  events?: string[];
-  headers?: {
-    'X-Custom-Header': string;
-  };
-  status?: string;
-  signatureKey?: string;
+  webhook: Webhook;
   switchId?: string;
   setShowNotification?: (show: boolean, error?: boolean) => void;
 } & ConnectedProps<typeof connector>;
@@ -31,7 +24,8 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const WebhooksListItem = (props: WebhooksListItemProps) => {
-  const {id, name, url, events, headers, status, signatureKey, switchId} = props;
+  const {webhook, switchId} = props;
+  const {id, name, url, events, headers, status, signatureKey} = webhook;
   const [subscribed, setSubscribed] = useState(status || 'Subscribed');
   const [editModeOn, setEditModeOn] = useState(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
@@ -48,12 +42,12 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       ? setShowUnsubscribeModal(true)
       : props
           .subscribeWebhook({
-            id: id,
-            url: url,
-            name: name,
-            events: events,
-            headers: headers,
-            signatureKey: signatureKey,
+            id,
+            url,
+            name,
+            events,
+            headers,
+            signatureKey,
           })
           .then(() => {
             setSubscribed('Subscribed');
@@ -88,12 +82,12 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     update &&
       props
         .updateWebhook({
-          id: id,
-          url: url,
-          name: name,
-          events: events,
-          signatureKey: signatureKey,
-          headers: headers,
+          id,
+          url,
+          name,
+          events,
+          signatureKey,
+          headers,
         })
         .then(() => {
           setIsLoading(false);
@@ -117,11 +111,11 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     setIsLoading(true);
     props
       .subscribeWebhook({
-        url: url,
-        name: name,
-        events: events,
-        signatureKey: signatureKey,
-        headers: headers,
+        url,
+        name,
+        events,
+        signatureKey,
+        headers,
       })
       .then(() => {
         setIsLoading(false);
@@ -138,7 +132,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
     setErrorOccurred(false);
     setIsLoading(true);
     props
-      .unsubscribeWebhook({id: id, url: url})
+      .unsubscribeWebhook({id, url})
       .then(() => {
         setShowUnsubscribeModal(false);
         setSubscribed('Unsubscribed');
@@ -180,10 +174,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       {editModeOn && (
         <SettingsModal close={cancelChanges} title="Update Webhook" style={{fontSize: '40px'}}>
           <SubscriptionModal
-            name={name}
-            url={url}
-            headers={headers}
-            signatureKey={signatureKey}
+            webhook={{id, name, url, headers, signatureKey}}
             newWebhook={false}
             setUpdateWebhook={updateWebhookConfirm}
             setSubscribeWebhook={subscribeWebhookConfirm}

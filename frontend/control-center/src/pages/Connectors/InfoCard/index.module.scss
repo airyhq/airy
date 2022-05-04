@@ -25,6 +25,12 @@
   height: 64px;
 }
 
+.isExpanded {
+  flex-direction: column;
+  align-items: start;
+  margin-left: 16px;
+}
+
 .channelLogoInstagram {
   margin-right: 10px;
   height: 40px;

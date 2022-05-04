@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel, Source} from 'model';
-import ChannelCard from './ChannelCard';
+import InfoCard, { InfoCardStyle } from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels} from '../../actions/channel';
@@ -51,8 +51,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
           return (
             channelsBySource(infoItem.type).length > 0 && (
               <div style={{display: 'flex'}} key={infoItem.type}>
-                <ChannelCard
+                <InfoCard
                   installed
+                  style={InfoCardStyle.expanded}
                   sourceInfo={infoItem}
                   addChannelAction={() => {
                     navigate(infoItem.channelsListRoute);

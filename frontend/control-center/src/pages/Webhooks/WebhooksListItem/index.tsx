@@ -174,7 +174,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       {editModeOn && (
         <SettingsModal close={cancelChanges} title="Update Webhook" style={{fontSize: '40px'}}>
           <SubscriptionModal
-            webhook={{id, name, url, headers, signatureKey}}
+            webhook={webhook}
             newWebhook={false}
             setUpdateWebhook={updateWebhookConfirm}
             setSubscribeWebhook={subscribeWebhookConfirm}

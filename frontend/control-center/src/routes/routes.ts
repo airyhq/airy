@@ -19,3 +19,5 @@ export const CATALOG_INSTAGRAM_ROUTE = '/catalog/instagram';
 
 export const STATUS_ROUTE = '/status';
 export const WEBHOOKS_ROUTE = '/webhooks';
+
+export const INBOX_ROUTE = '/inbox';

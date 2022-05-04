@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
+import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
 import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
@@ -20,6 +20,7 @@ import CatalogOutlet from './pages/Catalog/CatalogOutlet';
 import Connectors from './pages/Connectors';
 import Webhooks from './pages/Webhooks';
 import Status from './pages/Status';
+import Inbox from './pages/Inbox';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -65,6 +66,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route element={<NotFound />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
           <Route path={`${STATUS_ROUTE}`} element={<Status />} />
+          <Route path={`${INBOX_ROUTE}`} element={<Inbox />} />
         </Routes>
       </div>
     </div>

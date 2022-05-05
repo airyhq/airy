@@ -9,6 +9,7 @@ import {listChannels} from '../../actions/channel';
 import {setPageTitle} from '../../services/pageTitle';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
+import {EmptyStateConnectors} from './EmptyStateConnectors';
 
 const mapDispatchToProps = {
   listChannels,
@@ -40,29 +41,36 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.channelsWrapper}>
-      <div className={styles.channelsHeadline}>
-        <div>
-          <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+      {sourcesInfo.length > 0 && (
+        <div className={styles.channelsHeadline}>
+          <div>
+            <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+          </div>
         </div>
-      </div>
-
+      )}
       <div className={styles.wrapper}>
-        {sourcesInfo.map((infoItem: SourceInfo) => {
-          return (
-            channelsBySource(infoItem.type).length > 0 && (
-              <div style={{display: 'flex'}} key={infoItem.type}>
-                <InfoCard
-                  installed
-                  style={InfoCardStyle.expanded}
-                  sourceInfo={infoItem}
-                  addChannelAction={() => {
-                    navigate(infoItem.channelsListRoute);
-                  }}
-                />
-              </div>
-            )
-          );
-        })}
+        {sourcesInfo.length === 0 ? (
+          <EmptyStateConnectors />
+        ) : (
+          <>
+            {sourcesInfo.map((infoItem: SourceInfo) => {
+              return (
+                channelsBySource(infoItem.type).length > 0 && (
+                  <div style={{display: 'flex'}} key={infoItem.type}>
+                    <InfoCard
+                      installed
+                      style={InfoCardStyle.expanded}
+                      sourceInfo={infoItem}
+                      addChannelAction={() => {
+                        navigate(infoItem.channelsListRoute);
+                      }}
+                    />
+                  </div>
+                )
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );

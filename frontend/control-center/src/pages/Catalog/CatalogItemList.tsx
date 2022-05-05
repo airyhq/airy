@@ -1,5 +1,5 @@
 import React from 'react';
-import ChannelCard from '../Connectors/ChannelCard';
+import InfoCard, {InfoCardStyle} from '../Connectors/InfoCard';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
@@ -24,8 +24,9 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
 
       <div className={styles.connectorList}>
         {list.map(infoItem => (
-          <ChannelCard
+          <InfoCard
             installed={installedConnectors}
+            style={InfoCardStyle.normal}
             key={infoItem.type}
             sourceInfo={infoItem}
             addChannelAction={() => {

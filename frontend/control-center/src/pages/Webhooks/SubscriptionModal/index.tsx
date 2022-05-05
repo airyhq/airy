@@ -1,5 +1,5 @@
 import {Button} from 'components/cta/Button';
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 import {Webhook, WebhooksEventType} from 'model/Webhook';
@@ -37,6 +37,7 @@ const isEventOn = (events: WebhooksEventType[] | undefined, event: WebhooksEvent
 const SubscriptionModal = (props: SubscriptionModalProps) => {
   const {webhook, newWebhook, isLoading, error, setUpdateWebhook, setSubscribeWebhook} = props;
   const {name, url, events, headers, signatureKey} = webhook;
+  const [buttonTitle, setButtonTitle] = useState('');
   const [newUrl, setNewUrl] = useState(newWebhook ? '' : url);
   const [newName, setNewName] = useState(name || '');
   const [newEvents, setNewEvents] = useState(events || []);
@@ -84,6 +85,29 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
           ? setNewEvents([...newEvents, WebhooksEventType.channelUpdated])
           : setNewEvents(newEvents.filter(item => item !== event));
         break;
+      }
+    }
+  };
+
+  useLayoutEffect(() => {
+    getButtonTitle();
+  }, [isLoading, error]);
+
+  const getButtonTitle = () => {
+    if (error) {
+      return setButtonTitle('Try again...');
+    }
+    if (!isLoading) {
+      if (newWebhook) {
+        return setButtonTitle('Subscribe');
+      } else {
+        return setButtonTitle('Update');
+      }
+    } else {
+      if (newWebhook) {
+        return setButtonTitle('Subscribing...');
+      } else {
+        return setButtonTitle('Updating...');
       }
     }
   };
@@ -180,15 +204,7 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
           type="button"
         >
           {isLoading && <RefreshIcon height={24} width={24} />}
-          {isLoading
-            ? newWebhook
-              ? 'Subscribing...'
-              : 'Updating...'
-            : error
-            ? 'Try again...'
-            : newWebhook
-            ? 'Confirm'
-            : 'Update'}
+          {buttonTitle}
         </Button>
       </div>
       {error && <span className={styles.errorMessage}>Unable to {newWebhook ? 'subscribe' : 'update'} Webhook</span>}

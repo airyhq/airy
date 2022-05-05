@@ -1,5 +1,5 @@
 export interface Webhook {
-  id: string;
+  id?: string;
   name?: string;
   url: string;
   events?: WebhooksEventType[];

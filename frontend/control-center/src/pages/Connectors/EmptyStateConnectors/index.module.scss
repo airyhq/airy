@@ -2,22 +2,42 @@
 @import 'assets/scss/colors.scss';
 
 .container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
 
-    h1 {
-        @include font-xl;
-        font-weight: 800;
-        margin-top: 32px;
-        margin-bottom: 32px;
-    }
+  h1 {
+    @include font-xl;
+    font-weight: 800;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
 
-    p {
-        @include font-m;
-        text-align: center;
-    }
+  p {
+    @include font-m;
+    text-align: center;
+  }
+}
+
+.searchIconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 105px;
+  width: 105px;
+  background: var(--color-background-gray);
+}
+
+.linkContainer {
+  @include font-m;
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  text-decoration: none;
+  margin-right: 4px;
+  width: 95px;
+  justify-content: space-around;
 }

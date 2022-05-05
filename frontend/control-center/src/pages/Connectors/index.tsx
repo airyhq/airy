@@ -41,17 +41,15 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.channelsWrapper}>
-      {sourcesInfo.length === 0 && (
+      {sourcesInfo.length > 0 && (
         <div className={styles.channelsHeadline}>
           <div>
-            {' '}
             <h1 className={styles.channelsHeadlineText}>Connectors</h1>
           </div>
         </div>
       )}
-
       <div className={styles.wrapper}>
-        {sourcesInfo.length > 0 ? (
+        {sourcesInfo.length === 0 ? (
           <EmptyStateConnectors />
         ) : (
           <>

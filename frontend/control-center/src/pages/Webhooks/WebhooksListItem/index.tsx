@@ -43,7 +43,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
             ...webhook,
             status: WebhooksStatus.subscribed,
           },
-          () => {            
+          () => {
             props.setShowNotification(false);
           },
           () => {

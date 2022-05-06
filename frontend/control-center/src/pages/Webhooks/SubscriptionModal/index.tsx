@@ -13,21 +13,7 @@ type SubscriptionModalProps = {
   newWebhook?: boolean;
   isLoading?: boolean;
   error?: boolean;
-  setUpdateWebhook?: (
-    update: boolean,
-    url: string,
-    name?: string,
-    events?: WebhooksEventType[],
-    signatureKey?: string,
-    headers?: {'X-Custom-Header': string}
-  ) => void;
-  setSubscribeWebhook?: (
-    url: string,
-    name?: string,
-    events?: WebhooksEventType[],
-    signatureKey?: string,
-    headers?: {'X-Custom-Header': string}
-  ) => void;
+  setUpsertWebhook?: (isNew: boolean, webhook: Webhook) => void;
 };
 
 const isEventOn = (events: WebhooksEventType[] | undefined, event: WebhooksEventType): boolean => {
@@ -35,7 +21,7 @@ const isEventOn = (events: WebhooksEventType[] | undefined, event: WebhooksEvent
 };
 
 const SubscriptionModal = (props: SubscriptionModalProps) => {
-  const {webhook, newWebhook, isLoading, error, setUpdateWebhook, setSubscribeWebhook} = props;
+  const {webhook, newWebhook, isLoading, error, setUpsertWebhook} = props;
   const {name, url, events, headers, signatureKey} = webhook;
   const [buttonTitle, setButtonTitle] = useState('');
   const [newUrl, setNewUrl] = useState(newWebhook ? '' : url);
@@ -112,12 +98,29 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
     }
   };
 
-  const updateWebhook = () => {
-    setUpdateWebhook(true, newUrl, newName, newEvents, newSignatureKey, {'X-Custom-Header': newHeaders});
-  };
-
-  const subscribeToNewWebhook = () => {
-    setSubscribeWebhook(newUrl, newName, newEvents, newSignatureKey, {'X-Custom-Header': newHeaders});
+  const upsertWebhook = (isNew: boolean) => {
+    console.log('IS WEBHOOK NEW: ', isNew);
+    setUpsertWebhook(isNew, {
+      ...webhook,
+      ...(newUrl && {
+        url: newUrl,
+      }),
+      ...(newName && {
+        name: newName,
+      }),
+      ...(newEvents && {
+        events: newEvents,
+      }),
+      ...(newSignatureKey && {
+        signatureKey: newSignatureKey,
+      }),
+      ...(newSignatureKey && {
+        signatureKey: newSignatureKey,
+      }),
+      ...(newHeaders && {
+        headers: {'X-Custom-Header': newHeaders},
+      }),
+    });
   };
 
   return (
@@ -190,7 +193,7 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
       </div>
       <div className={isLoading ? styles.spinAnimation : ''} style={{display: 'flex', alignSelf: 'center'}}>
         <Button
-          onClick={newWebhook ? subscribeToNewWebhook : updateWebhook}
+          onClick={() => upsertWebhook(newWebhook)}
           style={{
             display: 'flex',
             justifyContent: 'space-evenly',

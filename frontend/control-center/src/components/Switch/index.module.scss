@@ -1,8 +1,8 @@
-.reactSwitchCheckbox {
+.switchCheckbox {
   display: none;
 }
 
-.reactSwitchLabel {
+.switchLabel {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   transition: background-color 0.2s;
 }
 
-.reactSwitchLabel .reactSwitchButton {
+.switchLabel .switchButton {
   content: '';
   position: absolute;
   top: 2px;
@@ -28,11 +28,11 @@
   box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
 }
 
-.reactSwitchCheckbox:checked + .reactSwitchLabel .reactSwitchButton {
+.switchCheckbox:checked + .switchLabel .switchButton {
   left: calc(100% - 2px);
   transform: translateX(-100%);
 }
 
-.reactSwitchLabel:active .reactSwitchButton {
+.switchLabel:active .switchButton {
   width: 6px;
 }

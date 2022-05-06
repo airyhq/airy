@@ -12,15 +12,9 @@ export const Switch = (props: SwitchProps) => {
   const {isActive, toggleActive, onColor, id} = props;
   return (
     <>
-      <input
-        className={styles.reactSwitchCheckbox}
-        id={id}
-        type="checkbox"
-        checked={isActive}
-        onChange={toggleActive}
-      />
-      <label style={{background: !isActive && onColor}} className={styles.reactSwitchLabel} htmlFor={id}>
-        <span className={styles.reactSwitchButton} />
+      <input className={styles.switchCheckbox} id={id} type="checkbox" checked={isActive} onChange={toggleActive} />
+      <label style={{background: !isActive && onColor}} className={styles.switchLabel} htmlFor={id}>
+        <span className={styles.switchButton} />
       </label>
     </>
   );

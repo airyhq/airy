@@ -2,31 +2,28 @@ import React, {useState} from 'react';
 import {ReactComponent as PensilIcon} from 'assets/images/icons/pencil.svg';
 import styles from './index.module.scss';
 import {Switch} from '../../../components/Switch';
-import {connect, ConnectedProps} from 'react-redux';
-import {subscribeWebhook, unsubscribeWebhook, updateWebhook} from '../../../actions/webhook';
 import {SettingsModal} from 'components';
 import SubscriptionModal from '../SubscriptionModal';
 import {UnsubscribeModal} from '../UnsubscribeModal';
-import {Webhook} from 'model/Webhook';
+import {Webhook, WebhooksStatus} from 'model/Webhook';
 
 type WebhooksListItemProps = {
   webhook: Webhook;
   switchId?: string;
+  upsertWebhook: (
+    isNew: boolean,
+    webhook: Webhook,
+    onCall?: () => void,
+    onResponse?: () => void,
+    onError?: (error: Error) => void
+  ) => void;
   setShowNotification?: (show: boolean, error?: boolean) => void;
-} & ConnectedProps<typeof connector>;
-
-const mapDispatchToProps = {
-  subscribeWebhook,
-  unsubscribeWebhook,
-  updateWebhook,
 };
 
-const connector = connect(null, mapDispatchToProps);
-
 const WebhooksListItem = (props: WebhooksListItemProps) => {
-  const {webhook, switchId} = props;
-  const {id, name, url, events, headers, status, signatureKey} = webhook;
-  const [subscribed, setSubscribed] = useState(status || 'Subscribed');
+  const {webhook, switchId, upsertWebhook} = props;
+  const {name, url, events, status} = webhook;
+  const [subscribed, setSubscribed] = useState(status || WebhooksStatus.subscribed);
   const [editModeOn, setEditModeOn] = useState(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,111 +35,78 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   };
 
   const handleSubscribeToggle = () => {
-    subscribed === 'Subscribed'
+    subscribed === WebhooksStatus.subscribed
       ? setShowUnsubscribeModal(true)
-      : props
-          .subscribeWebhook({
-            id,
-            url,
-            name,
-            events,
-            headers,
-            signatureKey,
-          })
-          .then(() => {
-            setSubscribed('Subscribed');
+      : upsertWebhook(
+          false,
+          {
+            ...webhook,
+            status: WebhooksStatus.subscribed,
+          },
+          () => {},
+          () => {
+            setSubscribed(WebhooksStatus.subscribed);
             props.setShowNotification(true);
             setTimeout(() => {
               props.setShowNotification(false);
             }, 4000);
-          })
-          .catch((error: Error) => {
+          },
+          (error: Error) => {
             console.error(error);
             props.setShowNotification(true, true);
             setTimeout(() => {
               props.setShowNotification(false);
             }, 4000);
-          });
+          }
+        );
   };
 
   const editWebhook = () => {
     setEditModeOn(!editModeOn);
   };
 
-  const updateWebhookConfirm = (
-    update: boolean,
-    url: string,
-    name?: string,
-    events?: string[],
-    signatureKey?: string,
-    headers?: {'X-Custom-Header': string}
-  ) => {
-    setErrorOccurred(false);
-    setIsLoading(true);
-    update &&
-      props
-        .updateWebhook({
-          id,
-          url,
-          name,
-          events,
-          signatureKey,
-          headers,
-        })
-        .then(() => {
-          setIsLoading(false);
-          setEditModeOn(false);
-        })
-        .catch((error: Error) => {
-          console.error(error);
-          setErrorOccurred(true);
-          setIsLoading(false);
-        });
-  };
-
-  const subscribeWebhookConfirm = (
-    url: string,
-    name?: string,
-    events?: string[],
-    signatureKey?: string,
-    headers?: {'X-Custom-Header': string}
-  ) => {
-    setErrorOccurred(false);
-    setIsLoading(true);
-    props
-      .subscribeWebhook({
-        url,
-        name,
-        events,
-        signatureKey,
-        headers,
-      })
-      .then(() => {
+  const upsertWebhookConfirm = (isNew: boolean, webhook: Webhook) => {
+    upsertWebhook(
+      isNew,
+      webhook,
+      () => {
+        setErrorOccurred(false);
+        setIsLoading(true);
+      },
+      () => {
         setIsLoading(false);
-        setSubscribed('Subscribed');
-      })
-      .catch((error: Error) => {
+        setEditModeOn(false);
+      },
+      (error: Error) => {
         console.error(error);
         setErrorOccurred(true);
         setIsLoading(false);
-      });
+      }
+    );
   };
 
   const unsubscribeWebhookConfirm = () => {
-    setErrorOccurred(false);
-    setIsLoading(true);
-    props
-      .unsubscribeWebhook({id, url})
-      .then(() => {
+    upsertWebhook(
+      false,
+      {
+        ...webhook,
+        status: WebhooksStatus.unsubscribed,
+      },
+      () => {
+        setErrorOccurred(false);
+        setIsLoading(true);
+      },
+      () => {
         setShowUnsubscribeModal(false);
-        setSubscribed('Unsubscribed');
+        setSubscribed(WebhooksStatus.unsubscribed);
         setIsLoading(false);
-      })
-      .catch((error: Error) => {
+      },
+      (error: Error) => {
         console.error(error);
         setErrorOccurred(true);
         setIsLoading(false);
-      });
+      }
+    );
   };
 
   return (
@@ -162,7 +126,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       <div className={styles.statusContainer} style={{width: '10%'}}>
         <Switch
           id={switchId}
-          isActive={subscribed === 'Subscribed' ? true : false}
+          isActive={subscribed === WebhooksStatus.subscribed ? true : false}
           toggleActive={handleSubscribeToggle}
           onColor="#EFEFEF"
         />
@@ -176,8 +140,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           <SubscriptionModal
             webhook={webhook}
             newWebhook={false}
-            setUpdateWebhook={updateWebhookConfirm}
-            setSubscribeWebhook={subscribeWebhookConfirm}
+            setUpsertWebhook={upsertWebhookConfirm}
             isLoading={isLoading}
             error={errorOccurred}
           />
@@ -198,4 +161,4 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   );
 };
 
-export default connector(WebhooksListItem);
+export default WebhooksListItem;

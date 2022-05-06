@@ -6,7 +6,7 @@ export interface Webhook {
   headers?: {
     'X-Custom-Header': string;
   };
-  status?: string;
+  status?: WebhooksStatus;
   signatureKey?: string;
 }
 
@@ -15,4 +15,9 @@ export enum WebhooksEventType {
   messageUpdated = 'message.updated',
   conversationUpdated = 'conversation.updated',
   channelUpdated = 'channel.updated',
+}
+
+export enum WebhooksStatus {
+  subscribed = 'Subscribed',
+  unsubscribed = 'Unsubscribed',
 }

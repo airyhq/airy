@@ -3,7 +3,7 @@ import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {listWebhooks, subscribeWebhook} from '../../actions/webhook';
+import {listWebhooks, subscribeWebhook, updateWebhook} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import styles from './index.module.scss';
@@ -19,6 +19,7 @@ const mapStateToProps = (state: StateModel) => ({
 const mapDispatchToProps = {
   listWebhooks,
   subscribeWebhook,
+  updateWebhook,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -47,26 +48,49 @@ const Webhooks = (props: WebhooksProps) => {
     setShowSuccessNotification(show);
   };
 
-  const subscribeWebhookConfirm = (
-    url: string,
-    name?: string,
-    events?: string[],
-    signatureKey?: string,
-    headers?: {'X-Custom-Header': string}
+  const upsertWebhook = (
+    isNew: boolean,
+    webhook: Webhook,
+    onCall?: () => void,
+    onResponse?: () => void,
+    onError?: (error: Error) => void
   ) => {
-    setErrorOccurred(false);
-    setIsLoading(true);
-    props
-      .subscribeWebhook({url, name, events, signatureKey, headers})
-      .then(() => {
+    onCall();
+    if (isNew) {
+      props
+        .subscribeWebhook({...webhook})
+        .then(() => onResponse())
+        .catch((error: Error) => {
+          onError(error);
+        });
+    } else {
+      props
+        .updateWebhook({...webhook, id: webhook.id})
+        .then(() => onResponse())
+        .catch((error: Error) => {
+          onError(error);
+        });
+    }
+  };
+
+  const subscribeWebhookConfirm = (isNew: boolean, webhook: Webhook) => {
+    upsertWebhook(
+      isNew,
+      webhook,
+      () => {
+        setErrorOccurred(false);
+        setIsLoading(true);
+      },
+      () => {
         setIsLoading(false);
         setNewWebhook(false);
-      })
-      .catch((error: Error) => {
+      },
+      (error: Error) => {
         console.error(error);
         setErrorOccurred(true);
         setIsLoading(false);
-      });
+      }
+    );
   };
 
   const SuccessfulSubscribed = () => {
@@ -100,7 +124,7 @@ const Webhooks = (props: WebhooksProps) => {
           <SubscriptionModal
             newWebhook={true}
             webhook={{id: '', url: '', signatureKey: '', events: [], headers: {'X-Custom-Header': ''}}}
-            setSubscribeWebhook={subscribeWebhookConfirm}
+            setUpsertWebhook={subscribeWebhookConfirm}
             isLoading={isLoading}
             error={errorOccurred}
           />
@@ -128,6 +152,7 @@ const Webhooks = (props: WebhooksProps) => {
                 webhook={webhook}
                 switchId={`${index}`}
                 key={index}
+                upsertWebhook={upsertWebhook}
                 setShowNotification={handleNotification}
               />
             ))}

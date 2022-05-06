@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {CSSProperties, ReactNode} from 'react';
 
 import styles from './style.module.scss';
 
@@ -9,11 +9,12 @@ type ButtonProps = {
   type?: 'submit' | 'button' | 'reset';
   disabled?: boolean;
   styleVariant?: styleVariantType;
+  style?: CSSProperties;
   tabIndex?: any;
   dataCy?: string;
 };
 
-export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy}: ButtonProps) => {
+export const Button = ({children, onClick, type, styleVariant, style, disabled, tabIndex, dataCy}: ButtonProps) => {
   const styleFor = (variant: styleVariantType) => {
     switch (variant) {
       case 'small':
@@ -36,6 +37,7 @@ export const Button = ({children, onClick, type, styleVariant, disabled, tabInde
   return (
     <button
       type={type || 'button'}
+      style={style}
       disabled={disabled || false}
       className={styleFor(styleVariant)}
       onClick={onClick}

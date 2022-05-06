@@ -1,0 +1,115 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 580px;
+  align-items: center;
+}
+
+.container {
+  @include font-base;
+  color: var(--color-text-gray);
+  background: white;
+  height: 500px;
+
+  h1 {
+    margin-top: 45px;
+    margin-bottom: 28px;
+    font-weight: 700;
+  }
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  span {
+    @include font-base;
+    cursor: pointer;
+    margin-right: 96px;
+  }
+  input {
+    @include font-base;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.inputContainer {
+  display: flex;
+
+  input {
+    @include font-base;
+    border: none;
+    background: var(--color-background-gray);
+    padding: 6px;
+    border-radius: 8px;
+    margin-right: 32px;
+    height: 50px;
+    padding: 16px 21px;
+  }
+
+  input:last-child {
+    @include font-base;
+    width: 400px;
+  }
+}
+
+.headerKeyContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 48px;
+  margin-bottom: 48px;
+
+  span {
+    @include font-base;
+    color: black;
+    margin-bottom: 28px;
+    font-weight: 800;
+  }
+
+  input {
+    @include font-base;
+    width: 408px;
+    background: var(--color-background-gray);
+    border-radius: 6px;
+    color: var(--color-red-info);
+    padding: 17px 12px;
+    border: none;
+  }
+}
+
+.headerKeyItem {
+  display: flex;
+  flex-direction: column;
+  margin-right: 42px;
+}
+
+.errorMessage {
+  @include font-base;
+  display: flex;
+  position: absolute;
+  bottom: 24px;
+  color: var(--color-red-alert);
+  font-size: 16px;
+}
+
+@keyframes spinAnimationRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(7200deg);
+  }
+}
+
+.spinAnimation {
+  svg {
+    height: 20px;
+    width: 20px;
+    animation: spinAnimationRefresh 40s linear;
+  }
+}

@@ -28,3 +28,7 @@ export * from './uploadFile';
 export * from './resendMessage';
 export * from './getContactDetails';
 export * from './updateContactDetails';
+export * from './listWebhooks';
+export * from './subscribeWebhook';
+export * from './unsubscribeWebhook';
+export * from './updateWebhook';

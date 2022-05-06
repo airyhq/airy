@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import Modal from 'react-modal';
 import ModalHeader from './ModalHeader';
 
 import styles from './style.module.scss';
 
-export const SettingsModal = ({close, title, children, style}) => {
+type SettingsModalProps = {
+  close: () => void;
+  title: string;
+  children: any;
+  style?: CSSProperties;
+  className?: string;
+};
+
+export const SettingsModal = (props: SettingsModalProps) => {
+  const {close, title, children, style, className} = props;
   return (
     <Modal
       className={styles.content}
@@ -15,10 +24,9 @@ export const SettingsModal = ({close, title, children, style}) => {
       shouldCloseOnOverlayClick={true}
       onRequestClose={close}
     >
-      <div style={style}>
-        <ModalHeader title={title} close={close} />
-
-        <div className={styles.container}>{children}</div>
+      <div style={style} className={className}>
+        <ModalHeader title={title} close={close} style={style} />
+        {children}
       </div>
     </Modal>
   );

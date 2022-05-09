@@ -2,7 +2,7 @@
 
 .dialog {
   position: absolute;
-  background-color: white;
+  background-color: var(--color-background-white);
   border: 1px solid var(--color-light-gray);
   border-radius: 4px;
   z-index: $popup;

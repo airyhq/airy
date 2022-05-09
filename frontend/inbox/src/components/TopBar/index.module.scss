@@ -9,7 +9,7 @@
   z-index: $navigation;
   height: 72px;
   background-color: var(--color-background-white);
-  box-shadow: 0 3px 8px 0 var(--color-light-gray);
+  box-shadow: 0 3px 8px 0 var(--color-shadow-gray);
   position: fixed;
   overflow: visible;
   top: 0;
@@ -66,6 +66,7 @@
 
 .accountName {
   font-weight: 900;
+  color: var(--color-text-contrast);
 }
 
 .accountHint {
@@ -82,7 +83,7 @@
 
 .dropdownContainer {
   position: absolute;
-  background-color: white;
+  background-color: var(--color-background-white);
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   top: 68px;

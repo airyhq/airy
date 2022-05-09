@@ -30,6 +30,7 @@
   border: 1px solid transparent;
   cursor: pointer;
   transition: background 400ms, border 400ms;
+  color:var(--color-text-contrast);
 }
 
 .quickFilterButtonActive {
@@ -67,7 +68,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0);
+  background: var(--color-text-contrast);
   border: none;
   margin-right: -13px;
   margin-top: -12px;
@@ -108,7 +109,7 @@
 .filterHint {
   @include font-s;
   background-color: var(--color-airy-blue);
-  color: white;
+  color: var(--color-background-white);
   border-radius: 4px;
   padding: 4px 8px;
   margin: 0 0 4px 4px;

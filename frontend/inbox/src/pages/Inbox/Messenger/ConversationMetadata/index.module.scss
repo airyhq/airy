@@ -8,7 +8,7 @@
   height: auto;
   flex-direction: column;
   overflow: auto;
-  background-color: #fff;
+  background-color: var(--color-background-white);
   margin: 0 0 0 8px;
   padding: 16px;
   border-top-left-radius: 8px;
@@ -135,6 +135,7 @@
 
 .tagsHeaderTitle {
   font-weight: bold;
+  color: var(--color-text-contrast);
 }
 
 .addTags {
@@ -154,6 +155,7 @@
 
 .addTagsDescription {
   margin: 8px 0;
+  color: var(--color-text-contrast);
 }
 
 .addTagsButtonRow {
@@ -175,6 +177,12 @@
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+.cancelIcon {
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .iconBlue {

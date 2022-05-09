@@ -7,11 +7,11 @@
 
 .input {
   display: flex;
-  background-color: white;
+  background-color: var(--color-background-white);
+  color:var(--color-text-contrast);
   width: 100%;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 4px;
-  color: var(--color-text-contrast);
   overflow: hidden;
 
   &::placeholder {
@@ -113,6 +113,8 @@
   flex-grow: 1;
   border: none;
   padding: 4px 8px;
+  background-color: var(--color-background-white);
+  color:var(--color-text-contrast);
 
   &:focus {
     background-color: var(--color-background-blue);
@@ -124,7 +126,6 @@
     border: none;
     outline: none;
     box-shadow: none;
-    background-color: rgba(0, 0, 0, 0);
   }
 }
 

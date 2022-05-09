@@ -36,6 +36,7 @@
 
 .infoName {
   word-break: break-all;
+  color: var(--color-text-contrast);
 }
 
 .infoLink:link,
@@ -54,6 +55,7 @@
 .container legend {
   @include font-s-bold;
   margin-bottom: 15px;
+  color: var(--color-text-contrast);
 }
 
 .container label {
@@ -67,6 +69,8 @@
   padding: 0;
   margin: 0;
   @include font-s;
+  background:var(--color-background-white);
+  color: var(--color-text-contrast);
 }
 
 .details {
@@ -76,12 +80,14 @@
 .detailName {
   font-weight: bold;
   margin-right: 3px;
+  color: var(--color-text-contrast);
 }
 
 .expandable {
   display: flex;
   align-items: center;
   cursor: pointer;
+  color: var(--color-text-contrast);
 }
 
 .saveButtonContainer {

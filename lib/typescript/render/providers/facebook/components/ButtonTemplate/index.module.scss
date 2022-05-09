@@ -16,7 +16,6 @@
   padding: 16px;
 }
 
-.messageTime {
-  @include font-s;
-  color: var(--color-text-gray);
+.tempateText {
+  color:var(--color-text-contrast);
 }

@@ -4,6 +4,9 @@
   --color-dark-elements-gray: #98a4ab;
   --color-icons-gray: #a0abb2;
   --color-light-gray: #cad5db;
+  --color-shadow-gray: #cad5db;
+  --color-tooltip-gray: #cad5db;
+  --color-button-gray:#cad5db;
   --color-background-gray: #f7f7f7;
   --color-template-gray: #f0f0f0;
   --color-light-greyish-white: #efefef;
@@ -40,33 +43,43 @@
 
 html[data-theme='dark'] {
   background-color: #1f201c;
-  --color-light-gray: #1f201c;
+  --color-tooltip-gray: #1f201c;
   --color-background-gray: #1f201c;
+  --color-light-greyish-white: #1f201c;
   --color-background-white: #272822;
   --color-template-highlight: #272822;
+  --color-text-contrast: #ffffff;
+  --color-background-blue: #243037;
+  --color-airy-message-inbound: #1c1e1f;
+  --color-airy-message-text-inbound: #ffffff;
+  --color-template-gray:#484848;
+  --color-shadow-gray: #4d5153;
+  --color-button-gray:#313537;
 }
 
-html[data-theme='dark'] {
-  --ifm-color-primary: #1ca1f2;
-  --ifm-color-primary-dark: #1ccaff;
-  --ifm-color-primary-darker: #0cc6ff;
-  --ifm-color-primary-darkest: #00a8dc;
-  --ifm-color-primary-light: #5ad8ff;
-  --ifm-color-primary-lighter: #6adcff;
-  --ifm-color-primary-lightest: #99e7ff;
+// color-light-gray: #4d5153 (box-shadow color top bar )
 
-  --ifm-background-color: #1f201c;
-  --ifm-background-surface-color: #272822;
-  --ifm-background-surface-color-secondary: #2a2b25;
-  --ifm-navbar-background-color: #272822;
+// html[data-theme='dark'] {
+//   --ifm-color-primary: #1ca1f2;
+//   --ifm-color-primary-dark: #1ccaff;
+//   --ifm-color-primary-darker: #0cc6ff;
+//   --ifm-color-primary-darkest: #00a8dc;
+//   --ifm-color-primary-light: #5ad8ff;
+//   --ifm-color-primary-lighter: #6adcff;
+//   --ifm-color-primary-lightest: #99e7ff;
 
-  --ifm-code-background: #2e2f28;
-  --ifm-code-color: #ffffff;
+//   --ifm-background-color: #1f201c;
+//   --ifm-background-surface-color: #272822;
+//   --ifm-background-surface-color-secondary: #2a2b25;
+//   --ifm-navbar-background-color: #272822;
 
-  background-color: #1f201c;
+//   --ifm-code-background: #2e2f28;
+//   --ifm-code-color: #ffffff;
 
-  --ifm-heading-color: #ffffff;
-  --ifm-hero-text-color: #ffffff;
-  --ifm-color-secondary: #f0f0f0;
-  --ifm-blockquote-color: #ffffff;
-}
+//   background-color: #1f201c;
+
+//   --ifm-heading-color: #ffffff;
+//   --ifm-hero-text-color: #ffffff;
+//   --ifm-color-secondary: #f0f0f0;
+//   --ifm-blockquote-color: #ffffff;
+// }

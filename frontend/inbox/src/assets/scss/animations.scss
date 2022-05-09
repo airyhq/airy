@@ -87,7 +87,7 @@
 .fill-to-bottom:hover,
 .fill-to-bottom:focus,
 .fill-to-bottom:active {
-  color: white;
+  color: var(--color-background-white);
 }
 .fill-to-bottom:hover:before,
 .fill-to-bottom:focus:before,
@@ -123,7 +123,7 @@
 .fill-to-top:hover,
 .fill-to-top:focus,
 .fill-to-top:active {
-  color: white;
+  color: var(--color-background-white);
 }
 .fill-to-top:hover:before,
 .fill-to-top:focus:before,

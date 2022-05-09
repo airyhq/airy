@@ -49,13 +49,13 @@
   font-size: 13px;
   height: 24px;
   padding: 0 8px 0 8px;
-  background-color: white;
+  background-color: var(--color-background-white);
   color: var(--color-airy-blue);
   border: 1px solid var(--color-airy-blue);
 
   &:hover {
     background-color: var(--color-airy-blue-hover);
-    color: white;
+    color: var(--color-background-white);
   }
 
   &:active {
@@ -76,6 +76,7 @@
   background: transparent;
   text-decoration: underline;
   color: var(--color-airy-blue);
+  background-color: var(--color-background-white);
   cursor: pointer;
   float: right;
   padding: 1.35em 0.25em;

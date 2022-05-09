@@ -1,8 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
 
-
-
 .container {
   @include font-base;
   display: flex;
@@ -22,6 +20,7 @@
   height: 100%;
   min-height: 100vh;
   background-color: var(--color-background-gray);
+  transition: all 0.5 ease;
 }
 
 

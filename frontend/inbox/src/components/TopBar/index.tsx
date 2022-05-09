@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
+import {Toggle} from 'components';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
 import {ReactComponent as AiryLogoWithText} from 'assets/images/logo/airyPrimaryRgb.svg';
@@ -27,6 +28,7 @@ const connector = connect(mapStateToProps);
 const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') ? true : false);
 
   const accountClickHandler = useCallback(() => {
     setAccountDropdownOn(!isAccountDropdownOn);
@@ -45,9 +47,15 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   }, [setFaqDropdownOn]);
 
   const toggleDarkTheme = () => {
-    //keep theme in localStorage
-    //add transition 
-    document.documentElement.setAttribute("data-theme", 'dark');
+    if(localStorage.getItem('theme') === 'dark'){
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('theme');
+      setDarkTheme(false)
+    } else {
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.setAttribute("data-theme", 'dark');
+      setDarkTheme(true)
+    }
   }
 
   return (
@@ -57,10 +65,12 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>
-          <button onClick={toggleDarkTheme}>🌙</button>
-          <div className={styles.help} onClick={faqClickHandler}>
+
+          <button className={styles.theme} onClick={toggleDarkTheme}><Toggle updateValue={toggleDarkTheme} value={darkTheme} /></button>
+
+          <button className={styles.help} onClick={faqClickHandler}>
             ?
-          </div>
+          </button>
 
           {isFaqDropdownOn && (
             <ListenOutsideClick onOuterClick={hideFaqDropdown}>

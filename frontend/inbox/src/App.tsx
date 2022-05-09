@@ -23,12 +23,15 @@ const connector = connect(null, mapDispatchToProps);
 const App = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.getClientConfig();
+    if(localStorage.getItem('theme') === 'dark'){
+      document.documentElement.setAttribute("data-theme", 'dark');
+    }
   }, []);
 
   return (
     <AiryWebSocket>
       <div className={styles.container}>
-        <div className={styles.wrapper} data-theme="dark">
+        <div className={styles.wrapper}>
           <>
             <TopBar isAdmin={true} />
             <Sidebar />

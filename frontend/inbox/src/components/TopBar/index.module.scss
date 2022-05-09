@@ -168,7 +168,9 @@
 
 .help {
   @include font-m;
+  background:transparent;
   margin-right: 16px;
+  margin-left: 32px;
   border: 1px solid var(--color-text-gray);
   border-radius: 50%;
   width: 24px;
@@ -185,6 +187,11 @@
     border: 1px solid var(--color-airy-blue);
     box-shadow: 0px 0px 0px 3px var(--color-background-blue);
   }
+}
+
+.theme {
+  background:transparent;
+  border:none;
 }
 
 #dropDownLink {

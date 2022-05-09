@@ -21,7 +21,7 @@ export const Toggle = ({value, text, updateValue, variant, size}: ToggleType) =>
           className={`${styles.slider} ${variant === 'green' ? styles.sliderGreen : styles.sliderBlue} ${
             size === 'small' ? styles.sliderSmall : styles.sliderBig
           }`}
-        ></span>
+        >☀️</span>
       </span>
       {text && <span>{text}</span>}
     </label>

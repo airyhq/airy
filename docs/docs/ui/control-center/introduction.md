@@ -41,7 +41,7 @@ It provides both a graphical overview and a way to manage your app's [components
         icon={<WebhooksSVG />}
         title='Webhooks'
         iconInvertible={true}
-        description="Add webhooks to your app in just a few clicks"
+        description="Manage, update and connect webhooks"
         link='ui/control-center/webhooks'
     />
 </ButtonBoxList>
@@ -52,3 +52,4 @@ Screenshots of the Control Center's Status, Connectors, and Catalog pages.
 <img alt="Control Center Status Demo"src={useBaseUrl('img/ui/controlCenterStatus.png')} />
 <img alt="Control Center Connectors Demo "src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
 <img alt="Control Center Catalog Demo"src={useBaseUrl('img/ui/controlCenterCatalog.png')} />
+<img alt="Control Center Webhooks Demo"src={useBaseUrl('img/ui/controlCenterWebhooks.png')} />

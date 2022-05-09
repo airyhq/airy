@@ -8,7 +8,7 @@
   justify-content: space-between;
   z-index: $navigation;
   height: 72px;
-  background-color: white;
+  background-color: var(--color-background-white);
   box-shadow: 0 3px 8px 0 var(--color-light-gray);
   position: fixed;
   overflow: visible;

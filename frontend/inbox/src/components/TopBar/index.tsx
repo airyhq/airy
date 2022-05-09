@@ -44,6 +44,12 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
     setFaqDropdownOn(false);
   }, [setFaqDropdownOn]);
 
+  const toggleDarkTheme = () => {
+    //keep theme in localStorage
+    //add transition 
+    document.documentElement.setAttribute("data-theme", 'dark');
+  }
+
   return (
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
@@ -51,6 +57,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>
+          <button onClick={toggleDarkTheme}>🌙</button>
           <div className={styles.help} onClick={faqClickHandler}>
             ?
           </div>

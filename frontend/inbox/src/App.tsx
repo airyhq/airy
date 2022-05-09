@@ -28,7 +28,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
   return (
     <AiryWebSocket>
       <div className={styles.container}>
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} data-theme="dark">
           <>
             <TopBar isAdmin={true} />
             <Sidebar />

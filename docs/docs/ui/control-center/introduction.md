@@ -8,6 +8,7 @@ import ButtonBox from "@site/src/components/ButtonBox";
 import ComponentsSVG from "@site/static/icons/componentsIcon.svg";
 import ConnectorsSVG from "@site/static/icons/connectorsIcon.svg";
 import CatalogSVG from "@site/static/icons/catalogIcon.svg";
+import WebhooksSVG from "@site/static/icons/webhooksIcon.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 The Control Center serves as the technical dashboard of your Airy Core app.
@@ -35,6 +36,13 @@ It provides both a graphical overview and a way to manage your app's [components
         iconInvertible={true}
         description="Add connectors to your app in just a few clicks"
         link='ui/control-center/catalog'
+    />
+     <ButtonBox
+        icon={<WebhooksSVG />}
+        title='Webhooks'
+        iconInvertible={true}
+        description="Add webhooks to your app in just a few clicks"
+        link='ui/control-center/webhooks'
     />
 </ButtonBoxList>
 

@@ -88,6 +88,7 @@ module.exports = {
             'ui/control-center/status',
             'ui/control-center/connectors',
             'ui/control-center/catalog',
+            'ui/control-center/webhooks',
           ],
         },
       ],

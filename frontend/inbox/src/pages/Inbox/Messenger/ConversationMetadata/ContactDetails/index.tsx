@@ -100,11 +100,13 @@ const ContactDetails = (props: ContactDetailsProps) => {
     const conversationsForContactArr = [];
 
     for (const idProperty in convObj) {
-      if (idProperty !== conversationId) setAreOthersConversationForContact(true);
-      const convInfo = {} as ConversationInfoForContact;
-      convInfo.id = idProperty;
-      convInfo.connector = convObj[idProperty];
-      conversationsForContactArr.push(convInfo);
+      if (idProperty !== conversationId) {
+        setAreOthersConversationForContact(true);
+        const convInfo = {} as ConversationInfoForContact;
+        convInfo.id = idProperty;
+        convInfo.connector = convObj[idProperty];
+        conversationsForContactArr.push(convInfo);
+      }
     }
 
     return conversationsForContactArr;
@@ -211,18 +213,17 @@ const ContactDetails = (props: ContactDetailsProps) => {
         )}
       </form>
 
-      {areOthersConversationForContact && (
+      {areOthersConversationForContact && conversationsForContact && (
         <div className={styles.contactConversationList}>
           <span>Other conversations for this contact:</span>
           <div className={styles.iconsContainer}>
-            {conversationsForContact &&
-              conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
-                <button type="button" key={conversationInfo.id}>
-                  <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
-                    <ConnectorAvatar source={conversationInfo.connector as Source} />
-                  </Link>
-                </button>
-              ))}
+            {conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
+              <button type="button" key={conversationInfo.id}>
+                <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
+                  <ConnectorAvatar source={conversationInfo.connector as Source} />
+                </Link>
+              </button>
+            ))}
           </div>
         </div>
       )}

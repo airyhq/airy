@@ -40,7 +40,6 @@ const Inbox = (props: ConnectedProps<typeof connector>) => {
     setPageTitle('Inbox');
   }, []);
 
-
   return (
     <div className={styles.inboxWrapper}>
       {sourcesInfo.length > 0 && (
@@ -63,9 +62,9 @@ const Inbox = (props: ConnectedProps<typeof connector>) => {
               </div>
             </div>
             <div className={styles.channelsContainer}>
-              {sourcesInfo.map((infoItem: SourceInfo) => {
+              {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
                 if (channelsBySource(infoItem.type).length > 0) {
-                  return <ChannelCard sourceInfo={infoItem} />;
+                  return <ChannelCard sourceInfo={infoItem} key={index} />;
                 }
               })}
             </div>

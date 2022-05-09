@@ -34,9 +34,15 @@
 }
 
 .channelsContainer {
-    
-    span {
-        @include font-base;
-        color: var(--color-airy-blue);
-    }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.channelsLine {
+  width: 100%;
+  span {
+    @include font-base;
+    color: var(--color-airy-blue);
+  }
 }

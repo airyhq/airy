@@ -1,4 +1,4 @@
-import React, {createRef, useCallback} from 'react';
+import React, {createRef, CSSProperties, useCallback} from 'react';
 
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
@@ -12,9 +12,10 @@ type Props = {
   resetClicked?: () => void;
   autoFocus?: boolean;
   dataCy?: string;
+  style?: CSSProperties;
 };
 
-export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus, dataCy}: Props) => {
+export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus, dataCy, style}: Props) => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
     setValue('');
@@ -24,7 +25,7 @@ export const SearchField = ({id, placeholder, value, setValue, resetClicked, aut
   }, [value, setValue]);
 
   return (
-    <div className={styles.component}>
+    <div className={styles.component} style={style}>
       <div className={styles.searchIcon}>
         <SearchIcon aria-hidden="true" className={styles.searchIcon} />
       </div>

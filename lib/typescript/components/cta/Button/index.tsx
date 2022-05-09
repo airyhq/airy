@@ -14,7 +14,7 @@ type ButtonProps = {
   dataCy?: string;
 };
 
-export const Button = ({children, onClick, type, styleVariant, style, disabled, tabIndex, dataCy}: ButtonProps) => {
+export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy, style}: ButtonProps) => {
   const styleFor = (variant: styleVariantType) => {
     switch (variant) {
       case 'small':
@@ -42,8 +42,7 @@ export const Button = ({children, onClick, type, styleVariant, style, disabled, 
       className={styleFor(styleVariant)}
       onClick={onClick}
       tabIndex={tabIndex}
-      data-cy={dataCy}
-    >
+      data-cy={dataCy}>
       {children}
     </button>
   );

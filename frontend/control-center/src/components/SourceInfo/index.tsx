@@ -35,6 +35,13 @@ import {
   CONNECTORS_CHAT_PLUGIN_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
+  INBOX_FACEBOOK_ROUTE,
+  INBOX_TWILIO_SMS_ROUTE,
+  INBOX_TWILIO_WHATSAPP_ROUTE,
+  INBOX_CHAT_PLUGIN_ROUTE,
+  INBOX_GOOGLE_ROUTE,
+  INBOX_INSTAGRAM_ROUTE,
+  INBOX_CONNECTED_ROUTE,
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -51,6 +58,12 @@ export type SourceInfo = {
   dataCyChannelList: string;
 };
 
+enum SourceInfoPage {
+  catalog = 'CATALOG',
+  connectors = 'CONNECTORS',
+  inbox = 'INBOX',
+}
+
 export const getSourcesInfo = (page: string): SourceInfo[] => {
   const connectorsPage = page === 'Connectors';
 
@@ -60,10 +73,12 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Airy Live Chat',
       description: 'Best of class browser messenger',
       image: <AiryAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_CHAT_PLUGIN_ROUTE + '/new' : CATALOG_CHAT_PLUGIN_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
-        : CATALOG_CONNECTED_ROUTE + '/chatplugin',
+      // newChannelRoute: connectorsPage ? CONNECTORS_CHAT_PLUGIN_ROUTE + '/new' : CATALOG_CHAT_PLUGIN_ROUTE + '/new',
+      newChannelRoute: INBOX_CHAT_PLUGIN_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/chatplugin',
+      // channelsListRoute: connectorsPage
+      //   ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
+      //   : CATALOG_CONNECTED_ROUTE + '/chatplugin',
       configKey: 'sources-chat-plugin',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -75,10 +90,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Messenger',
       description: 'Connect multiple Facebook pages',
       image: <MessengerAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_FACEBOOK_ROUTE + '/new' : CATALOG_FACEBOOK_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/facebook'
-        : CATALOG_CONNECTED_ROUTE + '/facebook',
+      newChannelRoute: INBOX_FACEBOOK_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -90,10 +103,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'SMS',
       description: 'Deliver SMS with ease',
       image: <SMSAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_TWILIO_SMS_ROUTE + '/new' : CATALOG_TWILIO_SMS_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#'
-        : CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
+      newChannelRoute: INBOX_TWILIO_SMS_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/twilio.sms/#',
       configKey: 'sources-twilio',
       channelsToShow: 2,
       itemInfoString: 'phones',
@@ -105,12 +116,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'WhatsApp',
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
-      newChannelRoute: connectorsPage
-        ? CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new'
-        : CATALOG_TWILIO_WHATSAPP_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
-        : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+      newChannelRoute: INBOX_TWILIO_WHATSAPP_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
       channelsToShow: 2,
       itemInfoString: 'phones',
@@ -122,8 +129,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Google Business Messages',
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_GOOGLE_ROUTE + '/new' : CATALOG_GOOGLE_ROUTE + '/new',
-      channelsListRoute: connectorsPage ? CONNECTORS_CONNECTED_ROUTE + '/google' : CATALOG_CONNECTED_ROUTE + '/google',
+      newChannelRoute: INBOX_GOOGLE_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
       channelsToShow: 4,
       itemInfoString: 'channels',
@@ -135,10 +142,8 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Instagram',
       description: 'Connect multiple Instagram pages',
       image: <InstagramIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_INSTAGRAM_ROUTE + '/new' : CATALOG_INSTAGRAM_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/instagram'
-        : CATALOG_CONNECTED_ROUTE + '/instagram',
+      newChannelRoute: INBOX_INSTAGRAM_ROUTE + '/new',
+      channelsListRoute: INBOX_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
       channelsToShow: 4,
       itemInfoString: 'channels',

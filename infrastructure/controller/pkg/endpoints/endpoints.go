@@ -3,8 +3,10 @@ package endpoints
 import (
 	"context"
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -46,7 +48,17 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func Serve(clientSet *kubernetes.Clientset, namespace string) {
+	r := mux.NewRouter()
+
+	// Load authentication middleware only if auth is enabled
+	systemToken := os.Getenv("systemToken")
+	jwtSecret := os.Getenv("jwtSecret")
+	if systemToken != "" || jwtSecret != "" {
+		authMiddleware := NewAuthMiddleware(systemToken, jwtSecret)
+		r.Use(authMiddleware.Middleware)
+	}
+
 	s := &Server{clientSet: clientSet, namespace: namespace}
-	http.Handle("/services", s)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	r.Handle("/services", s)
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

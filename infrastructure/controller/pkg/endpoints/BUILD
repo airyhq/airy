@@ -3,12 +3,18 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "endpoints",
-    srcs = ["endpoints.go"],
+    srcs = [
+        "auth.go",
+        "endpoints.go",
+    ],
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],
     deps = [
+        "@com_github_golang_jwt_jwt//:go_default_library",
+        "@com_github_gorilla_mux//:mux",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
+        "@io_k8s_klog//:klog",
     ],
 )
 

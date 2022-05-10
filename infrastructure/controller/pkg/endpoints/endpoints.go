@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"k8s.io/klog"
 	"log"
 	"net/http"
 	"os"
@@ -50,12 +51,25 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	r := mux.NewRouter()
 
-	// Load authentication middleware only if auth is enabled
+	// Load authentication middleware only if auth env is present
+	authEnabled := false
 	systemToken := os.Getenv("systemToken")
-	jwtSecret := os.Getenv("jwtSecret")
-	if systemToken != "" || jwtSecret != "" {
-		authMiddleware := NewAuthMiddleware(systemToken, jwtSecret)
+	if systemToken != "" {
+		klog.Info("adding system token auth")
+		authMiddleware := NewSystemTokenMiddleware(systemToken)
 		r.Use(authMiddleware.Middleware)
+	}
+
+	jwtSecret := os.Getenv("jwtSecret")
+	if jwtSecret != "" {
+		klog.Info("adding jwt auth")
+		authMiddleware := NewJwtMiddleware(jwtSecret)
+		r.Use(authMiddleware.Middleware)
+		authEnabled = true
+	}
+
+	if authEnabled {
+		r.Use(EnableAuth)
 	}
 
 	s := &Server{clientSet: clientSet, namespace: namespace}

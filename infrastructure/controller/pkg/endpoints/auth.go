@@ -1,48 +1,84 @@
 package endpoints
 
 import (
-	"fmt"
+	"context"
 	"github.com/golang-jwt/jwt"
-	"k8s.io/klog"
+	"log"
 	"net/http"
 	"strings"
 )
 
-type AuthMiddleware struct {
-	systemToken string
-	jwtSecret   string
-}
-
-func NewAuthMiddleware(systemToken string, jwtSecret string) *AuthMiddleware {
-	if systemToken == "" && jwtSecret == "" {
-		klog.Fatal("systemToken and jwtSecret must be set")
-	}
-	return &AuthMiddleware{systemToken: systemToken, jwtSecret: jwtSecret}
-}
-
-func (a *AuthMiddleware) Middleware(next http.Handler) http.Handler {
+func EnableAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authPayload := r.Header.Get("Authorization")
-		authPayload = strings.TrimPrefix(authPayload, "Bearer ")
-
-		if authPayload == a.systemToken && a.systemToken != "" {
-			next.ServeHTTP(w, r)
-			return
-		}
-
-		token, err := jwt.Parse(authPayload, func(token *jwt.Token) (interface{}, error) {
-			// Don't forget to validate the alg is what you expect:
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-			}
-
-			return a.jwtSecret, nil
-		})
-
-		if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid && err != nil && a.jwtSecret != "" {
+		ctx := r.Context()
+		if val, ok := ctx.Value("auth").(bool); ok && val == true {
 			next.ServeHTTP(w, r)
 		} else {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 		}
 	})
+}
+
+type SystemTokenMiddleware struct {
+	systemToken string
+}
+
+func NewSystemTokenMiddleware(systemToken string) *SystemTokenMiddleware {
+	return &SystemTokenMiddleware{systemToken: systemToken}
+}
+
+func (s *SystemTokenMiddleware) Middleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authPayload := r.Header.Get("Authorization")
+		authPayload = strings.TrimPrefix(authPayload, "Bearer ")
+
+		if authPayload == s.systemToken {
+			ctx := context.WithValue(r.Context(), "auth", true)
+			next.ServeHTTP(w, r.WithContext(ctx))
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+type JwtMiddleware struct {
+	jwtSecret []byte
+}
+
+func NewJwtMiddleware(jwtSecret string) *JwtMiddleware {
+	return &JwtMiddleware{jwtSecret: []byte(jwtSecret)}
+}
+
+func (j *JwtMiddleware) Middleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authPayload := r.Header.Get("Authorization")
+		authPayload = strings.TrimPrefix(authPayload, "Bearer ")
+		if authPayload == "" {
+			authPayload = getAuthCookie(r)
+		}
+
+		token, err := jwt.Parse(authPayload, func(token *jwt.Token) (interface{}, error) {
+			return j.jwtSecret, nil
+		})
+
+		if err != nil || !token.Valid {
+
+			log.Printf("err: %v", err)
+			log.Printf("token: %v", token)
+
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		ctx := context.WithValue(r.Context(), "auth", true)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func getAuthCookie(r *http.Request) string {
+	cookie, err := r.Cookie("airy_auth_token")
+	if err != nil {
+		return ""
+	}
+	return cookie.Value
 }

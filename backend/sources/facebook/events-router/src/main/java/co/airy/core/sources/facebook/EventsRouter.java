@@ -157,7 +157,7 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
 
     @Override
     public Health health() {
-        if (streams == null) {
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
             return Health.down().build();
         }
         streams.acquireLocalStore(metadataStore);

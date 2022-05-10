@@ -158,6 +158,10 @@
   margin: 0px;
   cursor: pointer;
   border: 7px solid var(--color-background-white);
+
+  circle {
+    fill:var(--color-background-white);
+   }
 }
 
 .sourceSelected {

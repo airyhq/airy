@@ -180,7 +180,7 @@ export const InputOptions = (props: Props) => {
       )}
       {isShowingEmojiDrawer && (
         <div ref={emojiDiv} className={styles.emojiDrawer}>
-          <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
+          <Picker theme={localStorage.getItem('theme')} showPreview={false} onSelect={addEmoji} title="Emoji" />
         </div>
       )}
 

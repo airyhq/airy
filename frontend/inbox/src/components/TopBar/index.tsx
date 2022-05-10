@@ -6,6 +6,7 @@ import {Toggle} from 'components';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
 import {ReactComponent as AiryLogoWithText} from 'assets/images/logo/airyPrimaryRgb.svg';
+import {ReactComponent as AiryLogoWithTextDark} from 'assets/images/logo/airyLogoDark.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/logo/airyLogo.svg';
 import styles from './index.module.scss';
@@ -61,7 +62,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   return (
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
-        <AiryLogoWithText className={styles.airyLogoSvg} />
+        {!darkTheme ? <AiryLogoWithText className={styles.airyLogoSvg} /> : <AiryLogoWithTextDark className={styles.airyLogoSvg}/>}
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>

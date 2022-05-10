@@ -2,7 +2,8 @@
 @import 'assets/scss/colors.scss';
 
 .catalogWrapper {
-  background: white;
+  background: var(--color-background-white);
+  color: var(--color-text-contrast);
   border-radius: 10px;
   padding: 32px;
   margin: 88px 1.5em 0 191px;

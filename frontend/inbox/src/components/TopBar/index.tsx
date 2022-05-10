@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
@@ -48,25 +48,28 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   }, [setFaqDropdownOn]);
 
   const toggleDarkTheme = () => {
-    if(localStorage.getItem('theme') === 'dark'){
+    if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.removeAttribute('data-theme');
       localStorage.removeItem('theme');
-      setDarkTheme(false)
+      setDarkTheme(false);
     } else {
       localStorage.setItem('theme', 'dark');
-      document.documentElement.setAttribute("data-theme", 'dark');
-      setDarkTheme(true)
+      document.documentElement.setAttribute('data-theme', 'dark');
+      setDarkTheme(true);
     }
-  }
+  };
 
   return (
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
-        {!darkTheme ? <AiryLogoWithText className={styles.airyLogoSvg} /> : <AiryLogoWithTextDark className={styles.airyLogoSvg}/>}
+        {!darkTheme ? (
+          <AiryLogoWithText className={styles.airyLogoSvg} />
+        ) : (
+          <AiryLogoWithTextDark className={styles.airyLogoSvg} />
+        )}
       </div>
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>
-
           <button className={styles.help} onClick={faqClickHandler}>
             ?
           </button>
@@ -142,7 +145,9 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
             )}
           </div>
         )}
-              <button className={styles.theme} onClick={toggleDarkTheme}><Toggle updateValue={toggleDarkTheme} value={darkTheme} emojiBefore='☀️' emojiAfter='🌙'/></button>
+        <button className={styles.theme} onClick={toggleDarkTheme}>
+          <Toggle updateValue={toggleDarkTheme} value={darkTheme} emojiBefore="☀️" emojiAfter="🌙" />
+        </button>
       </div>
     </div>
   );

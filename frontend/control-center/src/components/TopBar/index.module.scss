@@ -8,12 +8,13 @@
   justify-content: space-between;
   z-index: $navigation;
   height: 72px;
-  background-color: white;
-  box-shadow: 0 3px 8px 0 var(--color-light-gray);
+  background-color: var(--color-background-white);
+  box-shadow: 0 3px 8px 0 var(--color-shadow-gray);
   position: fixed;
   overflow: visible;
   top: 0;
   width: 100%;
+  color: var(--color-text-contrast);
 }
 
 .airyLogo {
@@ -96,7 +97,7 @@
 
 .dropdownContainer {
   position: absolute;
-  background-color: white;
+  background-color: var(--color-background-white);
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   top: 68px;
@@ -240,4 +241,10 @@
     border: 1px solid var(--color-airy-blue);
     box-shadow: 0px 0px 0px 3px var(--color-background-blue);
   }
+}
+
+.theme {
+  background: transparent;
+  border: none;
+  margin-left: 8px;
 }

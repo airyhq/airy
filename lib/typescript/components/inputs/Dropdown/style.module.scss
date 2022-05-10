@@ -75,6 +75,7 @@
   margin-top: 4px;
   overflow: visible;
   background: var(--color-background-white);
+  color: var(--color-text-contrast);
   border: 1px solid lightgray;
   border-radius: 6px;
   align-self: flex-start;
@@ -89,6 +90,7 @@
   display: flex;
   border: 0 solid var(--color-background-white);
   box-shadow: 0 0 0 0 var(--color-background-white);
+  color: var(--color-text-contrast);
   padding: 8px 8px;
   cursor: pointer;
   align-self: flex-start;

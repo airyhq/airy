@@ -26,11 +26,12 @@ export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, em
         <span
           className={`${styles.slider} ${variant === 'green' ? styles.sliderGreen : styles.sliderBlue} ${
             size === 'small' ? styles.sliderSmall : styles.sliderBig
-          } ${emoji === emojiAfter ? styles.emojiBefore : styles.emojiAfter}`}>
+          } ${emoji === emojiAfter ? styles.emojiBefore : styles.emojiAfter}`}
+        >
           {emoji ?? ''}
         </span>
       </span>
-      {text && <span>{text}</span>}
+      {text && <span className={styles.toggleText}>{text}</span>}
     </label>
   );
 };

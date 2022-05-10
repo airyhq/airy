@@ -6,11 +6,12 @@
   --color-light-gray: #cad5db;
   --color-shadow-gray: #cad5db;
   --color-tooltip-gray: #cad5db;
-  --color-button-gray:#cad5db;
+  --color-button-gray: #cad5db;
   --color-background-gray: #f7f7f7;
   --color-template-gray: #f0f0f0;
   --color-light-greyish-white: #efefef;
   --color-greyish-white: #e8eaea;
+  --color-very-light-grey: #e8eaea;
   --color-template-highlight: #fff;
   --color-background-white: #fff;
   --color-blue-white: #f5f8fa;
@@ -18,6 +19,7 @@
   --color-airy-logo-blue: #4bb3fd;
   --color-hover-blue: #337bb3;
   --color-airy-blue: #1578d4;
+  --color-elements-blue: #1578d4;
   --color-airy-accent: #1578d4;
   --color-airy-blue-hover: #1e62d0;
   --color-airy-blue-pressed: #1b4469;
@@ -45,14 +47,16 @@ html[data-theme='dark'] {
   --color-text-contrast: #e8e6e3;
   --color-background-gray: #1f201c;
   --color-light-greyish-white: #1f201c;
+  --color-blue-white: #1f201c;
   --color-background-white: #272822;
   --color-template-highlight: #272822;
   --color-tooltip-gray: #1f201c;
   --color-background-blue: #243037;
-  --color-template-gray:#484848;
+  --color-template-gray: #484848;
   --color-shadow-gray: #4d5153;
-  --color-button-gray:#313537;
+  --color-button-gray: #313537;
   --color-airy-message-inbound: #1c1e1f;
   --color-airy-message-outbound: #1160aa;
+  --color-elements-blue: #115fa8;
   --color-airy-message-text-inbound: #ffffff;
 }

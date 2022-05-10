@@ -6,7 +6,7 @@
   flex-direction: column;
   width: 582px;
   height: 430px;
-  background: white;
+  background: var(--color-background-white);
   border-radius: 8px;
   z-index: 1;
   position: fixed;
@@ -23,6 +23,7 @@
 
 .headline {
   @include font-base;
+  color: var(--color-text-contrast);
   padding-top: 40px;
   padding-left: 40px;
 }

@@ -55,7 +55,7 @@
 }
 
 .sliderGreen {
-  background: var(--color-light-greyish-white);
+  background: var(--color-very-light-grey);
   box-shadow: inset 0px 6px 8px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -79,15 +79,15 @@
 }
 
 .sliderBlue:before {
-  background-color: var(--color-airy-blue);
+  background-color: var(--color-elements-blue);
 }
 
 .sliderGreen:before {
-  background: linear-gradient(180deg, white 0%, var(--color-greyish-white) 100%);
+  background: linear-gradient(180deg, white 0%, var(--color-very-light-grey) 100%);
 }
 
 input:checked + .sliderBlue {
-  background-color: var(--color-airy-blue);
+  background-color: var(--color-elements-blue);
 }
 
 input:checked + .sliderGreen {
@@ -108,7 +108,7 @@ input:checked + .slider:before {
 }
 
 input:checked + .sliderGreen:before {
-  background: var(--color-light-greyish-white);
+  background: var(--color-very-light-grey);
 }
 
 input:checked + .sliderBig:before {
@@ -117,4 +117,8 @@ input:checked + .sliderBig:before {
 
 input:checked + .sliderSmall:before {
   transform: translateX(15px);
+}
+
+.toggleText {
+  margin-left: 3px;
 }

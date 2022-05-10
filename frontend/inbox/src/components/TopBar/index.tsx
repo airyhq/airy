@@ -66,8 +66,6 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
       <div className={styles.menuArea}>
         <div className={styles.menuItem}>
 
-          <button className={styles.theme} onClick={toggleDarkTheme}><Toggle updateValue={toggleDarkTheme} value={darkTheme} /></button>
-
           <button className={styles.help} onClick={faqClickHandler}>
             ?
           </button>
@@ -143,6 +141,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
             )}
           </div>
         )}
+              <button className={styles.theme} onClick={toggleDarkTheme}><Toggle updateValue={toggleDarkTheme} value={darkTheme} emojiBefore='☀️' emojiAfter='🌙'/></button>
       </div>
     </div>
   );

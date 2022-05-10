@@ -37,7 +37,16 @@
   bottom: 0;
   transition: 0.4s;
   border-radius: 50px;
+  padding: 0 5px;
   cursor: pointer;
+}
+
+.emojiBefore {
+  justify-content: flex-start;
+}
+
+.emojiAfter {
+  justify-content: flex-end;
 }
 
 .sliderBlue {

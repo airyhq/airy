@@ -1,11 +1,9 @@
 import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-
+import {StateModel} from '../../reducers';
 import {Tag as TagModel} from 'model';
-
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import styles from './index.module.scss';
-import {StateModel} from '../../reducers';
 
 type TagProps = {
   tag: TagModel;
@@ -38,7 +36,7 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, config: {tagCon
           color: `#${tagColor.font}`,
           border: `1px solid #${tagColor.border}`,
         }
-      : {backgroundColor: `#${tagColor.default}`};
+      : {backgroundColor: `#${tagColor.default}`, color: 'white', border: `1px solid #${tagColor.border}`};
 
   return (
     <div className={styles.tag} onClick={onClick}>

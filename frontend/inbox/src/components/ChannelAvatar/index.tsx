@@ -50,7 +50,7 @@ const ChannelAvatar = (props: ChannelAvatarProps) => {
   };
 
   return (
-    <div className={styles.image} style={style}>
+    <div className={`${styles.image}`} style={style}>
       {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getChannelAvatar(channel)}
     </div>
   );

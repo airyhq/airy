@@ -5,7 +5,8 @@ go_library(
     name = "endpoints",
     srcs = [
         "auth.go",
-        "endpoints.go",
+        "server.go",
+        "services.go",
     ],
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],

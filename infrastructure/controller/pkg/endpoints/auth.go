@@ -7,12 +7,31 @@ import (
 	"k8s.io/klog"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
-func EnableAuth(next http.Handler) http.Handler {
+type EnableAuthMiddleware struct {
+	pattern *regexp.Regexp
+}
+
+// NewAuthMiddleware Only paths that match the regexp pattern will be authenticated
+func NewAuthMiddleware(pattern string) *EnableAuthMiddleware {
+	r, err := regexp.Compile(pattern)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &EnableAuthMiddleware{pattern: r}
+}
+
+func (a *EnableAuthMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+		if !a.pattern.MatchString(r.URL.Path) {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		// Auth middlewares attach a flag to the context indicating that authentication was successful
 		if val, ok := ctx.Value("auth").(bool); ok && val == true {
 			next.ServeHTTP(w, r)
@@ -71,10 +90,6 @@ func (j *JwtMiddleware) Middleware(next http.Handler) http.Handler {
 		})
 
 		if err != nil || !token.Valid {
-
-			log.Printf("err: %v", err)
-			log.Printf("token: %v", token)
-
 			next.ServeHTTP(w, r)
 			return
 		}

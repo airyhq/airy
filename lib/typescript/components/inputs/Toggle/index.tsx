@@ -14,12 +14,6 @@ type ToggleType = {
 export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, emojiAfter}: ToggleType) => {
   const [emoji, setEmoji] = useState(value ? emojiAfter : emojiBefore);
 
-  console.log('value', value);
-
-  useEffect(() => {
-    console.log('emoji', emoji);
-  }, [emoji]);
-
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateValue(event.target.checked);
     emoji && emoji === emojiBefore ? setEmoji(emojiAfter) : setEmoji(emojiBefore);

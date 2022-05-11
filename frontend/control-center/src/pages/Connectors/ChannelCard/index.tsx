@@ -6,7 +6,7 @@ import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.s
 
 type ChannelCardProps = {
   sourceInfo: SourceInfo;
-  channelsToShow: number;
+  channelsToShow?: number;
 };
 
 export const ChannelCard = (props: ChannelCardProps) => {

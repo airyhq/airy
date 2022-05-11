@@ -118,7 +118,12 @@ const ChannelsList = () => {
             <h2 className={styles.description}>{description}</h2>
           </div>
         </div>
-        <Button style={{width: '152px', height: '40px', fontSize: '16px'}} onClick={() => {}}>
+        <Button
+          style={{width: '152px', height: '40px', fontSize: '16px'}}
+          onClick={() => {
+            console.log('DISABLE');
+          }}
+        >
           Disable
         </Button>
       </div>

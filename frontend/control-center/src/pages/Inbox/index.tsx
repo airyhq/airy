@@ -7,7 +7,7 @@ import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
-import {ChannelCard} from './ChannelCard';
+import {ChannelCard} from '../Connectors/ChannelCard';
 import {EmptyStateInbox} from './EmptyStateInbox';
 import styles from './index.module.scss';
 

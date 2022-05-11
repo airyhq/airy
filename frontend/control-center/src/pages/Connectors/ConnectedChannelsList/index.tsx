@@ -8,7 +8,7 @@ import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
 
-import {SearchField, LinkButton, Button, SettingsModal} from 'components';
+import {SearchField, LinkButton} from 'components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
@@ -32,7 +32,6 @@ import {
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
-import {DisableModal} from './DisableModal';
 import {Pagination} from '../../../components/Pagination';
 
 const ConnectedChannelsList = () => {
@@ -47,10 +46,6 @@ const ConnectedChannelsList = () => {
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
-  const [showDisableModal, setShowDisableModal] = useState(false);
-  const [cancelDisableChannel, setCancelDisableChannel] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorOccurred, setErrorOccurred] = useState(false);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -68,18 +63,6 @@ const ConnectedChannelsList = () => {
   useLayoutEffect(() => {
     getInfo();
   }, [source, channels]);
-
-  const handleDisable = () => {
-    setShowDisableModal(true);
-  };
-
-  const handleCancel = () => {
-    setShowDisableModal(false);
-  };
-
-  const cancelDisable = () => {
-    setShowDisableModal(false);
-  };
 
   const getInfo = () => {
     let ROUTE;
@@ -146,9 +129,6 @@ const ConnectedChannelsList = () => {
             <h2 className={styles.description}>{description}</h2>
           </div>
         </div>
-        <Button style={{width: '152px', height: '40px', fontSize: '16px'}} onClick={handleDisable}>
-          Disable
-        </Button>
       </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
@@ -196,13 +176,13 @@ const ConnectedChannelsList = () => {
       </div>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          sortBy(currentTableData, (channel: Channel) => channel.metadata.name.toLowerCase()).map(
-            (channel: Channel) => (
-              <div key={channel.id} className={styles.connectedChannel}>
-                <ChannelsListItem channel={channel} />
-              </div>
-            )
-          )
+          sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
+            channel.metadata.name.toLowerCase()
+          ).map((channel: Channel) => (
+            <div key={channel.id} className={styles.connectedChannel}>
+              <ChannelsListItem channel={channel} />
+            </div>
+          ))
         ) : (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>Result not found.</h1>
@@ -210,23 +190,12 @@ const ConnectedChannelsList = () => {
           </div>
         )}
       </div>
-      {showDisableModal && (
-        <SettingsModal close={cancelDisable} title="">
-          <DisableModal
-            setConfirmDisable={() => {}}
-            setCancelDisable={handleCancel}
-            channel={name}
-            channelLength={channels.length}
-            isLoading={isLoading}
-            error={errorOccurred}
-          />
-        </SettingsModal>
-      )}
       <Pagination
         totalCount={filteredChannels.length}
         pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
         currentPage={currentPage}
         onPageChange={page => setCurrentPage(page)}
+        onSearch={searchText !== ''}
       />
     </div>
   );

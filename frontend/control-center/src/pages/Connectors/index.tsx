@@ -10,7 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
-import {ChannelCard} from '../Inbox/ChannelCard';
+import {ChannelCard} from './ChannelCard';
 
 const mapDispatchToProps = {
   listChannels,

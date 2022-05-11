@@ -22,7 +22,7 @@
     "react-dom": "17.0.2",
     "react-i18next": "^11.16.7",
     "react-markdown": "^8.0.2",
-    "react-modal": "^3.14.4",
+    "react-modal": "^3.15.1",
     "react-redux": "8.0.1",
     "react-router-dom": "6.3.0",
     "redux": "^4.1.2",

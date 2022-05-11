@@ -27,7 +27,7 @@ const connector = connect(mapStateToProps);
 const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
-  const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') ? true : false);
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') === 'dark' ? true : false);
 
   const accountClickHandler = useCallback(() => {
     setAccountDropdownOn(!isAccountDropdownOn);

@@ -6,10 +6,11 @@ import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.s
 
 type ChannelCardProps = {
   sourceInfo: SourceInfo;
+  channelsToShow: number;
 };
 
 export const ChannelCard = (props: ChannelCardProps) => {
-  const {sourceInfo} = props;
+  const {sourceInfo, channelsToShow} = props;
   return (
     <Link to={sourceInfo.channelsListRoute} className={styles.container}>
       <div className={styles.channelCard}>
@@ -18,7 +19,9 @@ export const ChannelCard = (props: ChannelCardProps) => {
           {sourceInfo.title}
         </div>
         <div className={styles.linkContainer}>
-          <span>+ {sourceInfo.channelsToShow} channels</span>
+          <span>
+            {channelsToShow} {channelsToShow === 1 ? 'channel' : 'channels'}
+          </span>
           <ArrowRightIcon className={styles.arrowIcon} />
         </div>
       </div>

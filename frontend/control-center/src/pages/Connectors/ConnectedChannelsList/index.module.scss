@@ -13,10 +13,28 @@
   min-height: calc(100vh - 170px);
 }
 
+.headlineRow {
+  display: flex;
+  place-content: space-between;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
 .headline {
   @include font-xl;
   font-weight: bold;
-  margin-bottom: 8px;
+}
+
+.description {
+  @include font-base;
+  color: var(--color-text-gray);
+}
+
+.linkButtonContainer {
+  @include font-base;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-contrast);
 }
 
 .backButton {
@@ -25,17 +43,16 @@
   cursor: pointer;
   text-decoration: none;
   max-width: 200px;
-  color: var(--color-airy-blue);
   &:hover {
     text-decoration: underline;
   }
 }
 
 .backIcon {
-  height: 13px;
-  width: 17px;
+  height: 20px;
+  width: 20px;
   path {
-    fill: var(--color-airy-blue);
+    fill: var(--color-text-contrast);
   }
   margin-right: 8px;
 }
@@ -95,11 +112,6 @@
   color: var(--color-soft-green);
 }
 
-.headlineRow {
-  display: flex;
-  place-content: space-between;
-}
-
 .buttons {
   display: flex;
   flex-direction: row;
@@ -107,12 +119,12 @@
 
   button {
     align-self: center;
-    height: 40px;
-    min-width: 40px;
+    height: 32px;
+    width: 32px;
     margin-left: 16px;
+    border-radius: 32px;
     background: var(--color-blue-white);
     border: none;
-    border-radius: 4px;
     cursor: pointer;
   }
 
@@ -121,6 +133,10 @@
   }
 
   button:last-child {
+    border-radius: 48px;
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
     background: var(--color-airy-blue);
     svg {
       path {
@@ -140,19 +156,20 @@
 
 .searchField {
   min-width: 300px;
-  animation-name: searchFieldAnimation;
-  animation-duration: 500ms;
-  animation-fill-mode: forwards;
+  animation: searchFieldAnimation 3000ms ease;
+  height: 32px;
+  border-radius: 32px;
 }
 
 @keyframes searchFieldAnimation {
   0% {
-    margin-left: 0px;
-    width: 0%;
+    width: 0px;
+    opacity: 0;
   }
+
   100% {
-    margin-left: 16px;
     width: 200px;
+    opacity: 1;
   }
 }
 
@@ -166,6 +183,7 @@
 .closeIcon {
   height: 10px;
   width: 10px;
+  z-index: 2;
 }
 
 .plusIcon {

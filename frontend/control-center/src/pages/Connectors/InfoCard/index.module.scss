@@ -3,7 +3,8 @@
 @import 'assets/scss/z-index.scss';
 
 .channelCard {
-  width: 230px;
+  width: 260px;
+  height: 100px;
   margin-bottom: 28px;
   margin-right: 36px;
   display: flex;
@@ -14,7 +15,7 @@
   &:hover {
     border: 2px solid var(--color-airy-blue);
     margin-left: -1px;
-    width: 231px;
+    width: 261px;
     cursor: pointer;
   }
 }
@@ -94,23 +95,23 @@
 }
 
 .isExpandedCard {
-  height: 120px;
-  width: 340px;
+  height: 100px;
+  width: 260px;
   &:hover {
     border: 2px solid var(--color-airy-blue);
     margin-left: -1px;
-    width: 341px;
+    width: 261px;
   }
 }
 
 .isExpandedContainer {
-  height: 120px;
-  width: 340px;
+  height: 100px;
+  width: 260px;
   padding: 6px 0 0 0;
   flex-direction: column;
   align-items: start;
   &:hover {
-    width: 341px;
+    width: 261px;
   }
 }
 
@@ -124,7 +125,7 @@
   width: 100%;
   margin-left: 18px;
   h1 {
-    @include font-l;
+    @include font-base;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -32,7 +32,8 @@ export const ItemInfo = (props: ComponentInfoProps) => {
     <div
       className={`${styles.container} ${!isComponent ? styles.expandedContainer : ''}  ${
         !isComponent && isExpanded ? styles.expandedContainerShown : ''
-      }`}>
+      }`}
+    >
       <div className={styles.name}>
         {isComponent && (
           <>

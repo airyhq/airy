@@ -14,11 +14,11 @@
 }
 
 .headlineRow {
-    display: flex;
-    place-content: space-between;
-    margin-top: 32px;
-    margin-bottom: 16px;
-  }
+  display: flex;
+  place-content: space-between;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
 
 .headline {
   @include font-xl;
@@ -26,15 +26,15 @@
 }
 
 .description {
-    @include font-base;
-    color: var(--color-text-gray);
+  @include font-base;
+  color: var(--color-text-gray);
 }
 
 .linkButtonContainer {
-    @include font-base;
-    display: flex;
-    align-items: center;
-    color: var(--color-text-contrast);
+  @include font-base;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-contrast);
 }
 
 .backButton {

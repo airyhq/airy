@@ -147,7 +147,8 @@ const ChannelsList = () => {
           </button>
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-            onClick={() => navigate(path)}>
+            onClick={() => navigate(path)}
+          >
             <PlusIcon className={styles.plusIcon} />
           </button>
         </div>
@@ -160,7 +161,8 @@ const ChannelsList = () => {
           fontWeight: '700',
           fontSize: '16px',
           marginBottom: '24px',
-        }}>
+        }}
+      >
         <span>Name</span>
         <span>Manage</span>
       </div>

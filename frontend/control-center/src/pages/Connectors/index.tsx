@@ -10,6 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
+import {ChannelCard} from '../Inbox/ChannelCard';
 
 const mapDispatchToProps = {
   listChannels,
@@ -53,9 +54,16 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
           <EmptyStateConnectors />
         ) : (
           <>
-            {sourcesInfo.map((infoItem: SourceInfo) => {
-              return (
-                channelsBySource(infoItem.type).length > 0 && (
+            {sourcesInfo.map(
+              (infoItem: SourceInfo, index: number) =>
+                (channelsBySource(infoItem.type).length > 0 && infoItem.channel && (
+                  <ChannelCard
+                    sourceInfo={infoItem}
+                    channelsToShow={channelsBySource(infoItem.type).length}
+                    key={index}
+                  />
+                )) ||
+                (channelsBySource(infoItem.type).length > 0 && !infoItem.channel && (
                   <div style={{display: 'flex'}} key={infoItem.type}>
                     <InfoCard
                       installed
@@ -66,9 +74,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                       }}
                     />
                   </div>
-                )
-              );
-            })}
+                ))
+            )}
           </>
         )}
       </div>

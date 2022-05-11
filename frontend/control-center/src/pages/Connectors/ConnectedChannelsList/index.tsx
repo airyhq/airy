@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useLayoutEffect, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
@@ -7,9 +7,9 @@ import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
-import ChannelsListItem from './ChannelsListItem';
-import {SearchField, LinkButton} from 'components';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
+
+import {SearchField, LinkButton, Button, SettingsModal} from 'components';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
@@ -30,6 +30,10 @@ import {
   CATALOG_GOOGLE_ROUTE,
   CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
+import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import ChannelsListItem from './ChannelsListItem';
+import {DisableModal} from './DisableModal';
+import {Pagination} from '../../../components/Pagination';
 
 const ConnectedChannelsList = () => {
   const {source} = useParams();
@@ -39,38 +43,68 @@ const ConnectedChannelsList = () => {
   });
 
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
+  const [showDisableModal, setShowDisableModal] = useState(false);
+  const [cancelDisableChannel, setCancelDisableChannel] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorOccurred, setErrorOccurred] = useState(false);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  useEffect(() => {
+  const pageSize = filteredChannels.length >= 8 ? 8 : filteredChannels.length;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return filteredChannels.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, pageSize]);
+
+  useLayoutEffect(() => {
     getInfo();
   }, [source, channels]);
+
+  const handleDisable = () => {
+    setShowDisableModal(true);
+  };
+
+  const handleCancel = () => {
+    setShowDisableModal(false);
+  };
+
+  const cancelDisable = () => {
+    setShowDisableModal(false);
+  };
 
   const getInfo = () => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
         setName('Facebook Messenger');
+        setDescription('Connect multiple Facebook pages');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName('Google Business Messages');
+        setDescription('Be there when people search');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName('Twilio SMS');
+        setDescription('Deliver SMS with ease');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName('Twilio Whatsapp');
+        setDescription('World #1 chat app');
         ROUTE = location.pathname.includes('connectors')
           ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
           : CATALOG_TWILIO_WHATSAPP_ROUTE;
@@ -78,11 +112,13 @@ const ConnectedChannelsList = () => {
         break;
       case Source.chatPlugin:
         setName('Chat Plugin');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
         setName('Instagram');
+        setDescription('Connect multiple Instagram pages');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
@@ -96,8 +132,25 @@ const ConnectedChannelsList = () => {
 
   return (
     <div className={styles.wrapper}>
+      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
+        <div className={styles.linkButtonContainer}>
+          <ArrowLeftIcon className={styles.backIcon} />
+          Channels
+        </div>
+      </LinkButton>
       <div className={styles.headlineRow}>
-        <h1 className={styles.headline}>{name}</h1>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <div style={{height: '64px', width: '64px'}}>{getChannelAvatar(source)}</div>
+          <div style={{display: 'flex', flexDirection: 'column', marginLeft: '16px'}}>
+            <h1 className={styles.headline}>{name}</h1>
+            <h2 className={styles.description}>{description}</h2>
+          </div>
+        </div>
+        <Button style={{width: '152px', height: '40px', fontSize: '16px'}} onClick={handleDisable}>
+          Disable
+        </Button>
+      </div>
+      <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
           <div className={styles.searchField}>
             {showingSearchField && (
@@ -106,33 +159,44 @@ const ConnectedChannelsList = () => {
                 value={searchText}
                 setValue={(value: string) => setSearchText(value)}
                 autoFocus={true}
+                style={{height: '32px', borderRadius: '32px'}}
                 resetClicked={() => setSearchText('')}
               />
             )}
           </div>
-          <div className={styles.buttons}>
-            <button onClick={showSearchFieldToggle}>
-              {showingSearchField ? (
-                <CloseIcon className={styles.closeIcon} />
-              ) : (
-                <SearchIcon className={styles.searchIcon} />
-              )}
-            </button>
-            <button onClick={() => navigate(path)}>
-              <PlusIcon className={styles.plusIcon} />
-            </button>
-          </div>
+        </div>
+        <div className={styles.buttons}>
+          <button onClick={showSearchFieldToggle}>
+            {showingSearchField ? (
+              <CloseIcon className={styles.closeIcon} />
+            ) : (
+              <SearchIcon className={styles.searchIcon} />
+            )}
+          </button>
+          <button
+            style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+            onClick={() => navigate(path)}
+          >
+            <PlusIcon className={styles.plusIcon} />
+          </button>
         </div>
       </div>
-
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
-        <ArrowLeftIcon className={styles.backIcon} />
-        Back
-      </LinkButton>
-
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'space-between',
+          fontWeight: '700',
+          fontSize: '16px',
+          marginBottom: '24px',
+        }}
+      >
+        <span>Name</span>
+        <span>Manage</span>
+      </div>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase()).map(
+          sortBy(currentTableData, (channel: Channel) => channel.metadata.name.toLowerCase()).map(
             (channel: Channel) => (
               <div key={channel.id} className={styles.connectedChannel}>
                 <ChannelsListItem channel={channel} />
@@ -146,6 +210,24 @@ const ConnectedChannelsList = () => {
           </div>
         )}
       </div>
+      {showDisableModal && (
+        <SettingsModal close={cancelDisable} title="">
+          <DisableModal
+            setConfirmDisable={() => {}}
+            setCancelDisable={handleCancel}
+            channel={name}
+            channelLength={channels.length}
+            isLoading={isLoading}
+            error={errorOccurred}
+          />
+        </SettingsModal>
+      )}
+      <Pagination
+        totalCount={filteredChannels.length}
+        pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
+        currentPage={currentPage}
+        onPageChange={page => setCurrentPage(page)}
+      />
     </div>
   );
 };

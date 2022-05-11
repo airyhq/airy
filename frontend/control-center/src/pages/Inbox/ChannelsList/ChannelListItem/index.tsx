@@ -61,7 +61,8 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                 navigate(`/${path}/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
-              }>
+              }
+            >
               <PencilIcon height={16} width={16} />
             </Button>
             <Button style={{marginLeft: '8px'}} styleVariant="link" type="button" onClick={togglePopupVisibility}>

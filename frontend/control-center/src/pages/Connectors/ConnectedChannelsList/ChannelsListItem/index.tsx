@@ -6,8 +6,9 @@ import {disconnectChannel} from '../../../../actions/channel';
 import {SettingsModal, Button} from 'components';
 import {Channel} from 'model';
 
-import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
-import ChannelAvatar from '../../../../components/ChannelAvatar';
+import {ReactComponent as CheckMarkFilledIcon} from 'assets/images/icons/checkmarkFilled.svg';
+import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
+import {ReactComponent as DisconnectIcon} from 'assets/images/icons/disconnectIcon.svg';
 
 import styles from './index.module.scss';
 import {useNavigate} from 'react-router-dom';
@@ -48,20 +49,13 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          <div className={styles.channelLogo}>
-            <ChannelAvatar channel={channel} style={{width: '40px', height: '40px'}} />
-          </div>
+          {channel.connected && <CheckMarkFilledIcon height={20} width={20} />}
           <div className={styles.channelName}>{channel.metadata?.name}</div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
-          {channel.connected && (
-            <div className={styles.connectedHint}>
-              Connected <CheckMarkIcon />
-            </div>
-          )}
-
           <div className={styles.listButtons}>
             <Button
               styleVariant="link"
+              style={{marginRight: '0px'}}
               type="button"
               onClick={() =>
                 navigate(`/${path}/${channel.source}/${channel.id}`, {
@@ -69,10 +63,10 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                 })
               }
             >
-              Edit
+              <PencilIcon height={16} width={16} />
             </Button>
-            <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
-              Disconnect
+            <Button style={{marginLeft: '8px'}} styleVariant="link" type="button" onClick={togglePopupVisibility}>
+              <DisconnectIcon height={18} width={18} />
             </Button>
           </div>
         </div>

@@ -3,8 +3,8 @@
 @import 'assets/scss/z-index.scss';
 
 .container {
-  width: 230px;
-  height: 90px;
+  width: 260px;
+  height: 100px;
   margin-bottom: 28px;
   margin-right: 36px;
   display: flex;
@@ -16,7 +16,7 @@
   &:hover {
     border: 2px solid var(--color-airy-blue);
     margin-left: -1px;
-    width: 231px;
+    width: 261px;
     cursor: pointer;
   }
 }
@@ -29,7 +29,7 @@
 }
 
 .logoTitleContainer {
-  @include font-s;
+  @include font-base;
   font-weight: 600;
   margin-bottom: 13px;
   color: var(--color-text-contrast);

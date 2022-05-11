@@ -39,6 +39,7 @@ export const Carousel = ({children}) => {
   };
 
   const maximumScrollRight = (element: HTMLDivElement) => {
+    console.log('element', element);
     const rightCutOf = carouselChildren.current.scrollLeft + element.clientWidth;
     let currentChild = -1;
     let currentPosX = 0;
@@ -55,6 +56,7 @@ export const Carousel = ({children}) => {
     }
 
     if (currentElementIndex < carouselChildren.current.children.length - 1) currentElementIndex++;
+    console.log('maxScroll', maxScroll);
     return maxScroll;
   };
 
@@ -88,6 +90,7 @@ export const Carousel = ({children}) => {
   const resetScrollButtons = useCallback(() => {
     const element = carouselChildren.current;
     if (buttonLeft.current) {
+      console.log('LEFT', element.scrollLeft);
       if (element.scrollLeft > 0) {
         buttonLeft.current.style.display = 'block';
       } else {

@@ -5,6 +5,7 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
     "//lib/java/uuid",

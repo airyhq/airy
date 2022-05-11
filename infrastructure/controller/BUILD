@@ -1,7 +1,7 @@
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 
 # gazelle:prefix github.com/airyhq/airy/infrastructure/controller
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 load("//tools/build:container_release.bzl", "container_release")
 
@@ -38,10 +38,3 @@ container_release(
 )
 
 check_pkg(name = "buildifier")
-
-go_test(
-    name = "controller_test",
-    srcs = ["main_test.go"],
-    embed = [":controller_lib"],
-    deps = ["@com_github_golang_jwt_jwt//:jwt"],
-)

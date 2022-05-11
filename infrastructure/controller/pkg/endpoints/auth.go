@@ -2,7 +2,9 @@ package endpoints
 
 import (
 	"context"
+	"encoding/base64"
 	"github.com/golang-jwt/jwt"
+	"k8s.io/klog"
 	"log"
 	"net/http"
 	"strings"
@@ -11,6 +13,7 @@ import (
 func EnableAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+		// Auth middlewares attach a flag to the context indicating that authentication was successful
 		if val, ok := ctx.Value("auth").(bool); ok && val == true {
 			next.ServeHTTP(w, r)
 		} else {
@@ -46,8 +49,14 @@ type JwtMiddleware struct {
 }
 
 func NewJwtMiddleware(jwtSecret string) *JwtMiddleware {
-	return &JwtMiddleware{jwtSecret: []byte(jwtSecret)}
+	data, err := base64.StdEncoding.DecodeString(jwtSecret)
+	if err != nil {
+		klog.Fatal("failed to base64 decode jwt secret: ", err)
+	}
+
+	return &JwtMiddleware{jwtSecret: data}
 }
+
 
 func (j *JwtMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

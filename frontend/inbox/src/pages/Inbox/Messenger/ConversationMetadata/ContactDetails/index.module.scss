@@ -99,6 +99,9 @@
 
 .arrowIcon {
   margin-right: 6px;
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .downIcon {
@@ -118,6 +121,7 @@
   bottom: 40px;
   display: flex;
   flex-direction: column;
+  color: var(--color-text-contrast);
 
   .iconsContainer {
     display: flex;

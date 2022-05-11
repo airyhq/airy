@@ -55,7 +55,7 @@
 }
 
 .sliderGreen {
-  background: var(--color-very-light-grey);
+  background: var(--color-toggle-grey);
   box-shadow: inset 0px 6px 8px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -96,11 +96,6 @@ input:checked + .sliderGreen {
 
 input:focus + .sliderBlue {
   box-shadow: 0 0 0 2pt Highlight;
-}
-@media (-webkit-min-device-pixel-ratio: 0) {
-  input:focus + .sliderBlue {
-    box-shadow: 0 0 0 2pt -webkit-focus-ring-color;
-  }
 }
 
 input:checked + .slider:before {

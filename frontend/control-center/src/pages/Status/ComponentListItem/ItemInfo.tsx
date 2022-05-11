@@ -35,12 +35,16 @@ export const ItemInfo = (props: ComponentInfoProps) => {
       }`}
     >
       <div className={styles.name}>
-        {isComponent && (
+        {isComponent ? (
           <>
             <button onClick={toggleExpanded}>
               {!isExpanded ? <ArrowRight /> : <ArrowDown className={styles.arrowDownIcon} />}
             </button>
             <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
+          </>
+        ) : (
+          <>
+            <div className={styles.blankSpace} />
           </>
         )}
 

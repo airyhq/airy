@@ -14,7 +14,7 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const Status = (props: ConnectedProps<typeof connector>) => {
-  const config = useSelector((state: StateModel) => state.data.config);
+  const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
   const [spinAnim, setSpinAnim] = useState(true);
 
   useEffect(() => {
@@ -50,15 +50,19 @@ const Status = (props: ConnectedProps<typeof connector>) => {
         </button>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(config.components).map((component, index) => (
-          <ComponentListItem
-            key={index}
-            healthy={component[1].healthy}
-            enabled={component[1].enabled}
-            services={component[1].services}
-            componentName={component[0]}
-          />
-        ))}
+        {components
+          .filter(component => {
+            return component[1].enabled;
+          })
+          .map((component, index) => (
+            <ComponentListItem
+              key={index}
+              healthy={component[1].healthy}
+              enabled={component[1].enabled}
+              services={component[1].services}
+              componentName={component[0]}
+            />
+          ))}
       </div>
     </section>
   );

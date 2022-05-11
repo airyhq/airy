@@ -66,7 +66,7 @@
 }
 
 .serviceName {
-  margin-left: 25%;
+  margin-left: 10%;
   @include font-s;
   color: var(--color-text-gray);
 }
@@ -89,4 +89,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.blankSpace {
+  width: 60px;
 }

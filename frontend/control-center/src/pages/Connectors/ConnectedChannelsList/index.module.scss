@@ -125,13 +125,13 @@
     width: 32px;
     margin-left: 16px;
     border-radius: 32px;
-    background: var(--color-blue-white);
+    background: var(--color-blue-white-button);
     border: none;
     cursor: pointer;
   }
 
   button:hover {
-    background-color: var(--color-background-blue);
+    background-color: var(--color-button-light-blue);
   }
 
   button:last-child {

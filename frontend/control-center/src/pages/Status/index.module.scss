@@ -7,6 +7,7 @@
   padding: 28px 18px;
   margin: 88px 1.5em 0 191px;
   background: var(--color-blue-white);
+  color: var(--color-text-contrast);
   border-radius: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -25,8 +26,8 @@
 .listHeader {
   display: flex;
   flex-direction: row;
-  background-color: var(--color-airy-blue);
-  border: 1px solide var(--color-airy-blue);
+  background-color: var(--color-elements-blue);
+  border: 1px solide var(--color-elements-blue);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   height: 50px;

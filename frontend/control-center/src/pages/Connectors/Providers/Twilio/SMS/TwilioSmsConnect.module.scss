@@ -2,7 +2,7 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
-  background: white;
+  background: var(--color-background-white);
   display: block;
   border-radius: 10px;
   padding-left: 96px;
@@ -15,6 +15,7 @@
 
 .headline {
   @include font-xl;
+  color: var(--color-text-contrast);
   font-weight: bold;
   margin-bottom: 8px;
 }

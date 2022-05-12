@@ -5,7 +5,7 @@
   @include font-base;
   border: 0;
   padding: 0;
-  background-color: white;
+  background-color: var(--color-background-white);
   cursor: pointer;
   text-decoration: none;
   color: var(--color-airy-blue);

@@ -171,7 +171,7 @@ header {
     @include font-m;
 
     background-color: var(--color-airy-blue);
-    color: white;
+    color: var(--color-background-white);
     border-radius: 4px;
     text-align: center;
     height: 48px;

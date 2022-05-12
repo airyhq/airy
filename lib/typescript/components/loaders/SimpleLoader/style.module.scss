@@ -19,7 +19,7 @@
 .loaderWhite {
   @extend .loader;
   div {
-    background: white;
+    background: var(--color-background-white);
   }
 }
 

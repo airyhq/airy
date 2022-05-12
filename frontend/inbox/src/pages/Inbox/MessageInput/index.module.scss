@@ -34,7 +34,7 @@
   &:hover {
     .chevronDown {
       path {
-        fill: white;
+        fill: var(--color-background-white);
       }
     }
   }
@@ -112,10 +112,9 @@
   position: relative;
   width: 40px;
   margin-left: 8px;
-  transition: 0.2s ease-in-out all;
   top: 1px;
   border: none;
-  background: white;
+  background: transparent;
   padding: 0;
   outline: none;
   cursor: pointer;
@@ -130,7 +129,7 @@
   border: none;
   width: 40px;
   @include font-s;
-  background: #cad5db;
+  background: var(--color-button-gray);
   font-weight: 400;
   color: #000;
   border-radius: 50%;
@@ -155,7 +154,7 @@
   padding: 10px;
   border-radius: 4px;
   z-index: 1;
-  background-color: var(--color-light-gray);
+  background-color: var(--color-tooltip-gray);
 
   p {
     @include font-s;

@@ -130,7 +130,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           id={switchId}
           isActive={subscribed === WebhooksStatus.subscribed ? true : false}
           toggleActive={handleSubscribeToggle}
-          onColor="#EFEFEF"
+          onColor={localStorage.getItem('theme') === 'dark' ? '#828484' : '#EFEFEF'}
         />
         <div className={styles.pensilIcon} onClick={editWebhook}>
           <PensilIcon height={12} width={12} />

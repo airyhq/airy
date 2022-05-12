@@ -24,8 +24,9 @@
 }
 
 .editInput {
-  border: 1px solid #cad5db;
-  background-color: #f7f7f7;
+  border: 1px solid var(--color-light-gray);
+  background-color: var(--color-background-white);
+  color: var(--color-text-contrast);
   border-radius: 4px;
   padding: 6px;
   font-size: 16px;

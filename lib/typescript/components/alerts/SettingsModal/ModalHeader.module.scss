@@ -25,14 +25,13 @@
   position: absolute;
   right: 16px;
   top: 16px;
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .closeIcon {
   width: 10px;
   height: 10px;
-  svg {
-    path {
-      stroke: #aaa;
-    }
-  }
 }

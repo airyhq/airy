@@ -1,15 +1,32 @@
 :root {
+  //colors that change with darkmode (default is light mode)
   --color-text-contrast: #212428;
+  --color-background-gray: #f7f7f7;
+  --color-light-greyish-white: #efefef;
+  --color-toggle-grey: #e8eaea;
+  --color-blue-white: #f5f8fa;
+  --color-background-white: #fff;
+  --color-channel-icon-circle: #f1faff;
+  --color-template-highlight: #fff;
+  --color-tooltip-gray: #cad5db;
+  --color-background-blue: #f1faff;
+  --color-template-gray: #f0f0f0;
+  --color-shadow-gray: #cad5db;
+  --color-button-gray: #cad5db;
+  --color-airy-message-inbound: #f1faff;
+  --color-airy-message-outbound: #1578d4;
+  --color-elements-blue: #1578d4;
+  --color-airy-message-text-inbound: #000000;
+
+  //colors that do not change with darkmode
   --color-text-gray: #737373;
   --color-dark-elements-gray: #98a4ab;
   --color-icons-gray: #a0abb2;
   --color-light-gray: #cad5db;
-  --color-background-gray: #f7f7f7;
-  --color-template-gray: #f0f0f0;
-  --color-light-greyish-white: #efefef;
   --color-greyish-white: #e8eaea;
-  --color-template-highlight: #fff;
-  --color-blue-white: #f5f8fa;
+  --color-very-light-grey: #e8eaea;
+  --color-blue-white-button: #f5f8fa;
+  --color-button-light-blue: #f1faff;
   --color-airy-dark-blue: #1b4469;
   --color-airy-logo-blue: #4bb3fd;
   --color-hover-blue: #337bb3;
@@ -19,7 +36,6 @@
   --color-airy-blue-pressed: #1b4469;
   --color-fb-cta: #1877f2;
   --color-fb-cta-border: #2281fd;
-  --color-background-blue: #f1faff;
   --color-red-alert: #d51548;
   --color-red-info: #ee336c;
   --color-accent-magenta: #f7147d;
@@ -30,9 +46,26 @@
   --color-soft-green: #0da36b;
   --color-tag-green: #0e764f;
   --color-tag-purple: #730a80;
-  --color-airy-message-outbound: #1578d4;
-  --color-airy-message-inbound: #f1faff;
   --color-airy-message-text-outbound: #ffffff;
-  --color-airy-message-text-inbound: #000000;
   --color-switch-unchecked-background: #efefef;
+}
+
+html[data-theme='dark'] {
+  --color-text-contrast: #e8e6e3;
+  --color-background-gray: #1f201c;
+  --color-light-greyish-white: #1f201c;
+  --color-toggle-grey: #828484;
+  --color-blue-white: #1f201c;
+  --color-background-white: #272822;
+  --color-channel-icon-circle: #272822;
+  --color-template-highlight: #272822;
+  --color-tooltip-gray: #1f201c;
+  --color-background-blue: #243037;
+  --color-template-gray: #484848;
+  --color-shadow-gray: #4d5153;
+  --color-button-gray: #313537;
+  --color-airy-message-inbound: #1c1e1f;
+  --color-airy-message-outbound: #1160aa;
+  --color-elements-blue: #115fa8;
+  --color-airy-message-text-inbound: #ffffff;
 }

@@ -7,11 +7,11 @@
 
 .input {
   display: flex;
-  background-color: white;
+  background-color: var(--color-background-white);
+  color: var(--color-text-contrast);
   width: 100%;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 4px;
-  color: var(--color-text-contrast);
   overflow: hidden;
 
   &::placeholder {
@@ -56,9 +56,11 @@
 
     .icon svg {
       transform: scale(0.5, 0.668);
-      path {
-        fill: var(--color-soft-green);
-      }
+      fill: var(--color-soft-green);
+    }
+
+    .icon svg:hover {
+      fill: var(--color-soft-green);
     }
   }
   .input {
@@ -113,6 +115,8 @@
   flex-grow: 1;
   border: none;
   padding: 4px 8px;
+  background-color: var(--color-background-white);
+  color: var(--color-text-contrast);
 
   &:focus {
     background-color: var(--color-background-blue);
@@ -124,7 +128,6 @@
     border: none;
     outline: none;
     box-shadow: none;
-    background-color: rgba(0, 0, 0, 0);
   }
 }
 

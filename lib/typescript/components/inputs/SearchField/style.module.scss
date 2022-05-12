@@ -14,6 +14,8 @@
     width: 100%;
     border-radius: 0;
     -webkit-appearance: none;
+    background-color: var(--color-background-white);
+    color: var(--color-text-contrast);
 
     &::-webkit-search-decoration,
     &::-webkit-search-cancel-button {
@@ -59,9 +61,5 @@
 .closeIcon {
   height: 10px;
   width: 10px;
-  svg {
-    path {
-      fill: var(--color-text-gray);
-    }
-  }
+  fill: var(--color-text-contrast);
 }

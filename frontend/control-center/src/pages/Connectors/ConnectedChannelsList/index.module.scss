@@ -2,7 +2,8 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
-  background: white;
+  background: var(--color-background-white);
+  color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
   padding-left: 96px;
@@ -63,6 +64,7 @@
   margin-bottom: 32px;
   width: 474px;
   margin-top: 16px;
+  color: var(--color-text-contrast);
 
   label {
     margin-top: 24px;
@@ -123,13 +125,13 @@
     width: 32px;
     margin-left: 16px;
     border-radius: 32px;
-    background: var(--color-blue-white);
+    background: var(--color-blue-white-button);
     border: none;
     cursor: pointer;
   }
 
   button:hover {
-    background-color: var(--color-background-blue);
+    background-color: var(--color-button-light-blue);
   }
 
   button:last-child {
@@ -140,7 +142,7 @@
     background: var(--color-airy-blue);
     svg {
       path {
-        fill: white;
+        fill: var(--color-background-white);
       }
     }
   }

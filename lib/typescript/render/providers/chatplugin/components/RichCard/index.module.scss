@@ -31,8 +31,8 @@
 
 .description {
   @include font-base;
+  color: var(--color-text-contrast);
   font-size: 15px;
-  color: black;
   letter-spacing: 0;
   line-height: 24px;
 }

@@ -18,6 +18,6 @@
 
 .buttonLabel {
   @include font-base;
-  color: white;
+  color: var(--color-background-white);
   text-align: center;
 }

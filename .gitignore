@@ -39,6 +39,7 @@ package-lock.json
 
 # Testing
 cypress
+integration
 
 # Airy config files
 airy.yaml

@@ -55,7 +55,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
           <div className={styles.listButtons}>
             <Button
               styleVariant="link"
-              style={{marginRight: '0px'}}
+              style={{marginRight: '0px', padding: '0px'}}
               type="button"
               onClick={() =>
                 navigate(`/${path}/${channel.source}/${channel.id}`, {
@@ -65,7 +65,12 @@ const ChannelListItem = (props: ChannelListItemProps) => {
             >
               <PencilIcon height={16} width={16} />
             </Button>
-            <Button style={{marginLeft: '8px'}} styleVariant="link" type="button" onClick={togglePopupVisibility}>
+            <Button
+              style={{marginLeft: '16px', padding: '0px'}}
+              styleVariant="link"
+              type="button"
+              onClick={togglePopupVisibility}
+            >
               <DisconnectIcon height={18} width={18} />
             </Button>
           </div>

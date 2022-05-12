@@ -99,7 +99,6 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
   };
 
   const upsertWebhook = (isNew: boolean) => {
-    console.log('IS WEBHOOK NEW: ', isNew);
     setUpsertWebhook(isNew, {
       ...webhook,
       ...(newUrl && {

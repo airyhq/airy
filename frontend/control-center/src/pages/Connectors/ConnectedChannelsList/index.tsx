@@ -42,8 +42,6 @@ const ConnectedChannelsList = () => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
-  console.log('dasdjasoi');
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [path, setPath] = useState('');

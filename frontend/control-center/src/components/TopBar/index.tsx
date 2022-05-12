@@ -78,7 +78,8 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                     href="https://airy.co/faq"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={styles.dropdownLine}>
+                    className={styles.dropdownLine}
+                  >
                     <span className={styles.dropdownIcon}>
                       <ShortcutIcon />
                     </span>
@@ -132,7 +133,8 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                         id={styles.dropDownLink}
                         href="https://airy.co/docs/core/changelog"
                         target="_blank"
-                        rel="noopener noreferrer">
+                        rel="noopener noreferrer"
+                      >
                         Release notes
                       </a>
                       <h1>Version {props.version}</h1>

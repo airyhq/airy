@@ -16,7 +16,7 @@ export const Expandable = (props: ExpandableProps) => {
   return (
     <div className={styles.expandable} onClick={toggleExpandableContent} data-cy={cyContactExtendable}>
       {!collapse ? (
-        <ArrowRightIcon className={styles.arrowIcon} />
+        <ArrowRightIcon className={`${styles.arrowIcon} ${styles.arrowRightIcon}`} />
       ) : (
         <ArrowDownIcon className={`${styles.arrowIcon} ${styles.downIcon}`} />
       )}

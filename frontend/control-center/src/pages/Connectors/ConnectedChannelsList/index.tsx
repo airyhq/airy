@@ -33,6 +33,7 @@ import {
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from '../../../components/Pagination';
+import {useAnimation} from 'render/services/useAnimation';
 
 const ConnectedChannelsList = () => {
   const {source} = useParams();
@@ -41,11 +42,14 @@ const ConnectedChannelsList = () => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
+  console.log('dasdjasoi');
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
+  const [animationAction, setAnimationAction] = useState(false);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -109,7 +113,7 @@ const ConnectedChannelsList = () => {
   };
 
   const showSearchFieldToggle = () => {
-    setShowingSearchField(!showingSearchField);
+    useAnimation(showingSearchField, setShowingSearchField, setAnimationAction, 300);
     setSearchText('');
   };
 
@@ -133,16 +137,18 @@ const ConnectedChannelsList = () => {
       <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
           <div className={styles.searchField}>
-            {showingSearchField && (
-              <SearchField
-                placeholder="Search"
-                value={searchText}
-                setValue={(value: string) => setSearchText(value)}
-                autoFocus={true}
-                style={{height: '32px', borderRadius: '32px'}}
-                resetClicked={() => setSearchText('')}
-              />
-            )}
+            <div className={animationAction ? styles.animateIn : styles.animateOut}>
+              {showingSearchField && (
+                <SearchField
+                  placeholder="Search"
+                  value={searchText}
+                  setValue={(value: string) => setSearchText(value)}
+                  autoFocus={true}
+                  style={{height: '32px', borderRadius: '32px'}}
+                  resetClicked={() => setSearchText('')}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.buttons}>

@@ -1,0 +1,90 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInTranslateXLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes fadeOutTranslateXLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+}
+
+@keyframes searchfieldAnimIn {
+  from {
+    opacity: 0;
+    transform: translateX(300px);
+    width: 0px;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+    width: 300px;
+  }
+}
+
+@keyframes searchfieldAnimOut {
+  from {
+    opacity: 1;
+    transform: translateX(0px);
+    width: 300px;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(300px);
+    width: 0px;
+  }
+}
+
+@keyframes topbarDropdownIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-37px);
+  }
+}
+
+@keyframes topbarDropdownOut {
+  0% {
+    opacity: 1;
+    transform: translateY(-37px);
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}

@@ -15,16 +15,16 @@ type EnableAuthMiddleware struct {
 	pattern *regexp.Regexp
 }
 
-// NewAuthMiddleware Only paths that match the regexp pattern will be authenticated
-func NewAuthMiddleware(pattern string) *EnableAuthMiddleware {
+// MustNewAuthMiddleware Only paths that match the regexp pattern will be authenticated
+func MustNewAuthMiddleware(pattern string) EnableAuthMiddleware {
 	r, err := regexp.Compile(pattern)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return &EnableAuthMiddleware{pattern: r}
+	return EnableAuthMiddleware{pattern: r}
 }
 
-func (a *EnableAuthMiddleware) Middleware(next http.Handler) http.Handler {
+func (a EnableAuthMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		if !a.pattern.MatchString(r.URL.Path) {
@@ -45,11 +45,11 @@ type SystemTokenMiddleware struct {
 	systemToken string
 }
 
-func NewSystemTokenMiddleware(systemToken string) *SystemTokenMiddleware {
-	return &SystemTokenMiddleware{systemToken: systemToken}
+func NewSystemTokenMiddleware(systemToken string) SystemTokenMiddleware {
+	return SystemTokenMiddleware{systemToken: systemToken}
 }
 
-func (s *SystemTokenMiddleware) Middleware(next http.Handler) http.Handler {
+func (s SystemTokenMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authPayload := r.Header.Get("Authorization")
 		authPayload = strings.TrimPrefix(authPayload, "Bearer ")
@@ -67,17 +67,17 @@ type JwtMiddleware struct {
 	jwtSecret []byte
 }
 
-func NewJwtMiddleware(jwtSecret string) *JwtMiddleware {
+func NewJwtMiddleware(jwtSecret string) JwtMiddleware {
 	data, err := base64.StdEncoding.DecodeString(jwtSecret)
 	if err != nil {
 		klog.Fatal("failed to base64 decode jwt secret: ", err)
 	}
 
-	return &JwtMiddleware{jwtSecret: data}
+	return JwtMiddleware{jwtSecret: data}
 }
 
 
-func (j *JwtMiddleware) Middleware(next http.Handler) http.Handler {
+func (j JwtMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authPayload := r.Header.Get("Authorization")
 		authPayload = strings.TrimPrefix(authPayload, "Bearer ")

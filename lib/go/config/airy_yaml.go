@@ -1,4 +1,4 @@
-package workspace
+package config
 
 type IngressGlobalConf struct {
 	Lertsencrypt bool `yaml:"letsencrypt,omitempty"`

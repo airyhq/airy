@@ -2,17 +2,17 @@ package config
 
 import (
 	"cli/pkg/console"
-	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"context"
 	"fmt"
 	"os"
+	"text/tabwriter"
 
+	"github.com/airyhq/airy/lib/go/httpclient"
 	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var configFile string
@@ -63,78 +63,30 @@ func ApplyConfig(workspacePath string) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	namespace := viper.GetString("namespace")
+	systemToken := viper.GetString("systemToken")
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {
 		console.Exit("error parsing configuration file: ", err)
 	}
-	kubeCtx := kube.Load()
-	clientset, err := kubeCtx.GetClientSet()
+	c := httpclient.NewClient(viper.GetString("apihost"))
+
+	c.Token = systemToken
+
+	res, err := c.ComponentsUpdate(conf)
+
 	if err != nil {
-		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		console.Exit("could not apply config: ", err)
 	}
 
-	secData := getSecurityData(conf.Security)
-	if len(secData) != 0 {
-		applyErr := kube.ApplyConfigMap("security", namespace, secData, map[string]string{}, clientset)
-		if applyErr != nil {
-			// TODO should we error here?
-			fmt.Printf("unable to apply configuration for \"security\"\n Error:\n %v\n", applyErr)
-		} else {
-			fmt.Printf("applied configuration for \"security\"\n")
-		}
+	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+	fmt.Fprintf(w, "Configured component\t\tEnabled\n")
+
+	for _, component := range res {
+		fmt.Fprintf(w, "%s\t\t%t\n", component.Name, component.Enabled)
 	}
 
-	configuredComponents := make(map[string]bool)
-	for componentType, _ := range conf.Components {
-		for componentName, componentValues := range conf.Components[componentType] {
-			configmapName := componentType + "-" + componentName
-			labels := map[string]string{
-				"core.airy.co/component": configmapName,
-			}
-			applyErr := kube.ApplyConfigMap(configmapName, namespace, componentValues, labels, clientset)
-			configuredComponents[configmapName] = true
-			if applyErr != nil {
-				fmt.Printf("unable to apply configuration for component: \"%s-%s\"\n Error:\n %v\n", componentType, componentName, applyErr)
-			} else {
-				fmt.Printf("applied configuration for component: \"%s-%s\"\n", componentType, componentName)
-			}
-		}
-	}
+	w.Flush()
 
-	configmapList, _ := clientset.CoreV1().ConfigMaps(namespace).List(context.TODO(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
-	for _, configmap := range configmapList.Items {
-		if !configuredComponents[configmap.ObjectMeta.Name] {
-			deleteErr := kube.DeleteConfigMap(configmap.ObjectMeta.Name, namespace, clientset)
-			if deleteErr != nil {
-				fmt.Printf("unable to remove configuration for component %s.\n", configmap.ObjectMeta.Name)
-			} else {
-				fmt.Printf("removed configuration for component \"%s\".\n", configmap.ObjectMeta.Name)
-			}
-		}
-	}
-}
-
-func getSecurityData(s workspace.SecurityConf) map[string]string {
-	m := make(map[string]string, len(s.Oidc))
-
-	if s.SystemToken != "" {
-		m["systemToken"] = s.SystemToken
-	}
-	if s.AllowedOrigins != "" {
-		m["allowedOrigins"] = s.AllowedOrigins
-	}
-	if s.JwtSecret != "" {
-		m["jwtSecret"] = s.JwtSecret
-	}
-
-	for key, value := range s.Oidc {
-		if value != "" {
-			m["oidc."+key] = value
-		}
-	}
-
-	return m
 }
 
 var applyConfigCmd = &cobra.Command{

@@ -37,7 +37,11 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	}
 
 	s := &Services{clientSet: clientSet, namespace: namespace}
+	cu := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
+	cd := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
 	r.Handle("/services", s)
+	r.Handle("/components.update", cu)
+	r.Handle("/components.delete", cd)
 
 	cg := &ClusterGet{clientSet: clientSet, namespace: namespace}
 	r.Handle("/components.get", cg).Methods("GET")

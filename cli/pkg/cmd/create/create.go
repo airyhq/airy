@@ -4,12 +4,13 @@ import (
 	"cli/pkg/cmd/config"
 	"cli/pkg/console"
 	"cli/pkg/helm"
-	"cli/pkg/kube"
 	"cli/pkg/providers"
 	"cli/pkg/workspace"
 	"fmt"
 	"os"
 	"runtime"
+
+	"github.com/airyhq/airy/lib/go/k8s"
 
 	"github.com/TwinProduction/go-color"
 	"github.com/spf13/cobra"
@@ -114,7 +115,7 @@ func create(cmd *cobra.Command, args []string) {
 
 	fmt.Println("🎉 Your Airy Core is ready")
 
-	coreConfig, err := kube.GetCmData("core-config", namespace, clientset)
+	coreConfig, err := k8s.GetCmData("core-config", namespace, clientset)
 	if err != nil {
 		console.Exit("failed to get hosts from installation")
 	}

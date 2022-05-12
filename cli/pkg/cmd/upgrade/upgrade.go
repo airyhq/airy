@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
+	"github.com/airyhq/airy/lib/go/k8s"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -54,7 +55,7 @@ func upgrade(cmd *cobra.Command, args []string) {
 	if version == "" {
 		version = Version
 	}
-	clusterAiryCore, err := kube.GetCmData("core-config", namespace, clientset)
+	clusterAiryCore, err := k8s.GetCmData("core-config", namespace, clientset)
 	if err != nil {
 		console.Exit("Unable to retrieve existing version of Airy Core: ", err.Error())
 	}

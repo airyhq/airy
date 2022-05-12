@@ -6,6 +6,8 @@ go_library(
     srcs = [
         "auth.go",
         "cluster_get.go",
+        "components_delete.go",
+        "components_update.go",
         "server.go",
         "services.go",
     ],
@@ -13,6 +15,9 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//lib/go/kubectl/configmaps",
+        "//lib/go/config",
+        "//lib/go/k8s",
+        "//lib/go/payloads",
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",

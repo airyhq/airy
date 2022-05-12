@@ -38,9 +38,6 @@
   &:hover {
     svg {
       visibility: visible;
-      path {
-        fill: var(--color-airy-blue);
-      }
       &:hover {
         cursor: pointer;
       }
@@ -106,6 +103,7 @@
     svg {
       height: 8px;
       margin-bottom: 0.5px;
+      fill: var(--color-soft-green);
     }
   }
 

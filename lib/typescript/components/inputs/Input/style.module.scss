@@ -56,9 +56,11 @@
 
     .icon svg {
       transform: scale(0.5, 0.668);
-      path {
-        fill: var(--color-soft-green);
-      }
+      fill: var(--color-soft-green);
+    }
+
+    .icon svg:hover {
+      fill: var(--color-soft-green);
     }
   }
   .input {

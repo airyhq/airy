@@ -7,6 +7,7 @@ import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
 import {ReactComponent as StatusIcon} from 'assets/images/icons/statusIcon.svg';
+// import {ReactComponent as InboxIcon} from 'assets/images/icons/inboxIcon.svg';
 
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
@@ -52,6 +53,13 @@ const Sidebar = (props: SideBarProps) => {
             <span className={styles.iconText}>Webhooks</span>
           </Link>
         </div>
+        {/* <div style={{width: '95%', background: 'rgba(115, 115, 115, 0.2)', height: '0.3px', marginTop: '11px'}}></div>
+        <div className={`${styles.align} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>
+          <Link to={INBOX_ROUTE} className={`${styles.link} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>
+            <InboxIcon width={'20px'} height={'20px'} />
+            <span className={styles.iconText}>Inbox</span>
+          </Link>
+        </div> */}
       </div>
       <span className={styles.version}>Version {props.version}</span>
     </nav>

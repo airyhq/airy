@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useMemo, useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
@@ -7,8 +7,8 @@ import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
-
-import {SearchField, LinkButton} from 'components';
+import ChannelsListItem from './ChannelListItem';
+import {SearchField, LinkButton, Button} from 'components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
@@ -31,10 +31,8 @@ import {
   CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import ChannelsListItem from './ChannelsListItem';
-import {Pagination} from '../../../components/Pagination';
 
-const ConnectedChannelsList = () => {
+const ChannelsList = () => {
   const {source} = useParams();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
@@ -51,15 +49,6 @@ const ConnectedChannelsList = () => {
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const pageSize = filteredChannels.length >= 8 ? 8 : filteredChannels.length;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
-    return filteredChannels.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, pageSize]);
-
   useLayoutEffect(() => {
     getInfo();
   }, [source, channels]);
@@ -69,25 +58,25 @@ const ConnectedChannelsList = () => {
     switch (source) {
       case Source.facebook:
         setName('Facebook Messenger');
-        setDescription('Connect multiple Facebook pages');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName('Google Business Messages');
-        setDescription('Be there when people search');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName('Twilio SMS');
-        setDescription('Deliver SMS with ease');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName('Twilio Whatsapp');
-        setDescription('World #1 chat app');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors')
           ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
           : CATALOG_TWILIO_WHATSAPP_ROUTE;
@@ -101,7 +90,7 @@ const ConnectedChannelsList = () => {
         break;
       case Source.instagram:
         setName('Instagram');
-        setDescription('Connect multiple Instagram pages');
+        setDescription('Best of class browser messenger');
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
@@ -129,6 +118,14 @@ const ConnectedChannelsList = () => {
             <h2 className={styles.description}>{description}</h2>
           </div>
         </div>
+        <Button
+          style={{width: '152px', height: '40px', fontSize: '16px'}}
+          onClick={() => {
+            console.log('DISABLE');
+          }}
+        >
+          Disable
+        </Button>
       </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
@@ -174,15 +171,16 @@ const ConnectedChannelsList = () => {
         <span>Name</span>
         <span>Manage</span>
       </div>
+
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
-            channel.metadata.name.toLowerCase()
-          ).map((channel: Channel) => (
-            <div key={channel.id} className={styles.connectedChannel}>
-              <ChannelsListItem channel={channel} />
-            </div>
-          ))
+          sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase()).map(
+            (channel: Channel) => (
+              <div key={channel.id} className={styles.connectedChannel}>
+                <ChannelsListItem channel={channel} />
+              </div>
+            )
+          )
         ) : (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>Result not found.</h1>
@@ -190,15 +188,8 @@ const ConnectedChannelsList = () => {
           </div>
         )}
       </div>
-      <Pagination
-        totalCount={filteredChannels.length}
-        pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
-        currentPage={currentPage}
-        onPageChange={page => setCurrentPage(page)}
-        onSearch={searchText !== ''}
-      />
     </div>
   );
 };
 
-export default ConnectedChannelsList;
+export default ChannelsList;

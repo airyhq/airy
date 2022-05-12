@@ -38,7 +38,7 @@ export const ItemInfo = (props: ComponentInfoProps) => {
         {isComponent ? (
           <>
             <button onClick={toggleExpanded}>
-              {!isExpanded ? <ArrowRight /> : <ArrowDown className={styles.arrowDownIcon} />}
+              {!isExpanded ? <ArrowRight width={8} /> : <ArrowDown className={styles.arrowDownIcon} />}
             </button>
             <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
           </>

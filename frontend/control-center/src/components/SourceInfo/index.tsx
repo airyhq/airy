@@ -39,13 +39,13 @@ import {
 
 export type SourceInfo = {
   type: Source;
+  channel: boolean;
   title: string;
   description: string;
   image: JSX.Element;
   newChannelRoute: string;
   channelsListRoute: string;
   configKey: string;
-  channelsToShow: number;
   itemInfoString: string;
   dataCyAddChannelButton: string;
   dataCyChannelList: string;
@@ -57,6 +57,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
   return [
     {
       type: Source.chatPlugin,
+      channel: true,
       title: 'Airy Live Chat',
       description: 'Best of class browser messenger',
       image: <AiryAvatarIcon />,
@@ -65,13 +66,13 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
         ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
         : CATALOG_CONNECTED_ROUTE + '/chatplugin',
       configKey: 'sources-chat-plugin',
-      channelsToShow: 4,
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
       dataCyChannelList: cyChannelsChatPluginList,
     },
     {
       type: Source.facebook,
+      channel: true,
       title: 'Messenger',
       description: 'Connect multiple Facebook pages',
       image: <MessengerAvatarIcon />,
@@ -80,13 +81,13 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
         ? CONNECTORS_CONNECTED_ROUTE + '/facebook'
         : CATALOG_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
-      channelsToShow: 4,
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
       dataCyChannelList: cyChannelsFacebookList,
     },
     {
       type: Source.twilioSMS,
+      channel: true,
       title: 'SMS',
       description: 'Deliver SMS with ease',
       image: <SMSAvatarIcon />,
@@ -95,13 +96,13 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
         ? CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#'
         : CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
       configKey: 'sources-twilio',
-      channelsToShow: 2,
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
       dataCyChannelList: cyChannelsTwilioSmsList,
     },
     {
       type: Source.twilioWhatsApp,
+      channel: true,
       title: 'WhatsApp',
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
@@ -112,26 +113,26 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
         ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
         : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
-      channelsToShow: 2,
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
       dataCyChannelList: cyChannelsTwilioWhatsappList,
     },
     {
       type: Source.google,
+      channel: true,
       title: 'Google Business Messages',
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
       newChannelRoute: connectorsPage ? CONNECTORS_GOOGLE_ROUTE + '/new' : CATALOG_GOOGLE_ROUTE + '/new',
       channelsListRoute: connectorsPage ? CONNECTORS_CONNECTED_ROUTE + '/google' : CATALOG_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
-      channelsToShow: 4,
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsGoogleAddButton,
       dataCyChannelList: cyChannelsGoogleList,
     },
     {
       type: Source.instagram,
+      channel: true,
       title: 'Instagram',
       description: 'Connect multiple Instagram pages',
       image: <InstagramIcon />,
@@ -140,7 +141,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
         ? CONNECTORS_CONNECTED_ROUTE + '/instagram'
         : CATALOG_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
-      channelsToShow: 4,
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
       dataCyChannelList: cyChannelsInstagramList,

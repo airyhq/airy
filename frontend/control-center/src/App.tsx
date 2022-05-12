@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
+import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
 import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
@@ -20,6 +20,9 @@ import CatalogOutlet from './pages/Catalog/CatalogOutlet';
 import Connectors from './pages/Connectors';
 import Webhooks from './pages/Webhooks';
 import Status from './pages/Status';
+import Inbox from './pages/Inbox';
+import ChannelsList from './pages/Inbox/ChannelsList';
+import InboxOutlet from './pages/Inbox/InboxOutlet';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -60,6 +63,17 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`google/:channelId`} element={<GoogleConnect />} />
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
             <Route index element={<Catalog />} />
+          </Route>
+
+          <Route path={`${INBOX_ROUTE}/*`} element={<InboxOutlet />}>
+            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
+            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
+            <Route path={`connected/:source`} element={<ChannelsList />} />
+            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
+            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
+            <Route path={`google/:channelId`} element={<GoogleConnect />} />
+            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
+            <Route index element={<Inbox />} />
           </Route>
 
           <Route element={<NotFound />} />

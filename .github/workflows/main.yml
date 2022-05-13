@@ -46,8 +46,6 @@ jobs:
 
      - name: Cypress run
         uses: cypress-io/github-action@v2
-         wait-on: 'http://airy.core'
-         config: baseUrl=http://airy.core
 
       - name: Test
         run: |

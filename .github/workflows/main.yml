@@ -44,9 +44,6 @@ jobs:
           sudo apt-get install -y shellcheck
           ./scripts/lint.sh
 
-     - name: Cypress run
-        uses: cypress-io/github-action@v2
-
       - name: Test
         run: |
           bazel test --test_tag_filters=-lint //...

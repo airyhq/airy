@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
 
 .wrapper {
   background: var(--color-background-white);
@@ -197,4 +198,12 @@
   height: 18px;
   width: 18px;
   color: var(--color-text-gray);
+}
+
+.animateIn {
+  animation: searchfieldAnimIn 300ms ease;
+}
+
+.animateOut {
+  animation: searchfieldAnimOut 300ms ease;
 }

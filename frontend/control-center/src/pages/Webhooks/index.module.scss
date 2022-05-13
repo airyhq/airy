@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
 
 .webhooksWrapper {
   background: var(--color-background-white);
@@ -87,4 +88,12 @@
 
 .translateYAnimIn {
   animation: translateYIn 4s ease-in-out;
+}
+
+.animateIn {
+  animation: fadeInTranslateXLeft 3000ms ease;
+}
+
+.animateOut {
+  animation: fadeInTranslateXLeft 3000ms ease;
 }

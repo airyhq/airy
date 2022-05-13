@@ -11,11 +11,15 @@
   border-left: 1px solid var(--color-light-gray);
   border-right: 1px solid var(--color-light-gray);
   border-bottom: 1px solid var(--color-light-gray);
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-out;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .wrapperExpanded {
   display: inline-block;
+  z-index: 1;
 }
 
 .container {
@@ -61,6 +65,19 @@
   width: 15px;
   display: flex;
   align-items: center;
+  margin: 0px 40px;
+}
+
+.arrowDownIconOpen {
+  transition: 300ms ease;
+  margin-bottom: 0;
+  transform: rotate(90deg);
+}
+
+.arrowDownIconClose {
+  transition: 300ms ease;
+  margin-bottom: 0;
+  transform: rotate(0deg);
 }
 
 .componentName {
@@ -93,6 +110,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 .blankSpace {

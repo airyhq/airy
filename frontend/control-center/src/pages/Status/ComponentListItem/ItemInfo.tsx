@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
-import {ReactComponent as ArrowDown} from 'assets/images/icons/arrowDown.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
@@ -14,19 +13,14 @@ type ComponentInfoProps = {
   itemName: string;
   isComponent: boolean;
   isExpanded: boolean;
-  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   enabled?: boolean;
 };
 
 export const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, setIsExpanded, enabled} = props;
+  const {healthy, itemName, isComponent, isExpanded, enabled} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
-  };
 
   return (
     <div
@@ -37,9 +31,11 @@ export const ItemInfo = (props: ComponentInfoProps) => {
       <div className={styles.name}>
         {isComponent ? (
           <>
-            <button onClick={toggleExpanded}>
-              {!isExpanded ? <ArrowRight width={8} /> : <ArrowDown className={styles.arrowDownIcon} />}
-            </button>
+            <div
+              className={`${styles.arrowDownIcon} ${isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose}`}
+            >
+              <ArrowRight width={8} />
+            </div>
             <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
           </>
         ) : (

@@ -1,6 +1,7 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/z-index.scss';
+@import 'assets/scss/animations.scss';
 
 .topBar {
   display: flex;
@@ -56,8 +57,15 @@
 }
 
 .dropHintOpen {
+  transition: 300ms ease;
   margin-bottom: 0;
   transform: rotate(180deg);
+}
+
+.dropHintClose {
+  transition: 300ms ease;
+  margin-bottom: 0;
+  transform: rotate(0deg);
 }
 
 .accountDetails {
@@ -234,4 +242,12 @@
       text-decoration: underline;
     }
   }
+}
+
+.animateIn {
+  animation: topbarDropdownIn 300ms ease;
+}
+
+.animateOut {
+  animation: topbarDropdownOut 300ms ease;
 }

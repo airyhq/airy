@@ -14,27 +14,30 @@ export const ComponentListItem = (props: ComponentsListProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapper = useRef(null);
   const paddingWrapper = 20;
+  const defaultHeight = 50;
+  const serviceItemHeight = 24;
 
   useEffect(() => {
     if (wrapper && wrapper.current) {
       if (isExpanded) {
-        wrapper.current.style.height = `${wrapper.current.scrollHeight + paddingWrapper}px`;
+        wrapper.current.style.height = `${defaultHeight + services.length * (serviceItemHeight + paddingWrapper)}px`;
       } else {
-        wrapper.current.style.height = '50px';
+        wrapper.current.style.height = `${defaultHeight}px`;
       }
     }
   }, [isExpanded]);
 
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <section className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`} ref={wrapper}>
-      <ItemInfo
-        healthy={healthy}
-        itemName={componentName}
-        isComponent
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-        enabled={enabled}
-      />
+    <section
+      className={`${styles.wrapper} ${isExpanded ? styles.wrapperExpanded : ''}`}
+      ref={wrapper}
+      onClick={toggleExpanded}
+    >
+      <ItemInfo healthy={healthy} itemName={componentName} isComponent isExpanded={isExpanded} enabled={enabled} />
 
       {services.map((service, index) => (
         <ItemInfo
@@ -42,7 +45,6 @@ export const ComponentListItem = (props: ComponentsListProps) => {
           itemName={service.name}
           isComponent={false}
           isExpanded={isExpanded}
-          setIsExpanded={setIsExpanded}
           key={index}
         />
       ))}

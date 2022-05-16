@@ -38,7 +38,10 @@ package-lock.json
 .DS_Store
 
 # Testing
-cypress
+cypress/downloads
+cypress/fixtures
+cypress/plugins
+cypress.env.json
 
 # Airy config files
 airy.yaml

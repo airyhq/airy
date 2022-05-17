@@ -42,6 +42,7 @@ Subscribes the webhook for the first time or update its parameters.
 {
   "url": "https://endpoint.com/webhook", // required
   "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
+  "name": "Customer relationship tool",
   "events": ["message.created", "message.updated", "conversation.updated", "channel.updated"],
   "headers": {
     "X-Custom-Header": "e.g. authentication token"
@@ -51,9 +52,10 @@ Subscribes the webhook for the first time or update its parameters.
 ```
 
 - `url` Endpoint to be called when sending events.
-- `id` (optional) provide for updates
-- `headers` (optional) HTTP headers to set on each request (useful for authentication)
-- `signature_key` (optional) when set, the webhook will also sent a header `X-Airy-Content-Signature` that contains the SHA256 HMAC of the specified key and the content.
+- `id` (optional) provide for updates.
+- `name` (optional) name to identify the webhook.
+- `headers` (optional) HTTP headers to set on each request (useful for authentication).
+- `signature_key` (optional) when set, the webhook will also send a header `X-Airy-Content-Signature` that contains the SHA256 HMAC of the specified key and the content.
 - `events` (optional) List of event types to receive. [See below](#events) for a detailed list. Omit to receive all event types.
 
 **Sample response**
@@ -62,7 +64,7 @@ Subscribes the webhook for the first time or update its parameters.
 {
   "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
   "name": "Customer relationship tool", // optional
-  "url": "https://endpoint.com/webhook",
+  "url": "https://endpoint.com/webhook", // optional
   "events": [
     // optional
     "message.created",
@@ -86,8 +88,18 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  "url": "https://endpoint.com/webhook",
+  "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
+  "name": "Customer relationship tool", // optional
+  "url": "https://endpoint.com/webhook", // optional
+  "events": [
+    // optional
+    "message.created",
+    "message.updated",
+    "conversation.updated",
+    "channel.updated"
+  ],
   "headers": {
+    // optional
     "X-Custom-Header": "custom-code-for-header"
   },
   "status": "Unsubscribed"
@@ -105,6 +117,7 @@ Update the webhook parameters.
 ```json5
 {
   "id": "3e639566-29fa-450d-a59f-ae3c25d7260f", // required
+  "name": "Customer tool for relationship", // optional
   "url": "https://endpoint.com/webhook", // optional
   "events": ["message.created", "message.updated", "conversation.updated", "channel.updated"], // optional
   "headers": {
@@ -125,7 +138,7 @@ Update the webhook parameters.
 ```json5
 {
   "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
-  "name": "Customer relationship tool", // optional
+  "name": "Customer tool for relationship", // optional
   "url": "https://endpoint.com/webhook",
   "events": [
     // optional
@@ -140,7 +153,6 @@ Update the webhook parameters.
   },
   "status": "Subscribed"
 }
-}
 ```
 
 ## List
@@ -153,16 +165,19 @@ List of subscribed webhooks.
 {
   "data": [
     {
-      "name": "Customer relationship tool",
+      "name": "Customer relationship tool", // optional
       "url": "https://endpoint.com/webhook",
       "headers": {
+        // optional
         "X-Custom-Header": "custom-code-for-header"
-      }
+      },
+      "status": "Subscribed"
     },
     {
-      "name": "Datalake connector",
+      "name": "Datalake connector", // optional
       "url": "https://other-endpoint.com/webhook",
-      "events": ["conversation.updated"]
+      "events": ["conversation.updated"], // optional
+      "status": "Unsubscribed"
     }
   ]
 }
@@ -184,12 +199,21 @@ List of subscribed webhooks.
 
 ```json5
 {
-  "status": "Subscribed",
-  "name": "Customer relationship tool",
+  "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
+  "name": "Customer tool for relationship", // optional
   "url": "https://endpoint.com/webhook",
+  "events": [
+    // optional
+    "message.created",
+    "message.updated",
+    "conversation.updated",
+    "channel.updated"
+  ],
   "headers": {
+    // optional
     "X-Custom-Header": "custom-code-for-header"
-  }
+  },
+  "status": "Subscribed"
 }
 ```
 

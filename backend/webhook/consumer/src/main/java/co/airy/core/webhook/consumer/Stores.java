@@ -7,13 +7,15 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "webhook.Consumer";
     private final String webhooksStore = "webhooks-store";
     private final KafkaStreamsWrapper streams;
@@ -47,6 +49,14 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
         startStream();
+    }
+
+    @Override
+    public Health health() {
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
+            return Health.down().build();
+        }
+        return Health.up().build();
     }
 
     // visible for testing

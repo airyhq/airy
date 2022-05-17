@@ -40,45 +40,16 @@ npm_repositories = {
     "snapshot": "{snapshot}",
     "release": "{release}",
 }
+
 npm_registry = npm_repositories[repo_type]
 
-npm_username, npm_token, npm_email = (
-    os.getenv('DEPLOY_NPM_USERNAME'),
-    os.getenv('DEPLOY_NPM_TOKEN'),
-    os.getenv('DEPLOY_NPM_EMAIL'),
-)
-
-if not npm_username:
-    raise Exception(
-        'username should be passed via '
-        '$DEPLOY_NPM_USERNAME env variable'
-    )
+npm_token = os.getenv('DEPLOY_NPM_EMAIL')
 
 if not npm_token:
     raise Exception(
         'token should be passed via '
         '$DEPLOY_NPM_TOKEN env variable'
     )
-
-if not npm_email:
-    raise Exception(
-        'email should be passed via '
-        '$DEPLOY_NPM_EMAIL env variable'
-    )
-
-expect_input_tmpl = '''spawn npm adduser --registry={registry}
-expect {{
-  "Username:" {{send "{username}\r"; exp_continue}}
-  "Token:" {{send "$env(TOKEN)\r"; exp_continue}}
-  "Email: (this IS public)" {{send "{email}\r"; exp_continue}}
-}}'''
-
-with tempfile.NamedTemporaryFile('wt', delete=False) as expect_input_file:
-    expect_input_file.write(expect_input_tmpl.format(
-        registry=npm_registry,
-        username=npm_username,
-        email=npm_email,
-    ))
 
 node_path = ':'.join([
     '/usr/bin/',

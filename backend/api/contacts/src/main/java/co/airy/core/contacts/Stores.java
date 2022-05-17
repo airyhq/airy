@@ -2,8 +2,8 @@ package co.airy.core.contacts;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.core.contacts.dto.Contact;
-import co.airy.core.contacts.dto.ConversationContact;
+import co.airy.model.contacts.Contact;
+import co.airy.model.contacts.ConversationContact;
 import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.contacts.MetadataRepository.newContactMetadata;
-import static co.airy.core.contacts.dto.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.model.contacts.MetadataRepository.newContactMetadata;
+import static co.airy.model.contacts.Contact.MetadataKeys.CONVERSATIONS;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;

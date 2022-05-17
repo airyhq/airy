@@ -22,6 +22,8 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -35,7 +37,7 @@ import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @Component
-public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+public class EventsRouter implements HealthIndicator, DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final String appId = "sources.google.EventsRouter";
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
 
@@ -57,6 +59,14 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         startStream();
+    }
+
+    @Override
+    public Health health() {
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
+            return Health.down().build();
+        }
+        return Health.up().build();
     }
 
     private void startStream() {

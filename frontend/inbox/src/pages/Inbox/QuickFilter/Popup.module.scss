@@ -66,8 +66,9 @@
 
 .filterButton {
   border: 1px solid var(--color-light-gray);
+  color: var(--color-text-contrast);
   border-radius: 8px;
-  background-color: white;
+  background-color: var(--color-background-white);
   padding: 6px 8px;
   margin-right: 8px;
   display: flex;
@@ -76,7 +77,6 @@
   outline: none;
   max-height: 29px;
   white-space: nowrap;
-
   svg {
     display: inline-block;
     margin-right: 2px;
@@ -102,16 +102,16 @@
   @extend .filterButton;
   border: 1px solid var(--color-airy-blue);
   background-color: var(--color-airy-blue);
-  color: white;
+  color: var(--color-background-white);
   outline: none;
 
   path {
-    stroke: white;
-    fill: white;
+    stroke: var(--color-background-white);
+    fill: var(--color-background-white);
   }
 
   .openIcon {
-    border-color: white;
+    border-color: var(--color-background-white);
   }
 }
 
@@ -157,7 +157,11 @@
   flex-direction: row;
   margin: 0px;
   cursor: pointer;
-  border: 7px solid white;
+  border: 7px solid var(--color-background-white);
+
+  circle {
+    fill: var(----color-channel-icon-circle);
+  }
 }
 
 .sourceSelected {
@@ -196,7 +200,7 @@
   margin-right: 4px;
 
   path {
-    fill: white;
+    fill: var(--color-background-white);
   }
 
   svg {
@@ -211,6 +215,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--color-text-contrast);
 }
 
 .checkmarkCircleIcon {

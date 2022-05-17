@@ -1,5 +1,6 @@
 SPRING = "5.3.17"
 SPRING_BOOT = "2.6.4"
+MOCKITO_VERSION = "4.5.1"
 
 airy_jvm_deps = [
     "com.amazonaws:aws-java-sdk-core:1.12.182",
@@ -44,9 +45,9 @@ airy_jvm_deps = [
     "org.aspectj:aspectjweaver:1.9.8",
     "org.hamcrest:hamcrest-library:2.1",
     "org.hamcrest:hamcrest:2.1",
-    "org.junit.jupiter:junit-jupiter-engine:5.7.0",
-    "org.junit.jupiter:junit-jupiter:5.7.0",
-    "org.mockito:mockito-core:2.28.2",
+    "org.junit.jupiter:junit-jupiter-engine:5.8.1",
+    "org.junit.jupiter:junit-jupiter:5.8.1",
+    "org.mockito:mockito-core:%s" % MOCKITO_VERSION,
     "org.projectlombok:lombok:1.18.10",
     "org.springframework.boot:spring-boot-loader:%s" % SPRING_BOOT,
     "org.springframework.boot:spring-boot-starter-actuator:%s" % SPRING_BOOT,

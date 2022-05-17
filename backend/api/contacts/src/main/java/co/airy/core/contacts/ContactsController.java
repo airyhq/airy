@@ -1,7 +1,7 @@
 package co.airy.core.contacts;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.core.contacts.dto.Contact;
+import co.airy.model.contacts.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.ContactWithMergeHistoryResponsePayload;

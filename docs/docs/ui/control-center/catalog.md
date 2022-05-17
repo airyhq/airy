@@ -5,15 +5,19 @@ sidebar_label: Catalog
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-The Catalog page of the [Control Center](/ui/control-center/introduction) lists the available [connectors](/sources/introduction) that can be connected to an Airy Core app. You can choose which connector you want to add and configure it easily (see [Configuration](catalog#configuration) below).
+The Catalog page of the [Control Center](/ui/control-center/introduction) lists both the [connectors](/sources/introduction) that have been installed and those that are not installed.
+
+In the Catalog 'Not Installed' list, you can choose which connector you want to add and configure it easily (see [Configuration](catalog#configuration) below).
 
 A connector is listed in the [Connectors](connectors) page once it has been successfully connected.
 
 ## Example
 
-The screenshots below come from a sample Airy Core app. Its Control Center UI show that the app is already connected to the [Airy Live Chat](/sources/chatplugin/quickstart), [Facebook Messenger](/sources/facebook), [WhatsApp](/sources/whatsapp-twilio), [Google Business Messages](/sources/google), and [Instagram](/sources/instagram) connectors. The [SMS](/sources/sms-twilio) connector is listed in the Catalog: it hasn't been added to the app yet and is available to connect.
-<img alt="Control Center Connectors Example"src={useBaseUrl('img/ui/controlCenterConnectors.png')} />
-<img alt="Control Center Catalog Example"src={useBaseUrl('img/ui/controlCenterCatalogExample.png')} />
+The screenshots below come from a sample Airy Core app's Control Center UI.
+
+The Catalog shows that the app is already connected to the [Airy Live Chat](/sources/chatplugin/quickstart), [Facebook Messenger](/sources/facebook), [WhatsApp](/sources/whatsapp-twilio), [Google Business Messages](/sources/google), and [Instagram](/sources/instagram) connectors. The [SMS](/sources/sms-twilio) connector hasn't been installed yet and is available to connect.
+
+<img alt="Control Center Catalog Example"src={useBaseUrl('img/ui/controlCenterCatalog.png')} />
 
 ## Configuration
 

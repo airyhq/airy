@@ -48,7 +48,7 @@
 
 .backButton {
   border: none;
-  background-color: white;
+  background-color: var(--color-background-white);
   padding-left: 0px;
   padding-right: 14px;
 }
@@ -59,14 +59,14 @@
 
 .searchBox {
   color: black;
-  background: white;
+  background: var(--color-background-white);
   display: flex;
   align-items: center;
 }
 
 .searchButton {
   border: none;
-  background-color: white;
+  background-color: var(--color-background-white);
   cursor: pointer;
   outline: none;
   height: 24px;
@@ -84,6 +84,7 @@
   font-size: 24px;
   font-weight: 900;
   margin-bottom: 4px;
+  color: var(--color-text-contrast);
 }
 
 .searchIcon {

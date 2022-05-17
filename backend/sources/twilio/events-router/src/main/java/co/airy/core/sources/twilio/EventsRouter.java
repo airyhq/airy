@@ -16,12 +16,14 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+public class EventsRouter implements HealthIndicator, DisposableBean, ApplicationListener<ApplicationReadyEvent> {
 
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
     public static final String appId = "sources.twilio.EventsRouter";
@@ -98,6 +100,14 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         if (streams != null) {
             streams.close();
         }
+    }
+
+    @Override
+    public Health health() {
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
+            return Health.down().build();
+        }
+        return Health.up().build();
     }
 
     /**

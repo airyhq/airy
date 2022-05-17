@@ -1,0 +1,133 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
+
+.channelCard {
+  width: 260px;
+  height: 100px;
+  margin-bottom: 28px;
+  margin-right: 36px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 10px;
+  background-color: var(--color-background-blue);
+  &:hover {
+    border: 2px solid var(--color-airy-blue);
+    margin-left: -1px;
+    width: 261px;
+    cursor: pointer;
+  }
+}
+
+.notInstalled {
+  height: 96px;
+}
+
+.installed {
+  height: 64px;
+}
+
+.channelLogoInstagram {
+  margin-right: 10px;
+  height: 40px;
+  width: 40px;
+  svg {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+.textDetails {
+  width: 60%;
+  margin-left: 10px;
+  h1 {
+    @include font-s;
+    color: var(--color-text-contrast);
+    font-weight: 600;
+    letter-spacing: 0;
+    max-width: 90%;
+  }
+
+  p {
+    @include font-xs;
+    margin: 5px 0 0 0;
+    color: var(--color-text-gray);
+    max-width: 90%;
+  }
+}
+
+.channelLogoTitleContainer {
+  width: 230px;
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+.channelLogoTitleContainerInstalled {
+  height: 64px;
+  align-items: center;
+
+  .channelLogo {
+    height: 30px;
+    width: 30px;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.channelLogoTitleContainerNotInstalled {
+  height: 96px;
+  align-items: flex-start;
+  padding-top: 18px;
+
+  .channelLogo {
+    height: 40px;
+    width: 40px;
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.isExpandedCard {
+  height: 100px;
+  width: 260px;
+  &:hover {
+    border: 2px solid var(--color-airy-blue);
+    margin-left: -1px;
+    width: 261px;
+  }
+}
+
+.isExpandedContainer {
+  height: 100px;
+  width: 260px;
+  padding: 6px 0 0 0;
+  flex-direction: column;
+  align-items: start;
+  &:hover {
+    width: 261px;
+  }
+}
+
+.isExpandedLogo {
+  min-width: 40px;
+  max-width: 100%;
+  margin: 0 18px;
+}
+
+.isExpandedDetails {
+  width: 100%;
+  margin-left: 18px;
+  h1 {
+    @include font-base;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

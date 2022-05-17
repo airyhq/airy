@@ -1,6 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
-@import '../../../../assets/animations/animations.scss';
+@import 'assets/scss/animations.scss';
 
 .content {
   display: flex;
@@ -8,7 +8,7 @@
   height: auto;
   flex-direction: column;
   overflow: auto;
-  background-color: #fff;
+  background-color: var(--color-background-white);
   margin: 0 0 0 8px;
   padding: 16px;
   border-top-left-radius: 8px;
@@ -38,9 +38,6 @@
   &:hover {
     svg {
       visibility: visible;
-      path {
-        fill: var(--color-airy-blue);
-      }
       &:hover {
         cursor: pointer;
       }
@@ -106,6 +103,7 @@
     svg {
       height: 8px;
       margin-bottom: 0.5px;
+      fill: var(--color-soft-green);
     }
   }
 
@@ -135,6 +133,7 @@
 
 .tagsHeaderTitle {
   font-weight: bold;
+  color: var(--color-text-contrast);
 }
 
 .addTags {
@@ -154,6 +153,7 @@
 
 .addTagsDescription {
   margin: 8px 0;
+  color: var(--color-text-contrast);
 }
 
 .addTagsButtonRow {
@@ -175,6 +175,12 @@
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+.cancelIcon {
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .iconBlue {

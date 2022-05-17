@@ -96,6 +96,7 @@ public class PublisherTest {
 
         final Webhook acceptAll = Webhook.newBuilder()
                 .setEndpoint("http://endpoint.com/accept")
+                .setName("webhook name")
                 .setId(UUID.randomUUID().toString())
                 .setStatus(Status.Subscribed)
                 .setSubscribedAt(Instant.now().toEpochMilli())
@@ -103,6 +104,7 @@ public class PublisherTest {
 
         final Webhook selective = Webhook.newBuilder()
                 .setEndpoint("http://endpoint.com/selective")
+                .setName("webhook name")
                 .setEvents(List.of(
                         EventType.MESSAGE_CREATED.getEventType(),
                         EventType.CONVERSATION_UPDATED.getEventType()

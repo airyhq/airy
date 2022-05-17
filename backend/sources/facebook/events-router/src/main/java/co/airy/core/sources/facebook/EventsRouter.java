@@ -26,6 +26,8 @@ import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -40,7 +42,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+public class EventsRouter implements HealthIndicator, DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
 
     private final String metadataStore = "metadata-store";
@@ -151,6 +153,15 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         if (streams != null) {
             streams.close();
         }
+    }
+
+    @Override
+    public Health health() {
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
+            return Health.down().build();
+        }
+        streams.acquireLocalStore(metadataStore);
+        return Health.up().build();
     }
 
     // visible for testing

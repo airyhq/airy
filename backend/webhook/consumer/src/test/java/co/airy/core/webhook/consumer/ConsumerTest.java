@@ -100,6 +100,7 @@ public class ConsumerTest {
         final String endpoint = "http://customer-endpoint.com/webhook";
         final Webhook webhook = Webhook.newBuilder()
                 .setEndpoint(endpoint)
+                .setName("webhook name")
                 .setHeaders(Map.of(
                         "user-defined", "header"
                 ))

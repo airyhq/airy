@@ -20,6 +20,7 @@ public class WebhookSubscribePayload {
     private UUID id;
     @NotNull
     private URL url;
+    private String name;
     private Map<String, String> headers = new HashMap<>();
     private List<EventType> events = new ArrayList<>();
     private String signatureKey;

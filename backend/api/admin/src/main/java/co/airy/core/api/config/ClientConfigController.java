@@ -30,7 +30,6 @@ public class ClientConfigController {
         this.tagConfig = new ObjectMapper().readTree(tagConfigResource);
         try (InputStream is = version.getInputStream()) {
             clusterVersion = StreamUtils.copyToString(is, StandardCharsets.UTF_8);
-            ;
         }
     }
 

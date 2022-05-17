@@ -25,18 +25,21 @@ spec:
       serviceAccountName: airy-controller
       automountServiceAccountToken: true
       containers:
-      - name: app
-        image: "{{ .Values.global.containerRegistry}}/infrastructure/controller:{{ default .Chart.Version .Values.global.appImageTag }}"
-        imagePullPolicy: Always
-        env:
-        - name: LABEL_SELECTOR
-          value: "core.airy.co/managed=true"
-        - name: NAMESPACE
-          value: {{ .Release.Namespace }}
-        resources:
-          requests:
-            cpu: "50m"
-            memory: "32Mi"
-          limits:
-            cpu: "50m"
-            memory: "128Mi"
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/infrastructure/controller:{{ default .Chart.Version .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: security
+          env:
+            - name: LABEL_SELECTOR
+              value: "core.airy.co/managed=true"
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+            limits:
+              cpu: "50m"
+              memory: "128Mi"

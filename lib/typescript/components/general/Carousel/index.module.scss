@@ -7,8 +7,6 @@
   margin-top: 5px;
   overflow: hidden;
   position: relative;
-  max-width: inherit;
-  width: 100%;
 }
 
 .carouselChildren {
@@ -26,7 +24,7 @@
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  background-color: #ffffff;
+  background-color: var(--color-background-white);
   padding: 0;
   line-height: 0;
   cursor: pointer;

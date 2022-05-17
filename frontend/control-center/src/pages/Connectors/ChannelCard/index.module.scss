@@ -1,0 +1,65 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
+
+.container {
+  width: 260px;
+  height: 100px;
+  margin-bottom: 28px;
+  margin-right: 36px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 10px;
+  background-color: var(--color-background-blue);
+  text-decoration: none;
+  &:hover {
+    border: 2px solid var(--color-airy-blue);
+    margin-left: -1px;
+    width: 261px;
+    cursor: pointer;
+  }
+}
+
+.channelCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 16px;
+}
+
+.logoTitleContainer {
+  @include font-base;
+  font-weight: 600;
+  margin-bottom: 13px;
+  color: var(--color-text-contrast);
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+
+  svg {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+  }
+}
+
+.linkContainer {
+  @include font-s;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 14px;
+
+  span {
+    color: var(--color-airy-blue);
+    margin-right: 4px;
+    text-decoration: underline;
+  }
+  .arrowIcon {
+    width: 8px;
+    padding-top: 3px;
+    color: var(--color-airy-blue);
+  }
+}

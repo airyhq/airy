@@ -8,7 +8,7 @@ import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel, isComponentHealthy} from '../../../../reducers';
-import {useAnimation} from '../../../../assets/animations';
+import {useAnimation} from 'render';
 import ContactDetails from './ContactDetails';
 
 import styles from './index.module.scss';
@@ -145,7 +145,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const cancelEditDisplayName = () => {
     setDisplayName(conversation.metadata.contact.displayName);
-    useAnimation(setShowEditDisplayName, showEditDisplayName, setFade, 400);
+    useAnimation(showEditDisplayName, setShowEditDisplayName, setFade, 400);
   };
 
   const editDisplayName = () => {
@@ -175,7 +175,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
     return (
       <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
-        <Dialog close={() => useAnimation(setShowTagsDialog, showTagsDialog, setFade, 400)}>
+        <Dialog close={() => useAnimation(showTagsDialog, setShowTagsDialog, setFade, 400)}>
           <form className={styles.addTags} onSubmit={submitForm}>
             <Input
               type="text"
@@ -245,7 +245,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
               <EditIcon aria-label="edit contact" />
             </button>
           ) : (
-            <button className={styles.editIcon} onClick={cancelContactsInfoEdit} data-cy={cyCancelEditContactIcon}>
+            <button
+              className={`${styles.editIcon} ${styles.cancelIcon}`}
+              onClick={cancelContactsInfoEdit}
+              data-cy={cyCancelEditContactIcon}
+            >
               <CancelIcon aria-label="cancel contact edit" />
             </button>
           )}

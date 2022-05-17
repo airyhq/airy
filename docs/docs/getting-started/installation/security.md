@@ -24,6 +24,10 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer my-to
 
 ```
 
+:::note
+Both the `systemToken` and the `jwtSecret` need to be set in the `airy.yaml` file for the API security to work properly. If one of the values is omitted, the API will not be protected.
+:::
+
 ## Configuring OIDC
 
 Setting up the `systemToken` will secure the API, but it means that UI clients will no longer work since API keys are not meant for web authentication. This is why Airy Core also supports [Open Id Connect (OIDC)](https://openid.net/connect/) to allow your agents to authenticate via an external provider. If you configure this in addition to the system token then both types of authentication will work when requesting APIs.

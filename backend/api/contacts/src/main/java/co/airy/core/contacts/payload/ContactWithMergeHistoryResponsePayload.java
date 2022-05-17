@@ -1,6 +1,6 @@
 package co.airy.core.contacts.payload;
 
-import co.airy.core.contacts.dto.Contact;
+import co.airy.model.contacts.Contact;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;

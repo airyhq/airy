@@ -29,6 +29,10 @@
   outline: none;
   z-index: 1;
 
+  svg {
+    fill: var(--color-text-contrast);
+  }
+
   &:hover {
     border-color: var(--color-airy-blue);
 

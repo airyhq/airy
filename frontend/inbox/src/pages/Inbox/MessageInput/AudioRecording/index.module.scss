@@ -34,7 +34,7 @@
 
   svg {
     path {
-      fill: white;
+      fill: var(--color-background-white);
     }
   }
 }
@@ -45,7 +45,7 @@
 
   svg {
     path {
-      stroke: white;
+      stroke: var(--color-background-white);
     }
   }
 }

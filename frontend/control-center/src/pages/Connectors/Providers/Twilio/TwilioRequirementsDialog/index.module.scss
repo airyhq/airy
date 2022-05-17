@@ -1,0 +1,74 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 582px;
+  height: 360px;
+  background: var(--color-background-white);
+  border-radius: 8px;
+  z-index: $popup;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  @include font-xl;
+  align-self: center;
+  padding-top: 40px;
+}
+
+.headline {
+  @include font-xl;
+  color: var(--color-text-contrast);
+  font-weight: bold;
+  padding-top: 40px;
+  padding-left: 40px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  width: 14px;
+  height: 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  padding: 0px;
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+.inviteWrapper {
+  width: 500px;
+  margin: 20px 40px 0px 40px;
+}
+
+.firstMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.configMessage {
+  @include font-base;
+  color: rgba(235, 32, 97, 0.866);
+  text-decoration: none;
+  background-color: var(--color-light-gray);
+}
+
+.secondMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.thirdMessage {
+  @include font-base;
+  margin: 24px 0px 58px 0px;
+}

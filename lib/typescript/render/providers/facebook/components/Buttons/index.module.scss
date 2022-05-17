@@ -10,12 +10,12 @@
 }
 
 .buttonText {
-  color: var(--color-contrast);
+  color: var(--color-text-contrast);
   text-decoration: none;
   padding: 8px;
   display: block;
   &:hover {
-    color: var(--color-contrast);
+    color: var(--color-text-contrast);
     text-decoration: none;
   }
 }

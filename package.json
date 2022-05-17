@@ -5,6 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
     "@stomp/stompjs": "^6.1.2",
+    "@testing-library/user-event": "^14.2.0",
     "@types/jest": "^27.5.1",
     "audio-recorder-polyfill": "^0.4.1",
     "camelcase-keys": "^7.0.2",
@@ -30,6 +31,7 @@
     "regenerator-runtime": "^0.13.9",
     "reselect": "4.1.5",
     "ts-jest": "^28.0.2",
+    "ts-node": "^10.7.0",
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
@@ -37,14 +39,21 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
     "@babel/plugin-transform-spread": "^7.16.7",
+<<<<<<< HEAD
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.17.12",
+=======
+    "@babel/preset-env": "^7.17.12",
+    "@babel/preset-react": "^7.17.12",
+    "@babel/preset-typescript": "^7.16.0",
+>>>>>>> e316706b (jest config wip)
     "@bazel/typescript": "5.4.0",
     "@hot-loader/react-dom": "^17.0.2",
     "@svgr/plugin-svgo": "^6.2.0",
     "@svgr/webpack": "^6.2.1",
     "@testing-library/dom": "^8.13.0",
+    "@testing-library/react": "12.0.4",
     "@types/dom-mediacapture-record": "^1.0.11",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "17.0.26",
@@ -56,7 +65,12 @@
     "@types/resize-observer-browser": "^0.1.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
+<<<<<<< HEAD
     "babel-loader": "^8.2.5",
+=======
+    "babel-jest": "^28.1.0",
+    "babel-loader": "^8.2.4",
+>>>>>>> 7c3602d2 (jest config wip)
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
     "cypress": "^9.5.4",
@@ -65,11 +79,17 @@
     "eslint-plugin-react": "^7.29.4",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.0",
     "minimist": "^1.2.6",
     "prettier": "^2.6.2",
     "react-hot-loader": "^4.13.0",
+<<<<<<< HEAD
     "sass": "^1.52.1",
+=======
+    "react-test-renderer": "^18.1.0",
+    "sass": "^1.50.0",
+>>>>>>> e316706b (jest config wip)
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.1",

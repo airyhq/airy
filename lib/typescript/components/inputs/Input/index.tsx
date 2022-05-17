@@ -334,6 +334,7 @@ class InputComponent extends Component<InputProps, IState> {
           <div className={styles.input}>
             <input
               id={id}
+              data-testid={this.props.type === 'url' ? 'url-input' : 'input'}
               ref={inputRef || this.inputRef}
               className={inputClass}
               checked={checked}

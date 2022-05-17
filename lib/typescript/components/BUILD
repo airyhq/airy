@@ -16,6 +16,8 @@ ts_web_library(
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
         "@npm//react-router-dom",
+        "@npm//@testing-library/react",
+        "@npm//@testing-library/user-event"
     ],
 )
 

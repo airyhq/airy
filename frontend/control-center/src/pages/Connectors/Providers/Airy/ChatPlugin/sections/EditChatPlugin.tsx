@@ -8,6 +8,7 @@ import {CustomiseSection} from './CustomiseSection';
 import styles from './EditChatPlugin.module.scss';
 
 import {cyChannelsChatPluginFormNameInput} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 interface EditChatPluginProps {
   channel: Channel;
@@ -17,6 +18,7 @@ interface EditChatPluginProps {
 
 export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPluginProps) => {
   const [currentPage, setCurrentPage] = useState('settings');
+  const {t} = useTranslation();
 
   useEffect(() => {
     setCurrentPage('settings');
@@ -55,8 +57,8 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setDisplayName(e.target.value);
                     }}
-                    label="Display Name"
-                    placeholder="Add a name"
+                    label={t('displayName')}
+                    placeholder={t('addAName')}
                     required
                     height={32}
                     fontClass="font-base"
@@ -72,15 +74,15 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setImageUrl(e.target.value);
                     }}
-                    label="Image URL"
-                    placeholder="(optionally) add an image url"
-                    hint="max. 1024x1024 pixel PNG"
+                    label={t('imageUrl')}
+                    placeholder={t('imageUrlPlaceholder')}
+                    hint={t('imageUrlHint')}
                     height={32}
                     fontClass="font-base"
                   />
                 </div>
                 <Button type="submit" styleVariant="small">
-                  Update
+                  {t('update')}
                 </Button>
               </form>
             </div>
@@ -89,7 +91,7 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
       case 'install-customization':
         return (
           <div className={styles.formWrapper}>
-            <CustomiseSection channelId={channel.id} host={host} />
+            <CustomiseSection channelId={channel?.id} host={host} />
           </div>
         );
     }
@@ -97,16 +99,16 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
 
   return (
     <div>
-      <p className={styles.updatePageParagraph}>Add Airy Live Chat to your website and application</p>
+      <p className={styles.updatePageParagraph}>{t('addLiveChatToWebsite')}</p>
       <ul className={styles.tabView}>
         <li className={currentPage == 'settings' ? styles.tabEntrySelected : styles.tabEntry}>
           <a href="#" onClick={showSettings}>
-            Settings
+            {t('settings')}
           </a>
         </li>
         <li className={currentPage == 'install-customization' ? styles.tabEntrySelected : styles.tabEntry}>
           <a href="#" onClick={showCustomization}>
-            Install & Customize
+            {t('installCustomize')}
           </a>
         </li>
       </ul>

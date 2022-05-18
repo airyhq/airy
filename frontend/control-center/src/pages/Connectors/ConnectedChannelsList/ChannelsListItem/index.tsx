@@ -12,6 +12,7 @@ import {ReactComponent as DisconnectIcon} from 'assets/images/icons/disconnectIc
 
 import styles from './index.module.scss';
 import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 type ChannelListItemProps = {
   channel: Channel;
@@ -28,6 +29,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
   const navigate = useNavigate();
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
   const path = location.pathname.includes('connectors') ? 'connectors' : 'catalog';
+  const {t} = useTranslation();
 
   const togglePopupVisibility = () => {
     setDeletePopupVisible(!deletePopupVisible);
@@ -78,23 +80,24 @@ const ChannelListItem = (props: ChannelListItemProps) => {
       </div>
 
       {deletePopupVisible && (
-        <SettingsModal style={{maxWidth: '420px'}} title="Confirm Channel Disconnection" close={togglePopupVisibility}>
+        <SettingsModal
+          style={{maxWidth: '420px'}}
+          title={t('confirmDisconnectChannelTitle')}
+          close={togglePopupVisibility}
+        >
           <div className={styles.disconnectModal}>
+            <p>{t('confirmDisconnectChannelText')}</p>
             <p>
-              You are about to disconnect a channel. You will not receive any new messages in Airy or be able to send
-              messages anymore.
-            </p>
-            <p>
-              If you need help or experience a problem, please reach out to{' '}
+              {t('confirmDisconnectChannelProblem')}
               <a href="mailto:support@airy.co">support@airy.co</a>.
             </p>
             <div className={styles.modalSeparator} />
             <div className={styles.modalButtons}>
               <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Button styleVariant="warning" type="submit" onClick={disconnectChannel}>
-                Disconnect Channel
+                {t('disconnectChannel')}
               </Button>
             </div>
           </div>

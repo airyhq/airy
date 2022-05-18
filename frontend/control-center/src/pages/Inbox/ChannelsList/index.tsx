@@ -31,9 +31,11 @@ import {
   CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {useTranslation} from 'react-i18next';
 
 const ChannelsList = () => {
   const {source} = useParams();
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
@@ -57,40 +59,40 @@ const ChannelsList = () => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName('Facebook Messenger');
-        setDescription('Best of class browser messenger');
+        setName(t('facebookTitle'));
+        setDescription(t('facebookDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
-        setName('Google Business Messages');
-        setDescription('Best of class browser messenger');
+        setName(t('googleTitle'));
+        setDescription(t('googleDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
-        setName('Twilio SMS');
-        setDescription('Best of class browser messenger');
+        setName(t('twilioSmsTitle'));
+        setDescription(t('twilioSmsDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
-        setName('Twilio Whatsapp');
-        setDescription('Best of class browser messenger');
+        setName(t('twilioWhatsappTitle'));
+        setDescription(t('twilioWhatsappDescription'));
         ROUTE = location.pathname.includes('connectors')
           ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
           : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
-        setName('Chat Plugin');
-        setDescription('Best of class browser messenger');
+        setName(t('chatpluginTitle'));
+        setDescription(t('chatpluginDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
-        setName('Instagram');
-        setDescription('Best of class browser messenger');
+        setName(t('instagramTitle'));
+        setDescription(t('instagramDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;

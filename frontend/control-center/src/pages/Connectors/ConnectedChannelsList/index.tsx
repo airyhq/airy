@@ -34,9 +34,11 @@ import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from '../../../components/Pagination';
 import {useAnimation} from 'render/services/useAnimation';
+import {useTranslation} from 'react-i18next';
 
 const ConnectedChannelsList = () => {
   const {source} = useParams();
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
@@ -70,40 +72,40 @@ const ConnectedChannelsList = () => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName('Facebook Messenger');
-        setDescription('Connect multiple Facebook pages');
+        setName(t('facebookTitle'));
+        setDescription(t('facebookDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
-        setName('Google Business Messages');
-        setDescription('Be there when people search');
+        setName(t('googleTitle'));
+        setDescription(t('googleDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
-        setName('Twilio SMS');
-        setDescription('Deliver SMS with ease');
+        setName(t('twilioSmsTitle'));
+        setDescription(t('twilioSmsDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
-        setName('Twilio Whatsapp');
-        setDescription('World #1 chat app');
+        setName(t('twilioWhatsappTitle'));
+        setDescription(t('twilioWhatsappDescription'));
         ROUTE = location.pathname.includes('connectors')
           ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
           : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
-        setName('Chat Plugin');
-        setDescription('Best of class browser messenger');
+        setName(t('chatpluginTitle'));
+        setDescription(t('chatpluginDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
-        setName('Instagram');
-        setDescription('Connect multiple Instagram pages');
+        setName(t('instagramTitle'));
+        setDescription(t('instagramDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
@@ -120,7 +122,7 @@ const ConnectedChannelsList = () => {
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          Channels
+          {t('channelsCapital')}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>
@@ -138,7 +140,7 @@ const ConnectedChannelsList = () => {
             <div className={animationAction ? styles.animateIn : styles.animateOut}>
               {showingSearchField && (
                 <SearchField
-                  placeholder="Search"
+                  placeholder={t('search')}
                   value={searchText}
                   setValue={(value: string) => setSearchText(value)}
                   autoFocus={true}
@@ -175,8 +177,8 @@ const ConnectedChannelsList = () => {
           marginBottom: '24px',
         }}
       >
-        <span>Name</span>
-        <span>Manage</span>
+        <span>{t('name')}</span>
+        <span>{t('manage')}</span>
       </div>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
@@ -189,8 +191,8 @@ const ConnectedChannelsList = () => {
           ))
         ) : (
           <div className={styles.emptyState}>
-            <h1 className={styles.noSearchMatch}>Result not found.</h1>
-            <p>Try to search for a different term.</p>
+            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+            <p>{t('noResultsTerm')}</p>
           </div>
         )}
       </div>

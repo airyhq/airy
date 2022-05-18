@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
+import {useTranslation} from 'react-i18next';
 
 interface CatalogItemListProps {
   list: SourceInfo[];
@@ -15,12 +16,13 @@ interface CatalogItemListProps {
 export const CatalogItemList = (props: CatalogItemListProps) => {
   const {list, installedConnectors, setDisplayDialogFromSource} = props;
   const config = useSelector((state: StateModel) => state.data.config);
+  const {t} = useTranslation();
 
   const navigate = useNavigate();
 
   return (
     <section className={styles.connectorContainer}>
-      <h2>{installedConnectors ? 'Installed' : 'Not Installed'}</h2>
+      <h2>{installedConnectors ? t('installed') : t('notInstalled')}</h2>
 
       <div className={styles.connectorList}>
         {list.map(infoItem => (

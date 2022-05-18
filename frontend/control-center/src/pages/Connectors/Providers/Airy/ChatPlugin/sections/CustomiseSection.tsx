@@ -6,6 +6,7 @@ import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
 import {fetchGoogleFonts} from '../../../../../../api/index';
+import {useTranslation} from 'react-i18next';
 
 enum CloseOption {
   basic = 'basic',
@@ -25,6 +26,7 @@ interface CustomiseSectionProps {
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const useLocalState = getUseLocalState(channelId);
+  const {t} = useTranslation();
   const [customHost, setCustomHost] = useLocalState('customHost', host);
   const [headerText, setHeaderText] = useLocalState('headerText', '');
   const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
@@ -239,14 +241,15 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     <>
       <div className={styles.codeAreaContainer}>
         <div className={styles.installHint}>
-          Add this code inside the tag <code>&lt;head&gt;</code>:
+          {t('addCodeTagHead')}
+          <code>&lt;head&gt;</code>:
         </div>
         <div>
           <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={getCode()} />
         </div>
         <div className={styles.copyButtonHostName}>
           <Button onClick={copyToClipboard} disabled={customHost.length == 0}>
-            Copy code
+            {t('copyCode')}
           </Button>
           {customHost.length == 0 && (
             <div style={{marginLeft: '8px'}}>
@@ -256,7 +259,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         </div>
       </div>
       <div className={styles.customiseContainer}>
-        <p>Header Text Color</p>
+        <p>{t('headTextColor')}</p>
         <div className={styles.colorPicker}>
           {showHeaderTextColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowHeaderTextColorPicker}>
@@ -275,7 +278,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="Header Text Color"
+            name={t('headerTextColor')}
             value={headerTextColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setHeaderTextColor(e.target.value);
@@ -294,7 +297,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Subtitle Text Color</p>
+        <p>{t('subtitleTextColor')}</p>
         <div className={styles.colorPicker}>
           {showSubtitleTextColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowSubtitleTextColorPicker}>
@@ -313,7 +316,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="Subtitle Text Color"
+            name={t('subtitleTextColor')}
             value={subtitleTextColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSubtitleTextColor(e.target.value);
@@ -332,7 +335,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Primary Color</p>
+        <p>{t('primaryColor')}</p>
         <div className={styles.colorPicker}>
           {showPrimaryColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowPrimaryColorPicker}>
@@ -351,7 +354,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="Primary Color"
+            name={t('primaryColor')}
             value={primaryColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setPrimaryColor(e.target.value);
@@ -370,7 +373,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Accent Color</p>
+        <p>{t('accentColor')}</p>
         <div className={styles.colorPicker}>
           {showAccentColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowAccentColorPicker}>
@@ -390,7 +393,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="accentColor"
+            name={t('accentColor')}
             value={accentColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setAccentColor(e.target.value);
@@ -409,7 +412,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Background Color</p>
+        <p>{t('backgroundColor')}</p>
         <div className={styles.colorPicker}>
           {showBackgroundColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowBackgroundColorPicker}>
@@ -428,7 +431,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={backgroundColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setBackgroundColor(e.target.value);
@@ -447,7 +450,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Inbound Background Color</p>
+        <p>{t('inboundBackgroundColor')}</p>
         <div className={styles.colorPicker}>
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
@@ -469,7 +472,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={inboundMessageBackgroundColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setInboundMessageBackgroundColor(e.target.value);
@@ -488,7 +491,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Inbound Text Color</p>
+        <p>{t('inboundTextColor')}</p>
         <div className={styles.colorPicker}>
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
@@ -510,7 +513,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={inboundMessageTextColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setInboundMessageTextColor(e.target.value);
@@ -529,7 +532,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Outbound Background Color</p>
+        <p>{t('outboundBackgroundColor')}</p>
         <div className={styles.colorPicker}>
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
@@ -551,7 +554,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={outboundMessageBackgroundColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setOutboundMessageBackgroundColor(e.target.value);
@@ -570,7 +573,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Outbound Text Color</p>
+        <p>{t('outboundTextColor')}</p>
         <div className={styles.colorPicker}>
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
@@ -592,7 +595,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={outboundMessageTextColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setOutboundMessageTextColor(e.target.value);
@@ -611,7 +614,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
-        <p>Unread Message Dot Color</p>
+        <p>{t('unreadMessageDotColor')}</p>
         <div className={styles.colorPicker}>
           {showUnreadMessageDotColorPicker && (
             <ListenOutsideClick
@@ -633,7 +636,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
           <Input
             type="text"
-            name="backgroundColor"
+            name={t('backgroundColor')}
             value={unreadMessageDotColor}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setUnreadMessageDotColor(e.target.value);
@@ -654,7 +657,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         </div>
         <div className={styles.extraOptions}>
           <Dropdown
-            text={`Closing Options: ${closingOption}`}
+            text={`${t('closingOptions')}: ${closingOption}`}
             variant="normal"
             options={[CloseOption.basic, CloseOption.medium, CloseOption.full]}
             onClick={(option: CloseOption) => {
@@ -664,7 +667,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         </div>
         <div className={styles.extraOptions}>
           <Dropdown
-            text={`Bubble State Options: ${bubbleState}`}
+            text={`${t('bubbleStateOptions')}: ${bubbleState}`}
             variant="normal"
             options={[BubbleState.expanded, BubbleState.minimized]}
             onClick={(option: BubbleState) => {
@@ -679,8 +682,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="textHeader"
           value={headerText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setHeaderText(e.target.value)}
-          label="Header Text"
-          placeholder="(optionally) add a text"
+          label={t('headerText')}
+          placeholder={t('addTextOptional')}
           height={32}
           fontClass="font-base"
           maxLength={30}
@@ -690,8 +693,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="subtitle"
           value={subtitleText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSubtitleText(e.target.value)}
-          label="Subtitle Text"
-          placeholder="(optionally) add a text"
+          label={t('subtitleText')}
+          placeholder={t('addTextOptional')}
           height={32}
           fontClass="font-base"
           maxLength={50}
@@ -701,8 +704,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="startNewConversationText"
           value={startNewConversationText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartNewConversationText(e.target.value)}
-          label="Start new Conversation Text"
-          placeholder="(optionally) add a text"
+          label={t('startNewConversationText')}
+          placeholder={t('addTextOptional')}
           height={32}
           fontClass="font-base"
         />
@@ -711,8 +714,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="bubbleIconUrl"
           value={bubbleIconUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBubbleIconUrl(e.target.value)}
-          label="Chat Plugin Icon URL"
-          placeholder="(optionally) add an image url"
+          label={t('chatpluginIconUrl')}
+          placeholder={t('addImageurlOptional')}
           height={32}
           fontClass="font-base"
           showErrors={false}
@@ -722,8 +725,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="sendMessageIconUrl"
           value={sendMessageIconUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSendMessageIconUrl(e.target.value)}
-          label="Input Icon URL"
-          placeholder="(optionally) add an image url"
+          label={t('inputIconUrl')}
+          placeholder={t('addImageurlOptional')}
           height={32}
           fontClass="font-base"
           showErrors={false}
@@ -733,7 +736,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           name="customHostUrl"
           value={customHost}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomHost(e.target.value)}
-          label="Custom Host URL"
+          label={t('customHostUrl')}
           placeholder="http://airy.core"
           required={true}
           height={32}
@@ -763,8 +766,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
               e.preventDefault();
             }
           }}
-          label="Height (min 200px)"
-          placeholder="(optionally) add custom height"
+          label={t('heightPx')}
+          placeholder={t('customHeightPlaceholder')}
           height={32}
           fontClass="font-base"
           showErrors={false}
@@ -792,8 +795,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
               e.preventDefault();
             }
           }}
-          label="Width (min 200px)"
-          placeholder="(optionally) add custom width"
+          label={t('widthPx')}
+          placeholder={t('customWidthPlaceholder')}
           height={32}
           fontClass="font-base"
           showErrors={false}
@@ -801,33 +804,45 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         <div className={styles.extraOptions}>
           <Toggle
             value={disableMobile}
-            text="Disabled for Mobile"
+            text={t('disabledForMobile')}
             updateValue={(value: boolean) => setDisableMobile(value)}
           />
         </div>
         <div className={styles.extraOptions}>
-          <Toggle value={hideInputBar} text="Hide Input Bar" updateValue={(value: boolean) => setHideInputBar(value)} />
+          <Toggle
+            value={hideInputBar}
+            text={t('hideInputbar')}
+            updateValue={(value: boolean) => setHideInputBar(value)}
+          />
         </div>
         <div className={styles.extraOptions}>
-          <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
+          <Toggle value={hideEmojis} text={t('disableEmojis')} updateValue={(value: boolean) => setHideEmojis(value)} />
         </div>
         <div className={styles.extraOptions}>
           <Toggle
             value={useCustomFont}
-            text="Use Custom Font"
+            text={t('useCustomFont')}
             updateValue={(value: boolean) => setUseCustomFont(value)}
           />
         </div>
         <div>
-          <p>Supported file types:</p>
+          <p>{t('supportedFileTypes')}</p>
           <div className={styles.extraOptions}>
-            <Toggle value={hideImages} text="Disable Images" updateValue={(value: boolean) => setHideImages(value)} />
+            <Toggle
+              value={hideImages}
+              text={t('disableImages')}
+              updateValue={(value: boolean) => setHideImages(value)}
+            />
           </div>
           <div className={styles.extraOptions}>
-            <Toggle value={hideVideos} text="Disable Videos" updateValue={(value: boolean) => setHideVideos(value)} />
+            <Toggle
+              value={hideVideos}
+              text={t('disableVideos')}
+              updateValue={(value: boolean) => setHideVideos(value)}
+            />
           </div>
           <div className={styles.extraOptions}>
-            <Toggle value={hideFiles} text="Disable Files" updateValue={(value: boolean) => setHideFiles(value)} />
+            <Toggle value={hideFiles} text={t('disableFiles')} updateValue={(value: boolean) => setHideFiles(value)} />
           </div>
         </div>
       </div>
@@ -846,7 +861,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         {useCustomFont && (
           <div className={styles.fontDropdownContainer}>
             <Dropdown
-              text={`Custom Font: ${customFont}`}
+              text={`${t('customFont')}${customFont}`}
               variant="normal"
               options={fetchGoogleFonts()}
               onClick={(font: string) => {

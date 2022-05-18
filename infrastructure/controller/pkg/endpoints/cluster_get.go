@@ -1,0 +1,66 @@
+package endpoints
+
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+	"strings"
+
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+)
+
+type ClusterGet struct {
+	clientSet *kubernetes.Clientset
+	namespace string
+}
+
+func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	configmapList, err := s.clientSet.CoreV1().ConfigMaps(s.namespace).List(r.Context(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
+	if err != nil {
+		log.Printf("Unable to list config maps. Error: %s\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	components := make(map[string]map[string]interface{})
+	for _, configmap := range configmapList.Items {
+		label, ok := configmap.Labels["core.airy.co/component"]
+		if !ok {
+			continue
+		}
+
+		componentsGroup, componentName, ok := getComponentFromLabel(label)
+		if !ok {
+			continue
+		}
+
+		componentsGroupContent, ok := components[componentsGroup]
+		if !ok {
+			componentsGroupContent = make(map[string]interface{})
+			components[componentsGroup] = componentsGroupContent
+		}
+
+		componentsGroupContent[componentName] = configmap.Data
+	}
+
+	blob, err := json.Marshal(map[string]interface{}{"components": components})
+	if err != nil {
+		log.Printf("Unable to marchal config Error: %s\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(blob)
+}
+
+func getComponentFromLabel(l string) (string, string, bool) {
+	c := strings.Split(l, "-")
+	if len(c) != 2 {
+		return "", "", false
+	}
+
+	return c[0], c[1], true
+}

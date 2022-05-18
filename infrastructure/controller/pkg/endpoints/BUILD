@@ -5,6 +5,7 @@ go_library(
     name = "endpoints",
     srcs = [
         "auth.go",
+        "cluster_get.go",
         "server.go",
         "services.go",
     ],

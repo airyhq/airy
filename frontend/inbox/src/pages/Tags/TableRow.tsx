@@ -15,6 +15,7 @@ import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 import styles from './TableRow.module.scss';
 
 import {cyTagsTableRowDisplayDeleteModal} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 type TableRowProps = {
   tag: TagModel;
@@ -35,6 +36,7 @@ const TableRowComponent = (props: TableRowProps) => {
     name: '',
     color: '',
   });
+  const {t} = useTranslation();
 
   const handleUpdate = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,10 +120,10 @@ const TableRowComponent = (props: TableRowProps) => {
         <td style={{width: '25%'}}>
           <div className={styles.actions}>
             <Button styleVariant={'small'} disabled={!tagState.name.length} onClick={handleTagUpdate}>
-              Save
+              {t('save')}
             </Button>
             <div className={styles.cancelButton}>
-              <LinkButton onClick={cancelTagUpdate}>Cancel</LinkButton>
+              <LinkButton onClick={cancelTagUpdate}>{t('cancel')}</LinkButton>
             </div>
           </div>
         </td>
@@ -141,7 +143,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
-            <EditPencilIcon className={styles.actionSVGEdit} title="Edit tag" />
+            <EditPencilIcon className={styles.actionSVGEdit} title={t('editTag')} />
           </button>
           <button
             type="button"
@@ -149,7 +151,7 @@ const TableRowComponent = (props: TableRowProps) => {
             onClick={deleteClicked}
             data-cy={cyTagsTableRowDisplayDeleteModal}
           >
-            <TrashIcon className={styles.actionSVG} title="Delete tag" />
+            <TrashIcon className={styles.actionSVG} title={t('deleteTag')} />
           </button>
         </div>
       </td>

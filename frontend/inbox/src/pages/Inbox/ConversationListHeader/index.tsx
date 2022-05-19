@@ -15,6 +15,7 @@ import styles from './index.module.scss';
 import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
 import Popup from '../QuickFilter/Popup';
 import {formatConversationCount} from '../../../services/format/numbers';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   setSearch,
@@ -33,6 +34,7 @@ type ConversationListHeaderProps = ConnectedProps<typeof connector>;
 
 const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const {setSearch, resetFilteredConversationAction, currentFilter} = props;
+  const {t} = useTranslation();
 
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -89,7 +91,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
       </button>
       <div className={styles.searchFieldWidth}>
         <SearchField
-          placeholder="Search"
+          placeholder={t('search')}
           value={searchText}
           setValue={setValue}
           resetClicked={onClickSearch}
@@ -103,7 +105,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
       <InboxConversationCount />
       <div className={styles.searchBox}>
         <button type="button" className={styles.searchButton} onClick={onClickSearch} data-cy={cySearchButton}>
-          <IconSearch className={styles.searchIcon} title="Search" />
+          <IconSearch className={styles.searchIcon} title={t('search')} />
         </button>
         <button
           title="Filter"

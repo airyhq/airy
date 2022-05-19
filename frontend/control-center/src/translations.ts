@@ -15,6 +15,104 @@ const resources = {
       logout: 'Logout',
       releaseNotes: 'Release notes',
 
+      //Inbox
+
+      //MessageInput
+      failedToUploadFileAgainLater: 'Failed to upload the file. Please try again later.',
+      failedToUploadFile: 'Failed to upload the file',
+      maximumSize: 'The maximum file size allowed for this source is ',
+      fileTypeNotSupported: 'This file type is not supported by this source. Supported files: ',
+      suggestions: 'Suggestions',
+      loadingFile: 'loading file... ',
+      enterMessage: 'Enter a message...',
+      messagesDisabled: 'Sending messages is disabled because this channel was disconnected.',
+      addALine: 'Shift + Enter to add line',
+      files: 'Files',
+      continueRecording: 'Continue recording',
+      recordAudioClip: 'Record audio clip',
+
+      //Audio Recording
+      micAccessDenied:
+        'Microphone access denied. Check your browser settings to make sure Airy has permission to access your microphone, and try again.',
+      failedToUploadRecording: 'Failed to upload the audio recording. Please try again later.',
+
+      //Conversation
+
+      //Tag
+      addATag: 'Add a tag',
+      addTagName: 'Please enter a tag name',
+      tagAlreadyAdded: 'Tag already added',
+      addCapital: 'Add',
+      pickColor: 'Pick a color',
+      createTag: 'Create Tag',
+      close: 'Close',
+      plusAddTag: '+ Add Tag',
+      noTagsYet: `You don't have tags yet.`,
+      tagsExplanation:
+        'Tags provide a useful way to group related conversations together and to quickly filter and search them.',
+      createATag: 'Create a Tag',
+      deleteTagConfirmation: `Please type 'delete' in the input field before deleting`,
+      enterTagName: 'Please enter a tag name',
+      editTag: 'Edit tag',
+      deleteTag: 'Delete tag',
+
+      //Contact
+      setName: 'Set Name',
+      seeAll: 'See all ',
+      seeLess: ' See less',
+      email: 'email',
+      phone: 'phone',
+      title: 'title',
+      address: 'address',
+      city: 'city',
+      organization: 'organization',
+      companyName: 'company name',
+      contactCapital: 'Contact',
+      otherConversationsContact: 'Other conversations for this contact:',
+
+      //Status
+      all: 'All',
+      open: 'Open',
+      closed: 'Closed',
+
+      //Message
+      showSuggestions: 'Show suggestions',
+      dropFilesHere: 'Drop Files Here',
+      conversationsWillAppearHere: 'Your conversations will appear here as soon as a contact messages you.',
+      conversationsWillAppearHereText:
+        'Airy Messenger only shows new conversations from the moment you connect at least one channel.',
+      newMessagesWillAppearHere: 'Your new messages will appear here',
+      newMessagesWillAppearHereText:
+        'We start showing messages from the moment you connect a channel. Your conversations will appear here as soon as your contacts message you.',
+      nothingFound: 'Nothing found',
+      noMatchingConversations: 'We could not find a conversation matching your criterias.',
+
+      //Metadata
+      editDisplayName: 'Edit Display Name',
+
+      //QuickFilter
+      readUnread: 'Read/Unread',
+      readOnly: 'Read Only',
+      unreadOnly: 'Unread Only',
+      stateCapital: 'State',
+      byTags: 'By Tags',
+      byChannel: 'By Channel',
+      bySource: 'By Source',
+      searchTags: 'Search for Tags',
+      searchChannel: 'Search for Channel',
+      apply: 'Apply',
+      clearAll: 'Clear All',
+
+      //Templates
+      templates: 'Templates',
+      noTemplatesYet: 'You have no templates yet.',
+      templatesExplanation: 'Templates allow you to offer a richer interaction experience with images and buttons.',
+      useTemplates: 'Use text templates to never type the same thing again.',
+      noResult: 'No result found.',
+      writeCorrectly: 'Did you write everything correctly?',
+      errorTemplates: 'Oops! Your templates could not be loaded. Please try again later.',
+      searchTemplates: 'Search for templates',
+
       //Control-Center
 
       //Channels
@@ -218,7 +316,7 @@ const resources = {
       //Inbox
 
       //Tags
-      deleteTag: 'Are you sure you want to permanently delete this tag?',
+      deleteTagText: 'Are you sure you want to permanently delete this tag?',
     },
   },
   de: {
@@ -233,6 +331,109 @@ const resources = {
       contactUs: 'Kontaktieren Sie uns',
       logout: 'Ausloggen',
       releaseNotes: 'Versionshinweise',
+
+      //Inbox
+
+      //MessageInput
+      failedToUploadFileAgainLater:
+        'Der Upload der Datei ist fehlgeschlagen. Bitte versuchen Sie es später noch einmal.',
+      failedToUploadFile: 'Hochladen der Datei fehlgeschlagen',
+      maximumSize: 'Die maximal zulässige Dateigröße für diese Quelle ist ',
+      fileTypeNotSupported: 'Dieser Dateityp wird von dieser Quelle nicht unterstützt. Unterstützte Dateien: ',
+      suggestions: 'Vorschläge',
+      loadingFile: 'Datei laden... ',
+      enterMessage: 'Nachricht eingeben...',
+      messagesDisabled:
+        'Das Senden von Nachrichten ist deaktiviert, da die Verbindung zu diesem Kanal unterbrochen wurde.',
+      addALine: 'Shift + Enter zum Hinzufügen einer Zeile',
+      files: 'Dateien',
+      continueRecording: 'Aufnahme fortsetzen',
+      recordAudioClip: 'Audiodatei aufnehmen',
+
+      //Audio Recording
+      micAccessDenied:
+        'Mikrofonzugriff verweigert. Überprüfen Sie die Einstellungen Ihres Browsers, um sicherzustellen, dass Airy die Erlaubnis hat, auf Ihr Mikrofon zuzugreifen, und versuchen Sie es erneut.',
+      failedToUploadRecording:
+        'Der Upload der Audioaufnahme ist fehlgeschlagen. Bitte versuchen Sie es später noch einmal.',
+
+      //Conversation
+
+      //Tag
+      addATag: 'Einen Tag hinzufügen',
+      addTagName: 'Bitte geben Sie einen Tag-Namen ein',
+      tagAlreadyAdded: 'Tag bereits hinzugefügt',
+      addCapital: 'Hinzufügen',
+      pickColor: 'Wählen Sie eine Farbe',
+      createTag: 'Tag erstellen',
+      close: 'Schließen',
+      plusAddTag: '+ Tag hinzufügen',
+      noTagsYet: 'Sie haben noch keine Tags.',
+      tagsExplanation:
+        'Tags bieten eine nützliche Möglichkeit, zusammenhängende Konversationen zu gruppieren und sie schnell zu filtern und zu durchsuchen.',
+      createATag: 'Einen Tag erstellen',
+      deleteTagConfirmation: `Bitte geben Sie vor dem Löschen 'löschen' in das Eingabefeld ein`,
+      enterTagName: 'Bitte geben Sie einen Tag-Namen ein',
+      editTag: 'Tag bearbeiten',
+      deleteTag: 'Tag löschen',
+
+      //Contact
+      setName: 'Name festlegen',
+      seeAll: 'Alle anzeigen ',
+      seeLess: ' Weniger anzeigen',
+      email: 'Email',
+      phone: 'Telefon',
+      title: 'Titel',
+      address: 'Adresse',
+      city: 'Stadt',
+      organization: 'organisation',
+      companyName: 'Firmenname',
+      contactCapital: 'Kontakt',
+      otherConversationsContact: 'Andere Gespräche für diesen Kontakt:',
+
+      //Status
+      all: 'Alle',
+      open: 'Offen',
+      closed: 'Geschlossen',
+
+      //Message
+      showSuggestions: 'Vorschläge anzeigen',
+      dropFilesHere: 'Dateien hier ablegen',
+      conversationsWillAppearHere:
+        'Ihre Unterhaltungen werden hier angezeigt, sobald Ihnen ein Kontakt eine Nachricht sendet.',
+      conversationsWillAppearHereText:
+        'Airy Messenger zeigt neue Unterhaltungen erst an, wenn Sie mindestens einen Kanal verbinden.',
+      newMessagesWillAppearHere: 'Ihre neuen Nachrichten werden hier angezeigt',
+      newMessagesWillAppearHereText:
+        'Wir beginnen mit der Anzeige von Nachrichten, sobald Sie einen Kanal verbinden. Ihre Unterhaltungen werden hier angezeigt, sobald Ihre Kontakte Ihnen Nachrichten senden.',
+      nothingFound: 'Nichts gefunden',
+      noMatchingConversations: 'Wir konnten kein Gespräch finden, das Ihren Kriterien entspricht.',
+
+      //Metadata
+      editDisplayName: 'Anzeigename bearbeiten',
+
+      //QuickFilter
+      readUnread: 'Gelesen/Ungelesen',
+      readOnly: 'Nur gelesen',
+      unreadOnly: 'Nur ungelesen',
+      stateCapital: 'Zustand',
+      byTags: 'Nach Tags',
+      byChannel: 'Nach Kanal',
+      bySource: 'Nach Quelle',
+      searchTags: 'Suche nach Tags',
+      searchChannel: 'Suche nach Kanal',
+      apply: 'Anwenden',
+      clearAll: 'Alle entfernen',
+
+      //Templates
+      template: 'Vorlagen',
+      noTemplatesYet: 'Sie haben noch keine Vorlagen.',
+      templatesExplanation:
+        'Mithilfe von Vorlagen können Sie die Interaktion mit Bildern und Schaltflächen bereichern.',
+      useTemplates: 'Verwenden Sie Textvorlagen, um nie wieder das Gleiche zu tippen.',
+      noResult: 'Kein Ergebnis gefunden.',
+      writeCorrectly: 'Haben Sie alles richtig geschrieben?',
+      errorTemplates: 'Huch! Ihre Vorlagen konnten nicht geladen werden. Bitte versuchen Sie es später noch einmal.',
+      searchTemplates: 'Suche nach Vorlagen',
 
       //Control-Center
 
@@ -433,11 +634,6 @@ const resources = {
       updating: 'Aktualisieren...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALLE EVENTS',
-
-      //Inbox
-
-      //Tags
-      deleteTag: 'Sind Sie sicher, dass Sie diese Markierung dauerhaft löschen wollen?',
     },
   },
   fr: {
@@ -452,6 +648,102 @@ const resources = {
       contactUs: 'Nous contacter',
       logout: 'Déconnexion',
       releaseNotes: 'Notes de version',
+
+      //Inbox
+
+      //MessageInput
+      failedToUploadFileAgainLater: 'Le téléchargement du fichier a échoué. Veuillez réessayer plus tard.',
+      failedToUploadFile: 'Impossible de télécharger le fichier',
+      maximumSize: 'La taille maximale des fichiers autorisée pour cette source est de ',
+      fileTypeNotSupported: `Ce type de fichier n'est pas pris en charge par cette source. Fichiers pris en charge : `,
+      suggestions: 'Suggestions',
+      loadingFile: 'chargement du fichier... ',
+      enterMessage: 'Entrez un message..',
+      messagesDisabled: `L'envoi de messages est désactivé car ce canal a été déconnecté.`,
+      addALine: 'Shift + Enter pour ajouter une ligne',
+      files: 'Fichiers',
+      continueRecording: `Continuer l'enregistrement`,
+      recordAudioClip: 'Enregistrer un clip audio',
+
+      //Audio Recording
+      micAccessDenied: `Accès au microphone refusé. Vérifiez les paramètres de votre navigateur pour vous assurer que Airy a l'autorisation d'accéder à votre microphone, et réessayez`,
+      failedToUploadRecording: `Impossible de télécharger l'enregistrement audio. Veuillez réessayer plus tard.`,
+
+      //Conversation
+
+      //Tag
+      addATag: 'Ajouter une étiquette',
+      addTagName: `Veuillez entrer un nom d'étiquette`,
+      tagAlreadyAdded: 'Étiquette déjà ajoutée',
+      addCapital: 'Ajouter',
+      pickColor: 'Choisissez une couleur',
+      createTag: 'Créer une étiquette',
+      close: 'Fermer',
+      plusAddTag: '+ Ajouter une étiquette',
+      noTagsYet: `Vous n'avez pas encore d'étiquettes.`,
+      tagsExplanation:
+        'Les balises constituent un moyen utile de regrouper des conversations connexes et de les filtrer et de les rechercher rapidement.',
+      createATag: 'Créer une étiquette',
+      deleteTagConfirmation: `Veuillez taper 'delete' dans le champ de saisie avant de procéder à la suppression.`,
+      enterTagName: `Veuillez entrer un nom d'étiquette`,
+      editTag: `Étiquette d'édition`,
+      deleteTag: `Supprimer l'étiquette`,
+
+      //Contact
+      setName: `Nom de l'ensemble`,
+      seeAll: 'Voir tous ',
+      seeLess: ' Voir moins',
+      email: 'email',
+      phone: 'téléphone',
+      title: 'titre',
+      address: 'adresse',
+      city: 'ville',
+      organization: 'organisation',
+      companyName: `nom de l'entreprise`,
+      contactCapital: 'Contacter',
+      otherConversationsContact: 'Autres conversations pour ce contact :',
+
+      //Status
+      all: 'Tous',
+      open: 'Ouvrir',
+      closed: 'Fermé',
+
+      //Message
+      showSuggestions: 'Afficher les suggestions',
+      dropFilesHere: 'Déposez vos fichiers ici',
+      conversationsWillAppearHere: `Vos conversations apparaîtront ici dès qu'un contact vous enverra un message.`,
+      conversationsWillAppearHereText: `Airy Messenger n'affiche les nouvelles conversations qu'à partir du moment où vous connectez au moins un canal.`,
+      newMessagesWillAppearHere: 'Vos nouveaux messages apparaîtront ici',
+      newMessagesWillAppearHereText:
+        'Nous commençons à afficher les messages à partir du moment où vous connectez un canal. Vos conversations apparaîtront ici dès que vos contacts vous enverront des messages.',
+      nothingFound: 'Rien trouvé',
+      noMatchingConversations: `Nous n'avons pas pu trouver de conversation correspondant à vos critères.`,
+
+      //Metadata
+      editDisplayName: `Modifier le nom d'affichage`,
+
+      //QuickFilter
+      readUnread: 'Lire/Éliminer',
+      readOnly: 'Lire seulement',
+      unreadOnly: 'Non lu seulement',
+      stateCapital: 'État',
+      byTags: 'Par des étiquettes',
+      byChannel: 'Par le canal',
+      bySource: 'Par la source',
+      searchTags: `Recherche d'étiquettes`,
+      searchChannel: `Recherche d'un canal`,
+      apply: 'Appliquer',
+      clearAll: 'Effacer tout',
+
+      //Templates
+      templates: 'Modèles',
+      noTemplatesYet: `Vous n'avez pas encore de modèles.`,
+      templatesExplanation: `Les modèles vous permettent d'offrir une expérience d'interaction plus riche avec des images et des boutons.`,
+      useTemplates: 'Utilisez des modèles de texte pour ne plus jamais taper la même chose.',
+      noResult: 'Aucun résultat trouvé.',
+      writeCorrectly: 'Avez-vous tout écrit correctement?',
+      errorTemplates: `Oups! Vos modèles n'ont pas pu être chargés. Veuillez réessayer plus tard.`,
+      searchTemplates: 'Recherche de modèles',
 
       //Control-Center
 
@@ -650,11 +942,6 @@ const resources = {
       updating: 'Mise à jour...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TOUS LES ÉVÉNEMENTS',
-
-      //Inbox
-
-      //Tags
-      deleteTag: 'Êtes-vous sûr de vouloir supprimer définitivement ce tag?',
     },
   },
   es: {
@@ -669,6 +956,105 @@ const resources = {
       contactUs: 'Contacto con nosotros',
       logout: 'Cierre de sesión',
       releaseNotes: 'Notas de publicación',
+
+      //Inbox
+
+      //MessageInput
+      failedToUploadFileAgainLater: 'No se ha podido cargar el archivo. Por favor, inténtelo de nuevo más tarde.',
+      failedToUploadFile: 'No se ha podido cargar el archivo',
+      maximumSize: 'El tamaño máximo de archivo permitido para esta fuente es ',
+      fileTypeNotSupported: 'Este tipo de archivo no es compatible con esta fuente. Archivos compatibles: ',
+      suggestions: 'Sugerencias',
+      loadingFile: 'cargando el archivo... ',
+      enterMessage: 'Introduzca un mensaje...',
+      messagesDisabled: 'El envío de mensajes está desactivado porque este canal fue desconectado.',
+      addALine: 'Shift + Enter para añadir una línea',
+      files: 'Archivos',
+      continueRecording: 'Seguir grabando',
+      recordAudioClip: 'Grabar un clip de audio',
+
+      //Audio Recording
+      micAccessDenied:
+        'Acceso al micrófono denegado. Comprueba la configuración de tu navegador para asegurarte de que Airy tiene permiso para acceder a tu micrófono y vuelve a intentarlo.',
+      failedToUploadRecording: 'No se ha podido cargar la grabación de audio. Vuelve a intentarlo más tarde.',
+
+      //Conversation
+
+      //Tag
+      addATag: 'Añadir una etiqueta',
+      addTagName: 'Por favor, introduzca un nombre de etiqueta',
+      tagAlreadyAdded: 'Etiqueta ya añadida',
+      addCapital: 'Añadir',
+      pickColor: 'Elige un color',
+      createTag: 'Crear etiqueta',
+      close: 'Cerrar',
+      plusAddTag: '+ Añadir etiqueta',
+      noTagsYet: 'Todavía no tienes etiquetas.',
+      tagsExplanation:
+        'Las etiquetas proporcionan una forma útil de agrupar conversaciones relacionadas y de filtrarlas y buscarlas rápidamente.',
+      createATag: 'Crear una etiqueta',
+      deleteTagConfirmation: 'Por favor, escriba "delete" en el campo de entrada antes de borrar',
+      enterTagName: 'Por favor, introduzca un nombre de etiqueta',
+      editTag: 'Editar etiqueta',
+      deleteTag: 'Eliminar la etiqueta',
+
+      //Contact
+      setName: 'Nombre del conjunto',
+      seeAll: 'Ver todo ',
+      seeLess: ' Ver menos',
+      email: 'email',
+      phone: 'teléfono',
+      title: 'título',
+      address: 'dirección',
+      city: 'ciudad',
+      organization: 'organización',
+      companyName: 'nombre de la empresa',
+      contactCapital: 'Contacto',
+      otherConversationsContact: 'Otras conversaciones para este contacto:',
+
+      //Status
+      all: 'Todo',
+      open: 'Abrir',
+      closed: 'Cerrado',
+
+      //Message
+      showSuggestions: 'Mostrar sugerencias',
+      dropFilesHere: 'Dejar los archivos aquí',
+      conversationsWillAppearHere: 'Tus conversaciones aparecerán aquí en cuanto un contacto te envíe un mensaje.',
+      conversationsWillAppearHereText:
+        'Airy Messenger sólo muestra las nuevas conversaciones a partir del momento en que se conecta al menos un canal.',
+      newMessagesWillAppearHere: 'Sus nuevos mensajes aparecerán aquí',
+      newMessagesWillAppearHereText:
+        'Empezamos a mostrar los mensajes desde el momento en que conectas un canal. Tus conversaciones aparecerán aquí tan pronto como tus contactos te envíen mensajes.',
+      nothingFound: 'No se ha encontrado nada',
+      noMatchingConversations: 'No hemos podido encontrar una conversación que se ajuste a sus criterios.',
+
+      //Metadata
+      editDisplayName: 'Editar el nombre de la pantalla',
+
+      //QuickFilter
+      readUnread: 'Leído/No leído',
+      readOnly: 'Sólo lectura',
+      unreadOnly: 'Sólo sin leer',
+      stateCapital: 'Estado',
+      byTags: 'Por Etiquetas',
+      byChannel: 'Por el Canal',
+      bySource: 'Por la fuente',
+      searchTags: 'Búsqueda de etiquetas',
+      searchChannel: 'Buscar el canal',
+      apply: 'Aplicar',
+      clearAll: 'Borrar todo',
+
+      //Templates
+      templates: 'Plantillas',
+      noTemplatesYet: 'Todavía no tienes plantillas.',
+      templatesExplanation:
+        'Las plantillas permiten ofrecer una experiencia de interacción más rica con imágenes y botones.',
+      useTemplates: 'Utilice plantillas de texto para no volver a escribir lo mismo.',
+      noResult: 'No se ha encontrado ningún resultado.',
+      writeCorrectly: '¿Has escrito todo correctamente?',
+      errorTemplates: '¡Ups! No se han podido cargar sus plantillas. Por favor, inténtelo más tarde.',
+      searchTemplates: 'Búsqueda de plantillas',
 
       //Control-Center
 
@@ -869,11 +1255,6 @@ const resources = {
       updating: 'Actualizar...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TODOS LOS EVENTOS',
-
-      //Inbox
-
-      //Tags
-      deleteTag: '¿Estás seguro de que quieres eliminar permanentemente esta etiqueta?',
     },
   },
 };

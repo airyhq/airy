@@ -1,7 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-bl" viewBox="0 0 640 480">
-  <g fill-rule="evenodd" stroke-width="1pt">
-    <path fill="#fff" d="M0 0h640v480H0z"/>
-    <path fill="#00267f" d="M0 0h213.3v480H0z"/>
-    <path fill="#f31830" d="M426.7 0H640v480H426.7z"/>
-  </g>
+<svg viewBox="0 0 640 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_15_3842" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="2" width="640" height="478">
+<rect y="2" width="640" height="478" rx="40" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0_15_3842)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H640V480H0V0Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H213.3V480H0V0Z" fill="#00267F"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M426.7 0H640V480H426.7V0Z" fill="#F31830"/>
+</g>
 </svg>

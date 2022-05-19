@@ -3,6 +3,7 @@ import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.s
 import {ReactComponent as ArrowDownIcon} from 'assets/images/icons/arrowDown.svg';
 import styles from './index.module.scss';
 import {cyContactExtendable} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 interface ExpandableProps {
   toggleExpandableContent: () => void;
@@ -12,6 +13,7 @@ interface ExpandableProps {
 
 export const Expandable = (props: ExpandableProps) => {
   const {toggleExpandableContent, infoPointsNum, collapse} = props;
+  const {t} = useTranslation();
 
   return (
     <div className={styles.expandable} onClick={toggleExpandableContent} data-cy={cyContactExtendable}>
@@ -20,7 +22,14 @@ export const Expandable = (props: ExpandableProps) => {
       ) : (
         <ArrowDownIcon className={`${styles.arrowIcon} ${styles.downIcon}`} />
       )}
-      {!collapse ? <span> See all ({infoPointsNum})</span> : <span> See less</span>}
+      {!collapse ? (
+        <span>
+          {' '}
+          {t('seeAll')}({infoPointsNum})
+        </span>
+      ) : (
+        <span>{t('seeLess')}</span>
+      )}
     </div>
   );
 };

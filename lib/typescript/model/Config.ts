@@ -17,6 +17,13 @@ export interface ColorSettings {
   border: string;
 }
 
+export enum Language {
+  german = 'German',
+  english = 'English (US)',
+  french = 'French',
+  spanish = 'Spanish',
+}
+
 export const getComponents = (config: Config) => {
   const {services} = config;
 

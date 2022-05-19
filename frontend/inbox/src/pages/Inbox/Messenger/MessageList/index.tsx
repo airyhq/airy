@@ -12,6 +12,7 @@ import {usePrevious} from '../../../../services/hooks/usePrevious';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 import {SourceMessage} from 'render';
 import styles from './index.module.scss';
+import {useTranslation} from 'react-i18next';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
@@ -28,6 +29,7 @@ const connector = connect(null, mapDispatchToProps);
 const MessageList = (props: MessageListProps) => {
   const {listMessages, listPreviousMessages, showSuggestedReplies, resendMessage} = props;
   const [resentMessage, setResentMessage] = useState<boolean>(false);
+  const {t} = useTranslation();
 
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
@@ -156,7 +158,7 @@ const MessageList = (props: MessageListProps) => {
 
         const messageDecoration = hasSuggestions(message) ? (
           <button type="button" className={styles.suggestionWrapper} onClick={() => showSuggestions(message)}>
-            <LightBulbIcon className={styles.suggestionIcon} title="Show suggestions" />
+            <LightBulbIcon className={styles.suggestionIcon} title={t('showSuggestions')} />
           </button>
         ) : null;
 

@@ -6,6 +6,7 @@ import {ReactComponent as Cancel} from 'assets/images/icons/cancelCross.svg';
 import AudioRecorder from 'audio-recorder-polyfill';
 import mpegEncoder from 'audio-recorder-polyfill/mpeg-encoder';
 import styles from './index.module.scss';
+import {useTranslation} from 'react-i18next';
 
 declare global {
   interface Window {
@@ -46,6 +47,7 @@ export function AudioRecording({
   const [savedAudioRecording, setSavedAudioRecording] = useState<File | null>(null);
   const [audioRecordingFileUploaded, setAudioRecordingFileUploaded] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const {t} = useTranslation();
 
   useEffect(() => {
     let abort = false;
@@ -58,9 +60,7 @@ export function AudioRecording({
         setAudioStream(stream);
       } catch {
         audioRecordingCanceledUpdate(true);
-        setErrorPopUp(
-          'Microphone access denied. Check your browser settings to make sure Airy has permission to access your microphone, and try again.'
-        );
+        setErrorPopUp(t('micAccessDenied'));
       }
     };
 
@@ -119,7 +119,7 @@ export function AudioRecording({
           .catch(() => {
             setLoading(false);
             cancelRecording();
-            setErrorPopUp('Failed to upload the audio recording. Please try again later.');
+            setErrorPopUp(t('failedToUploadRecording'));
           });
       }
       return () => {

@@ -40,7 +40,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	r.Handle("/services", s)
 
 	cg := &ClusterGet{clientSet: clientSet, namespace: namespace}
-	r.Handle("/cluster.get", cg).Methods("GET")
+	r.Handle("/components.get", cg).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

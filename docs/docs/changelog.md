@@ -3,6 +3,54 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.44.0
+
+#### 🚀 Features
+
+- [[#2755](https://github.com/airyhq/airy/issues/2755)] Authenticate controller (#3147)
+- [[#3158](https://github.com/airyhq/airy/issues/#3158)] Added animations control center (#3162)
+- [[#3115](https://github.com/airyhq/airy/issues/#3115)] Dark mode for UI (#3153)
+- [[#3116](https://github.com/airyhq/airy/issues/#3116)] Redesign connectors \& prepared Inbox (Control-Center) (#3155)
+- [[#3144](https://github.com/airyhq/airy/issues/3144)] Show just enabled components (#3150)
+- [[#3004](https://github.com/airyhq/airy/issues/3004)] Add service to every connector (#3149)
+- [[#3050](https://github.com/airyhq/airy/issues/3050)] Show Webhook on Control Center UI (#3132)
+- [[#3091](https://github.com/airyhq/airy/issues/3091)] Empty "Connectors" view state (#3138)
+- [[#3073](https://github.com/airyhq/airy/issues/3073)] Show available conversation for same contact (#3107)
+- [[#3092](https://github.com/airyhq/airy/issues/3092)] Adding name to webhooks (#3094)
+
+#### 🐛 Bug Fixes
+
+- [[#3163](https://github.com/airyhq/airy/issues/3163)] Darkmode follow-up  (#3164)
+- [[#3141](https://github.com/airyhq/airy/issues/3141)] Conversations for contacts fix (#3142)
+- [[#3128](https://github.com/airyhq/airy/issues/3128)] Fix npm deployment (#3129)
+- [[#3085](https://github.com/airyhq/airy/issues/3085)] Navbar wrong view selection (#3105)
+- [[#3109](https://github.com/airyhq/airy/issues/3109)] Make name optional webhook (#3117)
+#### 📚 Documentation
+
+- [[#3148](https://github.com/airyhq/airy/issues/3148)] Docs for mandatory API security attributes (#3166)
+- [[#3126](https://github.com/airyhq/airy/issues/3126)] Added Webhooks to docs (#3143)
+- [[#3121](https://github.com/airyhq/airy/issues/3121)] Fix InfoCard and update connectors docs (#3136)
+- [[#3123](https://github.com/airyhq/airy/issues/3123)] Update docs for webhooks (#3124)
+- [[#3108](https://github.com/airyhq/airy/issues/3108)] Control center update (#3114)
+
+#### 🧰 Maintenance
+
+- Bump react-redux from 7.2.8 to 8.0.1 (#3060)
+- chore/add mockito inline to deps (#3137)
+- chore/update test libraries (#3135)
+- Bump cross-fetch from 3.0.6 to 3.1.5 in /docs (#3113)
+- Bump react-i18next from 11.16.6 to 11.16.7 (#3097)
+- House clean/move contacts dto to library (#3112)
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.44.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.44.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.44.0/windows/amd64/airy.exe)
+
+
 ## 0.43.0
 
 #### 🚀 Features

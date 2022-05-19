@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -17,32 +17,11 @@ type ClusterGet struct {
 }
 
 func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	configmapList, err := s.clientSet.CoreV1().ConfigMaps(s.namespace).List(r.Context(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
+	components, err := configmaps.GetComponentsConfigMaps(r.Context(), s.namespace, s.clientSet, maskSecrets)
 	if err != nil {
-		log.Printf("Unable to list config maps. Error: %s\n", err)
+		log.Printf(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
-	}
-
-	components := make(map[string]map[string]interface{})
-	for _, configmap := range configmapList.Items {
-		label, ok := configmap.Labels["core.airy.co/component"]
-		if !ok {
-			continue
-		}
-
-		componentsGroup, componentName, ok := getComponentFromLabel(label)
-		if !ok {
-			continue
-		}
-
-		componentsGroupContent, ok := components[componentsGroup]
-		if !ok {
-			componentsGroupContent = make(map[string]interface{})
-			components[componentsGroup] = componentsGroupContent
-		}
-
-		componentsGroupContent[componentName] = maskSecrets(configmap.Data)
 	}
 
 	blob, err := json.Marshal(map[string]interface{}{"components": components})

@@ -12,6 +12,7 @@ go_library(
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],
     deps = [
+        "//lib/go/kubectl/configmaps",
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",

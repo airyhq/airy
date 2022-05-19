@@ -26,7 +26,7 @@ func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	blob, err := json.Marshal(map[string]interface{}{"components": components})
 	if err != nil {
-		log.Printf("Unable to marchal config Error: %s\n", err)
+		log.Printf("Unable to marshal config Error: %s\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

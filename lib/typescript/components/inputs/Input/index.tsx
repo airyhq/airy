@@ -126,6 +126,7 @@ class InputComponent extends Component<InputProps, IState> {
 
   onChange = event => {
     const {onChange} = this.props;
+    console.log('ON CHANGE event.target.value', event.target.value);
     this.validateInput(event.target);
     if (onChange) {
       onChange(event);
@@ -286,7 +287,7 @@ class InputComponent extends Component<InputProps, IState> {
     const inputClass = `${styles[fontClass]} ${styles.inputInner} `;
 
     return (
-      <label className={labelClass}>
+      <label className={labelClass} data-testid='input-label'>
         <div className={styles.inputTitleRow}>
           {!hideLabel && (
             <div className={styles.inputTitle}>

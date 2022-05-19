@@ -17,13 +17,7 @@ import {env} from '../../env';
 import {useAnimation} from 'render';
 import {useTranslation} from 'react-i18next';
 import i18next from 'i18next';
-
-enum Language {
-  german = 'German',
-  english = 'English (US)',
-  french = 'French',
-  spanish = 'Spanish',
-}
+import {Language} from 'model/Config';
 
 interface TopBarProps {
   isAdmin: boolean;

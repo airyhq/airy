@@ -9,6 +9,7 @@ import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/emptyState/templatesEmptyState.png';
 import notFoundState from 'assets/images/notFound/templatesNotFound.png';
 import {SourceMessage} from 'render';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   listTemplates,
@@ -33,6 +34,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [listTemplatesError, setListTemplatesError] = useState(false);
+  const {t} = useTranslation();
 
   const componentRef = useRef(null);
 
@@ -66,10 +68,10 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
       <div className={styles.emptyMessage}>
         <img className={styles.emptyImagePlaceholder} src={emptyState} alt="No templates" />
         <div className={styles.emptyMessageText}>
-          <h1>You have no templates yet.</h1>
+          <h1>{t('noTemplatesYet')}</h1>
           <div className={styles.emptySeparator} />
-          <p>Templates allow you to offer a richer interaction experience with images and buttons.</p>
-          <p>Use text templates to never type the same thing again.</p>
+          <p>{t('templatesExplanation')}</p>
+          <p>{t('useTemplates')}</p>
         </div>
       </div>
     );
@@ -80,8 +82,8 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
       <div className={styles.notFoundMessage}>
         <div className={styles.notFoundImage} style={{backgroundImage: `url(${notFoundState})`}} />
         <div className={styles.notFoundText}>
-          <h2>No result found.</h2>
-          <p>Did you write everything correctly?</p>
+          <h2>{t('noResult')}</h2>
+          <p>{t('writeCorrectly')}</p>
         </div>
       </div>
     );
@@ -91,7 +93,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     <ListenOutsideClick onOuterClick={onClose}>
       <div className={styles.container} ref={componentRef}>
         {listTemplatesError ? (
-          <ErrorNotice theme="error">Oops! Your templates could not be loaded. Please try again later.</ErrorNotice>
+          <ErrorNotice theme="error">{t('errorTemplates')}</ErrorNotice>
         ) : templates.length === 0 && source === templatesSource ? (
           renderEmpty()
         ) : (
@@ -102,7 +104,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                   value={searchQuery}
                   setValue={(value: string) => setSearchQuery(value)}
                   autoFocus={true}
-                  placeholder="Search for templates"
+                  placeholder={t('searchTemplates')}
                 />
               </div>
             </div>

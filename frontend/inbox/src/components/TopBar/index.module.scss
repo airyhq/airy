@@ -115,6 +115,7 @@
     background-color: var(--color-background-blue);
     color: var(--color-airy-blue);
     text-decoration: underline;
+    cursor: pointer;
 
     .dropdownIcon {
       svg {
@@ -136,6 +137,18 @@
     path {
       fill: var(--color-text-gray);
     }
+  }
+}
+
+.dropdownIconLanguage {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  margin-right: 6px;
+  &hover {
+    cursor: pointer;
   }
 }
 

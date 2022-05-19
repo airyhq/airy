@@ -12,6 +12,7 @@ import {Tag as TagModel, TagColor} from 'model';
 
 import styles from './SimpleTagForm.module.scss';
 import {StateModel} from '../../reducers';
+import {useTranslation} from 'react-i18next';
 
 type SimpleTagFormProps = {
   errorMessage: string;
@@ -25,6 +26,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   const [name, setName] = useState('');
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [showError, setShowError] = useState(true);
+  const {t} = useTranslation();
 
   const handleCreate = () => {
     if (name.trim().length) {
@@ -54,7 +56,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
     <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '50px', right: '0px'}}>
       <div className={styles.tagCreate}>
         <Input
-          label="Add a tag"
+          label={t('addATag')}
           type="text"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setName(e.target.value);
@@ -64,7 +66,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           height={32}
           value={name}
           name="tag_name"
-          placeholder="Please enter a tag name"
+          placeholder={t('enterTagName')}
           autoComplete="off"
           autoFocus={true}
           fontClass="font-base"
@@ -78,7 +80,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           </div>
         )}
         <Fragment>
-          <p className={styles.description}>Pick a color</p>
+          <p className={styles.description}>{t('pickColor')}</p>
           <ColorSelector
             handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
             color={color}
@@ -86,7 +88,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           />
           <div className={styles.buttonRow}>
             <Button styleVariant="small" onClick={handleCreate}>
-              Create Tag
+              {t('createTag')}
             </Button>
           </div>
         </Fragment>

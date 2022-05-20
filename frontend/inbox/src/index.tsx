@@ -8,7 +8,7 @@ import {BrowserRouter} from 'react-router-dom';
 import {store} from './store';
 import './index.scss';
 import './assets/scss/reset.scss';
-import '../../control-center/src/translations';
+import 'translations';
 
 const render = async () => {
   const App = (await import('./App')).default;

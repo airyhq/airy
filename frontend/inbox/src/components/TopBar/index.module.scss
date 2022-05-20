@@ -41,6 +41,7 @@
   transition: 0.2s all ease-in-out;
   padding: 8px 16px;
   border-radius: 8px;
+  color: var(--color-text-contrast);
   cursor: pointer;
   &:hover {
     background-color: var(--color-background-blue);
@@ -107,7 +108,7 @@
   border-bottom: 1px solid var(--color-background-gray);
   padding: 12px;
 
-  color: var(--color-text-gray);
+  color: var(--color-text-contrast);
   text-decoration: none;
   font-weight: 400;
 
@@ -198,7 +199,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--color-text-gray);
+  color: var(--color-text-contrast);
   cursor: pointer;
 
   &:hover {

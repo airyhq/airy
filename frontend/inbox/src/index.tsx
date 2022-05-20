@@ -2,14 +2,13 @@ import 'core-js';
 import 'regenerator-runtime/runtime';
 
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import {store} from './store';
 import './index.scss';
 import './assets/scss/reset.scss';
 import 'translations';
-
 
 const render = async () => {
   const App = (await import('./App')).default;
@@ -21,10 +20,7 @@ const render = async () => {
     </Provider>
   );
 
-  const container = document.getElementById('root') as HTMLElement;
-  const root = createRoot(container);
-
-  root.render(<RootContainer />);
+  ReactDOM.render(<RootContainer />, document.getElementById('root'));
 };
 
 render();

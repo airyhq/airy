@@ -97,6 +97,11 @@ class InputComponent extends Component<InputProps, IState> {
 
   checkWithURLValidation = inputElement => {
     this.checkWithHTML5Validation(inputElement);
+    console.log('URL VALIDATION');
+
+    console.log('inputElement.value', inputElement.value);
+
+    //console.log('match url', inputElement.value.test(/.*\w\.\w.*/));
 
     if (!this.props.required && inputElement.value.length == 0) {
       inputElement.setCustomValidity('');
@@ -104,6 +109,7 @@ class InputComponent extends Component<InputProps, IState> {
     }
 
     if (!inputElement.value.match(/.*\w\.\w.*/)) {
+      console.log('validationResult invalid')
       this.setState({
         validationResult: 'The URL is invalid',
       });
@@ -375,8 +381,8 @@ class InputComponent extends Component<InputProps, IState> {
             ) : null}
           </div>
         )}
-        <div className={styles.inputHint}>
-          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? validationResult : hint}
+        <div className={styles.inputHint}  data-testid='input-hint'>
+          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? validationResult : hint} 
         </div>
       </label>
     );

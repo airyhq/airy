@@ -1,6 +1,7 @@
 ts_deps = [
     "//lib/typescript/assets",
     "//lib/typescript/components",
+    "//lib/typescript/translations",
     "//lib/typescript/types",
     "//lib/typescript/model",
     "//lib/typescript/render",

@@ -6,6 +6,10 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "translations",
+    deps = ts_deps + [
+        "@npm//i18next",
+        "@npm//react-i18next",
+    ],
 )
 
 check_pkg(name = "buildifier")

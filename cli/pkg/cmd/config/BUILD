@@ -10,8 +10,10 @@ go_library(
         "//cli/pkg/console",
         "//cli/pkg/kube",
         "//cli/pkg/workspace",
+        "//lib/go/kubectl/configmaps",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
+        "@in_gopkg_yaml_v2//:yaml_v2",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
     ],
 )

@@ -8,8 +8,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -20,6 +22,31 @@ var ConfigCmd = &cobra.Command{
 	Use:              "config",
 	TraverseChildren: true,
 	Short:            "Manages an Airy Core instance via airy.yaml",
+	Run:              getConfig,
+}
+
+func getConfig(cmd *cobra.Command, args []string) {
+	namespace := viper.GetString("namespace")
+	kubeCtx := kube.Load()
+	clientSet, err := kubeCtx.GetClientSet()
+	if err != nil {
+		fmt.Printf(err.Error())
+		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+	}
+
+	identity := func(d map[string]string) map[string]string { return d }
+
+	components, err := configmaps.GetComponentsConfigMaps(context.Background(), namespace, clientSet, identity)
+	if err != nil {
+		console.Exit(err.Error())
+	}
+
+	blob, err := yaml.Marshal(map[string]interface{}{"components": components})
+	if err != nil {
+		console.Exit("could not marshal components list %s", err)
+	}
+
+	fmt.Println(string(blob))
 }
 
 func applyConfig(cmd *cobra.Command, args []string) {

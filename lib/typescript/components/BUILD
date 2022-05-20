@@ -9,6 +9,8 @@ ts_web_library(
     deps = [
         "//lib/typescript/model",
         "//lib/typescript/types",
+        "@npm//@testing-library/react",
+        "@npm//@testing-library/user-event",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//lodash-es",
@@ -16,8 +18,6 @@ ts_web_library(
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
         "@npm//react-router-dom",
-        "@npm//@testing-library/react",
-        "@npm//@testing-library/user-event"
     ],
 )
 

@@ -97,19 +97,13 @@ class InputComponent extends Component<InputProps, IState> {
 
   checkWithURLValidation = inputElement => {
     this.checkWithHTML5Validation(inputElement);
-    console.log('URL VALIDATION');
-
-    console.log('inputElement.value', inputElement.value);
-
-    //console.log('match url', inputElement.value.test(/.*\w\.\w.*/));
 
     if (!this.props.required && inputElement.value.length == 0) {
       inputElement.setCustomValidity('');
       return;
     }
 
-    if (!inputElement.value.match(/.*\w\.\w.*/)) {
-      console.log('validationResult invalid')
+    if (!new RegExp('^https?://(.*)').test(inputElement.value)) {
       this.setState({
         validationResult: 'The URL is invalid',
       });
@@ -132,7 +126,6 @@ class InputComponent extends Component<InputProps, IState> {
 
   onChange = event => {
     const {onChange} = this.props;
-    console.log('ON CHANGE event.target.value', event.target.value);
     this.validateInput(event.target);
     if (onChange) {
       onChange(event);
@@ -293,7 +286,7 @@ class InputComponent extends Component<InputProps, IState> {
     const inputClass = `${styles[fontClass]} ${styles.inputInner} `;
 
     return (
-      <label className={labelClass} data-testid='input-label'>
+      <label className={labelClass} data-testid="input-label">
         <div className={styles.inputTitleRow}>
           {!hideLabel && (
             <div className={styles.inputTitle}>
@@ -381,8 +374,8 @@ class InputComponent extends Component<InputProps, IState> {
             ) : null}
           </div>
         )}
-        <div className={styles.inputHint}  data-testid='input-hint'>
-          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? validationResult : hint} 
+        <div className={styles.inputHint} data-testid="input-hint">
+          {validationResult ?? hint}
         </div>
       </label>
     );

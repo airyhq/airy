@@ -15,9 +15,6 @@ jobs:
           java-version: '11'
           architecture: 'x64'
 
-      - name: Run unit testing 
-        run: yarn jest 
-
       - name: Install bazelisk
         run: |
           curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
@@ -41,6 +38,12 @@ jobs:
           EOF
         env:
           GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
+
+      - name: Install dependencies 
+        run: yarn install
+
+      - name: Run unit testing 
+        run: yarn jest 
 
       - name: Lint
         run: |

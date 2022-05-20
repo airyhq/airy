@@ -6,6 +6,14 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "translations",
+    srcs = glob(
+        [
+            "**/*.json",
+            "**/*.ts",
+            "**/*.tsx",
+        ],
+        exclude = ["publish_package.json"],
+    ),
     deps = [
         "@npm//i18next",
         "@npm//react-i18next",

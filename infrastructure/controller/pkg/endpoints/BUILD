@@ -5,8 +5,8 @@ go_library(
     name = "endpoints",
     srcs = [
         "auth.go",
-        "cluster_get.go",
         "components_delete.go",
+        "components_get.go",
         "components_update.go",
         "server.go",
         "services.go",
@@ -14,7 +14,6 @@ go_library(
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],
     deps = [
-        "//lib/go/kubectl/configmaps",
         "//lib/go/config",
         "//lib/go/k8s",
         "//lib/go/payloads",

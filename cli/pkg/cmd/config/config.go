@@ -2,6 +2,7 @@ package config
 
 import (
 	"cli/pkg/console"
+	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"context"
 	"fmt"
@@ -9,7 +10,7 @@ import (
 	"text/tabwriter"
 
 	"github.com/airyhq/airy/lib/go/httpclient"
-	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
+	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -36,7 +37,7 @@ func getConfig(cmd *cobra.Command, args []string) {
 
 	identity := func(d map[string]string) map[string]string { return d }
 
-	components, err := configmaps.GetComponentsConfigMaps(context.Background(), namespace, clientSet, identity)
+	components, err := k8s.GetComponentsConfigMaps(context.Background(), namespace, clientSet, identity)
 	if err != nil {
 		console.Exit(err.Error())
 	}

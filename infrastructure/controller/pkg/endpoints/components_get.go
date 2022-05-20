@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
+	"github.com/airyhq/airy/lib/go/k8s"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -17,7 +17,7 @@ type ClusterGet struct {
 }
 
 func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	components, err := configmaps.GetComponentsConfigMaps(r.Context(), s.namespace, s.clientSet, maskSecrets)
+	components, err := k8s.GetComponentsConfigMaps(r.Context(), s.namespace, s.clientSet, maskSecrets)
 	if err != nil {
 		log.Printf(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

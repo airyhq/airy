@@ -15,6 +15,7 @@ export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, em
   const [emoji, setEmoji] = useState('');
 
   useEffect(() => {
+    console.log('VALUE', value);
     value ? setEmoji(emojiAfter) : setEmoji(emojiBefore);
   }, [value]);
 
@@ -25,7 +26,7 @@ export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, em
   return (
     <label className={styles.toggleLabel}>
       <span className={`${styles.switch} ${size === 'small' ? styles.small : styles.big}`}>
-        <input type="checkbox" onChange={onCheckboxChange} checked={value} />
+        <input type="checkbox" data-testid="toggle-input" onChange={onCheckboxChange} checked={value} />
         <span
           className={`${styles.slider} ${variant === 'green' ? styles.sliderGreen : styles.sliderBlue} ${
             size === 'small' ? styles.sliderSmall : styles.sliderBig

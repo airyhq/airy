@@ -3,7 +3,9 @@ import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {UrlInputField} from '../../lib/typescript/components/inputs/UrlInputField';
 
-describe('UrlInputField', () => {
+//clean up warning
+
+describe('UrlInputField verifies valid URLs', () => {
   test('Verifies valid URLs and adds http prefix to non-valid URLs', async () => {
     render(<UrlInputField />);
 

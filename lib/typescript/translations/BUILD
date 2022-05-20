@@ -6,8 +6,8 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "translations",
-    deps = [              
-        "@npm//@types/react",            
+    deps = [
+        "@npm//@types/react",
         "@npm//i18next",
         "@npm//react-i18next",
     ],

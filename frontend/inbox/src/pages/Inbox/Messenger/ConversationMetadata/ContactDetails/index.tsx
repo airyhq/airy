@@ -54,12 +54,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const {t} = useTranslation();
 
   const existingContact = contacts[conversationId]?.via?.phone || contacts[conversationId]?.title;
-  const [email, setEmail] = useState('email');
-  const [phone, setPhone] = useState('phone');
-  const [title, setTitle] = useState('title');
-  const [address, setAddress] = useState('address');
-  const [city, setCity] = useState('city');
-  const [organization, setOrganization] = useState('company name');
+  const [email, setEmail] = useState(`${t('email')}`);
+  const [phone, setPhone] = useState(`${t('phone')}`);
+  const [title, setTitle] = useState(`${t('title')}`);
+  const [address, setAddress] = useState(`${t('address')}`);
+  const [city, setCity] = useState(`${t('city')}`);
+  const [organization, setOrganization] = useState(`${t('company name')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [conversationsForContact, setConversationsForContact] = useState([]);

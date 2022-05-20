@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AiryChatPluginConfiguration} from './config';
-import './translations';
+import 'translations';
 
 import Chat from './components/chat';
 

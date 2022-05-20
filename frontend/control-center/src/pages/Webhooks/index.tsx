@@ -2,6 +2,7 @@ import {SettingsModal} from 'components/alerts/SettingsModal';
 import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {listWebhooks, subscribeWebhook, updateWebhook} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
@@ -32,6 +33,7 @@ const Webhooks = (props: WebhooksProps) => {
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [notificationText, setNotificatioNText] = useState('');
   const [notifcationColor, setNotifcationColor] = useState('');
+  const {t} = useTranslation();
 
   useEffect(() => {
     setPageTitle('Webhooks');
@@ -43,8 +45,8 @@ const Webhooks = (props: WebhooksProps) => {
 
   const handleNotification = (show: boolean, error: boolean) => {
     error
-      ? (setNotificatioNText('Error occurred'), setNotifcationColor('#d51548'))
-      : (setNotificatioNText('Successfully Subscribed!'), setNotifcationColor('#0da36b'));
+      ? (setNotificatioNText(t('errorOccurred')), setNotifcationColor('#d51548'))
+      : (setNotificatioNText(t('successfullySubscribed')), setNotifcationColor('#0da36b'));
     setShowSuccessNotification(show);
   };
 
@@ -120,7 +122,7 @@ const Webhooks = (props: WebhooksProps) => {
     <>
       {showSuccessNotification && <SuccessfulSubscribed />}
       {newWebhook && (
-        <SettingsModal close={() => setNewWebhook(false)} title="Subscribe Webhook" style={{fontSize: '40px'}}>
+        <SettingsModal close={() => setNewWebhook(false)} title={t('subscribeWebhook')} style={{fontSize: '40px'}}>
           <SubscriptionModal
             newWebhook={true}
             webhook={{id: '', url: '', signatureKey: '', events: [], headers: {'X-Custom-Header': ''}}}
@@ -134,8 +136,8 @@ const Webhooks = (props: WebhooksProps) => {
         <div className={styles.webhooksHeadline}>
           <div className={styles.headlineContainer}>
             <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-            <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, width: '176px', height: '40px'}}>
-              Subscribe Webhook
+            <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, minWidth: '176px', height: '40px'}}>
+              {t('subscribeWebhook')}
             </Button>
           </div>
         </div>

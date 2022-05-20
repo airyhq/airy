@@ -12,6 +12,7 @@ import {allConversations, useCurrentConversation} from '../../../../selectors/co
 import {Source, Suggestions} from 'model';
 import {getConversationInfo} from '../../../../actions';
 import {useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => ({
   conversations: allConversations(state),
@@ -28,6 +29,7 @@ type MessengerContainerProps = ConnectedProps<typeof connector>;
 
 const MessengerContainer = ({conversations, getConversationInfo, config}: MessengerContainerProps) => {
   const {conversationId} = useParams();
+  const {t} = useTranslation();
   const conversation = useCurrentConversation();
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
@@ -143,14 +145,14 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
       >
         {!dragAndDropDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
-            <h1>Drop Files Here</h1>
+            <h1>{t('dropFilesHere')}</h1>
           </div>
         )}
 
         {!conversations ? (
           <div className={styles.emptyState}>
-            <h1>Your conversations will appear here as soon as a contact messages you.</h1>
-            <p>Airy Messenger only shows new conversations from the moment you connect at least one channel.</p>
+            <h1>{t('conversationsWillAppearHere')}</h1>
+            <p>{t('conversationsWillAppearHereText')}</p>
             <EmptyStateImage />
           </div>
         ) : (

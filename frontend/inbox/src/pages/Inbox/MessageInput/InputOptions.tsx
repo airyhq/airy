@@ -13,6 +13,7 @@ import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
 import {getInputAcceptedFilesForSource, supportsAudioRecordingMp3} from '../../../services/types/attachmentsTypes';
 import styles from './InputOptions.module.scss';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -64,6 +65,7 @@ export const InputOptions = (props: Props) => {
     isAudioRecordingPaused,
     audioRecordingCanceled,
   } = props;
+  const {t} = useTranslation();
 
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
@@ -201,7 +203,7 @@ export const InputOptions = (props: Props) => {
             disabled={inputDisabled || !!errorPopUp || loadingSelector}
             onClick={toggleTemplateModal}
           >
-            <div className={styles.actionToolTip}>Templates</div>
+            <div className={styles.actionToolTip}>{t('templates')}</div>
             <div className={styles.templateActionContainer}>
               <TemplateAlt aria-hidden className={styles.templateAltIcon} />
             </div>
@@ -225,7 +227,7 @@ export const InputOptions = (props: Props) => {
                 disabled={inputDisabled || !!errorPopUp || loadingSelector}
                 onClick={toggleFileSelector}
               >
-                <div className={styles.actionToolTip}>Files</div>
+                <div className={styles.actionToolTip}>{t('files')}</div>
 
                 <label
                   htmlFor="file"
@@ -271,7 +273,9 @@ export const InputOptions = (props: Props) => {
                 onClick={handleMicrophoneIconClick}
               >
                 <div className={styles.actionToolTip}>
-                  {audioRecordingPaused && !audioRecordingPreviewLoading ? 'Continue recording' : 'Record audio clip'}
+                  {audioRecordingPaused && !audioRecordingPreviewLoading
+                    ? t('continueRecording')
+                    : t('recordAudioClip')}
                 </div>
                 {audioRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
               </button>

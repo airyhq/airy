@@ -6,6 +6,7 @@ import {SettingsModal} from 'components';
 import SubscriptionModal from '../SubscriptionModal';
 import {UnsubscribeModal} from '../UnsubscribeModal';
 import {Webhook, WebhooksStatus} from 'model/Webhook';
+import {useTranslation} from 'react-i18next';
 
 type WebhooksListItemProps = {
   webhook: Webhook;
@@ -28,6 +29,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOccurred, setErrorOccurred] = useState(false);
+  const {t} = useTranslation();
 
   const cancelChanges = () => {
     setEditModeOn(false);
@@ -138,7 +140,7 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
       </div>
 
       {editModeOn && (
-        <SettingsModal close={cancelChanges} title="Update Webhook" style={{fontSize: '40px'}}>
+        <SettingsModal close={cancelChanges} title={t('updateWebhook')} style={{fontSize: '40px'}}>
           <SubscriptionModal
             webhook={webhook}
             newWebhook={false}

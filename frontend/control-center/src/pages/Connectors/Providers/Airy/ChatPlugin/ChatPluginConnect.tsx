@@ -24,6 +24,7 @@ import {
   CATALOG_CONNECTED_ROUTE,
   CATALOG_CHAT_PLUGIN_ROUTE,
 } from '../../../../../routes/routes';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -41,6 +42,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const CONNECTED_ROUTE = location.pathname.includes('connectors')
     ? CONNECTORS_CONNECTED_ROUTE
     : CATALOG_CONNECTED_ROUTE;
@@ -68,7 +70,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   };
 
   const disconnectChannel = (channel: Channel) => {
-    if (window.confirm('Do you really want to delete this channel?')) {
+    if (window.confirm(t('deleteChannel'))) {
       props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
     }
   };
@@ -93,7 +95,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.listChannelName}>{channel.metadata?.name}</div>
             <div className={styles.listButtons}>
               <Link className={styles.listButtonEdit} to={`${CONNECTORS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
-                Edit
+                {t('edit')}
               </Link>
               <LinkButton
                 type="button"
@@ -101,7 +103,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                   disconnectChannel(channel);
                 }}
               >
-                Delete
+                {t('delete')}
               </LinkButton>
             </div>
           </li>
@@ -124,11 +126,11 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.headline}>
-        <h1 className={styles.headlineText}>Airy Live Chat</h1>
+        <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
         {channelId == null && (
           <div className={styles.addButton}>
             <Button onClick={openNewPage}>
-              <span title="Add channel">+</span>
+              <span title={t('addChannel')}>+</span>
             </Button>
           </div>
         )}
@@ -136,12 +138,12 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       <div>
         <InfoButton
           link="https://airy.co/docs/core/sources/chatplugin/overview"
-          text="more information about this source"
+          text={t('infoButtonText')}
           color="grey"
         />
         <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
-          Back
+          {t('back')}
         </LinkButton>
       </div>
       <PageContent />

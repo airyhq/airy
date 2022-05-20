@@ -12,6 +12,7 @@ import {Link} from 'react-router-dom';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getContactDetails,
@@ -50,14 +51,15 @@ const ContactDetails = (props: ContactDetailsProps) => {
     editingCanceled,
     getIsExpanded,
   } = props;
+  const {t} = useTranslation();
 
   const existingContact = contacts[conversationId]?.via?.phone || contacts[conversationId]?.title;
-  const [email, setEmail] = useState('email');
-  const [phone, setPhone] = useState('phone');
-  const [title, setTitle] = useState('title');
-  const [address, setAddress] = useState('address');
-  const [city, setCity] = useState('city');
-  const [organization, setOrganization] = useState('company name');
+  const [email, setEmail] = useState(`${t('email')}`);
+  const [phone, setPhone] = useState(`${t('phone')}`);
+  const [title, setTitle] = useState(`${t('title')}`);
+  const [address, setAddress] = useState(`${t('address')}`);
+  const [city, setCity] = useState(`${t('city')}`);
+  const [organization, setOrganization] = useState(`${t('company name')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [conversationsForContact, setConversationsForContact] = useState([]);
@@ -170,12 +172,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
       <form autoComplete="off" className={styles.container}>
         <fieldset>
           <legend>Contact</legend>
-          <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName="email" />
+          <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName={t('email')} />
 
           {(!newContactCollapsed || isEditing) && (
             <>
-              <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName="phone" />
-              <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName="title" />
+              <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName={t('phone')} />
+              <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName={t('title')} />
 
               {(expanded || isEditing) && (
                 <>
@@ -183,14 +185,14 @@ const ContactDetails = (props: ContactDetailsProps) => {
                     isEditing={isEditing}
                     address={address}
                     setAddress={setAddress}
-                    infoName="address"
+                    infoName={t('address')}
                   />
-                  <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName="city" />
+                  <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName={t('city')} />
                   <ContactInfoPoint
                     isEditing={isEditing}
                     organization={organization}
                     setOrganization={setOrganization}
-                    infoName="organization"
+                    infoName={t('organization')}
                   />
                 </>
               )}
@@ -201,7 +203,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
         {isEditing ? (
           <div className={styles.saveButtonContainer}>
             <Button dataCy={cyContactSaveButton} type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
-              Save
+              {t('save')}
             </Button>
           </div>
         ) : (
@@ -215,7 +217,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
       {areOthersConversationForContact && conversationsForContact && (
         <div className={styles.contactConversationList}>
-          <span>Other conversations for this contact:</span>
+          <span>{t('otherConversationsContact')}</span>
           <div className={styles.iconsContainer}>
             {conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
               <button type="button" key={conversationInfo.id}>

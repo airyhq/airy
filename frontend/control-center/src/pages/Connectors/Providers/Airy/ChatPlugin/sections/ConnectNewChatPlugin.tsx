@@ -5,6 +5,7 @@ import {Button, Input} from 'components';
 import styles from './ConnectNewChatPlugin.module.scss';
 
 import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 interface ConnectNewChatPluginProps {
   createNewConnection: (displayName: string, imageUrl?: string) => void;
@@ -13,10 +14,11 @@ interface ConnectNewChatPluginProps {
 export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPluginProps) => {
   const [displayName, setDisplayName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const {t} = useTranslation();
 
   return (
     <div>
-      <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
+      <p className={styles.newPageParagraph}>{t('addChatplugin')}</p>
       <div className={styles.formWrapper}>
         <div className={styles.settings}>
           <form>
@@ -28,8 +30,8 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setDisplayName(e.target.value);
                 }}
-                label="Display Name"
-                placeholder="Add a name"
+                label={t('displayName')}
+                placeholder={t('addDisplayName')}
                 required
                 height={32}
                 fontClass="font-base"
@@ -45,9 +47,9 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setImageUrl(e.target.value);
                 }}
-                label="Image URL"
-                placeholder="(optionally) add an image url"
-                hint="max. 1024x1024 pixel PNG"
+                label={t('imageUrl')}
+                placeholder={t('imageUrlPlaceholder')}
+                hint={t('imageUrlHint')}
                 height={32}
                 fontClass="font-base"
               />
@@ -61,7 +63,7 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                 createNewConnection(displayName, imageUrl);
               }}
             >
-              Save
+              {t('save')}
             </Button>
           </form>
         </div>

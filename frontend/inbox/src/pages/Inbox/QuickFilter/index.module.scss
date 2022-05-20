@@ -26,7 +26,7 @@
   outline: none;
   border-radius: 8px;
   padding: 2px;
-  width: 80px;
+  min-width: 80px;
   border: 1px solid transparent;
   cursor: pointer;
   transition: background 400ms, border 400ms;

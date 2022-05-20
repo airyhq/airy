@@ -6,6 +6,7 @@ import {StateModel} from '../../../../reducers';
 import {cyConversationStatus} from 'handles';
 import {SimpleLoader} from 'components';
 import {useCurrentConversation} from '../../../../selectors/conversations';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => ({
   currentFilter: state.data.conversations.filtered.currentFilter,
@@ -20,6 +21,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 function ConversationStatus(props: ConnectedProps<typeof connector>) {
   const {conversationState, currentFilter, setFilter} = props;
+  const {t} = useTranslation();
 
   const conversation = useCurrentConversation();
   const currentConversationState = conversation?.metadata?.state || 'OPEN';
@@ -53,12 +55,12 @@ function ConversationStatus(props: ConnectedProps<typeof connector>) {
         <>
           <div className={styles.closedButtonWrapper}>
             <div className={styles.closedButton} onClick={() => toggleState(conversation?.id, 'CLOSED')}>
-              Closed
+              {t('closed')}
             </div>
           </div>
           <div className={styles.openButtonWrapper}>
             <div className={styles.openButton} onClick={() => toggleState(conversation?.id, 'OPEN')}>
-              Open
+              {t('open')}
             </div>
           </div>
         </>

@@ -6,6 +6,7 @@ import {ComponentListItem} from './ComponentListItem';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 import {setPageTitle} from '../../services/pageTitle';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -16,6 +17,7 @@ const connector = connect(null, mapDispatchToProps);
 const Status = (props: ConnectedProps<typeof connector>) => {
   const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
   const [spinAnim, setSpinAnim] = useState(true);
+  const {t} = useTranslation();
 
   useEffect(() => {
     setPageTitle('Status');
@@ -37,12 +39,12 @@ const Status = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <section className={styles.statusWrapper}>
-      <h1>Status</h1>
+      <h1>{t('status')}</h1>
       <div className={styles.listHeader}>
-        <h2>Component Name</h2>
-        <h2>Health Status</h2>
+        <h2>{t('componentName')}</h2>
+        <h2>{t('healthStatus')}</h2>
 
-        <h2>Enabled</h2>
+        <h2>{t('enabled')}</h2>
         <button onClick={handleRefresh} className={styles.refreshButton}>
           <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
             <RefreshIcon />

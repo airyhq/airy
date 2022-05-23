@@ -8,7 +8,6 @@ export const UrlInputField = ({onKeyDown, onChange, ...props}: InputProps) => {
   const updateUrl = event => {
     const element = event.target;
     if (element.value.length > 0 && !element.value.match(/http(s)?:\/\//)) {
-      console.log('element.value', element.value);
       element.value = `http://${element.value}`;
       if (onChange) {
         onChange(event);

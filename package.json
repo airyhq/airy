@@ -3,12 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
     "@reduxjs/toolkit": "^1.8.2",
-=======
-    "@babel/helper-get-function-arity": "^7.16.7",
-    "@reduxjs/toolkit": "^1.8.1",
->>>>>>> ea3fffac (test wip)
     "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/user-event": "^14.2.0",
@@ -45,15 +40,9 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
     "@babel/plugin-transform-spread": "^7.16.7",
-<<<<<<< HEAD
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.17.12",
-=======
-    "@babel/preset-env": "^7.17.12",
-    "@babel/preset-react": "^7.17.12",
-    "@babel/preset-typescript": "^7.16.0",
->>>>>>> e316706b (jest config wip)
     "@bazel/typescript": "5.4.0",
     "@hot-loader/react-dom": "^17.0.2",
     "@svgr/plugin-svgo": "^6.2.0",
@@ -71,12 +60,8 @@
     "@types/resize-observer-browser": "^0.1.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
-<<<<<<< HEAD
     "babel-loader": "^8.2.5",
-=======
     "babel-jest": "^28.1.0",
-    "babel-loader": "^8.2.4",
->>>>>>> 7c3602d2 (jest config wip)
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
     "cypress": "^9.5.4",
@@ -91,12 +76,8 @@
     "minimist": "^1.2.6",
     "prettier": "^2.6.2",
     "react-hot-loader": "^4.13.0",
-<<<<<<< HEAD
     "sass": "^1.52.1",
-=======
     "react-test-renderer": "^18.1.0",
-    "sass": "^1.50.0",
->>>>>>> e316706b (jest config wip)
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.1",

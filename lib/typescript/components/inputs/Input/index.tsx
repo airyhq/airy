@@ -134,7 +134,6 @@ class InputComponent extends Component<InputProps, IState> {
 
   onBlur = event => {
     const {onBlur} = this.props;
-    console.log('ON BLUR');
     this.setState({wasBlurred: true});
     this.validateInput(event.target);
     if (onBlur) {

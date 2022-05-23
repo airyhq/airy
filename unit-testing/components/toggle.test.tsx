@@ -5,11 +5,12 @@ import {Toggle} from '../../lib/typescript/components/inputs/Toggle';
 
 describe('Input toggles value', () => {
   const toggleVal = (val: boolean) => !val;
-  render(<Toggle value={false} updateValue={toggleVal} />);
-
-  const toggleInput = screen.getByRole('checkbox') as HTMLInputElement;
 
   test('toggles input checked value', async () => {
+    render(<Toggle value={false} updateValue={toggleVal} />);
+
+    const toggleInput = screen.getByRole('checkbox') as HTMLInputElement;
+
     expect(toggleInput.checked).toEqual(false);
 
     await fireEvent.change(toggleInput, {

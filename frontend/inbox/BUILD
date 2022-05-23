@@ -31,7 +31,6 @@ ts_web_library(
         "@npm//@types/dom-mediacapture-record",
         "@npm//lodash-es",
         "@npm//react",
-        "@npm//react-dom",
         "@npm//react-router-dom",
         "@npm//redux",
         "@npm//@reduxjs/toolkit",

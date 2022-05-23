@@ -267,6 +267,7 @@ class InputComponent extends Component<InputProps, IState> {
       inputmode,
       minLength,
       maxLength,
+      showErrors,
       children,
       fontClass,
       inputComponent,
@@ -281,7 +282,7 @@ class InputComponent extends Component<InputProps, IState> {
       dataCy,
     } = this.props;
 
-    const {validationResult} = this.state;
+    const {validationResult, wasBlurred} = this.state;
     const labelClass = `${this.classForState()} ${styles.label}`;
     const inputClass = `${styles[fontClass]} ${styles.inputInner} `;
 
@@ -374,7 +375,7 @@ class InputComponent extends Component<InputProps, IState> {
           </div>
         )}
         <div className={styles.inputHint} data-testid="input-hint">
-          {validationResult ?? hint}
+          {typeof validationResult === 'string' || wasBlurred || showErrors ? validationResult : hint}
         </div>
       </label>
     );

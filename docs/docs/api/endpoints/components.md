@@ -48,17 +48,17 @@ Update the configuration of a list of components.
 
 ```json
 {
-  "Security": {
+  "security": {
     "SystemToken": "token",
     "AllowedOrigins": "*",
     "JwtSecret": "secret",
     "Oidc": null
   },
-  "Components": [
+  "components": [
     {
       "name": "sources-facebook",
       "enabled": true,
-      "Data": {
+      "data": {
         "appId": "id",
         "appSecret": "secret",
         "webhookSecret": "secret"
@@ -67,7 +67,7 @@ Update the configuration of a list of components.
     {
       "name": "sources-google",
       "enabled": true,
-      "Data": {
+      "data": {
         "partnerKey": "key",
         "saFile": "file"
       }
@@ -75,7 +75,7 @@ Update the configuration of a list of components.
     {
       "name": "integration-webhook",
       "enabled": true,
-      "Data": {
+      "data": {
         "name": "webhookname"
       }
     }
@@ -92,22 +92,22 @@ The list of configured components is returned.
   {
     "name": "security",
     "enabled": true,
-    "Data": null
+    "data": null
   },
   {
     "name": "sources-facebook",
     "enabled": true,
-    "Data": null
+    "data": null
   },
   {
     "name": "sources-google",
     "enabled": true,
-    "Data": null
+    "data": null
   },
   {
     "name": "integration-webhook",
     "enabled": true,
-    "Data": null
+    "data": null
   }
 ]
 ```

@@ -50,7 +50,7 @@ func (c *Client) post(endpoint string, payload []byte, res interface{}) error {
 	return json.NewDecoder(r.Body).Decode(&res)
 }
 
-//NOTE: for now there os no need to return a specific struct. Because we are only getting
+//NOTE: for now there is no need to return a specific struct. Because we are only getting
 //      and printing the data for now
 func (c *Client) get(endpoint string) (interface{}, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), nil)

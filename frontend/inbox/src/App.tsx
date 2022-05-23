@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Route, Routes, Navigate} from 'react-router-dom';
 
-import TopBar from './components/TopBar';
+import TopBar from './components/TopBar/index';
 import Inbox from './pages/Inbox';
 import Tags from './pages/Tags';
 import NotFound from './pages/NotFound';

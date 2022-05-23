@@ -134,6 +134,7 @@ class InputComponent extends Component<InputProps, IState> {
 
   onBlur = event => {
     const {onBlur} = this.props;
+    console.log('ON BLUR');
     this.setState({wasBlurred: true});
     this.validateInput(event.target);
     if (onBlur) {
@@ -266,7 +267,6 @@ class InputComponent extends Component<InputProps, IState> {
       inputmode,
       minLength,
       maxLength,
-      showErrors,
       children,
       fontClass,
       inputComponent,
@@ -281,12 +281,12 @@ class InputComponent extends Component<InputProps, IState> {
       dataCy,
     } = this.props;
 
-    const {validationResult, wasBlurred} = this.state;
+    const {validationResult} = this.state;
     const labelClass = `${this.classForState()} ${styles.label}`;
     const inputClass = `${styles[fontClass]} ${styles.inputInner} `;
 
     return (
-      <label className={labelClass} data-testid="input-label">
+      <label className={labelClass}>
         <div className={styles.inputTitleRow}>
           {!hideLabel && (
             <div className={styles.inputTitle}>
@@ -334,7 +334,6 @@ class InputComponent extends Component<InputProps, IState> {
           <div className={styles.input}>
             <input
               id={id}
-              data-testid={this.props.type === 'url' ? 'url-input' : 'input'}
               ref={inputRef || this.inputRef}
               className={inputClass}
               checked={checked}

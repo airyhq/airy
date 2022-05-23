@@ -3,28 +3,19 @@ import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {UrlInputField} from '../../lib/typescript/components/inputs/UrlInputField';
 
-//clean up warning
+test('verifies valid URLs', async () => {
+  render(<UrlInputField />);
 
-describe('UrlInputField verifies valid URLs', () => {
-  test('Verifies valid URLs and adds http prefix to non-valid URLs', async () => {
-    render(<UrlInputField />);
+  const input = screen.getByRole('textbox') as HTMLInputElement;
+  const inputHint = screen.getByTestId('input-hint') as HTMLInputElement;
 
-    const input = screen.getByTestId('url-input') as HTMLInputElement;
-    const inputHint = screen.getByTestId('input-hint') as HTMLInputElement;
+  expect(inputHint).toBeEmptyDOMElement();
 
-    fireEvent.change(input, {target: {value: 'airy.co'}});
+  fireEvent.change(input, {target: {value: 'airy.co'}});
 
-    expect(screen.getByRole('textbox')).toHaveValue('airy.co');
+  expect(inputHint).toHaveTextContent('The URL is invalid');
 
-    await fireEvent.focus(input);
-    input.focus();
+  fireEvent.change(input, {target: {value: 'https://airy.co'}});
 
-    expect(inputHint).toHaveTextContent('The URL is invalid');
-
-    await fireEvent.keyDown(input, {key: 'Enter', code: 'Enter', charCode: 13});
-
-    expect(screen.getByRole('textbox')).toHaveValue('http://airy.co');
-
-    expect(inputHint).toBeEmptyDOMElement();
-  });
+  expect(inputHint).toBeEmptyDOMElement();
 });

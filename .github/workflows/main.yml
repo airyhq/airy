@@ -43,7 +43,7 @@ jobs:
         run: yarn install
 
       - name: Run unit testing 
-        run: yarn jest 
+        run: yarn jest --coverage 
 
       - name: Lint
         run: |

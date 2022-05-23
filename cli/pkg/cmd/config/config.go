@@ -2,15 +2,12 @@ package config
 
 import (
 	"cli/pkg/console"
-	"cli/pkg/kube"
 	"cli/pkg/workspace"
-	"context"
 	"fmt"
 	"os"
 	"text/tabwriter"
 
 	"github.com/airyhq/airy/lib/go/httpclient"
-	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -27,22 +24,15 @@ var ConfigCmd = &cobra.Command{
 }
 
 func getConfig(cmd *cobra.Command, args []string) {
-	namespace := viper.GetString("namespace")
-	kubeCtx := kube.Load()
-	clientSet, err := kubeCtx.GetClientSet()
+	systemToken := viper.GetString("systemToken")
+	c := httpclient.NewClient(viper.GetString("apihost"))
+	c.Token = systemToken
+
+	res, err := c.ComponentsGet()
 	if err != nil {
-		fmt.Printf(err.Error())
-		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		console.Exit("could not get config: ", err)
 	}
-
-	identity := func(d map[string]string) map[string]string { return d }
-
-	components, err := k8s.GetComponentsConfigMaps(context.Background(), namespace, clientSet, identity)
-	if err != nil {
-		console.Exit(err.Error())
-	}
-
-	blob, err := yaml.Marshal(map[string]interface{}{"components": components})
+	blob, err := yaml.Marshal(map[string]interface{}{"components": res})
 	if err != nil {
 		console.Exit("could not marshal components list %s", err)
 	}

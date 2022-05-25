@@ -16,7 +16,6 @@ go_library(
         "//lib/go/kubectl/configmaps",
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
-        "@io_k8s_api//autoscaling/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
         "@io_k8s_klog//:klog",

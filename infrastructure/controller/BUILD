@@ -29,9 +29,9 @@ go_binary(
 
 genrule(
     name = "controller_bin_rule",
-		srcs = [":controller"],
-		outs = ["controller_bin"],
-		cmd = "cp $(SRCS) $@",
+    srcs = [":controller"],
+    outs = ["controller_bin"],
+    cmd = "cp $(SRCS) $@",
 )
 
 go_image(

@@ -47,6 +47,7 @@ const mapDispatchToProps = {
   addTagToConversation,
   removeTagFromConversation,
   updateConversationContactInfo,
+  updateContactDetails,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -61,6 +62,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     addTagToConversation,
     removeTagFromConversation,
     updateConversationContactInfo,
+    updateContactDetails,
   } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
@@ -144,7 +146,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const saveEditDisplayName = () => {
     updateConversationContactInfo(conversation.id, displayName);
-    updateContactDetails(conversation.id, {id: contacts[conversation.id].id, displayName: displayName});
+
+    if (contacts[conversation.id]?.id) {
+      updateContactDetails(conversation.id, {id: contacts[conversation.id].id, displayName: displayName});
+    }
+
     setShowEditDisplayName(!saveEditDisplayName);
   };
 

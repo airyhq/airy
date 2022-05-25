@@ -5,12 +5,17 @@ import (
 )
 
 type ComponentsUpdateRequestPayload struct {
-	Security   config.SecurityConf `yaml:"security"`
-	Components []config.Component  `yaml:"components,omitempty"`
+	Components []config.Component `json:"components,omitempty"`
 }
 
-type ComponentsUpdateResponsePayload []config.Component
+type ComponentsUpdateResponsePayload struct {
+	Components map[string]bool `json:"components,omitempty"`
+}
 
-type ComponentsDeleteRequestPayload []string
+type ComponentsDeleteRequestPayload struct {
+	Components []string `json:"components,omitempty"`
+}
 
-type ComponentsDeleteResponsePayload []string
+type ComponentsDeleteResponsePayload struct {
+	Components map[string]bool `json:"components,omitempty"`
+}

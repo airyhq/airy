@@ -17,11 +17,6 @@ The list of the currently configured components is returned.
 
 ```json5
 {
-  "security": {
-    "systemToken": "token",
-    "allowedOrigins": "*",
-    "jwtSecret": "secret"
-  },
   "components": {
     "sources": {
       "facebook": {
@@ -48,12 +43,6 @@ Update the configuration of a list of components.
 
 ```json
 {
-  "security": {
-    "SystemToken": "token",
-    "AllowedOrigins": "*",
-    "JwtSecret": "secret",
-    "Oidc": null
-  },
   "components": [
     {
       "name": "sources-facebook",
@@ -85,31 +74,16 @@ Update the configuration of a list of components.
 
 **Sample response**
 
-The list of configured components is returned.
+The list of configured components and if the configuration has been applied correctly is returned.
 
 ```json5
-[
-  {
-    "name": "security",
-    "enabled": true,
-    "data": null
-  },
-  {
-    "name": "sources-facebook",
-    "enabled": true,
-    "data": null
-  },
-  {
-    "name": "sources-google",
-    "enabled": true,
-    "data": null
-  },
-  {
-    "name": "integration-webhook",
-    "enabled": true,
-    "data": null
+{
+  "components": {
+    "integration-webhook": true,
+    "sources-facebook": true,
+    "sources-google": true
   }
-]
+}
 ```
 
 ## Delete
@@ -122,9 +96,9 @@ Delete a list of component which are currently deployed.
 
 ```json
 {
-  [
+	"components": [
     "sources-facebook",
-    "integration-webhook"
+    "sources-google",
   ]
 }
 ```
@@ -135,9 +109,10 @@ The list of the deleted components is returned.
 
 ```json5
 {
-  [
-    "sources-facebook",
-    "integration-webhook"
-  ]
+  "components": {
+    "sources-facebook": true,
+    "sources-google": true,
+  }
 }
+
 ```

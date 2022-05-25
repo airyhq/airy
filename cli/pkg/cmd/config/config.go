@@ -73,19 +73,27 @@ func ApplyConfig(workspacePath string) {
 
 	c.Token = systemToken
 
-	res, err := c.ComponentsUpdate(conf)
-
+	resComponents, err := c.ComponentsUpdate(conf)
 	if err != nil {
-		console.Exit("could not apply config: ", err)
+		console.Exit("could not apply components config: ", err)
 	}
-
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
-	fmt.Fprintf(w, "Configured component\t\tEnabled\n")
-
-	for _, component := range res {
-		fmt.Fprintf(w, "%s\t\t%t\n", component.Name, component.Enabled)
+	fmt.Fprintf(w, "Component\t\t\tApplied\n")
+	for component, applied := range resComponents.Components {
+		fmt.Fprintf(w, "%s\t\t\t%t\n", component, applied)
 	}
+	w.Flush()
 
+	resCluster, err := c.ClusterUpdate(conf)
+	if err != nil {
+		console.Exit("could not apply cluster config: ", err)
+	}
+	w = tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+	fmt.Fprintf(w, "\n")
+	fmt.Fprintf(w, "Cluster config\t\t\tApplied\n")
+	for clusterConfig, applied := range resCluster.ClusterConfig {
+		fmt.Fprintf(w, "%s\t\t\t%t\n", clusterConfig, applied)
+	}
 	w.Flush()
 
 }

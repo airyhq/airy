@@ -36,17 +36,20 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 		r.Use(authMiddleware.Middleware)
 	}
 
-	s := &Services{clientSet: clientSet, namespace: namespace}
-	r.Handle("/services", s)
+	services := &Services{clientSet: clientSet, namespace: namespace}
+	r.Handle("/services", services)
 
-	cu := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
-	r.Handle("/components.update", cu)
+	componentsUpdate := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.update", componentsUpdate)
 
-	cd := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
-	r.Handle("/components.delete", cd)
+	componentsDelete := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.delete", componentsDelete)
 
-	cg := &ClusterGet{clientSet: clientSet, namespace: namespace}
-	r.Handle("/components.get", cg).Methods("GET")
+	clusterGet := &ClusterGet{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.get", clusterGet)
+
+	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/cluster.update", clusterUpdate)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

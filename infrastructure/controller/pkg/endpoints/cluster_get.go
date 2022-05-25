@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"regexp"
-	"strings"
 
 	"github.com/airyhq/airy/lib/go/kubectl/configmaps"
 	"k8s.io/client-go/kubernetes"
@@ -34,15 +33,6 @@ func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(blob)
-}
-
-func getComponentFromLabel(l string) (string, string, bool) {
-	c := strings.Split(l, "-")
-	if len(c) != 2 {
-		return "", "", false
-	}
-
-	return c[0], c[1], true
 }
 
 var secretMatcher = regexp.MustCompile(`(?i)secret|key|token`)

@@ -7,8 +7,8 @@ go_library(
     name = "httpclient",
     srcs = [
         "client.go",
-        "components.go",
         "cluster.go",
+        "components.go",
         "httpclient.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/httpclient",

@@ -12,14 +12,13 @@ func (c *Client) ClusterUpdate(conf config.AiryConf) (payloads.ClusterUpdateResp
 	cluster := payloads.ClusterUpdateRequestPayload{}
 	secData := config.GetSecurityData(conf.Security)
 	if len(secData) != 0 {
-		cluster.Security = conf.Security
+		cluster.ClusterConfig.Security = conf.Security
 	}
 
 	payload, err := json.Marshal(cluster)
 	if err != nil {
 		return payloads.ClusterUpdateResponsePayload{}, err
 	}
-
 	res := payloads.ClusterUpdateResponsePayload{}
 	e := c.post("cluster.update", payload, &res)
 	if e != nil {

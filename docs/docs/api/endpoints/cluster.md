@@ -3,7 +3,7 @@ title: Cluster
 sidebar_label: Cluster
 ---
 
-The `cluster.*` API is about controlling the general configuration of the `Airy Core` Cluster, which is independent of the individual components. Currently the only supported argument is 
+The `cluster.*` API is about controlling the general configuration of the `Airy Core` Cluster, which is independent of the individual components. Currently the only supported argument is
 
 ## Update
 
@@ -36,5 +36,4 @@ A list of the applied cluster configuration categories and if it has been applie
     "security": true
   }
 }
-
 ```

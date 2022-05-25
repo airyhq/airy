@@ -96,10 +96,7 @@ Delete a list of component which are currently deployed.
 
 ```json
 {
-	"components": [
-    "sources-facebook",
-    "sources-google",
-  ]
+  "components": ["sources-facebook", "sources-google"]
 }
 ```
 
@@ -111,8 +108,7 @@ The list of the deleted components is returned.
 {
   "components": {
     "sources-facebook": true,
-    "sources-google": true,
+    "sources-google": true
   }
 }
-
 ```

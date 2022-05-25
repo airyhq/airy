@@ -5,7 +5,7 @@ import (
 )
 
 type ClusterUpdateRequestPayload struct {
-	Security config.SecurityConf `json:"security"`
+	ClusterConfig config.ClusterConfig `json:"cluster_config"`
 }
 
 type ClusterUpdateResponsePayload struct {

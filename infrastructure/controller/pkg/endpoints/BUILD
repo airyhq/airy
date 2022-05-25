@@ -5,10 +5,10 @@ go_library(
     name = "endpoints",
     srcs = [
         "auth.go",
+        "cluster_update.go",
         "components_delete.go",
         "components_get.go",
         "components_update.go",
-        "cluster_update.go",
         "server.go",
         "services.go",
     ],

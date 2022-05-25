@@ -32,3 +32,7 @@ type AiryConf struct {
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]ComponentsConf `yaml:"components,omitempty"`
 }
+
+type ClusterConfig struct {
+	Security SecurityConf `json:"security"`
+}

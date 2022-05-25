@@ -35,7 +35,7 @@ func (s *ClusterUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var response payloads.ClusterUpdateResponsePayload
 	response.ClusterConfig = make(map[string]bool)
 
-	secData := config.GetSecurityData(conf.Security)
+	secData := config.GetSecurityData(conf.ClusterConfig.Security)
 	if len(secData) != 0 {
 		applyErr := k8s.ApplyConfigMap("security", s.namespace, secData, map[string]string{}, s.clientSet)
 		if applyErr != nil {

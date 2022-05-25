@@ -6,16 +6,18 @@ import {
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
   cyChannelsFormBackButton,
+  cyConnectorsAddNewButton,
 } from 'handles';
 
 import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {
-    cy.visit('/inbox/channels');
+    cy.visit('/control-center/connectors');
     cy.wait(500);
 
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
+    cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
@@ -25,7 +27,7 @@ describe('Filter conversation', () => {
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
-    cy.visit('/inbox/');
+    cy.visit('/inbox/inbox');
 
     cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('gte', 1);
     cy.wait(500);

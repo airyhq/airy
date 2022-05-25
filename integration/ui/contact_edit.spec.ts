@@ -14,7 +14,7 @@ import {
 
 describe('Display and edit the contact details of a conversation', () => {
   before(() => {
-    cy.visit('/inbox/');
+    cy.visit('/inbox/inbox/');
     cy.url().should('include', '/inbox');
     cy.get(`[data-cy=${cyConversationList}]`).first().click();
   });

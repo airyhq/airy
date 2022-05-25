@@ -42,5 +42,8 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	cg := &ClusterGet{clientSet: clientSet, namespace: namespace}
 	r.Handle("/components.get", cg).Methods("GET")
 
+	enableDisableComponents := &EnableDisableComponents{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.enable", enableDisableComponents).Methods("POST")
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

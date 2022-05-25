@@ -39,6 +39,12 @@ jobs:
         env:
           GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
 
+      - name: Install dependencies 
+        run: yarn install
+
+      - name: Run unit testing 
+        run: yarn jest --coverage 
+
       - name: Lint
         run: |
           sudo apt-get install -y shellcheck

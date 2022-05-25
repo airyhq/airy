@@ -7,5 +7,6 @@
     "./frontend/**/*",
     "./lib/typescript/**/*"
   ],
+  "types": ["node", "jest", "@testing-library/jest-dom"],
   "rootDirs": ["."]
 }

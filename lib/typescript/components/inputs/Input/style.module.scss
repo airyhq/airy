@@ -1,10 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
 
-.label {
-  width: 100%;
-}
-
 .input {
   display: flex;
   background-color: var(--color-background-white);
@@ -22,6 +18,10 @@
     background-color: var(--color-background-blue);
     border: 1px solid var(--color-airy-blue);
     outline: none;
+  }
+
+  .label {
+    width: 100%;
   }
 }
 

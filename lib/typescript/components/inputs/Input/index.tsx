@@ -103,7 +103,7 @@ class InputComponent extends Component<InputProps, IState> {
       return;
     }
 
-    if (!inputElement.value.match(/.*\w\.\w.*/)) {
+    if (!new RegExp('^https?://(.*)').test(inputElement.value)) {
       this.setState({
         validationResult: 'The URL is invalid',
       });
@@ -373,8 +373,8 @@ class InputComponent extends Component<InputProps, IState> {
             ) : null}
           </div>
         )}
-        <div className={styles.inputHint}>
-          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? validationResult : hint}
+        <div className={styles.inputHint} data-testid="input-hint">
+          {typeof validationResult === 'string' || wasBlurred || showErrors ? validationResult : hint}
         </div>
       </label>
     );

@@ -63,6 +63,7 @@ module.exports = {
             'api/endpoints/contacts',
             'api/endpoints/client-config',
             'api/endpoints/components',
+            'api/endpoints/cluster',
           ],
         },
         'api/httpClient',

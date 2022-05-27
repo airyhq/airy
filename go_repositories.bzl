@@ -474,7 +474,7 @@ def go_repositories():
     )
     go_repository(
         name = "com_github_google_gnostic",
-	build_file_proto_mode = "disable",
+        build_file_proto_mode = "disable",
         importpath = "github.com/google/gnostic",
         sum = "h1:ZK/5VhkoX835RikCHpSUJV9a+S3e1zLh59YnyWeBW+0=",
         version = "v0.6.9",

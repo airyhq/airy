@@ -5,6 +5,7 @@ Usage:
 
 Available Commands:
   api         Interacts with the Airy Core HTTP API
+  completion  Generate the autocompletion script for the specified shell
   config      Manages an Airy Core instance via airy.yaml
   create      Creates an instance of Airy Core
   help        Help about any command

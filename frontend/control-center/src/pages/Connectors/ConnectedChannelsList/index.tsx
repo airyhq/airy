@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
@@ -75,7 +75,7 @@ const ConnectedChannelsList = () => {
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getInfo();
   }, [source, channels]);
 

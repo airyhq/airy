@@ -38,7 +38,7 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		labels := map[string]string{
 			"core.airy.co/component": component.Name,
 		}
-		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, component.Data, labels, s.clientSet)
+		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, s.clientSet)
 		if applyErr != nil {
 			klog.Error("Unable to apply configuration for component:" + component.Name + "\nError:\n" + err.Error())
 			responseComponents.Components[component.Name] = false

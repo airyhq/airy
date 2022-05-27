@@ -17,10 +17,10 @@ Update the configuration of a list of components.
 {
   "cluster_config": {
     "security": {
-      "SystemToken": "token",
-      "AllowedOrigins": "*",
-      "JwtSecret": "secret",
-      "Oidc": null
+      "system_token": "token",
+      "allowed_origins": "*",
+      "jwt_secret": "secret",
+      "oidc": null
     }
   }
 }

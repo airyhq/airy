@@ -12,7 +12,10 @@ go_library(
     ],
     importpath = "github.com/airyhq/airy/lib/go/payloads",
     visibility = ["//visibility:public"],
-    deps = ["//lib/go/config"],
+    deps = [
+        "//lib/go/config",
+        "@com_github_iancoleman_strcase//:strcase",
+    ],
 )
 
 check_pkg(name = "buildifier")

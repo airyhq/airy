@@ -48,17 +48,17 @@ Update the configuration of a list of components.
       "name": "sources-facebook",
       "enabled": true,
       "data": {
-        "appId": "id",
-        "appSecret": "secret",
-        "webhookSecret": "secret"
+        "app_id": "id",
+        "app_secret": "secret",
+        "webhook_secret": "secret"
       }
     },
     {
       "name": "sources-google",
       "enabled": true,
       "data": {
-        "partnerKey": "key",
-        "saFile": "file"
+        "partner_key": "key",
+        "sa_file": "file"
       }
     },
     {

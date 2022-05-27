@@ -9,7 +9,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "1364ef4b6147e92bd37095b0fd6ba49a0bf62ddb",
+    commit = "80b8dbe85d6a552578928695a6056ad14e405d3d",
     remote = "https://github.com/airyhq/bazel-tools.git",
     shallow_since = "1653559887 +0200",
 )
@@ -41,15 +41,6 @@ pinned_maven_install()
 
 ### Golang tooling
 # This needs to come before any rules_docker usage as it brings its own version of Gazelle
-http_archive(
-    name = "io_bazel_rules_go",
-    sha256 = "ab21448cef298740765f33a7f5acee0607203e4ea321219f2a4c85a6e0fb0a27",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.32.0/rules_go-v0.32.0.zip",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.32.0/rules_go-v0.32.0.zip",
-    ],
-)
-
 http_archive(
     name = "bazel_gazelle",
     sha256 = "5982e5463f171da99e3bdaeff8c0f48283a7a5f396ec5282910b9e8a49c0dd7e",

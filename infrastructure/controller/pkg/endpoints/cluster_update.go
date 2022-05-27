@@ -42,9 +42,8 @@ func (s *ClusterUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			klog.Error("Unable to apply configuration for \"security\"\nError:\n" + err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
-		} else {
-			response.ClusterConfig["security"] = true
 		}
+		response.ClusterConfig["security"] = true
 	}
 
 	resp, _ := json.Marshal(response)

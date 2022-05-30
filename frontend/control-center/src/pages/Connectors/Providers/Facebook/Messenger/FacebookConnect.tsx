@@ -28,7 +28,7 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage'));
+  const [buttonTitle, setButtonTitle] = useState(t<string>('connectPage'));
   const [errorMessage, setErrorMessage] = useState('');
 
   const CONNECTED_ROUTE = location.pathname.includes('connectors')

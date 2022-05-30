@@ -30,7 +30,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage'));
+  const [buttonTitle, setButtonTitle] = useState(t<string>('connectPage'));
   const [errorMessage, setErrorMessage] = useState('');
 
   const CONNECTED_ROUTE = location.pathname.includes('connectors')

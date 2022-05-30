@@ -20,11 +20,11 @@ const TwilioSmsConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const channel = useCurrentChannel();
 
-  const [buttonTitle, setButtonTitle] = useState(t('connectSmsNumber'));
+  const [buttonTitle, setButtonTitle] = useState(t<string>('connectSmsNumber'));
 
   useEffect(() => {
     if (channel) {
-      setButtonTitle(t('updateSmsNumber'));
+      setButtonTitle(t<string>('updateSmsNumber'));
     }
   }, []);
 

@@ -19,19 +19,19 @@ export const GoogleBusinessMessagesRequirementsDialog = (props: GoogleBusinessMe
             <CloseIcon />
           </button>
           <div className={styles.title}>
-            <p>{t('connectGoogle')}</p>
+            <p>{t<string>('connectGoogle')}</p>
           </div>
           <div className={styles.headline}>
-            <p>{t('googleConfigurationText')}</p>
+            <p>{t<string>('googleConfigurationText')}</p>
           </div>
           <div className={styles.body}>
             <ul>
-              <li>{t('googleAccountKey')}</li>
-              <li>{t('googleKey')}</li>
+              <li>{t<string>('googleAccountKey')}</li>
+              <li>{t<string>('googleKey')}</li>
             </ul>
             <p>
               <a href="https://airy.co/docs/core/sources/google" target="_blank" rel="noreferrer">
-                {t('googleConfigurationText2')}
+                {t<string>('googleConfigurationText2')}
               </a>{' '}
               {t('googleConfigurationText3')}
             </p>

@@ -30,10 +30,12 @@ export const GoogleBusinessMessagesRequirementsDialog = (props: GoogleBusinessMe
               <li>{t<string>('googleKey')}</li>
             </ul>
             <p>
-              <a href="https://airy.co/docs/core/sources/google" target="_blank" rel="noreferrer">
-                {t<string>('googleConfigurationText2')}
-              </a>{' '}
-              {t('googleConfigurationText3')}
+              <>
+                <a href="https://airy.co/docs/core/sources/google" target="_blank" rel="noreferrer">
+                  {t<string>('googleConfigurationText2')}
+                </a>{' '}
+                {t('googleConfigurationText3')}
+              </>
             </p>
           </div>
         </div>

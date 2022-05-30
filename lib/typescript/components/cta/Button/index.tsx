@@ -1,10 +1,10 @@
-import React, {CSSProperties} from 'react';
+import React, {CSSProperties, ReactNode} from 'react';
 
 import styles from './style.module.scss';
 
 type styleVariantType = 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
 type ButtonProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   onClick?: (event?) => void;
   type?: 'submit' | 'button' | 'reset';
   disabled?: boolean;

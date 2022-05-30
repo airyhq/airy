@@ -23,7 +23,7 @@ export const ListenOutsideClick = ({children, className, onOuterClick}: ListenOu
       }
     };
 
-    // // only add listener, if the element exists
+    //only add listener, if the element exists
     if (innerRef.current) {
       document.addEventListener('click', handleClick, true);
       document.addEventListener('keydown', keyDown);

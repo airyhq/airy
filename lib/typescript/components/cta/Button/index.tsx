@@ -4,7 +4,7 @@ import styles from './style.module.scss';
 
 type styleVariantType = 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
 type ButtonProps = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   onClick?: (event?) => void;
   type?: 'submit' | 'button' | 'reset';
   disabled?: boolean;

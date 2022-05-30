@@ -1,8 +1,8 @@
-import React, {ReactChild, ReactChildren, useState} from 'react';
+import React, {useState, ReactNode} from 'react';
 import style from './index.module.scss';
 
 type DragAndDropWrapperProps = {
-  children: ReactChild | ReactChildren;
+  children: ReactNode;
   setDragDropFile: (file: File) => void;
 };
 

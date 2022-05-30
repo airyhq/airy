@@ -33,6 +33,8 @@ spec:
               name: security
           - configMapRef:
               name: core-config
+          - configMapRef:
+              name: "{{ .Values.component }}"
         env:
         - name: KUBERNETES_NAMESPACE
           valueFrom:

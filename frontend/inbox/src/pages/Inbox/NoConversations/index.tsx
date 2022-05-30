@@ -11,13 +11,13 @@ const NoConversations = (props: NoConversationsProps) => {
   const {t} = useTranslation();
   return props.conversations === 0 && props.filterSet === false ? (
     <div className={styles.component}>
-      <strong>{t('newMessagesWillAppearHere')}</strong>
-      <p>{t('newMessagesWillAppearHereText')}</p>
+      <strong>{t<string>('newMessagesWillAppearHere')}</strong>
+      <p>{t<string>('newMessagesWillAppearHereText')}</p>
     </div>
   ) : (
     <div className={styles.component}>
-      <strong>{t('nothingFound')}</strong>
-      <p>{t('noMatchingConversations')}</p>
+      <strong>{t<string>('nothingFound')}</strong>
+      <p>{t<string>('noMatchingConversations')}</p>
     </div>
   );
 };

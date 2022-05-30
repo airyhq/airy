@@ -9,23 +9,23 @@ type ListenOutsideClickProps = {
 export const ListenOutsideClick = ({children, className, onOuterClick}: ListenOutsideClickProps) => {
   const innerRef = useRef(null);
 
-  useEffect(() => {
-    const handleClick = event => {
-      if (innerRef.current && !innerRef.current.contains(event.target)) {
-        event.preventDefault();
-        onOuterClick();
-      }
-    };
+  const handleClick = event => {
+    if (innerRef.current && !innerRef.current.contains(event.target)) {
+      event.preventDefault();
+      onOuterClick();
+    }
+  };
 
+  useEffect(() => {
     const keyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onOuterClick();
       }
     };
 
-    // only add listener, if the element exists
+    // // only add listener, if the element exists
     if (innerRef.current) {
-      document.addEventListener('click', handleClick);
+      document.addEventListener('click', handleClick, true);
       document.addEventListener('keydown', keyDown);
     }
 
@@ -34,7 +34,7 @@ export const ListenOutsideClick = ({children, className, onOuterClick}: ListenOu
       document.removeEventListener('click', handleClick);
       document.removeEventListener('keydown', keyDown);
     };
-  }, [onOuterClick, innerRef]);
+  }, []);
 
   return (
     <div className={className} ref={innerRef}>

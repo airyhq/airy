@@ -80,8 +80,10 @@ const TwilioConnect = (props: TwilioConnectProps) => {
       <div>
         <InfoButton link={infoLink} text={t('infoButtonText')} color="grey" />
         <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeft className={styles.backIcon} />
-          {t('back')}
+          <>
+            <ArrowLeft className={styles.backIcon} />
+            {t('back')}
+          </>
         </LinkButton>
       </div>
       <form className={styles.formContainer}>

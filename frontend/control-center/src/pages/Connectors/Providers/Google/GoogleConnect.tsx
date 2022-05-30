@@ -69,8 +69,10 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
       <div>
         <InfoButton link="https://airy.co/docs/core/sources/google" text={t('infoButtonText')} color="grey" />
         <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
+          <>
+            <ArrowLeftIcon className={styles.backIcon} />
+            {t('back')}
+          </>
         </LinkButton>
       </div>
       <div className={styles.inputContainer}>

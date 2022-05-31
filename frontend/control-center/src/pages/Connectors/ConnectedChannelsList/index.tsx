@@ -15,7 +15,16 @@ import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-import {cyChannelsFormBackButton} from 'handles';
+import {
+  cyChannelsFormBackButton,
+  cyConnectorsAddNewButton,
+  cyChannelsChatPluginList,
+  cyChannelsFacebookList,
+  cyChannelsGoogleList,
+  cyChannelsTwilioSmsList,
+  cyChannelsTwilioWhatsappList,
+  cyChannelsInstagramList,
+} from 'handles';
 import {
   CONNECTORS_FACEBOOK_ROUTE,
   CONNECTORS_CHAT_PLUGIN_ROUTE,
@@ -50,6 +59,7 @@ const ConnectedChannelsList = () => {
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
+  const [dataCyChannelList, setDataCyChannelList] = useState('');
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -76,18 +86,21 @@ const ConnectedChannelsList = () => {
         setDescription(t('facebookDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
@@ -96,18 +109,21 @@ const ConnectedChannelsList = () => {
           ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
           : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
         ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsInstagramList);
         break;
     }
   };
@@ -162,6 +178,7 @@ const ConnectedChannelsList = () => {
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             onClick={() => navigate(path)}
+            data-cy={cyConnectorsAddNewButton}
           >
             <PlusIcon className={styles.plusIcon} />
           </button>
@@ -180,7 +197,7 @@ const ConnectedChannelsList = () => {
         <span>{t('name')}</span>
         <span>{t('manage')}</span>
       </div>
-      <div className={styles.channelsList}>
+      <div className={styles.channelsList} data-cy={dataCyChannelList}>
         {filteredChannels.length > 0 ? (
           sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
             channel.metadata.name.toLowerCase()

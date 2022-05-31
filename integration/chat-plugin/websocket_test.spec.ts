@@ -2,16 +2,18 @@ import {cyInputbarTextarea, cyInputbarButton, cyChatPluginMessageList} from 'cha
 
 import {
   cyChannelsChatPluginAddButton,
+  cyConnectorsAddNewButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
 } from 'handles';
 
 describe('Websocket test', () => {
   it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
-    cy.visit('/inbox/channels');
+    cy.visit('/control-center/connectors');
     cy.wait(500);
-    cy.url().should('include', '/channels');
+    cy.url().should('include', '/connectors');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
+    cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 

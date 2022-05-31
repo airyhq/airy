@@ -14,7 +14,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
   const {sourceInfo, channelsToShow} = props;
   const {t} = useTranslation();
   return (
-    <Link to={sourceInfo.channelsListRoute} className={styles.container}>
+    <Link to={sourceInfo.channelsListRoute} className={styles.container} data-cy={sourceInfo.dataCyAddChannelButton}>
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>
           {sourceInfo.image}

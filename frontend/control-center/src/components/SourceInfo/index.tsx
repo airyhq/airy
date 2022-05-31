@@ -8,17 +8,11 @@ import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {
   cyChannelsChatPluginAddButton,
-  cyChannelsChatPluginList,
   cyChannelsFacebookAddButton,
-  cyChannelsFacebookList,
   cyChannelsGoogleAddButton,
-  cyChannelsGoogleList,
   cyChannelsTwilioSmsAddButton,
-  cyChannelsTwilioSmsList,
   cyChannelsTwilioWhatsappAddButton,
-  cyChannelsTwilioWhatsappList,
   cyChannelsInstagramAddButton,
-  cyChannelsInstagramList,
 } from 'handles';
 import {
   CATALOG_FACEBOOK_ROUTE,
@@ -48,7 +42,6 @@ export type SourceInfo = {
   configKey: string;
   itemInfoString: string;
   dataCyAddChannelButton: string;
-  dataCyChannelList: string;
 };
 
 export const getSourcesInfo = (page: string): SourceInfo[] => {
@@ -68,7 +61,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-chat-plugin',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
-      dataCyChannelList: cyChannelsChatPluginList,
     },
     {
       type: Source.facebook,
@@ -83,7 +75,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
-      dataCyChannelList: cyChannelsFacebookList,
     },
     {
       type: Source.twilioSMS,
@@ -98,7 +89,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
-      dataCyChannelList: cyChannelsTwilioSmsList,
     },
     {
       type: Source.twilioWhatsApp,
@@ -115,7 +105,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
-      dataCyChannelList: cyChannelsTwilioWhatsappList,
     },
     {
       type: Source.google,
@@ -128,7 +117,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-google',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsGoogleAddButton,
-      dataCyChannelList: cyChannelsGoogleList,
     },
     {
       type: Source.instagram,
@@ -143,7 +131,6 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
-      dataCyChannelList: cyChannelsInstagramList,
     },
   ];
 };

@@ -10,8 +10,8 @@
        "messageChatplugin": "Hello from Cypress ChatPlugin!",
        "newMessageChatplugin": "Hello once again from Cypress ChatPlugin!",
        "websocketMessage": "Websocket Test Message",
-       "channelId": "5e2323e2-22e8-4aa3-a948-794607fe5f67",
-       "messageId": "a658bce8-7088-473c-b69e-9bd9e4643dce"
+       "channelId": "206c91ae-156c-415d-a4c6-deefa6a0403d",
+       "messageId": "68495ead-2b3b-4b08-8386-5ac909974995"
     },
     "viewportHeight": 800,
     "viewportWidth": 1280,

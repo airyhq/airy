@@ -36,11 +36,20 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 		r.Use(authMiddleware.Middleware)
 	}
 
-	s := &Services{clientSet: clientSet, namespace: namespace}
-	r.Handle("/services", s)
+	services := &Services{clientSet: clientSet, namespace: namespace}
+	r.Handle("/services", services)
 
-	cg := &ClusterGet{clientSet: clientSet, namespace: namespace}
-	r.Handle("/components.get", cg).Methods("GET")
+	componentsUpdate := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.update", componentsUpdate)
+
+	componentsDelete := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.delete", componentsDelete)
+
+	clusterGet := &ClusterGet{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.get", clusterGet)
+
+	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/cluster.update", clusterUpdate)
 
 	enableDisableComponents := &EnableDisableComponents{clientSet: clientSet, namespace: namespace}
 	r.Handle("/components.enable", enableDisableComponents).Methods("POST")

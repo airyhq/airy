@@ -30,6 +30,7 @@ export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, em
           className={`${styles.slider} ${variant === 'green' ? styles.sliderGreen : styles.sliderBlue} ${
             size === 'small' ? styles.sliderSmall : styles.sliderBig
           } ${emoji === emojiBefore ? styles.emojiBefore : styles.emojiAfter}`}
+          data-testid="toggle-emoji"
         >
           {emoji ?? ''}
         </span>

@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel, TagColor} from 'model';
 
-import {createTag, listTags} from '../../../../actions';
+import {createTag, listTags, updateContactDetails} from '../../../../actions';
 import {addTagToConversation, removeTagFromConversation, updateConversationContactInfo} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
@@ -38,6 +38,7 @@ import {useTranslation} from 'react-i18next';
 const mapStateToProps = (state: StateModel) => ({
   tags: state.data.tags.all,
   config: state.data.config,
+  contacts: state.data.contacts.all,
 });
 
 const mapDispatchToProps = {
@@ -46,6 +47,7 @@ const mapDispatchToProps = {
   addTagToConversation,
   removeTagFromConversation,
   updateConversationContactInfo,
+  updateContactDetails,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -54,11 +56,13 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const {
     config,
     tags,
+    contacts,
     createTag,
     listTags,
     addTagToConversation,
     removeTagFromConversation,
     updateConversationContactInfo,
+    updateContactDetails,
   } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
@@ -142,6 +146,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const saveEditDisplayName = () => {
     updateConversationContactInfo(conversation.id, displayName);
+
+    if (contacts[conversation.id]?.id) {
+      updateContactDetails(conversation.id, {id: contacts[conversation.id].id, displayName: displayName});
+    }
+
     setShowEditDisplayName(!saveEditDisplayName);
   };
 

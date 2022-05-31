@@ -5,11 +5,11 @@ go_library(
     name = "endpoints",
     srcs = [
         "auth.go",
-        "enable_disable_components.go",
         "cluster_update.go",
         "components_delete.go",
         "components_get.go",
         "components_update.go",
+        "enable_disable_components.go",
         "server.go",
         "services.go",
     ],

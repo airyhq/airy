@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {connectFacebookChannel} from '../../../../../actions/channel';
@@ -12,7 +13,6 @@ import styles from './FacebookConnect.module.scss';
 import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../../routes/routes';
 import {useCurrentChannel} from '../../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
-import {t} from 'i18next';
 
 const mapDispatchToProps = {
   connectFacebookChannel,
@@ -24,11 +24,12 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectFacebookChannel} = props;
   const channel = useCurrentChannel();
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t<string>('connectPage'));
+  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const CONNECTED_ROUTE = location.pathname.includes('connectors')
@@ -75,10 +76,8 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
         <InfoButton link="https://airy.co/docs/core/sources/facebook" text={t('infoButtonText')} color="grey" />
 
         <LinkButton onClick={() => navigate(-1)} type="button">
-          <>
-            <ArrowLeftIcon className={styles.backIcon} />
-            {t('back')}
-          </>
+          <ArrowLeftIcon className={styles.backIcon} />
+          {t('back')}
         </LinkButton>
       </div>
       <div className={styles.inputContainer}>

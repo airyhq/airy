@@ -125,7 +125,6 @@ export const InputOptions = (props: Props) => {
 
   const addEmoji = emoji => {
     setInput(`${input} ${emoji.native}`);
-    //toggleEmojiDrawer();
   };
 
   const handleMicrophoneIconClick = () => {

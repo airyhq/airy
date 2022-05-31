@@ -19,7 +19,7 @@ const TwilioWhatsappConnect = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const channel = useCurrentChannel();
   const {channelId} = useParams();
-  const [buttonTitle, setButtonTitle] = useState(t<string>('connectWhatsappNumber'));
+  const [buttonTitle, setButtonTitle] = useState(t('connectWhatsappNumber'));
 
   useEffect(() => {
     if (channel) {

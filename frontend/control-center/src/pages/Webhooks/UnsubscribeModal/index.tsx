@@ -52,10 +52,8 @@ export const UnsubscribeModal = (props: UnsubscribeModalProps) => {
             }}
             type="submit"
           >
-            <>
-              {isLoading && <RefreshIcon height={24} width={24} />}
-              {isLoading ? t('unsubscribing') : error ? t('tryAgain') : t('confirm')}
-            </>
+            {isLoading && <RefreshIcon height={24} width={24} />}
+            {isLoading ? t('unsubscribing') : error ? t('tryAgain') : t('confirm')}
           </Button>
           <Button
             onClick={handleCancel}

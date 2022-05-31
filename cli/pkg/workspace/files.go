@@ -1,9 +1,12 @@
 package workspace
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"path/filepath"
+
+	"github.com/airyhq/airy/lib/go/config"
+
+	"gopkg.in/yaml.v2"
 )
 
 const cliConfigFileName = "cli.yaml"
@@ -16,17 +19,17 @@ func (f ConfigDir) GetAiryYaml() string {
 	return filepath.Join(f.Path, "airy.yaml")
 }
 
-func (f ConfigDir) LoadAiryYaml() (AiryConf, error) {
+func (f ConfigDir) LoadAiryYaml() (config.AiryConf, error) {
 	data, err := ioutil.ReadFile(f.GetAiryYaml())
 	if err != nil {
-		return AiryConf{}, err
+		return config.AiryConf{}, err
 	}
-	conf := AiryConf{}
+	conf := config.AiryConf{}
 	err = yaml.Unmarshal(data, &conf)
 	return conf, err
 }
 
-func (f ConfigDir) UpdateAiryYaml(apply func(AiryConf) AiryConf) error {
+func (f ConfigDir) UpdateAiryYaml(apply func(config.AiryConf) config.AiryConf) error {
 	airyYaml, err := f.LoadAiryYaml()
 	if err != nil {
 		return err

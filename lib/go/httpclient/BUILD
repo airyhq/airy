@@ -7,11 +7,16 @@ go_library(
     name = "httpclient",
     srcs = [
         "client.go",
+        "cluster.go",
+        "components.go",
         "httpclient.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/httpclient",
     visibility = ["//visibility:public"],
-    deps = ["//lib/go/httpclient/payloads"],
+    deps = [
+        "//lib/go/config",
+        "//lib/go/payloads",
+    ],
 )
 
 check_pkg(name = "buildifier")

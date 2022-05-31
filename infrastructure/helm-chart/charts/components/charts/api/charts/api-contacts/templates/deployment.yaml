@@ -32,7 +32,7 @@ spec:
           - configMapRef:
               name: security
           - configMapRef:
-              name: "integration-contacts"
+              name: "{{ .Values.component }}"
         env:
         - name: KAFKA_BROKERS
           valueFrom:

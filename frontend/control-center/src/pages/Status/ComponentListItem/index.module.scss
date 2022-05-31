@@ -81,7 +81,6 @@
 
 .serviceName {
   margin-left: 10%;
-  display: inline-block;
   @include font-s;
   color: var(--color-text-gray);
   animation: fadeIn ease 0.6s;

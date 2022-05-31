@@ -10,7 +10,7 @@ import (
 //NOTE: As stated on httpclient.go for now we can use a general interface. because we are only getting
 //      and printing the data
 func (c *Client) ComponentsGet() (interface{}, error) {
-	return c.post[interface{}]("components.get", nil)
+	return post[interface{}](c, "components.get", nil)
 }
 
 func (c *Client) ComponentsUpdate(conf config.AiryConf) (payloads.ComponentsUpdateResponsePayload, error) {
@@ -26,5 +26,5 @@ func (c *Client) ComponentsUpdate(conf config.AiryConf) (payloads.ComponentsUpda
 		return payloads.ComponentsUpdateResponsePayload{}, err
 	}
 
-	return c.post[payloads.ComponentsUpdateResponsePayload]("components.update", payload)
+	return post[payloads.ComponentsUpdateResponsePayload](c, "components.update", payload)
 }

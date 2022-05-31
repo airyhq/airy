@@ -12,5 +12,5 @@ func (c *Client) Config() (*payloads.ClientConfigResponsePayload, error) {
 		return nil, err
 	}
 
-	return c.post[payloads.ClientConfigResponsePayload]("client.config", payload)
+	return post[*payloads.ClientConfigResponsePayload](c, "client.config", payload)
 }

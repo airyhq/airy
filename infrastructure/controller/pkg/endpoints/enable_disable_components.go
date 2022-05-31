@@ -24,7 +24,6 @@ type component struct {
 
 func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	blob, err := ioutil.ReadAll(r.Body)
-	//TODO: Write error messages and logs
 	if err != nil {
 		klog.Infof("not able to read request body %s", err)
 		w.WriteHeader(http.StatusBadRequest)
@@ -32,7 +31,6 @@ func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	}
 
 	var c component
-	//TODO: Write error messages and logs
 	if err := json.Unmarshal(blob, &c); err != nil {
 		klog.Errorf("invalid payload %s", err)
 		w.WriteHeader(http.StatusBadRequest)
@@ -45,20 +43,17 @@ func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	)
 
 	for _, deployment := range deployments.Items {
-		//TODO: Write error messages and logs
 		if c.Enable && *deployment.Spec.Replicas > 0 {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
-		//TODO: Write error messages and logs
 		if !c.Enable && *deployment.Spec.Replicas == 0 {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
 		if c.Enable {
-			//TODO: Allow variable number of replicas
 			*deployment.Spec.Replicas = 1
 		} else {
 			*deployment.Spec.Replicas = 0
@@ -69,8 +64,8 @@ func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Reque
 			&deployment,
 			v1.UpdateOptions{},
 		)
-		//TODO: Write error messages and logs
 		if err != nil {
+			klog.Errorf("unable to update deployment %S", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	}

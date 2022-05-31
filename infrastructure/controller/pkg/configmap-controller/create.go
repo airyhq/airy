@@ -31,7 +31,6 @@ func (r ResourceCreatedHandler) Handle(ctx Context) error {
 	}
 
 	for _, deployment := range deployments {
-		//TODO: check for empty deployment labels
 		cnf := cnfMap[deployment.Labels["core.airy.co/component"]]
 		if cnf != nil && cnf.ObjectMeta.Annotations != nil && cnf.ObjectMeta.Annotations["enabled"] == "false" {
 			klog.Infof("Skipping deployment %s because it is disabled", deployment.Name)

@@ -19,7 +19,7 @@ type EnableDisableComponents struct {
 
 type component struct {
 	Name   string `json:"name"`
-	Enable bool   `json:"enable,string"`
+	Enable bool   `json:"enable"`
 }
 
 func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Request) {

@@ -19,11 +19,5 @@ func (c *Client) ClusterUpdate(conf config.AiryConf) (payloads.ClusterUpdateResp
 	if err != nil {
 		return payloads.ClusterUpdateResponsePayload{}, err
 	}
-	res := payloads.ClusterUpdateResponsePayload{}
-	e := c.post("cluster.update", payload, &res)
-	if e != nil {
-		return payloads.ClusterUpdateResponsePayload{}, e
-	}
-
-	return res, nil
+	return c.post[payloads.ClusterUpdateResponsePayload]("cluster.update", payload)
 }

@@ -3,40 +3,24 @@
 
 .wrapper {
   width: 100%;
-  padding: 12px 0 24px 0;
-  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   background: var(--color-background-white);
   border-left: 1px solid var(--color-light-gray);
   border-right: 1px solid var(--color-light-gray);
   border-bottom: 1px solid var(--color-light-gray);
-  transition: all 0.5s ease-out;
+  transition: height 0.4s ease;
   &:hover {
     cursor: pointer;
   }
-}
-
-.wrapperExpanded {
-  display: inline-block;
-  z-index: 1;
 }
 
 .container {
   width: 100%;
   display: flex;
   align-items: center;
-}
-
-.expandedContainer {
-  margin-top: 20px;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease 0.2s;
-}
-
-.expandedContainerShown {
-  opacity: 1;
+  padding: 25px 0;
+  height: 50px;
 }
 
 .name {
@@ -86,10 +70,21 @@
   color: var(--color-text-gray);
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .serviceName {
   margin-left: 10%;
+  display: inline-block;
   @include font-s;
   color: var(--color-text-gray);
+  animation: fadeIn ease 0.6s;
 }
 
 .healthyStatus {
@@ -100,9 +95,7 @@
 
 .icons {
   width: 20px;
-  width: 20px;
-  display: flex;
-  align-items: center;
+  height: 20px;
 }
 
 .enabled {

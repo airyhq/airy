@@ -1,0 +1,129 @@
+import {Pagination} from '../../../../control-center/src/components/Pagination';
+import {Contact} from 'model';
+import React, {useEffect, useMemo, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {connect, ConnectedProps} from 'react-redux';
+import {listContacts} from '../../actions/contacts';
+import {StateModel} from '../../reducers';
+import {setPageTitle} from '../../services/pageTitle';
+import ContactInformation from './ContactInformation';
+import {ContactListItem} from './ContactListItem';
+import styles from './index.module.scss';
+
+const mapStateToProps = (state: StateModel) => ({
+  contacts: Object.values(state.data.contacts.all.items),
+  paginationData: state.data.contacts.all.paginationData,
+});
+
+const mapDispatchToProps = {
+  listContacts,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type ContactsProps = {} & ConnectedProps<typeof connector>;
+
+const Contacts = (props: ContactsProps) => {
+  const {listContacts, contacts, paginationData} = props;
+  const {t} = useTranslation();
+  const [conversationId, setConversationId] = useState('');
+  const [currentContact, setCurrentContact] = useState<Contact>();
+  const [editModeOn, setEditModeOn] = useState(false);
+  const [cancelEdit, setCancelEdit] = useState(false);
+  const [contactInformationVisible, setContactInformationVisible] = useState(false);
+
+  useEffect(() => {
+    setPageTitle('Contacts');
+    listContacts();
+  }, []);
+
+  const pageSize = contacts.length >= 9 ? 9 : contacts.length;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(0);
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return contacts.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, pageSize, contacts.length]);
+
+  useEffect(() => {
+    lastPage % 5 == 0 && listContacts();
+  }, [currentPage]);
+
+  const handleConversationId = (conversationId: string) => {
+    setConversationId(conversationId);
+  };
+
+  const handleContact = (contact: Contact) => {
+    setContactInformationVisible(true);
+    setCurrentContact(contact);
+  };
+
+  const handleEditMode = (editMode: boolean) => {
+    setEditModeOn(editMode);
+  };
+
+  const handleCancelEditing = (cancel: boolean) => {
+    setCancelEdit(cancel);
+  };
+
+  const handlePageChange = (page: number) => {
+    page > lastPage && setLastPage(page);
+    setCurrentPage(page);
+  };
+
+  return (
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.headline}>
+          <div>
+            <h1 className={styles.headlineText}>Contacts</h1>
+          </div>
+        </div>
+        <div className={styles.container}>
+          <div className={styles.containerHeadline}>
+            <h1>{t('contactName')}</h1>
+            <h1>{t('conversations')}</h1>
+            <h1>{t('manage')}</h1>
+          </div>
+          <div className={styles.contactContent}>
+            <div className={styles.contactList}>
+              {currentTableData.map((contact: Contact) => (
+                <ContactListItem
+                  key={contact.id}
+                  contact={contact}
+                  setContact={handleContact}
+                  setConversationId={handleConversationId}
+                  setEditModeOn={handleEditMode}
+                  setCancelEdit={handleCancelEditing}
+                />
+              ))}
+            </div>
+          </div>
+          <div style={{marginLeft: '32px', marginRight: '32px', marginBottom: '32px'}}>
+            <Pagination
+              totalCount={paginationData?.total}
+              pageSize={9}
+              pageCount={contacts.length >= pageSize ? pageSize : contacts.length}
+              currentPage={currentPage}
+              // onPageChange={page => setCurrentPage(page)}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={contactInformationVisible ? styles.animateIn : ''}>
+        <ContactInformation
+          conversationId={conversationId}
+          contact={currentContact}
+          editModeOn={editModeOn}
+          setEditModeOn={handleEditMode}
+          cancelEdit={cancelEdit}
+        />
+      </div>
+    </>
+  );
+};
+
+export default connector(Contacts);

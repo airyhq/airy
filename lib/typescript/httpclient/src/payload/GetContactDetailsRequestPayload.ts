@@ -1,3 +1,4 @@
 export interface GetContactDetailsRequestPayload {
-  conversationId: string;
+  conversationId?: string;
+  id?: string;
 }

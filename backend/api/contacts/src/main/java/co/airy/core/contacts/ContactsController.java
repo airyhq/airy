@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -106,8 +107,16 @@ public class ContactsController implements HealthIndicator {
     public ResponseEntity<?> listContacts(@Valid @RequestBody(required = false) ListContactsRequestPayload payload) {
         payload = payload == null ? new ListContactsRequestPayload() : payload;
         final List<Contact> contacts = stores.getAllContacts();
+        final List<Contact> sortedContacts = contacts.stream()
+                .filter(c -> c.getDisplayName() != null)
+                .sorted(comparing(Contact::getDisplayName))
+                .collect(toList());
+        final List<Contact> noDisplayNameContacts = contacts.stream()
+                .filter(c -> c.getDisplayName() == null)
+                .collect(toList());
+        sortedContacts.addAll(noDisplayNameContacts);
 
-        Paginator<Contact> paginator = new Paginator<>(contacts, Contact::getId)
+        Paginator<Contact> paginator = new Paginator<>(sortedContacts, Contact::getId)
                 .perPage(payload.getPageSize()).from(payload.getCursor());
 
         Page<Contact> page = paginator.page();

@@ -43,10 +43,12 @@ const Contacts = (props: ContactsProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
 
+  const contactSorter = (a: Contact, b: Contact) => a.displayName?.localeCompare?.(b.displayName);
+
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
-    return contacts.slice(firstPageIndex, lastPageIndex);
+    return contacts.sort(contactSorter).slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, contacts.length]);
 
   useEffect(() => {

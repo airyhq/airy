@@ -1,4 +1,5 @@
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
+import {t} from 'i18next';
 import {Contact} from 'model';
 
 export const fillContactInfo = (
@@ -17,11 +18,11 @@ export const fillContactInfo = (
   const city = contact?.address?.city;
   const organizationName = contact?.organizationName;
 
-  email ? setEmail(email) : setEmail('email');
-  phone ? setPhone(phone) : setPhone('phone');
-  title ? setTitle(title) : setTitle('title');
-  address ? setAddress(address) : setAddress('address');
-  city ? setCity(city) : setCity('city');
-  organizationName ? setOrganization(organizationName) : setOrganization('company name');
-  address ? setAddress(address) : setAddress('address');
+  email ? setEmail(email) : setEmail(t('email'));
+  phone ? setPhone(phone) : setPhone(t('phone'));
+  title ? setTitle(title) : setTitle(t('title'));
+  address ? setAddress(address) : setAddress(t('address'));
+  city ? setCity(city) : setCity(t('city'));
+  organizationName ? setOrganization(organizationName) : setOrganization(t('company name'));
+  address ? setAddress(address) : setAddress(t('address'));
 };

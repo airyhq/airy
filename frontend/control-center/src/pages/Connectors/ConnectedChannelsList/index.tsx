@@ -198,6 +198,7 @@ const ConnectedChannelsList = () => {
       </div>
       <Pagination
         totalCount={filteredChannels.length}
+        pageSize={8}
         pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
         currentPage={currentPage}
         onPageChange={page => setCurrentPage(page)}

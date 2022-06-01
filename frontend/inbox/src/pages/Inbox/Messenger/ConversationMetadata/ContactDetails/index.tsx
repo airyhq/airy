@@ -21,13 +21,14 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    contacts: state.data.contacts.all,
+    contacts: state.data.contacts.all.items,
   };
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ContactDetailsProps = {
+  contact?: Contact;
   conversationId: string;
   isEditing: boolean;
   getUpdatedInfo: () => void;
@@ -35,13 +36,14 @@ type ContactDetailsProps = {
   getIsExpanded: (isExpanded: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
-interface ConversationInfoForContact {
+export interface ConversationInfoForContact {
   id: string;
   connector: string;
 }
 
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
+    contact,
     conversationId,
     getContactDetails,
     updateContactDetails,
@@ -51,15 +53,16 @@ const ContactDetails = (props: ContactDetailsProps) => {
     editingCanceled,
     getIsExpanded,
   } = props;
-  const {t} = useTranslation();
 
-  const existingContact = contacts[conversationId]?.via?.phone || contacts[conversationId]?.title;
-  const [email, setEmail] = useState(`${t('email')}`);
-  const [phone, setPhone] = useState(`${t('phone')}`);
-  const [title, setTitle] = useState(`${t('title')}`);
-  const [address, setAddress] = useState(`${t('address')}`);
-  const [city, setCity] = useState(`${t('city')}`);
-  const [organization, setOrganization] = useState(`${t('company name')}`);
+  const {t} = useTranslation();
+  const [contactId, setContactId] = useState('');
+  const existingContact = contacts[contactId]?.via?.phone || contacts[contactId]?.title;
+  const [email, setEmail] = useState(contacts[contact?.id]?.via?.email || `${t('email')}`);
+  const [phone, setPhone] = useState(contacts[contact?.id]?.via?.phone || `${t('phone')}`);
+  const [title, setTitle] = useState(contacts[contact?.id]?.title || `${t('title')}`);
+  const [address, setAddress] = useState(contacts[contact?.id]?.address?.addressLine1 || `${t('address')}`);
+  const [city, setCity] = useState(contacts[contact?.id]?.address?.city || `${t('city')}`);
+  const [organization, setOrganization] = useState(contacts[contact?.id]?.organizationName || `${t('companyName')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [conversationsForContact, setConversationsForContact] = useState([]);
@@ -73,19 +76,33 @@ const ContactDetails = (props: ContactDetailsProps) => {
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
-    getContactDetails(conversationId);
+    getContactId();
+    conversationId ? getContactDetails({conversationId: conversationId}) : getContactDetails({id: contact?.id});
     setExpanded(false);
     setAreOthersConversationForContact(false);
     setConversationsForContact([]);
-  }, [conversationId]);
+  }, [conversationId, contact?.id]);
+
+  const getContactId = async () => {
+    const contactId = await getContactDetails({conversationId});
+    setContactId(contactId);
+  };
 
   useEffect(() => {
-    if (conversationId && contacts && contacts[conversationId]) {
-      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
-      updateContactType(contacts[conversationId]);
-      setConversationsForContact(formatConversationsForContact(contacts[conversationId].conversations));
+    if (contacts && contacts[contact?.id || contactId]) {
+      fillContactInfo(
+        contacts[contact?.id || contactId],
+        setEmail,
+        setPhone,
+        setTitle,
+        setAddress,
+        setCity,
+        setOrganization
+      );
+      updateContactType(contacts[contact?.id || contactId]);
+      setConversationsForContact(formatConversationsForContact(contacts[contact?.id || contactId].conversations));
     }
-  }, [contacts, conversationId]);
+  }, [contact?.id, conversationId, contactId]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -93,7 +110,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   useEffect(() => {
     if (editingCanceled) {
-      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
+      fillContactInfo(contacts[contactId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
       setExpanded(false);
     }
   }, [editingCanceled]);
@@ -102,7 +119,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
     const conversationsForContactArr = [];
 
     for (const idProperty in convObj) {
-      if (idProperty !== conversationId) {
+      if (Object?.entries(contacts[contact?.id || contactId]?.conversations).length > 1) {
         setAreOthersConversationForContact(true);
         const convInfo = {} as ConversationInfoForContact;
         convInfo.id = idProperty;
@@ -115,12 +132,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
   };
 
   const removeDefaultTextWhenEditing = () => {
-    if (email === 'email') setEmail('');
-    if (phone === 'phone') setPhone('');
-    if (title === 'title') setTitle('');
-    if (address === 'address') setAddress('');
-    if (city === 'city') setCity('');
-    if (organization === 'company name') setOrganization('');
+    if (email === t('email')) setEmail('');
+    if (phone === t('phone')) setPhone('');
+    if (title === t('title')) setTitle('');
+    if (address === t('address')) setAddress('');
+    if (city === t('city')) setCity('');
+    if (organization === t('companyName')) setOrganization('');
   };
 
   const isExistingContact = (contact: Contact | UpdateContactDetailsRequestPayload) => {
@@ -140,7 +157,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
   };
 
   const toggleExpandableContent = () => {
-    if (isExistingContact(contacts[conversationId])) {
+    if (isExistingContact(contacts[contact?.id || contactId])) {
       setExistingContactCollapsed(!existingContactCollapsed);
     } else {
       setNewContactCollapsed(!newContactCollapsed);
@@ -151,7 +168,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   const saveUpdatedInfo = () => {
     const infoDetailsPayload = getInfoDetailsPayload(
-      contacts[conversationId].id,
+      contacts[contact?.id || contactId].id,
       email,
       phone,
       title,
@@ -159,7 +176,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
       city,
       organization
     );
-    updateContactDetails(conversationId, {...infoDetailsPayload});
+
+    updateContactDetails(contacts[contact?.id || contactId]?.id, {...infoDetailsPayload});
     updateContactType(infoDetailsPayload);
     getUpdatedInfo();
     fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);

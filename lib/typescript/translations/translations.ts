@@ -69,6 +69,11 @@ const resources = {
       companyName: 'company name',
       contactCapital: 'Contact',
       otherConversationsContact: 'Other conversations for this contact:',
+      noResultsConverstation: 'No Results',
+      contactName: 'Contact Name',
+      conversations: 'Conversations',
+      deleteContact: 'Delete Contact',
+      deleteContactText: 'Are you sure you want to delete this contact?',
 
       //Status
       all: 'All',
@@ -389,6 +394,11 @@ const resources = {
       companyName: 'Firmenname',
       contactCapital: 'Kontakt',
       otherConversationsContact: 'Andere Gespräche für diesen Kontakt:',
+      contactName: 'Kontaktname',
+      conversations: 'Konversationen',
+      noResultsConverstation: 'keine Ergebnisse',
+      deleteContact: 'Kontakt löschen',
+      deleteContactText: 'Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?',
 
       //Status
       all: 'Alle',
@@ -702,6 +712,11 @@ const resources = {
       companyName: `nom de l'entreprise`,
       contactCapital: 'Contacter',
       otherConversationsContact: 'Autres conversations pour ce contact :',
+      noResultsConverstation: 'Aucun Résultat',
+      contactName: 'Nom du contact',
+      conversations: 'Conversations',
+      deleteContact: 'Supprimer le Contact',
+      deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
 
       //Status
       all: 'Tous',
@@ -1011,6 +1026,11 @@ const resources = {
       companyName: 'nombre de la empresa',
       contactCapital: 'Contacto',
       otherConversationsContact: 'Otras conversaciones para este contacto:',
+      noResultsConverstation: 'Sin Resultados',
+      contactName: 'Nombre de contacto',
+      conversations: 'Conversaciones',
+      deleteContact: 'Eliminar el Contacto',
+      deleteContactText: '¿Estás seguro de que quieres eliminar este contacto?',
 
       //Status
       all: 'Todo',

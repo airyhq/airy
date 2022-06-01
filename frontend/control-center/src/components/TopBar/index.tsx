@@ -105,7 +105,6 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
         });
         break;
     }
-    toggleLanguageDropdown();
   };
 
   return (

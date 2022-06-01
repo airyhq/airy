@@ -110,7 +110,15 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   useEffect(() => {
     if (editingCanceled) {
-      fillContactInfo(contacts[contactId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
+      fillContactInfo(
+        contacts[contact?.id || contactId],
+        setEmail,
+        setPhone,
+        setTitle,
+        setAddress,
+        setCity,
+        setOrganization
+      );
       setExpanded(false);
     }
   }, [editingCanceled]);

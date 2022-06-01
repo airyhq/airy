@@ -60,12 +60,13 @@ const ConnectedChannelsList = () => {
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
+  const listPageSize = 8;
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const pageSize = filteredChannels.length >= 8 ? 8 : filteredChannels.length;
+  const pageSize = filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length;
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentTableData = useMemo(() => {
@@ -215,7 +216,7 @@ const ConnectedChannelsList = () => {
       </div>
       <Pagination
         totalCount={filteredChannels.length}
-        pageSize={8}
+        pageSize={listPageSize}
         pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
         currentPage={currentPage}
         onPageChange={page => setCurrentPage(page)}

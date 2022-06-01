@@ -31,13 +31,15 @@ const Contacts = (props: ContactsProps) => {
   const [editModeOn, setEditModeOn] = useState(false);
   const [cancelEdit, setCancelEdit] = useState(false);
   const [contactInformationVisible, setContactInformationVisible] = useState(false);
+  const listPageSize = 9;
+  const fetchNextPage = 5;
 
   useEffect(() => {
     setPageTitle('Contacts');
     listContacts();
   }, []);
 
-  const pageSize = contacts.length >= 9 ? 9 : contacts.length;
+  const pageSize = contacts.length >= listPageSize ? listPageSize : contacts.length;
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
 
@@ -48,7 +50,7 @@ const Contacts = (props: ContactsProps) => {
   }, [currentPage, pageSize, contacts.length]);
 
   useEffect(() => {
-    lastPage % 5 == 0 && listContacts();
+    lastPage % fetchNextPage == 0 && listContacts();
   }, [currentPage]);
 
   const handleConversationId = (conversationId: string) => {
@@ -104,10 +106,9 @@ const Contacts = (props: ContactsProps) => {
           <div style={{marginLeft: '32px', marginRight: '32px', marginBottom: '32px'}}>
             <Pagination
               totalCount={paginationData?.total}
-              pageSize={9}
+              pageSize={listPageSize}
               pageCount={contacts.length >= pageSize ? pageSize : contacts.length}
               currentPage={currentPage}
-              // onPageChange={page => setCurrentPage(page)}
               onPageChange={handlePageChange}
             />
           </div>

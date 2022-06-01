@@ -30,11 +30,14 @@ export const listContactsAction = createAction(CONTACT_LIST, (contacts: Contact[
 export const deleteContactAction = createAction(CONTACT_DELETE, (id: string) => id)<string>();
 
 export const listContacts = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
+  const pageSize = 54;
   const cursor = state().data.contacts.all.paginationData.nextCursor;
-  HttpClientInstance.listContacts({page_size: 54, cursor: cursor}).then((response: PaginatedResponse<Contact>) => {
-    dispatch(listContactsAction(response.data, response.paginationData));
-    return Promise.resolve(true);
-  });
+  HttpClientInstance.listContacts({page_size: pageSize, cursor: cursor}).then(
+    (response: PaginatedResponse<Contact>) => {
+      dispatch(listContactsAction(response.data, response.paginationData));
+      return Promise.resolve(true);
+    }
+  );
 };
 
 export const deleteContact = (id: string) => (dispatch: Dispatch<any>) => {

@@ -20,7 +20,7 @@ import {
   cyEditContactIcon,
   cyEditDisplayNameCheckmark,
   cyEditDisplayNameIcon,
-} from '../../../../handles/';
+} from 'handles';
 
 const mapDispatchToProps = {
   updateConversationContactInfo,

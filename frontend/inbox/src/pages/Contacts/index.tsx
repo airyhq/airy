@@ -1,4 +1,4 @@
-import {Pagination} from '../../../../control-center/src/components/Pagination';
+import {Pagination} from 'components';
 import {Contact} from 'model';
 import React, {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';

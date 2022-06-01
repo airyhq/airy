@@ -41,7 +41,7 @@ import {
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
-import {Pagination} from '../../../components/Pagination';
+import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
 
@@ -179,7 +179,8 @@ const ConnectedChannelsList = () => {
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             onClick={() => navigate(path)}
-            data-cy={cyConnectorsAddNewButton}>
+            data-cy={cyConnectorsAddNewButton}
+          >
             <PlusIcon className={styles.plusIcon} />
           </button>
         </div>
@@ -192,7 +193,8 @@ const ConnectedChannelsList = () => {
           fontWeight: '700',
           fontSize: '16px',
           marginBottom: '24px',
-        }}>
+        }}
+      >
         <span>{t('name')}</span>
         <span>{t('manage')}</span>
       </div>

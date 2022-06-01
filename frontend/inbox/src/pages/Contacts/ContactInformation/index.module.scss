@@ -1,0 +1,201 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/animations.scss';
+
+.content {
+  display: flex;
+  width: 290px;
+  min-width: 290px;
+  height: calc(100% - 88px);
+  flex-direction: column;
+  overflow: auto;
+  background-color: var(--color-background-white);
+  margin: 88px 16px 0 0;
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  position: relative;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.contact {
+  border-bottom: 1px solid var(--color-light-gray);
+  padding-bottom: 16px;
+}
+
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px auto;
+}
+
+.displayNameContainer {
+  @include font-m;
+  text-align: center;
+  color: var(--color-text-contrast);
+  margin-left: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    svg {
+      visibility: visible;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.displayName {
+  display: flex;
+  align-items: center;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editPencilIcon {
+  margin-left: 8px;
+  height: 24px;
+  width: 20px;
+  visibility: hidden;
+}
+
+.editDisplayNameContainer {
+  display: flex;
+  align-items: center;
+  visibility: visible;
+  margin-left: -28px;
+}
+
+.displayNameButtons {
+  display: flex;
+  margin-top: 22px;
+
+  button {
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .cancelEdit {
+    border: 1px solid var(--color-text-gray);
+    margin-left: 8px;
+    svg {
+      path {
+        fill: var(--color-text-gray);
+      }
+    }
+    &:hover {
+      border: 1px solid var(--color-red-alert);
+      svg {
+        path {
+          fill: var(--color-red-alert);
+        }
+      }
+    }
+  }
+
+  .saveEdit {
+    border: 1px solid var(--color-soft-green);
+    margin-left: 8px;
+    svg {
+      height: 8px;
+      margin-bottom: 0.5px;
+      fill: var(--color-soft-green);
+    }
+  }
+
+  .disabledSaveEdit {
+    border: 1px solid var(--color-text-gray);
+    margin-left: 8px;
+    svg {
+      height: 8px;
+      margin-bottom: 0.5px;
+      path {
+        fill: var(--color-text-gray);
+      }
+    }
+  }
+}
+
+.tags {
+  border-bottom: 1px solid var(--color-light-gray);
+  padding-bottom: 16px;
+}
+
+.tagsHeader {
+  display: flex;
+  margin: 8px 0;
+  justify-content: space-between;
+}
+
+.tagsHeaderTitle {
+  font-weight: bold;
+  color: var(--color-text-contrast);
+}
+
+.addTags {
+  padding: 8px;
+  width: 260px;
+}
+
+.tag {
+  max-width: 88%;
+}
+
+.addTagsRow {
+  display: flex;
+  margin: 4px 0;
+  justify-content: space-between;
+}
+
+.addTagsDescription {
+  margin: 8px 0;
+  color: var(--color-text-contrast);
+}
+
+.addTagsButtonRow {
+  margin: 8px 0;
+}
+
+.fadeInAnimation {
+  animation: fadeInTranslateXLeft 500ms ease;
+}
+
+.fadeOutAnimation {
+  animation: fadeOutTranslateXLeft 500ms ease;
+}
+
+.editIcon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cancelIcon {
+  svg {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.iconBlue {
+  svg {
+    fill: var(--color-airy-blue);
+  }
+}
+
+.iconGrey {
+  svg {
+    fill: var(--color-text-gray);
+  }
+}

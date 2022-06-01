@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getMaxInfoCharacterLength, getDataCy} from './util';
 import {ContactIcon} from './ContactIcon';
 import styles from './index.module.scss';
+import {useTranslation} from 'react-i18next';
 
 interface ContactInfoPointProps {
   isEditing: boolean;
@@ -37,6 +38,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     organization,
     setOrganization,
   } = props;
+  const {t} = useTranslation();
 
   const [text, setText] = useState('');
   const type = infoName === 'email' ? 'email' : infoName === 'phone' ? 'tel' : 'text';
@@ -46,7 +48,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
 
   const getDisplayedtext = () => {
     const maxDisplayedLength = getMaxInfoCharacterLength();
-    return infoValue.length > maxDisplayedLength ? infoValue.slice(0, maxDisplayedLength) + '...' : infoValue;
+    return infoValue?.length > maxDisplayedLength ? infoValue?.slice(0, maxDisplayedLength) + '...' : infoValue;
   };
 
   useEffect(() => {
@@ -61,22 +63,22 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
     }
 
     switch (infoName) {
-      case 'email':
+      case t('email'):
         setEmail(e.target.value);
         break;
-      case 'phone':
+      case t('phone'):
         setPhone(e.target.value);
         break;
-      case 'title':
+      case t('title'):
         setTitle(e.target.value);
         break;
-      case 'address':
+      case t('address'):
         setAddress(e.target.value);
         break;
-      case 'city':
+      case t('city'):
         setCity(e.target.value);
         break;
-      case 'organization':
+      case t('organization'):
         setOrganization(e.target.value);
         break;
       default:
@@ -85,7 +87,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
   };
 
   const InfoValue = () => {
-    if (infoName === 'email' && infoValue !== 'email') {
+    if (infoName === t('email') && infoValue !== t('email')) {
       return (
         <a
           target="_blank"
@@ -101,7 +103,7 @@ export const ContactInfoPoint = (props: ContactInfoPointProps) => {
       );
     }
 
-    if (infoName === 'address' && infoValue !== 'address') {
+    if (infoName === t('address') && infoValue !== t('address')) {
       return (
         <a
           target="_blank"

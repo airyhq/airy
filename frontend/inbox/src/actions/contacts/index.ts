@@ -1,37 +1,65 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {HttpClientInstance} from '../../httpClient';
-import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
-import {Contact} from 'model';
+import {GetContactDetailsRequestPayload, PaginatedResponse, UpdateContactDetailsRequestPayload} from 'httpclient/src';
+import {Contact, Pagination} from 'model';
+import {StateModel} from '../../reducers';
 
+const CONTACT_LIST = '@@contact/LIST';
 const CONTACT_INFO = '@@contact/INFO';
 const CONTACT_UPDATE = '@@contact/UPDATE';
+const CONTACT_DELETE = '@@contact/DELETE';
 
-export const getContactDetailsAction = createAction(CONTACT_INFO, (conversationId: string, contact: Contact) => ({
-  conversationId,
+export const getContactDetailsAction = createAction(CONTACT_INFO, (id: string, contact: Contact) => ({
+  id,
   contact,
-}))<{conversationId: string; contact: Contact}>();
+}))<{id: string; contact: Contact}>();
 
 export const updateContactDetailsAction = createAction(
   CONTACT_UPDATE,
-  (conversationId: string, updatedContact: UpdateContactDetailsRequestPayload) => ({
-    conversationId,
+  (id: string, updatedContact: UpdateContactDetailsRequestPayload) => ({
+    id,
     updatedContact,
   })
-)<{conversationId: string; updatedContact: UpdateContactDetailsRequestPayload}>();
+)<{id: string; updatedContact: UpdateContactDetailsRequestPayload}>();
+export const listContactsAction = createAction(CONTACT_LIST, (contacts: Contact[], paginationData: Pagination) => ({
+  contacts,
+  paginationData,
+}))<{contacts: Contact[]; paginationData: Pagination}>();
 
-export const getContactDetails = (conversationId: string) => (dispatch: Dispatch<any>) => {
-  HttpClientInstance.getContactDetails({conversationId: conversationId}).then((response: Contact) => {
-    dispatch(getContactDetailsAction(conversationId, response));
+export const deleteContactAction = createAction(CONTACT_DELETE, (id: string) => id)<string>();
+
+export const listContacts = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
+  const pageSize = 54;
+  const cursor = state().data.contacts.all.paginationData.nextCursor;
+  HttpClientInstance.listContacts({page_size: pageSize, cursor: cursor}).then(
+    (response: PaginatedResponse<Contact>) => {
+      dispatch(listContactsAction(response.data, response.paginationData));
+      return Promise.resolve(true);
+    }
+  );
+};
+
+export const deleteContact = (id: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.deleteContact(id).then(() => {
+    dispatch(deleteContactAction(id));
     return Promise.resolve(true);
   });
 };
 
-export const updateContactDetails =
-  (conversationId: string, updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) =>
+export const getContactDetails =
+  ({id, conversationId}: GetContactDetailsRequestPayload) =>
   (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.getContactDetails({id, conversationId}).then((response: Contact) => {
+      dispatch(getContactDetailsAction(response.id, response));
+      return Promise.resolve(response.id);
+    });
+  };
+
+export const updateContactDetails =
+  (id: string, updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) => (dispatch: Dispatch<any>) => {
     HttpClientInstance.updateContactDetails(updateContactDetailsRequestPayload).then(() => {
-      dispatch(updateContactDetailsAction(conversationId, updateContactDetailsRequestPayload));
+      dispatch(updateContactDetailsAction(id, updateContactDetailsRequestPayload));
       return Promise.resolve(true);
     });
   };

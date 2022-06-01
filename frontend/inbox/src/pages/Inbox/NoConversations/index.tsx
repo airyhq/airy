@@ -1,5 +1,5 @@
-import {t} from 'i18next';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
 interface NoConversationsProps {
@@ -8,6 +8,7 @@ interface NoConversationsProps {
 }
 
 const NoConversations = (props: NoConversationsProps) => {
+  const {t} = useTranslation();
   return props.conversations === 0 && props.filterSet === false ? (
     <div className={styles.component}>
       <strong>{t('newMessagesWillAppearHere')}</strong>

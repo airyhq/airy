@@ -5,11 +5,12 @@ import {Route, Routes, Navigate} from 'react-router-dom';
 import TopBar from './components/TopBar';
 import Inbox from './pages/Inbox';
 import Tags from './pages/Tags';
+import Contacts from './pages/Contacts';
 import NotFound from './pages/NotFound';
 import {Sidebar} from './components/Sidebar';
 import AiryWebSocket from './components/AiryWebsocket';
 
-import {INBOX_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
+import {CONTACTS_ROUTE, INBOX_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
@@ -40,6 +41,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={ROOT_ROUTE} element={<Navigate to={INBOX_ROUTE} replace />} />
             <Route path={TAGS_ROUTE} element={<Tags />} />
             <Route path={INBOX_ROUTE} element={<Inbox />} />
+            <Route path={CONTACTS_ROUTE} element={<Contacts />} />
             <Route path={`/inbox/conversations/:conversationId`} element={<Inbox />} />
             <Route element={<NotFound />} />
           </Routes>

@@ -11,13 +11,13 @@ ts_web_library(
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",
+        "@npm//i18next",
         "@npm//lodash-es",
         "@npm//react",
         "@npm//react-autosize-textarea",
+        "@npm//react-i18next",
         "@npm//react-modal",
         "@npm//react-router-dom",
-        "@npm//i18next",
-        "@npm//react-i18next",
     ],
 )
 

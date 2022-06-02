@@ -24,7 +24,7 @@ func (r ResourceCreatedHandler) Handle(ctx Context) error {
 		return errGetDeployments
 	}
 
-	cnfMap, err := getConfigMapsByLabelKey(ctx.ClientSet, ctx.Namespace)
+	cnfMap, err := getConfigMapsByComponent(ctx.ClientSet, ctx.Namespace)
 	if err != nil {
 		klog.Errorf("Error retrieving configmap %s", err)
 		return err
@@ -58,7 +58,7 @@ func (r ResourceCreatedHandler) Handle(ctx Context) error {
 	return nil
 }
 
-func getConfigMapsByLabelKey(clientSet kubernetes.Interface, namespace string) (map[string]*v1.ConfigMap, error) {
+func getConfigMapsByComponent(clientSet kubernetes.Interface, namespace string) (map[string]*v1.ConfigMap, error) {
 	configmaps, err := clientSet.CoreV1().ConfigMaps(namespace).List(
 		context.Background(),
 		metav1.ListOptions{LabelSelector: "core.airy.co/component"},

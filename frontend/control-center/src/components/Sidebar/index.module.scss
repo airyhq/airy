@@ -79,6 +79,10 @@
   background-color: var(--color-blue-white);
 }
 
+.inactive {
+  display: none;
+}
+
 .version {
   position: absolute;
   left: 8px;

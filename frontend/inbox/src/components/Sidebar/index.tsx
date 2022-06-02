@@ -27,7 +27,8 @@ const Sidebar = (props: SideBarProps) => {
   };
 
   useEffect(() => {
-    setContactsEnabled(props.components[ConfigServices.apiContacts]?.enabled || false);
+    Object.entries(props.components).length > 0 &&
+      setContactsEnabled(props.components[ConfigServices.apiContacts]?.enabled || false);
   }, [props.components]);
 
   const [contactsEnabled, setContactsEnabled] = useState(
@@ -49,14 +50,16 @@ const Sidebar = (props: SideBarProps) => {
             <span className={styles.iconText}>Tags</span>
           </Link>
         </div>
-        {contactsEnabled && (
-          <div className={`${styles.align} ${isActive(CONTACTS_ROUTE) ? styles.active : ''}`}>
-            <Link to={CONTACTS_ROUTE} className={`${styles.link} ${isActive(CONTACTS_ROUTE) ? styles.active : ''}`}>
-              <ContactIcon width={'18px'} />
-              <span className={styles.iconText}>Contacts</span>
-            </Link>
-          </div>
-        )}
+        <div
+          className={`${styles.align} ${isActive(CONTACTS_ROUTE) ? styles.active : ''} ${
+            !contactsEnabled && styles.inactive
+          }`}
+        >
+          <Link to={CONTACTS_ROUTE} className={`${styles.link} ${isActive(CONTACTS_ROUTE) ? styles.active : ''}`}>
+            <ContactIcon width={'18px'} />
+            <span className={styles.iconText}>Contacts</span>
+          </Link>
+        </div>
       </div>
       <span className={styles.version}>Version {props.version}</span>
     </nav>

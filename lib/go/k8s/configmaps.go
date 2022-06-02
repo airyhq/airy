@@ -11,37 +11,21 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func ApplyConfigMap(
-	configmapName string,
-	namespace string,
-	cmData map[string]string,
-	labels map[string]string,
-	annotations map[string]string,
-	clientset *kubernetes.Clientset,
-) error {
+func ApplyConfigMap(configmapName string, namespace string, cmData map[string]string, labels map[string]string, clientset *kubernetes.Clientset) error {
 	cm, _ := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), configmapName, v1.GetOptions{})
 	if cm.GetName() == "" {
 		_, err := clientset.CoreV1().ConfigMaps(namespace).Create(context.TODO(),
 			&corev1.ConfigMap{
 				ObjectMeta: v1.ObjectMeta{
-					Name:        configmapName,
-					Namespace:   namespace,
-					Labels:      labels,
-					Annotations: annotations,
+					Name:      configmapName,
+					Namespace: namespace,
+					Labels:    labels,
 				},
 				Data: cmData,
 			}, v1.CreateOptions{})
 		return err
 	} else {
-		if cmData != nil && len(cmData) > 0 {
-			cm.Data = cmData
-		}
-		for k, v := range labels {
-			cm.Labels[k] = v
-		}
-		for k, v := range annotations {
-			cm.Annotations[k] = v
-		}
+		cm.Data = cmData
 		_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
 		return err
 	}

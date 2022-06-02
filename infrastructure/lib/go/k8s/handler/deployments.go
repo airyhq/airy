@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-
 	apps_v1 "k8s.io/api/apps/v1"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
@@ -68,6 +67,10 @@ func ReloadDeployment(deployment apps_v1.Deployment, clientSet kubernetes.Interf
 	deploymentsClient := clientSet.AppsV1().Deployments(deployment.Namespace)
 
 	currentReplicas := deployment.Spec.Replicas
+	if *currentReplicas == 0 {
+		return nil
+	}
+
 	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		deployment, err := deploymentsClient.Get(context.TODO(), deployment.Name, metav1.GetOptions{})
 		if err != nil {
@@ -76,9 +79,6 @@ func ReloadDeployment(deployment apps_v1.Deployment, clientSet kubernetes.Interf
 		}
 		deployment.Spec.Replicas = util.Int32Ptr(0) // reduce replica count
 		_, updateErr := deploymentsClient.Update(context.TODO(), deployment, metav1.UpdateOptions{})
-		if *currentReplicas == 0 {
-			return updateErr
-		}
 		deployment.Spec.Replicas = currentReplicas // increase replica count
 		_, updateErr = deploymentsClient.Update(context.TODO(), deployment, metav1.UpdateOptions{})
 		return updateErr
@@ -86,9 +86,9 @@ func ReloadDeployment(deployment apps_v1.Deployment, clientSet kubernetes.Interf
 }
 
 type ScaleCommand struct {
-	ClientSet       kubernetes.Interface
-	Namespace       string
-	DeploymentName  string
+	ClientSet kubernetes.Interface
+	Namespace string
+	DeploymentName string
 	DesiredReplicas int32
 }
 
@@ -131,3 +131,4 @@ func CanBeStarted(deployment apps_v1.Deployment, clientSet kubernetes.Interface)
 
 	return true
 }
+

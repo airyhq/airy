@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 
 	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/airyhq/airy/lib/go/payloads"
@@ -39,10 +38,7 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		labels := map[string]string{
 			"core.airy.co/component": component.Name,
 		}
-		annotations := map[string]string{
-			"enabled": strconv.FormatBool(component.Enabled),
-		}
-		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, annotations, s.clientSet)
+		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, s.clientSet)
 		if applyErr != nil {
 			klog.Error("Unable to apply configuration for component:" + component.Name + "\nError:\n" + err.Error())
 			responseComponents.Components[component.Name] = false

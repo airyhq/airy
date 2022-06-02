@@ -37,7 +37,7 @@ func (s *ClusterUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	secData := config.GetSecurityData(conf.ClusterConfig.Security)
 	if len(secData) != 0 {
-		applyErr := k8s.ApplyConfigMap("security", s.namespace, secData, map[string]string{}, map[string]string{}, s.clientSet)
+		applyErr := k8s.ApplyConfigMap("security", s.namespace, secData, map[string]string{}, s.clientSet)
 		if applyErr != nil {
 			klog.Error("Unable to apply configuration for \"security\"\nError:\n" + err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)

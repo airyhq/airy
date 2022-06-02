@@ -21,28 +21,27 @@ func (r ResourceCreatedHandler) Handle(ctx Context) error {
 	}
 
 	for _, deployment := range deployments {
-		if r.ConfigMap.Annotations != nil && r.ConfigMap.Annotations["enabled"] == "false" {
+		if r.ConfigMap.Labels != nil && r.ConfigMap.Labels["core.airy.co/component"] == r.ConfigMap.Name && r.ConfigMap.Annotations != nil && r.ConfigMap.Annotations["enabled"] == "true" {
+			//NOTE: this check is probably not needed anymore
+			if !handler.CanBeStarted(deployment, ctx.ClientSet) {
+				klog.Infof("Skipping deployment %s because it is missing config maps", deployment.Name)
+				continue
+			}
+
+			klog.Infof("Scheduling start for deployment: %s", deployment.Name)
+			if err := handler.ScaleDeployment(handler.ScaleCommand{
+				ClientSet:       ctx.ClientSet,
+				Namespace:       ctx.Namespace,
+				DeploymentName:  deployment.Name,
+				DesiredReplicas: 1, //TODO extract from annotation
+			}); err != nil {
+				klog.Errorf("Starting deployment failed: %v", err)
+				return err
+			}
+			klog.Infof("Started deployment: %s", deployment.Name)
+		} else {
 			klog.Infof("Skipping deployment %s because it is disabled", deployment.Name)
-			continue
 		}
-
-		//NOTE: this check is probably not needed anymore
-		if !handler.CanBeStarted(deployment, ctx.ClientSet) {
-			klog.Infof("Skipping deployment %s because it is missing config maps", deployment.Name)
-			continue
-		}
-
-		klog.Infof("Scheduling start for deployment: %s", deployment.Name)
-		if err := handler.ScaleDeployment(handler.ScaleCommand{
-			ClientSet:       ctx.ClientSet,
-			Namespace:       ctx.Namespace,
-			DeploymentName:  deployment.Name,
-			DesiredReplicas: 1, //TODO extract from annotation
-		}); err != nil {
-			klog.Errorf("Starting deployment failed: %v", err)
-			return err
-		}
-		klog.Infof("Started deployment: %s", deployment.Name)
 	}
 	return nil
 }

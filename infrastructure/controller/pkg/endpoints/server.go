@@ -51,8 +51,5 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	enableDisableComponents := &EnableDisableComponents{clientSet: clientSet, namespace: namespace}
-	r.Handle("/components.enable", enableDisableComponents).Methods("POST")
-
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

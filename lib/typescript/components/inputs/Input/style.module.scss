@@ -70,9 +70,18 @@
 
 .inputTitle {
   @include font-base;
+  display: flex;
   color: var(--color-text-contrast);
   margin-bottom: 8px;
   width: 100%;
+
+  svg {
+    margin-left: 6px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .inputHint {

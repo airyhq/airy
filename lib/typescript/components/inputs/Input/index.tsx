@@ -4,6 +4,7 @@ import styles from './style.module.scss';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
+import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -243,8 +244,7 @@ class InputComponent extends Component<InputProps, IState> {
         ref={node => {
           this.node = node;
         }}
-        className={styles.emojiDrawer}
-      >
+        className={styles.emojiDrawer}>
         <Picker />
       </div>
     );
@@ -254,6 +254,7 @@ class InputComponent extends Component<InputProps, IState> {
     const {
       id,
       label,
+      showLabelIcon,
       hideLabel,
       name,
       value,
@@ -297,6 +298,7 @@ class InputComponent extends Component<InputProps, IState> {
                   {label} {this.iconForState()}
                 </Fragment>
               )}
+              {showLabelIcon && <InfoCircle width={20} />}
             </div>
           )}
           {this.props.maxLength > 0 && this.props.showCounter ? (
@@ -365,8 +367,7 @@ class InputComponent extends Component<InputProps, IState> {
                   type="button"
                   onClick={this.handleEmojiDrawer}
                   disabled={this.props.maxLength - value.length <= 0}
-                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}
-                >
+                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
                   <SmileyIcon title="Emoji" className={styles.smileyIcon} />
                 </button>
               </div>
@@ -388,6 +389,7 @@ export interface InputProps {
   id?: string;
   /** The label above the input field */
   label?: string;
+  showLabelIcon?: boolean;
 
   /** Want to hide the label completely? */
   hideLabel?: boolean;

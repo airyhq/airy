@@ -14,7 +14,7 @@ import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 import {EditChatPlugin} from './sections/EditChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 
 import styles from './ChatPluginConnect.module.scss';
 
@@ -101,8 +101,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                 type="button"
                 onClick={() => {
                   disconnectChannel(channel);
-                }}
-              >
+                }}>
                 {t('delete')}
               </LinkButton>
             </div>
@@ -123,9 +122,14 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     return <OverviewSection />;
   };
 
+  console.log(typeof ArrowLeftIcon);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.headline}>
+        <LinkButton onClick={() => navigate(-1)} type="button">
+          <ArrowLeftIcon className={styles.backIcon} />
+        </LinkButton>
         <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
         {channelId == null && (
           <div className={styles.addButton}>
@@ -135,18 +139,28 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
           </div>
         )}
       </div>
-      <div>
+      <div className={styles.infoBox}>
         <InfoButton
           link="https://airy.co/docs/core/sources/chatplugin/overview"
           text={t('infoButtonText')}
           color="grey"
+          style={{border: 'none', fontWeight: '700', paddingLeft: '10px', margin: '0px'}}
         />
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
       </div>
-      <PageContent />
+      <div className={styles.channelsLine}>
+        <div style={{display: 'flex', flexDirection: 'column', marginBottom: '36px'}}>
+          <span style={{marginBottom: '16px', marginTop: '16px', marginLeft: '36px', fontWeight: '700'}}>
+            {t('create')}
+          </span>
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{width: '150px', height: '4px', background: '#1578D4'}}></div>
+            <div style={{width: '100%', height: '1px', background: '#CAD5DB'}}></div>
+          </div>
+        </div>
+      </div>
+      <div style={{paddingLeft: '32px'}}>
+        <PageContent />
+      </div>
     </div>
   );
 };

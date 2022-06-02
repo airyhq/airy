@@ -18,7 +18,6 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
 
   return (
     <div>
-      <p className={styles.newPageParagraph}>{t('addChatplugin')}</p>
       <div className={styles.formWrapper}>
         <div className={styles.settings}>
           <form>
@@ -31,6 +30,7 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                   setDisplayName(e.target.value);
                 }}
                 label={t('displayName')}
+                showLabelIcon={true}
                 placeholder={t('addDisplayName')}
                 required
                 height={32}
@@ -48,6 +48,7 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                   setImageUrl(e.target.value);
                 }}
                 label={t('imageUrl')}
+                showLabelIcon={true}
                 placeholder={t('imageUrlPlaceholder')}
                 hint={t('imageUrlHint')}
                 height={32}
@@ -57,13 +58,14 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
             <Button
               type="submit"
               styleVariant="small"
+              style={{width: '176px', height: '40px'}}
               dataCy={cyChannelsChatPluginFormSubmitButton}
               onClick={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 createNewConnection(displayName, imageUrl);
               }}
             >
-              {t('save')}
+              {t('create')}
             </Button>
           </form>
         </div>

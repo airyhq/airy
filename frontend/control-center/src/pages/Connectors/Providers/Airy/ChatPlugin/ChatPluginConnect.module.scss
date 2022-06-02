@@ -6,16 +6,15 @@
   color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
-  padding-left: 96px;
-  padding-top: 88px;
   width: 100%;
-  padding: 32px;
+  padding: 32px 0;
   margin: 88px 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
 }
 
 .headline {
+  padding-left: 10px;
   h1 {
     @include font-xl;
     font-weight: bold;
@@ -34,10 +33,9 @@
 }
 
 .backIcon {
-  height: 13px;
-  width: 17px;
+  width: 20px;
   path {
-    fill: var(--color-airy-blue);
+    fill: var(--color-text-gray);
   }
   margin-right: 8px;
 }
@@ -157,4 +155,22 @@
   resize: none;
   padding: 8px;
   margin-bottom: 16px;
+}
+
+.channelsLine {
+  width: 100%;
+  span {
+    @include font-base;
+    color: var(--color-airy-blue);
+  }
+}
+
+.infoBox {
+  button {
+    border-color: red;
+  }
+  color: green;
+  a {
+    color: lightcoral
+  }
 }

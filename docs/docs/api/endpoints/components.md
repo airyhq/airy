@@ -35,7 +35,7 @@ The list of the currently configured components is returned.
 
 ## Update
 
-Update the configuration of a list of components.
+Update the configuration of a list of components. The `data` section is optional
 
 `POST /components.update`
 

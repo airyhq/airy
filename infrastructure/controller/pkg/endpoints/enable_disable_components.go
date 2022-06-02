@@ -37,38 +37,40 @@ func (s *EnableDisableComponents) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	deployments, err := s.clientSet.AppsV1().Deployments(s.namespace).List(
-		r.Context(),
-		v1.ListOptions{LabelSelector: fmt.Sprintf("core.airy.co/component=%s", c.Name)},
-	)
-
-	for _, deployment := range deployments.Items {
-		if c.Enable && *deployment.Spec.Replicas > 0 {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		if !c.Enable && *deployment.Spec.Replicas == 0 {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		if c.Enable {
-			*deployment.Spec.Replicas = 1
-		} else {
-			*deployment.Spec.Replicas = 0
-		}
-		//TODO: Use Patch insdead
-		_, err := s.clientSet.AppsV1().Deployments(s.namespace).Update(
-			r.Context(),
-			&deployment,
-			v1.UpdateOptions{},
-		)
-		if err != nil {
-			klog.Errorf("unable to update deployment %S", err)
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-	}
+	/*
+	 *  deployments, err := s.clientSet.AppsV1().Deployments(s.namespace).List(
+	 *    r.Context(),
+	 *    v1.ListOptions{LabelSelector: fmt.Sprintf("core.airy.co/component=%s", c.Name)},
+	 *  )
+	 *
+	 *  for _, deployment := range deployments.Items {
+	 *    if c.Enable && *deployment.Spec.Replicas > 0 {
+	 *      w.WriteHeader(http.StatusOK)
+	 *      return
+	 *    }
+	 *
+	 *    if !c.Enable && *deployment.Spec.Replicas == 0 {
+	 *      w.WriteHeader(http.StatusOK)
+	 *      return
+	 *    }
+	 *
+	 *    if c.Enable {
+	 *      *deployment.Spec.Replicas = 1
+	 *    } else {
+	 *      *deployment.Spec.Replicas = 0
+	 *    }
+	 *    //TODO: Use Patch insdead
+	 *    _, err := s.clientSet.AppsV1().Deployments(s.namespace).Update(
+	 *      r.Context(),
+	 *      &deployment,
+	 *      v1.UpdateOptions{},
+	 *    )
+	 *    if err != nil {
+	 *      klog.Errorf("unable to update deployment %S", err)
+	 *      w.WriteHeader(http.StatusInternalServerError)
+	 *    }
+	 *  }
+	 */
 
 	configmaps, err := s.clientSet.CoreV1().ConfigMaps(s.namespace).List(
 		r.Context(),

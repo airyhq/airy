@@ -33,7 +33,7 @@ func ApplyConfigMap(
 			}, v1.CreateOptions{})
 		return err
 	} else {
-		if cmData != nil {
+		if cmData != nil && len(cmData) > 0 {
 			cm.Data = cmData
 		}
 		for k, v := range labels {

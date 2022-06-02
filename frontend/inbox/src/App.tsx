@@ -7,7 +7,7 @@ import Inbox from './pages/Inbox';
 import Tags from './pages/Tags';
 import Contacts from './pages/Contacts';
 import NotFound from './pages/NotFound';
-import {Sidebar} from './components/Sidebar';
+import Sidebar from './components/Sidebar';
 import AiryWebSocket from './components/AiryWebsocket';
 
 import {CONTACTS_ROUTE, INBOX_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';

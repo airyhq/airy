@@ -34,7 +34,7 @@ spec:
           - configMapRef:
               name: core-config
           - configMapRef:
-              name: "{{ .Values.component }}"
+              name: "{{ .Values.api.admin.component }}"
         env:
         - name: KUBERNETES_NAMESPACE
           valueFrom:

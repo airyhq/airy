@@ -32,3 +32,5 @@ export * from './listWebhooks';
 export * from './subscribeWebhook';
 export * from './unsubscribeWebhook';
 export * from './updateWebhook';
+export * from './listContacts';
+export * from './deleteContact';

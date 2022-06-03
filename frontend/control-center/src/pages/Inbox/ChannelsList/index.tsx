@@ -46,6 +46,8 @@ const ChannelsList = () => {
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
+  const connectorsRoute = location.pathname.includes('connectors');
+  console.log('connectorsRoute', connectorsRoute);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -61,39 +63,37 @@ const ChannelsList = () => {
       case Source.facebook:
         setName(t('facebookTitle'));
         setDescription(t('facebookDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
         setDescription(t('twilioWhatsappDescription'));
-        ROUTE = location.pathname.includes('connectors')
-          ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
-          : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
     }
@@ -109,7 +109,7 @@ const ChannelsList = () => {
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          Channels
+          {connectorsRoute ? t('channelsCapital') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>
@@ -170,8 +170,8 @@ const ChannelsList = () => {
           marginBottom: '24px',
         }}
       >
-        <span>Name</span>
-        <span>Manage</span>
+        <span>{t('name')}</span>
+        <span>{t('manage')}</span>
       </div>
 
       <div className={styles.channelsList}>
@@ -185,8 +185,8 @@ const ChannelsList = () => {
           )
         ) : (
           <div className={styles.emptyState}>
-            <h1 className={styles.noSearchMatch}>Result not found.</h1>
-            <p>Try to search for a different term.</p>
+            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+            <p>{t('noResultsTerm')}</p>
           </div>
         )}
       </div>

@@ -23,7 +23,7 @@ describe('Filter conversation', () => {
 
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
 
-    cy.visit('/chatplugin/inbox/example?channel_id=' + Cypress.env('channelId'));
+    cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 

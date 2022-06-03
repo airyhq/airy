@@ -24,9 +24,7 @@ describe('adds two suggested replies to a message and sends one of the suggested
       cy.visit(`/inbox/inbox/conversations/${Cypress.env('conversationId')}`);
       cy.url().should('include', '/inbox');
 
-      cy.get(`[data-cy=${cySuggestionsButton}]`);
-
-      cy.get(`[data-cy=${cySuggestionsButton}]`).click();
+      cy.get(`[data-cy=${cySuggestionsButton}]`).should('be.visible').click();
 
       cy.get(`[data-cy=${cySuggestionsList}]`).contains('Welcome!').click({force: true});
 

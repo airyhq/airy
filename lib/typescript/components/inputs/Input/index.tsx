@@ -5,6 +5,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
+import {Tooltip} from 'components/general';
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -255,6 +256,9 @@ class InputComponent extends Component<InputProps, IState> {
       id,
       label,
       showLabelIcon,
+      tooltipContent,
+      tooltipDirection,
+      tooltipDelay,
       hideLabel,
       name,
       value,
@@ -298,7 +302,11 @@ class InputComponent extends Component<InputProps, IState> {
                   {label} {this.iconForState()}
                 </Fragment>
               )}
-              {showLabelIcon && <InfoCircle width={20} />}
+              {showLabelIcon && (
+                <Tooltip direction={tooltipDirection} content={tooltipContent} delay={tooltipDelay}>
+                  <InfoCircle width={20} />
+                </Tooltip>
+              )}
             </div>
           )}
           {this.props.maxLength > 0 && this.props.showCounter ? (
@@ -390,6 +398,9 @@ export interface InputProps {
   /** The label above the input field */
   label?: string;
   showLabelIcon?: boolean;
+  tooltipDirection?: string;
+  tooltipContent?: any;
+  tooltipDelay?: number;
 
   /** Want to hide the label completely? */
   hideLabel?: boolean;

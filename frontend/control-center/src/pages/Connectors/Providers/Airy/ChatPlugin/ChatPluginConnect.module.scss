@@ -161,16 +161,47 @@
   width: 100%;
   span {
     @include font-base;
-    color: var(--color-airy-blue);
   }
 }
 
-.infoBox {
-  button {
-    border-color: red;
+.activeItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 32px;
+  width: 150px;
+  color: var(--color-airy-blue);
+  border-bottom: 5px solid var(--color-airy-blue);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
   }
-  color: green;
-  a {
-    color: lightcoral
+}
+
+.inactiveItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 32px;
+  width: 150px;
+  border-bottom: 5px solid transparent;
+  color: var(--color-text-gray);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
   }
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: rgb(202, 213, 219);
+  display: flex;
+  position: relative;
+  top: -3px;
+  left: 0px;
 }

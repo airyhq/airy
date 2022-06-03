@@ -4,3 +4,4 @@ export * from './ListenOutsideClick';
 export * from './AudioClip';
 export * from './ConnectorAvatar';
 export * from './Pagination';
+export * from './Tooltip';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
@@ -11,7 +11,6 @@ import {Button, LinkButton, InfoButton} from 'components';
 import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
-import {EditChatPlugin} from './sections/EditChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
@@ -25,6 +24,15 @@ import {
   CATALOG_CHAT_PLUGIN_ROUTE,
 } from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
+import {CreateUpdateSection} from './sections/CreateUpdateSection';
+import {CustomiseSection} from './sections/CustomiseSection';
+import {InstallSection} from './sections/InstallSection';
+
+export enum Pages {
+  createUpdate = 'create-update',
+  customization = 'customization',
+  install = 'install',
+}
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -40,6 +48,7 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
+  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const {channelId} = useParams();
   const navigate = useNavigate();
   const {t} = useTranslation();
@@ -49,6 +58,23 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
     ? CONNECTORS_CHAT_PLUGIN_ROUTE
     : CATALOG_CHAT_PLUGIN_ROUTE;
+
+  const xxxx = () => {
+    switch (currentPage) {
+      case Pages.createUpdate:
+        return (
+          <div className={styles.formWrapper}>
+            {/* <InstallUpdateSection channel={channel} host={host} updateConnection={displayName, imageUrl} currentPage /> */}
+          </div>
+        );
+      case Pages.customization:
+        return (
+          <div className={styles.formWrapper}>{/* <CustomiseSection channelId={channel?.id} host={host} /> */}</div>
+        );
+      case Pages.install:
+        return <div className={styles.formWrapper}>{/* <InstallSection channelId={channel?.id} host={host} /> */}</div>;
+    }
+  };
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -73,6 +99,21 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     if (window.confirm(t('deleteChannel'))) {
       props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
     }
+  };
+
+  const showCreateUpdate = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.createUpdate);
+  };
+
+  const showCustomization = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.customization);
+  };
+
+  const showInstall = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.install);
   };
 
   const openNewPage = () => navigate(CHAT_PLUGIN_ROUTE + '/new');
@@ -117,12 +158,10 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     }
     if (channelId?.length > 0) {
       const channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      return <EditChatPlugin channel={channel} host={apiHostUrl} updateConnection={updateConnection} />;
+      // return <CreateUpdateSection channel={channel} host={apiHostUrl} updateConnection={updateConnection} currentPage={currentPage}/>;
     }
     return <OverviewSection />;
   };
-
-  console.log(typeof ArrowLeftIcon);
 
   return (
     <div className={styles.wrapper}>
@@ -149,13 +188,24 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       </div>
       <div className={styles.channelsLine}>
         <div style={{display: 'flex', flexDirection: 'column', marginBottom: '36px'}}>
-          <span style={{marginBottom: '16px', marginTop: '16px', marginLeft: '36px', fontWeight: '700'}}>
-            {t('create')}
-          </span>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <div style={{width: '150px', height: '4px', background: '#1578D4'}}></div>
-            <div style={{width: '100%', height: '1px', background: '#CAD5DB'}}></div>
+          <div style={{display: 'flex'}}>
+            <span
+              onClick={showCreateUpdate}
+              className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
+              {channelId === 'new' ? t('create') : t('update')}
+            </span>
+            <span
+              onClick={showCustomization}
+              className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}>
+              {t('customize')}
+            </span>
+            <span
+              onClick={showInstall}
+              className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}>
+              {t('install')}
+            </span>
           </div>
+          <div className={styles.line} />
         </div>
       </div>
       <div style={{paddingLeft: '32px'}}>

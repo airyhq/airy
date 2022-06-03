@@ -31,6 +31,9 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                 }}
                 label={t('displayName')}
                 showLabelIcon={true}
+                tooltipContent={<span>idiot</span>}
+                tooltipDelay={1}
+                tooltipDirection="right"
                 placeholder={t('addDisplayName')}
                 required
                 height={32}
@@ -49,6 +52,9 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                 }}
                 label={t('imageUrl')}
                 showLabelIcon={true}
+                tooltipContent={<span>clown</span>}
+                tooltipDelay={1}
+                tooltipDirection="bottom"
                 placeholder={t('imageUrlPlaceholder')}
                 hint={t('imageUrlHint')}
                 height={32}
@@ -63,8 +69,7 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
               onClick={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 createNewConnection(displayName, imageUrl);
-              }}
-            >
+              }}>
               {t('create')}
             </Button>
           </form>

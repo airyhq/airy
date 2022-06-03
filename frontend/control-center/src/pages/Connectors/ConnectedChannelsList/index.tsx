@@ -62,7 +62,6 @@ const ConnectedChannelsList = () => {
   const [dataCyChannelList, setDataCyChannelList] = useState('');
   const listPageSize = 8;
   const connectorsRoute = location.pathname.includes('connectors');
-  console.log('connectorsRoute', connectorsRoute);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())

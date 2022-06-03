@@ -47,7 +47,6 @@ const ChannelsList = () => {
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const connectorsRoute = location.pathname.includes('connectors');
-  console.log('connectorsRoute', connectorsRoute);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())

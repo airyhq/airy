@@ -61,6 +61,7 @@ const ConnectedChannelsList = () => {
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
   const listPageSize = 8;
+  const connectorsRoute = location.pathname.includes('connectors');
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -85,44 +86,42 @@ const ConnectedChannelsList = () => {
       case Source.facebook:
         setName(t('facebookTitle'));
         setDescription(t('facebookDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
         setDescription(t('twilioWhatsappDescription'));
-        ROUTE = location.pathname.includes('connectors')
-          ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
-          : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsInstagramList);
         break;
@@ -139,7 +138,7 @@ const ConnectedChannelsList = () => {
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          {t('channelsCapital')}
+          {connectorsRoute ? t('channelsCapital') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>

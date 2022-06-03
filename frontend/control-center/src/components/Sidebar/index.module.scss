@@ -14,6 +14,7 @@
   background-color: var(--color-background-white);
   color: var(--color-text-contrast);
   position: fixed;
+  z-index: 1;
 }
 
 .linkSection {

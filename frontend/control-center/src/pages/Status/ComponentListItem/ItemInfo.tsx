@@ -21,43 +21,44 @@ export const ItemInfo = (props: ComponentInfoProps) => {
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
+  const isVisible = isExpanded || isComponent;
 
   return (
-    <div
-      className={`${styles.container} ${!isComponent ? styles.expandedContainer : ''}  ${
-        !isComponent && isExpanded ? styles.expandedContainerShown : ''
-      }`}
-    >
-      <div className={styles.name}>
-        {isComponent ? (
-          <>
-            <div
-              className={`${styles.arrowDownIcon} ${isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose}`}
-            >
-              <ArrowRight width={8} />
+    <>
+      {isVisible && (
+        <div className={`${styles.container} ${!isComponent ? styles.expandedContainer : ''}`}>
+          <div className={styles.name}>
+            {isComponent ? (
+              <>
+                <div
+                  className={`${styles.arrowDownIcon} ${
+                    isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose
+                  }`}
+                >
+                  <ArrowRight width={8} />
+                </div>
+                <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
+              </>
+            ) : (
+              <div className={styles.blankSpace} />
+            )}
+
+            <p className={`${isComponent ? styles.componentName : styles.serviceName}`}>
+              {isComponent ? componentName : itemName}
+            </p>
+          </div>
+
+          <div className={styles.healthyStatus}>
+            {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
+          </div>
+
+          {isComponent && (
+            <div className={styles.enabled}>
+              <Toggle value={componentEnabled} updateValue={setComponentEnabled} size="small" variant="green" />
             </div>
-            <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
-          </>
-        ) : (
-          <>
-            <div className={styles.blankSpace} />
-          </>
-        )}
-
-        <p className={`${isComponent ? styles.componentName : styles.serviceName}`}>
-          {isComponent ? componentName : itemName}
-        </p>
-      </div>
-
-      <div className={styles.healthyStatus}>
-        {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
-      </div>
-
-      {isComponent && (
-        <div className={styles.enabled}>
-          <Toggle value={componentEnabled} updateValue={setComponentEnabled} size="small" variant="green" />
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 };

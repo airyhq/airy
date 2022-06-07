@@ -9,28 +9,40 @@ import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramCont
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/googleContactIcon.svg';
 import {ReactComponent as SmsIcon} from 'assets/images/icons/twilioSmsContactIcon.svg';
 import {ReactComponent as WhatsappIcon} from 'assets/images/icons/twilioWhatsappContactIcon.svg';
-import {Contact} from 'model/Contact';
-import {Source} from 'model';
+import {Source, Contact} from 'model';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import DeleteContactModal from '../DeleteContactModal';
 import {ConversationInfoForContact} from '../../Inbox/Messenger/ConversationMetadata/ContactDetails';
+import {StateModel} from '../../../reducers';
+import {connect, ConnectedProps} from 'react-redux';
+
+const mapStateToProps = (state: StateModel) => ({
+  contacts: state.data.contacts.all.items,
+});
+
+const connector = connect(mapStateToProps, null);
 
 type ContactListItemProps = {
   contact: Contact;
   setConversationId: (conversationId: string) => void;
-  setContact: (convtact: Contact) => void;
+  setContact: (contact: Contact) => void;
   setEditModeOn: (editOn: boolean) => void;
   setCancelEdit: (cancel: boolean) => void;
-};
+} & ConnectedProps<typeof connector>;
 
-export const ContactListItem = (props: ContactListItemProps) => {
-  const {contact, setConversationId, setContact, setEditModeOn, setCancelEdit} = props;
+const ContactListItem = (props: ContactListItemProps) => {
+  const {contacts, contact, setConversationId, setContact, setEditModeOn, setCancelEdit} = props;
   const {t} = useTranslation();
   const conversationId = contact.conversations && Object.keys(contact?.conversations)[0];
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false);
   const [conversationsForContact, setConversationsForContact] = useState([]);
+  const [currentContactDisplayName, setCurrentContactDisplayName] = useState('');
+
+  useEffect(() => {
+    setCurrentContactDisplayName(contacts?.[contact?.id]?.displayName);
+  }, [contacts, contact?.id]);
 
   const formatConversationsForContact = (convObj: {[key: string]: string}) => {
     const conversationsForContactArr = [];
@@ -81,7 +93,7 @@ export const ContactListItem = (props: ContactListItemProps) => {
     <div className={styles.container} onClick={handleOnClick}>
       <div className={styles.avatarDisplayName}>
         <Avatar contact={contact} />
-        <span>{contact.displayName}</span>
+        <span>{currentContactDisplayName}</span>
       </div>
       <div className={styles.conversationChannels}>
         {contact.conversations ? (
@@ -110,3 +122,5 @@ export const ContactListItem = (props: ContactListItemProps) => {
     </div>
   );
 };
+
+export default connector(ContactListItem);

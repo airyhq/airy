@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, SetStateAction} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {getContactDetails, updateContactDetails} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
@@ -34,6 +34,7 @@ type ContactDetailsProps = {
   getUpdatedInfo: () => void;
   editingCanceled: boolean;
   getIsExpanded: (isExpanded: boolean) => void;
+  setContactIdConvMetadata?: React.Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
 
 export interface ConversationInfoForContact {
@@ -52,6 +53,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
     isEditing,
     editingCanceled,
     getIsExpanded,
+    setContactIdConvMetadata,
   } = props;
 
   const {t} = useTranslation();
@@ -77,15 +79,21 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   useEffect(() => {
     getContactId();
-    conversationId ? getContactDetails({conversationId: conversationId}) : getContactDetails({id: contact?.id});
     setExpanded(false);
     setAreOthersConversationForContact(false);
     setConversationsForContact([]);
   }, [conversationId, contact?.id]);
 
   const getContactId = async () => {
-    const contactId = await getContactDetails({conversationId});
-    setContactId(contactId);
+    try {
+      const contactId = conversationId
+        ? await getContactDetails({conversationId: conversationId})
+        : await getContactDetails({id: contact?.id});
+      setContactId(contactId);
+      setContactIdConvMetadata(contactId);
+    } catch (error) {
+      return error;
+    }
   };
 
   useEffect(() => {
@@ -185,7 +193,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
       organization
     );
 
-    updateContactDetails(contacts[contact?.id || contactId]?.id, {...infoDetailsPayload});
+    updateContactDetails({...infoDetailsPayload});
     updateContactType(infoDetailsPayload);
     getUpdatedInfo();
     fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);

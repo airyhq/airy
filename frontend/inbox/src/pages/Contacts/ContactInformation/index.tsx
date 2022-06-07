@@ -1,4 +1,4 @@
-import {updateConversationContactInfo} from '../../../actions/conversations';
+import {updateContactDetails, updateConversationContactInfo} from '../../../actions';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
@@ -13,6 +13,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as EditIcon} from 'assets/images/icons/pen.svg';
 import {ReactComponent as CancelIcon} from 'assets/images/icons/cancelCross.svg';
+import {StateModel} from '../../../reducers';
 import {
   cyCancelEditContactIcon,
   cyDisplayName,
@@ -22,11 +23,16 @@ import {
   cyEditDisplayNameIcon,
 } from 'handles';
 
+const mapStateToProps = (state: StateModel) => ({
+  contacts: state.data.contacts.all.items,
+});
+
 const mapDispatchToProps = {
+  updateContactDetails,
   updateConversationContactInfo,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ContactInformationProps = {
   contact: Contact;
@@ -37,7 +43,16 @@ type ContactInformationProps = {
 } & ConnectedProps<typeof connector>;
 
 const ContactInformation = (props: ContactInformationProps) => {
-  const {contact, conversationId, updateConversationContactInfo, editModeOn, cancelEdit, setEditModeOn} = props;
+  const {
+    contact,
+    contacts,
+    conversationId,
+    updateContactDetails,
+    updateConversationContactInfo,
+    editModeOn,
+    cancelEdit,
+    setEditModeOn,
+  } = props;
   const {t} = useTranslation();
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
   const [displayName, setDisplayName] = useState(contact?.displayName);
@@ -45,11 +60,16 @@ const ContactInformation = (props: ContactInformationProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
+  const [currentContactDisplayName, setCurrentContactDisplayName] = useState('');
+
+  useEffect(() => {
+    setCurrentContactDisplayName(contacts[contact?.id]?.displayName);
+  }, [contacts, contact?.id]);
 
   useEffect(() => {
     setShowEditDisplayName(false);
     setDisplayName(contact?.displayName);
-  }, [conversationId]);
+  }, [conversationId, contact?.id]);
 
   useEffect(() => {
     setIsEditing(editModeOn);
@@ -57,7 +77,14 @@ const ContactInformation = (props: ContactInformationProps) => {
   }, [editModeOn, isContactDetailsExpanded, cancelEdit]);
 
   const saveEditDisplayName = () => {
-    updateConversationContactInfo(props.conversationId, displayName);
+    updateContactDetails({id: contact.id, displayName: displayName});
+
+    if (contact?.conversations) {
+      Object.keys(contact.conversations).forEach(conversationId => {
+        updateConversationContactInfo(conversationId, displayName);
+      });
+    }
+
     setShowEditDisplayName(!saveEditDisplayName);
   };
 
@@ -123,7 +150,7 @@ const ContactInformation = (props: ContactInformationProps) => {
                     <div className={styles.editDisplayNameContainer}>
                       <Input
                         autoFocus={true}
-                        placeholder={contact.displayName}
+                        placeholder={displayName}
                         value={displayName}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
                         height={32}
@@ -150,7 +177,7 @@ const ContactInformation = (props: ContactInformationProps) => {
                   </div>
                 ) : (
                   <div className={styles.displayName} data-cy={cyDisplayName}>
-                    {contact?.displayName}
+                    {currentContactDisplayName}
                     <EditPencilIcon
                       className={styles.editPencilIcon}
                       title={t('editDisplayName')}

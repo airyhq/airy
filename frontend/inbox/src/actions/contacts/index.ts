@@ -17,11 +17,10 @@ export const getContactDetailsAction = createAction(CONTACT_INFO, (id: string, c
 
 export const updateContactDetailsAction = createAction(
   CONTACT_UPDATE,
-  (id: string, updatedContact: UpdateContactDetailsRequestPayload) => ({
-    id,
-    updatedContact,
+  (contact: UpdateContactDetailsRequestPayload) => ({
+    contact,
   })
-)<{id: string; updatedContact: UpdateContactDetailsRequestPayload}>();
+)<{contact: UpdateContactDetailsRequestPayload}>();
 export const listContactsAction = createAction(CONTACT_LIST, (contacts: Contact[], paginationData: Pagination) => ({
   contacts,
   paginationData,
@@ -57,9 +56,9 @@ export const getContactDetails =
   };
 
 export const updateContactDetails =
-  (id: string, updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) => (dispatch: Dispatch<any>) => {
-    HttpClientInstance.updateContactDetails(updateContactDetailsRequestPayload).then(() => {
-      dispatch(updateContactDetailsAction(id, updateContactDetailsRequestPayload));
+  (updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) => (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.updateContactDetails(updateContactDetailsRequestPayload).then(() => {
+      dispatch(updateContactDetailsAction(updateContactDetailsRequestPayload));
       return Promise.resolve(true);
     });
   };

@@ -15,13 +15,12 @@ const connector = connect(null, mapDispatchToProps);
 
 type ContactDetailsProps = {
   contact: Contact;
-  conversationId: string;
   isEditing: boolean;
   cancelEditing: boolean;
 } & ConnectedProps<typeof connector>;
 
 const ContactDetails = (props: ContactDetailsProps) => {
-  const {contact, conversationId, isEditing, cancelEditing, updateContactDetails} = props;
+  const {contact, isEditing, cancelEditing, updateContactDetails} = props;
   const {t} = useTranslation();
   const [email, setEmail] = useState(contact?.via?.email || 'email');
   const [phone, setPhone] = useState(contact?.via?.phone || 'phone');
@@ -56,7 +55,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
   }, [cancelEditing]);
 
   const handleUpdateContact = () => {
-    updateContactDetails(conversationId, {id: contact.id, via: {email, phone}, title, organizationName: organization});
+    updateContactDetails({id: contact.id, via: {email, phone}, title, organizationName: organization});
   };
 
   return (

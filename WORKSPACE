@@ -7,6 +7,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Airy Bazel tools
+
 git_repository(
     name = "com_github_airyhq_bazel_tools",
     commit = "3da34dbb12d47ac9b1759fd6b5bafce754dac679",

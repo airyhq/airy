@@ -332,7 +332,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.tagsHeader}>
               <h3 className={styles.tagsHeaderTitle}>Tags</h3>
               <LinkButton onClick={showAddTags} type="button" dataCy={cyShowTagsDialog}>
-                {showTagsDialog ? t('close') : t('plusAddTag')}{' '}
+                {showTagsDialog ? t('close') : t('plusAddTag')}
               </LinkButton>
             </div>
 

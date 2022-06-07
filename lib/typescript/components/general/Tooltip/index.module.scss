@@ -42,7 +42,7 @@
   }
   
   /* Absolute positioning */
-  .tooltip.top {
+  .tooltipTop {
     top: calc(var(--tooltip-margin) * -1);
   }
   /* CSS border triangles */
@@ -66,13 +66,11 @@
   }
   
   /* Absolute positioning */
-  .tooltip.bottom {
+  .tooltipbottom {
     bottom: calc(var(--tooltip-margin) * -1);
   }
   /* CSS border triangles */
-  .tooltip.bottom::before {
-    color: coral;
-    background: blue;
+  .tooltipbottom::before {
     bottom: 100%;
     border-bottom-color: var(--tooltip-background-color);
   }

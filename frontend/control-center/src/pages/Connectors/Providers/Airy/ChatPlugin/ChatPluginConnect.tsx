@@ -24,7 +24,7 @@ import {
   CATALOG_CHAT_PLUGIN_ROUTE,
 } from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
-import {CreateUpdateSection} from './sections/CreateUpdateSection';
+import CreateUpdateSection from './sections/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection';
 import {InstallSection} from './sections/InstallSection';
 
@@ -48,8 +48,14 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
-  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const {channelId} = useParams();
+  const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
+
+  console.log('current: ', currentChannel);
+
+  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
+  const [displayName, setDisplayName] = useState(currentChannel?.metadata?.name || '');
+  const [imageUrl, setImageUrl] = useState(currentChannel?.metadata?.imageUrl || '');
   const navigate = useNavigate();
   const {t} = useTranslation();
   const CONNECTED_ROUTE = location.pathname.includes('connectors')
@@ -58,23 +64,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
     ? CONNECTORS_CHAT_PLUGIN_ROUTE
     : CATALOG_CHAT_PLUGIN_ROUTE;
-
-  const xxxx = () => {
-    switch (currentPage) {
-      case Pages.createUpdate:
-        return (
-          <div className={styles.formWrapper}>
-            {/* <InstallUpdateSection channel={channel} host={host} updateConnection={displayName, imageUrl} currentPage /> */}
-          </div>
-        );
-      case Pages.customization:
-        return (
-          <div className={styles.formWrapper}>{/* <CustomiseSection channelId={channel?.id} host={host} /> */}</div>
-        );
-      case Pages.install:
-        return <div className={styles.formWrapper}>{/* <InstallSection channelId={channel?.id} host={host} /> */}</div>;
-    }
-  };
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -87,12 +76,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       .then(() => {
         navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
       });
-  };
-
-  const updateConnection = (displayName: string, imageUrl?: string) => {
-    props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
-    });
   };
 
   const disconnectChannel = (channel: Channel) => {
@@ -117,6 +100,27 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   };
 
   const openNewPage = () => navigate(CHAT_PLUGIN_ROUTE + '/new');
+
+  const PageContent = () => {
+    switch (currentPage) {
+      case Pages.createUpdate:
+        if (channelId === 'new') {
+          return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
+        }
+        if (channelId?.length > 0) {
+          return <CreateUpdateSection channel={currentChannel} displayName={displayName} imageUrl={imageUrl} />;
+        }
+        return <OverviewSection />;
+      case Pages.customization:
+        return <CustomiseSection channelId={channelId} host={apiHostUrl} />;
+      case Pages.install:
+        return (
+          <div className={styles.formWrapper}>
+            <InstallSection channelId={channelId} host={apiHostUrl} />
+          </div>
+        );
+    }
+  };
 
   const OverviewSection = () => (
     <div className={styles.overview}>
@@ -152,17 +156,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     </div>
   );
 
-  const PageContent = () => {
-    if (channelId === 'new') {
-      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
-    }
-    if (channelId?.length > 0) {
-      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      // return <CreateUpdateSection channel={channel} host={apiHostUrl} updateConnection={updateConnection} currentPage={currentPage}/>;
-    }
-    return <OverviewSection />;
-  };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.headline}>
@@ -194,16 +187,20 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
               className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
               {channelId === 'new' ? t('create') : t('update')}
             </span>
-            <span
-              onClick={showCustomization}
-              className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}>
-              {t('customize')}
-            </span>
-            <span
-              onClick={showInstall}
-              className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}>
-              {t('install')}
-            </span>
+            {channelId !== 'new' && (
+              <span
+                onClick={showCustomization}
+                className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}>
+                {t('customize')}
+              </span>
+            )}
+            {channelId !== 'new' && (
+              <span
+                onClick={showInstall}
+                className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}>
+                {t('install')}
+              </span>
+            )}
           </div>
           <div className={styles.line} />
         </div>

@@ -74,7 +74,7 @@ const ConnectedChannelsList = () => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, channels.length]);
 
   useEffect(() => {
     getInfo();
@@ -178,8 +178,7 @@ const ConnectedChannelsList = () => {
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             onClick={() => navigate(path)}
-            data-cy={cyConnectorsAddNewButton}
-          >
+            data-cy={cyConnectorsAddNewButton}>
             <PlusIcon className={styles.plusIcon} />
           </button>
         </div>
@@ -192,8 +191,7 @@ const ConnectedChannelsList = () => {
           fontWeight: '700',
           fontSize: '16px',
           marginBottom: '24px',
-        }}
-      >
+        }}>
         <span>{t('name')}</span>
         <span>{t('manage')}</span>
       </div>

@@ -28,7 +28,7 @@ export const Tooltip = (props: ToolTipProps) => {
     <div className={styles.toolTipWrapper} onMouseEnter={showTip} onMouseLeave={hideTip}>
       {children}
       {/* {active && <div className={`${styles.tooltip} ${direction}`}>{content}</div>} */}
-      {active && <div className={`${styles.tooltip} 'bottom'`}>{content}</div>}
+      {active && <div className={`${styles.tooltip} ${styles.tooltipbottom}`}>{content}</div>}
     </div>
   );
 };

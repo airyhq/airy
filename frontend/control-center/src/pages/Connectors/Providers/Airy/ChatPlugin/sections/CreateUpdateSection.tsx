@@ -1,25 +1,43 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Input} from 'components';
-import {Channel} from 'model';
-import styles from './InstallUpdateSection.module.scss';
+import styles from './CreateUpdateSection.module.scss';
 import {cyChannelsChatPluginFormNameInput} from 'handles';
 import {useTranslation} from 'react-i18next';
-import {Pages} from '../ChatPluginConnect';
+import {updateChannel} from '../../../../../../actions/channel';
+import {connect, ConnectedProps} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {Channel} from 'model';
 
-interface InstallUpdateSectionProps {
+import {CATALOG_CONNECTED_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../../routes/routes';
+
+const mapDispatchToProps = {
+  updateChannel,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+type InstallUpdateSectionProps = {
   channel: Channel;
-  host: string;
-  updateConnection(displayName: string, imageUrl?: string): void;
-  currentPage: Pages;
   displayName: string;
-  setDisplayName: (newDisplayName: string) => void;
   imageUrl: string;
-  setImageUrl: (newImageUrl: string) => void;
-}
+} & ConnectedProps<typeof connector>;
 
-export const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
-  const {channel, host, updateConnection, currentPage, displayName, setDisplayName, imageUrl, setImageUrl} = props;
+const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
+  const {channel, displayName, imageUrl} = props;
+  const [submit, setSubmit] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState(displayName);
+  const [newImageUrl, setNewImageUrl] = useState(imageUrl);
   const {t} = useTranslation();
+  const navigate = useNavigate();
+  const CONNECTED_ROUTE = location.pathname.includes('connectors')
+    ? CONNECTORS_CONNECTED_ROUTE
+    : CATALOG_CONNECTED_ROUTE;
+
+  const updateConnection = (displayName: string, imageUrl?: string) => {
+    props.updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl}).then(() => {
+      navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
+    });
+  };
 
   return (
     <div className={styles.formWrapper}>
@@ -27,15 +45,15 @@ export const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
         <form
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            updateConnection(displayName, imageUrl);
+            updateConnection(newDisplayName, newImageUrl);
           }}>
           <div className={styles.formRow}>
             <Input
               type="text"
               name="displayName"
-              value={displayName}
+              value={newDisplayName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setDisplayName(e.target.value);
+                setNewDisplayName(e.target.value);
               }}
               label={t('displayName')}
               placeholder={t('addAName')}
@@ -50,9 +68,9 @@ export const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
             <Input
               type="url"
               name="url"
-              value={imageUrl}
+              value={newImageUrl}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setImageUrl(e.target.value);
+                setNewImageUrl(e.target.value);
               }}
               label={t('imageUrl')}
               placeholder={t('imageUrlPlaceholder')}
@@ -61,7 +79,7 @@ export const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
               fontClass="font-base"
             />
           </div>
-          <Button type="submit" styleVariant="small">
+          <Button onClick={() => setSubmit(true)} type="submit" styleVariant="small">
             {t('update')}
           </Button>
         </form>
@@ -69,3 +87,5 @@ export const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
     </div>
   );
 };
+
+export default connector(CreateUpdateSection);

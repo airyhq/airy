@@ -1,4 +1,4 @@
-import React, {createRef, useEffect} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {Button, Dropdown, ErrorNotice, Input, ListenOutsideClick, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
@@ -7,6 +7,7 @@ import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
 import {fetchGoogleFonts} from '../../../../../../api/index';
 import {useTranslation} from 'react-i18next';
+import {ColorPicker} from './HeaderTextColorPicker';
 
 enum CloseOption {
   basic = 'basic',
@@ -96,6 +97,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [customFont, setCustomFont] = useLocalState('customFont', 'Lato');
   const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
   const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
+  const [colorStepText, setColorStepText] = useLocalState<string>('', `${t('headTextColor')}`);
+  const [hexColor, setHexColor] = useLocalState<string>('', subtitleTextColor);
+  const [activeColorStep, setActiveColorStep] = useState(0);
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -147,39 +151,165 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowUnreadMessageDotColorPicker(!showUnreadMessageDotColorPicker);
   };
 
-  const getTemplateConfig = () => {
-    const config = [
-      headerText && `headerText: '${headerText}'`,
-      subtitleText && `subtitleText: '${subtitleText}'`,
-      startNewConversationText && `startNewConversationText: '${startNewConversationText}'`,
-      bubbleIconUrl && `bubbleIcon: '${bubbleIconUrl}'`,
-      sendMessageIconUrl && `sendMessageIcon: '${sendMessageIconUrl}'`,
-      headerTextColor && `headerTextColor: '${headerTextColor}'`,
-      subtitleTextColor && `subtitleTextColor: '${subtitleTextColor}'`,
-      primaryColor && `primaryColor: '${primaryColor}'`,
-      accentColor && `accentColor: '${accentColor}'`,
-      backgroundColor && `backgroundColor: '${backgroundColor}'`,
-      inboundMessageBackgroundColor && `inboundMessageColor: '${inboundMessageBackgroundColor}'`,
-      inboundMessageTextColor && `inboundMessageTextColor: '${inboundMessageTextColor}'`,
-      outboundMessageBackgroundColor && `outboundMessageColor: '${outboundMessageBackgroundColor}'`,
-      outboundMessageTextColor && `outboundMessageTextColor: '${outboundMessageTextColor}'`,
-      unreadMessageDotColor && `unreadMessageDotColor: '${unreadMessageDotColor}'`,
-      height && `height: '${height}'`,
-      width && `width: '${width}'`,
-      `closeMode: '${closingOption}'`,
-      `bubbleState: '${bubbleState}'`,
-      `disableMobile: '${disableMobile}'`,
-      `hideInputBar: '${hideInputBar}'`,
-      `hideEmojis: '${hideEmojis}'`,
-      `useCustomFont: '${useCustomFont}'`,
-      `customFont: '${customFont}'`,
-      `hideAttachments: '${hideAttachments}'`,
-      `hideImages: '${hideImages}'`,
-      `hideVideos: '${hideVideos}'`,
-      `hideFiles: '${hideFiles}'`,
-    ];
+  const [headerTextColorPickerColor, setHeaderTextColorPickerColor] = useState('');
 
-    return `w[n].config = {${'\n           '}${config.filter(it => it !== '').join(',\n           ')}\n        };`;
+  const handleColorStepChange = (step: number) => {
+    switch (step) {
+      case 0:
+        setActiveColorStep(0);
+        setColorStepText(`${t('headTextColor')}`);
+        break;
+      case 1:
+        setActiveColorStep(1);
+        setColorStepText(`${t('subtitleTextColor')}`);
+        break;
+      case 2:
+        setActiveColorStep(2);
+        setColorStepText(`${t('primaryColor')}`);
+        break;
+      case 3:
+        setActiveColorStep(3);
+        setColorStepText(`${t('accentColor')}`);
+        break;
+      case 4:
+        setActiveColorStep(4);
+        setColorStepText(`${t('backgroundColor')}`);
+        break;
+      case 5:
+        setActiveColorStep(5);
+        setColorStepText(`${t('inboundBackgroundColor')}`);
+        break;
+      case 6:
+        setActiveColorStep(6);
+        setColorStepText(`${t('outboundBackgroundColor')}`);
+        break;
+    }
+  };
+
+  const HeaderTextColorPicker = () => {
+    return (
+      <div className={styles.headerTextColors}>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(0)}
+          style={{background: headerTextColor}}>
+          {activeColorStep === 0 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: headerTextColor}}
+                  onClick={toggleShowHeaderTextColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(1)}
+          style={{background: subtitleTextColor}}>
+          {activeColorStep === 1 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: subtitleTextColor}}
+                  onClick={toggleShowSubtitleTextColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(2)}
+          style={{background: primaryColor}}>
+          {activeColorStep === 2 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: primaryColor}}
+                  onClick={toggleShowPrimaryColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(3)}
+          style={{background: accentColor}}>
+          {activeColorStep === 3 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: accentColor}}
+                  onClick={toggleShowAccentColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(4)}
+          style={{background: backgroundColor}}>
+          {activeColorStep === 4 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: backgroundColor}}
+                  onClick={toggleShowBackgroundColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(5)}
+          style={{background: inboundMessageBackgroundColor}}>
+          {activeColorStep === 5 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: inboundMessageBackgroundColor}}
+                  onClick={toggleShowInboundMessageColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          className={styles.inactiveColorStep}
+          onClick={() => handleColorStepChange(6)}
+          style={{background: outboundMessageBackgroundColor}}>
+          {activeColorStep === 6 && (
+            <>
+              <div className={styles.activeColorStep} />
+              <div style={{position: 'absolute', left: '760px', top: '410px'}}>
+                <div
+                  className={styles.colorPickerSample}
+                  style={{backgroundColor: outboundMessageBackgroundColor}}
+                  onClick={toggleShowOutboundMessageColorPicker}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const demoConfig: AiryChatPluginConfiguration = {
@@ -217,87 +347,65 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(hideFiles && {hideFiles: hideFiles}),
     },
   };
-  const copyToClipboard = () => {
-    codeAreaRef.current?.select();
-    document.execCommand('copy');
-  };
-
-  const getCode = () =>
-    `<script>
-        (function(w, d, s, n) {
-          w[n] = w[n] || {};
-          w[n].channelId = '${channelId}';
-          w[n].host = '${customHost}';
-          ${getTemplateConfig()}
-          var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s);
-          j.async = true;
-          j.src = w[n].host + '/chatplugin/ui/s.js';
-          f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'airy');
-      </script>`;
 
   return (
     <>
-      <div className={styles.codeAreaContainer}>
-        <div className={styles.installHint}>
-          {t('addCodeTagHead')}
-          <code>&lt;head&gt;</code>:
-        </div>
-        <div>
-          <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={getCode()} />
-        </div>
-        <div className={styles.copyButtonHostName}>
-          <Button onClick={copyToClipboard} disabled={customHost.length == 0}>
-            {t('copyCode')}
-          </Button>
-          {customHost.length == 0 && (
-            <div style={{marginLeft: '8px'}}>
-              <ErrorNotice theme="warning">You need to add a Host URL</ErrorNotice>
-            </div>
-          )}
-        </div>
-      </div>
       <div className={styles.customiseContainer}>
-        <p>{t('headTextColor')}</p>
-        <div className={styles.colorPicker}>
-          {showHeaderTextColorPicker && (
-            <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowHeaderTextColorPicker}>
-              <SketchPicker
-                color={headerTextColor}
-                onChangeComplete={(color: {hex: string}) => {
-                  setHeaderTextColor(color.hex.toUpperCase());
-                }}
-              />
-            </ListenOutsideClick>
-          )}
-          <div
-            className={styles.colorPickerSample}
-            style={{backgroundColor: headerTextColor}}
-            onClick={toggleShowHeaderTextColorPicker}
-          />
-          <Input
-            type="text"
-            name={t('headerTextColor')}
-            value={headerTextColor}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setHeaderTextColor(e.target.value);
-            }}
-            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const value = e.target.value;
-              if (value !== '') {
-                const newHeaderTextColor = value.startsWith('#') ? value : '#' + value;
-                setHeaderTextColor(newHeaderTextColor.toUpperCase());
-              } else {
-                setHeaderTextColor('');
-              }
-            }}
-            placeholder="#FFFFFF"
-            height={32}
-            fontClass="font-base"
-          />
+        <div className={styles.titleContainer}>
+          <h1>{t('chatpluginTitle')}</h1>
+          <span>{t('chatpluginCustomize')}</span>
         </div>
-        <p>{t('subtitleTextColor')}</p>
+        <div style={{display: 'flex'}}>
+          {/* <HeaderTextColorPicker /> */}
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <p>{colorStepText}</p>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              {/* <ColorPicker /> */}
+              <HeaderTextColorPicker />
+              {showHeaderTextColorPicker && (
+                <ListenOutsideClick
+                  className={styles.colorPickerWrapper}
+                  onOuterClick={toggleShowHeaderTextColorPicker}>
+                  <SketchPicker
+                    color={headerTextColor}
+                    onChangeComplete={(color: {hex: string}) => {
+                      setHeaderTextColor(color.hex.toUpperCase());
+                    }}
+                  />
+                </ListenOutsideClick>
+              )}
+              <div
+                className={styles.colorPickerSample}
+                style={{backgroundColor: headerTextColor}}
+                onClick={toggleShowHeaderTextColorPicker}
+              />
+            </div>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <p>Hex</p>
+            <Input
+              type="text"
+              name={t('headerTextColor')}
+              value={headerTextColor}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setHeaderTextColor(e.target.value);
+              }}
+              onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const value = e.target.value;
+                if (value !== '') {
+                  const newHeaderTextColor = value.startsWith('#') ? value : '#' + value;
+                  setHeaderTextColor(newHeaderTextColor.toUpperCase());
+                } else {
+                  setHeaderTextColor('');
+                }
+              }}
+              placeholder="#FFFFFF"
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+        </div>
+        {/* <p>{t('subtitleTextColor')}</p>
         <div className={styles.colorPicker}>
           {showSubtitleTextColorPicker && (
             <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowSubtitleTextColorPicker}>
@@ -455,8 +563,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageColorPicker}>
               <SketchPicker
                 color={inboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -496,8 +603,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showInboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowInboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowInboundMessageTextColorPicker}>
               <SketchPicker
                 color={inboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -537,8 +643,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageColorPicker}>
               <SketchPicker
                 color={outboundMessageBackgroundColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -578,8 +683,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showOutboundMessageTextColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowOutboundMessageTextColorPicker}
-            >
+              onOuterClick={toggleShowOutboundMessageTextColorPicker}>
               <SketchPicker
                 color={outboundMessageTextColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -619,8 +723,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           {showUnreadMessageDotColorPicker && (
             <ListenOutsideClick
               className={styles.colorPickerWrapper}
-              onOuterClick={toggleShowUnreadMessageDotColorPicker}
-            >
+              onOuterClick={toggleShowUnreadMessageDotColorPicker}>
               <SketchPicker
                 color={unreadMessageDotColor}
                 onChangeComplete={(color: {hex: string}) => {
@@ -654,27 +757,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             height={32}
             fontClass="font-base"
           />
-        </div>
-        <div className={styles.extraOptions}>
-          <Dropdown
-            text={`${t('closingOptions')}: ${closingOption}`}
-            variant="normal"
-            options={[CloseOption.basic, CloseOption.medium, CloseOption.full]}
-            onClick={(option: CloseOption) => {
-              setClosingOption(option);
-            }}
-          />
-        </div>
-        <div className={styles.extraOptions}>
-          <Dropdown
-            text={`${t('bubbleStateOptions')}: ${bubbleState}`}
-            variant="normal"
-            options={[BubbleState.expanded, BubbleState.minimized]}
-            onClick={(option: BubbleState) => {
-              setBubbleState(option);
-            }}
-          />
-        </div>
+        </div> */}
       </div>
       <div className={styles.customiseContainer}>
         <Input
@@ -852,8 +935,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           style={{
             ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
             ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-          }}
-        >
+          }}>
           <div className={styles.pluginContainer}>
             <AiryChatPlugin config={demoConfig} />
           </div>
@@ -870,6 +952,26 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             />
           </div>
         )}
+        <div className={styles.extraOptions}>
+          <Dropdown
+            text={`${t('closingOptions')}: ${closingOption}`}
+            variant="normal"
+            options={[CloseOption.basic, CloseOption.medium, CloseOption.full]}
+            onClick={(option: CloseOption) => {
+              setClosingOption(option);
+            }}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Dropdown
+            text={`${t('bubbleStateOptions')}: ${bubbleState}`}
+            variant="normal"
+            options={[BubbleState.expanded, BubbleState.minimized]}
+            onClick={(option: BubbleState) => {
+              setBubbleState(option);
+            }}
+          />
+        </div>
       </div>
     </>
   );

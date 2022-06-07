@@ -1,4 +1,5 @@
 @import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
 
 .customiseContainer {
   margin-top: 28px;
@@ -7,12 +8,12 @@
 
 .colorPickerWrapper {
   position: absolute;
-  padding: 46px 24px 46px 0px;
+  // padding: 46px 24px 46px 0px;
 }
 
 .colorPicker {
   display: flex;
-  place-items: flex-end;
+  align-items: center;
 }
 
 .colorPickerSample {
@@ -84,4 +85,50 @@
 
 .fontDropdownContainer {
   margin: 34px 0 0 24px;
+}
+
+.titleContainer {
+  margin-bottom: 18px;
+  h1 {
+    @include font-l;
+    margin-bottom: 16px;
+  }
+
+  span {
+    @include font-base;
+    font-weight: 700;
+  }
+}
+
+.headerTextColors {
+  display: flex;
+  height: 32px;
+  align-items: center;
+}
+
+.activeColorStep {
+  position: relative;
+  height: 32px;
+  width: 32px;
+  left: -5px; 
+  top: -5px;
+  border-radius: 32px;
+  border: 1px solid var(--color-airy-blue);
+  background-color: transparent;
+}
+
+.inactiveColorStep {
+    height: 26px;
+    width: 26px;
+    border-radius: 26px;
+    border: 2px solid black;
+    margin-right: 18px;
+    margin-left: 3px;
+    &:hover {
+      cursor: pointer;
+    }
+  
+    div:last-child {
+      margin-right: 32px;
+    }
 }

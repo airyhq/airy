@@ -167,6 +167,7 @@ const resources = {
       imageUrlHint: 'max. 1024x1024 pixel PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
       addCodeTagHead: 'Add this code inside the tag ',
       copyCode: 'Copy code',
       headTextColor: 'Header Text Color',
@@ -498,6 +499,7 @@ const resources = {
       imageUrlHint: 'max. 1024x1024 Pixel PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
       addCodeTagHead: 'Fügen Sie diesen Code innerhalb des Tags ein ',
       copyCode: 'Code kopieren',
       headTextColor: 'Textfarbe der Kopfzeile',
@@ -817,6 +819,7 @@ const resources = {
       imageUrlHint: 'max. 1024x1024 pixel PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
       copyCode: 'Copier le code',
       headTextColor: `Couleur du texte de l'en-tête`,
@@ -1136,6 +1139,7 @@ const resources = {
       imageUrlHint: 'PNG de 1024x1024 píxeles como máximo',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
       addCodeTagHead: 'Añade este código dentro de la etiqueta ',
       copyCode: 'Copiar código',
       headTextColor: 'Color del texto de la cabecera',

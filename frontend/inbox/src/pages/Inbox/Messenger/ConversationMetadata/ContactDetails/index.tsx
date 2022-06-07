@@ -4,12 +4,10 @@ import {getContactDetails, updateContactDetails} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
-import {Contact, Source} from 'model';
+import {Contact} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
-import {Button, ConnectorAvatar} from 'components';
-import {Link} from 'react-router-dom';
-import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
+import {Button} from 'components';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 import {useTranslation} from 'react-i18next';
@@ -29,7 +27,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ContactDetailsProps = {
   contact?: Contact;
-  conversationId: string;
+  conversationId?: string;
   isEditing: boolean;
   getUpdatedInfo: () => void;
   editingCanceled: boolean;
@@ -110,7 +108,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
       updateContactType(contacts[contact?.id || contactId]);
       setConversationsForContact(formatConversationsForContact(contacts[contact?.id || contactId].conversations));
     }
-  }, [contact?.id, conversationId, contactId]);
+  }, [conversationId, contactId]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -132,19 +130,28 @@ const ContactDetails = (props: ContactDetailsProps) => {
   }, [editingCanceled]);
 
   const formatConversationsForContact = (convObj: {[key: string]: string}) => {
-    const conversationsForContactArr = [];
+    const conversationsForContactArr = Object?.entries(contacts[contact?.id || contactId]?.conversations);
+    const conversationsForContactFormatted = [];
 
     for (const idProperty in convObj) {
-      if (Object?.entries(contacts[contact?.id || contactId]?.conversations).length > 1) {
+      if (conversationId && conversationsForContactArr.length > 1) {
         setAreOthersConversationForContact(true);
+      }
+
+      if (!conversationId) setAreOthersConversationForContact(true);
+
+      if (conversationsForContactArr.length > 0) {
         const convInfo = {} as ConversationInfoForContact;
-        convInfo.id = idProperty;
-        convInfo.connector = convObj[idProperty];
-        conversationsForContactArr.push(convInfo);
+
+        if (idProperty !== conversationId) {
+          convInfo.id = idProperty;
+          convInfo.connector = convObj[idProperty];
+          conversationsForContactFormatted.push(convInfo);
+        }
       }
     }
 
-    return conversationsForContactArr;
+    return conversationsForContactFormatted;
   };
 
   const removeDefaultTextWhenEditing = () => {
@@ -249,19 +256,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
         )}
       </form>
 
-      {areOthersConversationForContact && conversationsForContact && (
-        <div className={styles.contactConversationList}>
-          <span>{t('otherConversationsContact')}</span>
-          <div className={styles.iconsContainer}>
-            {conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
-              <button type="button" key={conversationInfo.id}>
-                <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
-                  <ConnectorAvatar source={conversationInfo.connector as Source} />
-                </Link>
-              </button>
-            ))}
-          </div>
-        </div>
+      {areOthersConversationForContact && conversationsForContact.length >= 1 && (
+       
       )}
     </>
   );

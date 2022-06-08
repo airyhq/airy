@@ -1,6 +1,7 @@
 package create
 
 import (
+	"cli/pkg/cmd/config"
 	"cli/pkg/console"
 	"cli/pkg/helm"
 	"cli/pkg/providers"
@@ -23,6 +24,7 @@ var (
 	namespace       string
 	version         string
 	initOnly        bool
+	noApply         bool
 	disableTracking bool
 	CreateCmd       = &cobra.Command{
 		Use:   "create [workspace directory]",
@@ -38,6 +40,7 @@ func init() {
 	CreateCmd.Flags().StringToStringVar(&providerConfig, "provider-config", nil, "Additional configuration for the providers.")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit.")
+	CreateCmd.Flags().BoolVar(&noApply, "no-apply", false, "Don't apply any component configuration found in an existing airy.yaml file after creation.")
 	CreateCmd.Flags().BoolVar(&disableTracking, "disable-tracking", false, "Disables sending anonymous events to Segment.")
 	CreateCmd.MarkFlagRequired("provider")
 }
@@ -138,6 +141,10 @@ func create(cmd *cobra.Command, args []string) {
 	viper.Set("namespace", namespace)
 	viper.WriteConfig()
 
+	if !noApply {
+		fmt.Println("⚙️  Applying config from airy.yaml")
+		config.ApplyConfig(workspacePath)
+	}
 	airyAnalytics.Track(analytics.Track{
 		UserId: coreConfig["CORE_ID"],
 		Event:  "installation_succesful"})

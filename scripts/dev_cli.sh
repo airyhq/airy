@@ -21,7 +21,6 @@ if [[ $1 == "create" ]]; then
     minikube delete -p airy-core
   fi
   $AIRY_BIN "$@" --disable-tracking
-  $AIRY_BIN config apply
 else 
   $AIRY_BIN "$@"
 fi

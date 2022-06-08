@@ -78,6 +78,7 @@ airy create [workspace directory] [flags]
   -h, --help                             help for create
       --init-only                        Only create the airy workspace directory and exit.
       --namespace string                 (optional) Kubernetes namespace that Airy should be installed to. (default "default")
+      --no-apply                         Don't apply any component configuration found in an existing airy.yaml file after creation.
       --provider string                  One of the supported providers (aws|minikube). (default "minikube")
       --provider-config stringToString   Additional configuration for the providers. (default [])
 ```

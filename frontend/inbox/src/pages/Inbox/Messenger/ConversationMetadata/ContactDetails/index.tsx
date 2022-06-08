@@ -8,9 +8,15 @@ import {Contact} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
 import {Button} from 'components';
+import {ConversationsForContact} from './ConversationsForContact';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 import {useTranslation} from 'react-i18next';
+
+export interface ConversationInfoForContact {
+  id: string;
+  connector: string;
+}
 
 const mapDispatchToProps = {
   getContactDetails,
@@ -34,11 +40,6 @@ type ContactDetailsProps = {
   getIsExpanded: (isExpanded: boolean) => void;
   setContactIdConvMetadata?: React.Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
-
-export interface ConversationInfoForContact {
-  id: string;
-  connector: string;
-}
 
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
@@ -65,8 +66,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const [organization, setOrganization] = useState(contacts[contact?.id]?.organizationName || `${t('companyName')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
-  const [conversationsForContact, setConversationsForContact] = useState([]);
-  const [areOthersConversationForContact, setAreOthersConversationForContact] = useState(false);
+  const [areAvailableConversationForContact, setAreAvailableConversationForContact] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const totalInfoPoints = 6;
   const visibleInfoPointsNewContact = 1;
@@ -75,14 +75,17 @@ const ContactDetails = (props: ContactDetailsProps) => {
     ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
+    console.log('conversationId', conversationId);
+    console.log('contact', contact)
+
   useEffect(() => {
     getContactId();
     setExpanded(false);
-    setAreOthersConversationForContact(false);
-    setConversationsForContact([]);
+    setAreAvailableConversationForContact(false);
   }, [conversationId, contact?.id]);
 
   const getContactId = async () => {
+<<<<<<< HEAD
     try {
       const contactId = conversationId
         ? await getContactDetails({conversationId: conversationId})
@@ -92,6 +95,10 @@ const ContactDetails = (props: ContactDetailsProps) => {
     } catch (error) {
       return error;
     }
+=======
+    const contactId = conversationId ? await getContactDetails({conversationId: conversationId}) : await getContactDetails({id: contact.id});
+    setContactId(contactId);
+>>>>>>> e78b143c (bug fix wip)
   };
 
   useEffect(() => {
@@ -106,7 +113,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
         setOrganization
       );
       updateContactType(contacts[contact?.id || contactId]);
-      setConversationsForContact(formatConversationsForContact(contacts[contact?.id || contactId].conversations));
     }
   }, [conversationId, contactId]);
 
@@ -129,30 +135,13 @@ const ContactDetails = (props: ContactDetailsProps) => {
     }
   }, [editingCanceled]);
 
-  const formatConversationsForContact = (convObj: {[key: string]: string}) => {
-    const conversationsForContactArr = Object?.entries(contacts[contact?.id || contactId]?.conversations);
-    const conversationsForContactFormatted = [];
-
-    for (const idProperty in convObj) {
-      if (conversationId && conversationsForContactArr.length > 1) {
-        setAreOthersConversationForContact(true);
-      }
-
-      if (!conversationId) setAreOthersConversationForContact(true);
-
-      if (conversationsForContactArr.length > 0) {
-        const convInfo = {} as ConversationInfoForContact;
-
-        if (idProperty !== conversationId) {
-          convInfo.id = idProperty;
-          convInfo.connector = convObj[idProperty];
-          conversationsForContactFormatted.push(convInfo);
-        }
-      }
+  useEffect(() => {
+    if(contact && contact?.conversations){
+      const conversationsForContactArr = Object?.entries(contact?.conversations);
+      if (conversationId && conversationsForContactArr.length > 1) setAreAvailableConversationForContact(true);
+      if (!conversationId && conversationsForContactArr.length >= 1) setAreAvailableConversationForContact(true);
     }
-
-    return conversationsForContactFormatted;
-  };
+  }, [contact]);
 
   const removeDefaultTextWhenEditing = () => {
     if (email === t('email')) setEmail('');
@@ -256,8 +245,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
         )}
       </form>
 
-      {areOthersConversationForContact && conversationsForContact.length >= 1 && (
-       
+      {areAvailableConversationForContact && (
+        <ConversationsForContact conversationId={conversationId} conversationsForContact={contacts?.[contact?.id || contactId]?.conversations} />
       )}
     </>
   );

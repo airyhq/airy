@@ -125,16 +125,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
     }
   }, [contacts, contactId]);
 
-  useEffect(() => {
-    if (contacts && contactId) {
-      console.log('contacts[contactId]', contacts[contactId]);
-    }
-  }, [contacts, contactId]);
-
-  useEffect(() => {
-    console.log('AreAvailableConversationForContact', areAvailableConversationForContact);
-  }, [areAvailableConversationForContact]);
-
   const fetchContactDetailsAndStoreId = async () => {
     if (conversationId && !contact?.id) {
       const contactId = await getContactDetails({conversationId: conversationId});

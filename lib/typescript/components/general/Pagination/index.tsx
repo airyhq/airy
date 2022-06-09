@@ -3,24 +3,26 @@ import styles from './index.module.scss';
 
 import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevronLeft.svg';
 import {ReactComponent as ChevronRight} from 'assets/images/icons/chevronRight.svg';
+import {useTranslation} from 'react-i18next';
 
 type PaginationType = {
   totalCount: number;
   pageCount: number;
+  pageSize: number;
   currentPage?: number;
   onPageChange: (page: number) => void;
-  onSearch: boolean;
+  onSearch?: boolean;
 };
 
 export const Pagination = (props: PaginationType) => {
-  const {totalCount, pageCount, currentPage, onPageChange, onSearch} = props;
+  const {totalCount, pageCount, currentPage, onPageChange, onSearch, pageSize} = props;
   const [displayedItems, setDisplayedItems] = useState([1, pageCount]);
   const [endReached, setEndReached] = useState(false);
-  const pageSize = 8;
+  const {t} = useTranslation();
 
   useEffect(() => {
     currentPage * pageCount + pageCount > totalCount ? setEndReached(true) : setEndReached(false);
-    pageCount < pageSize && !onSearch && setDisplayedItems([1, pageCount]);
+    pageCount < pageSize && !onSearch && setDisplayedItems([1, pageSize]);
   }, [currentPage, pageCount, onSearch]);
 
   const onNext = () => {
@@ -46,7 +48,9 @@ export const Pagination = (props: PaginationType) => {
               ? `${pageCount} `
               : `${displayedItems[0]} - ${displayedItems[1]} `}
           </span>
-          <span>of {totalCount}</span>
+          <span>
+            {t('of')} {totalCount}
+          </span>
         </div>
         {totalCount > pageCount && (
           <div className={styles.buttons}>

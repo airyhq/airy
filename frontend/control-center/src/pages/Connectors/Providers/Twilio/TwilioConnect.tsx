@@ -17,7 +17,7 @@ type TwilioConnectProps = {
   channel?: Channel;
   source: string;
   pageTitle: string;
-  buttonText: () => void;
+  buttonText: string;
   infoLink: string;
 } & ConnectedProps<typeof connector>;
 

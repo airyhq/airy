@@ -38,7 +38,7 @@ import {useTranslation} from 'react-i18next';
 const mapStateToProps = (state: StateModel) => ({
   tags: state.data.tags.all,
   config: state.data.config,
-  contacts: state.data.contacts.all,
+  contacts: state.data.contacts.all.items,
 });
 
 const mapDispatchToProps = {
@@ -69,13 +69,13 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
-  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
+  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName || '');
+  const [contactIdConvMetadata, setContactIdConvMetadata] = useState('');
   const [fade, setFade] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
   const {t} = useTranslation();
-
   const isContactsEnabled = isComponentHealthy(config, 'api-contacts');
 
   useEffect(() => {
@@ -145,11 +145,12 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const saveEditDisplayName = () => {
-    updateConversationContactInfo(conversation.id, displayName);
-
-    if (contacts[conversation.id]?.id) {
-      updateContactDetails(conversation.id, {id: contacts[conversation.id].id, displayName: displayName});
+    if (contacts[contactIdConvMetadata]?.conversations) {
+      Object.keys(contacts[contactIdConvMetadata]?.conversations).forEach(conversationId => {
+        updateConversationContactInfo(conversationId, displayName);
+      });
     }
+    updateContactDetails({id: contactIdConvMetadata, displayName: displayName});
 
     setShowEditDisplayName(!saveEditDisplayName);
   };
@@ -294,9 +295,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                         <CloseIcon />
                       </button>
                       <button
-                        className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
+                        className={`${displayName?.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                         onClick={saveEditDisplayName}
-                        disabled={displayName.length === 0}
+                        disabled={displayName?.length === 0}
                         data-cy={cyEditDisplayNameCheckmark}
                       >
                         <CheckmarkCircleIcon />
@@ -325,6 +326,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 getUpdatedInfo={getUpdatedInfo}
                 editingCanceled={editingCanceled}
                 getIsExpanded={getIsExpanded}
+                setContactIdConvMetadata={setContactIdConvMetadata}
               />
             )}
           </div>
@@ -332,7 +334,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.tagsHeader}>
               <h3 className={styles.tagsHeaderTitle}>Tags</h3>
               <LinkButton onClick={showAddTags} type="button" dataCy={cyShowTagsDialog}>
-                {showTagsDialog ? t('close') : t('plusAddTag')}{' '}
+                {showTagsDialog ? t('close') : t('plusAddTag')}
               </LinkButton>
             </div>
 

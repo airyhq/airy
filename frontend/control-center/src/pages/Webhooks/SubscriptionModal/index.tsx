@@ -207,8 +207,10 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
           disabled={newUrl.length < 4 || isLoading}
           type="button"
         >
-          {isLoading && <RefreshIcon height={24} width={24} />}
-          {buttonTitle}
+          <>
+            {isLoading && <RefreshIcon height={24} width={24} />}
+            {buttonTitle}
+          </>
         </Button>
       </div>
       {error && (

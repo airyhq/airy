@@ -27,6 +27,7 @@ import {
   UnsubscribeWebhookRequestPayload,
   SubscribeWebhookRequestPayload,
   UpdateWebhookRequestPayload,
+  ListContactsRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -63,6 +64,8 @@ import {
   unsubscribeWebhookDef,
   subscribeWebhookDef,
   updateWebhookDef,
+  listContactsDef,
+  deleteContactDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -241,6 +244,10 @@ export class HttpClient {
   public unsubscribeWebhook = this.getRequest<UnsubscribeWebhookRequestPayload, Webhook>(unsubscribeWebhookDef);
 
   public updateWebhook = this.getRequest<UpdateWebhookRequestPayload, Webhook>(updateWebhookDef);
+
+  public listContacts = this.getRequest<ListContactsRequestPayload, PaginatedResponse<Contact>>(listContactsDef);
+
+  public deleteContact = this.getRequest<string>(deleteContactDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

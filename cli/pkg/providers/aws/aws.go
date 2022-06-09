@@ -279,10 +279,11 @@ func (p *provider) createVpc(cidr string, name string) (*ec2Types.Vpc, error) {
 }
 
 func (p *provider) enableDNSOnVpc(vpcId *string) error {
+	value := true
 	_, err := p.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
 		VpcId: vpcId,
 		EnableDnsSupport: &ec2Types.AttributeBooleanValue{
-			Value: true,
+			Value: &value,
 		},
 	})
 
@@ -293,7 +294,7 @@ func (p *provider) enableDNSOnVpc(vpcId *string) error {
 	_, err = p.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
 		VpcId: vpcId,
 		EnableDnsHostnames: &ec2Types.AttributeBooleanValue{
-			Value: true,
+			Value: &value,
 		},
 	})
 
@@ -387,7 +388,7 @@ func (p *provider) getSubnets(vpcId string) ([]string, error) {
 	})
 
 	for i := range result.Subnets {
-		if result.Subnets[i].MapPublicIpOnLaunch == true {
+		if *result.Subnets[i].MapPublicIpOnLaunch == true {
 			subnets = append(subnets, *result.Subnets[i].SubnetId)
 		}
 	}
@@ -395,10 +396,11 @@ func (p *provider) getSubnets(vpcId string) ([]string, error) {
 }
 
 func (p *provider) allowPublicIpOnSubnet(subnetId *string) error {
+	value := true
 	_, err := p.ec2Client.ModifySubnetAttribute(context.TODO(), &ec2.ModifySubnetAttributeInput{
 		SubnetId: subnetId,
 		MapPublicIpOnLaunch: &ec2Types.AttributeBooleanValue{
-			Value: true,
+			Value: &value,
 		},
 	})
 

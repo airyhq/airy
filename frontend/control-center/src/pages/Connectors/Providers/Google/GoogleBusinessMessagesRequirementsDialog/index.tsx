@@ -4,13 +4,14 @@ import {SettingsModal} from 'components';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-import {t} from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 type GoogleBusinessMessagesRequirementsDialogProps = {
   onClose: () => void;
 };
 
 export const GoogleBusinessMessagesRequirementsDialog = (props: GoogleBusinessMessagesRequirementsDialogProps) => {
+  const {t} = useTranslation();
   return (
     <SettingsModal style={{maxWidth: '582px'}} title={t('connectGoogle')} close={() => props.onClose()}>
       <div className={styles.backgroundContainer}>
@@ -30,10 +31,12 @@ export const GoogleBusinessMessagesRequirementsDialog = (props: GoogleBusinessMe
               <li>{t('googleKey')}</li>
             </ul>
             <p>
-              <a href="https://airy.co/docs/core/sources/google" target="_blank" rel="noreferrer">
-                {t('googleConfigurationText2')}
-              </a>{' '}
-              {t('googleConfigurationText3')}
+              <>
+                <a href="https://airy.co/docs/core/sources/google" target="_blank" rel="noreferrer">
+                  {t('googleConfigurationText2')}
+                </a>
+                {t('googleConfigurationText3')}
+              </>
             </p>
           </div>
         </div>

@@ -19,6 +19,7 @@ go_library(
         "//cli/pkg/cmd/upgrade",
         "//cli/pkg/kube",
         "//cli/pkg/workspace",
+        "//lib/go/k8s",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
     ],

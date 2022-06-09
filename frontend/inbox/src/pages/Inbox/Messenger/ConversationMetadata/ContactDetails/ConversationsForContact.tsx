@@ -36,7 +36,6 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
         }
       }
     }
-
     setConversationsForContactFormatted(conversationsForContactArr);
   };
 

@@ -81,18 +81,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
     setAreAvailableConversationForContact(false);
   }, [conversationId, contact?.id]);
 
-  const getContactId = async () => {
-    try {
-      const contactId = conversationId
-        ? await getContactDetails({conversationId: conversationId})
-        : await getContactDetails({id: contact?.id});
-      setContactId(contactId);
-      setContactIdConvMetadata(contactId);
-    } catch (error) {
-      return error;
-    }
-  };
-
   useEffect(() => {
     if (contacts && contacts[contact?.id || contactId]) {
       fillContactInfo(
@@ -129,18 +117,32 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   useEffect(() => {
     const currentContact = contacts[contactId] || contact;
-    if (contactId && currentContact) {
-      const conversationsForContactArr = Object?.entries(currentContact.conversations);
+    if (contactId && currentContact && currentContact?.conversations) {
+      if (setContactIdConvMetadata) setContactIdConvMetadata(contactId);
+      const conversationsForContactArr = Object.entries(currentContact?.conversations);
       if (conversationId && conversationsForContactArr.length > 2) setAreAvailableConversationForContact(true);
       if (!conversationId && conversationsForContactArr.length >= 1) setAreAvailableConversationForContact(true);
     }
-  }, [contactId]);
+  }, [contacts, contactId]);
+
+  useEffect(() => {
+    if (contacts && contactId) {
+      console.log('contacts[contactId]', contacts[contactId]);
+    }
+  }, [contacts, contactId]);
+
+  useEffect(() => {
+    console.log('AreAvailableConversationForContact', areAvailableConversationForContact);
+  }, [areAvailableConversationForContact]);
 
   const fetchContactDetailsAndStoreId = async () => {
-    const contactId = conversationId
-      ? await getContactDetails({conversationId: conversationId})
-      : await getContactDetails({id: contact.id});
-    setContactId(contactId);
+    if (conversationId && !contact?.id) {
+      const contactId = await getContactDetails({conversationId: conversationId});
+      setContactId(contactId);
+    } else {
+      await getContactDetails({id: contact.id});
+      setContactId(contact.id);
+    }
   };
 
   const removeDefaultTextWhenEditing = () => {
@@ -245,10 +247,10 @@ const ContactDetails = (props: ContactDetailsProps) => {
         )}
       </form>
 
-      {areAvailableConversationForContact && (
+      {contacts && contactId && contacts[contactId] && areAvailableConversationForContact && (
         <ConversationsForContact
           conversationId={conversationId}
-          conversationsForContact={contacts?.[contact?.id || contactId]?.conversations}
+          conversationsForContact={contacts[contactId].conversations}
         />
       )}
     </>

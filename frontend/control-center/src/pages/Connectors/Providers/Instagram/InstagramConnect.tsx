@@ -12,6 +12,7 @@ import styles from './InstagramConnect.module.scss';
 import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   connectInstagramChannel,
@@ -21,6 +22,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectInstagramChannel} = props;
+  const {t} = useTranslation();
   const channel = useCurrentChannel();
   const navigate = useNavigate();
   const [id, setId] = useState(channel?.metadata?.pageId || '');
@@ -28,7 +30,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState('Connect Page');
+  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const CONNECTED_ROUTE = location.pathname.includes('connectors')
@@ -41,7 +43,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     if (channel) {
-      setButtonTitle('Update Page');
+      setButtonTitle(t('updatePage'));
     }
   }, []);
 
@@ -65,7 +67,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         navigate(CONNECTED_ROUTE + '/instagram', {replace: true});
       })
       .catch(() => {
-        setErrorMessage('Please check entered value');
+        setErrorMessage(t('errorMessage'));
       });
   };
 
@@ -73,22 +75,18 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Instagram</h1>
       <div>
-        <InfoButton
-          link="https://airy.co/docs/core/sources/instagram"
-          text="more information about this source"
-          color="grey"
-        />
+        <InfoButton link="https://airy.co/docs/core/sources/instagram" text={t('infoButtonText')} color="grey" />
 
         <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
-          Back
+          {t('back')}
         </LinkButton>
       </div>
       <div className={styles.inputContainer}>
         <Input
           id="id"
-          label="Facebook Page ID connected to the Instagram account"
-          placeholder="Add the Facebook Page ID"
+          label={t('instagramAccount')}
+          placeholder={t('instagramAccountPlaceholder')}
           value={id}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
           minLength={6}
@@ -99,8 +97,8 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         />
         <Input
           id="token"
-          label="Token"
-          placeholder="Add the page Access Token"
+          label={t('token')}
+          placeholder={t('tokenPlaceholder')}
           value={token}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
           required={true}
@@ -110,8 +108,8 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         />
         <Input
           id="account_id"
-          label="ID of the Instagram account"
-          placeholder="Add the ID of the Instagram account"
+          label={t('instagramAccountId')}
+          placeholder={t('instagramAccountIdPlaceholder')}
           value={accountId}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setAccountId(event.target.value)}
           required={true}
@@ -121,9 +119,9 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         />
         <Input
           id="name"
-          label="Name (optional)"
-          placeholder="Add a name"
-          hint="The standard name will be the same as the Facebook Page"
+          label={t('nameOptional')}
+          placeholder={t('addAName')}
+          hint={t('nameFacebookPlaceholder')}
           value={name}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           height={32}
@@ -131,9 +129,9 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         />
         <Input
           id="image"
-          label="Image URL (optional)"
-          placeholder="Add an URL"
-          hint="The standard picture is the same as the Facebook Page"
+          label={t('imageUrlOptional')}
+          placeholder={t('addAnUrl')}
+          hint={t('imageFacebookHint')}
           value={image}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
           height={32}

@@ -1,11 +1,12 @@
 package endpoints
 
 import (
-	"github.com/gorilla/mux"
-	"k8s.io/klog"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
+	"k8s.io/klog"
 
 	"k8s.io/client-go/kubernetes"
 )
@@ -35,8 +36,20 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 		r.Use(authMiddleware.Middleware)
 	}
 
-	s := &Services{clientSet: clientSet, namespace: namespace}
-	r.Handle("/services", s)
+	services := &Services{clientSet: clientSet, namespace: namespace}
+	r.Handle("/services", services)
+
+	componentsUpdate := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.update", componentsUpdate)
+
+	componentsDelete := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.delete", componentsDelete)
+
+	clusterGet := &ClusterGet{clientSet: clientSet, namespace: namespace}
+	r.Handle("/components.get", clusterGet)
+
+	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
+	r.Handle("/cluster.update", clusterUpdate)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

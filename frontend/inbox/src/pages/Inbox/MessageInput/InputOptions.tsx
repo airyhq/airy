@@ -13,6 +13,8 @@ import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
 import {getInputAcceptedFilesForSource, supportsAudioRecordingMp3} from '../../../services/types/attachmentsTypes';
 import styles from './InputOptions.module.scss';
+import {useTranslation} from 'react-i18next';
+import {ListenOutsideClick} from 'components';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -64,8 +66,8 @@ export const InputOptions = (props: Props) => {
     isAudioRecordingPaused,
     audioRecordingCanceled,
   } = props;
+  const {t} = useTranslation();
 
-  const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [isShowingFileSelector, setIsShowingFileSelector] = useState(false);
@@ -87,18 +89,6 @@ export const InputOptions = (props: Props) => {
     }
   }, [isFileLoaded]);
 
-  useEffect(() => {
-    if (isShowingEmojiDrawer) {
-      document.addEventListener('keydown', handleEmojiKeyEvent);
-      document.addEventListener('click', handleEmojiClickedOutside);
-
-      return () => {
-        document.removeEventListener('keydown', handleEmojiKeyEvent);
-        document.removeEventListener('click', handleEmojiClickedOutside);
-      };
-    }
-  }, [isShowingEmojiDrawer]);
-
   const onInputFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     setInputFile(file);
@@ -114,20 +104,7 @@ export const InputOptions = (props: Props) => {
       focusInput();
     }
 
-    setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
-  };
-
-  const handleEmojiKeyEvent = e => {
-    if (e.key === 'Escape') {
-      toggleEmojiDrawer();
-    }
-  };
-
-  const handleEmojiClickedOutside = e => {
-    if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
-      return;
-    }
-    toggleEmojiDrawer();
+    setIsShowingEmojiDrawer(true);
   };
 
   const toggleTemplateModal = () => {
@@ -148,7 +125,6 @@ export const InputOptions = (props: Props) => {
 
   const addEmoji = emoji => {
     setInput(`${input} ${emoji.native}`);
-    toggleEmojiDrawer();
   };
 
   const handleMicrophoneIconClick = () => {
@@ -179,9 +155,9 @@ export const InputOptions = (props: Props) => {
         />
       )}
       {isShowingEmojiDrawer && (
-        <div ref={emojiDiv} className={styles.emojiDrawer}>
+        <ListenOutsideClick onOuterClick={() => setIsShowingEmojiDrawer(false)} className={styles.emojiDrawer}>
           <Picker theme={localStorage.getItem('theme')} showPreview={false} onSelect={addEmoji} title="Emoji" />
-        </div>
+        </ListenOutsideClick>
       )}
 
       {audioRecordingCanceled && (
@@ -201,7 +177,7 @@ export const InputOptions = (props: Props) => {
             disabled={inputDisabled || !!errorPopUp || loadingSelector}
             onClick={toggleTemplateModal}
           >
-            <div className={styles.actionToolTip}>Templates</div>
+            <div className={styles.actionToolTip}>{t('templates')}</div>
             <div className={styles.templateActionContainer}>
               <TemplateAlt aria-hidden className={styles.templateAltIcon} />
             </div>
@@ -225,7 +201,7 @@ export const InputOptions = (props: Props) => {
                 disabled={inputDisabled || !!errorPopUp || loadingSelector}
                 onClick={toggleFileSelector}
               >
-                <div className={styles.actionToolTip}>Files</div>
+                <div className={styles.actionToolTip}>{t('files')}</div>
 
                 <label
                   htmlFor="file"
@@ -271,7 +247,9 @@ export const InputOptions = (props: Props) => {
                 onClick={handleMicrophoneIconClick}
               >
                 <div className={styles.actionToolTip}>
-                  {audioRecordingPaused && !audioRecordingPreviewLoading ? 'Continue recording' : 'Record audio clip'}
+                  {audioRecordingPaused && !audioRecordingPreviewLoading
+                    ? t('continueRecording')
+                    : t('recordAudioClip')}
                 </div>
                 {audioRecordingPaused ? <MicrophoneFilled aria-hidden /> : <MicrophoneOutline aria-hidden />}
               </button>

@@ -7,6 +7,7 @@ import {setFilter} from '../../../actions/conversationsFilter';
 
 import styles from './index.module.scss';
 import {omit} from 'lodash-es';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -26,6 +27,7 @@ type ConversationsFilterProps = {} & ConnectedProps<typeof connector>;
 
 const QuickFilter = (props: ConversationsFilterProps) => {
   const {setFilter, currentFilter} = props;
+  const {t} = useTranslation();
   const [filterState, setFilterState] = useState('all');
 
   useEffect(() => {
@@ -59,19 +61,19 @@ const QuickFilter = (props: ConversationsFilterProps) => {
               className={filterState === 'all' ? styles.quickFilterButtonActive : styles.quickFilterButton}
               onClick={() => setCurrentState('all')}
             >
-              All
+              {t('all')}
             </button>
             <button
               className={filterState === 'open' ? styles.quickFilterButtonActive : styles.quickFilterButton}
               onClick={() => setCurrentState('open')}
             >
-              Open
+              {t('open')}
             </button>
             <button
               className={filterState === 'closed' ? styles.quickFilterButtonActive : styles.quickFilterButton}
               onClick={() => setCurrentState('closed')}
             >
-              Closed
+              {t('closed')}
             </button>
           </div>
         </div>

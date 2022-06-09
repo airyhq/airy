@@ -14,6 +14,7 @@ import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 import ChannelAvatar from '../../../components/ChannelAvatar';
 import {SourceIcon} from '../../../components/SourceIcon';
+import {useTranslation} from 'react-i18next';
 
 function mapStateToProps(state: StateModel) {
   const channels: Channel[] = Object.values(allChannels(state));
@@ -44,6 +45,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
   const {filter, channels, tags, listTags, closeCallback, setFilter, sources} = props;
   const [channelSearch, setChannelSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
+  const {t} = useTranslation();
 
   useEffect(() => {
     listTags();
@@ -131,26 +133,26 @@ const PopUpFilter = (props: PopUpFilterProps) => {
         <div className={styles.filterColumn}>
           <div className={styles.filterStateContainer}>
             <div className={styles.filterItem}>
-              <h3>Read/Unread</h3>
+              <h3>{t('readUnread')}</h3>
               <div className={styles.filterRow}>
                 <button
                   className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
                   onClick={toggleReadOnly}
                 >
-                  Read Only
+                  {t('readOnly')}
                 </button>
                 <button
                   className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
                   onClick={toggleUnreadOnly}
                 >
-                  Unread Only
+                  {t('unreadOnly')}
                 </button>
               </div>
             </div>
           </div>
           <div className={styles.filterColumn}>
             <div className={styles.filterItem}>
-              <h3>State</h3>
+              <h3>{t('stateCapital')}</h3>
               <div className={styles.filterRow}>
                 <button
                   className={
@@ -161,7 +163,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, true)}
                 >
                   <div className={styles.openIconButton} />
-                  Open
+                  {t('open')}
                 </button>
                 <button
                   className={
@@ -174,7 +176,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                   <div className={styles.checkmarkCircleIcon}>
                     <CheckmarkCircleIcon />
                   </div>
-                  Closed
+                  {t('closed')}
                 </button>
               </div>
             </div>
@@ -182,10 +184,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
         </div>
         {Object.keys(tags).length > 0 && (
           <div className={styles.filterColumn}>
-            <h3>By Tags</h3>
+            <h3>{t('byTags')}</h3>
             <div className={styles.searchField}>
               <SearchField
-                placeholder="Search for Tags"
+                placeholder={t('searchTags')}
                 value={tagSearch}
                 setValue={(value: string) => setTagSearch(value)}
               />
@@ -207,10 +209,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
         {channels.length > 1 && (
           <div className={styles.filterColumn}>
-            <h3>By Channel</h3>
+            <h3>{t('byChannel')}</h3>
             <div className={styles.searchField}>
               <SearchField
-                placeholder="Search for Channel"
+                placeholder={t('searchChannel')}
                 value={channelSearch}
                 setValue={(value: string) => setChannelSearch(value)}
               />
@@ -244,7 +246,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
         {sources.size > 1 && (
           <div className={styles.filterColumn}>
-            <h3>By Source</h3>
+            <h3>{t('bySource')}</h3>
             <div className={styles.sourcesList}>
               {Array.from<string>(sources)
                 .sort()
@@ -272,9 +274,9 @@ const PopUpFilter = (props: PopUpFilterProps) => {
       </div>
 
       <div className={styles.buttonRow}>
-        <LinkButton onClick={onReset}>Clear All</LinkButton>
+        <LinkButton onClick={onReset}>{t('clearAll')}</LinkButton>
         <Button styleVariant="outline-big" onClick={closeCallback}>
-          Apply
+          {t('apply')}
         </Button>
       </div>
     </DialogCustomizable>

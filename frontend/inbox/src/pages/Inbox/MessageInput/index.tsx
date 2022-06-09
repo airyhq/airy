@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 're
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
-import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
+import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
@@ -23,6 +23,7 @@ import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 import {AudioRecording} from './AudioRecording';
 import styles from './index.module.scss';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -66,6 +67,7 @@ const MessageInput = (props: Props) => {
     setDragAndDropDisabled,
     config,
   } = props;
+  const {t} = useTranslation();
 
   const conversation = useCurrentConversation();
   const messages = useCurrentMessages();
@@ -112,7 +114,7 @@ const MessageInput = (props: Props) => {
           })
           .catch(() => {
             setLoadingSelector(false);
-            setErrorPopUp('Failed to upload the file. Please try again later.');
+            setErrorPopUp(t('failedToUploadFileAgainLater'));
           });
       }
 
@@ -190,8 +192,8 @@ const MessageInput = (props: Props) => {
       //size limit error
       if (fileSizeInMB >= maxFileSizeAllowed) {
         return setErrorPopUp(
-          `Failed to upload the file.
-        The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
+          `${t('failedToUploadFile')}.
+        ${t('maximumSize')}${maxFileSizeAllowed}MB.`
         );
       }
 
@@ -199,8 +201,7 @@ const MessageInput = (props: Props) => {
       if (!getAttachmentType(file.name, source)) {
         const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
 
-        const errorMessage = `This file type is not supported by this source. 
-      Supported files: ${supportedFilesForSource}`;
+        const errorMessage = `${t('fileTypeNotSupported')}${supportedFilesForSource}`;
 
         return setErrorPopUp(errorMessage);
       }
@@ -456,14 +457,9 @@ const MessageInput = (props: Props) => {
             />
           )}
 
-          <Button
-            type="button"
-            styleVariant="outline-big"
-            onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+          <Button type="button" styleVariant="outline-big" onClick={toggleSuggestedReplies}>
             <div className={styles.suggestionButton}>
-              Suggestions
+              {t('suggestions')}
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
             </div>
           </Button>
@@ -477,7 +473,7 @@ const MessageInput = (props: Props) => {
                 {loadingSelector && (
                   <div className={styles.selectorLoader}>
                     <SimpleLoader />
-                    <span>loading file... </span>
+                    <span>{t('loadingFile')}</span>
                   </div>
                 )}
                 {isElementSelected() && (
@@ -503,7 +499,7 @@ const MessageInput = (props: Props) => {
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  placeholder={channelConnected ? t('enterMessage') : ''}
                   autoFocus={channelConnected}
                   value={input}
                   onChange={e => setInput(e.target.value)}
@@ -556,7 +552,7 @@ const MessageInput = (props: Props) => {
         <div className={styles.sendDiv}>
           {!channelConnected && (
             <div className={styles.disconnectedChannelToolTip}>
-              <p>Sending messages is disabled because this channel was disconnected.</p>
+              <p>{t('messagesDisabled')}</p>
             </div>
           )}
           <button
@@ -579,7 +575,7 @@ const MessageInput = (props: Props) => {
         className={styles.linebreakHint}
         style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
       >
-        {'Shift + Enter to add line'}
+        {t('addALine')}
       </div>
     </div>
   );

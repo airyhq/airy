@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
+
+	"github.com/airyhq/airy/lib/go/k8s"
 )
 
 // UICmd opens the Airy Core UI
@@ -29,7 +31,7 @@ func ui(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
+	coreConfig, err := k8s.GetCmData("core-config", viper.GetString("namespace"), set)
 	if err != nil {
 		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 		os.Exit(1)

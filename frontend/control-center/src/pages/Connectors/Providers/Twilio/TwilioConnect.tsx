@@ -11,6 +11,7 @@ import styles from './TwilioConnect.module.scss';
 
 import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 type TwilioConnectProps = {
   channel?: Channel;
@@ -26,6 +27,7 @@ const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
   const {channel, source, pageTitle, buttonText, infoLink, connectTwilioWhatsapp, connectTwilioSms} = props;
+  const {t} = useTranslation();
 
   const navigate = useNavigate();
   const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
@@ -76,18 +78,18 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>{pageTitle}</h1>
       <div>
-        <InfoButton link={infoLink} text="more information about this source" color="grey" />
+        <InfoButton link={infoLink} text={t('infoButtonText')} color="grey" />
         <LinkButton onClick={() => navigate(-1)} type="button">
           <ArrowLeft className={styles.backIcon} />
-          Back
+          {t('back')}
         </LinkButton>
       </div>
       <form className={styles.formContainer}>
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>
             <Input
-              label="Twilio Phone Number"
-              placeholder="Purchased Number +123456789"
+              label={t('twilioPhoneNumber')}
+              placeholder={t('twilioPhoneNumberPlaceholder')}
               value={numberInput}
               required={true}
               height={32}
@@ -98,8 +100,8 @@ const TwilioConnect = (props: TwilioConnectProps) => {
           </div>
           <div className={styles.formContentName}>
             <Input
-              label="Add a Name (optional)"
-              placeholder="Add a name"
+              label={t('nameOptional')}
+              placeholder={t('addAName')}
               value={nameInput}
               required={false}
               height={32}
@@ -109,8 +111,8 @@ const TwilioConnect = (props: TwilioConnectProps) => {
           </div>
           <div className={styles.formContentNumber}>
             <UrlInputField
-              label="Image URL (optional)"
-              placeholder="Add an URL"
+              label={t('imageUrlOptional')}
+              placeholder={t('addAnUrl')}
               value={imageUrlInput}
               required={false}
               height={32}

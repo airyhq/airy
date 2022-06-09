@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.api.admin.component }}"
+  labels:
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.api.admin.mandatory }}"
+    core.airy.co/component: "{{ .Values.api.admin.component }}"
+  annotations:
+    core.airy.co/enabled: "{{ .Values.api.admin.enabled }}"

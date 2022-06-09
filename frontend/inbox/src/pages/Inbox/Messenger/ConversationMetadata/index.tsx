@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel, TagColor} from 'model';
 
-import {createTag, listTags} from '../../../../actions';
+import {createTag, listTags, updateContactDetails} from '../../../../actions';
 import {addTagToConversation, removeTagFromConversation, updateConversationContactInfo} from '../../../../actions';
 import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
@@ -33,10 +33,12 @@ import {
 } from 'handles';
 import {difference} from 'lodash-es';
 import {useCurrentConversation} from '../../../../selectors/conversations';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => ({
   tags: state.data.tags.all,
   config: state.data.config,
+  contacts: state.data.contacts.all.items,
 });
 
 const mapDispatchToProps = {
@@ -45,6 +47,7 @@ const mapDispatchToProps = {
   addTagToConversation,
   removeTagFromConversation,
   updateConversationContactInfo,
+  updateContactDetails,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -53,23 +56,26 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const {
     config,
     tags,
+    contacts,
     createTag,
     listTags,
     addTagToConversation,
     removeTagFromConversation,
     updateConversationContactInfo,
+    updateContactDetails,
   } = props;
   const conversation = useCurrentConversation();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
-  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
+  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName || '');
+  const [contactIdConvMetadata, setContactIdConvMetadata] = useState('');
   const [fade, setFade] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
   const [isContactDetailsExpanded, setIsContactDetailsExpanded] = useState(false);
-
+  const {t} = useTranslation();
   const isContactsEnabled = isComponentHealthy(config, 'api-contacts');
 
   useEffect(() => {
@@ -109,7 +115,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     }
 
     if (usedTags.find(tag => tag.name === tagName)) {
-      return 'Tag already added';
+      return t('tagAlreadyAdded');
     }
 
     return true;
@@ -139,7 +145,13 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const saveEditDisplayName = () => {
-    updateConversationContactInfo(conversation.id, displayName);
+    if (contacts[contactIdConvMetadata]?.conversations) {
+      Object.keys(contacts[contactIdConvMetadata]?.conversations).forEach(conversationId => {
+        updateConversationContactInfo(conversationId, displayName);
+      });
+    }
+    updateContactDetails({id: contactIdConvMetadata, displayName: displayName});
+
     setShowEditDisplayName(!saveEditDisplayName);
   };
 
@@ -179,14 +191,14 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
           <form className={styles.addTags} onSubmit={submitForm}>
             <Input
               type="text"
-              label="Add a tag"
+              label={t('addATag')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setTagName(e.target.value);
               }}
               height={32}
               value={tagName}
               name="tag_name"
-              placeholder="Please enter a tag name"
+              placeholder={t('addTagName')}
               autoComplete="off"
               autoFocus
               fontClass="font-base"
@@ -204,7 +216,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                       <Tag tag={tag} />
                     </div>
                     <LinkButton type="button" onClick={() => addTag(tag)}>
-                      Add
+                      {t('addCapital')}
                     </LinkButton>
                   </div>
                 );
@@ -212,7 +224,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             ) : (
               <div>
                 {tagName.length > 0 && <Tag tag={{id: '', color: color, name: tagName}} />}
-                <p className={styles.addTagsDescription}>Pick a color</p>
+                <p className={styles.addTagsDescription}>{t('pickColor')}</p>
                 <ColorSelector
                   handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
                   color={color}
@@ -220,7 +232,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 />
                 <div className={styles.addTagsButtonRow}>
                   <Button type="submit" styleVariant="small" dataCy={cyTagsDialogButton}>
-                    Create Tag
+                    {t('createTag')}
                   </Button>
                 </div>
               </div>
@@ -275,7 +287,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                       fontClass="font-base"
                       minLength={1}
                       maxLength={50}
-                      label="Set Name"
+                      label={t('setName')}
                       dataCy={cyDisplayNameInput}
                     />
                     <div className={styles.displayNameButtons}>
@@ -283,9 +295,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                         <CloseIcon />
                       </button>
                       <button
-                        className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
+                        className={`${displayName?.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                         onClick={saveEditDisplayName}
-                        disabled={displayName.length === 0}
+                        disabled={displayName?.length === 0}
                         data-cy={cyEditDisplayNameCheckmark}
                       >
                         <CheckmarkCircleIcon />
@@ -300,7 +312,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                   </div>
                   <EditPencilIcon
                     className={styles.editPencilIcon}
-                    title="Edit Display Name"
+                    title={t('editDisplayName')}
                     onClick={editDisplayName}
                     data-cy={cyEditDisplayNameIcon}
                   />
@@ -314,6 +326,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 getUpdatedInfo={getUpdatedInfo}
                 editingCanceled={editingCanceled}
                 getIsExpanded={getIsExpanded}
+                setContactIdConvMetadata={setContactIdConvMetadata}
               />
             )}
           </div>
@@ -321,7 +334,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.tagsHeader}>
               <h3 className={styles.tagsHeaderTitle}>Tags</h3>
               <LinkButton onClick={showAddTags} type="button" dataCy={cyShowTagsDialog}>
-                {showTagsDialog ? 'Close' : '+ Add Tag'}{' '}
+                {showTagsDialog ? t('close') : t('plusAddTag')}
               </LinkButton>
             </div>
 

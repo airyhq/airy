@@ -55,6 +55,12 @@
       "dates/*": [
         "./lib/typescript/dates/*"
       ],
+      "translations": [
+        "./lib/typescript/translations"
+      ],
+      "translations/*": [
+        "./lib/typescript/translations/*"
+      ],
       "render": [
         "./lib/typescript/render"
       ],

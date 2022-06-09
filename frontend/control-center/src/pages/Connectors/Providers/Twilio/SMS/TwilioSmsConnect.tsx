@@ -6,6 +6,7 @@ import {allChannels, useCurrentChannel} from '../../../../../selectors/channels'
 import {Channel, Source} from 'model';
 import TwilioConnect from '../TwilioConnect';
 import {useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => ({
   channels: Object.values(allChannels(state)),
@@ -15,14 +16,15 @@ const connector = connect(mapStateToProps);
 
 const TwilioSmsConnect = (props: ConnectedProps<typeof connector>) => {
   const {channels} = props;
+  const {t} = useTranslation();
   const {channelId} = useParams();
   const channel = useCurrentChannel();
 
-  const [buttonTitle, setButtonTitle] = useState('Connect Sms Number');
+  const [buttonTitle, setButtonTitle] = useState(t('connectSmsNumber') || '');
 
   useEffect(() => {
     if (channel) {
-      setButtonTitle('Update Sms Number');
+      setButtonTitle(t('updateSmsNumber'));
     }
   }, []);
 

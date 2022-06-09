@@ -2,7 +2,9 @@ import React from 'react';
 
 import styles from './index.module.scss';
 
-interface IProps {}
+interface IProps {
+  children: React.ReactNode;
+}
 
 const Wrapper: React.FunctionComponent<IProps> = props => (
   <div className={styles.App}>

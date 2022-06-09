@@ -14,6 +14,7 @@
   background-color: var(--color-background-white);
   color: var(--color-text-contrast);
   position: fixed;
+  z-index: 1;
 }
 
 .linkSection {
@@ -48,7 +49,7 @@
     text-align: center;
   }
   svg path {
-    fill: var(--color-text-gray);
+    color: var(--color-text-gray);
   }
 
   &:hover {
@@ -77,6 +78,10 @@
 
 .align.active {
   background-color: var(--color-blue-white);
+}
+
+.inactive {
+  display: none;
 }
 
 .version {

@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useLayoutEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
@@ -7,9 +7,17 @@ import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/signOut.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/logo/airyLogo.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevronDown.svg';
+import {ReactComponent as LanguageIcon} from 'assets/images/icons/languageIcon.svg';
+import {ReactComponent as FlagUS} from 'assets/images/icons/flagUS.svg';
+import {ReactComponent as FlagGermany} from 'assets/images/icons/flagGermany.svg';
+import {ReactComponent as FlagFrance} from 'assets/images/icons/flagFrance.svg';
+import {ReactComponent as FlagSpain} from 'assets/images/icons/flagSpain.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
 import {useAnimation} from 'render';
+import {useTranslation} from 'react-i18next';
+import i18next from 'i18next';
+import {Language} from 'model/Config';
 
 interface TopBarProps {
   isAdmin: boolean;
@@ -28,9 +36,17 @@ const connector = connect(mapStateToProps);
 const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
+  const [isLanguageDropdownOn, setLanguageDropdownOn] = useState(false);
   const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') === 'dark' ? true : false);
   const [animationAction, setAnimationAction] = useState(false);
   const [chevronAnim, setChevronAnim] = useState(false);
+  const [chevronLanguageAnim, setChevronLanguageAnim] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem('language') || Language.english);
+  const {t} = useTranslation();
+
+  useLayoutEffect(() => {
+    handleLanguage(localStorage.getItem('language'));
+  }, []);
 
   const toggleAccountDropdown = useCallback(() => {
     setChevronAnim(!chevronAnim);
@@ -41,6 +57,11 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
     useAnimation(isFaqDropdownOn, setFaqDropdownOn, setAnimationAction, 300);
   }, [setFaqDropdownOn, isFaqDropdownOn]);
 
+  const toggleLanguageDropdown = useCallback(() => {
+    setChevronLanguageAnim(!chevronLanguageAnim);
+    useAnimation(isLanguageDropdownOn, setLanguageDropdownOn, setAnimationAction, 300);
+  }, [setLanguageDropdownOn, isLanguageDropdownOn]);
+
   const toggleDarkTheme = () => {
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.removeAttribute('data-theme');
@@ -50,6 +71,39 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
       localStorage.setItem('theme', 'dark');
       document.documentElement.setAttribute('data-theme', 'dark');
       setDarkTheme(true);
+    }
+  };
+
+  const handleLanguage = (language: string) => {
+    switch (language) {
+      case Language.english:
+        setCurrentLanguage(Language.english);
+        localStorage.setItem('language', Language.english);
+        i18next.changeLanguage('en').then(t => {
+          t('en');
+        });
+        break;
+      case Language.german:
+        setCurrentLanguage(Language.german);
+        localStorage.setItem('language', Language.german);
+        i18next.changeLanguage('de').then(t => {
+          t('de');
+        });
+        break;
+      case Language.spanish:
+        setCurrentLanguage(Language.spanish);
+        localStorage.setItem('language', Language.spanish);
+        i18next.changeLanguage('es').then(t => {
+          t('es');
+        });
+        break;
+      case Language.french:
+        setCurrentLanguage(Language.french);
+        localStorage.setItem('language', Language.french);
+        i18next.changeLanguage('fr').then(t => {
+          t('fr');
+        });
+        break;
     }
   };
 
@@ -72,7 +126,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                     <span className={styles.dropdownIcon}>
                       <ShortcutIcon />
                     </span>
-                    <span>Contact us</span>
+                    <span>{t('contactUs')}</span>
                   </a>
                   <a
                     href="https://airy.co/faq"
@@ -93,6 +147,58 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                       Privacy Policy
                     </a>
                   </div>
+                </div>
+              </ListenOutsideClick>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.menuItem}>
+          <div className={styles.dropDown} onClick={toggleLanguageDropdown}>
+            <LanguageIcon width={24} />
+            <span style={{marginRight: '12px', marginLeft: '4px'}}>{currentLanguage}</span>
+            <div className={`${styles.dropHint} ${chevronLanguageAnim ? styles.dropHintOpen : styles.dropHintClose}`}>
+              <span className={styles.chevronDown}>
+                <ChevronDownIcon />
+              </span>
+            </div>
+          </div>
+          <div className={animationAction ? styles.animateIn : styles.animateOut}>
+            {isLanguageDropdownOn && (
+              <ListenOutsideClick onOuterClick={toggleLanguageDropdown}>
+                <div className={styles.dropdownContainer}>
+                  {currentLanguage !== Language.english && (
+                    <div onClick={() => handleLanguage(Language.english)} className={styles.dropdownLine}>
+                      <span className={styles.dropdownIconLanguage}>
+                        <FlagUS />
+                      </span>
+                      <span>{Language.english}</span>
+                    </div>
+                  )}
+                  {currentLanguage !== Language.german && (
+                    <div onClick={() => handleLanguage(Language.german)} className={styles.dropdownLine}>
+                      <span className={styles.dropdownIconLanguage}>
+                        <FlagGermany />
+                      </span>
+                      <span>{Language.german}</span>
+                    </div>
+                  )}
+                  {currentLanguage !== Language.french && (
+                    <div onClick={() => handleLanguage(Language.french)} className={styles.dropdownLine}>
+                      <span className={styles.dropdownIconLanguage}>
+                        <FlagFrance />
+                      </span>
+                      <span>{Language.french}</span>
+                    </div>
+                  )}
+                  {currentLanguage !== Language.spanish && (
+                    <div onClick={() => handleLanguage(Language.spanish)} className={styles.dropdownLine}>
+                      <span className={styles.dropdownIconLanguage}>
+                        <FlagSpain />
+                      </span>
+                      <span>{Language.spanish}</span>
+                    </div>
+                  )}
                 </div>
               </ListenOutsideClick>
             )}
@@ -126,7 +232,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                       <span className={styles.dropdownIcon}>
                         <LogoutIcon />
                       </span>
-                      <span>Logout</span>
+                      <span>{t('logout')}</span>
                     </a>
                     <div className={styles.dropDownVersionContainer}>
                       <a
@@ -135,7 +241,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Release notes
+                        {t('releaseNotes')}
                       </a>
                       <h1>Version {props.version}</h1>
                     </div>

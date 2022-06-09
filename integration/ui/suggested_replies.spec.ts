@@ -21,10 +21,10 @@ describe('adds two suggested replies to a message and sends one of the suggested
       },
     }).then(response => {
       expect(response).property('status').to.equal(200);
-      cy.visit('/inbox/');
+      cy.visit(`/inbox/inbox/conversations/${Cypress.env('conversationId')}`);
       cy.url().should('include', '/inbox');
 
-      cy.get(`[data-cy=${cySuggestionsButton}]`).click();
+      cy.get(`[data-cy=${cySuggestionsButton}]`).should('be.visible').click();
 
       cy.get(`[data-cy=${cySuggestionsList}]`).contains('Welcome!').click({force: true});
 

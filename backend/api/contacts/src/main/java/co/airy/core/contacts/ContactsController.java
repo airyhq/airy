@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Comparator;
 
 import static java.util.stream.Collectors.toList;
 
@@ -106,8 +107,11 @@ public class ContactsController implements HealthIndicator {
     public ResponseEntity<?> listContacts(@Valid @RequestBody(required = false) ListContactsRequestPayload payload) {
         payload = payload == null ? new ListContactsRequestPayload() : payload;
         final List<Contact> contacts = stores.getAllContacts();
+        final List<Contact> sortedContacts = contacts.stream()
+                .sorted(Comparator.comparing(Contact::getDisplayName, Comparator.nullsLast(Comparator.naturalOrder())))
+                .collect(toList());
 
-        Paginator<Contact> paginator = new Paginator<>(contacts, Contact::getId)
+        Paginator<Contact> paginator = new Paginator<>(sortedContacts, Contact::getId)
                 .perPage(payload.getPageSize()).from(payload.getCursor());
 
         Page<Contact> page = paginator.page();

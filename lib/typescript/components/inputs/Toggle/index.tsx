@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styles from './style.module.scss';
 
 type ToggleType = {
@@ -12,15 +12,7 @@ type ToggleType = {
 };
 
 export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, emojiAfter}: ToggleType) => {
-  const [emoji, setEmoji] = useState('');
-
-  useEffect(() => {
-    value ? setEmoji(emojiAfter) : setEmoji(emojiBefore);
-  }, [value]);
-
-  const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateValue(event.target.checked);
-  };
+  const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => updateValue(event.target.checked);
 
   return (
     <label className={styles.toggleLabel}>
@@ -29,9 +21,10 @@ export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, em
         <span
           className={`${styles.slider} ${variant === 'green' ? styles.sliderGreen : styles.sliderBlue} ${
             size === 'small' ? styles.sliderSmall : styles.sliderBig
-          } ${emoji === emojiBefore ? styles.emojiBefore : styles.emojiAfter}`}
+          } ${value ? styles.emojiAfter : styles.emojiBefore}`}
+          data-testid="toggle-emoji"
         >
-          {emoji ?? ''}
+          {value ? emojiAfter : emojiBefore}
         </span>
       </span>
       {text && <span className={styles.toggleText}>{text}</span>}

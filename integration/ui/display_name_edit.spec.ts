@@ -2,7 +2,7 @@ import {cyEditDisplayNameIcon, cyDisplayName, cyDisplayNameInput, cyEditDisplayN
 
 describe('Edits the display name of a conversation', () => {
   it('Edits the display name of a conversation', () => {
-    cy.visit('/inbox/');
+    cy.visit('/inbox/inbox');
     cy.url().should('include', '/inbox');
 
     cy.get(`[data-cy=${cyEditDisplayNameIcon}]`).click({force: true});

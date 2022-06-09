@@ -6,6 +6,7 @@ import {Channel, Source} from 'model';
 import TwilioConnect from '../TwilioConnect';
 import {StateModel} from '../../../../../reducers';
 import {useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = (state: StateModel) => ({
   channels: Object.values(allChannels(state)),
@@ -15,14 +16,14 @@ const connector = connect(mapStateToProps);
 
 const TwilioWhatsappConnect = (props: ConnectedProps<typeof connector>) => {
   const {channels} = props;
-
+  const {t} = useTranslation();
   const channel = useCurrentChannel();
   const {channelId} = useParams();
-  const [buttonTitle, setButtonTitle] = useState('Connect Whatsapp Number');
+  const [buttonTitle, setButtonTitle] = useState(t('connectWhatsappNumber') || '');
 
   useEffect(() => {
     if (channel) {
-      setButtonTitle('Update Whatsapp Number');
+      setButtonTitle(t('updateWhatsappNumber'));
     }
   }, []);
 

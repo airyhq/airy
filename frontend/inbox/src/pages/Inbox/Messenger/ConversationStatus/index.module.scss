@@ -2,7 +2,7 @@
 @import 'assets/scss/fonts.scss';
 
 .conversationStatus {
-  width: 96px;
+  min-width: 96px;
   height: 26px;
   display: flex;
   flex-direction: row;

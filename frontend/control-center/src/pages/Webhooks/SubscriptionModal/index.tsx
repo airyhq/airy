@@ -3,6 +3,7 @@ import React, {useLayoutEffect, useState} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import styles from './index.module.scss';
 import {Webhook, WebhooksEventType} from 'model/Webhook';
+import {useTranslation} from 'react-i18next';
 
 type SubscriptionModalProps = {
   webhook: Webhook;
@@ -41,6 +42,7 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
   const [channelUpdatedChecked, setChannelUpdatedChecked] = useState(
     isEventOn(events, WebhooksEventType.channelUpdated)
   );
+  const {t} = useTranslation();
 
   const handleChecked = (event: WebhooksEventType) => {
     switch (event) {
@@ -81,19 +83,19 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
 
   const getButtonTitle = () => {
     if (error) {
-      return setButtonTitle('Try again...');
+      return setButtonTitle(t('tryAgain'));
     }
     if (!isLoading) {
       if (newWebhook) {
-        return setButtonTitle('Subscribe');
+        return setButtonTitle(t('subscribeCapital'));
       } else {
-        return setButtonTitle('Update');
+        return setButtonTitle(t('updateCapital'));
       }
     } else {
       if (newWebhook) {
-        return setButtonTitle('Subscribing...');
+        return setButtonTitle(t('subscribing'));
       } else {
-        return setButtonTitle('Updating...');
+        return setButtonTitle(t('updating'));
       }
     }
   };
@@ -125,9 +127,9 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
   return (
     <form className={styles.formContainer}>
       <div className={styles.container}>
-        <h1>WEBHOOK</h1>
+        <h1>{t('webhookCapslock')}</h1>
         <div className={styles.inputContainer}>
-          <input placeholder={name || 'Name'} value={newName} onChange={event => setNewName(event.target.value)} />
+          <input placeholder={name || t('name')} value={newName} onChange={event => setNewName(event.target.value)} />
           <input
             placeholder={newWebhook ? 'URL' : url}
             value={newUrl}
@@ -136,7 +138,7 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
             required={true}
           />
         </div>
-        <h1>ALL EVENTS</h1>
+        <h1>{t('allEvents')}</h1>
         <div className={styles.checkboxContainer}>
           <input
             type="checkbox"
@@ -205,11 +207,15 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
           disabled={newUrl.length < 4 || isLoading}
           type="button"
         >
-          {isLoading && <RefreshIcon height={24} width={24} />}
-          {buttonTitle}
+          <>
+            {isLoading && <RefreshIcon height={24} width={24} />}
+            {buttonTitle}
+          </>
         </Button>
       </div>
-      {error && <span className={styles.errorMessage}>Unable to {newWebhook ? 'subscribe' : 'update'} Webhook</span>}
+      {error && (
+        <span className={styles.errorMessage}>Unable to {newWebhook ? t('subscribe') : t('update')} Webhook</span>
+      )}
     </form>
   );
 };

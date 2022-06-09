@@ -31,6 +31,7 @@ export const cyChannelsTwilioWhatsappList = 'channelsTwilioWhatsappList';
 export const cyChannelsGoogleList = 'channelsGoogleList';
 
 export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButton';
+export const cyConnectorsAddNewButton = 'connectorsAddNewButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
 export const cyChannelsFormBackButton = 'channelsFormBackButton';

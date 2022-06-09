@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import {ReactComponent as ErrorMessage} from 'assets/images/icons/errorMessage.svg';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import {Button} from 'components/cta/Button';
+import {useTranslation} from 'react-i18next';
 
 type DisableModalProps = {
   setConfirmDisable: (confirm: boolean) => void;
@@ -16,6 +17,7 @@ type DisableModalProps = {
 
 export const DisableModal = (props: DisableModalProps) => {
   const {setConfirmDisable, setCancelDisable, channel, channelLength, isLoading, error} = props;
+  const {t} = useTranslation();
 
   const handleConfirm = () => {
     setConfirmDisable(true);
@@ -28,10 +30,10 @@ export const DisableModal = (props: DisableModalProps) => {
   return (
     <div className={styles.container}>
       <ErrorMessage height={140} width={140} />
-      <h1>Disable Channels</h1>
+      <h1>{t('disableChannels')}</h1>
       <p>
-        Are you sure you want to disable <br /> all {channelLength} {channelLength === 1 ? 'channel' : 'channels'} of{' '}
-        {channel}?
+        {t('sureToDisable')}
+        {channelLength} {channelLength === 1 ? t('channel') : t('channels')} {t('of')} {channel}?
       </p>
       <div className={styles.buttonContainer}>
         <div className={isLoading ? styles.spinAnimation : ''} style={{display: 'flex'}}>
@@ -50,7 +52,7 @@ export const DisableModal = (props: DisableModalProps) => {
             type="submit"
           >
             {isLoading && <RefreshIcon height={24} width={24} />}
-            {isLoading ? 'Unsubscribing...' : error ? 'Try again...' : 'Confirm'}
+            {isLoading ? t('unsubscribing') : error ? t('tryAgain') : t('confirm')}
           </Button>
           <Button
             onClick={handleCancel}
@@ -58,11 +60,11 @@ export const DisableModal = (props: DisableModalProps) => {
             style={{alignSelf: 'center', width: '213px', height: '48px', borderRadius: '10px'}}
             type="reset"
           >
-            Cancel
+            {t('cancel')}
           </Button>
         </div>
       </div>
-      {error && <span className={styles.errorMessage}>Unable to disable Channel</span>}
+      {error && <span className={styles.errorMessage}>{t('unableDisableChannel')}</span>}
     </div>
   );
 };

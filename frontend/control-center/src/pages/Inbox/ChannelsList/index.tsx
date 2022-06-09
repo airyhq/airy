@@ -31,9 +31,11 @@ import {
   CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {useTranslation} from 'react-i18next';
 
 const ChannelsList = () => {
   const {source} = useParams();
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
@@ -44,6 +46,7 @@ const ChannelsList = () => {
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
+  const connectorsRoute = location.pathname.includes('connectors');
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -57,41 +60,39 @@ const ChannelsList = () => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName('Facebook Messenger');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        setName(t('facebookTitle'));
+        setDescription(t('facebookDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
-        setName('Google Business Messages');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        setName(t('googleTitle'));
+        setDescription(t('googleDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
-        setName('Twilio SMS');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        setName(t('twilioSmsTitle'));
+        setDescription(t('twilioSmsDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
-        setName('Twilio Whatsapp');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors')
-          ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
-          : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        setName(t('twilioWhatsappTitle'));
+        setDescription(t('twilioWhatsappDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
-        setName('Chat Plugin');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        setName(t('chatpluginTitle'));
+        setDescription(t('chatpluginDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
-        setName('Instagram');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        setName(t('instagramTitle'));
+        setDescription(t('instagramDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
     }
@@ -107,7 +108,7 @@ const ChannelsList = () => {
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          Channels
+          {connectorsRoute ? t('channelsCapital') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>
@@ -168,8 +169,8 @@ const ChannelsList = () => {
           marginBottom: '24px',
         }}
       >
-        <span>Name</span>
-        <span>Manage</span>
+        <span>{t('name')}</span>
+        <span>{t('manage')}</span>
       </div>
 
       <div className={styles.channelsList}>
@@ -183,8 +184,8 @@ const ChannelsList = () => {
           )
         ) : (
           <div className={styles.emptyState}>
-            <h1 className={styles.noSearchMatch}>Result not found.</h1>
-            <p>Try to search for a different term.</p>
+            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+            <p>{t('noResultsTerm')}</p>
           </div>
         )}
       </div>

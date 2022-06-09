@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, SetStateAction} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {getContactDetails, updateContactDetails} from '../../../../../actions';
 import {StateModel} from '../../../../../reducers';
@@ -12,6 +12,7 @@ import {Link} from 'react-router-dom';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getContactDetails,
@@ -20,27 +21,30 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    contacts: state.data.contacts.all,
+    contacts: state.data.contacts.all.items,
   };
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ContactDetailsProps = {
+  contact?: Contact;
   conversationId: string;
   isEditing: boolean;
   getUpdatedInfo: () => void;
   editingCanceled: boolean;
   getIsExpanded: (isExpanded: boolean) => void;
+  setContactIdConvMetadata?: React.Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
 
-interface ConversationInfoForContact {
+export interface ConversationInfoForContact {
   id: string;
   connector: string;
 }
 
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
+    contact,
     conversationId,
     getContactDetails,
     updateContactDetails,
@@ -49,15 +53,18 @@ const ContactDetails = (props: ContactDetailsProps) => {
     isEditing,
     editingCanceled,
     getIsExpanded,
+    setContactIdConvMetadata,
   } = props;
 
-  const existingContact = contacts[conversationId]?.via?.phone || contacts[conversationId]?.title;
-  const [email, setEmail] = useState('email');
-  const [phone, setPhone] = useState('phone');
-  const [title, setTitle] = useState('title');
-  const [address, setAddress] = useState('address');
-  const [city, setCity] = useState('city');
-  const [organization, setOrganization] = useState('company name');
+  const {t} = useTranslation();
+  const [contactId, setContactId] = useState('');
+  const existingContact = contacts[contactId]?.via?.phone || contacts[contactId]?.title;
+  const [email, setEmail] = useState(contacts[contact?.id]?.via?.email || `${t('email')}`);
+  const [phone, setPhone] = useState(contacts[contact?.id]?.via?.phone || `${t('phone')}`);
+  const [title, setTitle] = useState(contacts[contact?.id]?.title || `${t('title')}`);
+  const [address, setAddress] = useState(contacts[contact?.id]?.address?.addressLine1 || `${t('address')}`);
+  const [city, setCity] = useState(contacts[contact?.id]?.address?.city || `${t('city')}`);
+  const [organization, setOrganization] = useState(contacts[contact?.id]?.organizationName || `${t('companyName')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
   const [conversationsForContact, setConversationsForContact] = useState([]);
@@ -71,19 +78,39 @@ const ContactDetails = (props: ContactDetailsProps) => {
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
-    getContactDetails(conversationId);
+    getContactId();
     setExpanded(false);
     setAreOthersConversationForContact(false);
     setConversationsForContact([]);
-  }, [conversationId]);
+  }, [conversationId, contact?.id]);
+
+  const getContactId = async () => {
+    try {
+      const contactId = conversationId
+        ? await getContactDetails({conversationId: conversationId})
+        : await getContactDetails({id: contact?.id});
+      setContactId(contactId);
+      setContactIdConvMetadata(contactId);
+    } catch (error) {
+      return error;
+    }
+  };
 
   useEffect(() => {
-    if (conversationId && contacts && contacts[conversationId]) {
-      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
-      updateContactType(contacts[conversationId]);
-      setConversationsForContact(formatConversationsForContact(contacts[conversationId].conversations));
+    if (contacts && contacts[contact?.id || contactId]) {
+      fillContactInfo(
+        contacts[contact?.id || contactId],
+        setEmail,
+        setPhone,
+        setTitle,
+        setAddress,
+        setCity,
+        setOrganization
+      );
+      updateContactType(contacts[contact?.id || contactId]);
+      setConversationsForContact(formatConversationsForContact(contacts[contact?.id || contactId].conversations));
     }
-  }, [contacts, conversationId]);
+  }, [contact?.id, conversationId, contactId]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -91,7 +118,15 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   useEffect(() => {
     if (editingCanceled) {
-      fillContactInfo(contacts[conversationId], setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
+      fillContactInfo(
+        contacts[contact?.id || contactId],
+        setEmail,
+        setPhone,
+        setTitle,
+        setAddress,
+        setCity,
+        setOrganization
+      );
       setExpanded(false);
     }
   }, [editingCanceled]);
@@ -100,7 +135,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
     const conversationsForContactArr = [];
 
     for (const idProperty in convObj) {
-      if (idProperty !== conversationId) {
+      if (Object?.entries(contacts[contact?.id || contactId]?.conversations).length > 1) {
         setAreOthersConversationForContact(true);
         const convInfo = {} as ConversationInfoForContact;
         convInfo.id = idProperty;
@@ -113,12 +148,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
   };
 
   const removeDefaultTextWhenEditing = () => {
-    if (email === 'email') setEmail('');
-    if (phone === 'phone') setPhone('');
-    if (title === 'title') setTitle('');
-    if (address === 'address') setAddress('');
-    if (city === 'city') setCity('');
-    if (organization === 'company name') setOrganization('');
+    if (email === t('email')) setEmail('');
+    if (phone === t('phone')) setPhone('');
+    if (title === t('title')) setTitle('');
+    if (address === t('address')) setAddress('');
+    if (city === t('city')) setCity('');
+    if (organization === t('companyName')) setOrganization('');
   };
 
   const isExistingContact = (contact: Contact | UpdateContactDetailsRequestPayload) => {
@@ -138,7 +173,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
   };
 
   const toggleExpandableContent = () => {
-    if (isExistingContact(contacts[conversationId])) {
+    if (isExistingContact(contacts[contact?.id || contactId])) {
       setExistingContactCollapsed(!existingContactCollapsed);
     } else {
       setNewContactCollapsed(!newContactCollapsed);
@@ -149,7 +184,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
   const saveUpdatedInfo = () => {
     const infoDetailsPayload = getInfoDetailsPayload(
-      contacts[conversationId].id,
+      contacts[contact?.id || contactId].id,
       email,
       phone,
       title,
@@ -157,7 +192,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
       city,
       organization
     );
-    updateContactDetails(conversationId, {...infoDetailsPayload});
+
+    updateContactDetails({...infoDetailsPayload});
     updateContactType(infoDetailsPayload);
     getUpdatedInfo();
     fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);
@@ -170,12 +206,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
       <form autoComplete="off" className={styles.container}>
         <fieldset>
           <legend>Contact</legend>
-          <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName="email" />
+          <ContactInfoPoint email={email} isEditing={isEditing} setEmail={setEmail} infoName={t('email')} />
 
           {(!newContactCollapsed || isEditing) && (
             <>
-              <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName="phone" />
-              <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName="title" />
+              <ContactInfoPoint isEditing={isEditing} phone={phone} setPhone={setPhone} infoName={t('phone')} />
+              <ContactInfoPoint isEditing={isEditing} title={title} setTitle={setTitle} infoName={t('title')} />
 
               {(expanded || isEditing) && (
                 <>
@@ -183,14 +219,14 @@ const ContactDetails = (props: ContactDetailsProps) => {
                     isEditing={isEditing}
                     address={address}
                     setAddress={setAddress}
-                    infoName="address"
+                    infoName={t('address')}
                   />
-                  <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName="city" />
+                  <ContactInfoPoint isEditing={isEditing} city={city} setCity={setCity} infoName={t('city')} />
                   <ContactInfoPoint
                     isEditing={isEditing}
                     organization={organization}
                     setOrganization={setOrganization}
-                    infoName="organization"
+                    infoName={t('organization')}
                   />
                 </>
               )}
@@ -201,7 +237,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
         {isEditing ? (
           <div className={styles.saveButtonContainer}>
             <Button dataCy={cyContactSaveButton} type="submit" styleVariant="outline-big" onClick={saveUpdatedInfo}>
-              Save
+              {t('save')}
             </Button>
           </div>
         ) : (
@@ -215,7 +251,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
 
       {areOthersConversationForContact && conversationsForContact && (
         <div className={styles.contactConversationList}>
-          <span>Other conversations for this contact:</span>
+          <span>{t('otherConversationsContact')}</span>
           <div className={styles.iconsContainer}>
             {conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
               <button type="button" key={conversationInfo.id}>

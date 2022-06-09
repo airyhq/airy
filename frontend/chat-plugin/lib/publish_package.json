@@ -21,8 +21,8 @@
     "@types/react-dom": "17.0.9",
     "linkifyjs": "^3.0.1",
     "linkify-react": "^3.0.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react":  "18.1.0",
+    "react-dom": "18.1.0",
     "camelcase-keys": "7.0.0",
     "emoji-mart": "3.0.1"
   }

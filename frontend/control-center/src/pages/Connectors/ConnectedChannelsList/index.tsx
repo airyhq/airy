@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
@@ -15,7 +15,16 @@ import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-import {cyChannelsFormBackButton} from 'handles';
+import {
+  cyChannelsFormBackButton,
+  cyConnectorsAddNewButton,
+  cyChannelsChatPluginList,
+  cyChannelsFacebookList,
+  cyChannelsGoogleList,
+  cyChannelsTwilioSmsList,
+  cyChannelsTwilioWhatsappList,
+  cyChannelsInstagramList,
+} from 'handles';
 import {
   CONNECTORS_FACEBOOK_ROUTE,
   CONNECTORS_CHAT_PLUGIN_ROUTE,
@@ -32,11 +41,13 @@ import {
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
-import {Pagination} from '../../../components/Pagination';
+import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
+import {useTranslation} from 'react-i18next';
 
 const ConnectedChannelsList = () => {
   const {source} = useParams();
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
@@ -48,12 +59,15 @@ const ConnectedChannelsList = () => {
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
+  const [dataCyChannelList, setDataCyChannelList] = useState('');
+  const listPageSize = 8;
+  const connectorsRoute = location.pathname.includes('connectors');
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const pageSize = filteredChannels.length >= 8 ? 8 : filteredChannels.length;
+  const pageSize = filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length;
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentTableData = useMemo(() => {
@@ -62,7 +76,7 @@ const ConnectedChannelsList = () => {
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getInfo();
   }, [source, channels]);
 
@@ -70,42 +84,46 @@ const ConnectedChannelsList = () => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName('Facebook Messenger');
-        setDescription('Connect multiple Facebook pages');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        setName(t('facebookTitle'));
+        setDescription(t('facebookDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
-        setName('Google Business Messages');
-        setDescription('Be there when people search');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        setName(t('googleTitle'));
+        setDescription(t('googleDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
-        setName('Twilio SMS');
-        setDescription('Deliver SMS with ease');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        setName(t('twilioSmsTitle'));
+        setDescription(t('twilioSmsDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
-        setName('Twilio Whatsapp');
-        setDescription('World #1 chat app');
-        ROUTE = location.pathname.includes('connectors')
-          ? CONNECTORS_TWILIO_WHATSAPP_ROUTE
-          : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        setName(t('twilioWhatsappTitle'));
+        setDescription(t('twilioWhatsappDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
-        setName('Chat Plugin');
-        setDescription('Best of class browser messenger');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        setName(t('chatpluginTitle'));
+        setDescription(t('chatpluginDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
-        setName('Instagram');
-        setDescription('Connect multiple Instagram pages');
-        ROUTE = location.pathname.includes('connectors') ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        setName(t('instagramTitle'));
+        setDescription(t('instagramDescription'));
+        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
+        setDataCyChannelList(cyChannelsInstagramList);
         break;
     }
   };
@@ -120,7 +138,7 @@ const ConnectedChannelsList = () => {
       <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          Channels
+          {connectorsRoute ? t('channelsCapital') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>
@@ -138,7 +156,7 @@ const ConnectedChannelsList = () => {
             <div className={animationAction ? styles.animateIn : styles.animateOut}>
               {showingSearchField && (
                 <SearchField
-                  placeholder="Search"
+                  placeholder={t('search')}
                   value={searchText}
                   setValue={(value: string) => setSearchText(value)}
                   autoFocus={true}
@@ -160,6 +178,7 @@ const ConnectedChannelsList = () => {
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             onClick={() => navigate(path)}
+            data-cy={cyConnectorsAddNewButton}
           >
             <PlusIcon className={styles.plusIcon} />
           </button>
@@ -175,10 +194,10 @@ const ConnectedChannelsList = () => {
           marginBottom: '24px',
         }}
       >
-        <span>Name</span>
-        <span>Manage</span>
+        <span>{t('name')}</span>
+        <span>{t('manage')}</span>
       </div>
-      <div className={styles.channelsList}>
+      <div className={styles.channelsList} data-cy={dataCyChannelList}>
         {filteredChannels.length > 0 ? (
           sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
             channel.metadata.name.toLowerCase()
@@ -189,13 +208,14 @@ const ConnectedChannelsList = () => {
           ))
         ) : (
           <div className={styles.emptyState}>
-            <h1 className={styles.noSearchMatch}>Result not found.</h1>
-            <p>Try to search for a different term.</p>
+            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+            <p>{t('noResultsTerm')}</p>
           </div>
         )}
       </div>
       <Pagination
         totalCount={filteredChannels.length}
+        pageSize={listPageSize}
         pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
         currentPage={currentPage}
         onPageChange={page => setCurrentPage(page)}

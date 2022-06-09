@@ -41,6 +41,7 @@
   transition: 0.2s all ease-in-out;
   padding: 8px 16px;
   border-radius: 8px;
+  color: var(--color-text-contrast);
   cursor: pointer;
   &:hover {
     background-color: var(--color-background-blue);
@@ -107,7 +108,7 @@
   border-bottom: 1px solid var(--color-background-gray);
   padding: 12px;
 
-  color: var(--color-text-gray);
+  color: var(--color-text-contrast);
   text-decoration: none;
   font-weight: 400;
 
@@ -115,6 +116,7 @@
     background-color: var(--color-background-blue);
     color: var(--color-airy-blue);
     text-decoration: underline;
+    cursor: pointer;
 
     .dropdownIcon {
       svg {
@@ -136,6 +138,18 @@
     path {
       fill: var(--color-text-gray);
     }
+  }
+}
+
+.dropdownIconLanguage {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  margin-right: 6px;
+  &hover {
+    cursor: pointer;
   }
 }
 
@@ -185,7 +199,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--color-text-gray);
+  color: var(--color-text-contrast);
   cursor: pointer;
 
   &:hover {

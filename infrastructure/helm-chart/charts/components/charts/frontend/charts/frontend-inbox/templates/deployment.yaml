@@ -38,6 +38,9 @@ spec:
               name: core-config
               key: API_HOST
         {{- end }}
+        envFrom:
+          - configMapRef:
+              name: "{{ .Values.component }}"
         livenessProbe:
           httpGet:
             path: /health

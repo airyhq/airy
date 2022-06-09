@@ -1,4 +1,4 @@
-package workspace
+package config
 
 type IngressGlobalConf struct {
 	Lertsencrypt bool `yaml:"letsencrypt,omitempty"`
@@ -19,11 +19,12 @@ type IngressConf struct {
 }
 
 type SecurityConf struct {
-	SystemToken    string            `yaml:"systemToken,omitempty"`
-	AllowedOrigins string            `yaml:"allowedOrigins"`
-	JwtSecret      string            `yaml:"jwtSecret"`
-	Oidc           map[string]string `yaml:"oidc,omitempty"`
+	SystemToken    string            `yaml:"systemToken,omitempty" json:"system_token,omitempty"`
+	AllowedOrigins string            `yaml:"allowedOrigins" json:"allowed_origins"`
+	JwtSecret      string            `yaml:"jwtSecret" json:"jwt_secret"`
+	Oidc           map[string]string `yaml:"oidc,omitempty" json:"oidc,omitempty`
 }
+
 type ComponentsConf map[string]map[string]string
 
 type AiryConf struct {
@@ -31,4 +32,8 @@ type AiryConf struct {
 	Ingress    IngressConf               `yaml:"ingress"`
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]ComponentsConf `yaml:"components,omitempty"`
+}
+
+type ClusterConfig struct {
+	Security SecurityConf `json:"security"`
 }

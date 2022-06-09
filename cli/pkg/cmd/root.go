@@ -17,6 +17,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -93,7 +94,7 @@ var versionCmd = &cobra.Command{
 				return
 			}
 
-			coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
+			coreConfig, err := k8s.GetCmData("core-config", viper.GetString("namespace"), set)
 			if err != nil {
 				fmt.Println("Unable to retrieve the kubernetes config map:", err.Error())
 			} else if airyVersion, ok := coreConfig["APP_IMAGE_TAG"]; ok {

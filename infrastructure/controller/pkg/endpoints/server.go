@@ -32,7 +32,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	}
 
 	if authEnabled {
-		authMiddleware := MustNewAuthMiddleware("/cluster")
+		authMiddleware := MustNewAuthMiddleware("/components|/cluster")
 		r.Use(authMiddleware.Middleware)
 	}
 

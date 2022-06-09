@@ -7,7 +7,7 @@ import {listContacts} from '../../actions/contacts';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import ContactInformation from './ContactInformation';
-import {ContactListItem} from './ContactListItem';
+import ContactListItem from './ContactListItem';
 import styles from './index.module.scss';
 
 const mapStateToProps = (state: StateModel) => ({
@@ -55,9 +55,7 @@ const Contacts = (props: ContactsProps) => {
     lastPage % fetchNextPage == 0 && listContacts();
   }, [currentPage]);
 
-  const handleConversationId = (conversationId: string) => {
-    setConversationId(conversationId);
-  };
+  const handleConversationId = (conversationId: string) => setConversationId(conversationId);
 
   const handleContact = (contact: Contact) => {
     setContactInformationVisible(true);

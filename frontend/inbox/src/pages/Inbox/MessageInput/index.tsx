@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 're
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {Button, SimpleLoader} from 'components';
-import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
+import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
@@ -457,12 +457,7 @@ const MessageInput = (props: Props) => {
             />
           )}
 
-          <Button
-            type="button"
-            styleVariant="outline-big"
-            onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+          <Button type="button" styleVariant="outline-big" onClick={toggleSuggestedReplies}>
             <div className={styles.suggestionButton}>
               {t('suggestions')}
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />

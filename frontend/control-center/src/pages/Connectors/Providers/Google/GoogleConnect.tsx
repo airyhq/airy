@@ -12,7 +12,7 @@ import styles from './GoogleConnect.module.scss';
 import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
-import {t} from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   connectGoogleChannel,
@@ -24,10 +24,11 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectGoogleChannel} = props;
   const channel = useCurrentChannel();
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage'));
+  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const CONNECTED_ROUTE = location.pathname.includes('connectors')

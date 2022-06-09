@@ -13,7 +13,7 @@ import {setMetadataAction} from '../../actions/metadata';
 import {allConversations} from '../../selectors/conversations';
 import {upsertTagAction} from '../../actions';
 
-type AiryWebSocketProps = {} & ConnectedProps<typeof connector>;
+type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof connector>;
 
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 

@@ -55,7 +55,7 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
         setDragAndDropDisabled(true);
       }
     }
-  }, [source, config, conversation?.id, draggedAndDroppedFile]);
+  }, [source, config, draggedAndDroppedFile]);
 
   useEffect(() => {
     window.addEventListener(
@@ -75,16 +75,40 @@ const MessengerContainer = ({conversations, getConversationInfo, config}: Messen
       },
       false
     );
+
+    return () => {
+      window.removeEventListener(
+        'dragover',
+        event => {
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        false
+      );
+
+      window.removeEventListener(
+        'drop',
+        event => {
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        false
+      );
+    };
   }, [isFileDragged]);
 
   useEffect(() => {
     if (!conversation && conversationId) {
       getConversationInfo(conversationId);
     }
-
-    setIsFileDragged(false);
-    setDraggedAndDroppedFile(null);
   }, [conversation, conversationId]);
+
+  useEffect(() => {
+    if (conversationId) {
+      setIsFileDragged(false);
+      setDraggedAndDroppedFile(null);
+    }
+  }, [conversationId]);
 
   const hideSuggestedReplies = () => {
     showSuggestedReplies(null);

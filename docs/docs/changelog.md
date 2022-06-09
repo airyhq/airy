@@ -3,6 +3,94 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.45.1
+
+#### 🐛 Hotfix
+
+- [[#3267](https://github.com/airyhq/airy/issues/3267)] Putting components.* endpoints behind auth (#3268)
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.45.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.45.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.45.1/windows/amd64/airy.exe)
+
+
+## 0.45.0
+
+#### Changes
+
+- [[#3187](https://github.com/airyhq/airy/issues/3187)] Upgrade to react 18 (#3222)
+- [[#3167](https://github.com/airyhq/airy/issues/3167)] Unit test components research (#3186)
+- [[#3185](https://github.com/airyhq/airy/issues/3185)] Update cypress tests (#3191)
+
+#### 🚀 Features
+
+- [[#3030](https://github.com/airyhq/airy/issues/3030)] Added enabled service component check (#3237)
+- [[#3234](https://github.com/airyhq/airy/issues/3234)] Sort contacts alphabetically (#3235)
+- [[#3101](https://github.com/airyhq/airy/issues/3101)] Added contacts to Inbox (#3233)
+- [[#2756](https://github.com/airyhq/airy/issues/2756)] Apply config through the airy controller  (#3176)
+- [[#3156](https://github.com/airyhq/airy/issues/3156)] Added translations (#3181)
+- [[#3066](https://github.com/airyhq/airy/issues/3066)] New design sidebar inbox (#3182)
+- [[#3130](https://github.com/airyhq/airy/issues/3130)] Feature/endpoint for retrieving the current configuration (#3177)
+
+#### 🐛 Bug Fixes
+
+- [[#3249](https://github.com/airyhq/airy/issues/3249)] Fixed bug contacts (#3259)
+- [[#3247](https://github.com/airyhq/airy/issues/3247)] Fixed catalog view card (#3251)
+- [[#3228](https://github.com/airyhq/airy/issues/3228)] Control center fix status view (#3232)
+- [[#3227](https://github.com/airyhq/airy/issues/3227)] Darkmode fix on safari (#3250)
+- [[#3241](https://github.com/airyhq/airy/issues/3241)] Fixed staging crashing  (#3242)
+- [[#2756](https://github.com/airyhq/airy/issues/2756)] Fix api-admin deployment env (#3240)
+- [[#2756](https://github.com/airyhq/airy/issues/2756)] Fix values inside api-admin configMap (#3230)
+- [[#3171](https://github.com/airyhq/airy/issues/3171)] Admin api unhealthy on minikube (#3219)
+- [[#3192](https://github.com/airyhq/airy/issues/3192)] Update contacts update (#3203)
+- [[#3179](https://github.com/airyhq/airy/issues/3179)] Hotfix update release changelog docs (#3180)
+
+#### 📚 Documentation
+
+- [[#3184](https://github.com/airyhq/airy/issues/3184)] Update release notes with testing (#3190)
+
+#### 🧰 Maintenance
+
+- Bump terser-webpack-plugin from 5.3.1 to 5.3.3 (#3254)
+- Chore/upgrade go to 1.18.2 (#3244)
+- Bump eventsource from 1.0.7 to 1.1.1 in /docs (#3239)
+- Bump copy-webpack-plugin from 10.2.4 to 11.0.0 (#3202)
+- Bump @types/node from 17.0.35 to 17.0.36 (#3223)
+- Bump i18next from 21.8.4 to 21.8.5 (#3224)
+- Bump sass-loader from 12.6.0 to 13.0.0 (#3220)
+- Bump @types/node from 17.0.26 to 17.0.35 (#3218)
+- Bump @babel/core from 7.18.0 to 7.18.2 (#3216)
+- Bump react-redux from 8.0.1 to 8.0.2 (#3217)
+- Bump babel-loader from 8.2.4 to 8.2.5 (#3205)
+- Bump @reduxjs/toolkit from 1.8.1 to 1.8.2 (#3204)
+- Bump core-js from 3.22.5 to 3.22.7 (#3200)
+- Bump react-markdown from 8.0.2 to 8.0.3 (#3201)
+- Bump typescript from 4.6.3 to 4.6.4 (#3197)
+- Bump @babel/core from 7.17.9 to 7.18.0 (#3195)
+- Bump @babel/preset-env from 7.16.11 to 7.18.0 (#3194)
+- Bump sass from 1.50.0 to 1.52.1 (#3196)
+- Bump webpack-dev-server from 4.8.1 to 4.9.0 (#3152)
+- Bump react-modal from 3.14.4 to 3.15.1 (#3119)
+- Bump @babel/preset-typescript from 7.16.7 to 7.17.12 (#3189)
+- Bump redux from 4.1.2 to 4.2.0 (#3188)
+- Bump webpack from 5.72.0 to 5.72.1 (#3173)
+- Bump preact from 10.7.1 to 10.7.2 (#3172)
+- Bump core-js from 3.22.0 to 3.22.5 (#3151)
+- Bump @types/react-redux from 7.1.23 to 7.1.24 (#3062)
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.45.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.45.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.45.0/windows/amd64/airy.exe)
+
+
 ## 0.44.0
 
 #### 🚀 Features

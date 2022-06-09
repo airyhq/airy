@@ -26,6 +26,7 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer my-to
 
 :::note
 Both the `systemToken` and the `jwtSecret` need to be set in the `airy.yaml` file for the API security to work properly. If one of the values is omitted, the API will not be protected.
+To use the `airy` CLI, you also need to add the `systemToken` to the `cli.yaml` file.
 :::
 
 ## Configuring OIDC

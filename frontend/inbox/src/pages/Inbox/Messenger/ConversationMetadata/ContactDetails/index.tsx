@@ -75,17 +75,13 @@ const ContactDetails = (props: ContactDetailsProps) => {
     ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
-    console.log('conversationId', conversationId);
-    console.log('contact', contact)
-
   useEffect(() => {
-    getContactId();
+    fetchContactDetailsAndStoreId();
     setExpanded(false);
     setAreAvailableConversationForContact(false);
   }, [conversationId, contact?.id]);
 
   const getContactId = async () => {
-<<<<<<< HEAD
     try {
       const contactId = conversationId
         ? await getContactDetails({conversationId: conversationId})
@@ -95,10 +91,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
     } catch (error) {
       return error;
     }
-=======
-    const contactId = conversationId ? await getContactDetails({conversationId: conversationId}) : await getContactDetails({id: contact.id});
-    setContactId(contactId);
->>>>>>> e78b143c (bug fix wip)
   };
 
   useEffect(() => {
@@ -136,12 +128,20 @@ const ContactDetails = (props: ContactDetailsProps) => {
   }, [editingCanceled]);
 
   useEffect(() => {
-    if(contact && contact?.conversations){
-      const conversationsForContactArr = Object?.entries(contact?.conversations);
-      if (conversationId && conversationsForContactArr.length > 1) setAreAvailableConversationForContact(true);
+    const currentContact = contacts[contactId] || contact;
+    if (contactId && currentContact) {
+      const conversationsForContactArr = Object?.entries(currentContact.conversations);
+      if (conversationId && conversationsForContactArr.length > 2) setAreAvailableConversationForContact(true);
       if (!conversationId && conversationsForContactArr.length >= 1) setAreAvailableConversationForContact(true);
     }
-  }, [contact]);
+  }, [contactId]);
+
+  const fetchContactDetailsAndStoreId = async () => {
+    const contactId = conversationId
+      ? await getContactDetails({conversationId: conversationId})
+      : await getContactDetails({id: contact.id});
+    setContactId(contactId);
+  };
 
   const removeDefaultTextWhenEditing = () => {
     if (email === t('email')) setEmail('');
@@ -246,7 +246,10 @@ const ContactDetails = (props: ContactDetailsProps) => {
       </form>
 
       {areAvailableConversationForContact && (
-        <ConversationsForContact conversationId={conversationId} conversationsForContact={contacts?.[contact?.id || contactId]?.conversations} />
+        <ConversationsForContact
+          conversationId={conversationId}
+          conversationsForContact={contacts?.[contact?.id || contactId]?.conversations}
+        />
       )}
     </>
   );

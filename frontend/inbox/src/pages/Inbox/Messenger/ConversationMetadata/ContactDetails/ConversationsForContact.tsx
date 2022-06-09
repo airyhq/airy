@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
 import {Source} from 'model';
@@ -8,9 +8,9 @@ import {ConversationInfoForContact} from './index';
 import styles from './index.module.scss';
 
 type ConversationsForContactsProps = {
-    conversationId: string;
-    conversationsForContact: {[conversationId: string]: Source};
-}
+  conversationId: string;
+  conversationsForContact: {[conversationId: string]: Source};
+};
 
 export const ConversationsForContact = (props: ConversationsForContactsProps) => {
   const {conversationId, conversationsForContact} = props;
@@ -18,12 +18,8 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
   const [conversationsForContactFormatted, setConversationsForContactFormatted] = useState([]);
 
   useEffect(() => {
-    console.log('conversationsForContactFormatted', conversationsForContactFormatted)
-  }, [conversationsForContactFormatted])
-
-  useEffect(() => {
-    formatConversationsForContact()
-  }, [])
+    formatConversationsForContact();
+  }, []);
 
   const formatConversationsForContact = () => {
     const conversationsIdForContactArr = Object?.entries(conversationsForContact);
@@ -41,21 +37,22 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
       }
     }
 
-    setConversationsForContactFormatted(conversationsForContactArr)
+    setConversationsForContactFormatted(conversationsForContactArr);
   };
 
-    return(
-        <div className={styles.contactConversationList}>
-        <span>{conversationId ? t('otherConversationsContact') : t('conversationsContact')}</span>
-        <div className={styles.iconsContainer}>
-          {conversationsForContactFormatted.length > 0 && conversationsForContactFormatted.map((conversationInfo: ConversationInfoForContact) => (
+  return (
+    <div className={styles.contactConversationList}>
+      <span>{conversationId ? t('otherConversationsContact') : t('conversationsContact')}</span>
+      <div className={styles.iconsContainer}>
+        {conversationsForContactFormatted.length > 0 &&
+          conversationsForContactFormatted.map((conversationInfo: ConversationInfoForContact) => (
             <button type="button" key={conversationInfo.id}>
               <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
                 <ConnectorAvatar source={conversationInfo.connector as Source} />
               </Link>
             </button>
           ))}
-        </div>
       </div>
-    )
-}
+    </div>
+  );
+};

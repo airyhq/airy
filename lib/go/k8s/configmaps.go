@@ -36,8 +36,14 @@ func ApplyConfigMap(
 		if cmData != nil && len(cmData) > 0 {
 			cm.Data = cmData
 		}
+		if cm.Labels == nil {
+			cm.Labels = make(map[string]string)
+		}
 		for k, v := range labels {
 			cm.Labels[k] = v
+		}
+		if cm.Annotations == nil {
+			cm.Annotations = make(map[string]string)
 		}
 		for k, v := range annotations {
 			cm.Annotations[k] = v

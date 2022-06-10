@@ -79,6 +79,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
     fetchContactDetailsAndStoreId();
     setExpanded(false);
     setAreAvailableConversationForContact(false);
+    setContactId('');
   }, [conversationId, contact?.id]);
 
   useEffect(() => {
@@ -120,8 +121,12 @@ const ContactDetails = (props: ContactDetailsProps) => {
     if (contactId && currentContact && currentContact?.conversations) {
       if (setContactIdConvMetadata) setContactIdConvMetadata(contactId);
       const conversationsForContactArr = Object.entries(currentContact?.conversations);
-      if (conversationId && conversationsForContactArr.length > 2) setAreAvailableConversationForContact(true);
-      if (!conversationId && conversationsForContactArr.length >= 1) setAreAvailableConversationForContact(true);
+      if (conversationId && conversationsForContactArr.length > 2) {
+        setAreAvailableConversationForContact(true);
+      }
+      if (!conversationId && conversationsForContactArr.length >= 1) {
+        setAreAvailableConversationForContact(true);
+      }
     }
   }, [contacts, contactId]);
 

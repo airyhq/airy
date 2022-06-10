@@ -25,8 +25,8 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
     const conversationsIdForContactArr = Object?.entries(conversationsForContact);
     const conversationsForContactArr = [];
 
-    for (const idProperty in conversationsForContact) {
-      if (conversationsIdForContactArr.length > 0) {
+    if (conversationsIdForContactArr.length > 0) {
+      for (const idProperty in conversationsForContact) {
         const convInfo = {} as ConversationInfoForContact;
 
         if (idProperty !== conversationId) {
@@ -35,8 +35,8 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
           conversationsForContactArr.push(convInfo);
         }
       }
+      setConversationsForContactFormatted(conversationsForContactArr);
     }
-    setConversationsForContactFormatted(conversationsForContactArr);
   };
 
   return (

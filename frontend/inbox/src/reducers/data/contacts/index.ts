@@ -34,6 +34,7 @@ const contactsReducer = (state = initialState, action: Action) => {
         },
       };
     case getType(actions.deleteContactAction):
+      console.log('omit(state.all.items, action.payload)', omit(state.all.items, action.payload));
       return {
         ...state,
         all: {

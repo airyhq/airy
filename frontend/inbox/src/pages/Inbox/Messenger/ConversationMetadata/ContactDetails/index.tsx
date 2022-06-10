@@ -75,6 +75,10 @@ const ContactDetails = (props: ContactDetailsProps) => {
     ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
+    useEffect(() => {
+      console.log('contacts', contacts);
+    }, [contacts])
+
   useEffect(() => {
     fetchContactDetailsAndStoreId();
     setExpanded(false);

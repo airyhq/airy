@@ -189,7 +189,6 @@ const ContactInformation = (props: ContactInformationProps) => {
               </div>
               <ContactDetails
                 contact={contact}
-                conversationId={conversationId}
                 isEditing={isEditing}
                 getUpdatedInfo={getUpdatedInfo}
                 editingCanceled={editingCanceled}

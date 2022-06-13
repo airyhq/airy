@@ -199,3 +199,21 @@
     fill: var(--color-text-gray);
   }
 }
+
+.contactsDetailsCollapseIcon {
+  position:absolute;
+  left: 20Px;
+  top: 20Px;
+  width:20Px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  transition: opacity 0.3s;
+  svg {
+    fill: var(--color-airy-blue);
+  }
+}
+
+.contactsDetailsCollapseIcon:hover {
+  opacity:0.5;
+}

@@ -12,6 +12,7 @@ import {ConversationsForContact} from './ConversationsForContact';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 import {useTranslation} from 'react-i18next';
+import {ReactComponent as CollapseRightArrowsIcon} from 'assets/images/icons/collapseRightArrows.svg';
 
 export interface ConversationInfoForContact {
   id: string;
@@ -74,6 +75,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const remainingInfoPoints = newContactCollapsed
     ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
+  
+  const isContactsPage = location.pathname.includes('contacts');
 
   useEffect(() => {
     fetchContactDetailsAndStoreId();

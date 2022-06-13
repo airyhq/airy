@@ -31,6 +31,7 @@ const Contacts = (props: ContactsProps) => {
   const [editModeOn, setEditModeOn] = useState(false);
   const [cancelEdit, setCancelEdit] = useState(false);
   const [contactInformationVisible, setContactInformationVisible] = useState(false);
+  const [currentVisibleContactId, setCurrentVisibleContactId] = useState('');
   const listPageSize = 9;
   const fetchNextPage = 5;
 
@@ -53,7 +54,13 @@ const Contacts = (props: ContactsProps) => {
 
   useEffect(() => {
     lastPage % fetchNextPage == 0 && listContacts();
+    setContactInformationVisible(false)
   }, [currentPage]);
+
+
+  useEffect(() => {
+    console.log('currentVisibleContactId', currentVisibleContactId);
+  }, [currentVisibleContactId])
 
   const handleConversationId = (conversationId: string) => setConversationId(conversationId);
 
@@ -99,6 +106,9 @@ const Contacts = (props: ContactsProps) => {
                   setConversationId={handleConversationId}
                   setEditModeOn={handleEditMode}
                   setCancelEdit={handleCancelEditing}
+                  contactInformationVisible={contactInformationVisible}
+                  setCurrentVisibleContactId={setCurrentVisibleContactId}
+                  currentVisibleContactId={currentVisibleContactId}
                 />
               ))}
             </div>
@@ -114,13 +124,15 @@ const Contacts = (props: ContactsProps) => {
           </div>
         </div>
       </div>
-      <div className={contactInformationVisible ? styles.animateIn : ''}>
+      <div className={contactInformationVisible ? styles.contactColumnAnimateIn : styles.contactColumnAnimateOut}>
         <ContactInformation
           conversationId={conversationId}
           contact={currentContact}
           editModeOn={editModeOn}
           setEditModeOn={handleEditMode}
           cancelEdit={cancelEdit}
+          setContactInformationVisible={setContactInformationVisible}
+          contactInformationVisible={contactInformationVisible}
         />
       </div>
     </>

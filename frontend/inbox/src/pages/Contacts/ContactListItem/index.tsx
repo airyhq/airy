@@ -30,10 +30,13 @@ type ContactListItemProps = {
   setContact: (contact: Contact) => void;
   setEditModeOn: (editOn: boolean) => void;
   setCancelEdit: (cancel: boolean) => void;
+  contactInformationVisible: boolean;
+  setCurrentVisibleContactId:any;
+  currentVisibleContactId:string;
 } & ConnectedProps<typeof connector>;
 
 const ContactListItem = (props: ContactListItemProps) => {
-  const {contacts, contact, setConversationId, setContact, setEditModeOn, setCancelEdit} = props;
+  const {contacts, contact, setConversationId, setContact, setEditModeOn, setCancelEdit, setCurrentVisibleContactId, currentVisibleContactId} = props;
   const {t} = useTranslation();
   const conversationId = contact.conversations && Object.keys(contact?.conversations)[0];
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false);
@@ -43,6 +46,7 @@ const ContactListItem = (props: ContactListItemProps) => {
   useEffect(() => {
     setCurrentContactDisplayName(contacts?.[contact?.id]?.displayName);
   }, [contacts, contact?.id]);
+
 
   const formatConversationsForContact = (convObj: {[key: string]: string}) => {
     const conversationsForContactArr = [];
@@ -77,6 +81,7 @@ const ContactListItem = (props: ContactListItemProps) => {
     setContact(contact);
     setCancelEdit(true);
     setEditModeOn(false);
+    setCurrentVisibleContactId(contact.id)
   };
 
   const handleShowModal = (show: boolean) => {
@@ -90,7 +95,7 @@ const ContactListItem = (props: ContactListItemProps) => {
   };
 
   return (
-    <div className={styles.container} onClick={handleOnClick}>
+    <div className={styles.container} onClick={handleOnClick} style={{background: contact.id === currentVisibleContactId ? 'red' : ''}}>
       <div className={styles.avatarDisplayName}>
         <Avatar contact={contact} />
         <span>{currentContactDisplayName}</span>

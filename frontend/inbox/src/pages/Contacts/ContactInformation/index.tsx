@@ -13,6 +13,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as EditIcon} from 'assets/images/icons/pen.svg';
 import {ReactComponent as CancelIcon} from 'assets/images/icons/cancelCross.svg';
+import {ReactComponent as CollapseRightArrowsIcon} from 'assets/images/icons/collapseRightArrows.svg';
 import {StateModel} from '../../../reducers';
 import {
   cyCancelEditContactIcon,
@@ -40,6 +41,8 @@ type ContactInformationProps = {
   editModeOn: boolean;
   cancelEdit: boolean;
   setEditModeOn: (editing: boolean) => void;
+  setContactInformationVisible:any;
+  contactInformationVisible: boolean;
 } & ConnectedProps<typeof connector>;
 
 const ContactInformation = (props: ContactInformationProps) => {
@@ -52,6 +55,8 @@ const ContactInformation = (props: ContactInformationProps) => {
     editModeOn,
     cancelEdit,
     setEditModeOn,
+    setContactInformationVisible,
+    contactInformationVisible
   } = props;
   const {t} = useTranslation();
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
@@ -119,22 +124,25 @@ const ContactInformation = (props: ContactInformationProps) => {
 
   return (
     <>
-      {(contact || conversationId) && (
+      {(contact || conversationId) && contactInformationVisible &&(
         <div className={styles.content}>
+          <button
+            className={styles.contactsDetailsCollapseIcon}
+            onClick={() => setContactInformationVisible(!contactInformationVisible)}>
+            <CollapseRightArrowsIcon />
+          </button>
           {!isEditing ? (
             <button
               className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
               onClick={editContactDetails}
-              data-cy={cyEditContactIcon}
-            >
+              data-cy={cyEditContactIcon}>
               <EditIcon aria-label="edit contact" />
             </button>
           ) : (
             <button
               className={`${styles.editIcon} ${styles.cancelIcon}`}
               onClick={cancelContactsInfoEdit}
-              data-cy={cyCancelEditContactIcon}
-            >
+              data-cy={cyCancelEditContactIcon}>
               <CancelIcon aria-label="cancel contact edit" />
             </button>
           )}
@@ -168,8 +176,7 @@ const ContactInformation = (props: ContactInformationProps) => {
                           className={`${displayName?.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                           onClick={saveEditDisplayName}
                           disabled={displayName?.length === 0}
-                          data-cy={cyEditDisplayNameCheckmark}
-                        >
+                          data-cy={cyEditDisplayNameCheckmark}>
                           <CheckmarkCircleIcon />
                         </button>
                       </div>

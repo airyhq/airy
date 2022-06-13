@@ -71,6 +71,10 @@
   flex-direction: column;
 }
 
-.animateIn {
-  animation: contactsInformationIn 300ms ease;
+.contactColumnAnimateIn {
+  animation: contactsInformationIn 500ms ease;
+}
+
+.contactColumnAnimateOut {
+  animation: contactsInformationOut 300ms ease;
 }

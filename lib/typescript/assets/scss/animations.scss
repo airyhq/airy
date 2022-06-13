@@ -99,3 +99,16 @@
     transform: translateX(0px);
   }
 }
+
+@keyframes contactsInformationOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0px);
+    width: 290px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300px);
+    width: 0;
+  }
+}

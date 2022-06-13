@@ -107,7 +107,6 @@ const Contacts = (props: ContactsProps) => {
                   setConversationId={handleConversationId}
                   setEditModeOn={handleEditMode}
                   setCancelEdit={handleCancelEditing}
-                  contactInformationVisible={contactInformationVisible}
                   setCurrentVisibleContactId={setCurrentVisibleContactId}
                   currentVisibleContactId={currentVisibleContactId}
                 />

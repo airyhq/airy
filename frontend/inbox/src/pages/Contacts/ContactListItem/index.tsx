@@ -14,7 +14,7 @@ import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import DeleteContactModal from '../DeleteContactModal';
-import {ConversationInfoForContact} from '../../Inbox/Messenger/ConversationMetadata/ContactDetails';
+import {ConversationInfoForContact} from '../../../components/ContactDetails';
 import {StateModel} from '../../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
 
@@ -31,12 +31,21 @@ type ContactListItemProps = {
   setEditModeOn: (editOn: boolean) => void;
   setCancelEdit: (cancel: boolean) => void;
   contactInformationVisible: boolean;
-  setCurrentVisibleContactId:any;
-  currentVisibleContactId:string;
+  setCurrentVisibleContactId: React.Dispatch<React.SetStateAction<string>>;
+  currentVisibleContactId: string;
 } & ConnectedProps<typeof connector>;
 
 const ContactListItem = (props: ContactListItemProps) => {
-  const {contacts, contact, setConversationId, setContact, setEditModeOn, setCancelEdit, setCurrentVisibleContactId, currentVisibleContactId} = props;
+  const {
+    contacts,
+    contact,
+    setConversationId,
+    setContact,
+    setEditModeOn,
+    setCancelEdit,
+    setCurrentVisibleContactId,
+    currentVisibleContactId,
+  } = props;
   const {t} = useTranslation();
   const conversationId = contact.conversations && Object.keys(contact?.conversations)[0];
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false);
@@ -46,7 +55,6 @@ const ContactListItem = (props: ContactListItemProps) => {
   useEffect(() => {
     setCurrentContactDisplayName(contacts?.[contact?.id]?.displayName);
   }, [contacts, contact?.id]);
-
 
   const formatConversationsForContact = (convObj: {[key: string]: string}) => {
     const conversationsForContactArr = [];
@@ -81,21 +89,24 @@ const ContactListItem = (props: ContactListItemProps) => {
     setContact(contact);
     setCancelEdit(true);
     setEditModeOn(false);
-    setCurrentVisibleContactId(contact.id)
+    setCurrentVisibleContactId(contact.id);
   };
 
   const handleShowModal = (show: boolean) => {
     setShowDeleteContactModal(show);
   };
 
-  const handleEditMode = (event: any) => {
+  const handleEditMode = (event: React.MouseEvent<HTMLDivElement>) => {
     setContact(contact);
     setEditModeOn(true);
     event.stopPropagation();
   };
 
   return (
-    <div className={styles.container} onClick={handleOnClick} style={{background: contact.id === currentVisibleContactId ? 'red' : ''}}>
+    <div
+      className={`${styles.container} ${contact.id === currentVisibleContactId ? styles.itemSelected : ''}`}
+      onClick={handleOnClick}
+    >
       <div className={styles.avatarDisplayName}>
         <Avatar contact={contact} />
         <span>{currentContactDisplayName}</span>

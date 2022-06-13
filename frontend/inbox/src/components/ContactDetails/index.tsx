@@ -1,7 +1,7 @@
 import React, {useState, useEffect, SetStateAction} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {getContactDetails, updateContactDetails} from '../../../../../actions';
-import {StateModel} from '../../../../../reducers';
+import {getContactDetails, updateContactDetails} from '../../actions';
+import {StateModel} from '../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
 import {Contact} from 'model';
@@ -12,7 +12,6 @@ import {ConversationsForContact} from './ConversationsForContact';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 import {useTranslation} from 'react-i18next';
-import {ReactComponent as CollapseRightArrowsIcon} from 'assets/images/icons/collapseRightArrows.svg';
 
 export interface ConversationInfoForContact {
   id: string;
@@ -75,8 +74,6 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const remainingInfoPoints = newContactCollapsed
     ? totalInfoPoints - visibleInfoPointsNewContact
     : totalInfoPoints - visibleInfoPointsExistingContact;
-  
-  const isContactsPage = location.pathname.includes('contacts');
 
   useEffect(() => {
     fetchContactDetailsAndStoreId();

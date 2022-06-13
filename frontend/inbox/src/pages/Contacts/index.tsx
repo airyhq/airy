@@ -53,14 +53,15 @@ const Contacts = (props: ContactsProps) => {
   }, [currentPage, pageSize, contacts.length]);
 
   useEffect(() => {
-    lastPage % fetchNextPage == 0 && listContacts();
-    setContactInformationVisible(false)
-  }, [currentPage]);
-
+    if (currentTableData?.[0]?.id) {
+      setCurrentVisibleContactId(currentTableData?.[0]?.id);
+      setCurrentContact(currentTableData[0]);
+    }
+  }, [currentTableData]);
 
   useEffect(() => {
-    console.log('currentVisibleContactId', currentVisibleContactId);
-  }, [currentVisibleContactId])
+    lastPage % fetchNextPage == 0 && listContacts();
+  }, [currentPage]);
 
   const handleConversationId = (conversationId: string) => setConversationId(conversationId);
 
@@ -113,7 +114,7 @@ const Contacts = (props: ContactsProps) => {
               ))}
             </div>
           </div>
-          <div style={{marginLeft: '32px', marginRight: '32px', marginBottom: '32px'}}>
+          <div className={styles.paginationContainer}>
             <Pagination
               totalCount={paginationData?.total}
               pageSize={listPageSize}

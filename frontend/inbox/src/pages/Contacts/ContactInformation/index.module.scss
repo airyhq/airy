@@ -201,13 +201,13 @@
 }
 
 .contactsDetailsCollapseIcon {
-  position:absolute;
-  left: 20Px;
-  top: 20Px;
-  width:20Px;
-  background:transparent;
-  border:none;
-  cursor:pointer;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: opacity 0.3s;
   svg {
     fill: var(--color-airy-blue);
@@ -215,5 +215,5 @@
 }
 
 .contactsDetailsCollapseIcon:hover {
-  opacity:0.5;
+  opacity: 0.5;
 }

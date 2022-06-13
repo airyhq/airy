@@ -71,6 +71,10 @@
   flex-direction: column;
 }
 
+.paginationContainer {
+  margin: 0 32px 32px 32px;
+}
+
 .contactColumnAnimateIn {
   animation: contactsInformationIn 500ms ease;
 }

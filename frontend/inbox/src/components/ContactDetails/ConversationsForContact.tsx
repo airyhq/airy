@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
+import {INBOX_CONVERSATIONS_ROUTE} from '../../routes/routes';
 import {Source} from 'model';
 import {ConnectorAvatar} from 'components';
 import {useTranslation} from 'react-i18next';

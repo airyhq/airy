@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
-import ContactDetails from '../../Inbox/Messenger/ConversationMetadata/ContactDetails';
+import ContactDetails from '../../../components/ContactDetails';
 import {useAnimation} from 'render';
 import {Contact} from 'model';
 import {Avatar} from 'components/message/Avatar';
@@ -41,7 +41,7 @@ type ContactInformationProps = {
   editModeOn: boolean;
   cancelEdit: boolean;
   setEditModeOn: (editing: boolean) => void;
-  setContactInformationVisible:any;
+  setContactInformationVisible: React.Dispatch<React.SetStateAction<boolean>>;
   contactInformationVisible: boolean;
 } & ConnectedProps<typeof connector>;
 
@@ -56,7 +56,7 @@ const ContactInformation = (props: ContactInformationProps) => {
     cancelEdit,
     setEditModeOn,
     setContactInformationVisible,
-    contactInformationVisible
+    contactInformationVisible,
   } = props;
   const {t} = useTranslation();
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
@@ -124,25 +124,28 @@ const ContactInformation = (props: ContactInformationProps) => {
 
   return (
     <>
-      {(contact || conversationId) && contactInformationVisible &&(
+      {(contact || conversationId) && contactInformationVisible && (
         <div className={styles.content}>
           <button
             className={styles.contactsDetailsCollapseIcon}
-            onClick={() => setContactInformationVisible(!contactInformationVisible)}>
+            onClick={() => setContactInformationVisible(!contactInformationVisible)}
+          >
             <CollapseRightArrowsIcon />
           </button>
           {!isEditing ? (
             <button
               className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}
               onClick={editContactDetails}
-              data-cy={cyEditContactIcon}>
+              data-cy={cyEditContactIcon}
+            >
               <EditIcon aria-label="edit contact" />
             </button>
           ) : (
             <button
               className={`${styles.editIcon} ${styles.cancelIcon}`}
               onClick={cancelContactsInfoEdit}
-              data-cy={cyCancelEditContactIcon}>
+              data-cy={cyCancelEditContactIcon}
+            >
               <CancelIcon aria-label="cancel contact edit" />
             </button>
           )}
@@ -176,7 +179,8 @@ const ContactInformation = (props: ContactInformationProps) => {
                           className={`${displayName?.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                           onClick={saveEditDisplayName}
                           disabled={displayName?.length === 0}
-                          data-cy={cyEditDisplayNameCheckmark}>
+                          data-cy={cyEditDisplayNameCheckmark}
+                        >
                           <CheckmarkCircleIcon />
                         </button>
                       </div>

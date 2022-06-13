@@ -16,6 +16,13 @@ your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
 ## Create a minikube cluster
 
+:::note
+
+By default the UI and the API will be available at `http://localhost`.
+Make sure you don't have any other process using port 80 on your localhost interface
+
+:::
+
 First install minikube using [their documentation](https://kubernetes.io/de/docs/tasks/tools/install-minikube/). Minikube version v1.19.0 or higher is required.
 
 Next you also need to install the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new

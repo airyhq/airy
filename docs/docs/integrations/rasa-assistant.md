@@ -91,7 +91,7 @@ Add the configuration values to your existing Rasa `credentials.yml`:
 
 ```yaml
 channels.airy.AiryInput:
-  api_host: "http://airy.core"
+  api_host: "http://localhost"
   system_token: "the system api token for Airy Core"
 ```
 

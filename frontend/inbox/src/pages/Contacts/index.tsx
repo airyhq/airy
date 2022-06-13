@@ -54,7 +54,7 @@ const Contacts = (props: ContactsProps) => {
 
   useEffect(() => {
     if (currentTableData?.[0]?.id) {
-      setCurrentVisibleContactId(currentTableData?.[0]?.id);
+      setCurrentVisibleContactId(currentTableData[0].id);
       setCurrentContact(currentTableData[0]);
     }
   }, [currentTableData]);

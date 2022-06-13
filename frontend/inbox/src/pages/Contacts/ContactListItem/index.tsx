@@ -30,7 +30,6 @@ type ContactListItemProps = {
   setContact: (contact: Contact) => void;
   setEditModeOn: (editOn: boolean) => void;
   setCancelEdit: (cancel: boolean) => void;
-  contactInformationVisible: boolean;
   setCurrentVisibleContactId: React.Dispatch<React.SetStateAction<string>>;
   currentVisibleContactId: string;
 } & ConnectedProps<typeof connector>;

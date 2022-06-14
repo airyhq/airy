@@ -33,7 +33,7 @@
     "redux": "^4.2.0",
     "regenerator-runtime": "^0.13.9",
     "reselect": "4.1.5",
-    "ts-jest": "^28.0.2",
+    "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typesafe-actions": "^5.1.0"
   },

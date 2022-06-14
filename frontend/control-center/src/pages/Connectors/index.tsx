@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel, Source} from 'model';
 import InfoCard, {InfoCardStyle} from './InfoCard';
@@ -23,7 +23,7 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const {channels} = props;
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();

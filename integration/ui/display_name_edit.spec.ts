@@ -5,6 +5,7 @@ describe('Edits the display name of a conversation', () => {
     cy.visit('/inbox/inbox');
     cy.url().should('include', '/inbox');
 
+    //abstract display_name edit
     cy.get(`[data-cy=${cyEditDisplayNameIcon}]`).click({force: true});
 
     cy.get(`[data-cy=${cyDisplayNameInput}]`).type('new name');

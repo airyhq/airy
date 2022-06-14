@@ -1,6 +1,7 @@
 {
     "baseUrl": "http://airy.core",
     "integrationFolder": "integration",
+    "supportFile": "integration/commands/index.ts",
     "testFiles": "**/*.spec.?s",
     "env": {
        "chatPluginName": "Cypress Chatplugin",
@@ -10,9 +11,9 @@
        "messageChatplugin": "Hello from Cypress ChatPlugin!",
        "newMessageChatplugin": "Hello once again from Cypress ChatPlugin!",
        "websocketMessage": "Websocket Test Message",
-       "channelId": "8bb1aede-7d6f-4cd5-bf3a-c17764a9689a",
+       "channelId": "1cd1b148-0cea-47af-801c-ae65baf3012e",
        "messageId": "683e32bf-42f7-48c0-a701-d8e66f252c7b",
-       "conversationId": "6f683a3d-ec9a-4fe1-beef-88745155b5d0"
+       "conversationId": "05e86332-e6cd-4de5-9e1f-6c7c84994e03"
     },
     "viewportHeight": 800,
     "viewportWidth": 1280,

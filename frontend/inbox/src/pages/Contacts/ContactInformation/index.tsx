@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
-import ContactDetails from '../../Inbox/Messenger/ConversationMetadata/ContactDetails';
+import ContactDetails from '../../../components/ContactDetails';
 import {useAnimation} from 'render';
 import {Contact} from 'model';
 import {Avatar} from 'components/message/Avatar';
@@ -13,6 +13,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as EditIcon} from 'assets/images/icons/pen.svg';
 import {ReactComponent as CancelIcon} from 'assets/images/icons/cancelCross.svg';
+import {ReactComponent as CollapseRightArrowsIcon} from 'assets/images/icons/collapseRightArrows.svg';
 import {StateModel} from '../../../reducers';
 import {
   cyCancelEditContactIcon,
@@ -40,6 +41,8 @@ type ContactInformationProps = {
   editModeOn: boolean;
   cancelEdit: boolean;
   setEditModeOn: (editing: boolean) => void;
+  setContactInformationVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  contactInformationVisible: boolean;
 } & ConnectedProps<typeof connector>;
 
 const ContactInformation = (props: ContactInformationProps) => {
@@ -52,6 +55,8 @@ const ContactInformation = (props: ContactInformationProps) => {
     editModeOn,
     cancelEdit,
     setEditModeOn,
+    setContactInformationVisible,
+    contactInformationVisible,
   } = props;
   const {t} = useTranslation();
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
@@ -119,8 +124,14 @@ const ContactInformation = (props: ContactInformationProps) => {
 
   return (
     <>
-      {(contact || conversationId) && (
+      {(contact || conversationId) && contactInformationVisible && (
         <div className={styles.content}>
+          <button
+            className={styles.contactsDetailsCollapseIcon}
+            onClick={() => setContactInformationVisible(!contactInformationVisible)}
+          >
+            <CollapseRightArrowsIcon />
+          </button>
           {!isEditing ? (
             <button
               className={`${styles.editIcon} ${isContactDetailsExpanded ? styles.iconBlue : styles.iconGrey}`}

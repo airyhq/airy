@@ -13,6 +13,10 @@
   }
 }
 
+.itemSelected {
+  background: var(--color-background-blue);
+}
+
 .avatarDisplayName {
   display: flex;
   align-items: center;

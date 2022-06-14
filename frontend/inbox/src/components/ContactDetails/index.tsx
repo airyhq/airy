@@ -1,7 +1,7 @@
 import React, {useState, useEffect, SetStateAction} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {getContactDetails, updateContactDetails} from '../../../../../actions';
-import {StateModel} from '../../../../../reducers';
+import {getContactDetails, updateContactDetails} from '../../actions';
+import {StateModel} from '../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
 import {Contact} from 'model';

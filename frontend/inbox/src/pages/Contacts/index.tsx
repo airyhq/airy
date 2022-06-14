@@ -31,6 +31,7 @@ const Contacts = (props: ContactsProps) => {
   const [editModeOn, setEditModeOn] = useState(false);
   const [cancelEdit, setCancelEdit] = useState(false);
   const [contactInformationVisible, setContactInformationVisible] = useState(false);
+  const [currentVisibleContactId, setCurrentVisibleContactId] = useState('');
   const listPageSize = 9;
   const fetchNextPage = 5;
 
@@ -50,6 +51,13 @@ const Contacts = (props: ContactsProps) => {
     const lastPageIndex = firstPageIndex + pageSize;
     return contacts.sort(contactSorter).slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, contacts.length]);
+
+  useEffect(() => {
+    if (currentTableData?.[0]?.id) {
+      setCurrentVisibleContactId(currentTableData[0].id);
+      setCurrentContact(currentTableData[0]);
+    }
+  }, [currentTableData]);
 
   useEffect(() => {
     lastPage % fetchNextPage == 0 && listContacts();
@@ -99,11 +107,13 @@ const Contacts = (props: ContactsProps) => {
                   setConversationId={handleConversationId}
                   setEditModeOn={handleEditMode}
                   setCancelEdit={handleCancelEditing}
+                  setCurrentVisibleContactId={setCurrentVisibleContactId}
+                  currentVisibleContactId={currentVisibleContactId}
                 />
               ))}
             </div>
           </div>
-          <div style={{marginLeft: '32px', marginRight: '32px', marginBottom: '32px'}}>
+          <div className={styles.paginationContainer}>
             <Pagination
               totalCount={paginationData?.total}
               pageSize={listPageSize}
@@ -114,13 +124,15 @@ const Contacts = (props: ContactsProps) => {
           </div>
         </div>
       </div>
-      <div className={contactInformationVisible ? styles.animateIn : ''}>
+      <div className={contactInformationVisible ? styles.contactColumnAnimateIn : styles.contactColumnAnimateOut}>
         <ContactInformation
           conversationId={conversationId}
           contact={currentContact}
           editModeOn={editModeOn}
           setEditModeOn={handleEditMode}
           cancelEdit={cancelEdit}
+          setContactInformationVisible={setContactInformationVisible}
+          contactInformationVisible={contactInformationVisible}
         />
       </div>
     </>

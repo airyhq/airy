@@ -9,7 +9,7 @@ import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel, isComponentHealthy} from '../../../../reducers';
 import {useAnimation} from 'render';
-import ContactDetails from './ContactDetails';
+import ContactDetails from '../../../../components/ContactDetails';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';

@@ -40,7 +40,7 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"core.airy.co/component": component.Name,
 		}
 		annotations := map[string]string{
-			"enabled": strconv.FormatBool(component.Enabled),
+			"core.airy.co/enabled": strconv.FormatBool(component.Enabled),
 		}
 		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, annotations, s.clientSet)
 		if applyErr != nil {

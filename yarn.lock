@@ -1001,21 +1001,21 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@bazel/typescript@5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.4.0.tgz#0a24e8d47152728f71b26b73adc3913645e5309e"
-  integrity sha512-AWmS9HcnjqGsPQv5lnqecA8xof+d4ChpbI/Z6aiSM0qOemc8e1WT9wb1VzM6g6hRfV5foWyIHt0VhTonTsPhYw==
+"@bazel/typescript@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.5.0.tgz#053c255acb1b3cac23d24984cd8d5d5542fe1f7c"
+  integrity sha512-Ord0+nCj+B1M4NDbe0uqZf2FyOCzaDAlc4DAsr5UKJrArCipIbMTEAxlsEk+WAYBNAFGO/FS9/zlDtLceqpHqw==
   dependencies:
-    "@bazel/worker" "5.4.0"
+    "@bazel/worker" "5.5.0"
     protobufjs "6.8.8"
     semver "5.6.0"
     source-map-support "0.5.9"
     tsutils "3.21.0"
 
-"@bazel/worker@5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.4.0.tgz#ce50e34951ccf7233b651f0be665bbd43d7ed7f1"
-  integrity sha512-Rtkol9WoYs0NCZl1wt4Q8T7Rs0wbQjIvFiJzVeeoC/00TG0e/qi4mYE5iQwUJmO8st3N8VnaWz2N31UHc6yhRA==
+"@bazel/worker@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.5.0.tgz#d30b75e46f2052d33bcda251b328d36655a5636f"
+  integrity sha512-pYfjJKg4D1CQ/AJ1UGC5ySyH09gDqNiBrQJ0uMYVewIBW24uOAkKsJfTE2y4ES0UL1Ik758WO0la0mJeFOKScg==
   dependencies:
     google-protobuf "^3.6.1"
 
@@ -4775,10 +4775,10 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-i18next@^21.8.5:
-  version "21.8.5"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.8.5.tgz#b7615f107d9a1492c771dc0e0b8742a80c1d9bec"
-  integrity sha512-uI5LVG10SBHLVOclr6yY1aCimmrzeZ0dwD73Sio61E8gQEwRmKI7/M8RKM084mNNy7VscKtxzSwELrso8BKv1g==
+i18next@^21.8.9:
+  version "21.8.9"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.8.9.tgz#c79edd5bba61e0a0d5b43a93d52e2d13a526de82"
+  integrity sha512-PY9a/8ADVmnju1tETeglbbVQi+nM5pcJQWm9kvKMTE3GPgHHtpDsHy5HQ/hccz2/xtW7j3vuso23JdQSH0EttA==
   dependencies:
     "@babel/runtime" "^7.17.2"
 
@@ -6747,10 +6747,10 @@ postcss@^8.4.7:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-preact@^10.7.2:
-  version "10.7.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.7.2.tgz#5c632ba194b87345dcaee6598b3b6529b58e6a12"
-  integrity sha512-GLjn0I3r6ka+NvxJUppsVFqb4V0qDTEHT/QxHlidPuClGaxF/4AI2Qti4a0cv3XMh5n1+D3hLScW10LRIm5msQ==
+preact@^10.7.3:
+  version "10.7.3"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.7.3.tgz#f98c09a29cb8dbb22e5fc824a1edcc377fc42b5a"
+  integrity sha512-giqJXP8VbtA1tyGa3f1n9wiN7PrHtONrDyE3T+ifjr/tTkg+2N4d/6sjC9WyJKv8wM7rOYDveqy5ZoFmYlwo4w==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

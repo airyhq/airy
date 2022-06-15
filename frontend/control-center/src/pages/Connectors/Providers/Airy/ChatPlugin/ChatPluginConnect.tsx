@@ -26,7 +26,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection';
-import {InstallSection} from './sections/InstallSection';
+import {ChatpluginConfig, InstallSection} from './sections/InstallSection';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -51,8 +51,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
 
-  console.log('current: ', currentChannel);
-
+  const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(null);
   const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const [displayName, setDisplayName] = useState(currentChannel?.metadata?.name || '');
   const [imageUrl, setImageUrl] = useState(currentChannel?.metadata?.imageUrl || '');
@@ -112,11 +111,11 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }
         return <OverviewSection />;
       case Pages.customization:
-        return <CustomiseSection channelId={channelId} host={apiHostUrl} />;
+        return <CustomiseSection channelId={channelId} host={apiHostUrl} setChatpluginConfig={setChatpluginConfig} />;
       case Pages.install:
         return (
           <div className={styles.formWrapper}>
-            <InstallSection channelId={channelId} host={apiHostUrl} />
+            <InstallSection channelId={channelId} host={apiHostUrl} chatpluginConfig={chatpluginConfig} />
           </div>
         );
     }
@@ -146,7 +145,8 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                 type="button"
                 onClick={() => {
                   disconnectChannel(channel);
-                }}>
+                }}
+              >
                 {t('delete')}
               </LinkButton>
             </div>
@@ -157,56 +157,57 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   );
 
   return (
-    <div className={styles.wrapper}>
+    <div style={{display: 'flex', width: '100%'}}>
       <div className={styles.headline}>
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-        </LinkButton>
-        <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
-        {channelId == null && (
-          <div className={styles.addButton}>
-            <Button onClick={openNewPage}>
-              <span title={t('addChannel')}>+</span>
-            </Button>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
+            <LinkButton onClick={() => navigate(-1)} type="button">
+              <ArrowLeftIcon className={styles.backIcon} />
+            </LinkButton>
+            <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
           </div>
-        )}
-      </div>
-      <div className={styles.infoBox}>
-        <InfoButton
-          link="https://airy.co/docs/core/sources/chatplugin/overview"
-          text={t('infoButtonText')}
-          color="grey"
-          style={{border: 'none', fontWeight: '700', paddingLeft: '10px', margin: '0px'}}
-        />
-      </div>
-      <div className={styles.channelsLine}>
-        <div style={{display: 'flex', flexDirection: 'column', marginBottom: '36px'}}>
-          <div style={{display: 'flex'}}>
-            <span
-              onClick={showCreateUpdate}
-              className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
-              {channelId === 'new' ? t('create') : t('update')}
-            </span>
-            {channelId !== 'new' && (
-              <span
-                onClick={showCustomization}
-                className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}>
-                {t('customize')}
-              </span>
-            )}
-            {channelId !== 'new' && (
-              <span
-                onClick={showInstall}
-                className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}>
-                {t('install')}
-              </span>
-            )}
+          <div className={styles.infoBox}>
+            <InfoButton
+              link="https://airy.co/docs/core/sources/chatplugin/overview"
+              text={t('infoButtonText')}
+              color="grey"
+            />
           </div>
-          <div className={styles.line} />
         </div>
       </div>
-      <div style={{paddingLeft: '32px'}}>
-        <PageContent />
+      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
+        <div className={styles.channelsLine}>
+          <div style={{display: 'flex', flexDirection: 'column', marginBottom: '36px'}}>
+            <div style={{display: 'flex'}}>
+              <span
+                onClick={showCreateUpdate}
+                className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
+              >
+                {channelId === 'new' ? t('create') : t('update')}
+              </span>
+              {channelId !== 'new' && (
+                <span
+                  onClick={showCustomization}
+                  className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('customize')}
+                </span>
+              )}
+              {channelId !== 'new' && (
+                <span
+                  onClick={showInstall}
+                  className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('install')}
+                </span>
+              )}
+            </div>
+            <div className={styles.line} />
+          </div>
+        </div>
+        <div style={{paddingLeft: '32px'}}>
+          <PageContent />
+        </div>
       </div>
     </div>
   );

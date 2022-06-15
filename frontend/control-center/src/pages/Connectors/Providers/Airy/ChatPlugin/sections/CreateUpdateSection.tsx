@@ -46,7 +46,8 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             updateConnection(newDisplayName, newImageUrl);
-          }}>
+          }}
+        >
           <div className={styles.formRow}>
             <Input
               type="text"

@@ -1,14 +1,81 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
 
 .customiseContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   margin-top: 28px;
   margin-right: 16px;
+  label {
+    white-space: nowrap;
+    margin-right: 30px;
+    min-width: 240px;
+  }
+}
+.customiseContainerInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.customiseContainerToggles {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.customiseContainerDropdowns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.headline {
+  position: absolute;
+  padding-left: 10px;
+  margin: 88px 1.5em 0 191px;
+  h1 {
+    @include font-xl;
+    font-weight: bold;
+  }
+  button {
+    height: 20px;
+    background: transparent;
+  }
+}
+
+.infoBox {
+  margin: 0;
+  button {
+    border: none;
+  }
+  h1 {
+    @include font-xl;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+}
+
+.backButton {
+  display: block;
+  margin-bottom: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.backIcon {
+  width: 20px;
+  background: transparent;
+  path {
+    fill: var(--color-text-gray);
+  }
+  margin-right: 8px;
 }
 
 .colorPickerWrapper {
   position: absolute;
-  // padding: 46px 24px 46px 0px;
 }
 
 .colorPicker {
@@ -16,18 +83,18 @@
   align-items: center;
 }
 
-.colorPickerSample {
-  background-color: var(--color-airy-blue);
-  box-shadow: lightgray 0px 0px 3px 0px;
-  height: 34px;
-  width: 40px;
-  border-radius: 20%;
-  margin-right: 4px;
-  margin-bottom: 8px;
+.extraOptions {
+  margin: 16px 20px 24px 0;
+  min-width: 300px;
 }
 
-.extraOptions {
-  margin: 16px 0 24px 0;
+.stepTextDropdown {
+  button {
+    line-height: 24px;
+    width: auto;
+    margin-bottom: 8px;
+    border: none;
+  }
 }
 
 .codeAreaContainer {
@@ -61,16 +128,20 @@
 }
 
 .pluginWrapper {
-  position: relative;
   display: flex;
   flex-flow: column-reverse;
   background-color: var(--color-background-gray);
-  border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   padding: 0 24px 0 24px;
   margin: 32px 0 0 24px;
   min-width: 350px;
   min-height: 700px;
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  background: transparent;
+  z-index: $popup + 1;
+  pointer-events: none;
 }
 
 .pluginContainer {
@@ -88,10 +159,15 @@
 }
 
 .titleContainer {
-  margin-bottom: 18px;
+  margin-left: 8px;
   h1 {
     @include font-l;
-    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  h2 {
+    @include font-base;
+    color: var(--color-text-gray);
+    margin-bottom: 18px;
   }
 
   span {
@@ -104,31 +180,39 @@
   display: flex;
   height: 32px;
   align-items: center;
+  padding-left: 8px;
 }
 
 .activeColorStep {
   position: relative;
-  height: 32px;
-  width: 32px;
-  left: -5px; 
-  top: -5px;
+  height: 34px;
+  width: 34px;
+  left: -6px;
+  top: -6px;
   border-radius: 32px;
-  border: 1px solid var(--color-airy-blue);
+  border: 2px solid var(--color-airy-logo-blue);
   background-color: transparent;
 }
 
 .inactiveColorStep {
-    height: 26px;
-    width: 26px;
-    border-radius: 26px;
-    border: 2px solid black;
-    margin-right: 18px;
-    margin-left: 3px;
-    &:hover {
-      cursor: pointer;
-    }
-  
-    div:last-child {
-      margin-right: 32px;
-    }
+  height: 26px;
+  width: 26px;
+  border-radius: 26px;
+  border: 2px solid black;
+  margin-right: 18px;
+  margin-left: 3px;
+  &:hover {
+    cursor: pointer;
+  }
+
+  div:last-child {
+    margin-right: 32px;
+  }
+}
+
+.borderLine {
+  height: 1px;
+  width: 80%;
+  background-color: var(--color-light-gray);
+  margin: 18px 0;
 }

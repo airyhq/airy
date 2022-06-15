@@ -15,13 +15,15 @@ export const InfoButton = ({text, link, color, dataCy, style}: Props) => (
   <button
     className={`${styles.button} ${color === 'blue' ? styles.blueButton : styles.greyButton}`}
     style={style}
-    data-cy={dataCy}>
+    data-cy={dataCy}
+  >
     <InfoCircle className={`${styles.circleIcon} ${color === 'blue' ? styles.blueIcon : styles.greyIcon}`} />
     <a
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${styles.link} ${color === 'blue' ? styles.blueLink : styles.greyLink}`}>
+      className={`${styles.link} ${color === 'blue' ? styles.blueLink : styles.greyLink}`}
+    >
       {text}
     </a>
   </button>

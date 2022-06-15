@@ -64,12 +64,14 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
             <Button
               type="submit"
               styleVariant="small"
+              disabled={displayName === ''}
               style={{width: '176px', height: '40px'}}
               dataCy={cyChannelsChatPluginFormSubmitButton}
               onClick={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 createNewConnection(displayName, imageUrl);
-              }}>
+              }}
+            >
               {t('create')}
             </Button>
           </form>

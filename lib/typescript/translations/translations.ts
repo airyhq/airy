@@ -170,15 +170,15 @@ const resources = {
       chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
       addCodeTagHead: 'Add this code inside the tag ',
       copyCode: 'Copy code',
-      headTextColor: 'Header Text Color',
+      headerTextColor: 'Header Text Color',
       subtitleTextColor: 'Subtitle Text Color',
       primaryColor: 'Primary Color',
       accentColor: 'Accent Color',
       backgroundColor: 'Background Color',
       inboundBackgroundColor: 'Inbound Background Color',
-      inboundTextColor: 'Inbound Text Color',
+      inboundMessageTextColor: 'Inbound Text Color',
       outboundBackgroundColor: 'Outbound Background Color',
-      outboundTextColor: 'Outbound Text Color',
+      outboundMessageTextColor: 'Outbound Text Color',
       unreadMessageDotColor: 'Unread Message Dot Color',
       headerText: 'Header Text',
       addTextOptional: '(optionally) add a text',
@@ -223,6 +223,10 @@ const resources = {
       connectPage: 'Connect Page',
       updatePage: 'Update Page',
       errorMessage: 'Please check entered value',
+      chatpluginInstallText:
+        'You will be able to access the code to include in your header later after you are done customising.',
+      installCodeNpm1: 'You can install your ',
+      installCodeNpm2: ' library here:',
 
       //Facebook Messenger
 
@@ -502,15 +506,15 @@ const resources = {
       chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
       addCodeTagHead: 'Fügen Sie diesen Code innerhalb des Tags ein ',
       copyCode: 'Code kopieren',
-      headTextColor: 'Textfarbe der Kopfzeile',
+      headerTextColor: 'Textfarbe der Kopfzeile',
       subtitleTextColor: 'Untertitel Textfarbe',
       primaryColor: 'Primärfarbe',
       accentColor: 'Akzentfarbe',
       backgroundColor: 'Hintergrundfarbe',
       inboundBackgroundColor: 'Eingehende Hintergrundfarbe',
-      inboundTextColor: 'Eingehende Textfarbe',
+      inboundMessageTextColor: 'Eingehende Textfarbe',
       outboundBackgroundColor: 'Ausgehende Hintergrundfarbe',
-      outboundTextColor: 'Ausgehende Textfarbe',
+      outboundMessageTextColor: 'Ausgehende Textfarbe',
       unreadMessageDotColor: 'Farbe des Punktes für ungelesene Nachrichten',
       headerText: 'Kopfzeilentext',
       addTextOptional: '(optional) einen Text hinzufügen',
@@ -555,6 +559,10 @@ const resources = {
       connectPage: 'Seite verbinden',
       updatePage: 'Seite  aktualisieren',
       errorMessage: 'Bitte überprüfen Sie Ihre Eingabe',
+      chatpluginInstallText:
+        'Sie können auf den Code zugreifen, den Sie später in Ihre Kopfzeile einfügen können, wenn Sie mit den Anpassungen fertig sind.',
+      installCodeNpm1: 'Sie können Ihre ',
+      installCodeNpm2: '-Bibliothek hier installieren:',
 
       //Facebook Messenger
 
@@ -822,15 +830,15 @@ const resources = {
       chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
       copyCode: 'Copier le code',
-      headTextColor: `Couleur du texte de l'en-tête`,
+      headerTextColor: `Couleur du texte de l'en-tête`,
       subtitleTextColor: 'Couleur du texte du sous-titre',
       primaryColor: 'Couleur primaire',
       accentColor: `Couleur d'accent`,
       backgroundColor: 'Couleur de fond',
       inboundBackgroundColor: `Couleur d'arrière-plan pour les messages entrants`,
-      inboundTextColor: 'Couleur du texte entrant',
+      inboundMessageTextColor: 'Couleur du texte entrant',
       outboundBackgroundColor: `Couleur d'arrière-plan pour les messages de sortie`,
-      outboundTextColor: 'Couleur du texte sortant',
+      outboundMessageTextColor: 'Couleur du texte sortant',
       unreadMessageDotColor: 'Couleur du point des messages non lus',
       headerText: `Texte d'en-tête`,
       addTextOptional: '(facultatif) ajouter un texte',
@@ -877,6 +885,13 @@ const resources = {
       connectPage: 'Connecter la page',
       updatePage: `Actualiser la page`,
       errorMessage: 'Veuillez vérifier la valeur saisie',
+      chatpluginInstallText:
+        'Vous pourrez accéder au code à inclure dans votre en-tête plus tard, lorsque vous aurez fini de le personnaliser.',
+      installCodeNpm1: 'Vous pouvez installer votre bibliothèque ',
+      installCodeNpm2: ' ici:',
+
+      //Facebook Messenger
+
       connectMessenger: 'Connecter le Messenger',
       facebookConfiguration: 'La source Facebook nécessite la configuration suivante:',
       facebookConfigurationText: `Un identifiant et un secret d'application pour que la plateforme puisse renvoyer des messages via votre application Facebook.`,
@@ -1142,15 +1157,15 @@ const resources = {
       chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
       addCodeTagHead: 'Añade este código dentro de la etiqueta ',
       copyCode: 'Copiar código',
-      headTextColor: 'Color del texto de la cabecera',
+      headerTextColor: 'Color del texto de la cabecera',
       subtitleTextColor: 'Color del texto de los subtítulos',
       primaryColor: 'Color primario',
       accentColor: 'Color de acento',
       backgroundColor: 'Color de fondo',
       inboundBackgroundColor: 'Color de fondo de entrada',
-      inboundTextColor: 'Color del texto entrante',
+      inboundMessageTextColor: 'Color del texto entrante',
       outboundBackgroundColor: 'Color de fondo de salida',
-      outboundTextColor: 'Color del texto de salida',
+      outboundMessageTextColor: 'Color del texto de salida',
       unreadMessageDotColor: 'Color de los puntos de los mensajes no leídos',
       headerText: 'Texto de cabecera',
       addTextOptional: '(opcionalmente) añadir un texto',
@@ -1195,6 +1210,10 @@ const resources = {
       connectPage: 'Conectar la página',
       updatePage: 'Actualización de la página',
       errorMessage: 'Por favor, compruebe el valor introducido',
+      chatpluginInstallText:
+        'Podrá acceder al código para incluirlo en su cabecera más tarde, cuando haya terminado de personalizarlo.',
+      installCodeNpm1: 'Puede instalar su biblioteca ',
+      installCodeNpm2: ' aquí:',
 
       //Facebook Messenger
 

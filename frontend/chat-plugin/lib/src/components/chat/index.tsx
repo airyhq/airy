@@ -116,6 +116,10 @@ const Chat = ({config, ...props}: Props) => {
     setNewConversation(true);
   }, []);
 
+  useEffect(() => {
+    (config.bubbleState === 'minimized') != isChatHidden && ctrl.toggleHideChat();
+  }, [config.bubbleState]);
+
   const setInitialMessages = (initialMessages: Array<Message>) => {
     setMessages([...messages, ...initialMessages]);
   };

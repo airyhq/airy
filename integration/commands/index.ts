@@ -4,19 +4,19 @@ import {editDisplayName} from './editDisplayName';
 import {listConversationsForContact} from './listConversationsForContact';
 
 declare global {
-  namespace Cy {
+  namespace cy {
     interface Chainable {
-      createChatPluginConversation: typeof createChatPluginConversation;
-      editContactDetails: typeof editContactDetails;
-      connectChatPluginConnector: typeof connectChatPluginConnector;
-      editDisplayName: typeof editDisplayName;
-      listConversationsForContact: typeof listConversationsForContact;
+      createChatPluginConversation: () => void;
+      editContactDetails: () => void;
+      connectChatPluginConnector: () => void;
+      editDisplayName: () => void;
+      listConversationsForContact: () => void;
     }
   }
 }
 
-Cypress.Commands.add('createChatPluginConversation', createChatPluginConversation);
-Cypress.Commands.add('editContactDetails', editContactDetails);
-Cypress.Commands.add('connectChatPluginConnector', connectChatPluginConnector);
-Cypress.Commands.add('editDisplayName', editDisplayName);
-Cypress.Commands.add('listConversationsForContact', listConversationsForContact);
+cy.Commands.add('createChatPluginConversation', createChatPluginConversation);
+cy.Commands.add('editContactDetails', editContactDetails);
+cy.Commands.add('connectChatPluginConnector', connectChatPluginConnector);
+cy.Commands.add('editDisplayName', editDisplayName);
+cy.Commands.add('listConversationsForContact', listConversationsForContact);

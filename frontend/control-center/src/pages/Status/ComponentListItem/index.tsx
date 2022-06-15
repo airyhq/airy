@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {ItemInfo} from './ItemInfo';
+import ItemInfo from './ItemInfo';
 import styles from './index.module.scss';
 
 type ComponentsListProps = {

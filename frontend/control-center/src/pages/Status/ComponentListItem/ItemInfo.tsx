@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+
+import {enableDisableComponent} from '../../../actions';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
@@ -7,6 +9,7 @@ import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
 import {Toggle} from 'components';
 import styles from './index.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
 
 type ComponentInfoProps = {
   healthy: boolean;
@@ -14,10 +17,16 @@ type ComponentInfoProps = {
   isComponent: boolean;
   isExpanded: boolean;
   enabled?: boolean;
+} & ConnectedProps<typeof connector>;
+
+const mapDispatchToProps = {
+  enableDisableComponent,
 };
 
-export const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, enabled} = props;
+const connector = connect(null, mapDispatchToProps);
+
+const ItemInfo = (props: ComponentInfoProps) => {
+  const {healthy, itemName, isComponent, isExpanded, enabled, enableDisableComponent} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -26,6 +35,8 @@ export const ItemInfo = (props: ComponentInfoProps) => {
   const enableHandler = (componentId: string) => {
     return (enabled: boolean) => {
       console.log(`${componentId} is now ${enabled ? 'enabled' : 'disabled'}`);
+      console.log(enableDisableComponent);
+      enableDisableComponent({components: [{name: componentId, enabled: enabled}]});
       setComponentEnabled(enabled);
     };
   };
@@ -69,3 +80,5 @@ export const ItemInfo = (props: ComponentInfoProps) => {
     </>
   );
 };
+
+export default connector(ItemInfo);

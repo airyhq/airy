@@ -24,3 +24,11 @@ data:
 {{- if .Values.global.apiHost }}
   API_HOST: {{ .Values.global.apiHost }}
 {{- end }}
+  global.yaml: |
+    global:
+      containerRegistry: {{ .Values.global.containerRegistry }}
+      busyboxImage: {{ .Values.global.busyboxImage }}
+      host: {{ .Values.global.host }}
+      apiHost: {{ .Values.global.apiHost }}
+      ingress:
+        letsencrypt: {{ .Values.global.ingress.letsencrypt }}

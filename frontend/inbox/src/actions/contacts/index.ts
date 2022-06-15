@@ -39,6 +39,7 @@ export const listContacts = () => (dispatch: Dispatch<any>, state: () => StateMo
   );
 };
 
+//deleteContact is disabled in the Contacts page (temporarily)
 export const deleteContact = (id: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.deleteContact(id).then(() => {
     dispatch(deleteContactAction(id));

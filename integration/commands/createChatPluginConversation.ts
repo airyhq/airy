@@ -13,7 +13,7 @@ export const connectChatPluginConnector = () => {
   cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click();
   cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
   cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-}
+};
 
 export const createChatPluginConversation = () => {
   cy.visit('/control-center/connectors');
@@ -28,5 +28,3 @@ export const createChatPluginConversation = () => {
   cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
   cy.get(`[data-cy=${cyInputbarButton}]`).click();
 };
-
-

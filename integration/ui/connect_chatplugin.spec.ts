@@ -1,7 +1,4 @@
-import {
-  cyChannelsFormBackButton,
-  cyChannelsChatPluginList,
-} from 'handles';
+import {cyChannelsFormBackButton, cyChannelsChatPluginList} from 'handles';
 
 describe('Connect chatplugin channel', () => {
   it('Connect chatplugin channel', () => {

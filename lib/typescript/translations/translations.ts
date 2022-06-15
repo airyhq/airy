@@ -722,9 +722,9 @@ const resources = {
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
 
       //Status
-      all: 'Tous',
-      open: 'Ouvrir',
-      closed: 'Fermé',
+      all: 'Toutes',
+      open: 'Ouverte(s)',
+      closed: 'Fermée(s)',
 
       //Message
       showSuggestions: 'Afficher les suggestions',
@@ -851,8 +851,6 @@ const resources = {
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
-      
-      
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',

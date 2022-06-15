@@ -110,20 +110,5 @@
     opacity: 0;
     transform: translateX(300px);
     width: 0;
-    
-@keyframes translateYIn {
-  0% {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-
-  50% {
-    transform: translateY(16px);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(-50px);
-    opacity: 0;
   }
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel, Source} from 'model';
 import InfoCard, {InfoCardStyle} from './InfoCard';
@@ -16,14 +16,10 @@ const mapDispatchToProps = {
   listChannels,
 };
 
-const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannelsConnected(state)),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {channels} = props;
+  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();
@@ -34,11 +30,11 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (props.channels.length === 0) {
+    if (channels.length === 0) {
       props.listChannels();
     }
     setPageTitle(pageTitle);
-  }, [props.channels.length]);
+  }, [channels.length]);
 
   return (
     <div className={styles.channelsWrapper}>

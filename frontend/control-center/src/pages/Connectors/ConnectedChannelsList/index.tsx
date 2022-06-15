@@ -78,7 +78,7 @@ const ConnectedChannelsList = () => {
 
   useEffect(() => {
     getInfo();
-  }, [source, channels]);
+  }, [source]);
 
   const getInfo = () => {
     let ROUTE;

@@ -1,45 +1,13 @@
 import {Button, ErrorNotice} from 'components';
-import {useLocalState} from '../../../../../../../../control-center/src/services';
 import React, {createRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import styles from './InstallSection.module.scss';
-import {BubbleState, CloseOption} from './CustomiseSection';
-
-export interface ChatpluginConfig {
-  headerText?: string;
-  subtitleText?: string;
-  startNewConversationText?: string;
-  bubbleIconUrl?: string;
-  sendMessageIconUrl?: string;
-  headerTextColor?: string;
-  subtitleTextColor?: string;
-  primaryColor?: string;
-  accentColor?: string;
-  backgroundColor?: string;
-  inboundMessageBackgroundColor?: string;
-  inboundMessageTextColor?: string;
-  outboundMessageBackgroundColor?: string;
-  outboundMessageTextColor?: string;
-  unreadMessageDotColor?: string;
-  height?: string;
-  width?: string;
-  closingOption?: CloseOption;
-  bubbleState?: BubbleState;
-  disableMobile?: boolean;
-  hideInputBar?: boolean;
-  hideEmojis?: boolean;
-  useCustomFont?: boolean;
-  customFont?: string;
-  hideAttachments?: boolean;
-  hideImages?: boolean;
-  hideVideos?: boolean;
-  hideFiles?: boolean;
-}
+import {Config} from '../../../../../../../../chat-plugin/lib';
 
 type InstallSectionProps = {
   channelId: string;
   host: string;
-  chatpluginConfig: ChatpluginConfig;
+  chatpluginConfig: Config;
 };
 
 export const InstallSection = (props: InstallSectionProps) => {
@@ -48,21 +16,21 @@ export const InstallSection = (props: InstallSectionProps) => {
     headerText,
     subtitleText,
     startNewConversationText,
-    bubbleIconUrl,
-    sendMessageIconUrl,
+    bubbleIcon,
+    sendMessageIcon,
     headerTextColor,
     subtitleTextColor,
     primaryColor,
     accentColor,
     backgroundColor,
-    inboundMessageBackgroundColor,
+    inboundMessageColor,
     inboundMessageTextColor,
-    outboundMessageBackgroundColor,
+    outboundMessageColor,
     outboundMessageTextColor,
     unreadMessageDotColor,
     height,
     width,
-    closingOption,
+    closeMode,
     bubbleState,
     disableMobile,
     hideInputBar,
@@ -75,7 +43,6 @@ export const InstallSection = (props: InstallSectionProps) => {
     hideFiles,
   } = chatpluginConfig;
   const {t} = useTranslation();
-  const [customHost, setCustomHost] = useLocalState('customHost', host);
   const codeAreaRef = createRef<HTMLTextAreaElement>();
   const codeAreaRefNpm = createRef<HTMLTextAreaElement>();
 
@@ -84,21 +51,21 @@ export const InstallSection = (props: InstallSectionProps) => {
       headerText ? `headerText: '${headerText}'` : `headerText: ''`,
       subtitleText ? `subtitleText: '${subtitleText}'` : `subtitleText: '${subtitleText}'`,
       startNewConversationText && `startNewConversationText: '${startNewConversationText}'`,
-      bubbleIconUrl && `bubbleIcon: '${bubbleIconUrl}'`,
-      sendMessageIconUrl && `sendMessageIcon: '${sendMessageIconUrl}'`,
+      bubbleIcon && `bubbleIcon: '${bubbleIcon}'`,
+      sendMessageIcon && `sendMessageIcon: '${sendMessageIcon}'`,
       headerTextColor && `headerTextColor: '${headerTextColor}'`,
       subtitleTextColor && `subtitleTextColor: '${subtitleTextColor}'`,
       primaryColor && `primaryColor: '${primaryColor}'`,
       accentColor && `accentColor: '${accentColor}'`,
       backgroundColor && `backgroundColor: '${backgroundColor}'`,
-      inboundMessageBackgroundColor && `inboundMessageColor: '${inboundMessageBackgroundColor}'`,
+      inboundMessageColor && `inboundMessageColor: '${inboundMessageColor}'`,
       inboundMessageTextColor && `inboundMessageTextColor: '${inboundMessageTextColor}'`,
-      outboundMessageBackgroundColor && `outboundMessageColor: '${outboundMessageBackgroundColor}'`,
+      outboundMessageColor && `outboundMessageColor: '${outboundMessageColor}'`,
       outboundMessageTextColor && `outboundMessageTextColor: '${outboundMessageTextColor}'`,
       unreadMessageDotColor && `unreadMessageDotColor: '${unreadMessageDotColor}'`,
       height && `height: '${height}'`,
       width && `width: '${width}'`,
-      `closeMode: '${closingOption}'`,
+      `closeMode: '${closeMode}'`,
       `bubbleState: '${bubbleState}'`,
       `disableMobile: '${disableMobile}'`,
       `hideInputBar: '${hideInputBar}'`,
@@ -112,7 +79,7 @@ export const InstallSection = (props: InstallSectionProps) => {
     ];
 
     return isNpm
-      ? `${config.filter(it => it !== '').join(',\n        ')}};`
+      ? `${config.filter(it => it !== '').join(',\n        ')}`
       : `w[n].config = {${'\n           '}${config.filter(it => it !== '').join(',\n           ')}\n        };`;
   };
 
@@ -126,7 +93,7 @@ export const InstallSection = (props: InstallSectionProps) => {
             (function(w, d, s, n) {
               w[n] = w[n] || {};
               w[n].channelId = '${channelId}';
-              w[n].host = '${customHost}';
+              w[n].host = '${host}';
               ${getTemplateConfig(false)}
               var f = d.getElementsByTagName(s)[0],
               j = d.createElement(s);
@@ -143,7 +110,7 @@ export const InstallSection = (props: InstallSectionProps) => {
     
     const Component = () => {
       const config: AiryChatPluginConfiguration = {
-        apiHost: '${customHost}',
+        apiHost: '${host}',
         channelId: '${channelId}',
         ${getTemplateConfig(true)}
       };
@@ -169,10 +136,10 @@ export const InstallSection = (props: InstallSectionProps) => {
             <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={getCodeScript()} />
           </div>
           <div className={styles.copyButtonHostName}>
-            <Button onClick={() => copyToClipboard(false)} disabled={customHost.length == 0}>
+            <Button onClick={() => copyToClipboard(false)} disabled={host.length == 0}>
               {t('copyCode')}
             </Button>
-            {customHost.length == 0 && (
+            {host.length == 0 && (
               <div style={{marginLeft: '8px'}}>
                 <ErrorNotice theme="warning">You need to add a Host URL</ErrorNotice>
               </div>
@@ -189,10 +156,10 @@ export const InstallSection = (props: InstallSectionProps) => {
             <textarea readOnly className={styles.codeArea} ref={codeAreaRefNpm} value={getCodeNpm()} />
           </div>
           <div className={styles.copyButtonHostName}>
-            <Button onClick={() => copyToClipboard(true)} disabled={customHost.length == 0}>
+            <Button onClick={() => copyToClipboard(true)} disabled={host.length == 0}>
               {t('copyCode')}
             </Button>
-            {customHost.length == 0 && (
+            {host.length == 0 && (
               <div style={{marginLeft: '8px'}}>
                 <ErrorNotice theme="warning">You need to add a Host URL</ErrorNotice>
               </div>

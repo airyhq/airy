@@ -43,6 +43,15 @@ const defaultWelcomeMessage: Message = {
   sender: {id: '12345'},
 };
 
+const defaultWelcomeMessageContact: Message = {
+  id: '3218319-9b47-4e18-9f79-fd1998b931281',
+  content: {text: `Hej! What's your opening hours?`},
+  deliveryState: DeliveryState.delivered,
+  fromContact: true,
+  sentAt: new Date(),
+  sender: {id: '56789'},
+};
+
 type Props = AiryChatPluginConfiguration;
 
 const Chat = ({config, ...props}: Props) => {
@@ -67,7 +76,9 @@ const Chat = ({config, ...props}: Props) => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(chatHiddenInitialState());
-  const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
+  const [messages, setMessages] = useState<Message[]>(
+    config.showMode ? [defaultWelcomeMessage, defaultWelcomeMessageContact] : [defaultWelcomeMessage]
+  );
   const [messageString, setMessageString] = useState('');
   const [dragAndDropFile, setDragAndDropFile] = useState<File | undefined>(null);
   const [connectionState, setConnectionState] = useState(null);
@@ -87,7 +98,7 @@ const Chat = ({config, ...props}: Props) => {
 
     !isChatHidden && setUnreadMessage(false);
 
-    localStorage.setItem('messagesLength', `${messageLengthRef.current}`);
+    messageLengthRef.current && localStorage.setItem('messagesLength', `${messageLengthRef.current}`);
     messageLengthRef.current = messages.length;
   }, [isChatHidden, messages]);
 

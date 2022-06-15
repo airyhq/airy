@@ -9,13 +9,14 @@ type ToggleType = {
   size?: 'big' | 'small'; //default is big
   emojiBefore?: string;
   emojiAfter?: string;
+  minWidth?: number;
 };
 
-export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, emojiAfter}: ToggleType) => {
+export const Toggle = ({value, text, updateValue, variant, size, emojiBefore, emojiAfter, minWidth}: ToggleType) => {
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => updateValue(event.target.checked);
 
   return (
-    <label className={styles.toggleLabel}>
+    <label className={styles.toggleLabel} style={{minWidth: `${minWidth}px`}}>
       <span className={`${styles.switch} ${size === 'small' ? styles.small : styles.big}`}>
         <input type="checkbox" onChange={onCheckboxChange} checked={value} />
         <span

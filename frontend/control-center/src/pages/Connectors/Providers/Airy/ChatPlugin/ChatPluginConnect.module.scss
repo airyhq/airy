@@ -12,7 +12,14 @@
   overflow-y: scroll;
 }
 
-.headline {
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.headlineContainer {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   padding-left: 10px;
   margin: 88px 1.5em 0 191px;
@@ -26,10 +33,20 @@
   }
 }
 
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
 .infoBox {
   margin: 0;
   button {
+    padding-left: 4px;
     border: none;
+  }
+  svg {
+    color: var(--color-text-gray);
   }
   h1 {
     @include font-xl;
@@ -49,7 +66,7 @@
 }
 
 .backIcon {
-  width: 20px;
+  width: 24px;
   background: transparent;
   path {
     fill: var(--color-text-gray);
@@ -175,11 +192,17 @@
   margin-bottom: 16px;
 }
 
-.channelsLine {
+.channelsLineContainer {
   width: 100%;
+  display: flex;
+  flex-direction: column;
   span {
     @include font-base;
   }
+}
+
+.channelsLineItems {
+  display: flex;
 }
 
 .activeItem {

@@ -1,5 +1,5 @@
 import {Input} from 'components';
-import React, {Dispatch, SetStateAction, useEffect, useRef} from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 
 type SampleInputProps = {
   value: string;

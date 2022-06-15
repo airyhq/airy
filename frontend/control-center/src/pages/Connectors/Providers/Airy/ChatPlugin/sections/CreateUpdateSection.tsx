@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Input} from 'components';
 import styles from './CreateUpdateSection.module.scss';
 import {cyChannelsChatPluginFormNameInput} from 'handles';
@@ -25,8 +25,8 @@ type InstallUpdateSectionProps = {
 const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const {channel, displayName, imageUrl} = props;
   const [submit, setSubmit] = useState(false);
-  const [newDisplayName, setNewDisplayName] = useState(displayName);
-  const [newImageUrl, setNewImageUrl] = useState(imageUrl);
+  const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
+  const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const CONNECTED_ROUTE = location.pathname.includes('connectors')
@@ -45,7 +45,7 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
         <form
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            updateConnection(newDisplayName, newImageUrl);
+            submit && updateConnection(newDisplayName, newImageUrl);
           }}
         >
           <div className={styles.formRow}>
@@ -75,12 +75,19 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
               }}
               label={t('imageUrl')}
               placeholder={t('imageUrlPlaceholder')}
-              hint={t('imageUrlHint')}
+              showLabelIcon
+              tooltipText={t('imageUrlHint')}
               height={32}
               fontClass="font-base"
             />
           </div>
-          <Button onClick={() => setSubmit(true)} type="submit" styleVariant="small">
+          <Button
+            onClick={() => setSubmit(true)}
+            disabled={newDisplayName === ''}
+            type="submit"
+            styleVariant="small"
+            style={{width: '176px', height: '40px', marginTop: '16px'}}
+          >
             {t('update')}
           </Button>
         </form>

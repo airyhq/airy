@@ -1,12 +1,13 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
 @import 'assets/scss/z-index.scss';
 
 .customiseContainer {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin-top: 28px;
+  // margin-top: 28px;
   margin-right: 16px;
   label {
     white-space: nowrap;
@@ -27,32 +28,6 @@
 .customiseContainerDropdowns {
   display: flex;
   flex-wrap: wrap;
-}
-
-.headline {
-  position: absolute;
-  padding-left: 10px;
-  margin: 88px 1.5em 0 191px;
-  h1 {
-    @include font-xl;
-    font-weight: bold;
-  }
-  button {
-    height: 20px;
-    background: transparent;
-  }
-}
-
-.infoBox {
-  margin: 0;
-  button {
-    border: none;
-  }
-  h1 {
-    @include font-xl;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
 }
 
 .backButton {
@@ -148,6 +123,7 @@
   bottom: 0px;
   right: 0px;
   position: absolute;
+  pointer-events: all;
 }
 
 .copyButtonHostName {
@@ -159,6 +135,8 @@
 }
 
 .titleContainer {
+  display: flex;
+  flex-direction: column;
   margin-left: 8px;
   h1 {
     @include font-l;
@@ -176,11 +154,73 @@
   }
 }
 
+.buttonContainer {
+  display: flex;
+  height: 26px;
+  align-self: flex-end;
+  align-items: center;
+  button {
+    border: 1px solid green;
+    @include font-base;
+    border: none;
+    background: transparent;
+    color: var(--color-airy-blue);
+    margin: 0 8px;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+  a {
+    @include font-base;
+    text-decoration: none;
+    color: var(--color-airy-blue);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.colorContainer {
+  display: flex;
+}
+
+.dropdownInputContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.colorPickerContainer {
+  display: flex;
+  align-items: center;
+}
+
 .headerTextColors {
   display: flex;
   height: 32px;
   align-items: center;
   padding-left: 8px;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.hexTitle {
+  margin-top: 6px;
+  margin-bottom: 5px;
+}
+
+.colorSample {
+  display: flex;
+  flex-direction: column;
+}
+
+.sampleTitle {
+  margin-top: 6px;
+  margin-bottom: 12px;
 }
 
 .activeColorStep {

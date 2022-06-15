@@ -47,8 +47,9 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const chatpluginStyle = {
     background: 'transparent',
-    width: windowWidth < 420 ? windowWidth : Math.min(config.config?.width ?? DEFAULT_WIDTH, windowWidth),
-    height: windowHeight < 700 ? windowHeight : Math.min(config.config?.height ?? DEFAULT_HEIGHT, windowHeight),
+    width: windowWidth < 420 ? windowWidth : Math.min((config.config?.width as number) ?? DEFAULT_WIDTH, windowWidth),
+    height:
+      windowHeight < 700 ? windowHeight : Math.min((config.config?.height as number) ?? DEFAULT_HEIGHT, windowHeight),
     ...customStyle(config),
   };
 

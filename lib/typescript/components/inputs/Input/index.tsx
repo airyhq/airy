@@ -5,7 +5,6 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
-import {Tooltip} from 'components/general';
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -257,9 +256,7 @@ class InputComponent extends Component<InputProps, IState> {
       id,
       label,
       showLabelIcon,
-      tooltipContent,
-      tooltipDirection,
-      tooltipDelay,
+      tooltipText,
       hideLabel,
       name,
       value,
@@ -272,6 +269,7 @@ class InputComponent extends Component<InputProps, IState> {
       inputmode,
       minLength,
       maxLength,
+      minWidth,
       showErrors,
       children,
       fontClass,
@@ -304,9 +302,10 @@ class InputComponent extends Component<InputProps, IState> {
                 </Fragment>
               )}
               {showLabelIcon && (
-                <Tooltip direction={tooltipDirection} content={tooltipContent} delay={tooltipDelay}>
-                  <InfoCircle width={20} />
-                </Tooltip>
+                <>
+                  <InfoCircle width={20} className={styles.infoCircle} />
+                  {tooltipText && <span className={styles.infoCircleText}>{tooltipText}</span>}
+                </>
               )}
             </div>
           )}
@@ -355,6 +354,7 @@ class InputComponent extends Component<InputProps, IState> {
               onBlur={this.onBlur}
               style={{
                 height: `${height}px`,
+                minWidth: `${minWidth}px`,
               }}
               type={type}
               value={value}
@@ -400,9 +400,8 @@ export interface InputProps {
   /** The label above the input field */
   label?: string;
   showLabelIcon?: boolean;
-  tooltipDirection?: string;
-  tooltipContent?: any;
-  tooltipDelay?: number;
+  tooltipText?: string;
+  minWidth?: number;
 
   /** Want to hide the label completely? */
   hideLabel?: boolean;

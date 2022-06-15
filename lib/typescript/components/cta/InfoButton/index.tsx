@@ -6,7 +6,7 @@ import styles from './style.module.scss';
 type Props = {
   text: string;
   link: string;
-  color: 'blue' | 'grey';
+  color?: 'blue' | 'grey';
   dataCy?: string;
   style?: CSSProperties;
 };

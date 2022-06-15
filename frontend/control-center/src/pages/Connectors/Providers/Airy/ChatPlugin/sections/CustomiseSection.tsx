@@ -1,56 +1,48 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {Dropdown, Input, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
-import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
+import {
+  AiryChatPlugin,
+  AiryChatPluginConfiguration,
+  BubbleState,
+  CloseOption,
+  DefaultColors,
+  DefaultConfig,
+} from 'chat-plugin';
 import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
 import {fetchGoogleFonts} from '../../../../../../api/index';
 import {useTranslation} from 'react-i18next';
 import {SampleInput} from './SampleInput';
 import {ColorPickerSample} from './ColorPickerSample';
-import {ChatpluginConfig} from './InstallSection';
 import {ModalColorPicker} from './ModalColorPicker';
-
-export enum CloseOption {
-  basic = 'basic',
-  medium = 'medium',
-  full = 'full',
-}
-
-export enum BubbleState {
-  minimized = 'minimized',
-  expanded = 'expanded',
-}
-
-export enum DefaultColors {
-  headerTextColor = '#FFFFFF',
-  subtitleTextColor = '#FFFFFF',
-  primaryColor = '#1578D4',
-  accentColor = '#1578D4',
-  backgroundColor = '#FFFFFF',
-  inboundMessageBackgroundColor = '#F1FAFF',
-  inboundMessageTextColor = '#000000',
-  outboundMessageBackgroundColor = '#1578D4',
-  outboundMessageTextColor = '#FFFFFF',
-  unreadMessageDotColor = '#FF0000',
-}
+import {Config} from '../../../../../../../../chat-plugin/lib';
+import {useParams} from 'react-router-dom';
+import {Language} from 'model';
+import {isEqual} from 'lodash-es';
 
 type CustomiseSectionProps = {
   channelId: string;
   host: string;
-  setChatpluginConfig: Dispatch<SetStateAction<ChatpluginConfig>>;
+  setChatpluginConfig: Dispatch<SetStateAction<Config>>;
 };
 
+let CurrentConfig: Config = {};
+
 export const CustomiseSection = ({channelId, host, setChatpluginConfig}: CustomiseSectionProps) => {
-  const useLocalState = getUseLocalState(channelId);
+  const {channelIdParams} = useParams();
+  const useLocalState = getUseLocalState(channelId || channelIdParams);
   const {t} = useTranslation();
   const [customHost, setCustomHost] = useLocalState('customHost', host);
-  const [headerText, setHeaderText] = useLocalState('headerText', '');
-  const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
-  const [startNewConversationText, setStartNewConversationText] = useLocalState('startNewConversationText', '');
-  const [bubbleIconUrl, setBubbleIconUrl] = useLocalState('bubbleIconUrl', '');
-  const [sendMessageIconUrl, setSendMessageIconUrl] = useLocalState('sendMessageIconUrl', '');
-  const [headerTextColor, setHeaderTextColor] = useLocalState('headerTextColor', `${DefaultColors.headerTextColor}`);
+  const [headerText, setHeaderText] = useLocalState('headerText', DefaultConfig.headerText);
+  const [subtitleText, setSubtitleText] = useLocalState('subTitleText', DefaultConfig.subtitleText);
+  const [startNewConversationText, setStartNewConversationText] = useLocalState(
+    'startNewConversationText',
+    DefaultConfig.startNewConversationText
+  );
+  const [bubbleIcon, setBubbleIcon] = useLocalState('bubbleIcon', DefaultConfig.bubbleIcon);
+  const [sendMessageIcon, setSendMessageIcon] = useLocalState('sendMessageIcon', DefaultConfig.sendMessageIcon);
+  const [headerTextColor, setHeaderTextColor] = useLocalState('headerTextColor', `${DefaultConfig.headerTextColor}`);
   const [subtitleTextColor, setSubtitleTextColor] = useLocalState(
     'subtitleTextColor',
     `${DefaultColors.subtitleTextColor}`
@@ -68,9 +60,9 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
   const [backgroundColor, setBackgroundColor] = useLocalState('backgroundColor', `${DefaultColors.backgroundColor}`);
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useLocalState('showBackgroundColorPicker', false);
 
-  const [inboundMessageBackgroundColor, setInboundMessageBackgroundColor] = useLocalState(
-    'inboundMessageBackgroundColor',
-    `${DefaultColors.inboundMessageBackgroundColor}`
+  const [inboundMessageColor, setInboundMessageColor] = useLocalState(
+    'inboundMessageColor',
+    `${DefaultColors.inboundMessageColor}`
   );
   const [showInboundMessageColorPicker, setShowInboundMessageColorPicker] = useLocalState(
     'showInboundMessageColorPicker',
@@ -86,9 +78,9 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     false
   );
 
-  const [outboundMessageBackgroundColor, setOutboundMessageBackgroundColor] = useLocalState(
-    'outboundMessageBackgroundColor',
-    `${DefaultColors.outboundMessageBackgroundColor}`
+  const [outboundMessageColor, setOutboundMessageColor] = useLocalState(
+    'outboundMessageColor',
+    `${DefaultColors.outboundMessageColor}`
   );
   const [showOutboundMessageColorPicker, setShowOutboundMessageColorPicker] = useLocalState(
     'showOutboundMessageColorPicker',
@@ -112,21 +104,22 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     false
   );
 
-  const [height, setHeight] = useLocalState('height', '700');
-  const [width, setWidth] = useLocalState('width', '380');
-  const [disableMobile, setDisableMobile] = useLocalState('disableMobile', false);
-  const [hideInputBar, setHideInputBar] = useLocalState('hideInputBar', false);
-  const [hideEmojis, setHideEmojis] = useLocalState('hideEmojis', false);
-  const [hideAttachments, setHideAttachments] = useLocalState('hideAttachments', false);
-  const [hideImages, setHideImages] = useLocalState('hideImages', false);
-  const [hideVideos, setHideVideos] = useLocalState('hideVideos', false);
-  const [hideFiles, setHideFiles] = useLocalState('hideFiles', false);
-  const [useCustomFont, setUseCustomFont] = useLocalState('useCustomFont', true);
-  const [customFont, setCustomFont] = useLocalState('customFont', 'Lato');
-  const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
-  const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
-  const [colorStepText, setColorStepText] = useState(`${t('headerTextColor')}`);
-  const [activeColorStep, setActiveColorStep] = useState(0);
+  const [height, setHeight] = useLocalState('height', `${DefaultConfig.height}`);
+  const [width, setWidth] = useLocalState('width', `${DefaultConfig.width}`);
+  const [disableMobile, setDisableMobile] = useLocalState('disableMobile', DefaultConfig.disableMobile);
+  const [hideInputBar, setHideInputBar] = useLocalState('hideInputBar', DefaultConfig.hideInputBar);
+  const [hideEmojis, setHideEmojis] = useLocalState('hideEmojis', DefaultConfig.hideEmojis);
+  const [hideAttachments, setHideAttachments] = useLocalState('hideAttachments', DefaultConfig.hideAttachments);
+  const [hideImages, setHideImages] = useLocalState('hideImages', DefaultConfig.hideImages);
+  const [hideVideos, setHideVideos] = useLocalState('hideVideos', DefaultConfig.hideVideos);
+  const [hideFiles, setHideFiles] = useLocalState('hideFiles', DefaultConfig.hideFiles);
+  const [useCustomFont, setUseCustomFont] = useLocalState('useCustomFont', DefaultConfig.useCustomFont);
+  const [customFont, setCustomFont] = useLocalState('customFont', DefaultConfig.customFont);
+  const [closeMode, setCloseMode] = useLocalState('closeMode', DefaultConfig.closeMode);
+  const [bubbleState, setBubbleState] = useLocalState('bubbleState', DefaultConfig.bubbleState);
+  const [colorStepText, setColorStepText] = useLocalState('colorStepText', `${t('headerTextColor')}`);
+  const [activeColorStep, setActiveColorStep] = useLocalState('activeColorStep', 0);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const colorStepsArr = [
     t('headerTextColor'),
     t('subtitleTextColor'),
@@ -140,6 +133,44 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     t('unreadMessageDotColor'),
   ];
 
+  const currentLanguage = localStorage.getItem('language');
+
+  const NewConfig: Config = {
+    welcomeMessage: '',
+    startNewConversationText: '',
+    headerText,
+    subtitleText,
+    headerTextColor,
+    subtitleTextColor,
+    primaryColor,
+    accentColor,
+    backgroundColor,
+    inboundMessageColor,
+    inboundMessageTextColor,
+    outboundMessageColor,
+    outboundMessageTextColor,
+    unreadMessageDotColor,
+    sendMessageIcon,
+    showMode: false,
+    height,
+    width,
+    disableMobile,
+    bubbleState,
+    bubbleIcon,
+    closeMode,
+    hideInputBar,
+    hideEmojis,
+    useCustomFont,
+    customFont,
+    hideAttachments,
+    hideImages,
+    hideVideos,
+    hideFiles,
+  };
+
+  const areEqual = isEqual(CurrentConfig, NewConfig);
+  const noChanges = isEqual(NewConfig, DefaultConfig) && isEqual(CurrentConfig, DefaultConfig);
+
   useEffect(() => {
     hideImages && hideVideos && hideFiles ? setHideAttachments(true) : setHideAttachments(false);
   }, [hideImages, hideVideos, hideFiles]);
@@ -148,41 +179,6 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     useCustomFont ? setCustomFont(customFont) : setCustomFont('Arial');
     useCustomFont && customFont === 'Arial' && setCustomFont('Lato');
   }, [useCustomFont]);
-
-  // useEffect(() => {
-  //   console.log('crazy');
-
-  //   setChatpluginConfig({
-  //     headerText,
-  //     subtitleText,
-  //     startNewConversationText,
-  //     bubbleIconUrl,
-  //     sendMessageIconUrl,
-  //     headerTextColor,
-  //     subtitleTextColor,
-  //     primaryColor,
-  //     accentColor,
-  //     backgroundColor,
-  //     inboundMessageBackgroundColor,
-  //     inboundMessageTextColor,
-  //     outboundMessageBackgroundColor,
-  //     outboundMessageTextColor,
-  //     unreadMessageDotColor,
-  //     height,
-  //     width,
-  //     closingOption,
-  //     bubbleState,
-  //     disableMobile,
-  //     hideInputBar,
-  //     hideEmojis,
-  //     useCustomFont,
-  //     customFont,
-  //     hideAttachments,
-  //     hideImages,
-  //     hideVideos,
-  //     hideFiles,
-  //   });
-  // }, [hideFiles]);
 
   const toggleShowHeaderTextColorPicker = () => {
     setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
@@ -268,7 +264,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     }
   };
 
-  const HeaderTextColorPicker = () => {
+  const ColorPicker = () => {
     return (
       <div className={styles.headerTextColors}>
         <div
@@ -309,7 +305,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
         <div
           className={styles.inactiveColorStep}
           onClick={() => handleColorStepChange(t('inboundBackgroundColor'))}
-          style={{background: inboundMessageBackgroundColor}}
+          style={{background: inboundMessageColor}}
         >
           {activeColorStep === 5 && <div className={styles.activeColorStep} />}
         </div>
@@ -323,7 +319,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
         <div
           className={styles.inactiveColorStep}
           onClick={() => handleColorStepChange(t('outboundBackgroundColor'))}
-          style={{background: outboundMessageBackgroundColor}}
+          style={{background: outboundMessageColor}}
         >
           {activeColorStep === 7 && <div className={styles.activeColorStep} />}
         </div>
@@ -345,6 +341,66 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     );
   };
 
+  const SuccessfullySaved = () => {
+    return (
+      <div
+        className={showSuccessNotification && styles.translateYAnimIn}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          left: '50%',
+          top: '20px',
+          marginLeft: '-120px',
+          height: '40px',
+          width: '240px',
+          zIndex: 9999,
+          background: '#0da36b',
+          borderRadius: '10px',
+        }}
+      >
+        <span className={styles.SuccessfullySaved}>{t('SuccessfullySaved')}</span>
+      </div>
+    );
+  };
+
+  const handleResetConfig = () => {
+    setHeaderText('');
+    setHeaderTextColor(DefaultColors.headerTextColor);
+    setSubtitleText('');
+    setSubtitleTextColor(DefaultColors.subtitleTextColor);
+    setPrimaryColor(DefaultColors.primaryColor);
+    setAccentColor(DefaultColors.accentColor);
+    setBackgroundColor(DefaultColors.backgroundColor);
+    setInboundMessageColor(DefaultColors.inboundMessageColor);
+    setInboundMessageTextColor(DefaultColors.inboundMessageTextColor);
+    setOutboundMessageColor(DefaultColors.outboundMessageColor);
+    setOutboundMessageTextColor(DefaultColors.outboundMessageTextColor);
+    setUnreadMessageDotColor(DefaultColors.unreadMessageDotColor);
+    setHeight('700');
+    setWidth('380');
+    setDisableMobile(false);
+    setBubbleState(BubbleState.expanded);
+    setCloseMode(CloseOption.full);
+    setHideInputBar(false);
+    setHideEmojis(false);
+    setUseCustomFont(true);
+    setCustomFont('Lato');
+    setHideAttachments(false);
+    setHideImages(false);
+    setHideVideos(false);
+    setHideFiles(false);
+    setSendMessageIcon('');
+    setBubbleIcon('');
+  };
+
+  const handleSaveConfig = () => {
+    setShowSuccessNotification(true);
+    CurrentConfig = NewConfig;
+    setChatpluginConfig(NewConfig);
+  };
+
   const demoConfig: AiryChatPluginConfiguration = {
     apiHost: env.API_HOST,
     channelId,
@@ -358,16 +414,16 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
       ...(primaryColor && {primaryColor}),
       ...(accentColor && {accentColor}),
       ...(backgroundColor && {backgroundColor}),
-      ...(outboundMessageBackgroundColor && {outboundMessageColor: outboundMessageBackgroundColor}),
+      ...(outboundMessageColor && {outboundMessageColor: outboundMessageColor}),
       ...(outboundMessageTextColor && {outboundMessageTextColor}),
-      ...(inboundMessageBackgroundColor && {inboundMessageColor: inboundMessageBackgroundColor}),
+      ...(inboundMessageColor && {inboundMessageColor: inboundMessageColor}),
       ...(inboundMessageTextColor && {inboundMessageTextColor}),
       ...(unreadMessageDotColor && {unreadMessageDotColor}),
-      ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
-      ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
+      ...(bubbleIcon && {bubbleIcon: bubbleIcon}),
+      ...(sendMessageIcon && {sendMessageIcon: sendMessageIcon}),
       ...(width && {width: parseInt(width) < 200 ? 380 : parseInt(width)}),
       ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-      ...(closingOption && {closeMode: closingOption}),
+      ...(closeMode && {closeMode: closeMode}),
       ...(bubbleState && {bubbleState: bubbleState}),
       ...(disableMobile && {disableMobile: disableMobile}),
       ...(hideInputBar && {hideInputBar: hideInputBar}),
@@ -383,13 +439,32 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
 
   return (
     <>
+      {showSuccessNotification && <SuccessfullySaved />}
       <div className={styles.customiseContainer}>
         <div className={styles.titleContainer}>
+          <div className={styles.buttonContainer}>
+            {!noChanges && (
+              <>
+                {areEqual ? (
+                  <button onClick={handleResetConfig}>{t('reset')}</button>
+                ) : (
+                  <button onClick={handleSaveConfig}>{t('save')}</button>
+                )}
+              </>
+            )}
+            <a
+              href={`https://staging.airy.co/chatplugin/ui/example?channel_id=${channelId}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('preview')}
+            </a>
+          </div>
           <h1>{t('chatpluginTitle')}</h1>
           <h2>{t('chatpluginCustomize')}</h2>
         </div>
-        <div style={{display: 'flex'}}>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div className={styles.colorContainer}>
+          <div className={styles.dropdownInputContainer}>
             <div className={styles.stepTextDropdown}>
               <Dropdown
                 text={colorStepText}
@@ -400,8 +475,8 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
                 }}
               />
             </div>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <HeaderTextColorPicker />
+            <div className={styles.colorPickerContainer}>
+              <ColorPicker />
               {showHeaderTextColorPicker && (
                 <ModalColorPicker
                   color={headerTextColor}
@@ -435,8 +510,8 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               )}
               {showInboundMessageColorPicker && (
                 <ModalColorPicker
-                  color={inboundMessageBackgroundColor}
-                  setColor={setInboundMessageBackgroundColor}
+                  color={inboundMessageColor}
+                  setColor={setInboundMessageColor}
                   toggle={toggleShowInboundMessageColorPicker}
                 />
               )}
@@ -449,8 +524,8 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               )}
               {showOutboundMessageColorPicker && (
                 <ModalColorPicker
-                  color={outboundMessageBackgroundColor}
-                  setColor={setOutboundMessageBackgroundColor}
+                  color={outboundMessageColor}
+                  setColor={setOutboundMessageColor}
                   toggle={toggleShowOutboundMessageColorPicker}
                 />
               )}
@@ -470,8 +545,8 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               )}
             </div>
           </div>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
-            <p style={{marginBottom: '5px', marginTop: '6px'}}>Hex</p>
+          <div className={styles.inputsContainer}>
+            <p className={styles.hexTitle}>Hex</p>
             {activeColorStep === 0 && (
               <SampleInput
                 value={headerTextColor}
@@ -514,10 +589,10 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             )}
             {activeColorStep === 5 && (
               <SampleInput
-                value={inboundMessageBackgroundColor}
-                setValue={setInboundMessageBackgroundColor}
-                name={t('inboundMessageBackgroundColor')}
-                placeholder={DefaultColors.inboundMessageBackgroundColor}
+                value={inboundMessageColor}
+                setValue={setInboundMessageColor}
+                name={t('inboundMessageColor')}
+                placeholder={DefaultColors.inboundMessageColor}
               />
             )}
             {activeColorStep === 6 && (
@@ -530,10 +605,10 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             )}
             {activeColorStep === 7 && (
               <SampleInput
-                value={outboundMessageBackgroundColor}
-                setValue={setOutboundMessageBackgroundColor}
+                value={outboundMessageColor}
+                setValue={setOutboundMessageColor}
                 name={t('outboundMessageBackgroundColor')}
-                placeholder={DefaultColors.outboundMessageBackgroundColor}
+                placeholder={DefaultColors.outboundMessageColor}
               />
             )}
             {activeColorStep === 8 && (
@@ -553,8 +628,8 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               />
             )}
           </div>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
-            <p style={{marginBottom: '12px', marginTop: '6px'}}>Sample</p>
+          <div className={styles.colorSample}>
+            <p className={styles.sampleTitle}>Sample</p>
             {activeColorStep === 0 && (
               <ColorPickerSample value={headerTextColor} toggle={toggleShowHeaderTextColorPicker} />
             )}
@@ -567,13 +642,13 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               <ColorPickerSample value={backgroundColor} toggle={toggleShowBackgroundColorPicker} />
             )}
             {activeColorStep === 5 && (
-              <ColorPickerSample value={inboundMessageBackgroundColor} toggle={toggleShowInboundMessageColorPicker} />
+              <ColorPickerSample value={inboundMessageColor} toggle={toggleShowInboundMessageColorPicker} />
             )}
             {activeColorStep === 6 && (
               <ColorPickerSample value={inboundMessageTextColor} toggle={toggleShowInboundMessageTextColorPicker} />
             )}
             {activeColorStep === 7 && (
-              <ColorPickerSample value={outboundMessageBackgroundColor} toggle={toggleShowOutboundMessageColorPicker} />
+              <ColorPickerSample value={outboundMessageColor} toggle={toggleShowOutboundMessageColorPicker} />
             )}
             {activeColorStep === 8 && (
               <ColorPickerSample value={outboundMessageTextColor} toggle={toggleShowOutboundMessageTextColorPicker} />
@@ -597,19 +672,19 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             height={32}
             fontClass="font-base"
             maxLength={30}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="text"
             name="subtitle"
             value={subtitleText}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSubtitleText(e.target.value), setChatpluginConfig({subtitleText: e.target.value});
-            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSubtitleText(e.target.value)}
             label={t('subtitleText')}
             placeholder={t('addTextOptional')}
             height={32}
             fontClass="font-base"
             maxLength={50}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="text"
@@ -620,32 +695,35 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             placeholder={t('addTextOptional')}
             height={32}
             fontClass="font-base"
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="url"
-            name="bubbleIconUrl"
-            value={bubbleIconUrl}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBubbleIconUrl(e.target.value)}
+            name="bubbleIcon"
+            value={bubbleIcon}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBubbleIcon(e.target.value)}
             label={t('chatpluginIconUrl')}
             placeholder={t('addImageurlOptional')}
             height={32}
             fontClass="font-base"
             showErrors={false}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="text"
-            name="sendMessageIconUrl"
-            value={sendMessageIconUrl}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSendMessageIconUrl(e.target.value)}
+            name="sendMessageIcon"
+            value={sendMessageIcon}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSendMessageIcon(e.target.value)}
             label={t('inputIconUrl')}
             placeholder={t('addImageurlOptional')}
             height={32}
             fontClass="font-base"
             showErrors={false}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="text"
-            name="customHostUrl"
+            name="customHost"
             value={customHost}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomHost(e.target.value)}
             label={t('customHostUrl')}
@@ -654,6 +732,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             height={32}
             fontClass="font-base"
             showErrors={false}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="numeric"
@@ -684,6 +763,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             height={32}
             fontClass="font-base"
             showErrors={false}
+            minWidth={currentLanguage !== Language.english && 350}
           />
           <Input
             type="numeric"
@@ -714,15 +794,24 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
             height={32}
             fontClass="font-base"
             showErrors={false}
+            minWidth={currentLanguage !== Language.english && 350}
           />
         </div>
         <div className={styles.borderLine} />
-        <div className={styles.customiseContainerToggles}>
+        <div
+          className={styles.customiseContainerToggles}
+          style={
+            currentLanguage === Language.french || currentLanguage === Language.spanish
+              ? {minWidth: '340px'}
+              : {minWidth: '300px'}
+          }
+        >
           <div className={styles.extraOptions}>
             <Toggle
               value={disableMobile}
               text={t('disabledForMobile')}
               updateValue={(value: boolean) => setDisableMobile(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
@@ -730,6 +819,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               value={hideInputBar}
               text={t('hideInputbar')}
               updateValue={(value: boolean) => setHideInputBar(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
@@ -737,6 +827,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               value={hideEmojis}
               text={t('disableEmojis')}
               updateValue={(value: boolean) => setHideEmojis(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
@@ -744,6 +835,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               value={useCustomFont}
               text={t('useCustomFont')}
               updateValue={(value: boolean) => setUseCustomFont(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
@@ -751,6 +843,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               value={hideImages}
               text={t('disableImages')}
               updateValue={(value: boolean) => setHideImages(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
@@ -758,10 +851,16 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               value={hideVideos}
               text={t('disableVideos')}
               updateValue={(value: boolean) => setHideVideos(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
             />
           </div>
           <div className={styles.extraOptions}>
-            <Toggle value={hideFiles} text={t('disableFiles')} updateValue={(value: boolean) => setHideFiles(value)} />
+            <Toggle
+              value={hideFiles}
+              text={t('disableFiles')}
+              updateValue={(value: boolean) => setHideFiles(value)}
+              minWidth={(currentLanguage === Language.german || currentLanguage === Language.french) && 350}
+            />
           </div>
         </div>
       </div>
@@ -781,11 +880,11 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
         )}
         <div className={styles.extraOptions}>
           <Dropdown
-            text={`${t('closingOptions')}: ${closingOption}`}
+            text={`${t('closingOptions')}: ${closeMode}`}
             variant="normal"
             options={[CloseOption.basic, CloseOption.medium, CloseOption.full]}
             onClick={(option: CloseOption) => {
-              setClosingOption(option);
+              setCloseMode(option);
             }}
           />
         </div>

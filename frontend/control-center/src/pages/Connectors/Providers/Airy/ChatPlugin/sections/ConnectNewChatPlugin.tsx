@@ -30,10 +30,6 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                   setDisplayName(e.target.value);
                 }}
                 label={t('displayName')}
-                showLabelIcon={true}
-                tooltipContent={<span>idiot</span>}
-                tooltipDelay={1}
-                tooltipDirection="right"
                 placeholder={t('addDisplayName')}
                 required
                 height={32}
@@ -51,12 +47,9 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
                   setImageUrl(e.target.value);
                 }}
                 label={t('imageUrl')}
-                showLabelIcon={true}
-                tooltipContent={<span>clown</span>}
-                tooltipDelay={1}
-                tooltipDirection="bottom"
+                showLabelIcon
+                tooltipText={t('imageUrlHint')}
                 placeholder={t('imageUrlPlaceholder')}
-                hint={t('imageUrlHint')}
                 height={32}
                 fontClass="font-base"
               />

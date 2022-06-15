@@ -23,6 +23,13 @@ export const ItemInfo = (props: ComponentInfoProps) => {
   const [componentEnabled, setComponentEnabled] = useState(enabled);
   const isVisible = isExpanded || isComponent;
 
+  const enableHandler = (componentId: string) => {
+    return (enabled: boolean) => {
+      console.log(`${componentId} is now ${enabled ? 'enabled' : 'disabled'}`);
+      setComponentEnabled(enabled);
+    };
+  };
+
   return (
     <>
       {isVisible && (
@@ -54,7 +61,7 @@ export const ItemInfo = (props: ComponentInfoProps) => {
 
           {isComponent && (
             <div className={styles.enabled}>
-              <Toggle value={componentEnabled} updateValue={setComponentEnabled} size="small" variant="green" />
+              <Toggle value={componentEnabled} updateValue={enableHandler(itemName)} size="small" variant="green" />
             </div>
           )}
         </div>

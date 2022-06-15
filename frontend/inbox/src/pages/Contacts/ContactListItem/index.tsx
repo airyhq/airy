@@ -2,7 +2,7 @@ import {Avatar, SettingsModal} from 'components';
 import React, {useEffect, useState} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
-import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
+//import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airyContactIcon.svg';
 import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebookContactIcon.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramContactIcon.svg';
@@ -125,9 +125,9 @@ const ContactListItem = (props: ContactListItemProps) => {
         <div onClick={event => handleEditMode(event)}>
           <PencilIcon />
         </div>
-        <div onClick={() => setShowDeleteContactModal(true)}>
+        {/* <div onClick={() => setShowDeleteContactModal(true)}>
           <TrashIcon />
-        </div>
+        </div> */}
       </div>
       {showDeleteContactModal && (
         <SettingsModal close={() => setShowDeleteContactModal(false)} title="">

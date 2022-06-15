@@ -4,7 +4,7 @@ import {editDisplayName} from './editDisplayName';
 import {listConversationsForContact} from './listConversationsForContact';
 
 declare global {
-  namespace Cypress {
+  namespace Cy {
     interface Chainable {
       createChatPluginConversation: typeof createChatPluginConversation;
       editContactDetails: typeof editContactDetails;

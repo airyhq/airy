@@ -6,11 +6,11 @@ import {listConversationsForContact} from './listConversationsForContact';
 declare global {
   namespace Cypress {
     interface Chainable {
-      createChatPluginConversation: () => void;
-      editContactDetails: () => void;
-      connectChatPluginConnector: () => void;
-      editDisplayName: () => void;
-      listConversationsForContact: () => void;
+      createChatPluginConversation(): Chainable<void>;
+      editContactDetails(): Chainable<void>;
+      connectChatPluginConnector(): Chainable<void>;
+      editDisplayName(): Chainable<void>;
+      listConversationsForContact(): Chainable<void>;
     }
   }
 }

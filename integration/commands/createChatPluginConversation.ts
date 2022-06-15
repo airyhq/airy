@@ -8,14 +8,14 @@ import {
 } from 'handles';
 import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
-export const connectChatPluginConnector = () => {
+export const connectChatPluginConnector = (): void => {
   cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
   cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click();
   cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
   cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 };
 
-export const createChatPluginConversation = () => {
+export const createChatPluginConversation = (): void => {
   cy.visit('/control-center/connectors');
   cy.wait(500);
   cy.connectChatPluginConnector();

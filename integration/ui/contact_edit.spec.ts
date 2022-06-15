@@ -1,5 +1,4 @@
 import {cyConversationList, cyEditContactIcon} from 'handles';
-import '../support';
 
 describe('Display and edit the contact details of a conversation', () => {
   before(() => {

@@ -1,6 +1,6 @@
 import {cyEditDisplayNameIcon, cyDisplayName, cyDisplayNameInput, cyEditDisplayNameCheckmark} from 'handles';
 
-export const editDisplayName = () => {
+export const editDisplayName = (): void => {
   cy.get(`[data-cy=${cyEditDisplayNameIcon}]`).click({force: true});
   cy.wait(500);
 

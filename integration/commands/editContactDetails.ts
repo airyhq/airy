@@ -10,7 +10,7 @@ import {
   cyContactExtendable,
 } from 'handles';
 
-export const editContactDetails = () => {
+export const editContactDetails = (): void => {
   it('displays default values if there is no information', () => {
     cy.get(`[data-cy=${cyContactEmail}]`).clear();
     cy.get(`[data-cy=${cyContactPhone}]`).clear();

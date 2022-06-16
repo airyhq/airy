@@ -42,6 +42,12 @@ import Script from "@site/src/components/Script";
 
 <Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
 
+To customize your Minikube instance, you can adjust the `driver`, `cpus` and `memory` attributes in the following manner:
+
+```
+airy create --provider=minikube --provider-config driver=virtualbox,cpus=4,memory=8192 my-airy
+```
+
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).
 

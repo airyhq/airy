@@ -17,7 +17,6 @@ ts_web_library(
             "types": [
                 "cypress",
                 "node",
-                "../commands/index.ts",
             ],
         },
     },

@@ -33,6 +33,7 @@ const contactsReducer = (state = initialState, action: Action) => {
           paginationData: action.payload.paginationData,
         },
       };
+    //deleteContact is disabled in the Contacts page (temporarily)
     case getType(actions.deleteContactAction):
       return {
         ...state,

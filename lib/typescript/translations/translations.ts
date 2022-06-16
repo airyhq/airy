@@ -722,9 +722,9 @@ const resources = {
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
 
       //Status
-      all: 'Tous',
-      open: 'Ouvrir',
-      closed: 'Fermé',
+      all: 'Toutes',
+      open: 'Ouverte(s)',
+      closed: 'Fermée(s)',
 
       //Message
       showSuggestions: 'Afficher les suggestions',
@@ -827,15 +827,15 @@ const resources = {
       addTextOptional: '(facultatif) ajouter un texte',
       subtitleText: 'Texte du sous-titre',
       startNewConversationText: 'Texte pour commencer une nouvelle conversation',
-      chatpluginIconUrl: `URL de l'icône du plugin de chat`,
-      inputIconUrl: `URL de l'icône d'entrée`,
+      chatpluginIconUrl: `URL de l'icône du bouton du chat`,
+      inputIconUrl: `URL de l'icône du champ de saisie`,
       customHostUrl: `URL de l'hôte personnalisé`,
-      addImageurlOptional: `(facultatif) ajouter l'url d'une image`,
+      addImageurlOptional: `(facultatif) ajouter l'URL d'une image`,
       heightPx: 'Hauteur (min 200px)',
       customHeightPlaceholder: '(facultatif) ajouter une hauteur personnalisée',
       widthPx: 'Largeur (min 200px)',
       customWidthPlaceholder: '(facultatif) ajouter une largeur personnalisée',
-      disabledForMobile: 'Désactiver pour la versions mobile',
+      disabledForMobile: 'Désactiver pour la version mobile',
       hideInputbar: 'Masquer la barre de saisie',
       disableEmojis: 'Désactiver les emojis',
       useCustomFont: 'Utiliser une police personnalisée',
@@ -851,21 +851,20 @@ const resources = {
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
       facebookPageIdPlaceholder: `Ajoutez l'ID de la page Facebook`,
       token: 'Token',
       tokenPlaceholder: `Ajouter le token d'accès de la page`,
       nameOptional: 'Nom (facultatif)',
-      nameFacebookPlaceholder: 'Le nom standard sera le même que celui de la page Facebook.',
+      nameFacebookPlaceholder: 'Le nom affiché sera le même que celui de la page Facebook.',
       imageUrlOptional: `Url de l'image (facultatif)`,
-      addAnUrl: `Ajouter une url`,
-      imageFacebookHint: 'La photo standard est la même que celle de la page Facebook.',
+      addAnUrl: `Ajouter une URL`,
+      imageFacebookHint: 'La photo affichée sera la même que celle de la page Facebook.',
       connectPage: 'Connecter la page',
-      updatePage: `Page d'actualisatione`,
+      updatePage: `Actualiser la page`,
       errorMessage: 'Veuillez vérifier la valeur saisie',
-
-      //Facebook Messenger
-
       connectMessenger: 'Connecter le Messenger',
       facebookConfiguration: 'La source Facebook nécessite la configuration suivante:',
       facebookConfigurationText: `Un identifiant et un secret d'application pour que la plateforme puisse renvoyer des messages via votre application Facebook.`,

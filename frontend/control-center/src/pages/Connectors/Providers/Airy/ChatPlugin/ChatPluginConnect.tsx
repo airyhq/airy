@@ -17,17 +17,12 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_CONNECTED_ROUTE,
-  CATALOG_CONNECTED_ROUTE,
-  CATALOG_CHAT_PLUGIN_ROUTE,
-} from '../../../../../routes/routes';
+import {CONNECTORS_CHAT_PLUGIN_ROUTE, CATALOG_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection';
 import {InstallSection} from './sections/InstallSection';
-import {Config, DefaultConfig} from '../../../../../../../chat-plugin/lib/src/config';
+import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -51,7 +46,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
-  const [chatpluginConfig, setChatpluginConfig] = useState<Config>(DefaultConfig);
+  const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
   const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const displayName = currentChannel?.metadata?.name || '';
   const imageUrl = currentChannel?.metadata?.imageUrl || '';

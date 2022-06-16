@@ -83,7 +83,7 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
           </div>
           <Button
             onClick={() => setSubmit(true)}
-            disabled={newDisplayName === ''}
+            disabled={newDisplayName === '' || newDisplayName === displayName}
             type="submit"
             styleVariant="small"
             style={{width: '176px', height: '40px', marginTop: '16px'}}

@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  // margin-top: 28px;
   margin-right: 16px;
   label {
     white-space: nowrap;
@@ -15,6 +14,7 @@
     min-width: 240px;
   }
 }
+
 .customiseContainerInputs {
   display: flex;
   flex-wrap: wrap;
@@ -28,34 +28,6 @@
 .customiseContainerDropdowns {
   display: flex;
   flex-wrap: wrap;
-}
-
-.backButton {
-  display: block;
-  margin-bottom: 16px;
-  cursor: pointer;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.backIcon {
-  width: 20px;
-  background: transparent;
-  path {
-    fill: var(--color-text-gray);
-  }
-  margin-right: 8px;
-}
-
-.colorPickerWrapper {
-  position: absolute;
-}
-
-.colorPicker {
-  display: flex;
-  align-items: center;
 }
 
 .extraOptions {
@@ -123,14 +95,6 @@
   bottom: 0px;
   right: 0px;
   position: absolute;
-}
-
-.copyButtonHostName {
-  display: flex;
-}
-
-.fontDropdownContainer {
-  margin: 34px 0 0 24px;
 }
 
 .titleContainer {

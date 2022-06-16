@@ -1,14 +1,7 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {Dropdown, Input, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
-import {
-  AiryChatPlugin,
-  AiryChatPluginConfiguration,
-  BubbleState,
-  CloseOption,
-  DefaultColors,
-  DefaultConfig,
-} from 'chat-plugin';
+import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
 import {getUseLocalState} from '../../../../../../services/hooks/localState';
 import {fetchGoogleFonts} from '../../../../../../api/index';
@@ -16,18 +9,17 @@ import {useTranslation} from 'react-i18next';
 import {SampleInput} from './SampleInput';
 import {ColorPickerSample} from './ColorPickerSample';
 import {ModalColorPicker} from './ModalColorPicker';
-import {Config} from '../../../../../../../../chat-plugin/lib';
 import {useParams} from 'react-router-dom';
-import {Language} from 'model';
+import {BubbleState, ChatpluginConfig, CloseOption, DefaultColors, DefaultConfig, Language} from 'model';
 import {isEqual} from 'lodash-es';
 
 type CustomiseSectionProps = {
   channelId: string;
   host: string;
-  setChatpluginConfig: Dispatch<SetStateAction<Config>>;
+  setChatpluginConfig: Dispatch<SetStateAction<ChatpluginConfig>>;
 };
 
-let CurrentConfig: Config = {};
+let CurrentConfig: ChatpluginConfig = {};
 
 export const CustomiseSection = ({channelId, host, setChatpluginConfig}: CustomiseSectionProps) => {
   const {channelIdParams} = useParams();
@@ -135,7 +127,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
 
   const currentLanguage = localStorage.getItem('language');
 
-  const NewConfig: Config = {
+  const NewConfig: ChatpluginConfig = {
     welcomeMessage: '',
     startNewConversationText: '',
     headerText,

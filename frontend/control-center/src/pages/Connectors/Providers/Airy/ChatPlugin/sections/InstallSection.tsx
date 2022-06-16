@@ -1,13 +1,13 @@
 import {Button, ErrorNotice} from 'components';
+import {ChatpluginConfig} from 'model';
 import React, {createRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import styles from './InstallSection.module.scss';
-import {Config} from '../../../../../../../../chat-plugin/lib';
 
 type InstallSectionProps = {
   channelId: string;
   host: string;
-  chatpluginConfig: Config;
+  chatpluginConfig: ChatpluginConfig;
 };
 
 export const InstallSection = (props: InstallSectionProps) => {

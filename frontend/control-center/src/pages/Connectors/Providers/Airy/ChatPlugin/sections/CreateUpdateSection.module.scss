@@ -6,34 +6,3 @@
 .settings {
   width: 20rem;
 }
-
-.updatePageParagraph {
-  margin: 24px 0;
-  color: var(--color-text-gray);
-}
-
-.tabView {
-  display: flex;
-  margin-bottom: 16px;
-  list-style-type: none;
-
-  li {
-    margin-right: 16px;
-  }
-}
-
-.tabEntrySelected {
-  border-bottom: 2px solid var(--color-airy-blue);
-  a {
-    color: var(--color-text-contrast);
-    font-weight: bold;
-    text-decoration: none;
-  }
-}
-
-.tabEntry {
-  a {
-    color: var(--color-airy-blue);
-    text-decoration: none;
-  }
-}

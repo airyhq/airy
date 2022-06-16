@@ -7,8 +7,6 @@ variable "aws_secret_key" {
 }
 
 variable "fargate_profiles" {
-  type = map
-  default = {
-    "name" = "default"
-  }
+  type = list(string)
+  default = []
 }

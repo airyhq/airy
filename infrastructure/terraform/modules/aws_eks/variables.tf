@@ -16,11 +16,6 @@ variable "ssh_key" {
   default     = "~/.ssh/id_rsa"
 }
 
-variable "profile" {
-  description = "AWS profile that is used for authentication"
-  default     = "airy-prod"
-}
-
 variable "vpc_id" {
   type    = string
   default = null

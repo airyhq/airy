@@ -15,7 +15,7 @@ module "my-airy-core" {
 }
 
 data "template_file" "airy_yaml" {
-  template = file("${path.module}/files/airy.yaml")
+  template = file("${path.module}/files/airyConfig.yaml")
 
   vars = {
     host        = var.host

@@ -6,7 +6,7 @@ check_pkg(name = "buildifier")
 nodejs_binary(
     name = "cypress",
     data = [
-        ":cypress.json",
+        ":cypress.config.ts",
         "//integration/chat-plugin",
         "//integration/ui",
         "@npm//cypress",
@@ -16,14 +16,14 @@ nodejs_binary(
     },
     templated_args = [
         "open",
-        "-C $(rootpath :cypress.json)",
+        "-C $(rootpath :cypress.config.ts)",
     ],
 )
 
 nodejs_binary(
     name = "cypress_run",
     data = [
-        ":cypress.json",
+        ":cypress.config.ts",
         "//integration/chat-plugin",
         "//integration/ui",
         "@npm//cypress",
@@ -33,6 +33,6 @@ nodejs_binary(
     },
     templated_args = [
         "run",
-        "-C $(rootpath :cypress.json)",
+        "-C $(rootpath :cypress.config.ts)",
     ],
 )

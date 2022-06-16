@@ -21,9 +21,9 @@ ts_web_library(
         },
     },
     deps = [
-        "../commands/index.ts",
         "//frontend/chat-plugin/handles:chat-plugin-handles",
         "//frontend/inbox/handles",
+        "//integration/commands",
         "@npm//@types/node",
         "@npm//cypress",
     ],

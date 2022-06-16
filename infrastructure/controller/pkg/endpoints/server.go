@@ -36,6 +36,12 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 		r.Use(authMiddleware.Middleware)
 	}
 
+	if allowedOrigins := os.Getenv("allowedOrigins"); allowedOrigins != "" {
+		klog.Info("adding cors")
+		middleware := CORS{allowedOrigins}
+		r.Use(middleware.Middleware)
+	}
+
 	services := &Services{clientSet: clientSet, namespace: namespace}
 	r.Handle("/services", services)
 
@@ -51,5 +57,6 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	//FIXME: revert port 8080
+	log.Fatal(http.ListenAndServe(":8082", r))
 }

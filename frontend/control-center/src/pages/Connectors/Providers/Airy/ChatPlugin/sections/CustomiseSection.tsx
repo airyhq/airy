@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect} from 'react';
 import {Dropdown, Input, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
@@ -12,6 +12,7 @@ import {ModalColorPicker} from './ModalColorPicker';
 import {useParams} from 'react-router-dom';
 import {BubbleState, ChatpluginConfig, CloseOption, DefaultColors, DefaultConfig, Language} from 'model';
 import {isEqual} from 'lodash-es';
+import {ColorPicker} from './ColorPicker';
 
 type CustomiseSectionProps = {
   channelId: string;
@@ -111,7 +112,6 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
   const [bubbleState, setBubbleState] = useLocalState('bubbleState', DefaultConfig.bubbleState);
   const [colorStepText, setColorStepText] = useLocalState('colorStepText', `${t('headerTextColor')}`);
   const [activeColorStep, setActiveColorStep] = useLocalState('activeColorStep', 0);
-  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const colorStepsArr = [
     t('headerTextColor'),
     t('subtitleTextColor'),
@@ -256,107 +256,6 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
     }
   };
 
-  const ColorPicker = () => {
-    return (
-      <div className={styles.headerTextColors}>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('headerTextColor'))}
-          style={{background: headerTextColor}}
-        >
-          {activeColorStep === 0 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('subtitleTextColor'))}
-          style={{background: subtitleTextColor}}
-        >
-          {activeColorStep === 1 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('primaryColor'))}
-          style={{background: primaryColor}}
-        >
-          {activeColorStep === 2 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('accentColor'))}
-          style={{background: accentColor}}
-        >
-          {activeColorStep === 3 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('backgroundColor'))}
-          style={{background: backgroundColor}}
-        >
-          {activeColorStep === 4 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('inboundBackgroundColor'))}
-          style={{background: inboundMessageColor}}
-        >
-          {activeColorStep === 5 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('inboundMessageTextColor'))}
-          style={{background: inboundMessageTextColor}}
-        >
-          {activeColorStep === 6 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('outboundBackgroundColor'))}
-          style={{background: outboundMessageColor}}
-        >
-          {activeColorStep === 7 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('outboundMessageTextColor'))}
-          style={{background: outboundMessageTextColor}}
-        >
-          {activeColorStep === 8 && <div className={styles.activeColorStep} />}
-        </div>
-        <div
-          className={styles.inactiveColorStep}
-          onClick={() => handleColorStepChange(t('unreadMessageDotColor'))}
-          style={{background: unreadMessageDotColor}}
-        >
-          {activeColorStep === 9 && <div className={styles.activeColorStep} />}
-        </div>
-      </div>
-    );
-  };
-
-  const SuccessfullySaved = () => {
-    return (
-      <div
-        className={showSuccessNotification && styles.translateYAnimIn}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          left: '50%',
-          top: '20px',
-          marginLeft: '-120px',
-          height: '40px',
-          width: '240px',
-          zIndex: 9999,
-          background: '#0da36b',
-          borderRadius: '10px',
-        }}
-      >
-        <span className={styles.SuccessfullySaved}>{t('SuccessfullySaved')}</span>
-      </div>
-    );
-  };
-
   const handleResetConfig = () => {
     setHeaderText('');
     setHeaderTextColor(DefaultColors.headerTextColor);
@@ -388,7 +287,6 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
   };
 
   const handleSaveConfig = () => {
-    setShowSuccessNotification(true);
     CurrentConfig = NewConfig;
     setChatpluginConfig(NewConfig);
   };
@@ -431,7 +329,6 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
 
   return (
     <>
-      {showSuccessNotification && <SuccessfullySaved />}
       <div className={styles.customiseContainer}>
         <div className={styles.titleContainer}>
           <div className={styles.buttonContainer}>
@@ -468,7 +365,68 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               />
             </div>
             <div className={styles.colorPickerContainer}>
-              <ColorPicker />
+              <div className={styles.headerTextColors}>
+                <ColorPicker
+                  background={headerTextColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[0])}
+                  activeColorStep={activeColorStep}
+                  colorStep={0}
+                />
+                <ColorPicker
+                  background={subtitleTextColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[1])}
+                  activeColorStep={activeColorStep}
+                  colorStep={1}
+                />
+                <ColorPicker
+                  background={primaryColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[2])}
+                  activeColorStep={activeColorStep}
+                  colorStep={2}
+                />
+                <ColorPicker
+                  background={accentColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[3])}
+                  activeColorStep={activeColorStep}
+                  colorStep={3}
+                />
+                <ColorPicker
+                  background={backgroundColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[4])}
+                  activeColorStep={activeColorStep}
+                  colorStep={4}
+                />
+                <ColorPicker
+                  background={inboundMessageColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[5])}
+                  activeColorStep={activeColorStep}
+                  colorStep={5}
+                />
+                <ColorPicker
+                  background={inboundMessageTextColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[6])}
+                  activeColorStep={activeColorStep}
+                  colorStep={6}
+                />
+                <ColorPicker
+                  background={outboundMessageColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[7])}
+                  activeColorStep={activeColorStep}
+                  colorStep={7}
+                />
+                <ColorPicker
+                  background={outboundMessageTextColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[8])}
+                  activeColorStep={activeColorStep}
+                  colorStep={8}
+                />
+                <ColorPicker
+                  background={unreadMessageDotColor}
+                  setColorStep={() => handleColorStepChange(colorStepsArr[9])}
+                  activeColorStep={activeColorStep}
+                  colorStep={9}
+                />
+              </div>
               {showHeaderTextColorPicker && (
                 <ModalColorPicker
                   color={headerTextColor}

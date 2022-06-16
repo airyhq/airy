@@ -4,7 +4,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://airy.core',
     specPattern: 'integration/**/*.spec.?s',
-    supportFile: './commands/index.ts',
+    supportFile: 'integration/commands/index.ts',
   },
   env: {
     chatPluginName: 'Cypress Chatplugin',

@@ -44,7 +44,7 @@ variable "node_group_size" {
 }
 
 variable "cluster_version" {
-  default = "1.21"
+  default = "1.22"
 }
 
 variable "core_id" {
@@ -56,7 +56,7 @@ variable "namespace" {
 }
 
 variable "kubeconfig_output_path" {
-  default = "../main/.kubeconfig"
+  default = "../airy-core/.kubeconfig"
 }
 
 variable "fargate_profiles" {

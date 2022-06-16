@@ -722,9 +722,9 @@ const resources = {
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
 
       //Status
-      all: 'Toutes',
-      open: 'Ouverte(s)',
-      closed: 'Fermée(s)',
+      all: 'Tous',
+      open: 'Ouvert',
+      closed: 'Fermé',
 
       //Message
       showSuggestions: 'Afficher les suggestions',
@@ -759,7 +759,7 @@ const resources = {
       templatesExplanation: `Les modèles vous permettent d'offrir une expérience d'interaction plus riche avec des images et des boutons.`,
       useTemplates: 'Utilisez des modèles de texte pour ne plus jamais taper la même chose.',
       noResult: 'Aucun résultat trouvé.',
-      writeCorrectly: 'Avez-vous tout écrit correctement?',
+      writeCorrectly: 'Avez-vous tout écrit correctement ?',
       errorTemplates: `Oups! Vos modèles n'ont pas pu être chargés. Veuillez réessayer plus tard.`,
       searchTemplates: 'Recherche de modèles',
 
@@ -797,8 +797,8 @@ const resources = {
       manage: 'Gérer',
       name: 'Nom',
       edit: 'Modifier',
-      search: 'Recherche',
-      save: 'Sauvez',
+      search: 'Rechercher',
+      save: 'Sauver',
       delete: 'Supprimer',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',

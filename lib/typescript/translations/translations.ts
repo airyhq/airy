@@ -722,9 +722,9 @@ const resources = {
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
 
       //Status
-      all: 'Toutes',
-      open: 'Ouverte(s)',
-      closed: 'Fermée(s)',
+      all: 'Tous',
+      open: 'Ouvert',
+      closed: 'Fermé',
 
       //Message
       showSuggestions: 'Afficher les suggestions',
@@ -759,7 +759,7 @@ const resources = {
       templatesExplanation: `Les modèles vous permettent d'offrir une expérience d'interaction plus riche avec des images et des boutons.`,
       useTemplates: 'Utilisez des modèles de texte pour ne plus jamais taper la même chose.',
       noResult: 'Aucun résultat trouvé.',
-      writeCorrectly: 'Avez-vous tout écrit correctement?',
+      writeCorrectly: 'Avez-vous tout écrit correctement ?',
       errorTemplates: `Oups! Vos modèles n'ont pas pu être chargés. Veuillez réessayer plus tard.`,
       searchTemplates: 'Recherche de modèles',
 
@@ -797,8 +797,8 @@ const resources = {
       manage: 'Gérer',
       name: 'Nom',
       edit: 'Modifier',
-      search: 'Recherche',
-      save: 'Sauvez',
+      search: 'Rechercher',
+      save: 'Sauvegarder',
       delete: 'Supprimer',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
@@ -808,7 +808,7 @@ const resources = {
       addDisplayName: 'Ajouter un nom',
       imageUrl: `URL d'une image`,
       imageUrlPlaceholder: `(facultatif) ajouter l'URL d'une image`,
-      imageUrlHint: 'max. 1024x1024 pixel PNG',
+      imageUrlHint: 'max. 1024x1024 pixels PNG',
 
       //Customize Chatplugin
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
@@ -824,17 +824,17 @@ const resources = {
       outboundTextColor: 'Couleur du texte sortant',
       unreadMessageDotColor: 'Couleur du point des messages non lus',
       headerText: `Texte d'en-tête`,
-      addTextOptional: '(facultatif) ajouter un texte',
+      addTextOptional: 'Ajouter un texte (facultatif)',
       subtitleText: 'Texte du sous-titre',
       startNewConversationText: 'Texte pour commencer une nouvelle conversation',
       chatpluginIconUrl: `URL de l'icône du bouton du chat`,
       inputIconUrl: `URL de l'icône du champ de saisie`,
       customHostUrl: `URL de l'hôte personnalisé`,
-      addImageurlOptional: `(facultatif) ajouter l'URL d'une image`,
+      addImageurlOptional: `Ajouter l'URL d'une image (facultatif)`,
       heightPx: 'Hauteur (min 200px)',
-      customHeightPlaceholder: '(facultatif) ajouter une hauteur personnalisée',
+      customHeightPlaceholder: 'Ajouter une hauteur personnalisée (facultatif) ',
       widthPx: 'Largeur (min 200px)',
-      customWidthPlaceholder: '(facultatif) ajouter une largeur personnalisée',
+      customWidthPlaceholder: 'Ajouter une largeur personnalisée (facultatif)',
       disabledForMobile: 'Désactiver pour la version mobile',
       hideInputbar: 'Masquer la barre de saisie',
       disableEmojis: 'Désactiver les emojis',

@@ -3,7 +3,11 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress", "node", "./commands/index.ts"]
+    "typeRoots": [
+      "./commands",
+      "node_modules/@types"
+    ],
+    "types": ["cypress", "node"]
   },
   "include": ["**/*.ts"]
 }

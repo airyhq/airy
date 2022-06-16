@@ -25,5 +25,6 @@ ts_web_library(
         "//frontend/inbox/handles",
         "@npm//@types/node",
         "@npm//cypress",
+        '../commands/index.ts"
     ],
 )

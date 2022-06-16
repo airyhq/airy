@@ -7,6 +7,6 @@
     "./frontend/**/*",
     "./lib/typescript/**/*"
   ],
-  "types": ["node", "jest", "@testing-library/jest-dom", "cypress"],
+  "types": ["node", "jest", "@testing-library/jest-dom", "cypress", "./integration/commands/index.ts"],
   "rootDirs": ["."]
 }

@@ -17,6 +17,7 @@ import DeleteContactModal from '../DeleteContactModal';
 import {ConversationInfoForContact} from '../../../components/ContactDetails';
 import {StateModel} from '../../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
+import {cyContactItem} from 'handles';
 
 const mapStateToProps = (state: StateModel) => ({
   contacts: state.data.contacts.all.items,
@@ -105,6 +106,7 @@ const ContactListItem = (props: ContactListItemProps) => {
     <div
       className={`${styles.container} ${contact.id === currentVisibleContactId ? styles.itemSelected : ''}`}
       onClick={handleOnClick}
+      data-cy={cyContactItem}
     >
       <div className={styles.avatarDisplayName}>
         <Avatar contact={contact} />

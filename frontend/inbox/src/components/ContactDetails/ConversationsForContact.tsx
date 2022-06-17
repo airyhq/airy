@@ -5,6 +5,7 @@ import {Source} from 'model';
 import {ConnectorAvatar} from 'components';
 import {useTranslation} from 'react-i18next';
 import {ConversationInfoForContact} from './index';
+import {cyConversationsListForContact, cyConversationForContactButton} from 'handles';
 import styles from './index.module.scss';
 
 type ConversationsForContactsProps = {
@@ -40,12 +41,12 @@ export const ConversationsForContact = (props: ConversationsForContactsProps) =>
   };
 
   return (
-    <div className={styles.contactConversationList}>
+    <div className={styles.contactConversationList} data-cy={cyConversationsListForContact}>
       <span>{conversationId ? t('otherConversationsContact') : t('conversationsContact')}</span>
       <div className={styles.iconsContainer}>
         {conversationsForContactFormatted.length > 0 &&
           conversationsForContactFormatted.map((conversationInfo: ConversationInfoForContact) => (
-            <button type="button" key={conversationInfo.id}>
+            <button type="button" key={conversationInfo.id} data-cy={cyConversationForContactButton}>
               <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
                 <ConnectorAvatar source={conversationInfo.connector as Source} />
               </Link>

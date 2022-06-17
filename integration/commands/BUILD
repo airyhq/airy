@@ -6,7 +6,7 @@ check_pkg(name = "buildifier")
 package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
-    name = "ui",
+    name = "commands",
     srcs = glob(["*.spec.ts"]),
     tsconfig = {
         "compilerOptions": {
@@ -14,10 +14,7 @@ ts_web_library(
                 "esnext",
                 "dom",
             ],
-            "types": [
-                "cypress",
-                "node",
-            ],
+            "types": ["cypress"],
         },
     },
     deps = [

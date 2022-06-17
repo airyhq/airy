@@ -16,6 +16,13 @@ your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
 ## Create a minikube cluster
 
+:::note
+
+By default the UI and the API will be available at `http://localhost`.
+Make sure you don't have any other process using port 80 on your localhost interface
+
+:::
+
 First install minikube using [their documentation](https://kubernetes.io/de/docs/tasks/tools/install-minikube/). Minikube version v1.19.0 or higher is required.
 
 Next you also need to install the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new
@@ -34,6 +41,12 @@ This will execute the following actions:
 import Script from "@site/src/components/Script";
 
 <Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
+
+To customize your Minikube instance, you can adjust the `driver`, `cpus` and `memory` attributes in the following manner:
+
+```
+airy create --provider=minikube --provider-config driver=virtualbox,cpus=4,memory=8192 my-airy
+```
 
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).

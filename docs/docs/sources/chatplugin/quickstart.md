@@ -62,7 +62,7 @@ import ConnectChatPlugin from '../../api/endpoints/connect-chatPlugin.mdx'
 curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"
-}" http://airy.core/channels.chatplugin.connect
+}" http://localhost/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/sources/chatplugin/connect_chatplugin_channel.gif')} />
@@ -111,7 +111,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://airy.core/chatplugin/ui/example?channel_id=<channel_id>
+http://localhost/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -129,7 +129,7 @@ created. it should return the message you have just sent.
 <br />
 
 ```sh
-curl -XPOST http://airy.core/conversations.list | jq .
+curl -XPOST http://localhost/conversations.list | jq .
 ```
 
 The [Inbox UI](/ui/inbox/introduction) lists all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).

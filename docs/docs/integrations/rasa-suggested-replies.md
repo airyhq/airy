@@ -96,5 +96,5 @@ Now we need to stop the server and retrain the model:
 rasa train
 ```
 
-Finally, we start the Rasa server, open the Airy Inbox (at `http://airy.core` for local deployments), where we should
+Finally, we start the Rasa server, open the Airy Inbox (at `http://localhost` for local deployments), where we should
 see the suggested replies whenever a contact greets us (see gif above).

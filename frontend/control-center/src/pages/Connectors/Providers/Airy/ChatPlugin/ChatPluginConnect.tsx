@@ -19,9 +19,9 @@ import styles from './ChatPluginConnect.module.scss';
 
 import {CONNECTORS_CHAT_PLUGIN_ROUTE, CATALOG_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
-import CreateUpdateSection from './sections/CreateUpdateSection';
-import {CustomiseSection} from './sections/CustomiseSection';
-import {InstallSection} from './sections/InstallSection';
+import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
+import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
+import {InstallSection} from './sections/InstallSection/InstallSection';
 import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {

@@ -1,0 +1,38 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
+@import 'assets/scss/z-index.scss';
+
+.customiseContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-right: 16px;
+  label {
+    white-space: nowrap;
+    margin-right: 30px;
+    min-width: 240px;
+  }
+}
+
+.customiseContainerInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.customiseContainerToggles {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.extraOptions {
+  margin: 16px 20px 24px 0;
+  min-width: 300px;
+}
+
+.borderLine {
+  height: 1px;
+  width: 80%;
+  background-color: var(--color-light-gray);
+  margin: 18px 0;
+}

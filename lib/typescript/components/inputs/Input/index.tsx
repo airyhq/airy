@@ -270,6 +270,7 @@ class InputComponent extends Component<InputProps, IState> {
       minLength,
       maxLength,
       minWidth,
+      width,
       showErrors,
       children,
       fontClass,
@@ -355,6 +356,7 @@ class InputComponent extends Component<InputProps, IState> {
               style={{
                 height: `${height}px`,
                 minWidth: `${minWidth}px`,
+                width: `${width}px`,
               }}
               type={type}
               value={value}
@@ -402,6 +404,7 @@ export interface InputProps {
   showLabelIcon?: boolean;
   tooltipText?: string;
   minWidth?: number;
+  width?: number;
 
   /** Want to hide the label completely? */
   hideLabel?: boolean;

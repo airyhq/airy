@@ -3,12 +3,12 @@ import {Button, Input} from 'components';
 import styles from './CreateUpdateSection.module.scss';
 import {cyChannelsChatPluginFormNameInput} from 'handles';
 import {useTranslation} from 'react-i18next';
-import {updateChannel} from '../../../../../../actions/channel';
+import {updateChannel} from '../../../../../../../actions/channel';
 import {connect, ConnectedProps} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel} from 'model';
 
-import {CATALOG_CONNECTED_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../../routes/routes';
+import {CATALOG_CONNECTED_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../../../routes/routes';
 
 const mapDispatchToProps = {
   updateChannel,

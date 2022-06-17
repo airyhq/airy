@@ -1,4 +1,5 @@
 export * from './Channel';
+export * from './ChatpluginConfig';
 export * from './Config';
 export * from './Contact';
 export * from './Content';

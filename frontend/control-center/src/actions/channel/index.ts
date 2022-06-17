@@ -60,7 +60,7 @@ export const connectInstagramChannel =
 export const connectChatPlugin = (requestPayload: ConnectChatPluginRequestPayload) => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.connectChatPluginChannel(requestPayload).then((response: Channel) => {
     dispatch(addChannelsAction([response]));
-    return Promise.resolve(response);
+    return Promise.resolve(response.id);
   });
 
 export const connectTwilioSms = (requestPayload: ConnectTwilioSmsRequestPayload) => async (dispatch: Dispatch<any>) =>

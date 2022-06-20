@@ -52,16 +52,15 @@ const Status = (props: ConnectedProps<typeof connector>) => {
         </button>
       </div>
       <div className={styles.listItems}>
-        {components
-          .map((component, index) => (
-            <ComponentListItem
-              key={index}
-              healthy={component[1].healthy}
-              enabled={component[1].enabled}
-              services={component[1].services}
-              componentName={component[0]}
-            />
-          ))}
+        {components.map((component, index) => (
+          <ComponentListItem
+            key={index}
+            healthy={component[1].healthy}
+            enabled={component[1].enabled}
+            services={component[1].services}
+            componentName={component[0]}
+          />
+        ))}
       </div>
     </section>
   );

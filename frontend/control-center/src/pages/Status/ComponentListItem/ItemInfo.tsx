@@ -7,9 +7,10 @@ import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
-import {Toggle} from 'components';
+import {SettingsModal, Button, Toggle} from 'components';
 import styles from './index.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 type ComponentInfoProps = {
   healthy: boolean;
@@ -30,16 +31,24 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
+  const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
+  const {t} = useTranslation();
 
-  const enableHandler = (componentId: string) => {
-    return (enabled: boolean) => {
-      console.log(`${componentId} is now ${enabled ? 'enabled' : 'disabled'}`);
-      console.log(enableDisableComponent);
-      enableDisableComponent({components: [{name: componentId, enabled: enabled}]});
+  const triggerEnableDisableAction = (enabled: boolean) => {
+      enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
       setComponentEnabled(enabled);
-    };
-  };
+      setEnablePopupVisible(false);
+  }
+
+  const enableHandler = (enabled: boolean) => {
+    if (enabled) {
+      triggerEnableDisableAction(enabled);
+      return;
+    }
+
+    setEnablePopupVisible(true);
+  }
 
   return (
     <>
@@ -72,11 +81,29 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
           {isComponent && (
             <div className={styles.enabled}>
-              <Toggle value={componentEnabled} updateValue={enableHandler(itemName)} size="small" variant="green" />
+              <Toggle value={componentEnabled} updateValue={enableHandler} size="small" variant="green" />
             </div>
           )}
         </div>
       )}
+
+        {enablePopupVisible && (
+          <SettingsModal
+            style={{}}
+            title={t('disableComponent') + ' ' + componentName}
+            close={() => setEnablePopupVisible(false)}
+          >
+            <div className={styles.disconnectModal}>
+              <p>{t('disableComponentText')}</p>
+              <div className={styles.modalSeparator} />
+              <div className={styles.modalButtons}>
+                <Button styleVariant="normal" type="submit" onClick={() => triggerEnableDisableAction(false)}>
+                  {t('disconnectComponent')}
+                </Button>
+              </div>
+            </div>
+          </SettingsModal>
+          )}
     </>
   );
 };

@@ -53,9 +53,6 @@ const Status = (props: ConnectedProps<typeof connector>) => {
       </div>
       <div className={styles.listItems}>
         {components
-          .filter(component => {
-            return component[1].enabled;
-          })
           .map((component, index) => (
             <ComponentListItem
               key={index}

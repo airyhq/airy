@@ -119,14 +119,18 @@
 }
 
 .enableModalContainer {
-  display: flex;
+  @include font-l;
   flex-direction: column;
+  display: flex;
   justify-content: center;
   align-items: center;
-  @include font-l;
+}
+
+.enableModalContainer div {
+  @include font-xl;
 }
 
 .enableModalContainer p {
+  @include font-l;
   margin-bottom: 30px;
-  @include font-m;
 }

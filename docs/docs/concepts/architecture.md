@@ -37,7 +37,7 @@ All the credentials, keys and secrets which the user can overwrite can be config
 
 ## Apps
 
- An App is a component or a collection of components which are interconnected and can be used to build any kind of application inside the Airy system.
+An App is a component or a collection of components which are interconnected and can be used to build any kind of application inside the Airy system.
 
 ## Components
 

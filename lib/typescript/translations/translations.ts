@@ -792,7 +792,7 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
-      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',

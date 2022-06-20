@@ -7,10 +7,10 @@ const ENABLE_DISABLE_COMPONENT = '@@component/ENABLE_DISABLE';
 
 export const enableDisableComponentAction = createAction(
   ENABLE_DISABLE_COMPONENT,
-  (compoents: EnableDisableComponentRequestPayload) => ({
-    compoents,
+  (components: EnableDisableComponentRequestPayload) => ({
+    components,
   })
-)<{compoents: EnableDisableComponentRequestPayload}>();
+)<{components: EnableDisableComponentRequestPayload}>();
 
 export const enableDisableComponent =
   (enableDisableComponentRequestPayload: EnableDisableComponentRequestPayload) => (dispatch: Dispatch<any>) => {

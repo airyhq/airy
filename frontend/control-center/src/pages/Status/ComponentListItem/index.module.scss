@@ -108,3 +108,25 @@
 .blankSpace {
   width: 60px;
 }
+
+.enableModalContainerWrapper {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+}
+
+.enableModalContainer p {
+  margin-bottom: 30px;
+  @include font-m;
+}

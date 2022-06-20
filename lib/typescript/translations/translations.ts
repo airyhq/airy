@@ -123,7 +123,6 @@ const resources = {
       disableComponent: 'Disable',
       disableComponentText: 'Are you sure you want to disable this component?',
 
-
       //Channels
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',

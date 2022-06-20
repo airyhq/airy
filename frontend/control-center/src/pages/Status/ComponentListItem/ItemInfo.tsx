@@ -36,10 +36,10 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const {t} = useTranslation();
 
   const triggerEnableDisableAction = (enabled: boolean) => {
-      enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
-      setComponentEnabled(enabled);
-      setEnablePopupVisible(false);
-  }
+    enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
+    setComponentEnabled(enabled);
+    setEnablePopupVisible(false);
+  };
 
   const enableHandler = (enabled: boolean) => {
     if (enabled) {
@@ -48,7 +48,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
     }
 
     setEnablePopupVisible(true);
-  }
+  };
 
   return (
     <>
@@ -87,23 +87,24 @@ const ItemInfo = (props: ComponentInfoProps) => {
         </div>
       )}
 
-        {enablePopupVisible && (
-          <SettingsModal
-            style={{}}
-            title={t('disableComponent') + ' ' + componentName}
-            close={() => setEnablePopupVisible(false)}
+      {enablePopupVisible && (
+        <SettingsModal
+          wrapperClassName={styles.enableModalContainerWrapper}
+          containerClassName={styles.enableModalContainer}
+          title={t('disableComponent') + ' ' + componentName}
+          close={() => setEnablePopupVisible(false)}
+        >
+          <p>{t('disableComponentText')}</p>
+          <Button
+            styleVariant="normal"
+            style={{width: '45%'}}
+            type="submit"
+            onClick={() => triggerEnableDisableAction(false)}
           >
-            <div className={styles.disconnectModal}>
-              <p>{t('disableComponentText')}</p>
-              <div className={styles.modalSeparator} />
-              <div className={styles.modalButtons}>
-                <Button styleVariant="normal" type="submit" onClick={() => triggerEnableDisableAction(false)}>
-                  {t('disconnectComponent')}
-                </Button>
-              </div>
-            </div>
-          </SettingsModal>
-          )}
+            {t('disableComponent')}
+          </Button>
+        </SettingsModal>
+      )}
     </>
   );
 };

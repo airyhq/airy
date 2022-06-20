@@ -9,14 +9,15 @@ type SettingsModalProps = {
   title: string;
   children: any;
   style?: CSSProperties;
-  className?: string;
+  wrapperClassName?: string;
+  containerClassName?: string;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {close, title, children, style, className} = props;
+  const {close, title, children, style, wrapperClassName, containerClassName} = props;
   return (
     <Modal
-      className={styles.content}
+      className={`${styles.content} ${wrapperClassName}`}
       ariaHideApp={false}
       overlayClassName={styles.overlay}
       contentLabel={title}
@@ -24,7 +25,7 @@ export const SettingsModal = (props: SettingsModalProps) => {
       shouldCloseOnOverlayClick={true}
       onRequestClose={close}
     >
-      <div style={style} className={className}>
+      <div style={style} className={containerClassName}>
         <ModalHeader title={title} close={close} style={style} />
         {children}
       </div>

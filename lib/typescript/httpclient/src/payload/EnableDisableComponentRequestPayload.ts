@@ -1,3 +1,3 @@
 export interface EnableDisableComponentRequestPayload {
-  components: {name: string, enabled: boolean}[];
+  components: {name: string; enabled: boolean}[];
 }

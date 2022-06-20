@@ -124,6 +124,7 @@ const resources = {
       disableComponentText: 'Are you sure you want to disable this component?',
 
       //Channels
+      toConfigure: 'To configure',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -466,6 +467,7 @@ const resources = {
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
 
       //Channels
+      toConfigure: 'konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
       facebookTitle: 'Facebook Messenger',
@@ -795,6 +797,7 @@ const resources = {
       disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
 
       //Channels
+      toConfigure: 'configuration',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
       facebookTitle: 'Facebook Messenger',
@@ -1127,6 +1130,7 @@ const resources = {
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
 
       //Channels
+      toConfigure: 'configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
       facebookTitle: 'Facebook Messenger',

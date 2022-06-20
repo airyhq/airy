@@ -58,5 +58,5 @@ func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	r.Handle("/cluster.update", clusterUpdate)
 
 	//FIXME: revert port 8080
-	log.Fatal(http.ListenAndServe(":8082", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

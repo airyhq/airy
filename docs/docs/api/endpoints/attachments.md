@@ -15,7 +15,7 @@ Expects a multi-part form upload including the original filename
 **Sample curl**
 
 ```shell script
-curl http://airy.core/media.upload \
+curl http://localhost/media.upload \
 -X POST \
 -H "Content-Type: multipart/form-data" \
 --form file=@test_image.jpg

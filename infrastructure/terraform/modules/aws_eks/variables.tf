@@ -16,11 +16,6 @@ variable "ssh_key" {
   default     = "~/.ssh/id_rsa"
 }
 
-variable "profile" {
-  description = "AWS profile that is used for authentication"
-  default     = "airy-prod"
-}
-
 variable "vpc_id" {
   type    = string
   default = null
@@ -49,7 +44,7 @@ variable "node_group_size" {
 }
 
 variable "cluster_version" {
-  default = "1.21"
+  default = "1.22"
 }
 
 variable "core_id" {
@@ -61,7 +56,7 @@ variable "namespace" {
 }
 
 variable "kubeconfig_output_path" {
-  default = "../main/.kubeconfig"
+  default = "../airy-core/.kubeconfig"
 }
 
 variable "fargate_profiles" {

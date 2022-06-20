@@ -1,0 +1,18 @@
+@import 'assets/scss/z-index.scss';
+
+.content {
+  position: fixed;
+  top: calc(50% - 150px);
+  left: calc(50% - 110px);
+  transition: top 0.5s;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: $popup;
+  background-color: rgba(0, 0, 0, 0.75);
+}

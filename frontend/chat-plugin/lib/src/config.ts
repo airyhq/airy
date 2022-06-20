@@ -22,8 +22,8 @@ export type Config = {
   unreadMessageDotColor?: string;
   sendMessageIcon?: string;
   showMode?: boolean;
-  height?: number;
-  width?: number;
+  height?: number | string;
+  width?: number | string;
   disableMobile?: boolean;
   bubbleState?: 'expanded' | 'minimized';
   closeMode?: 'basic' | 'medium' | 'full';

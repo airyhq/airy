@@ -2,7 +2,7 @@ import {Avatar, SettingsModal} from 'components';
 import React, {useEffect, useState} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as PencilIcon} from 'assets/images/icons/pencil.svg';
-import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
+//import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airyContactIcon.svg';
 import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebookContactIcon.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramContactIcon.svg';
@@ -17,6 +17,7 @@ import DeleteContactModal from '../DeleteContactModal';
 import {ConversationInfoForContact} from '../../../components/ContactDetails';
 import {StateModel} from '../../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
+import {cyContactItem} from 'handles';
 
 const mapStateToProps = (state: StateModel) => ({
   contacts: state.data.contacts.all.items,
@@ -105,6 +106,7 @@ const ContactListItem = (props: ContactListItemProps) => {
     <div
       className={`${styles.container} ${contact.id === currentVisibleContactId ? styles.itemSelected : ''}`}
       onClick={handleOnClick}
+      data-cy={cyContactItem}
     >
       <div className={styles.avatarDisplayName}>
         <Avatar contact={contact} />
@@ -125,9 +127,9 @@ const ContactListItem = (props: ContactListItemProps) => {
         <div onClick={event => handleEditMode(event)}>
           <PencilIcon />
         </div>
-        <div onClick={() => setShowDeleteContactModal(true)}>
+        {/* <div onClick={() => setShowDeleteContactModal(true)}>
           <TrashIcon />
-        </div>
+        </div> */}
       </div>
       {showDeleteContactModal && (
         <SettingsModal close={() => setShowDeleteContactModal(false)} title="">

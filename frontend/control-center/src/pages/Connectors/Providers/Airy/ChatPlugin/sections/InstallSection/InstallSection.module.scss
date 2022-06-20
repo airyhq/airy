@@ -1,0 +1,70 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  h1 {
+    @include font-xl;
+    font-weight: 700;
+  }
+  h2 {
+    @include font-base;
+    font-weight: 700;
+    color: var(--color-text-gray);
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.codeAreaContainer {
+  display: flex;
+}
+
+.codeAreaBox {
+  margin-right: 64px;
+}
+
+.installHint {
+  @include font-base;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--color-text-gray);
+
+  span {
+    color: var(--color-text-contrast);
+    font-weight: 900;
+  }
+
+  code {
+    color: var(--color-red-alert);
+    background-color: var(--color-background-gray);
+    padding: 2px;
+  }
+}
+
+.codeArea {
+  @media screen and (max-width: 1600px) {
+    max-width: 32em;
+  }
+  @include font-base;
+  width: 40em;
+  height: 500px;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-contrast);
+  border-radius: 8px;
+  border: 1px solid var(--color-dark-elements-gray);
+  resize: none;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+.copyButtonHostName {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 80px;
+  button {
+    @include font-base;
+    width: 176px;
+    height: 40px;
+  }
+}

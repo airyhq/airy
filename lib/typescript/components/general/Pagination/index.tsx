@@ -63,8 +63,8 @@ export const Pagination = (props: PaginationType) => {
             </button>
             <button
               onClick={onNext}
-              disabled={currentPage === Math.round(totalCount / pageCount) || onSearch}
-              style={currentPage === Math.round(totalCount / pageCount) || onSearch ? {visibility: 'hidden'} : {}}
+              disabled={currentPage === Math.ceil(totalCount / pageCount) || onSearch}
+              style={currentPage === Math.ceil(totalCount / pageCount) || onSearch ? {visibility: 'hidden'} : {}}
             >
               <ChevronRight height={15} />
             </button>

@@ -49,7 +49,7 @@ first integration because it does not require any configuration.
 curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"
-}" http://airy.core/channels.chatplugin.connect
+}" http://localhost/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
@@ -64,7 +64,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://airy.core/chatplugin/ui/example?channel_id=<channel_id>
+http://localhost/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -78,7 +78,7 @@ conversations](/api/endpoints/conversations.md#list) for the channel you have ju
 created. It should return the message you have just sent.
 
 ```shell script
-curl -XPOST http://airy.core/conversations.list | jq .
+curl -XPOST http://localhost/conversations.list | jq .
 ```
 
 <img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />

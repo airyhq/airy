@@ -1,0 +1,194 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
+@import 'assets/scss/z-index.scss';
+
+.customiseContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-right: 16px;
+  label {
+    white-space: nowrap;
+    margin-right: 30px;
+    min-width: 240px;
+  }
+}
+
+.customiseContainerInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.customiseContainerToggles {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.customiseContainerDropdowns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.extraOptions {
+  margin: 16px 20px 24px 0;
+  min-width: 300px;
+}
+
+.stepTextDropdown {
+  button {
+    line-height: 24px;
+    width: auto;
+    margin-bottom: 8px;
+    border: none;
+  }
+}
+
+.codeAreaContainer {
+  margin-right: 16px;
+}
+
+.installHint {
+  font-weight: bold;
+  margin-bottom: 8px;
+  code {
+    color: var(--color-red-alert);
+    background-color: var(--color-background-gray);
+    padding: 2px;
+  }
+}
+
+.codeArea {
+  @media screen and (max-width: 1600px) {
+    max-width: 32em;
+  }
+  @include font-base;
+  width: 40em;
+  height: 19.2em;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-contrast);
+  border-radius: 8px;
+  border: 1px solid var(--color-dark-elements-gray);
+  resize: none;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+.pluginWrapper {
+  display: flex;
+  flex-flow: column-reverse;
+  background-color: var(--color-background-gray);
+  border-radius: 10px;
+  padding: 0 24px 0 24px;
+  margin: 32px 0 0 24px;
+  min-width: 350px;
+  min-height: 700px;
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  background: transparent;
+  z-index: $popup + 1;
+  pointer-events: none;
+}
+
+.pluginContainer {
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  h1 {
+    @include font-l;
+    font-weight: 700;
+  }
+  h2 {
+    @include font-base;
+    color: var(--color-text-gray);
+    margin-bottom: 18px;
+  }
+
+  span {
+    @include font-base;
+    font-weight: 700;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  height: 26px;
+  align-self: flex-end;
+  align-items: center;
+  button {
+    border: 1px solid green;
+    @include font-base;
+    border: none;
+    background: transparent;
+    color: var(--color-airy-blue);
+    margin: 0 8px;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+  a {
+    @include font-base;
+    text-decoration: none;
+    color: var(--color-airy-blue);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.colorContainer {
+  display: flex;
+}
+
+.dropdownInputContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.colorPickerContainer {
+  display: flex;
+  align-items: center;
+}
+
+.colorPickers {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.hexTitle {
+  margin-top: 6px;
+  margin-bottom: 5px;
+}
+
+.colorSample {
+  display: flex;
+  flex-direction: column;
+}
+
+.sampleTitle {
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.borderLine {
+  height: 1px;
+  width: 80%;
+  background-color: var(--color-light-gray);
+  margin: 18px 0;
+}

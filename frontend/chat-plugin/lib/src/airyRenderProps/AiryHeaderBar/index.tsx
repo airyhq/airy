@@ -16,18 +16,12 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
   const {config} = props;
 
   const customStyle = {
-    ...(config?.accentColor && {
-      color: config?.accentColor,
-    }),
     ...(config?.headerTextColor && {
       color: config?.headerTextColor,
     }),
   };
 
   const customStyleSubtitle = {
-    ...(config?.accentColor && {
-      color: config?.accentColor,
-    }),
     ...(config?.subtitleTextColor && {
       color: config?.subtitleTextColor,
     }),

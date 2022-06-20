@@ -22,6 +22,7 @@ import {
   cyEditContactIcon,
   cyEditDisplayNameCheckmark,
   cyEditDisplayNameIcon,
+  cyContactsCollapseIcon,
 } from 'handles';
 
 const mapStateToProps = (state: StateModel) => ({
@@ -129,6 +130,7 @@ const ContactInformation = (props: ContactInformationProps) => {
           <button
             className={styles.contactsDetailsCollapseIcon}
             onClick={() => setContactInformationVisible(!contactInformationVisible)}
+            data-cy={cyContactsCollapseIcon}
           >
             <CollapseRightArrowsIcon />
           </button>

@@ -34,7 +34,7 @@ The library exports an `HttpClient` class with public methods that make requests
 To get started, instantiate the `HttpClient` class with your API host URL:
 
 ```
-const client = new HttpClient("http://airy.core");
+const client = new HttpClient("http://localhost");
 ```
 
 ## Call a method

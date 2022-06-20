@@ -134,7 +134,9 @@ function googleInbound(message): ContentUnion {
 
   if (messageJson?.surveyResponse) {
     const userResponse =
-      messageJson?.surveyResponse?.questionResponsePostbackData ?? messageJson?.surveyResponse?.questionResponseText;
+      messageJson?.surveyResponse?.questionResponsePostbackData ??
+      messageJson?.surveyResponse?.questionResponseText ??
+      messageJson?.surveyResponse?.rating;
     return {
       type: 'surveyResponse',
       rating: userResponse,

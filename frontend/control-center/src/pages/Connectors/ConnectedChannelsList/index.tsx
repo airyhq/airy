@@ -74,11 +74,11 @@ const ConnectedChannelsList = () => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, channels.length]);
 
   useEffect(() => {
     getInfo();
-  }, [source, channels]);
+  }, [source]);
 
   const getInfo = () => {
     let ROUTE;

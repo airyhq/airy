@@ -32,23 +32,10 @@ spec:
             - configMapRef:
                 name: security
             - configMapRef:
+                name: kafka-config
+            - configMapRef:
                 name: core-config
           env:
-            - name: KAFKA_BROKERS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_BROKERS
-            - name: KAFKA_SCHEMA_REGISTRY_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_SCHEMA_REGISTRY_URL
-            - name: KAFKA_COMMIT_INTERVAL_MS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_COMMIT_INTERVAL_MS
             - name: authToken
               valueFrom:
                 configMapKeyRef:
@@ -69,17 +56,9 @@ spec:
           image: "{{ .Values.global.busyboxImage }}"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh" ]
-          env:
-            - name: KAFKA_BROKERS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_BROKERS
-            - name: REPLICAS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_MINIMUM_REPLICAS
+          envFrom:
+            - configMapRef:
+                name: kafka-config
           volumeMounts:
             - name: provisioning-scripts
               mountPath: /opt/provisioning

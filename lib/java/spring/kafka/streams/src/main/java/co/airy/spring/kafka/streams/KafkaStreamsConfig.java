@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource("classpath:kafka-streams.properties")
 public class KafkaStreamsConfig {
 
     @Value("${kafka.cleanup:false}")
@@ -25,13 +27,16 @@ public class KafkaStreamsConfig {
     @Value("${kafka.rpc-host:}")
     private String rpcHost;
 
+    @Value("${kafka.sasl.jaas.config:}")
+    private String jaasConfig;
+
     @Value("${kafka.rpc-port:0}")
     private int rpcPort;
 
     @Value("${kafka.session.timeout.ms:30000}")
     private int sessionTimeoutMs;
 
-    @Value("${kafka.replication.factor:1}")
+    @Value("${kafka.replication.factor:3}")
     private int replicationFactor;
 
     @Value("${kafka.heartbeat.interval.ms:10000}")
@@ -60,6 +65,7 @@ public class KafkaStreamsConfig {
     public KafkaStreamsWrapper airyKafkaStreams(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl, @Value("${kafka.commit-interval-ms}") final long commitIntervalMs) {
         return new KafkaStreamsWrapper(brokers, schemaRegistryUrl)
                 .withCommitIntervalInMs(commitIntervalMs)
+                .withJaasConfig(jaasConfig)
                 .withSuppressIntervalInMs(suppressIntervalMs)
                 .withThreadCount(streamsThreadCount)
                 .withAppServerHost(rpcHost)

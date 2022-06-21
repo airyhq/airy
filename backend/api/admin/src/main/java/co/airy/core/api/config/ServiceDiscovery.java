@@ -5,7 +5,6 @@ import co.airy.core.api.config.dto.ServiceInfo;
 import co.airy.core.api.config.payload.ServicesResponsePayload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,7 +49,7 @@ public class ServiceDiscovery {
                 });
     }
 
-    @Scheduled(fixedRate = 1_000)
+    // @Scheduled(fixedRate = 1_000)
     public void updateComponentsStatus() {
         final ResponseEntity<ServicesResponsePayload> response = restTemplate.getForEntity(String.format("http://airy-controller.%s/services", namespace),
                 ServicesResponsePayload.class);

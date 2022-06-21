@@ -15,6 +15,7 @@ export const enableDisableComponentAction = createAction(
 export const enableDisableComponent =
   (enableDisableComponentRequestPayload: EnableDisableComponentRequestPayload) => (dispatch: Dispatch<any>) => {
     return HttpClientInstance.enableDisableComponent(enableDisableComponentRequestPayload).then(() => {
+      console.log('enable payload', enableDisableComponentRequestPayload);
       dispatch(enableDisableComponentAction(enableDisableComponentRequestPayload));
       return Promise.resolve(true);
     });

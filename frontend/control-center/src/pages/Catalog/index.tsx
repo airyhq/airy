@@ -9,16 +9,18 @@ import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioReq
 import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
-import {Channel, Source} from 'model';
+import {Channel, Source, getSourceForComponent} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 
 const Catalog = () => {
-  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const connectors = useSelector((state: StateModel) => state.data.config.components);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
   const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
   const [installedConnectors, setInstalledConnectors] = useState([]);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const pageTitle = 'Catalog';
+
+  console.log('connectors', connectors);
 
   useEffect(() => {
     setPageTitle(pageTitle);
@@ -37,15 +39,40 @@ const Catalog = () => {
     console.log('notInstalledConnectors', notInstalledConnectors);
   }, [notInstalledConnectors])
 
+
   useEffect(() => {
-    sourcesInfo.map((infoItem: SourceInfo) => {
-      if (channelsBySource(infoItem.type).length === 0) {
-        setNotInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      } else {
-        setInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      }
-    });
-  }, [sourcesInfo]);
+    if(sourcesInfo.length > 0){
+      console.log('entries',Object.entries(connectors))
+
+      const installedList = []
+  
+      let nonInstalledComponents = [...sourcesInfo];
+      console.log('before', nonInstalledComponents);
+  
+      const getInstalledComponents = () => {
+       Object.entries(connectors).filter(elem => {
+        if(getSourceForComponent(elem[0])){
+            const index = nonInstalledComponents.findIndex(obj => obj.type === getSourceForComponent(elem[0]));
+            //console.log('index', index, getSourceForComponent(elem[0]));
+            if(index !== -1){
+              nonInstalledComponents.splice(index)
+              installedList.push(nonInstalledComponents[index])
+            } 
+
+            
+        }
+        return getSourceForComponent(elem[0])
+      });
+
+      setInstalledConnectors(installedList)
+    }
+
+    getInstalledComponents()
+
+    setNotInstalledConnectors(nonInstalledComponents)
+  
+    }
+  }, [connectors, sourcesInfo]);
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -63,7 +90,7 @@ const Catalog = () => {
     return null;
   };
 
-  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
+  //const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
 
   return (
     <div className={styles.catalogWrapper}>

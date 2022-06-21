@@ -7,6 +7,7 @@ import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
+import {ReactComponent as ZendeskIcon} from 'assets/images/icons/zendeskLogo.svg';
 import {
   cyChannelsChatPluginAddButton,
   cyChannelsFacebookAddButton,
@@ -31,7 +32,8 @@ import {
   CONNECTORS_CHAT_PLUGIN_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-  CONNECTORS_DIALOGFLOW_ROUTE
+  CONNECTORS_DIALOGFLOW_ROUTE,
+  CONNECTORS_ZENDESK_ROUTE
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -149,7 +151,20 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
     },
-   
-
+    {
+      type: Source.zendesk,
+      channel: false,
+      title: 'Zendesk',
+      description: 'Champions of customer service',
+      image: <ZendeskIcon />,
+      newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/zendesk'
+        : CATALOG_CONNECTED_ROUTE + '/zendesk',
+      configKey: 'enterprise-zendesk-connector',
+      itemInfoString: 'channels',
+      dataCyAddChannelButton: cyChannelsDialogflowAddButton,
+    }
+  
   ];
 };

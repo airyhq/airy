@@ -253,6 +253,8 @@ export class HttpClient {
 
   public enableDisableComponent = this.getRequest<EnableDisableComponentRequestPayload>(enableDisableComponentDef);
 
+  //public installComponent = this.getRequest<EnableDisableComponentRequestPayload>(enableDisableComponentDef);
+
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {
       endpoint = typeof endpoint === 'string' ? endpoint : endpoint(requestPayload);

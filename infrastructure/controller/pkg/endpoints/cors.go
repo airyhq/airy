@@ -22,6 +22,11 @@ func NewCORSMiddleware(allowedOrigins string) CORS {
 func (c *CORS) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
+		if r.Method != "OPTIONS" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		origin := r.Header.Get("Origin")
 		if _, ok := c.allowedOrigins[origin]; !ok {
 			w.WriteHeader(http.StatusForbidden)
@@ -35,10 +40,5 @@ func (c *CORS) Middleware(next http.Handler) http.Handler {
 			"Access-Control-Allow-Headers",
 			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Requested-With, X-XSRF-Token",
 		)
-		if r.Method == "OPTIONS" {
-			return
-		}
-
-		next.ServeHTTP(w, r)
 	})
 }

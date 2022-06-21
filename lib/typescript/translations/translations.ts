@@ -120,6 +120,8 @@ const resources = {
       searchTemplates: 'Search for templates',
 
       //Control-Center
+      disableComponent: 'Disable',
+      disableComponentText: 'Are you sure you want to disable this component?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -460,6 +462,8 @@ const resources = {
       searchTemplates: 'Suche nach Vorlagen',
 
       //Control-Center
+      disableComponent: 'Deaktivieren',
+      disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -787,6 +791,8 @@ const resources = {
       searchTemplates: 'Recherche de modèles',
 
       //Control-Center
+      disableComponent: 'Désactiver',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -1117,6 +1123,8 @@ const resources = {
       searchTemplates: 'Búsqueda de plantillas',
 
       //Control-Center
+      disableComponent: 'Desactivar',
+      disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',

@@ -14,6 +14,12 @@ import (
 func Serve(clientSet *kubernetes.Clientset, namespace string) {
 	r := mux.NewRouter()
 
+	if allowedOrigins := os.Getenv("allowedOrigins"); allowedOrigins != "" {
+		klog.Info("adding cors")
+		middleware := NewCORSMiddleware(allowedOrigins)
+		r.Use(middleware.Middleware)
+	}
+
 	// Load authentication middleware only if auth env is present
 	authEnabled := false
 	systemToken := os.Getenv("systemToken")

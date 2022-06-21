@@ -28,6 +28,7 @@ import {
   SubscribeWebhookRequestPayload,
   UpdateWebhookRequestPayload,
   ListContactsRequestPayload,
+  EnableDisableComponentRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -66,6 +67,7 @@ import {
   updateWebhookDef,
   listContactsDef,
   deleteContactDef,
+  enableDisableComponentDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -248,6 +250,8 @@ export class HttpClient {
   public listContacts = this.getRequest<ListContactsRequestPayload, PaginatedResponse<Contact>>(listContactsDef);
 
   public deleteContact = this.getRequest<string>(deleteContactDef);
+
+  public enableDisableComponent = this.getRequest<EnableDisableComponentRequestPayload>(enableDisableComponentDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

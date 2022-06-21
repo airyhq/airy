@@ -22,23 +22,28 @@ func NewCORSMiddleware(allowedOrigins string) CORS {
 func (c *CORS) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		if r.Method != "OPTIONS" {
-			next.ServeHTTP(w, r)
-			return
-		}
-
 		origin := r.Header.Get("Origin")
-		if _, ok := c.allowedOrigins[origin]; !ok {
+		_, allowed := c.allowedOrigins[origin]
+
+		if !allowed && r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
 
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.Header().Set("Access-Control-Allow-Origin", origin)
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET")
-		w.Header().Set(
-			"Access-Control-Allow-Headers",
-			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Requested-With, X-XSRF-Token",
-		)
+		if allowed {
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET")
+			w.Header().Set(
+				"Access-Control-Allow-Headers",
+				"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Requested-With, X-XSRF-Token",
+			)
+		}
+
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		next.ServeHTTP(w, r)
 	})
 }

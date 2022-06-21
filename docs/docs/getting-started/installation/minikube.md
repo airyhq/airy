@@ -29,14 +29,18 @@ This will execute the following actions:
 
 1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--workspace` flag.
 2. Start a minikube cluster on your system and install Airy Core on it.
-3. Print URLs for accessing the UI and APIs as well as an `ngrok` url for integrating webhooks (see recording)
+3. Prints a URL for the `Airy Core` UI/APIs and another `ngrok` tunnel URL to connect your `Airy Core` instance to different [sources](../../sources/introduction.md) (see recording)
 
 import Script from "@site/src/components/Script";
 
 <Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script> 
 
 
-The base URL for the [API](../../api/introduction.md) is same URL to access the UI through your browser. 
+::: note
+
+The base URL for the [API](../../api/introduction.md) is the same to access the UI through your browser. 
+
+:::
 
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).

@@ -39,7 +39,7 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `zookeepers` comma separated list of the zookeeper endpoints
   - `schemaRegistryUrl` url to the Schema Registry
   - `commitInterval` the [Kafka Commit Interval](https://kafka.apache.org/documentation/#consumerconfigs_auto.commit.interval.ms) if you are using the included Helm chart
-  - `authJaas` the [JAAS configuration](https://docs.confluent.io/platform/current/kafka/authentication_sasl/index.html#authentication-with-sasl-using-jaas) used to authenticate to remote Kafka clusters 
+  - `authJaas` the [JAAS configuration](https://docs.confluent.io/platform/current/kafka/authentication_sasl/index.html#authentication-with-sasl-using-jaas) used to authenticate to remote Kafka clusters. [Read more](/guides/remote-kafka-cluster.md).
 
 
 

@@ -41,7 +41,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
     setEnablePopupVisible(false);
   };
 
-  const enableHandler = (enabled: boolean) => {
+  const onEnableComponent = (enabled: boolean) => {
     if (enabled) {
       triggerEnableDisableAction(enabled);
       return;
@@ -81,7 +81,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
           {isComponent && (
             <div className={styles.enabled}>
-              <Toggle value={componentEnabled} updateValue={enableHandler} size="small" variant="green" />
+              <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
             </div>
           )}
         </div>

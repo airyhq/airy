@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import ModalHeader from './ModalHeader';
 
@@ -8,13 +8,14 @@ type SettingsModalProps = {
   close: () => void;
   title: string;
   children: any;
-  style?: CSSProperties;
   wrapperClassName?: string;
   containerClassName?: string;
+  Icon?:React.ElementType | null;
+  headerClassName?: string;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {close, title, children, style, wrapperClassName, containerClassName} = props;
+  const {close, title, children, headerClassName, wrapperClassName, containerClassName, Icon} = props;
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}
@@ -25,8 +26,9 @@ export const SettingsModal = (props: SettingsModalProps) => {
       shouldCloseOnOverlayClick={true}
       onRequestClose={close}
     >
-      <div style={style} className={containerClassName}>
-        <ModalHeader title={title} close={close} style={style} />
+      <div className={containerClassName}>
+        {Icon ? <Icon className={styles.icon}/> : ''}
+        <ModalHeader title={title} close={close} headerClassName={headerClassName} />
         {children}
       </div>
     </Modal>

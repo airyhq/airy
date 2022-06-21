@@ -1,5 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {SourceInfo} from '../../../components/SourceInfo';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, SettingsModal} from 'components';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
@@ -18,10 +19,11 @@ type InfoCardProps = {
 
 const InfoCard = (props: InfoCardProps) => {
   const {sourceInfo, addChannelAction, installed, style} = props;
-  const [isInstallationToggled, setIsInstallationToggled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(installed);
+  const [isModal, setIsModal] = useState(false);
   const buttonRef = useRef(null);
   const {t} = useTranslation();
-  const installVar = !installed ? t('install') : t('uninstall');
+  const installedVar = !installed ? t('installed') : t('uninstalled');
 
   const install = () => {
     console.log('INSTALL');
@@ -32,12 +34,12 @@ const InfoCard = (props: InfoCardProps) => {
   };
 
   const addAction = (e: React.MouseEvent) => {
-    console.log(e.currentTarget)
-    //check event target here for install/uninstall 
-    addChannelAction()
-  }
+    console.log(e.currentTarget);
+    //check event target here for install/uninstall
 
   //onClick={(e: React.MouseEvent) => addAction(e)}
+    addChannelAction();
+  };
 
   return (
     <div
@@ -78,30 +80,28 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
       </div>
       {!installed && <p>{sourceInfo.description}</p>}
-        <Button
-            styleVariant={installed ? 'outline' : 'extra-small'}
-            type="submit"
-            onClick={() => setIsInstallationToggled(true)}
-            buttonRef={buttonRef}>
-            {installVar}
-          </Button>
+      <Button
+        styleVariant={installed ? 'outline' : 'extra-small'}
+        type="submit"
+        onClick={() => setIsModal(true)}>
+        {!isInstalled ? t('install') : t('uninstall')}
+      </Button>
 
-          {isInstallationToggled && (
-            <SettingsModal
-              wrapperClassName={styles.enableModalContainerWrapper}
-              containerClassName={styles.enableModalContainer}
-              title={sourceInfo.title + ' ' + installVar}
-              close={() => setIsInstallationToggled(false)}>
-              {!installed && (
-                <Button
-                  styleVariant="normal"
-                  type="submit"
-                  onClick={() => console.log('configure installation')}>
-                  {t('toConfigure')}
-                </Button>
-              )}
-            </SettingsModal>
+      {isModal && (
+        <SettingsModal
+          Icon={CheckmarkIcon as React.ElementType}
+          wrapperClassName={styles.enableModalContainerWrapper}
+          containerClassName={styles.enableModalContainer}
+          title={sourceInfo.title + ' ' + installedVar}
+          close={() => setIsModal(false)}
+          headerClassName={styles.headerModal}>
+          {!installed && (
+            <Button styleVariant="normal" type="submit" onClick={() => console.log('configure installation')}>
+              {t('toConfigure')}
+            </Button>
           )}
+        </SettingsModal>
+      )}
     </div>
   );
 };

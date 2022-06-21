@@ -26,6 +26,18 @@ const Catalog = () => {
   }, []);
 
   useEffect(() => {
+    console.log('sourcesInfo', sourcesInfo);
+  }, [sourcesInfo])
+
+  useEffect(() => {
+    console.log('installedConnectors', installedConnectors);
+  }, [installedConnectors])
+
+  useEffect(() => {
+    console.log('notInstalledConnectors', notInstalledConnectors);
+  }, [notInstalledConnectors])
+
+  useEffect(() => {
     sourcesInfo.map((infoItem: SourceInfo) => {
       if (channelsBySource(infoItem.type).length === 0) {
         setNotInstalledConnectors(prevArr => [...prevArr, infoItem]);

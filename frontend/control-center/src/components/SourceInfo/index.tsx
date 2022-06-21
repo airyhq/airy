@@ -6,6 +6,7 @@ import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/phoneIcon.svg
 import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsappLogoFilled.svg';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
+import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
 import {
   cyChannelsChatPluginAddButton,
   cyChannelsFacebookAddButton,
@@ -13,6 +14,7 @@ import {
   cyChannelsTwilioSmsAddButton,
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsInstagramAddButton,
+  cyChannelsDialogflowAddButton
 } from 'handles';
 import {
   CATALOG_FACEBOOK_ROUTE,
@@ -29,6 +31,7 @@ import {
   CONNECTORS_CHAT_PLUGIN_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
+  CONNECTORS_DIALOGFLOW_ROUTE
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -132,5 +135,21 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
     },
+    {
+      type: Source.dialogflow,
+      channel: false,
+      title: 'Dialogflow',
+      description: 'Conversational AI with virtual agents',
+      image: <DialogflowIcon />,
+      newChannelRoute: CONNECTORS_DIALOGFLOW_ROUTE + '/new',
+      channelsListRoute: connectorsPage
+        ? CONNECTORS_CONNECTED_ROUTE + '/dialogflow'
+        : CATALOG_CONNECTED_ROUTE + '/dialogflow',
+      configKey: 'enterprise-dialogflow-connector',
+      itemInfoString: 'channels',
+      dataCyAddChannelButton: cyChannelsDialogflowAddButton,
+    },
+   
+
   ];
 };

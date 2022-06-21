@@ -24,6 +24,7 @@ export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';
 export const cyChannelsTwilioSmsAddButton = 'channelsTwilioSmsAddButton';
 export const cyChannelsTwilioWhatsappAddButton = 'channelsTwilioWhatsappAddButton';
 export const cyChannelsGoogleAddButton = 'channelsGoogleAddButton';
+export const cyChannelsDialogflowAddButton = 'channelsDialogflowAddButton';
 export const cyChannelsChatPluginList = 'channelsChatPluginList';
 export const cyChannelsFacebookList = 'channelsFacebookList';
 export const cyChannelsTwilioSmsList = 'channelsTwilioSmsList';

@@ -64,6 +64,7 @@
 
 .channelLogoTitleContainer {
   display: flex;
+  align-items: center;
   border-radius: 10px;
 
 
@@ -73,11 +74,11 @@
   align-items: center;
 
   .channelLogo {
-    height: 30px;
-    width: 30px;
+    display: flex;
+    align-items: center;
     svg {
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      max-height: 30px;
     }
   }
 }

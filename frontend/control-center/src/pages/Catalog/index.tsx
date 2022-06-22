@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
-import {allChannelsConnected} from '../../selectors/channels';
 import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
@@ -12,6 +11,8 @@ import {CatalogItemList} from './CatalogItemList';
 import {Channel, Source, getSourceForComponent} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 
+//rename SourceInfo to ComponentsInfo 
+
 const Catalog = () => {
   const connectors = useSelector((state: StateModel) => state.data.config.components);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
@@ -20,59 +21,35 @@ const Catalog = () => {
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const pageTitle = 'Catalog';
 
-  console.log('connectors', connectors);
-
   useEffect(() => {
     setPageTitle(pageTitle);
     setSourcesInfo(getSourcesInfo(pageTitle));
   }, []);
 
   useEffect(() => {
-    console.log('sourcesInfo', sourcesInfo);
-  }, [sourcesInfo])
+    if (sourcesInfo.length > 0 && Object.entries(connectors).length > 0) {
+      const installedList = [];
+      const sourcesInfosClone = [...sourcesInfo];
 
-  useEffect(() => {
-    console.log('installedConnectors', installedConnectors);
-  }, [installedConnectors])
-
-  useEffect(() => {
-    console.log('notInstalledConnectors', notInstalledConnectors);
-  }, [notInstalledConnectors])
-
-
-  useEffect(() => {
-    if(sourcesInfo.length > 0){
-      console.log('entries',Object.entries(connectors))
-
-      const installedList = []
-  
-      let nonInstalledComponents = [...sourcesInfo];
-      console.log('before', nonInstalledComponents);
-  
-      const getInstalledComponents = () => {
-       Object.entries(connectors).filter(elem => {
-        if(getSourceForComponent(elem[0])){
-            const index = nonInstalledComponents.findIndex(obj => obj.type === getSourceForComponent(elem[0]));
-            //console.log('index', index, getSourceForComponent(elem[0]));
-            if(index !== -1){
-              nonInstalledComponents.splice(index)
-              installedList.push(nonInstalledComponents[index])
-            } 
-
-            
+      Object.entries(connectors).map(elem => {
+        if (getSourceForComponent(elem[0])) {
+          installedList.push(getSourceForComponent(elem[0]));
         }
-        return getSourceForComponent(elem[0])
       });
 
-      setInstalledConnectors(installedList)
-    }
+      const isComponentInstalled = elem =>
+        installedList.includes(elem.type) ||
+        (elem.type === Source.instagram && installedList.includes('facebook')) ||
+        elem.type === Source.twilioWhatsApp ||
+        (Source.twilioSMS && installedList.includes('twilio'));
 
-    getInstalledComponents()
+      const installedComponents = sourcesInfosClone.filter(elem => isComponentInstalled(elem));
+      const notInstalledComponents = sourcesInfosClone.filter(elem => !isComponentInstalled(elem));
 
-    setNotInstalledConnectors(nonInstalledComponents)
-  
+      setInstalledConnectors(installedComponents);
+      setNotInstalledConnectors(notInstalledComponents);
     }
-  }, [connectors, sourcesInfo]);
+  }, [sourcesInfo, connectors]);
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -89,8 +66,6 @@ const Catalog = () => {
 
     return null;
   };
-
-  //const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
 
   return (
     <div className={styles.catalogWrapper}>

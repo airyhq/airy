@@ -117,10 +117,11 @@ const InfoCard = (props: InfoCardProps) => {
           close={cancelInstallationToggle}
           headerClassName={styles.headerModal}>
           {installed && (
+            //add translation here 
             <p> Are you sure you want to uninstall this component? </p>
           )}
           {!installed ? (
-            <Button styleVariant="normal" type="submit" onClick={() => console.log('configure installation')}>
+            <Button styleVariant="normal" type="submit" onClick={addChannelAction}>
               {t('toConfigure')}
             </Button>
           ): (

@@ -47,10 +47,14 @@ export type SourceInfo = {
   configKey: string;
   itemInfoString: string;
   dataCyAddChannelButton: string;
+  docs: string;
 };
 
 export const getSourcesInfo = (page: string): SourceInfo[] => {
+  //remove this?
   const connectorsPage = page === 'Connectors';
+
+  //add translations to this
 
   return [
     {
@@ -59,13 +63,14 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Airy Live Chat',
       description: 'Best of class browser messenger',
       image: <AiryAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_CHAT_PLUGIN_ROUTE + '/new' : CATALOG_CHAT_PLUGIN_ROUTE + '/new',
+      newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
       channelsListRoute: connectorsPage
         ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
         : CATALOG_CONNECTED_ROUTE + '/chatplugin',
       configKey: 'sources-chat-plugin',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
+      docs: "https://airy.co/docs/core/sources/chatplugin/overview",
     },
     {
       type: Source.facebook,
@@ -73,13 +78,14 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Messenger',
       description: 'Connect multiple Facebook pages',
       image: <MessengerAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_FACEBOOK_ROUTE + '/new' : CATALOG_FACEBOOK_ROUTE + '/new',
+      newChannelRoute: CONNECTORS_FACEBOOK_ROUTE + '/new',
       channelsListRoute: connectorsPage
         ? CONNECTORS_CONNECTED_ROUTE + '/facebook'
         : CATALOG_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
+      docs: "https://airy.co/docs/core/sources/facebook",
     },
     {
       type: Source.twilioSMS,
@@ -87,13 +93,12 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'SMS',
       description: 'Deliver SMS with ease',
       image: <SMSAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_TWILIO_SMS_ROUTE + '/new' : CATALOG_TWILIO_SMS_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#'
-        : CATALOG_CONNECTED_ROUTE + '/twilio.sms/#',
+      newChannelRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
+      docs: "https://airy.co/docs/core/sources/sms-twilio",
     },
     {
       type: Source.twilioWhatsApp,
@@ -101,15 +106,14 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'WhatsApp',
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
-      newChannelRoute: connectorsPage
-        ? CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new'
-        : CATALOG_TWILIO_WHATSAPP_ROUTE + '/new',
+      newChannelRoute: CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new',
       channelsListRoute: connectorsPage
         ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
         : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
+      docs: 'https://airy.co/docs/core/sources/whatsapp-twilio',
     },
     {
       type: Source.google,
@@ -118,10 +122,11 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
       newChannelRoute: connectorsPage ? CONNECTORS_GOOGLE_ROUTE + '/new' : CATALOG_GOOGLE_ROUTE + '/new',
-      channelsListRoute: connectorsPage ? CONNECTORS_CONNECTED_ROUTE + '/google' : CATALOG_CONNECTED_ROUTE + '/google',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsGoogleAddButton,
+      docs: 'https://airy.co/docs/core/sources/google'
     },
     {
       type: Source.instagram,
@@ -130,12 +135,11 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Connect multiple Instagram pages',
       image: <InstagramIcon />,
       newChannelRoute: connectorsPage ? CONNECTORS_INSTAGRAM_ROUTE + '/new' : CATALOG_INSTAGRAM_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/instagram'
-        : CATALOG_CONNECTED_ROUTE + '/instagram',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
+      docs: 'https://airy.co/docs/core/sources/instagram'
     },
     {
       type: Source.dialogflow,
@@ -144,12 +148,11 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Conversational AI with virtual agents',
       image: <DialogflowIcon />,
       newChannelRoute: CONNECTORS_DIALOGFLOW_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/dialogflow'
-        : CATALOG_CONNECTED_ROUTE + '/dialogflow',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/dialogflow',
       configKey: 'enterprise-dialogflow-connector',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
+      docs: 'https://dialogflow.cloud.google.com/cx/projects'
     },
     {
       type: Source.zendesk,
@@ -158,12 +161,11 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Champions of customer service',
       image: <ZendeskIcon />,
       newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/zendesk'
-        : CATALOG_CONNECTED_ROUTE + '/zendesk',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',
       configKey: 'enterprise-zendesk-connector',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
+      docs: 'https://airy.co/docs/enterprise/'
     }
   
   ];

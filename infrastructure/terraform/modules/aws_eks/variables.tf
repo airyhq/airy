@@ -1,14 +1,10 @@
 variable "region" {
-  description = "the AWS region in which resources are created, you must set the availability_zones variable as well if you define this value to something other than the default"
+  description = "The AWS region in which resources are created"
   default     = "eu-west-1"
 }
 
-variable "aws_access_key" {
-  description = "AWS Access Key"
-}
-
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
+variable "aws_profile" {
+  description = "The AWS profile associated with your credentials (default = 'default')"
 }
 
 variable "ssh_key" {

@@ -1,10 +1,11 @@
-variable "aws_access_key" {
-  description = "AWS Access Key"
+variable "aws_profile" {
+  description = "The AWS Profile associated with your credentials (default = 'default')"
 }
 
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
+variable "region" {
+  description = "The AWS region in which resources are created"
 }
+
 
 variable "fargate_profiles" {
   type = list(string)

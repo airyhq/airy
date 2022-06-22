@@ -28,13 +28,20 @@ export const ComponentListItem = (props: ComponentsListProps) => {
     }
   }, [isExpanded]);
 
-  const toggleExpanded = () => {     
+  const toggleExpanded = () => {
     if (!isPopUpOpen) setIsExpanded(!isExpanded);
-  }
+  };
 
   return (
     <section className={styles.wrapper} ref={wrapperSection} onClick={toggleExpanded}>
-      <ItemInfo healthy={healthy} itemName={componentName} isComponent isExpanded={isExpanded} enabled={enabled} setIsPopUpOpen={setIsPopUpOpen} />
+      <ItemInfo
+        healthy={healthy}
+        itemName={componentName}
+        isComponent
+        isExpanded={isExpanded}
+        enabled={enabled}
+        setIsPopUpOpen={setIsPopUpOpen}
+      />
 
       {services.map((service, index) => (
         <ItemInfo

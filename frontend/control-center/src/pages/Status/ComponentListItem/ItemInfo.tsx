@@ -97,7 +97,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           containerClassName={styles.enableModalContainer}
           title={t('disableComponent') + ' ' + componentName}
           close={() => {
-            setEnablePopupVisible(false)
+            setEnablePopupVisible(false);
             setIsPopUpOpen(false);
           }}
         >

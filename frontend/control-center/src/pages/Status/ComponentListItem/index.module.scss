@@ -130,6 +130,10 @@
   @include font-xl;
 }
 
+.popUpSubtitle {
+  color: var(--color-text-gray);
+}
+
 .enableModalContainer p {
   @include font-l;
   margin-bottom: 30px;

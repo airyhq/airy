@@ -18,6 +18,7 @@ type ComponentInfoProps = {
   isComponent: boolean;
   isExpanded: boolean;
   enabled?: boolean;
+  setIsPopUpOpen: (value: boolean) => void;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -27,7 +28,7 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, enabled, enableDisableComponent} = props;
+  const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -39,15 +40,18 @@ const ItemInfo = (props: ComponentInfoProps) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
     setComponentEnabled(enabled);
     setEnablePopupVisible(false);
+    setIsPopUpOpen(false);
   };
 
   const onEnableComponent = (enabled: boolean) => {
     if (enabled) {
       triggerEnableDisableAction(enabled);
+      setIsPopUpOpen(false);
       return;
     }
 
     setEnablePopupVisible(true);
+    setIsPopUpOpen(true);
   };
 
   return (
@@ -92,9 +96,12 @@ const ItemInfo = (props: ComponentInfoProps) => {
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={t('disableComponent') + ' ' + componentName}
-          close={() => setEnablePopupVisible(false)}
+          close={() => {
+            setEnablePopupVisible(false)
+            setIsPopUpOpen(false);
+          }}
         >
-          <p>{t('disableComponentText')}</p>
+          <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
             style={{width: '45%'}}

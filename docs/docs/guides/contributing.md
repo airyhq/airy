@@ -163,6 +163,7 @@ Branches must abide to the following format:
 
 - `feature` or `feat` are used for feature branches
 - `bug`, `fix`, `hotfix` are used for bug fixes
+- `enhancement` is used for improvements of existing features
 - `doc` or `docs` are used for documentation changes
 - `chore` is used for maintenance tasks on the repo
 
@@ -174,6 +175,7 @@ Given these conventions here are a few examples:
 feat/42-the-meaning-of-life
 bug/24-say-the-vat-is-good
 hotfix/4242-til-json-is-not-a-subset-of-js
+enhancement/3333-speed-up-airy-instance-creation
 ```
 
 ### Commits
@@ -182,7 +184,7 @@ To keep a clean track of what is being released, every feature must contain only
 one commit when merged. The commit message of the squashed commit is very
 important, since it will be used to keep track of the features in a release.
 
-The conventional format is: `[#issue] - description`. For the example, if your
+The conventional format is: `[#issue] Description` (`Description` must start with a capital letter). For the example, if your
 pull request refers to the issue "Introduce meaning of life" with number 42,
 the squashed commit message must be:
 

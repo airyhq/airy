@@ -57,6 +57,7 @@ module "eks" {
   subnets                = [local.vpc.private_subnets[0], local.vpc.public_subnets[1]]
   fargate_subnets        = [local.vpc.private_subnets[0]]
   kubeconfig_output_path = var.kubeconfig_output_path
+  kubeconfig_api_version = "client.authentication.k8s.io/v1beta1"
   write_kubeconfig       = true
   map_users              = var.kubernetes_users
   tags                   = var.tags

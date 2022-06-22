@@ -11,10 +11,11 @@ interface CatalogItemListProps {
   list: SourceInfo[];
   installedConnectors: boolean;
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
+  updateItemList: any;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, setDisplayDialogFromSource} = props;
+  const {list, installedConnectors, setDisplayDialogFromSource, updateItemList} = props;
   const config = useSelector((state: StateModel) => state.data.config);
   const {t} = useTranslation();
 
@@ -27,6 +28,7 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
       <div className={styles.connectorList}>
         {list.map(infoItem => (
           <InfoCard
+            updateItemList={updateItemList}
             installed={installedConnectors}
             style={InfoCardStyle.normal}
             key={infoItem.type}

@@ -16,6 +16,7 @@ type InfoCardProps = {
   addChannelAction: () => void;
   installed: boolean;
   style: InfoCardStyle;
+  updateItemList:any;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -25,7 +26,7 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {sourceInfo, addChannelAction, installed, style} = props;
+  const {sourceInfo, addChannelAction, installed, style, updateItemList} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const buttonRef = useRef(null);
@@ -35,7 +36,7 @@ const InfoCard = (props: InfoCardProps) => {
 
   const toggleInstallation = () => {
     //TO DO: add action to install/uninstall component
-    setIsInstalled(!isInstalled)
+
     setIsModalVisible(true);
   }
 
@@ -46,6 +47,20 @@ const InfoCard = (props: InfoCardProps) => {
   //onClick={(e: React.MouseEvent) => addAction(e)}
     addChannelAction();
   };
+
+  const cancelInstallationToggle = () => {
+     //for installing components, we install even if the user passes the config
+     if(!isInstalled){
+      confirmInstallationToggle()
+     } 
+
+    setIsModalVisible(false)
+  }
+
+  const confirmInstallationToggle = () => {
+    setIsInstalled(!isInstalled);
+    updateItemList(!isInstalled, sourceInfo.type)
+  }
 
   return (
     <div
@@ -95,16 +110,23 @@ const InfoCard = (props: InfoCardProps) => {
 
       {isModalVisible && (
         <SettingsModal
-          Icon={CheckmarkIcon as React.ElementType}
+          Icon={!installed ? CheckmarkIcon as React.ElementType : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={sourceInfo.title + ' ' + installedVar}
-          close={() => setIsModalVisible(false)}
+          close={cancelInstallationToggle}
           headerClassName={styles.headerModal}>
-          {!installed && (
+          {installed && (
+            <p> Are you sure you want to uninstall this component? </p>
+          )}
+          {!installed ? (
             <Button styleVariant="normal" type="submit" onClick={() => console.log('configure installation')}>
               {t('toConfigure')}
             </Button>
+          ): (
+            <Button styleVariant="normal" type="submit" onClick={confirmInstallationToggle}>
+            {t('uninstall')}
+          </Button>
           )}
         </SettingsModal>
       )}

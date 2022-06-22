@@ -8,10 +8,9 @@ import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioReq
 import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
-import {Channel, Source, getSourceForComponent} from 'model';
+import {Source, getSourceForComponent} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 
-//rename SourceInfo to ComponentsInfo 
 
 const Catalog = () => {
   const connectors = useSelector((state: StateModel) => state.data.config.components);

@@ -47,9 +47,9 @@ A Component is a single unit which is used to build an App alone or together wit
 - `ui` - a UI component is a component which is used to display the events in a user interface.
 - `api` - an API component is a component which is used to expose the events to a third party.
 
-## Services / Pods
+## Pods
 
-A Service / Pod is the smallest unit of a component. It is a container which runs inside a Kubernetes cluster.
+Since Airy is built on Kubernetes pods are the smallest deployable unit and therefore are used to compose components.
 A Component can have multiple Services / Pods.
 
 ## API

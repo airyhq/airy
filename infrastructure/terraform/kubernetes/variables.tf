@@ -2,7 +2,7 @@ variable "aws_profile" {
   description = "The AWS Profile associated with your credentials (default = 'default')"
 }
 
-variable "region" {
+variable "aws_region" {
   description = "The AWS region in which resources are created"
 }
 

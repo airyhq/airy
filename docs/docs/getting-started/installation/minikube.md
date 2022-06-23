@@ -33,7 +33,7 @@ This will execute the following actions:
 
 import Script from "@site/src/components/Script";
 
-<Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
+<Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script> 
 
 ::: note
 
@@ -53,12 +53,11 @@ Section](configuration.md).
 After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility.
 `airy create` adds the kubeconfig of your Airy Core instance to the default kubeconfig file `~/.kube/config`, under the context `airy-core`.
 
-:::note
+:::note 
 
-If the `airy create` command fails and you have installed a hypervisor for the first time, double-check that you have given it all the necessary permissions on your local machine.
+If the `airy create` command fails and you have installed a hypervisor for the first time, double-check that you have given it all the necessary permissions on your local machine. 
 
 :::
-
 ## Integrate public webhooks
 
 In order to integrate with the webhook of most sources on your local machine, we

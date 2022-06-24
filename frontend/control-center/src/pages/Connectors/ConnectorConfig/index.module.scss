@@ -6,7 +6,7 @@
   color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
-  width: 100%;
+  width:100%;
   margin: 17% 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
@@ -32,28 +32,44 @@
   position: absolute;
   padding-left: 10px;
   margin: 88px 1.5em 0 191px;
+  width:85%;
   h1 {
     @include font-xl;
     font-weight: bold;
   }
-  button {
+  p button {
     height: 20px;
     background: transparent;
+  }
+
+  button {
+    @include font-base;
+    font-weight:500;
   }
 }
 
 .textIconContainer {
   display: flex;
+  width:100%;
 }
+
+
 
 .textContainer {
   display:flex;
   flex-direction: column;
+  width:100%;
 }
 
 .connectorIcon {
   width:50px;
   margin-right:24px;
+}
+
+.textInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
 }
 
 .connectorDetails {
@@ -212,4 +228,40 @@
   position: relative;
   top: -3px;
   left: 0px;
+}
+
+
+.enableModalContainerWrapper {
+  width: 60%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width:70%;
+    text-align:center;
+    margin: 4px 0 20Px 0;
+  }
+
+}
+
+
+.enableModalContainer  button {
+  margin-top:14px;
+  padding: 0 40px;
+}
+
+
+.headerModal {
+  @include font-xl;
 }

@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
 import styles from './ConnectNewDialogflow.module.scss';
 import {useTranslation} from 'react-i18next';
@@ -12,12 +14,25 @@ interface ConnectNewDialogflowProps {
   ) => void;
 }
 
+
 export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflowProps) => {
+  const componentInfo = useSelector((state: StateModel) => state.data.config.components['enterprise-dialogflow-connector']);
+
   const [projectID, setProjectID] = useState('');
   const [appCredentials, setAppCredentials] = useState('');
   const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState('');
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState('');
   const {t} = useTranslation();
+
+  //call get components
+
+  useEffect(() => {
+    componentInfo?.project_id && setProjectID(componentInfo?.project_id)
+    componentInfo?.dialogflow_credentials && setAppCredentials( componentInfo?.dialogflow_credentials);
+    componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
+    componentInfo?.suggestion_confidence_level && setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
+  }, [componentInfo])
+
 
   return (
     <div>

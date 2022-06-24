@@ -154,19 +154,19 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
       docs: 'https://dialogflow.cloud.google.com/cx/projects'
     },
-    {
-      type: Source.zendesk,
-      channel: false,
-      title: 'Zendesk',
-      description: 'Champions of customer service',
-      image: <ZendeskIcon />,
-      newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
-      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',
-      configKey: 'enterprise-zendesk-connector',
-      itemInfoString: 'channels',
-      dataCyAddChannelButton: cyChannelsDialogflowAddButton,
-      docs: 'https://airy.co/docs/enterprise/'
-    }
+    // {
+    //   type: Source.zendesk,
+    //   channel: false,
+    //   title: 'Zendesk',
+    //   description: 'Champions of customer service',
+    //   image: <ZendeskIcon />,
+    //   newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
+    //   channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',
+    //   configKey: 'enterprise-zendesk-connector',
+    //   itemInfoString: 'channels',
+    //   dataCyAddChannelButton: cyChannelsDialogflowAddButton,
+    //   docs: 'https://airy.co/docs/enterprise/'
+    // }
   
   ];
 };

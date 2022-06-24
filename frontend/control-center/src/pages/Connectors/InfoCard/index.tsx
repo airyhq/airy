@@ -113,7 +113,7 @@ const InfoCard = (props: InfoCardProps) => {
           Icon={!installed ? CheckmarkIcon as React.ElementType : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
-          title={sourceInfo.title + ' ' + installedVar}
+          title={t('uninstall') + ' ' + sourceInfo.title}
           close={cancelInstallationToggle}
           headerClassName={styles.headerModal}>
           {installed && (

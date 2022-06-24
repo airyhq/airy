@@ -329,6 +329,7 @@ const resources = {
       componentName: 'Component Name',
       healthStatus: 'Health Status',
       enabled: 'Enabled',
+      enabledLowerCase: 'enabled',
 
       //Webhooks
 
@@ -683,6 +684,8 @@ const resources = {
       componentName: 'Komponenten Name',
       healthStatus: 'Gesundheitszustand',
       enabled: 'Aktiviert',
+      enabledLowerCase: 'aktiviert',
+
 
       //Webhooks
 
@@ -1026,6 +1029,7 @@ const resources = {
       componentName: 'Nom du composant',
       healthStatus: 'État de santé',
       enabled: 'Activé',
+      enabledLowerCase: 'activé',
 
       //Webhooks
 
@@ -1370,6 +1374,7 @@ const resources = {
       componentName: 'Nombre del componente',
       healthStatus: 'Estado de salud',
       enabled: 'Activado',
+      enabledLowerCase: 'activado',
 
       //Webhooks
 

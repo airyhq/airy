@@ -135,8 +135,8 @@
 }
 
 .enableModalContainerWrapper {
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,6 +148,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @include font-l;
+
+  p {
+    max-width:70%;
+    text-align:center;
+    margin: 4px 0 20Px 0;
+  }
+
 }
 
 

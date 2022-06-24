@@ -4,8 +4,10 @@ import {getClusterVersion, getComponents} from 'model';
 
 type Action = ActionType<typeof actions>;
 
+//{[key: string]: {enabled: boolean; healthy: boolean; [key:string]: string|boolean; services: {name: string; healthy: boolean}[]}};
+
 export type Config = {
-  components: {[key: string]: {enabled: boolean; healthy: boolean; services: {name: string; healthy: boolean}[]}};
+  components: any;
   clusterVersion: string;
 };
 
@@ -41,6 +43,14 @@ export default function configReducer(state = defaultState, action: Action): Con
       console.log('action', action);
       return{
         ...state,
+        components: {
+          ...state.components,
+          [action.payload.components[0].name]:{
+            ...state.components[action.payload.components[0].name],
+            enabled: action.payload.components[0].enabled,
+            ...action.payload.components[0].data
+          }
+        }
       }
     default:
       return state;

@@ -112,3 +112,84 @@ The list of the deleted components is returned.
   }
 }
 ```
+
+## List
+
+List all the components, both installed and not installed.
+
+`POST /components.list`
+
+**Sample request**
+
+```json
+{
+  "repository": "airy-core" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "components": [
+    {
+      "name": "sources-facebook",
+      "repository": "airy-core",
+      "installed": true
+    },
+    {
+      "name": "sources-google",
+      "repository": "airy-core",
+      "installed": false
+    }
+  ]
+}
+```
+
+## Install
+
+Install a new component.
+
+`POST /components.install`
+
+**Sample request**
+
+```json
+{
+  "name": "sources-chat-plugin"
+}
+```
+
+**Sample response**
+
+The response includes the name of the component that was installed with an indication of the process was completed successfully (true) or not (false).
+
+```json5
+{
+  "sources-chat-plugin": true
+}
+```
+
+## Uninstall
+
+Install an existing component.
+
+`POST /components.uninstall`
+
+**Sample request**
+
+```json
+{
+  "name": "sources-chat-plugin"
+}
+```
+
+**Sample response**
+
+The response includes the name of the component that was uninstalled with an indication of the process was completed successfully (true) or not (false).
+
+```json5
+{
+  "sources-chat-plugin": true
+}
+```

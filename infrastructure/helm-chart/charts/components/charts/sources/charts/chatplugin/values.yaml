@@ -7,3 +7,8 @@ backend:
 frontend:
   image: frontend/chat-plugin
   resources: {}
+global:
+  ingress:
+    letsencrypt: false
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest

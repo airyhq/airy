@@ -35,6 +35,10 @@ link='/cli/introduction'
 />
 </ButtonBoxList>
 
+## Install Airy Core
+
+After you have installed your Airy CLI you can choose one of the following supported platforms and use the CLI to deploy `Airy Core`.
+
 <ButtonBoxList>
 <ButtonBox
 icon={<HelmSVG />}
@@ -44,11 +48,6 @@ description='Deploy Airy Core with Helm, on an existing Kubernetes cluster'
 link='/getting-started/installation/helm'
 />
 </ButtonBoxList>
-
-## Install Airy Core
-
-After you have installed your Airy CLI you can choose one of the following supported platforms and use the CLI to deploy `Airy Core`.
-
 <ButtonBoxList>
 <ButtonBox
 icon={<Minikube />}

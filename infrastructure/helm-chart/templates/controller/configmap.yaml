@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: repositories
+  namespace: {{ .Values.namespace }}
+data:
+  repositories.json: |
+    {
+      "repositories": [
+        {
+          "name": "airy-core",
+          "url": "https://github.com/airyhq/airy/tree/develop/infrastructure/helm-chart/charts/components/charts"
+        }
+      ]
+    }

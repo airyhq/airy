@@ -284,6 +284,9 @@ class InputComponent extends Component<InputProps, IState> {
       showCounter,
       onFocus,
       dataCy,
+      min,
+      max,
+      step
     } = this.props;
 
     const {validationResult, wasBlurred} = this.state;
@@ -370,6 +373,9 @@ class InputComponent extends Component<InputProps, IState> {
               pattern={pattern}
               inputMode={inputmode}
               data-cy={dataCy}
+              step={step}
+              min={min}
+              max={max}
             />
             {this.props.renderEmojiPicker ? (
               <div className={styles.emojiWrapper}>
@@ -399,6 +405,10 @@ export interface InputProps {
   renderEmojiPicker?: (onSelect: (emoji: string) => void) => JSX.Element;
 
   id?: string;
+  step?: number;
+  min?:number;
+  max?:number;
+
   /** The label above the input field */
   label?: string;
   showLabelIcon?: boolean;

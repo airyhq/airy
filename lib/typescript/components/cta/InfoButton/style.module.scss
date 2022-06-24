@@ -23,23 +23,26 @@
   background-color: transparent;
   border-radius: 8px;
   cursor: pointer;
+  border: none;
 }
 
 .greyButton {
-  border: 1px solid var(--color-text-gray);
+  border: 2px solid var(--color-text-gray);
 }
 
 .blueButton {
-  border: 1px solid var(--color-airy-blue);
+  border: 2px solid var(--color-airy-blue);
+
 }
 
 .link,
 .link:hover,
 .link:active,
 .link:visited {
-  text-decoration: none;
+  text-decoration: underline;
   font-weight: 400;
   @include font-s;
+  font-weight:bold;
 }
 
 .greyLink,

@@ -7,7 +7,7 @@
   display: block;
   border-radius: 10px;
   width: 100%;
-  margin: 18% 1.5em 0 191px;
+  margin: 17% 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
 }
@@ -42,6 +42,15 @@
   }
 }
 
+.textIconContainer {
+  display: flex;
+}
+
+.textContainer {
+  display:flex;
+  flex-direction: column;
+}
+
 .connectorIcon {
   width:50px;
   margin-right:24px;
@@ -54,7 +63,7 @@
 
   p {
     display:flex;
-    margin-left:74px;
+    color:var(--color-text-gray);
   }
 }
 

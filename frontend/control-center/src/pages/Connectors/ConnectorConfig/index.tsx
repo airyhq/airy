@@ -23,6 +23,7 @@ import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from '../Providers/Airy/ChatPlugin/sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from '../Providers/Airy/ChatPlugin/sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from '../Providers/Airy/ChatPlugin/sections/InstallSection/InstallSection';
+import { ConnectNewDialogflow } from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {
@@ -76,6 +77,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     setConnectorInfo({...connectorSourceInfo[0]});
   }, []);
 
+
+  //create one for each source //
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
       .connectChatPlugin({
@@ -91,10 +94,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   //here switch with source to make it custimizable
   const PageContent = () => {
-    return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
-  };
 
-  //change LinkButton component to remove border + customize color
+    if(connector === Source.chatPlugin){
+      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
+    }
+
+    if(connector === Source.dialogflow){
+      return <ConnectNewDialogflow createNewConnection={createNewConnection} />;
+    }
+
+
+  };
 
   return (
     <div className={styles.container}>
@@ -111,20 +121,22 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         </div>
 
         <section className={styles.connectorDetails}>
-
           <div className={styles.titleIconDetails}>
-            <div className={styles.connectorIcon}>{connectorInfo && connectorInfo?.image}</div>
-            <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+            <div className={styles.textIconContainer}>
+              <div className={styles.connectorIcon}>{connectorInfo && connectorInfo?.image}</div>
 
-            <p>
-            {connectorInfo && connectorInfo?.description}{' '}
-            <InfoButton link={connectorInfo && connectorInfo?.docs} text={t('infoButtonText')} />
-          </p>
+              <div className={styles.textContainer}>
+                <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+                <p>
+                  {connectorInfo && connectorInfo?.description}{' '}
+                  <InfoButton borderOff={true} color="blue" link={connectorInfo && connectorInfo?.docs} text={t('infoButtonText')} />
+                </p>
+              </div>
+            </div>
           </div>
-
-         
         </section>
       </section>
+
       <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
@@ -138,7 +150,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           style={
             currentPage === Pages.customization
               ? {paddingTop: '0px', paddingLeft: '32px'}
-              : {paddingTop: '36px', paddingLeft: '32px'}
+              : {paddingTop: '28px', paddingLeft: '32px'}
           }>
           <PageContent />
         </div>

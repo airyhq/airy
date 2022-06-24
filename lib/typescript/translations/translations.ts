@@ -125,6 +125,7 @@ const resources = {
 
       //Channels
       toConfigure: 'To configure',
+      configure: 'configure',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -165,7 +166,7 @@ const resources = {
       undoStep: 'Undo',
       deleteChannel: 'Do you really want to delete this channel?',
       addChanne: 'Add channel',
-      infoButtonText: 'more information about this source',
+      infoButtonText: 'more information',
       addChatplugin: 'Add Airy Live Chat to your website and application',
       displayName: 'Display Name',
       addDisplayName: 'Add a name',
@@ -237,6 +238,15 @@ const resources = {
         'You will be able to access the code to include in your header later after you are done customising.',
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
+
+      //Dialogflow
+      projectID: 'Project ID',
+      AddProjectId: 'Add the project id',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      to: 'to',
 
       //Facebook Messenger
 
@@ -471,6 +481,7 @@ const resources = {
 
       //Channels
       toConfigure: 'konfigurieren',
+      configure: 'konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
       facebookTitle: 'Facebook Messenger',
@@ -510,7 +521,7 @@ const resources = {
       sample: 'Muster',
       deleteChannel: 'Wollen Sie diesen Kanal wirklich löschen?',
       addChanne: 'Kanal hinzufügen',
-      infoButtonText: 'mehr Informationen über diese Quelle',
+      infoButtonText: 'mehr Informationen',
       addChatplugin: 'Fügen Sie Airy Live Chat zu Ihrer Website und Anwendung hinzu',
       displayName: 'Anzeige Name',
       addDisplayName: 'Namen hinzufügen',
@@ -581,6 +592,15 @@ const resources = {
         'Sie können auf den Code zugreifen, den Sie später in Ihre Kopfzeile einfügen können, wenn Sie mit den Anpassungen fertig sind.',
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
+
+      //Dialogflow
+      projectID: 'Projekt-ID',
+      AddProjectId: 'Projekt-ID hinzufügen',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Google Application Credentials hinzufügen',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      to: 'bis',
 
       //Facebook Messenger
 
@@ -803,6 +823,7 @@ const resources = {
 
       //Channels
       toConfigure: 'configuration',
+      configure: 'ajouter la configuration',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
       facebookTitle: 'Facebook Messenger',
@@ -842,7 +863,7 @@ const resources = {
       sample: 'Echantillon',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
-      infoButtonText: `plus d'informations sur cette source`,
+      infoButtonText: `plus d'informations`,
       addChatplugin: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
       displayName: `Nom d'affichage`,
       addDisplayName: 'Ajouter un nom',
@@ -897,6 +918,16 @@ const resources = {
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //dialogflow
+      projectID: 'ID du project',
+      AddProjectId: "Ajouter l'ID du project",
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      googleAppCredentialsTooltip: 'Don’t have Google Credentials ? Create it here',
+      AddGoogleApplicationCredentials: 'Ajouter les Google Application Credentials',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      to: 'à',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -1138,6 +1169,7 @@ const resources = {
 
       //Channels
       toConfigure: 'configurar',
+      configure: 'configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
       facebookTitle: 'Facebook Messenger',
@@ -1177,7 +1209,7 @@ const resources = {
       sample: 'Muestra',
       deleteChannel: '¿Realmente quieres borrar este canal?',
       addChanne: 'Añadir canal',
-      infoButtonText: 'más información sobre esta fuente',
+      infoButtonText: 'más información',
       addChatplugin: 'Añade Airy Live Chat a tu sitio web y aplicación',
       displayName: 'Nombre de la pantalla',
       addDisplayName: 'Añadir un nombre',
@@ -1249,8 +1281,16 @@ const resources = {
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
 
-      //Facebook Messenger
+      //Dialogflow
+      projectID: 'ID del proyecto',
+      AddProjectId: 'Añadir el ID del proyecto',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Añadir los Google Application Credentials',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      to: 'a',
 
+      //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',
       facebookConfiguration: 'La fuente de Facebook requiere la siguiente configuración:',
       facebookConfigurationText:

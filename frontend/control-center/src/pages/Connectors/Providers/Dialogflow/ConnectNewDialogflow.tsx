@@ -115,7 +115,7 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
                 createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
               }}
               style={{padding: '20px 60px'}}>
-              {t('configure')}
+              {componentInfo?.enabled ? t('Update') : t('Configure')}
             </Button>
           </form>
         </div>

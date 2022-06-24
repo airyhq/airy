@@ -60,14 +60,21 @@ type ConnectorConfigProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, connectChatPlugin, updateComponentConfiguration, enableDisableComponent} = props;
+  const {connector, connectChatPlugin, updateComponentConfiguration, enableDisableComponent, config} = props;
   const {channelId} = useParams();
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
   const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [configurationModal, setConfigurationModal] = useState(false);
-  const [configurationStatus, setConfigurationStatus] = useState('');
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [modalTitle, setModalTitle] = useState('');
+
+  console.log('isEnabled initial', config);
+  console.log(
+    'config?.components[connectorInfo?.configKey]?.enabled',
+    config?.components[connectorInfo?.configKey]?.enabled
+  );
 
   const navigate = useNavigate();
   const {t} = useTranslation();
@@ -76,6 +83,20 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     : CATALOG_CHAT_PLUGIN_ROUTE;
 
   //Pages.createUpdate:
+
+  useEffect(() => {
+    if (config && connectorInfo) {
+      console.log('CONFIG', config?.components && config?.components[connectorInfo?.configKey]?.enabled);
+      setIsEnabled(config?.components[connectorInfo?.configKey]?.enabled);
+    }
+  }, [config, connectorInfo]);
+
+  useEffect(() => {
+    console.log('isEnabled', isEnabled);
+    isEnabled
+      ? setModalTitle(t('Disable') + ' ' + connectorInfo && connectorInfo?.title)
+      : setModalTitle(connectorInfo && connectorInfo?.title + ' ' + t('enabled'));
+  }, [isEnabled, connectorInfo]);
 
   useEffect(() => {
     console.log('connectorInfo', connectorInfo);
@@ -124,7 +145,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       console.log('PAYLOAD', payload);
 
       updateComponentConfiguration(payload).then(() => {
-        setConfigurationStatus(t('enabledLowerCase'));
+        setIsEnabled(true);
         setConfigurationModal(true);
       });
     }
@@ -142,9 +163,16 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const enableDisableComponentToggle = () => {
-    const updatedStatus = configurationStatus === 'Disable' ? false : true;
+    setConfigurationModal(false);
+    setIsEnabled(!isEnabled);
+    const updatedStatus = isEnabled ? false : true;
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: updatedStatus}]});
   };
+
+  const closeConfigurationModal = () => {
+    if(!isEnabled) enableDisableComponentToggle();
+    setConfigurationModal(false)
+  }
 
   return (
     <div className={styles.container}>
@@ -181,9 +209,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                   <Button
                     styleVariant="normal"
                     type="submit"
-                    onClick={enableDisableComponentToggle}
+                    onClick={() => setConfigurationModal(true)}
                     style={{padding: '20px 40px'}}>
-                    {t('Disable')}
+                    {isEnabled ? t('Disable') : t('Enable')}
                   </Button>
                 </div>
               </div>
@@ -208,19 +236,19 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
       {configurationModal && (
         <SettingsModal
-          Icon={CheckmarkIcon as React.ElementType}
+          Icon={!isEnabled ? (CheckmarkIcon as React.ElementType) : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
-          title={connectorInfo?.title + ' ' + configurationStatus}
-          close={() => setConfigurationModal(false)}
+          title={modalTitle}
+          close={closeConfigurationModal}
           headerClassName={styles.headerModal}>
-          {configurationStatus === 'Disable' && (
+          {isEnabled && (
             //add translation here
             <>
               <p> Are you sure you want to disable this component? </p>
 
               <Button styleVariant="normal" type="submit" onClick={enableDisableComponentToggle}>
-                {t('uninstall')}
+                {t('Disable')}
               </Button>
             </>
           )}

@@ -250,6 +250,9 @@ const resources = {
       AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
+      fromCloudConsole : 'given by the Cloud Console',
+      amountSuggestions: 'amount for suggestions',
+      amountReplies: 'amount for replies',
       to: 'to',
 
       //Facebook Messenger
@@ -487,6 +490,8 @@ const resources = {
       Enable: 'Aktivieren',
       NotConfigured: 'Nicht konfiguriert',
       uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
+      Update: 'Aktualisieren',
+
 
       //Channels
       toConfigure: 'konfigurieren',
@@ -610,6 +615,9 @@ const resources = {
       SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
       ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
       to: 'bis',
+      fromCloudConsole : 'gegeben von das Cloud Console',
+      amountSuggestions: 'betrag für Vorschläge',
+      amountReplies: 'betrag für Antworte',
 
       //Facebook Messenger
 
@@ -829,11 +837,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
-      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
       Enabled: 'Activé',
       Enable: 'Activer',
       NotConfigured: 'Non configuré',
-      uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant?',
+      uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
+      Update: 'Mettre à jour',
 
       //Channels
       toConfigure: 'configuration',
@@ -933,16 +942,19 @@ const resources = {
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
 
-      //dialogflow
+      //Dialogflow
       projectID: 'ID du project',
       AddProjectId: "Ajouter l'ID du project",
       GoogleApplicationCredentials: 'références de votre app Google',
       googleAppCredentialsTooltip: 'références de la Cloud Console',
       AddGoogleApplicationCredentials: 'Ajouter les Google Application Credentials',
-      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
-      ReplyConfidenceLevel: 'Reply Confidence Level',
+      SuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
+      ReplyConfidenceLevel: 'Niveau de confiance des réponses',
+      fromCloudConsole : 'donné(s) par la Cloud Console',
+      amountSuggestions: 'niveau pour les suggestions',
+      amountReplies: 'niveau pour les réponses',
       to: 'à',
-
+     
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
       facebookPageIdPlaceholder: `Ajoutez l'ID de la page Facebook`,
@@ -1185,6 +1197,7 @@ const resources = {
       Enable: 'Activar',
       NotConfigured: 'No configurado',
       uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
+      Update: 'Actualizar',
 
       //Channels
       toConfigure: 'configurar',
@@ -1305,9 +1318,12 @@ const resources = {
       AddProjectId: 'Añadir el ID del proyecto',
       GoogleApplicationCredentials: 'Google Application Credentials',
       AddGoogleApplicationCredentials: 'Añadir los Google Application Credentials',
-      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
-      ReplyConfidenceLevel: 'Reply Confidence Level',
+      SuggestionConfidenceLevel: 'Nivel de confianza de la sugerencia',
+      ReplyConfidenceLevel: 'Nivel de confianza de respuesta',
       to: 'a',
+      fromCloudConsole : 'dado por la Cloud Console',
+      amountSuggestions: 'nivel para sugerencias',
+      amountReplies: 'nivel para respuestas',
 
       //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',

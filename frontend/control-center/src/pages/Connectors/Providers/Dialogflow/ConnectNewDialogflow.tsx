@@ -47,7 +47,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
                 label={t('projectID')}
                 placeholder={t('AddProjectId')}
                 showLabelIcon
-                tooltipText={'project ID from the Cloud Console'}
+                tooltipText={t('fromCloudConsole')}
                 required
                 height={32}
                 fontClass="font-base"
@@ -63,7 +63,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
                 label={t('GoogleApplicationCredentials')}
                 placeholder={t('AddGoogleApplicationCredentials')}
                 showLabelIcon
-                tooltipText={t('credentials from the Cloud Console')}
+                tooltipText={t('fromCloudConsole')}
                 required
                 height={32}
                 fontClass="font-base"
@@ -81,7 +81,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
                 label={t('SuggestionConfidenceLevel')}
                 placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
                 showLabelIcon
-                tooltipText={'amount for suggestions'}
+                tooltipText={t('amountSuggestions')}
                 required
                 height={32}
                 fontClass="font-base"
@@ -99,7 +99,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
                 label={t('ReplyConfidenceLevel')}
                 placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
                 showLabelIcon
-                tooltipText={'amount for replies'}
+                tooltipText={t('amountReplies')}
                 required
                 height={32}
                 fontClass="font-base"
@@ -115,7 +115,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
               }}
               style={{padding: '20px 60px'}}
             >
-              {isEnabled ? t('Update') : t('Configure')}
+              {isEnabled ? t('Update') : t('toConfigure')}
             </Button>
           </form>
         </div>

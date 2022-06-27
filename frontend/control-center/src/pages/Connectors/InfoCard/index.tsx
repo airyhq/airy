@@ -136,8 +136,7 @@ const InfoCard = (props: InfoCardProps) => {
           headerClassName={styles.headerModal}
         >
           {installed && (
-            //add translation here
-            <p> Are you sure you want to uninstall this component? </p>
+            <p> {t('uninstallComponentText')} </p>
           )}
           {!installed ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>

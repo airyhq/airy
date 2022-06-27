@@ -42,8 +42,6 @@ const InfoCard = (props: InfoCardProps) => {
     setModalTitle(title);
   }, [isInstalled]);
 
-  console.log('sourceInfo.title', sourceInfo.title);
-
   const toggleInstallation = () => {
     //TO DO: call action to install/uninstall component here
     setIsModalVisible(true);
@@ -135,9 +133,7 @@ const InfoCard = (props: InfoCardProps) => {
           close={cancelInstallationToggle}
           headerClassName={styles.headerModal}
         >
-          {installed && (
-            <p> {t('uninstallComponentText')} </p>
-          )}
+          {installed && <p> {t('uninstallComponentText')} </p>}
           {!installed ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>
               {t('toConfigure')}

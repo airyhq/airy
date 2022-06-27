@@ -52,7 +52,6 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         ) : (
           <>
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
-              //console.log('ENABLED', components?.[infoItem?.configKey]?.enabled);
               return (
                 (channelsBySource(infoItem.type).length > 0 && infoItem.channel && (
                   <ChannelCard

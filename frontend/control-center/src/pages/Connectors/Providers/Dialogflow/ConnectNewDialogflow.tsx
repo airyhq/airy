@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
+import {getConnectorsConfiguration} from '../../../../actions';
 import {Button, Input} from 'components';
 import styles from './ConnectNewDialogflow.module.scss';
 import {useTranslation} from 'react-i18next';
+import {connect, ConnectedProps} from 'react-redux';
 
-interface ConnectNewDialogflowProps {
+type ConnectNewDialogflowProps = {
   createNewConnection: (
     projectId: string,
     appCredentials: string,
@@ -13,9 +15,19 @@ interface ConnectNewDialogflowProps {
     replyConfidenceLevel: string
   ) => void;
   isEnabled: boolean;
-}
+} & ConnectedProps<typeof connector>;
 
-export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+const mapDispatchToProps = {
+  getConnectorsConfiguration,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+const ConnectNewDialogflow = ({
+  createNewConnection,
+  isEnabled,
+  getConnectorsConfiguration,
+}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['enterprise-dialogflow-connector']);
   const [projectID, setProjectID] = useState('');
   const [appCredentials, setAppCredentials] = useState('');
@@ -24,13 +36,15 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
   const {t} = useTranslation();
 
   useEffect(() => {
-    componentInfo?.project_id && setProjectID(componentInfo?.project_id);
-    componentInfo?.dialogflow_credentials && setAppCredentials(componentInfo?.dialogflow_credentials);
-    componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
-    componentInfo?.suggestion_confidence_level &&
-      setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
-    //TO add when the backend is fixed:
-    ///call get components if no connector info are present
+    if (componentInfo) {
+      componentInfo?.project_id && setProjectID(componentInfo?.project_id);
+      componentInfo?.dialogflow_credentials && setAppCredentials(componentInfo?.dialogflow_credentials);
+      componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
+      componentInfo?.suggestion_confidence_level &&
+        setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
+    } else {
+      getConnectorsConfiguration();
+    }
   }, [componentInfo]);
 
   return (
@@ -123,3 +137,5 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
     </div>
   );
 };
+
+export default connector(ConnectNewDialogflow);

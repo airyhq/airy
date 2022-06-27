@@ -16,7 +16,7 @@ import {LinkButton, InfoButton} from 'components';
 import {Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
-import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
+import ConnectNewDialogflow from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 

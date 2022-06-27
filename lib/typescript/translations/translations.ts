@@ -250,7 +250,7 @@ const resources = {
       AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
-      fromCloudConsole : 'given by the Cloud Console',
+      fromCloudConsole: 'given by the Cloud Console',
       amountSuggestions: 'amount for suggestions',
       amountReplies: 'amount for replies',
       to: 'to',
@@ -492,7 +492,6 @@ const resources = {
       uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
       Update: 'Aktualisieren',
 
-
       //Channels
       toConfigure: 'konfigurieren',
       configure: 'konfigurieren',
@@ -615,7 +614,7 @@ const resources = {
       SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
       ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
       to: 'bis',
-      fromCloudConsole : 'gegeben von das Cloud Console',
+      fromCloudConsole: 'gegeben von das Cloud Console',
       amountSuggestions: 'betrag für Vorschläge',
       amountReplies: 'betrag für Antworte',
 
@@ -950,11 +949,11 @@ const resources = {
       AddGoogleApplicationCredentials: 'Ajouter les Google Application Credentials',
       SuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
       ReplyConfidenceLevel: 'Niveau de confiance des réponses',
-      fromCloudConsole : 'donné(s) par la Cloud Console',
+      fromCloudConsole: 'donné(s) par la Cloud Console',
       amountSuggestions: 'niveau pour les suggestions',
       amountReplies: 'niveau pour les réponses',
       to: 'à',
-     
+
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
       facebookPageIdPlaceholder: `Ajoutez l'ID de la page Facebook`,
@@ -1321,7 +1320,7 @@ const resources = {
       SuggestionConfidenceLevel: 'Nivel de confianza de la sugerencia',
       ReplyConfidenceLevel: 'Nivel de confianza de respuesta',
       to: 'a',
-      fromCloudConsole : 'dado por la Cloud Console',
+      fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
 

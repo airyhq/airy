@@ -36,3 +36,4 @@ export * from './listContacts';
 export * from './deleteContact';
 export * from './enableDisableComponent';
 export * from './updateComponentConfiguration';
+export * from './getComponents';

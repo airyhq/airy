@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {enableDisableComponent} from '../../../actions';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
+import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
@@ -80,7 +80,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
+            {healthy && enabled  ? <CheckmarkIcon className={styles.icons} /> : healthy && !enabled ? <UncheckedIcon className={`${styles.icons} ${styles.disableHealthy}`} /> : <UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
           </div>
 
           {isComponent && (
@@ -104,7 +104,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
-            style={{width: '45%'}}
+            style={{padding: '0 40Px'}}
             type="submit"
             onClick={() => triggerEnableDisableAction(false)}
           >

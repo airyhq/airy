@@ -10,6 +10,7 @@ type ButtonProps = {
   disabled?: boolean;
   styleVariant?: styleVariantType;
   style?: CSSProperties;
+  className?: string;
   tabIndex?: any;
   dataCy?: string;
   buttonRef?: any;
@@ -24,6 +25,7 @@ export const Button = ({
   tabIndex,
   dataCy,
   style,
+  className,
   buttonRef,
 }: ButtonProps) => {
   const styleFor = (variant: styleVariantType) => {
@@ -53,7 +55,7 @@ export const Button = ({
       type={type || 'button'}
       style={style}
       disabled={disabled || false}
-      className={styleFor(styleVariant)}
+      className={`${styleFor(styleVariant)} ${className}`}
       onClick={onClick}
       tabIndex={tabIndex}
       data-cy={dataCy}

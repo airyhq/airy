@@ -49,7 +49,8 @@ const Catalog = () => {
     }
   }, [sourcesInfo, connectors]);
 
-  //mock of the installed / uninstalled components list update
+
+  //mock up of install/uninstall api: remove when backend is added
   const updateItemList = (installed: boolean, type: Source) => {
     if (!installed) {
       const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => {
@@ -68,7 +69,6 @@ const Catalog = () => {
     }
   };
 
-  //should we keep this?
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case Source.facebook:

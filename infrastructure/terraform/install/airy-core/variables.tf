@@ -1,6 +1,6 @@
 variable "core_id" {
   default     = "core"
-  description = ""
+  description = "The name of the cluster "
 }
 
 variable "host" {

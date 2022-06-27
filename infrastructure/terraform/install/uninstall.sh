@@ -9,5 +9,3 @@ terraform destroy -auto-approve
 
 cd ../$provider
 terraform destroy
-
-cd ../

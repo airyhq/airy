@@ -33,3 +33,7 @@ output "fargate_iam_role_arn" {
 output "vpc_private_subnets" {
   value = module.vpc.private_subnets
 }
+
+output "kubeconfig_output_path" {
+  value = var.kubeconfig_output_path
+}

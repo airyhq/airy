@@ -52,7 +52,8 @@ variable "namespace" {
 }
 
 variable "kubeconfig_output_path" {
-  default = "../airy-core/.kubeconfig"
+  type = string
+  description = "The location of the kubeconfig file"
 }
 
 variable "fargate_profiles" {

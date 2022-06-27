@@ -6,8 +6,7 @@ variable "aws_region" {
   description = "The AWS region in which resources are created"
 }
 
-
 variable "fargate_profiles" {
-  type = list(string)
+  type    = list(string)
   default = []
 }

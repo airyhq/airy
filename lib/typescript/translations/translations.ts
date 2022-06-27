@@ -122,6 +122,10 @@ const resources = {
       //Control-Center
       disableComponent: 'Disable',
       disableComponentText: 'Are you sure you want to disable this component?',
+      Enabled: 'Enabled',
+      Enable: 'Enable',
+      NotConfigured: 'Not Configured',
+      uninstallComponentText: 'Are you sure you want to uninstall this component?',
 
       //Channels
       toConfigure: 'To configure',
@@ -479,6 +483,10 @@ const resources = {
       //Control-Center
       disableComponent: 'Deaktivieren',
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
+      Enabled: 'Aktiviert',
+      Enable: 'Aktivieren',
+      NotConfigured: 'Nicht konfiguriert',
+      uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
 
       //Channels
       toConfigure: 'konfigurieren',
@@ -822,6 +830,10 @@ const resources = {
       //Control-Center
       disableComponent: 'Désactiver',
       disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
+      Enabled: 'Activé',
+      Enable: 'Activer',
+      NotConfigured: 'Non configuré',
+      uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant?',
 
       //Channels
       toConfigure: 'configuration',
@@ -1169,6 +1181,10 @@ const resources = {
       //Control-Center
       disableComponent: 'Desactivar',
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
+      Enabled: 'Activado',
+      Enable: 'Activar',
+      NotConfigured: 'No configurado',
+      uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
 
       //Channels
       toConfigure: 'configurar',

@@ -122,7 +122,7 @@ const InfoCard = (props: InfoCardProps) => {
             enabled === 'Enabled' ? styles.buttonEnabled : styles.buttonNotConfigured
           }`}
         >
-          {enabled}
+          {t(`${enabled}`)}
         </Button>
       )}
 

@@ -75,6 +75,8 @@ const resources = {
       conversations: 'Conversations',
       deleteContact: 'Delete Contact',
       deleteContactText: 'Are you sure you want to delete this contact?',
+      noContacts: 'No Contacts',
+      emptyContacts: 'Empty Contact List',
 
       //Status
       all: 'All',
@@ -415,6 +417,8 @@ const resources = {
       noResultsConverstation: 'keine Ergebnisse',
       deleteContact: 'Kontakt löschen',
       deleteContactText: 'Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?',
+      noContacts: 'Keine Kontakte',
+      emptyContacts: 'Leere Kontaktliste',
 
       //Status
       all: 'Alle',
@@ -747,6 +751,8 @@ const resources = {
       conversations: 'Conversations',
       deleteContact: 'Supprimer le Contact',
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
+      noContacts: 'Aucun contact',
+      emptyContacts: 'Liste de contacts vide',
 
       //Status
       all: 'Tous',
@@ -1077,6 +1083,8 @@ const resources = {
       conversations: 'Conversaciones',
       deleteContact: 'Eliminar el Contacto',
       deleteContactText: '¿Estás seguro de que quieres eliminar este contacto?',
+      noContacts: 'No hay contactos',
+      emptyContacts: 'Lista de contactos vacía',
 
       //Status
       all: 'Todo',

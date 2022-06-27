@@ -9,7 +9,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg
 
 import styles from './InstagramConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -33,9 +33,7 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const CONNECTED_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CONNECTED_ROUTE
-    : CATALOG_CONNECTED_ROUTE;
+  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const buttonStatus = () => {
     return !(id.length > 5 && token != '');

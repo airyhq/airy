@@ -80,7 +80,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {healthy && enabled  ? <CheckmarkIcon className={styles.icons} /> : healthy && !enabled ? <UncheckedIcon className={`${styles.icons} ${styles.disableHealthy}`} /> : <UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
+            {healthy && enabled ? (
+              <CheckmarkIcon className={styles.icons} />
+            ) : healthy && !enabled ? (
+              <UncheckedIcon className={`${styles.icons} ${styles.disableHealthy}`} />
+            ) : (
+              <UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />
+            )}
           </div>
 
           {isComponent && (

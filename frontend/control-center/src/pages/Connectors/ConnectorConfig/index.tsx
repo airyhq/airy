@@ -9,7 +9,7 @@ import {
   connectChatPlugin,
   updateChannel,
   disconnectChannel,
-  updateComponentConfiguration,
+  updateConnectorConfiguration,
   enableDisableComponent,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
@@ -17,6 +17,7 @@ import {Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
+import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 
 export enum Pages {
@@ -29,7 +30,7 @@ const mapDispatchToProps = {
   connectChatPlugin,
   updateChannel,
   disconnectChannel,
-  updateComponentConfiguration,
+  updateConnectorConfiguration,
   enableDisableComponent,
 };
 
@@ -44,18 +45,17 @@ type ConnectorConfigProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, updateComponentConfiguration, enableDisableComponent, config} = props;
+  const {connector, enableDisableComponent, updateConnectorConfiguration, config} = props;
   const {channelId} = useParams();
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
-  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
+  const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
-  const [modalTitle, setModalTitle] = useState('');
 
   const {t} = useTranslation();
 
   useEffect(() => {
-    const sourceInfoArr = getSourcesInfo('Connectors');
+    const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
     setConnectorInfo({...connectorSourceInfo[0]});
   }, []);
@@ -66,18 +66,12 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   }, [config, connectorInfo]);
 
-  useEffect(() => {
-    isEnabled
-      ? setModalTitle(t('Disable') + ' ' + connectorInfo && connectorInfo?.title)
-      : setModalTitle(connectorInfo && connectorInfo?.title + ' ' + t('enabled'));
-  }, [isEnabled, connectorInfo]);
-
-  //here return with connector connection to make it custimizable
-  const createNewConnection = (...args: string[]) => {
+  //here return with connector connection to make the component custimizable
+  const createNewConnection = async (...args: string[]) => {
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
 
-      const payload = {
+      const payload: UpdateComponentConfigurationRequestPayload = {
         components: [
           {
             name: connectorInfo && connectorInfo?.configKey,
@@ -92,17 +86,20 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         ],
       };
 
-      updateComponentConfiguration(payload).then(() => {
-        setIsEnabled(true);
-        setConfigurationModal(true);
-      });
+      try {
+        await enableDisableComponent(payload);
+        await updateConnectorConfiguration(payload);
+        if (!isEnabled) setIsEnabled(true);
+      } catch (error) {
+        return error;
+      }
     }
   };
 
-  //here return with connector connect form to make it custimizable
+  //here return with connector connect form to make the component custimizable
   const PageContent = () => {
     if (connector === Source.dialogflow) {
-      return <ConnectNewDialogflow createNewConnection={createNewConnection} />;
+      return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
     }
   };
 
@@ -156,7 +153,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                     onClick={() => setConfigurationModal(true)}
                     style={{padding: '20px 40px'}}
                   >
-                    {isEnabled ? t('Disable') : t('Enable')}
+                    {isEnabled ? t('disableComponent') : t('Enable')}
                   </Button>
                 </div>
               </div>
@@ -184,16 +181,18 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           Icon={!isEnabled ? (CheckmarkIcon as React.ElementType) : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
-          title={modalTitle}
+          title={
+            isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
+          }
           close={closeConfigurationModal}
           headerClassName={styles.headerModal}
         >
           {isEnabled && (
             <>
-              <p> {t('ConfirmationDisableQuestion')} </p>
+              <p> {t('disableComponentText')} </p>
 
               <Button styleVariant="normal" type="submit" onClick={enableDisableComponentToggle}>
-                {t('Disable')}
+                {t('disableComponent')}
               </Button>
             </>
           )}

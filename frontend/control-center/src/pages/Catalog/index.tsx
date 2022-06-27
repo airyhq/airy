@@ -21,7 +21,7 @@ const Catalog = () => {
 
   useEffect(() => {
     setPageTitle(pageTitle);
-    setSourcesInfo(getSourcesInfo(pageTitle));
+    setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {
@@ -48,7 +48,6 @@ const Catalog = () => {
       setNotInstalledConnectors(notInstalledComponents);
     }
   }, [sourcesInfo, connectors]);
-
 
   //mock up of install/uninstall api: remove when backend is added
   const updateItemList = (installed: boolean, type: Source) => {

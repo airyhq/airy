@@ -7,7 +7,6 @@ import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
-import {ReactComponent as ZendeskIcon} from 'assets/images/icons/zendeskLogo.svg';
 import {
   cyChannelsChatPluginAddButton,
   cyChannelsFacebookAddButton,
@@ -18,14 +17,7 @@ import {
   cyChannelsDialogflowAddButton,
 } from 'handles';
 import {
-  CATALOG_FACEBOOK_ROUTE,
-  CATALOG_TWILIO_SMS_ROUTE,
-  CATALOG_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_CONNECTED_ROUTE,
-  CATALOG_CHAT_PLUGIN_ROUTE,
-  CATALOG_GOOGLE_ROUTE,
-  CATALOG_INSTAGRAM_ROUTE,
-  CATALOG_CONNECTED_ROUTE,
   CONNECTORS_FACEBOOK_ROUTE,
   CONNECTORS_TWILIO_SMS_ROUTE,
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
@@ -33,7 +25,6 @@ import {
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
   CONNECTORS_DIALOGFLOW_ROUTE,
-  CONNECTORS_ZENDESK_ROUTE,
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -50,12 +41,7 @@ export type SourceInfo = {
   docs: string;
 };
 
-export const getSourcesInfo = (page: string): SourceInfo[] => {
-  //remove this?
-  const connectorsPage = page === 'Connectors';
-
-  //add translations to this
-
+export const getSourcesInfo = (): SourceInfo[] => {
   return [
     {
       type: Source.chatPlugin,
@@ -64,9 +50,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Best of class browser messenger',
       image: <AiryAvatarIcon />,
       newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/chatplugin'
-        : CATALOG_CONNECTED_ROUTE + '/chatplugin',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',
       configKey: 'sources-chat-plugin',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
@@ -79,9 +63,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'Connect multiple Facebook pages',
       image: <MessengerAvatarIcon />,
       newChannelRoute: CONNECTORS_FACEBOOK_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/facebook'
-        : CATALOG_CONNECTED_ROUTE + '/facebook',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
@@ -107,9 +89,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       description: 'World #1 chat app',
       image: <WhatsAppAvatarIcon />,
       newChannelRoute: CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new',
-      channelsListRoute: connectorsPage
-        ? CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#'
-        : CATALOG_CONNECTED_ROUTE + '/twilio.whatsapp/#',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
@@ -121,7 +101,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Google Business Messages',
       description: 'Be there when people search',
       image: <GoogleAvatarIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_GOOGLE_ROUTE + '/new' : CATALOG_GOOGLE_ROUTE + '/new',
+      newChannelRoute: CONNECTORS_GOOGLE_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
       itemInfoString: 'channels',
@@ -134,7 +114,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       title: 'Instagram',
       description: 'Connect multiple Instagram pages',
       image: <InstagramIcon />,
-      newChannelRoute: connectorsPage ? CONNECTORS_INSTAGRAM_ROUTE + '/new' : CATALOG_INSTAGRAM_ROUTE + '/new',
+      newChannelRoute: CONNECTORS_INSTAGRAM_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
       itemInfoString: 'channels',

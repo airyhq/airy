@@ -247,7 +247,6 @@ const resources = {
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
       to: 'to',
-      ConfirmationDisableQuestion: 'Are you sure you want to disable this component?',
 
       //Facebook Messenger
 
@@ -603,7 +602,6 @@ const resources = {
       SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
       ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
       to: 'bis',
-      ConfirmationDisableQuestion: 'Möchten Sie diese Komponente wirklich deaktivieren?',
 
       //Facebook Messenger
 
@@ -932,7 +930,6 @@ const resources = {
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
       to: 'à',
-      ConfirmationDisableQuestion: 'Voulez-vous vraiment désactiver ce composant ?',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -1295,7 +1292,6 @@ const resources = {
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
       to: 'a',
-      ConfirmationDisableQuestion: '¿Está seguro de que querer desactivar este componente?',
 
       //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',

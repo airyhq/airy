@@ -27,7 +27,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const pageTitle = 'Connectors';
 
   useEffect(() => {
-    setSourcesInfo(getSourcesInfo(pageTitle));
+    setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {
@@ -52,6 +52,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         ) : (
           <>
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
+              //console.log('ENABLED', components?.[infoItem?.configKey]?.enabled);
               return (
                 (channelsBySource(infoItem.type).length > 0 && infoItem.channel && (
                   <ChannelCard
@@ -78,7 +79,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   components[infoItem.configKey] && (
                     <div style={{display: 'flex'}} key={infoItem.type}>
                       <InfoCard
-                        installed
+                        installed={true}
                         enabled={components[infoItem.configKey].enabled ? 'Enabled' : 'Not Configured'}
                         style={InfoCardStyle.normal}
                         key={infoItem.type}

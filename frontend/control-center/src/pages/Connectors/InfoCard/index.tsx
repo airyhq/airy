@@ -1,7 +1,8 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SourceInfo} from '../../../components/SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
+import {CATALOG_ROUTE} from '../../../routes/routes';
 import {Button, SettingsModal} from 'components';
 import {Source} from 'model';
 import {useTranslation} from 'react-i18next';
@@ -32,30 +33,27 @@ const InfoCard = (props: InfoCardProps) => {
   const {sourceInfo, addChannelAction, installed, style, updateItemList, enabled} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const buttonRef = useRef(null);
+  const [modalTitle, setModalTitle] = useState('');
   const {t} = useTranslation();
   const navigate = useNavigate();
 
-  const toggleInstallation = () => {
-    //TO DO: add action to install/uninstall component
+  useEffect(() => {
+    const title = isInstalled ? t('uninstall') + ' ' + sourceInfo.title : sourceInfo.title + ' ' + t('installed');
+    setModalTitle(title);
+  }, [isInstalled]);
 
+  console.log('sourceInfo.title', sourceInfo.title);
+
+  const toggleInstallation = () => {
+    //TO DO: call action to install/uninstall component here
     setIsModalVisible(true);
   };
-
-  // const addAction = (e: React.MouseEvent) => {
-  //   console.log(e.currentTarget);
-  //   //check event target here for install/uninstall
-
-  //   //onClick={(e: React.MouseEvent) => addAction(e)}
-  //   addChannelAction();
-  // };
 
   const cancelInstallationToggle = () => {
     //for installing components, we install even if the user passes the config
     if (!isInstalled) {
       confirmInstallationToggle();
     }
-
     setIsModalVisible(false);
   };
 
@@ -75,7 +73,8 @@ const InfoCard = (props: InfoCardProps) => {
             ? styles.installed
             : styles.notInstalled
         } 
-      `}>
+      `}
+    >
       <div
         className={`
           ${styles.channelLogoTitleContainer} 
@@ -86,25 +85,27 @@ const InfoCard = (props: InfoCardProps) => {
               ? styles.channelLogoTitleContainerInstalled
               : styles.channelLogoTitleContainerNotInstalled
           }          
-        `}>
+        `}
+      >
         <div
           className={`
           ${styles.channelLogo}
           ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
-        `}>
+        `}
+        >
           {sourceInfo.image}
         </div>
         <div
           className={`
           ${styles.textDetails}
           ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
-        `}>
+        `}
+        >
           <h1>{sourceInfo.title}</h1>
         </div>
       </div>
 
-      {/* //fix this */}
-      {window.location.pathname.includes('catalog') && (
+      {window.location.pathname.includes(CATALOG_ROUTE) && (
         <>
           {!installed && <p>{sourceInfo.description}</p>}
           <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={toggleInstallation}>
@@ -114,7 +115,13 @@ const InfoCard = (props: InfoCardProps) => {
       )}
 
       {enabled && (
-        <Button onClick={() => navigate(sourceInfo.newChannelRoute)} styleVariant="extra-small" className={`${styles.installationButton} ${enabled === 'Enabled' ? styles.buttonEnabled : styles.buttonNotConfigured}`}>
+        <Button
+          onClick={() => navigate(sourceInfo.newChannelRoute)}
+          styleVariant="extra-small"
+          className={`${styles.installationButton} ${
+            enabled === 'Enabled' ? styles.buttonEnabled : styles.buttonNotConfigured
+          }`}
+        >
           {enabled}
         </Button>
       )}
@@ -124,9 +131,10 @@ const InfoCard = (props: InfoCardProps) => {
           Icon={!installed ? (CheckmarkIcon as React.ElementType) : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
-          title={t('uninstall') + ' ' + sourceInfo.title}
+          title={modalTitle}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {installed && (
             //add translation here
             <p> Are you sure you want to uninstall this component? </p>

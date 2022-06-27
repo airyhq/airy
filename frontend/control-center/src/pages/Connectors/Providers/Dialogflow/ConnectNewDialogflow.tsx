@@ -12,20 +12,16 @@ interface ConnectNewDialogflowProps {
     suggestionConfidenceLevel: string,
     replyConfidenceLevel: string
   ) => void;
+  isEnabled: boolean;
 }
 
-export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector(
-    (state: StateModel) => state.data.config.components['enterprise-dialogflow-connector']
-  );
-
+export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+  const componentInfo = useSelector((state: StateModel) => state.data.connector['enterprise-dialogflow-connector']);
   const [projectID, setProjectID] = useState('');
   const [appCredentials, setAppCredentials] = useState('');
   const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState('');
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState('');
   const {t} = useTranslation();
-
-  //call get components
 
   useEffect(() => {
     componentInfo?.project_id && setProjectID(componentInfo?.project_id);
@@ -33,6 +29,8 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
     componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
     componentInfo?.suggestion_confidence_level &&
       setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
+    //TO add when the backend is fixed:
+    ///call get components if no connector info are present
   }, [componentInfo]);
 
   return (
@@ -117,7 +115,7 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
               }}
               style={{padding: '20px 60px'}}
             >
-              {componentInfo?.enabled ? t('Update') : t('Configure')}
+              {isEnabled ? t('Update') : t('Configure')}
             </Button>
           </form>
         </div>

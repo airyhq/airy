@@ -161,23 +161,22 @@
 }
 
 .installationButton {
-border-radius: 20px;
-color:white;
-border:none;
-width: max-content;
+  border-radius: 20px;
+  color: white;
+  border: none;
+  width: max-content;
 }
 
-.buttonEnabled, 
+.buttonEnabled,
 .buttonEnabled:hover,
 .buttonEnabled:active,
 .buttonEnabled:visited {
   background: var(--color-soft-green);
-} 
+}
 
-.buttonNotConfigured, 
+.buttonNotConfigured,
 .buttonNotConfigured:hover,
 .buttonNotConfigured:active,
-.buttonNotConfigured:visited{
+.buttonNotConfigured:visited {
   background: var(--color-not-configured-orange);
-
 }

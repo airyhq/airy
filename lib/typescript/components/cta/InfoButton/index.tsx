@@ -13,8 +13,6 @@ type Props = {
 };
 
 export const InfoButton = ({text, link, color, dataCy, style, borderOff}: Props) => {
-  console.log('borderOff', borderOff);
-
   return (
     <button
       className={`${styles.button} ${

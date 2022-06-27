@@ -16,7 +16,7 @@ type InfoCardProps = {
   addChannelAction: () => void;
   installed: boolean;
   style: InfoCardStyle;
-  updateItemList:any;
+  updateItemList: any;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -38,29 +38,29 @@ const InfoCard = (props: InfoCardProps) => {
     //TO DO: add action to install/uninstall component
 
     setIsModalVisible(true);
-  }
+  };
 
   const addAction = (e: React.MouseEvent) => {
     console.log(e.currentTarget);
     //check event target here for install/uninstall
 
-  //onClick={(e: React.MouseEvent) => addAction(e)}
+    //onClick={(e: React.MouseEvent) => addAction(e)}
     addChannelAction();
   };
 
   const cancelInstallationToggle = () => {
-     //for installing components, we install even if the user passes the config
-     if(!isInstalled){
-      confirmInstallationToggle()
-     } 
+    //for installing components, we install even if the user passes the config
+    if (!isInstalled) {
+      confirmInstallationToggle();
+    }
 
-    setIsModalVisible(false)
-  }
+    setIsModalVisible(false);
+  };
 
   const confirmInstallationToggle = () => {
     setIsInstalled(!isInstalled);
-    updateItemList(!isInstalled, sourceInfo.type)
-  }
+    updateItemList(!isInstalled, sourceInfo.type);
+  };
 
   return (
     <div
@@ -73,7 +73,8 @@ const InfoCard = (props: InfoCardProps) => {
             ? styles.installed
             : styles.notInstalled
         } 
-      `}>
+      `}
+    >
       <div
         className={`
           ${styles.channelLogoTitleContainer} 
@@ -84,50 +85,51 @@ const InfoCard = (props: InfoCardProps) => {
               ? styles.channelLogoTitleContainerInstalled
               : styles.channelLogoTitleContainerNotInstalled
           }          
-        `}>
+        `}
+      >
         <div
           className={`
           ${styles.channelLogo}
           ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
-        `}>
+        `}
+        >
           {sourceInfo.image}
         </div>
         <div
           className={`
           ${styles.textDetails}
           ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
-        `}>
+        `}
+        >
           <h1>{sourceInfo.title}</h1>
         </div>
       </div>
       {!installed && <p>{sourceInfo.description}</p>}
-      <Button
-        styleVariant={isInstalled ? 'outline' : 'extra-small'}
-        type="submit"
-        onClick={toggleInstallation}>
+      <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={toggleInstallation}>
         {!isInstalled ? t('install') : t('uninstall')}
       </Button>
 
       {isModalVisible && (
         <SettingsModal
-          Icon={!installed ? CheckmarkIcon as React.ElementType : null}
+          Icon={!installed ? (CheckmarkIcon as React.ElementType) : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={t('uninstall') + ' ' + sourceInfo.title}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {installed && (
-            //add translation here 
+            //add translation here
             <p> Are you sure you want to uninstall this component? </p>
           )}
           {!installed ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>
               {t('toConfigure')}
             </Button>
-          ): (
+          ) : (
             <Button styleVariant="normal" type="submit" onClick={confirmInstallationToggle}>
-            {t('uninstall')}
-          </Button>
+              {t('uninstall')}
+            </Button>
           )}
         </SettingsModal>
       )}

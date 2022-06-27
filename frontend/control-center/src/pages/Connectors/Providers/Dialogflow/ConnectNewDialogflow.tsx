@@ -14,9 +14,10 @@ interface ConnectNewDialogflowProps {
   ) => void;
 }
 
-
 export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.config.components['enterprise-dialogflow-connector']);
+  const componentInfo = useSelector(
+    (state: StateModel) => state.data.config.components['enterprise-dialogflow-connector']
+  );
 
   const [projectID, setProjectID] = useState('');
   const [appCredentials, setAppCredentials] = useState('');
@@ -27,12 +28,12 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
   //call get components
 
   useEffect(() => {
-    componentInfo?.project_id && setProjectID(componentInfo?.project_id)
-    componentInfo?.dialogflow_credentials && setAppCredentials( componentInfo?.dialogflow_credentials);
+    componentInfo?.project_id && setProjectID(componentInfo?.project_id);
+    componentInfo?.dialogflow_credentials && setAppCredentials(componentInfo?.dialogflow_credentials);
     componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
-    componentInfo?.suggestion_confidence_level && setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
-  }, [componentInfo])
-
+    componentInfo?.suggestion_confidence_level &&
+      setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
+  }, [componentInfo]);
 
   return (
     <div>
@@ -54,7 +55,7 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
                 fontClass="font-base"
               />
             </div>
-         
+
             <div className={styles.formRow}>
               <Input
                 type="text"
@@ -114,7 +115,8 @@ export const ConnectNewDialogflow = ({createNewConnection}: ConnectNewDialogflow
                 event.preventDefault();
                 createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
               }}
-              style={{padding: '20px 60px'}}>
+              style={{padding: '20px 60px'}}
+            >
               {componentInfo?.enabled ? t('Update') : t('Configure')}
             </Button>
           </form>

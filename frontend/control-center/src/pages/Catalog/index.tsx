@@ -11,7 +11,6 @@ import {CatalogItemList} from './CatalogItemList';
 import {Source, getSourceForComponent} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 
-
 const Catalog = () => {
   const connectors = useSelector((state: StateModel) => state.data.config.components);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
@@ -36,40 +35,38 @@ const Catalog = () => {
         }
       });
 
-      const isComponentInstalled = (elem:SourceInfo) =>
+      const isComponentInstalled = (elem: SourceInfo) =>
         installedList.includes(elem.type) ||
         (elem.type === Source.instagram && installedList.includes('facebook')) ||
         elem.type === Source.twilioWhatsApp ||
         (Source.twilioSMS && installedList.includes('twilio'));
 
-      const installedComponents = sourcesInfosClone.filter((elem:SourceInfo) => isComponentInstalled(elem));
-      const notInstalledComponents = sourcesInfosClone.filter((elem:SourceInfo) => !isComponentInstalled(elem));
+      const installedComponents = sourcesInfosClone.filter((elem: SourceInfo) => isComponentInstalled(elem));
+      const notInstalledComponents = sourcesInfosClone.filter((elem: SourceInfo) => !isComponentInstalled(elem));
 
       setInstalledConnectors(installedComponents);
       setNotInstalledConnectors(notInstalledComponents);
     }
   }, [sourcesInfo, connectors]);
 
-
-  //mock of the installed / uninstalled components list update 
+  //mock of the installed / uninstalled components list update
   const updateItemList = (installed: boolean, type: Source) => {
-    if(!installed){
-      const updatedInstalledList = installedConnectors.filter((elem:SourceInfo) => {
-        if(elem.type === type) setNotInstalledConnectors(prevState => [...prevState, elem])
-        return elem.type !== type
+    if (!installed) {
+      const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => {
+        if (elem.type === type) setNotInstalledConnectors(prevState => [...prevState, elem]);
+        return elem.type !== type;
       });
-      setInstalledConnectors(updatedInstalledList)
+      setInstalledConnectors(updatedInstalledList);
     }
 
-    if(installed){
-      const updatedNotInstalledList = notInstalledConnectors.filter((elem:SourceInfo) => {
-        if(elem.type === type) setInstalledConnectors(prevState => [...prevState, elem])
-        return elem.type !== type
+    if (installed) {
+      const updatedNotInstalledList = notInstalledConnectors.filter((elem: SourceInfo) => {
+        if (elem.type === type) setInstalledConnectors(prevState => [...prevState, elem]);
+        return elem.type !== type;
       });
-      setNotInstalledConnectors(updatedNotInstalledList)
+      setNotInstalledConnectors(updatedNotInstalledList);
     }
-  }
-
+  };
 
   //should we keep this?
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {

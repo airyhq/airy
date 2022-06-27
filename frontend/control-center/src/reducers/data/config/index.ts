@@ -29,29 +29,29 @@ export default function configReducer(state = defaultState, action: Action): Con
         clusterVersion: getClusterVersion(action.payload) || 'unknown',
       };
     case getType(actions.enableDisableComponentAction):
-        return {
-          ...state,
-          components: {
-            ...state.components,
-            [action.payload.components[0].name]:{
-              ...state.components[action.payload.components[0].name],
-              enabled: action.payload.components[0].enabled,
-            }
-          }
-      }
-    case getType(actions.updateComponentConfigurationAction):
-      console.log('action', action);
-      return{
+      return {
         ...state,
         components: {
           ...state.components,
-          [action.payload.components[0].name]:{
+          [action.payload.components[0].name]: {
             ...state.components[action.payload.components[0].name],
             enabled: action.payload.components[0].enabled,
-            ...action.payload.components[0].data
-          }
-        }
-      }
+          },
+        },
+      };
+    case getType(actions.updateComponentConfigurationAction):
+      console.log('action', action);
+      return {
+        ...state,
+        components: {
+          ...state.components,
+          [action.payload.components[0].name]: {
+            ...state.components[action.payload.components[0].name],
+            enabled: action.payload.components[0].enabled,
+            ...action.payload.components[0].data,
+          },
+        },
+      };
     default:
       return state;
   }

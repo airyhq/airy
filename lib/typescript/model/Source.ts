@@ -22,6 +22,6 @@ export const getSourceForComponent = (item: string) => {
     .split('-')
     .filter(element => element !== 'enterprise' && element !== 'sources' && element !== 'connector');
   let componentName = itemArr.join(' ').replace(/ /g, '');
-  if(componentName === 'chatplugin') componentName = 'chatPlugin';
+  if (componentName === 'chatplugin') componentName = 'chatPlugin';
   return Source[componentName];
 };

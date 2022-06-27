@@ -15,7 +15,7 @@ import {
   cyChannelsTwilioSmsAddButton,
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsInstagramAddButton,
-  cyChannelsDialogflowAddButton
+  cyChannelsDialogflowAddButton,
 } from 'handles';
 import {
   CATALOG_FACEBOOK_ROUTE,
@@ -33,7 +33,7 @@ import {
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
   CONNECTORS_DIALOGFLOW_ROUTE,
-  CONNECTORS_ZENDESK_ROUTE
+  CONNECTORS_ZENDESK_ROUTE,
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -70,7 +70,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-chat-plugin',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
-      docs: "https://airy.co/docs/core/sources/chatplugin/overview",
+      docs: 'https://airy.co/docs/core/sources/chatplugin/overview',
     },
     {
       type: Source.facebook,
@@ -85,7 +85,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
-      docs: "https://airy.co/docs/core/sources/facebook",
+      docs: 'https://airy.co/docs/core/sources/facebook',
     },
     {
       type: Source.twilioSMS,
@@ -98,7 +98,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-twilio',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
-      docs: "https://airy.co/docs/core/sources/sms-twilio",
+      docs: 'https://airy.co/docs/core/sources/sms-twilio',
     },
     {
       type: Source.twilioWhatsApp,
@@ -126,7 +126,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-google',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsGoogleAddButton,
-      docs: 'https://airy.co/docs/core/sources/google'
+      docs: 'https://airy.co/docs/core/sources/google',
     },
     {
       type: Source.instagram,
@@ -139,7 +139,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'sources-facebook',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
-      docs: 'https://airy.co/docs/core/sources/instagram'
+      docs: 'https://airy.co/docs/core/sources/instagram',
     },
     {
       type: Source.dialogflow,
@@ -152,7 +152,7 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
       configKey: 'enterprise-dialogflow-connector',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
-      docs: 'https://dialogflow.cloud.google.com/cx/projects'
+      docs: 'https://dialogflow.cloud.google.com/cx/projects',
     },
     // {
     //   type: Source.zendesk,
@@ -167,6 +167,5 @@ export const getSourcesInfo = (page: string): SourceInfo[] => {
     //   dataCyAddChannelButton: cyChannelsDialogflowAddButton,
     //   docs: 'https://airy.co/docs/enterprise/'
     // }
-  
   ];
 };

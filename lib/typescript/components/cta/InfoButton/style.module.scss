@@ -32,7 +32,6 @@
 
 .blueButton {
   border: 2px solid var(--color-airy-blue);
-
 }
 
 .link,
@@ -42,7 +41,7 @@
   text-decoration: underline;
   font-weight: 400;
   @include font-s;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .greyLink,

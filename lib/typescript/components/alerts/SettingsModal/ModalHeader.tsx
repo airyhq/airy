@@ -14,9 +14,7 @@ const ModalHeader = ({title, close, headerClassName}: ModalHeaderProps) => {
       <button className={styles.closeButton} onClick={close}>
         <CloseIcon className={styles.closeIcon} title="Close" />
       </button>
-      <div className={`${styles.headline} ${headerClassName}`}>
-        {title}
-      </div>
+      <div className={`${styles.headline} ${headerClassName}`}>{title}</div>
     </div>
   );
 };

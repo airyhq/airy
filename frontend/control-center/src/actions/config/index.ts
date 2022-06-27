@@ -11,12 +11,13 @@ const ADD_SETTINGS_TO_STORE = 'ADD_CONFIG_TO_STORE';
 export const saveClientConfigAction = createAction(ADD_SETTINGS_TO_STORE, (config: Config) => config)<Config>();
 export const enableDisableComponentAction = createAction(
   ENABLE_DISABLE_COMPONENT,
-  (components: EnableDisableComponentRequestPayload) => components)<EnableDisableComponentRequestPayload>();
+  (components: EnableDisableComponentRequestPayload) => components
+)<EnableDisableComponentRequestPayload>();
 
-export const updateComponentConfigurationAction = createAction(UPDATE_COMPONENT_CONFIGURATION, 
-  (updatedComponentData: UpdateComponentConfigurationRequestPayload) => updatedComponentData)
-  <UpdateComponentConfigurationRequestPayload>();
-
+export const updateComponentConfigurationAction = createAction(
+  UPDATE_COMPONENT_CONFIGURATION,
+  (updatedComponentData: UpdateComponentConfigurationRequestPayload) => updatedComponentData
+)<UpdateComponentConfigurationRequestPayload>();
 
 export const getClientConfig = () => async (dispatch: Dispatch<any>) => {
   return HttpClientInstance.getConfig().then((response: Config) => {
@@ -33,11 +34,11 @@ export const enableDisableComponent =
     });
   };
 
-export const updateComponentConfiguration = (updateComponentConfigurationRequestPayload: UpdateComponentConfigurationRequestPayload) => (dispatch: Dispatch<any>) => {
-  return HttpClientInstance.updateComponentConfiguration(updateComponentConfigurationRequestPayload).then(() => {
-    dispatch(updateComponentConfigurationAction(updateComponentConfigurationRequestPayload));
-    return Promise.resolve(true);
-  })
-}
-
-
+export const updateComponentConfiguration =
+  (updateComponentConfigurationRequestPayload: UpdateComponentConfigurationRequestPayload) =>
+  (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.updateComponentConfiguration(updateComponentConfigurationRequestPayload).then(() => {
+      dispatch(updateComponentConfigurationAction(updateComponentConfigurationRequestPayload));
+      return Promise.resolve(true);
+    });
+  };

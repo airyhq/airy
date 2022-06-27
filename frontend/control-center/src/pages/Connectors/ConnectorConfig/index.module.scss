@@ -6,7 +6,7 @@
   color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
-  width:100%;
+  width: 100%;
   margin: 17% 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
@@ -17,13 +17,12 @@
   width: 100%;
 }
 
-
 .linkButtonContainer {
   @include font-base;
   display: flex;
   align-items: center;
   color: var(--color-text-contrast);
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .headlineContainer {
@@ -32,7 +31,7 @@
   position: absolute;
   padding-left: 10px;
   margin: 88px 1.5em 0 191px;
-  width:85%;
+  width: 85%;
   h1 {
     @include font-xl;
     font-weight: bold;
@@ -44,47 +43,45 @@
 
   button {
     @include font-base;
-    font-weight:500;
+    font-weight: 500;
   }
 }
 
 .textIconContainer {
   display: flex;
-  width:100%;
+  width: 100%;
 }
 
-
-
 .textContainer {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 }
 
 .connectorIcon {
-  width:50px;
-  margin-right:24px;
+  width: 50px;
+  margin-right: 24px;
 }
 
 .textInfo {
   display: flex;
   justify-content: space-between;
-  align-items:center;
+  align-items: center;
 }
 
 .connectorDetails {
-  display:flex;
-  flex-direction:column;
-  margin-top:25px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
 
   p {
-    display:flex;
-    color:var(--color-text-gray);
+    display: flex;
+    color: var(--color-text-gray);
   }
 }
 
 .titleIconDetails {
-  display:flex;
+  display: flex;
 }
 
 .backButtonContainer {
@@ -93,7 +90,7 @@
   flex-direction: row;
 
   button {
-    background:transparent;
+    background: transparent;
   }
 }
 
@@ -234,7 +231,6 @@
   left: 0px;
 }
 
-
 .enableModalContainerWrapper {
   width: 60%;
   height: 80%;
@@ -252,19 +248,16 @@
   @include font-l;
 
   p {
-    max-width:70%;
-    text-align:center;
-    margin: 4px 0 20Px 0;
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
   }
-
 }
 
-
-.enableModalContainer  button {
-  margin-top:14px;
+.enableModalContainer button {
+  margin-top: 14px;
   padding: 0 40px;
 }
-
 
 .headerModal {
   @include font-xl;

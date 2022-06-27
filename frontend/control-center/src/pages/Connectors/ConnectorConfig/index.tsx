@@ -1,13 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
 import {Button, SettingsModal} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-
-import {apiHostUrl} from '../../../httpClient';
 import {StateModel} from '../../../reducers';
-import {allChannels} from '../../../selectors/channels';
 import {
   connectChatPlugin,
   updateChannel,
@@ -15,24 +12,12 @@ import {
   updateComponentConfiguration,
   enableDisableComponent,
 } from '../../../actions';
-
 import {LinkButton, InfoButton} from 'components';
-import {Channel, Source} from 'model';
-
-import {ConnectNewChatPlugin} from '../Providers/Airy/ChatPlugin/sections/ConnectNewChatPlugin';
-
-import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
+import {Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
-
-import styles from './index.module.scss';
-
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CATALOG_CHAT_PLUGIN_ROUTE} from '../../../routes/routes';
 import {useTranslation} from 'react-i18next';
-import CreateUpdateSection from '../Providers/Airy/ChatPlugin/sections/CreateUpdateSection/CreateUpdateSection';
-import {CustomiseSection} from '../Providers/Airy/ChatPlugin/sections/CustomiseSection/CustomiseSection';
-import {InstallSection} from '../Providers/Airy/ChatPlugin/sections/InstallSection/InstallSection';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
-import {ChatpluginConfig, DefaultConfig} from 'model';
+import styles from './index.module.scss';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -49,7 +34,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannels(state)),
   config: state.data.config,
 });
 
@@ -60,70 +44,36 @@ type ConnectorConfigProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, connectChatPlugin, updateComponentConfiguration, enableDisableComponent, config} = props;
+  const {connector, updateComponentConfiguration, enableDisableComponent, config} = props;
   const {channelId} = useParams();
-  const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
-  const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
-  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
+  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [modalTitle, setModalTitle] = useState('');
 
-  console.log('isEnabled initial', config);
-  console.log(
-    'config?.components[connectorInfo?.configKey]?.enabled',
-    config?.components[connectorInfo?.configKey]?.enabled
-  );
-
-  const navigate = useNavigate();
   const {t} = useTranslation();
-  const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CHAT_PLUGIN_ROUTE
-    : CATALOG_CHAT_PLUGIN_ROUTE;
 
-  //Pages.createUpdate:
+  useEffect(() => {
+    const sourceInfoArr = getSourcesInfo('Connectors');
+    const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
+    setConnectorInfo({...connectorSourceInfo[0]});
+  }, []);
 
   useEffect(() => {
     if (config && connectorInfo) {
-      console.log('CONFIG', config?.components && config?.components[connectorInfo?.configKey]?.enabled);
       setIsEnabled(config?.components[connectorInfo?.configKey]?.enabled);
     }
   }, [config, connectorInfo]);
 
   useEffect(() => {
-    console.log('isEnabled', isEnabled);
     isEnabled
       ? setModalTitle(t('Disable') + ' ' + connectorInfo && connectorInfo?.title)
       : setModalTitle(connectorInfo && connectorInfo?.title + ' ' + t('enabled'));
   }, [isEnabled, connectorInfo]);
 
-  useEffect(() => {
-    console.log('connectorInfo', connectorInfo);
-  }, [connectorInfo]);
-
-  useEffect(() => {
-    const sourceInfoArr = getSourcesInfo('Connectors');
-
-    const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
-
-    setConnectorInfo({...connectorSourceInfo[0]});
-  }, []);
-
-  //create one for each source //
+  //here return with connector connection to make it custimizable
   const createNewConnection = (...args: string[]) => {
-    if (connector === Source.chatPlugin) {
-      const [displayName, imageUrl] = args;
-      return connectChatPlugin({
-        name: displayName,
-        ...(imageUrl.length > 0 && {
-          imageUrl: imageUrl,
-        }),
-      }).then((id: string) => {
-        navigate(`${CHAT_PLUGIN_ROUTE}/${id}`);
-      });
-    }
-
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
 
@@ -142,8 +92,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         ],
       };
 
-      console.log('PAYLOAD', payload);
-
       updateComponentConfiguration(payload).then(() => {
         setIsEnabled(true);
         setConfigurationModal(true);
@@ -151,12 +99,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   };
 
-  //here switch with source to make it custimizable
+  //here return with connector connect form to make it custimizable
   const PageContent = () => {
-    if (connector === Source.chatPlugin) {
-      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
-    }
-
     if (connector === Source.dialogflow) {
       return <ConnectNewDialogflow createNewConnection={createNewConnection} />;
     }
@@ -170,9 +114,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const closeConfigurationModal = () => {
-    if(!isEnabled) enableDisableComponentToggle();
-    setConfigurationModal(false)
-  }
+    if (!isEnabled) enableDisableComponentToggle();
+    setConfigurationModal(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -210,7 +154,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                     styleVariant="normal"
                     type="submit"
                     onClick={() => setConfigurationModal(true)}
-                    style={{padding: '20px 40px'}}>
+                    style={{padding: '20px 40px'}}
+                  >
                     {isEnabled ? t('Disable') : t('Enable')}
                   </Button>
                 </div>
@@ -220,7 +165,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         </section>
       </section>
 
-      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
+      <div className={styles.wrapper}>
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
@@ -241,11 +186,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           containerClassName={styles.enableModalContainer}
           title={modalTitle}
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {isEnabled && (
-            //add translation here
             <>
-              <p> Are you sure you want to disable this component? </p>
+              <p> {t('ConfirmationDisableQuestion')} </p>
 
               <Button styleVariant="normal" type="submit" onClick={enableDisableComponentToggle}>
                 {t('Disable')}

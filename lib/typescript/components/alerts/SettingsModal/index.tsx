@@ -10,7 +10,7 @@ type SettingsModalProps = {
   children: any;
   wrapperClassName?: string;
   containerClassName?: string;
-  Icon?:React.ElementType | null;
+  Icon?: React.ElementType | null;
   headerClassName?: string;
 };
 
@@ -27,7 +27,7 @@ export const SettingsModal = (props: SettingsModalProps) => {
       onRequestClose={close}
     >
       <div className={containerClassName}>
-        {Icon ? <Icon className={styles.icon}/> : ''}
+        {Icon ? <Icon className={styles.icon} /> : ''}
         <ModalHeader title={title} close={close} headerClassName={headerClassName} />
         {children}
       </div>

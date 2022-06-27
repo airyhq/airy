@@ -20,7 +20,6 @@
   //   cursor: pointer;
   // }
 
-
   p {
     @include font-xs;
     margin: 10px 0 0 0;
@@ -28,7 +27,7 @@
   }
 
   button {
-    margin-top:14px;
+    margin-top: 14px;
   }
 }
 
@@ -60,18 +59,13 @@
   }
 }
 
-
-
 .channelLogoTitleContainer {
   display: flex;
   align-items: center;
   border-radius: 10px;
-
-
 }
 
-
-//refactor this as they are the same 
+//refactor this as they are the same
 .channelLogoTitleContainerInstalled {
   align-items: center;
 
@@ -151,22 +145,17 @@
   @include font-l;
 
   p {
-    max-width:70%;
-    text-align:center;
-    margin: 4px 0 20Px 0;
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
   }
-
 }
 
-
-.enableModalContainer  button {
-  margin-top:14px;
+.enableModalContainer button {
+  margin-top: 14px;
   padding: 0 40px;
 }
-
 
 .headerModal {
   @include font-xl;
 }
-
-

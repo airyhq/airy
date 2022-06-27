@@ -286,7 +286,7 @@ class InputComponent extends Component<InputProps, IState> {
       dataCy,
       min,
       max,
-      step
+      step,
     } = this.props;
 
     const {validationResult, wasBlurred} = this.state;
@@ -406,8 +406,8 @@ export interface InputProps {
 
   id?: string;
   step?: number;
-  min?:number;
-  max?:number;
+  min?: number;
+  max?: number;
 
   /** The label above the input field */
   label?: string;

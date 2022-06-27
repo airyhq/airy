@@ -15,7 +15,17 @@ type ButtonProps = {
   buttonRef?: any;
 };
 
-export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy, style, buttonRef}: ButtonProps) => {
+export const Button = ({
+  children,
+  onClick,
+  type,
+  styleVariant,
+  disabled,
+  tabIndex,
+  dataCy,
+  style,
+  buttonRef,
+}: ButtonProps) => {
   const styleFor = (variant: styleVariantType) => {
     switch (variant) {
       case 'extra-small':

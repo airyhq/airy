@@ -91,10 +91,7 @@ func GetComponentsConfigMaps(
 			continue
 		}
 
-		componentsGroup, componentName, ok := getComponentFromLabel(label)
-		if !ok {
-			continue
-		}
+		componentsGroup, componentName := getComponentFromLabel(label)
 
 		componentsGroupContent, ok := components[componentsGroup]
 		if !ok {
@@ -108,11 +105,8 @@ func GetComponentsConfigMaps(
 	return components, nil
 }
 
-func getComponentFromLabel(l string) (string, string, bool) {
+func getComponentFromLabel(l string) (string, string) {
 	c := strings.Split(l, "-")
-	if len(c) != 2 {
-		return "", "", false
-	}
 
-	return c[0], c[1], true
+	return c[0], strings.Join(c[1:], "-")
 }

@@ -1,4 +1,4 @@
-import React, {CSSProperties, ReactNode, useRef} from 'react';
+import React, {CSSProperties, ReactNode} from 'react';
 
 import styles from './style.module.scss';
 

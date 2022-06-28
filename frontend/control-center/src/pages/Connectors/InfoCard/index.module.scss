@@ -13,12 +13,6 @@
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
-  // &:hover {
-  //   border: 2px solid var(--color-airy-blue);
-  //   margin-left: -1px;
-  //   width: 261px;
-  //   cursor: pointer;
-  // }
 
   p {
     @include font-xs;
@@ -30,14 +24,6 @@
     margin-top: 14px;
   }
 }
-
-// .notInstalled {
-//   height: 96px;
-// }
-
-// .installed {
-//   height: 64px;
-// }
 
 .channelLogoInstagram {
   margin-right: 10px;
@@ -63,11 +49,6 @@
   display: flex;
   align-items: center;
   border-radius: 10px;
-}
-
-//refactor this as they are the same
-.channelLogoTitleContainerInstalled {
-  align-items: center;
 
   .channelLogo {
     display: flex;
@@ -75,17 +56,6 @@
     svg {
       width: 34px;
       max-height: 30px;
-    }
-  }
-}
-
-.channelLogoTitleContainerNotInstalled {
-  align-items: center;
-
-  .channelLogo {
-    svg {
-      width: 34px;
-      height: 30px;
     }
   }
 }

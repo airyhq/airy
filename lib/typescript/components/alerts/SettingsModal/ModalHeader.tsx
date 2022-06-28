@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 import styles from './ModalHeader.module.scss';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 

@@ -78,10 +78,7 @@ const InfoCard = (props: InfoCardProps) => {
           ${styles.channelLogoTitleContainer} 
           ${
             style === InfoCardStyle.expanded
-              ? styles.isExpandedContainer
-              : installed
-              ? styles.channelLogoTitleContainerInstalled
-              : styles.channelLogoTitleContainerNotInstalled
+              ? styles.isExpandedContainer : ''
           }          
         `}
       >

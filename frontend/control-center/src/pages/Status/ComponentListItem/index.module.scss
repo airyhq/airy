@@ -97,7 +97,11 @@
   height: 20px;
 }
 
-.disableHealthy {
+.installedNotConfigured {
+  fill: var(--color-not-configured-orange);
+}
+
+.disabledHealthy {
   fill: var(--color-text-gray);
 }
 

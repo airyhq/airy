@@ -17,13 +17,18 @@ export default function connectorsReducer(state = defaultState, action: Action):
         ...action.payload.components.sources,
         ...action.payload.components.enterprise,
       };
-    case getType(actions.updateConnectorConfigurationAction):
+    case getType(actions.updateConnectorConfigurationAction): {
+      let name = action.payload.components[0].name;
+      if (name.includes('enterprise')) {
+        name = name = name.replace('enterprise-', '');
+      }
       return {
         ...state,
-        [action.payload.components[0].name]: {
+        [name]: {
           ...action.payload.components[0].data,
         },
       };
+    }
     default:
       return state;
   }

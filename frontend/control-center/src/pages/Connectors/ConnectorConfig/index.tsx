@@ -16,7 +16,7 @@ import {LinkButton, InfoButton} from 'components';
 import {Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
-import ConnectNewDialogflow from '../Providers/Dialogflow/ConnectNewDialogflow';
+import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 
@@ -66,7 +66,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   }, [config, connectorInfo]);
 
-  //here return with connector connection to make the component custimizable
+  //the component is customizable: here return with connector connection to make
   const createNewConnection = (...args: string[]) => {
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
@@ -87,19 +87,14 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
 
       updateConnectorConfiguration(payload).then(() => {
-        enableDisableComponent(payload);
         if (!isEnabled) {
-          setIsEnabled(true);
-
-          setTimeout(() => {
-            setConfigurationModal(true);
-          }, 200)
+          setConfigurationModal(true);
         }
       });
     }
   };
 
-  //here return with connector connect form to make the component custimizable
+  //the component is customizable: here return with connect form of each connector
   const PageContent = () => {
     if (connector === Source.dialogflow) {
       return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
@@ -114,13 +109,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const closeConfigurationModal = () => {
     setConfigurationModal(false);
+    if (!isEnabled) {
+      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
+      setIsEnabled(true);
+    }
   };
 
   const openModal = () => {
-    if (!isEnabled) {
-      setIsEnabled(true);
-      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
-    }
     setConfigurationModal(true);
   };
 
@@ -189,7 +184,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

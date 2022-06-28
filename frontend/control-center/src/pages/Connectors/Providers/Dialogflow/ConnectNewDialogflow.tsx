@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {getConnectorsConfiguration} from '../../../../actions';
 import {Button, Input} from 'components';
 import styles from './ConnectNewDialogflow.module.scss';
 import {useTranslation} from 'react-i18next';
-import {connect, ConnectedProps} from 'react-redux';
 
 type ConnectNewDialogflowProps = {
   createNewConnection: (
@@ -15,40 +13,22 @@ type ConnectNewDialogflowProps = {
     replyConfidenceLevel: string
   ) => void;
   isEnabled: boolean;
-} & ConnectedProps<typeof connector>;
-
-const mapDispatchToProps = {
-  getConnectorsConfiguration,
 };
 
-const connector = connect(null, mapDispatchToProps);
-
-const ConnectNewDialogflow = ({
-  createNewConnection,
-  isEnabled,
-  getConnectorsConfiguration,
-}: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector['enterprise-dialogflow-connector']);
-  const [projectID, setProjectID] = useState(componentInfo?.project_id || '');
-  const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflow_credentials || '');
-  const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(componentInfo?.suggestion_confidence_level || '');
-  const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.reply_confidence_level || '');
+export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+  const componentInfo = useSelector((state: StateModel) => state.data.connector['dialogflow-connector']);
+  const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
+  const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
+  const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(
+    componentInfo?.suggestionConfidenceLevel || ''
+  );
+  const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const {t} = useTranslation();
 
-  // useEffect(() => {
-  //   if(componentInfo){
-  //     if(!projectID)setProjectID(componentInfo.project_id);
-  //     if(!appCredentials) setAppCredentials(componentInfo.dialogflow_credentials);
-  //     if(!suggestionConfidenceLevel) setSuggestionConfidenceLevel(componentInfo.suggestion_confidence_level);
-  //     if(!replyConfidenceLevel) setReplyConfidenceLevel(componentInfo.reply_confidence_level );
-  //   } 
-
-  // }, [componentInfo, projectID,appCredentials,suggestionConfidenceLevel,replyConfidenceLevel ])
-
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
-    }
+    event.preventDefault();
+    createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
+  };
 
   return (
     <div>
@@ -124,12 +104,12 @@ const ConnectNewDialogflow = ({
             </div>
             <Button
               styleVariant="small"
-              type='button'
+              type="button"
               disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
               style={{padding: '20px 60px'}}
-              onClick={(e) => submitConfigData(e)}
+              onClick={e => submitConfigData(e)}
             >
-              {isEnabled ? t('Update') : t('toConfigure')}
+              {isEnabled ? t('Update') : t('configure')}
             </Button>
           </form>
         </div>
@@ -137,5 +117,3 @@ const ConnectNewDialogflow = ({
     </div>
   );
 };
-
-export default connector(ConnectNewDialogflow);

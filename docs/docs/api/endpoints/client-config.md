@@ -60,11 +60,6 @@ The `tag_config` property in the response represents the configuration for [tags
       "healthy": false,
       "component": "sources-google"
     },
-    "sources-viber-events-router": {
-      "enabled": false,
-      "healthy": false,
-      "component": "sources-viber"
-    },
     "api-communication": {
       "enabled": true,
       "healthy": true,

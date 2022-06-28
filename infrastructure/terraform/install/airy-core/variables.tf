@@ -13,5 +13,5 @@ variable "hosted_zone" {
 
 variable "airy_workspace" {
   type    = string
-  default = "../../"
+  default = "../.."
 }

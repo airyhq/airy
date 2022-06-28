@@ -73,9 +73,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   </div>
                 )) ||
                 (getSourceForComponent(infoItem.type) &&
-                  !(channelsBySource(infoItem.type).length > 0) &&
                   components &&
-                  components[infoItem.configKey] && (
+                  components[infoItem.configKey] && !infoItem.channel && (
                     <div style={{display: 'flex'}} key={infoItem.type}>
                       <InfoCard
                         installed={true}

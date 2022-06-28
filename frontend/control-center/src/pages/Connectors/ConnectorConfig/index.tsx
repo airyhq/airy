@@ -67,7 +67,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, [config, connectorInfo]);
 
   //here return with connector connection to make the component custimizable
-  const createNewConnection = async (...args: string[]) => {
+  const createNewConnection = (...args: string[]) => {
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
 
@@ -86,13 +86,16 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         ],
       };
 
-      try {
-        await enableDisableComponent(payload);
-        await updateConnectorConfiguration(payload);
-        if (!isEnabled) setIsEnabled(true);
-      } catch (error) {
-        return error;
-      }
+      updateConnectorConfiguration(payload).then(() => {
+        enableDisableComponent(payload);
+        if (!isEnabled) {
+          setIsEnabled(true);
+
+          setTimeout(() => {
+            setConfigurationModal(true);
+          }, 200)
+        }
+      });
     }
   };
 
@@ -106,13 +109,19 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
     setIsEnabled(!isEnabled);
-    const updatedStatus = isEnabled ? false : true;
-    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: updatedStatus}]});
+    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]});
   };
 
   const closeConfigurationModal = () => {
-    if (!isEnabled) enableDisableComponentToggle();
     setConfigurationModal(false);
+  };
+
+  const openModal = () => {
+    if (!isEnabled) {
+      setIsEnabled(true);
+      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
+    }
+    setConfigurationModal(true);
   };
 
   return (
@@ -147,12 +156,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       text={t('infoButtonText')}
                     />
                   </p>
-                  <Button
-                    styleVariant="normal"
-                    type="submit"
-                    onClick={() => setConfigurationModal(true)}
-                    style={{padding: '20px 40px'}}
-                  >
+                  <Button styleVariant="normal" type="button" onClick={openModal} style={{padding: '20px 40px'}}>
                     {isEnabled ? t('disableComponent') : t('Enable')}
                   </Button>
                 </div>
@@ -185,8 +189,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}
-        >
+          headerClassName={styles.headerModal}>
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

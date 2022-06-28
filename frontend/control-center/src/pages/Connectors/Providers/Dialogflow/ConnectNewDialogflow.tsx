@@ -29,23 +29,26 @@ const ConnectNewDialogflow = ({
   getConnectorsConfiguration,
 }: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['enterprise-dialogflow-connector']);
-  const [projectID, setProjectID] = useState('');
-  const [appCredentials, setAppCredentials] = useState('');
-  const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState('');
-  const [replyConfidenceLevel, setReplyConfidenceLevel] = useState('');
+  const [projectID, setProjectID] = useState(componentInfo?.project_id || '');
+  const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflow_credentials || '');
+  const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(componentInfo?.suggestion_confidence_level || '');
+  const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.reply_confidence_level || '');
   const {t} = useTranslation();
 
-  useEffect(() => {
-    if (componentInfo) {
-      componentInfo?.project_id && setProjectID(componentInfo?.project_id);
-      componentInfo?.dialogflow_credentials && setAppCredentials(componentInfo?.dialogflow_credentials);
-      componentInfo?.reply_confidence_level && setReplyConfidenceLevel(componentInfo?.reply_confidence_level);
-      componentInfo?.suggestion_confidence_level &&
-        setSuggestionConfidenceLevel(componentInfo?.suggestion_confidence_level);
-    } else {
-      getConnectorsConfiguration();
+  // useEffect(() => {
+  //   if(componentInfo){
+  //     if(!projectID)setProjectID(componentInfo.project_id);
+  //     if(!appCredentials) setAppCredentials(componentInfo.dialogflow_credentials);
+  //     if(!suggestionConfidenceLevel) setSuggestionConfidenceLevel(componentInfo.suggestion_confidence_level);
+  //     if(!replyConfidenceLevel) setReplyConfidenceLevel(componentInfo.reply_confidence_level );
+  //   } 
+
+  // }, [componentInfo, projectID,appCredentials,suggestionConfidenceLevel,replyConfidenceLevel ])
+
+  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
     }
-  }, [componentInfo]);
 
   return (
     <div>
@@ -120,14 +123,11 @@ const ConnectNewDialogflow = ({
               />
             </div>
             <Button
-              type="submit"
               styleVariant="small"
+              type='button'
               disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
-              onClick={(event: React.FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
-              }}
               style={{padding: '20px 60px'}}
+              onClick={(e) => submitConfigData(e)}
             >
               {isEnabled ? t('Update') : t('toConfigure')}
             </Button>

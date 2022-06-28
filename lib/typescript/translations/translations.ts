@@ -129,7 +129,7 @@ const resources = {
 
       //Channels
       toConfigure: 'To configure',
-      configure: 'configure',
+      configure: 'Configure',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -494,7 +494,7 @@ const resources = {
 
       //Channels
       toConfigure: 'konfigurieren',
-      configure: 'konfigurieren',
+      configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
       facebookTitle: 'Facebook Messenger',
@@ -845,7 +845,7 @@ const resources = {
 
       //Channels
       toConfigure: 'configuration',
-      configure: 'ajouter la configuration',
+      configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
       facebookTitle: 'Facebook Messenger',
@@ -1200,7 +1200,7 @@ const resources = {
 
       //Channels
       toConfigure: 'configurar',
-      configure: 'configurar',
+      configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
       facebookTitle: 'Facebook Messenger',

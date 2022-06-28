@@ -9,7 +9,7 @@ Airy Core is a messaging platform that contains a backend and frontend system.
 
 The `backend` system is a streaming platform. Its role is to:
 
-- Ingest conversational events from different sources (mostly via webhook
+- Ingest conversational events from different connectors (mostly via webhook
   integrations), process them, and store them in an Apache Kafka cluster.
 - Make the processed events available and accessible through the [Core API](/api/introduction).
 - Expose conversational events via a [webhook](/api/webhook) integration.
@@ -35,11 +35,22 @@ All the credentials, keys and secrets which the user can overwrite can be config
 - `{component-type}-{component}` ConfigMap - holding the configuration for individual sources and components
 - `airy-config-map` ConfigMap - storing a copy of the `airy.yaml` config file, inside the Kubernetes cluster.
 
-## Sources
+## Apps
 
-- sources-`SOURCE_NAME`-webhook - Ingest events from the `SOURCE_NAME` source
-- sources-`SOURCE_NAME`-events-router - Process messages from a `SOURCE_NAME` source
-- sources-`SOURCE_NAME`-connector - Send and receive events (mostly messages) to and from a `SOURCE_NAME` source and extract metadata
+An App is a component or a collection of components which are interconnected and can be used to build any kind of application inside the Airy system.
+
+## Components
+
+A Component is a single unit which is used to build an App alone or together with other Components. There are different types of Components:
+
+- `connector` - a connector is a component which is used to ingest events from and to a different source.
+- `ui` - a UI component is a component which is used to display the events in a user interface.
+- `api` - an API component is a component which is used to expose the events to a third party.
+
+## Pods
+
+Since Airy is built on Kubernetes pods are the smallest deployable unit and therefore are used to compose components.
+A Component can have multiple Services / Pods.
 
 ## API
 

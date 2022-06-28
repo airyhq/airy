@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
 
 import styles from './style.module.scss';
@@ -6,12 +6,17 @@ import styles from './style.module.scss';
 type Props = {
   text: string;
   link: string;
-  color: 'blue' | 'grey';
+  color?: 'blue' | 'grey';
   dataCy?: string;
+  style?: CSSProperties;
 };
 
-export const InfoButton = ({text, link, color, dataCy}: Props) => (
-  <button className={`${styles.button} ${color === 'blue' ? styles.blueButton : styles.greyButton}`} data-cy={dataCy}>
+export const InfoButton = ({text, link, color, dataCy, style}: Props) => (
+  <button
+    className={`${styles.button} ${color === 'blue' ? styles.blueButton : styles.greyButton}`}
+    style={style}
+    data-cy={dataCy}
+  >
     <InfoCircle className={`${styles.circleIcon} ${color === 'blue' ? styles.blueIcon : styles.greyIcon}`} />
     <a
       href={link}

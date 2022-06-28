@@ -22,7 +22,20 @@ func (r ResourceUpdatedHandler) Handle(ctx Context) error {
 	}
 
 	for _, deployment := range deployments {
-		klog.Infof("Scheduling reload for deployment: %s", deployment.Name)
+		if r.ConfigMap.Labels != nil && r.ConfigMap.Annotations != nil {
+			if r.ConfigMap.Labels["core.airy.co/component"] == r.ConfigMap.Name {
+				if r.ConfigMap.Annotations["core.airy.co/enabled"] == "true" {
+					klog.Infof("Scheduling reload for deployment: %s", deployment.Name)
+					//TODO: Hanlde variable number of replicas
+					deployment.Spec.Replicas = util.Int32Ptr(1)
+				} else {
+					klog.Infof("Scheduling disable for deployment: %s", deployment.Name)
+					deployment.Spec.Replicas = util.Int32Ptr(0)
+				}
+
+			}
+
+		}
 		if err := handler.ReloadDeployment(deployment, ctx.ClientSet); err != nil {
 			klog.Errorf("Reloading deployment failed: %v", err)
 			return err

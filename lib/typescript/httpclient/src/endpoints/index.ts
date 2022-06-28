@@ -34,3 +34,4 @@ export * from './unsubscribeWebhook';
 export * from './updateWebhook';
 export * from './listContacts';
 export * from './deleteContact';
+export * from './enableDisableComponent';

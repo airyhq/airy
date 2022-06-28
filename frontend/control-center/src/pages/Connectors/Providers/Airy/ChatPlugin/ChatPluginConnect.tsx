@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
@@ -7,24 +7,28 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
-import {Button, LinkButton, InfoButton} from 'components';
+import {LinkButton, InfoButton} from 'components';
 import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
-import {EditChatPlugin} from './sections/EditChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_CONNECTED_ROUTE,
-  CATALOG_CONNECTED_ROUTE,
-  CATALOG_CHAT_PLUGIN_ROUTE,
-} from '../../../../../routes/routes';
+import {CONNECTORS_CHAT_PLUGIN_ROUTE, CATALOG_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
+import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
+import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
+import {InstallSection} from './sections/InstallSection/InstallSection';
+import {ChatpluginConfig, DefaultConfig} from 'model';
+
+export enum Pages {
+  createUpdate = 'create-update',
+  customization = 'customization',
+  install = 'install',
+}
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -41,11 +45,13 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
+  const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
+  const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
+  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
+  const displayName = currentChannel?.metadata?.name || '';
+  const imageUrl = currentChannel?.metadata?.imageUrl || '';
   const navigate = useNavigate();
   const {t} = useTranslation();
-  const CONNECTED_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CONNECTED_ROUTE
-    : CATALOG_CONNECTED_ROUTE;
   const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
     ? CONNECTORS_CHAT_PLUGIN_ROUTE
     : CATALOG_CHAT_PLUGIN_ROUTE;
@@ -58,15 +64,9 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
           imageUrl: imageUrl,
         }),
       })
-      .then(() => {
-        navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
+      .then((id: string) => {
+        navigate(`${CHAT_PLUGIN_ROUTE}/${id}`);
       });
-  };
-
-  const updateConnection = (displayName: string, imageUrl?: string) => {
-    props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
-    });
   };
 
   const disconnectChannel = (channel: Channel) => {
@@ -75,7 +75,45 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     }
   };
 
-  const openNewPage = () => navigate(CHAT_PLUGIN_ROUTE + '/new');
+  const showCreateUpdate = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.createUpdate);
+  };
+
+  const showCustomization = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.customization);
+  };
+
+  const showInstall = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage(Pages.install);
+  };
+
+  const PageContent = () => {
+    switch (currentPage) {
+      case Pages.createUpdate:
+        if (channelId === 'new') {
+          return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
+        }
+        if (channelId?.length > 0) {
+          return <CreateUpdateSection channel={currentChannel} displayName={displayName} imageUrl={imageUrl} />;
+        }
+        return <OverviewSection />;
+      case Pages.customization:
+        return <CustomiseSection channelId={channelId} host={apiHostUrl} setChatpluginConfig={setChatpluginConfig} />;
+      case Pages.install:
+        return (
+          <div className={styles.formWrapper}>
+            <InstallSection
+              channelId={channelId}
+              host={apiHostUrl}
+              chatpluginConfig={chatpluginConfig || DefaultConfig}
+            />
+          </div>
+        );
+    }
+  };
 
   const OverviewSection = () => (
     <div className={styles.overview}>
@@ -112,41 +150,57 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     </div>
   );
 
-  const PageContent = () => {
-    if (channelId === 'new') {
-      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
-    }
-    if (channelId?.length > 0) {
-      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      return <EditChatPlugin channel={channel} host={apiHostUrl} updateConnection={updateConnection} />;
-    }
-    return <OverviewSection />;
-  };
-
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.headline}>
-        <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
-        {channelId == null && (
-          <div className={styles.addButton}>
-            <Button onClick={openNewPage}>
-              <span title={t('addChannel')}>+</span>
-            </Button>
+    <div className={styles.container}>
+      <div className={styles.headlineContainer}>
+        <div className={styles.backButtonContainer}>
+          <LinkButton onClick={() => navigate(-1)} type="button">
+            <ArrowLeftIcon className={styles.backIcon} />
+          </LinkButton>
+          <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
+        </div>
+        <div className={styles.infoBox}>
+          <InfoButton link="https://airy.co/docs/core/sources/chatplugin/overview" text={t('infoButtonText')} />
+        </div>
+      </div>
+      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
+        <div className={styles.channelsLineContainer}>
+          <div className={styles.channelsLineItems}>
+            <span
+              onClick={showCreateUpdate}
+              className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
+            >
+              {channelId === 'new' ? t('create') : t('update')}
+            </span>
+            {channelId !== 'new' && (
+              <span
+                onClick={showCustomization}
+                className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+              >
+                {t('customize')}
+              </span>
+            )}
+            {channelId !== 'new' && (
+              <span
+                onClick={showInstall}
+                className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
+              >
+                {t('install')}
+              </span>
+            )}
           </div>
-        )}
+          <div className={styles.line} />
+        </div>
+        <div
+          style={
+            currentPage === Pages.customization
+              ? {paddingTop: '0px', paddingLeft: '32px'}
+              : {paddingTop: '36px', paddingLeft: '32px'}
+          }
+        >
+          <PageContent />
+        </div>
       </div>
-      <div>
-        <InfoButton
-          link="https://airy.co/docs/core/sources/chatplugin/overview"
-          text={t('infoButtonText')}
-          color="grey"
-        />
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
-      </div>
-      <PageContent />
     </div>
   );
 };

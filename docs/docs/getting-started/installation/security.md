@@ -20,7 +20,7 @@ security:
 After you apply this configuration, you can query the API with the appropriate systemToken:
 
 ```sh
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer my-token-for-the-api" http://airy.core/conversations.list
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer my-token-for-the-api" http://localhost/conversations.list
 
 ```
 

@@ -69,6 +69,7 @@ const resources = {
       companyName: 'company name',
       contactCapital: 'Contact',
       otherConversationsContact: 'Other conversations for this contact:',
+      conversationsContact: 'Conversations for this contact:',
       noResultsConverstation: 'No Results',
       contactName: 'Contact Name',
       conversations: 'Conversations',
@@ -119,6 +120,8 @@ const resources = {
       searchTemplates: 'Search for templates',
 
       //Control-Center
+      disableComponent: 'Disable',
+      disableComponentText: 'Are you sure you want to disable this component?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -155,6 +158,10 @@ const resources = {
       search: 'Search',
       save: 'Save',
       delete: 'Delete',
+      reset: 'Reset',
+      preview: 'Preview',
+      sample: 'Sample',
+      undoStep: 'Undo',
       deleteChannel: 'Do you really want to delete this channel?',
       addChanne: 'Add channel',
       infoButtonText: 'more information about this source',
@@ -166,17 +173,18 @@ const resources = {
       imageUrlHint: 'max. 1024x1024 pixel PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
       addCodeTagHead: 'Add this code inside the tag ',
       copyCode: 'Copy code',
-      headTextColor: 'Header Text Color',
+      headerTextColor: 'Header Text Color',
       subtitleTextColor: 'Subtitle Text Color',
       primaryColor: 'Primary Color',
       accentColor: 'Accent Color',
       backgroundColor: 'Background Color',
       inboundBackgroundColor: 'Inbound Background Color',
-      inboundTextColor: 'Inbound Text Color',
+      inboundMessageTextColor: 'Inbound Text Color',
       outboundBackgroundColor: 'Outbound Background Color',
-      outboundTextColor: 'Outbound Text Color',
+      outboundMessageTextColor: 'Outbound Text Color',
       unreadMessageDotColor: 'Unread Message Dot Color',
       headerText: 'Header Text',
       addTextOptional: '(optionally) add a text',
@@ -202,6 +210,9 @@ const resources = {
       disableFiles: 'Disable Files',
       customFont: 'Custom Font: ',
       update: 'Update',
+      create: 'Create',
+      customize: 'Customize',
+      install: 'Install',
       addAName: 'Add a name',
       settings: 'Settings',
       installCustomize: 'Install & Customize',
@@ -218,6 +229,10 @@ const resources = {
       connectPage: 'Connect Page',
       updatePage: 'Update Page',
       errorMessage: 'Please check entered value',
+      chatpluginInstallText:
+        'You will be able to access the code to include in your header later after you are done customising.',
+      installCodeNpm1: 'You can install your ',
+      installCodeNpm2: ' library here:',
 
       //Facebook Messenger
 
@@ -394,6 +409,7 @@ const resources = {
       companyName: 'Firmenname',
       contactCapital: 'Kontakt',
       otherConversationsContact: 'Andere Gespräche für diesen Kontakt:',
+      conversationsContact: 'Gespräche für diesen Kontakt:',
       contactName: 'Kontaktname',
       conversations: 'Konversationen',
       noResultsConverstation: 'keine Ergebnisse',
@@ -446,6 +462,8 @@ const resources = {
       searchTemplates: 'Suche nach Vorlagen',
 
       //Control-Center
+      disableComponent: 'Deaktivieren',
+      disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -482,6 +500,9 @@ const resources = {
       search: 'Suchen',
       save: 'Speichern',
       delete: 'Löschen',
+      reset: 'Zurücksetzen',
+      preview: 'Vorschau',
+      sample: 'Muster',
       deleteChannel: 'Wollen Sie diesen Kanal wirklich löschen?',
       addChanne: 'Kanal hinzufügen',
       infoButtonText: 'mehr Informationen über diese Quelle',
@@ -493,17 +514,18 @@ const resources = {
       imageUrlHint: 'max. 1024x1024 Pixel PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
       addCodeTagHead: 'Fügen Sie diesen Code innerhalb des Tags ein ',
       copyCode: 'Code kopieren',
-      headTextColor: 'Textfarbe der Kopfzeile',
+      headerTextColor: 'Textfarbe der Kopfzeile',
       subtitleTextColor: 'Untertitel Textfarbe',
       primaryColor: 'Primärfarbe',
       accentColor: 'Akzentfarbe',
       backgroundColor: 'Hintergrundfarbe',
       inboundBackgroundColor: 'Eingehende Hintergrundfarbe',
-      inboundTextColor: 'Eingehende Textfarbe',
+      inboundMessageTextColor: 'Eingehende Textfarbe',
       outboundBackgroundColor: 'Ausgehende Hintergrundfarbe',
-      outboundTextColor: 'Ausgehende Textfarbe',
+      outboundMessageTextColor: 'Ausgehende Textfarbe',
       unreadMessageDotColor: 'Farbe des Punktes für ungelesene Nachrichten',
       headerText: 'Kopfzeilentext',
       addTextOptional: '(optional) einen Text hinzufügen',
@@ -529,6 +551,9 @@ const resources = {
       closingOptions: 'Optionen zum Schließen',
       bubbleStateOptions: 'Blasenstatus-Optionen',
       update: 'Aktualisieren',
+      create: 'Erstellen',
+      customize: 'Anpassen',
+      install: 'Installieren',
       addAName: 'Namen hinzufügen',
       settings: 'Einstellungen',
       installCustomize: 'Installieren & Anpassen',
@@ -545,6 +570,10 @@ const resources = {
       connectPage: 'Seite verbinden',
       updatePage: 'Seite  aktualisieren',
       errorMessage: 'Bitte überprüfen Sie Ihre Eingabe',
+      chatpluginInstallText:
+        'Sie können auf den Code zugreifen, den Sie später in Ihre Kopfzeile einfügen können, wenn Sie mit den Anpassungen fertig sind.',
+      installCodeNpm1: 'Sie können Ihre ',
+      installCodeNpm2: '-Bibliothek hier installieren:',
 
       //Facebook Messenger
 
@@ -711,7 +740,8 @@ const resources = {
       organization: 'organisation',
       companyName: `nom de l'entreprise`,
       contactCapital: 'Contacter',
-      otherConversationsContact: 'Autres conversations pour ce contact :',
+      otherConversationsContact: 'Autres conversations de ce contact :',
+      conversationsContact: 'Conversations de ce contact :',
       noResultsConverstation: 'Aucun Résultat',
       contactName: 'Nom du contact',
       conversations: 'Conversations',
@@ -720,7 +750,7 @@ const resources = {
 
       //Status
       all: 'Tous',
-      open: 'Ouvrir',
+      open: 'Ouvert',
       closed: 'Fermé',
 
       //Message
@@ -756,11 +786,13 @@ const resources = {
       templatesExplanation: `Les modèles vous permettent d'offrir une expérience d'interaction plus riche avec des images et des boutons.`,
       useTemplates: 'Utilisez des modèles de texte pour ne plus jamais taper la même chose.',
       noResult: 'Aucun résultat trouvé.',
-      writeCorrectly: 'Avez-vous tout écrit correctement?',
+      writeCorrectly: 'Avez-vous tout écrit correctement ?',
       errorTemplates: `Oups! Vos modèles n'ont pas pu être chargés. Veuillez réessayer plus tard.`,
       searchTemplates: 'Recherche de modèles',
 
       //Control-Center
+      disableComponent: 'Désactiver',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -794,9 +826,12 @@ const resources = {
       manage: 'Gérer',
       name: 'Nom',
       edit: 'Modifier',
-      search: 'Recherche',
-      save: 'Sauvez',
+      search: 'Rechercher',
+      save: 'Sauvegarder',
       delete: 'Supprimer',
+      reset: 'Réinitialiser',
+      preview: 'Aperçu',
+      sample: 'Echantillon',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
       infoButtonText: `plus d'informations sur cette source`,
@@ -805,34 +840,35 @@ const resources = {
       addDisplayName: 'Ajouter un nom',
       imageUrl: `URL d'une image`,
       imageUrlPlaceholder: `(facultatif) ajouter l'URL d'une image`,
-      imageUrlHint: 'max. 1024x1024 pixel PNG',
+      imageUrlHint: 'max. 1024x1024 pixels PNG',
 
       //Customize Chatplugin
+      chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
       copyCode: 'Copier le code',
-      headTextColor: `Couleur du texte de l'en-tête`,
+      headerTextColor: `Couleur du texte de l'en-tête`,
       subtitleTextColor: 'Couleur du texte du sous-titre',
       primaryColor: 'Couleur primaire',
       accentColor: `Couleur d'accent`,
       backgroundColor: 'Couleur de fond',
       inboundBackgroundColor: `Couleur d'arrière-plan pour les messages entrants`,
-      inboundTextColor: 'Couleur du texte entrant',
+      inboundMessageTextColor: 'Couleur du texte entrant',
       outboundBackgroundColor: `Couleur d'arrière-plan pour les messages de sortie`,
-      outboundTextColor: 'Couleur du texte sortant',
+      outboundMessageTextColor: 'Couleur du texte sortant',
       unreadMessageDotColor: 'Couleur du point des messages non lus',
       headerText: `Texte d'en-tête`,
-      addTextOptional: '(facultatif) ajouter un texte',
+      addTextOptional: 'Ajouter un texte (facultatif)',
       subtitleText: 'Texte du sous-titre',
       startNewConversationText: 'Texte pour commencer une nouvelle conversation',
-      chatpluginIconUrl: `URL de l'icône du plugin de chat`,
-      inputIconUrl: `URL de l'icône d'entrée`,
+      chatpluginIconUrl: `URL de l'icône du bouton du chat`,
+      inputIconUrl: `URL de l'icône du champ de saisie`,
       customHostUrl: `URL de l'hôte personnalisé`,
-      addImageurlOptional: `(facultatif) ajouter l'url d'une image`,
+      addImageurlOptional: `Ajouter l'URL d'une image (facultatif)`,
       heightPx: 'Hauteur (min 200px)',
-      customHeightPlaceholder: '(facultatif) ajouter une hauteur personnalisée',
+      customHeightPlaceholder: 'Ajouter une hauteur personnalisée (facultatif) ',
       widthPx: 'Largeur (min 200px)',
-      customWidthPlaceholder: '(facultatif) ajouter une largeur personnalisée',
-      disabledForMobile: 'Désactiver pour la versions mobile',
+      customWidthPlaceholder: 'Ajouter une largeur personnalisée (facultatif)',
+      disabledForMobile: 'Désactiver pour la version mobile',
       hideInputbar: 'Masquer la barre de saisie',
       disableEmojis: 'Désactiver les emojis',
       useCustomFont: 'Utiliser une police personnalisée',
@@ -844,22 +880,31 @@ const resources = {
       disableFiles: 'Désactiver les fichiers',
       customFont: 'Police de caractères personnalisée : ',
       update: 'Mise à jour',
+      create: 'Créer',
+      customize: 'Personnaliser',
+      install: 'Installer',
       addAName: 'Ajouter un nom',
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
       facebookPageIdPlaceholder: `Ajoutez l'ID de la page Facebook`,
       token: 'Token',
       tokenPlaceholder: `Ajouter le token d'accès de la page`,
       nameOptional: 'Nom (facultatif)',
-      nameFacebookPlaceholder: 'Le nom standard sera le même que celui de la page Facebook.',
+      nameFacebookPlaceholder: 'Le nom affiché sera le même que celui de la page Facebook.',
       imageUrlOptional: `Url de l'image (facultatif)`,
-      addAnUrl: `Ajouter une url`,
-      imageFacebookHint: 'La photo standard est la même que celle de la page Facebook.',
+      addAnUrl: `Ajouter une URL`,
+      imageFacebookHint: 'La photo affichée sera la même que celle de la page Facebook.',
       connectPage: 'Connecter la page',
-      updatePage: `Page d'actualisatione`,
+      updatePage: `Actualiser la page`,
       errorMessage: 'Veuillez vérifier la valeur saisie',
+      chatpluginInstallText:
+        'Vous pourrez accéder au code à inclure dans votre en-tête plus tard, lorsque vous aurez fini de le personnaliser.',
+      installCodeNpm1: 'Vous pouvez installer votre bibliothèque ',
+      installCodeNpm2: ' ici:',
 
       //Facebook Messenger
 
@@ -1026,6 +1071,7 @@ const resources = {
       companyName: 'nombre de la empresa',
       contactCapital: 'Contacto',
       otherConversationsContact: 'Otras conversaciones para este contacto:',
+      conversationsContact: 'Conversaciones para este contacto:',
       noResultsConverstation: 'Sin Resultados',
       contactName: 'Nombre de contacto',
       conversations: 'Conversaciones',
@@ -1077,6 +1123,8 @@ const resources = {
       searchTemplates: 'Búsqueda de plantillas',
 
       //Control-Center
+      disableComponent: 'Desactivar',
+      disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
 
       //Channels
       chatpluginTitle: 'Chat Plugin',
@@ -1113,6 +1161,9 @@ const resources = {
       search: 'Busque en',
       save: 'Guardar',
       delete: 'Borrar',
+      reset: 'Restablecer',
+      preview: 'Vista previa',
+      sample: 'Muestra',
       deleteChannel: '¿Realmente quieres borrar este canal?',
       addChanne: 'Añadir canal',
       infoButtonText: 'más información sobre esta fuente',
@@ -1124,17 +1175,18 @@ const resources = {
       imageUrlHint: 'PNG de 1024x1024 píxeles como máximo',
 
       //Customize Chatplugin
+      chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
       addCodeTagHead: 'Añade este código dentro de la etiqueta ',
       copyCode: 'Copiar código',
-      headTextColor: 'Color del texto de la cabecera',
+      headerTextColor: 'Color del texto de la cabecera',
       subtitleTextColor: 'Color del texto de los subtítulos',
       primaryColor: 'Color primario',
       accentColor: 'Color de acento',
       backgroundColor: 'Color de fondo',
       inboundBackgroundColor: 'Color de fondo de entrada',
-      inboundTextColor: 'Color del texto entrante',
+      inboundMessageTextColor: 'Color del texto entrante',
       outboundBackgroundColor: 'Color de fondo de salida',
-      outboundTextColor: 'Color del texto de salida',
+      outboundMessageTextColor: 'Color del texto de salida',
       unreadMessageDotColor: 'Color de los puntos de los mensajes no leídos',
       headerText: 'Texto de cabecera',
       addTextOptional: '(opcionalmente) añadir un texto',
@@ -1160,6 +1212,9 @@ const resources = {
       disableFiles: 'Desactivar archivos',
       customFont: 'Fuente personalizada: ',
       update: 'Actualización',
+      create: 'Crear',
+      customize: 'Personalizar',
+      install: 'Instalar',
       addAName: 'Añadir un nombre',
       settings: 'Ajustes',
       installCustomize: 'Instalar & personalizar',
@@ -1176,6 +1231,10 @@ const resources = {
       connectPage: 'Conectar la página',
       updatePage: 'Actualización de la página',
       errorMessage: 'Por favor, compruebe el valor introducido',
+      chatpluginInstallText:
+        'Podrá acceder al código para incluirlo en su cabecera más tarde, cuando haya terminado de personalizarlo.',
+      installCodeNpm1: 'Puede instalar su biblioteca ',
+      installCodeNpm2: ' aquí:',
 
       //Facebook Messenger
 

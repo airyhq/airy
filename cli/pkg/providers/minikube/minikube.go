@@ -19,9 +19,10 @@ import (
 )
 
 const (
-	minikube  = "minikube"
-	profile   = "airy-core"
-	hostAlias = "airy.core"
+	minikube      = "minikube"
+	profile       = "airy-core"
+	hostAlias     = "airy.core"
+	dockerRuntime = " --container-runtime=containerd"
 )
 
 type provider struct {
@@ -40,7 +41,7 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 func (p *provider) GetOverrides() template.Variables {
 	return template.Variables{
 		NgrokEnabled: true,
-		Host:         "airy.core",
+		Host:         "localhost",
 	}
 }
 
@@ -49,7 +50,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		return kube.KubeCtx{}, err
 	}
 
-	if err := p.startCluster(); err != nil {
+	if err := p.startCluster(providerConfig); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
@@ -68,8 +69,18 @@ func checkInstallation() error {
 	return err
 }
 
-func (p *provider) startCluster() error {
-	args := []string{"start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535", "--driver=virtualbox"}
+func (p *provider) startCluster(providerConfig map[string]string) error {
+	minikubeDriver := getArg(providerConfig, "driver", "docker")
+	minikubeCpus := getArg(providerConfig, "cpus", "4")
+	minikubeMemory := getArg(providerConfig, "memory", "7168")
+	driverArg := "--driver=" + minikubeDriver
+	runtimeArg := ""
+	if minikubeDriver == "docker" {
+		runtimeArg = dockerRuntime
+	}
+	cpusArg := "--cpus=" + minikubeCpus
+	memoryArg := "--memory=" + minikubeMemory
+	args := []string{"start", "--extra-config=apiserver.service-node-port-range=1-65535", "--ports=80:80", driverArg, runtimeArg, cpusArg, memoryArg}
 	// Prevent minikube download progress bar from polluting the output
 	_, err := runGetOutput(append(args, "--download-only")...)
 	if err != nil {
@@ -138,5 +149,13 @@ func (p *provider) PostInstallation(providerConfig map[string]string, namespace 
 		return err
 	}
 
-	return AddHostRecord()
+	return nil
+}
+
+func getArg(providerConfig map[string]string, key string, fallback string) string {
+	value := providerConfig[key]
+	if value == "" {
+		return fallback
+	}
+	return value
 }

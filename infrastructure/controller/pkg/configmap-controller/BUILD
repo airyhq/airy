@@ -15,6 +15,7 @@ go_library(
         "//infrastructure/lib/go/k8s/handler",
         "//infrastructure/lib/go/k8s/util",
         "@io_k8s_api//core/v1:go_default_library",
+        "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/fields:go_default_library",
         "@io_k8s_apimachinery//pkg/util/runtime:go_default_library",
         "@io_k8s_apimachinery//pkg/util/wait:go_default_library",

@@ -10,6 +10,12 @@
 
 .formRow {
   margin-bottom: 16px;
+
+  &:hover {
+    .actionToolTip {
+      display: block;
+    }
+  }
 }
 
 .settings {

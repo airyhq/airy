@@ -27,6 +27,13 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+genrule(
+    name = "controller_bin_rule",
+    srcs = [":controller"],
+    outs = ["controller_bin"],
+    cmd = "cp $(SRCS) $@",
+)
+
 go_image(
     name = "image",
     embed = [":controller_lib"],

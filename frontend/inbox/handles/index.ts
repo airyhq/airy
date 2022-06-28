@@ -35,12 +35,16 @@ export const cyConnectorsAddNewButton = 'connectorsAddNewButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
 export const cyChannelsFormBackButton = 'channelsFormBackButton';
+
 export const cyOpenStateButton = 'openStateButton';
 export const cyClosedStateButton = 'closedStateButton';
 export const cyConversationListItemInfo = 'conversationListItemInfo';
 export const cyConversationStatus = 'conversationStatus';
+
 export const cySuggestionsButton = 'suggestionsButton';
 export const cySuggestionsList = 'suggestionsList';
+
+//contact details
 export const cyEditDisplayNameIcon = 'editDisplayNameIcon';
 export const cyDisplayName = 'displayName';
 export const cyDisplayNameInput = 'displayNameInput';
@@ -58,3 +62,9 @@ export const cyContactSaveButton = 'contactSaveButton';
 export const cyClickableListItem = 'clickableListItem';
 export const cyChannelsInstagramAddButton = 'cyChannelsInstagramAddButton';
 export const cyChannelsInstagramList = 'cyChannelsInstagramList';
+
+//conversations for contact
+export const cyConversationsListForContact = 'conversationsListForContact';
+export const cyConversationForContactButton = 'conversationForContactButton';
+export const cyContactItem = 'contactItem';
+export const cyContactsCollapseIcon = 'contactsCollapseIcon';

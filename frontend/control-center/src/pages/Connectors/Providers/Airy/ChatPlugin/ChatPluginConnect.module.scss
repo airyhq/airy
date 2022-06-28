@@ -6,16 +6,48 @@
   color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
-  padding-left: 96px;
-  padding-top: 88px;
   width: 100%;
-  padding: 32px;
-  margin: 88px 1.5em 0 191px;
+  margin: 162px 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
 }
 
-.headline {
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.headlineContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding-left: 10px;
+  margin: 88px 1.5em 0 191px;
+  h1 {
+    @include font-xl;
+    font-weight: bold;
+  }
+  button {
+    height: 20px;
+    background: transparent;
+  }
+}
+
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.infoBox {
+  margin: 0;
+  button {
+    padding-left: 4px;
+    border: none;
+  }
+  svg {
+    color: var(--color-text-gray);
+  }
   h1 {
     @include font-xl;
     font-weight: bold;
@@ -34,41 +66,20 @@
 }
 
 .backIcon {
-  height: 13px;
-  width: 17px;
+  width: 24px;
+  background: transparent;
   path {
-    fill: var(--color-airy-blue);
+    fill: var(--color-text-gray);
   }
   margin-right: 8px;
-}
-
-.newPageParagraph {
-  margin: 24px 0;
-  color: var(--color-text-gray);
-}
-
-.updatePageParagraph {
-  margin: 24px 0;
-  color: var(--color-text-gray);
 }
 
 .formWrapper {
   display: flex;
 }
 
-.formRow {
-  margin-bottom: 16px;
-}
-
-.settings {
-  width: 20rem;
-}
-
-.headline {
-  display: flex;
-}
-
 .headlineText {
+  color: var(--color-text-contrast);
   flex-grow: 1;
 }
 
@@ -110,51 +121,57 @@
   border-radius: 100%;
 }
 
-.tabView {
+.channelsLineContainer {
+  width: 100%;
   display: flex;
-  margin-bottom: 16px;
-  list-style-type: none;
-
-  li {
-    margin-right: 16px;
+  flex-direction: column;
+  span {
+    @include font-base;
   }
 }
 
-.tabEntrySelected {
-  border-bottom: 2px solid var(--color-airy-blue);
-  a {
-    color: var(--color-text-contrast);
-    font-weight: bold;
-    text-decoration: none;
+.channelsLineItems {
+  display: flex;
+}
+
+.activeItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 42px;
+  width: 150px;
+  color: var(--color-airy-blue);
+  border-bottom: 5px solid var(--color-airy-blue);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
   }
 }
 
-.tabEntry {
-  a {
-    color: var(--color-airy-blue);
-    text-decoration: none;
+.inactiveItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 32px;
+  width: 150px;
+  border-bottom: 5px solid transparent;
+  color: var(--color-text-gray);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
   }
 }
 
-.installHint {
-  font-weight: bold;
-  margin-bottom: 8px;
-  code {
-    color: var(--color-red-alert);
-    background-color: var(--color-background-gray);
-    padding: 2px;
-  }
-}
-
-.codeArea {
-  @include font-base;
-  width: 40em;
-  height: 19.2em;
-  background-color: var(--color-background-gray);
-  color: var(--color-text-contrast);
-  border-radius: 8px;
-  border: 1px solid var(--color-dark-elements-gray);
-  resize: none;
-  padding: 8px;
-  margin-bottom: 16px;
+.line {
+  width: 100%;
+  height: 1px;
+  background: rgb(202, 213, 219);
+  display: flex;
+  position: relative;
+  top: -3px;
+  left: 0px;
 }

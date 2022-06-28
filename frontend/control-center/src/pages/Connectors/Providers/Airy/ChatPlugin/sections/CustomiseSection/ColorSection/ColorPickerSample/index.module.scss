@@ -1,0 +1,12 @@
+.colorPickerSample {
+  background-color: white;
+  box-shadow: lightgray 0px 0px 3px 0px;
+  height: 34px;
+  width: 40px;
+  border-radius: 20%;
+  margin-right: 4px;
+  margin-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+}

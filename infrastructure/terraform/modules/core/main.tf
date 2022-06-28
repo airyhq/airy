@@ -5,11 +5,7 @@ resource "kubernetes_namespace" "core" {
 }
 
 data "http" "core_version" {
-  url = "https://airy-core-binaries.s3.amazonaws.com/stable.txt"
-
-  request_headers = {
-    Accept = "application/json"
-  }
+  url = "https://raw.githubusercontent.com/airyhq/airy/main/VERSION"
 }
 
 locals {

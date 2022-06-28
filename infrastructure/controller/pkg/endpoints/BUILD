@@ -9,6 +9,7 @@ go_library(
         "components_delete.go",
         "components_get.go",
         "components_update.go",
+        "cors.go",
         "server.go",
         "services.go",
     ],

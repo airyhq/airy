@@ -108,3 +108,33 @@
 .blankSpace {
   width: 60px;
 }
+
+.enableModalContainerWrapper {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  @include font-l;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer div {
+  @include font-xl;
+}
+
+.popUpSubtitle {
+  color: var(--color-text-gray);
+}
+
+.enableModalContainer p {
+  @include font-l;
+  margin-bottom: 30px;
+}

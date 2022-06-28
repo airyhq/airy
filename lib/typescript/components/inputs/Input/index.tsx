@@ -4,6 +4,7 @@ import styles from './style.module.scss';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
+import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -254,6 +255,8 @@ class InputComponent extends Component<InputProps, IState> {
     const {
       id,
       label,
+      showLabelIcon,
+      tooltipText,
       hideLabel,
       name,
       value,
@@ -266,6 +269,8 @@ class InputComponent extends Component<InputProps, IState> {
       inputmode,
       minLength,
       maxLength,
+      minWidth,
+      width,
       showErrors,
       children,
       fontClass,
@@ -297,12 +302,18 @@ class InputComponent extends Component<InputProps, IState> {
                   {label} {this.iconForState()}
                 </Fragment>
               )}
+              {showLabelIcon && (
+                <>
+                  <InfoCircle width={20} className={styles.infoCircle} />
+                  {tooltipText && <span className={styles.infoCircleText}>{tooltipText}</span>}
+                </>
+              )}
             </div>
           )}
           {this.props.maxLength > 0 && this.props.showCounter ? (
             <div className={styles.inputMaxLength}>
-              <span className={value?.length > this.props.maxLength ? styles.inputMaxLengthError : ''}>
-                {Math.max(0, this.props.maxLength - (value?.length || 0))}
+              <span className={value.length > this.props.maxLength ? styles.inputMaxLengthError : ''}>
+                {Math.max(0, this.props.maxLength - value.length)}
               </span>
             </div>
           ) : (
@@ -344,6 +355,8 @@ class InputComponent extends Component<InputProps, IState> {
               onBlur={this.onBlur}
               style={{
                 height: `${height}px`,
+                minWidth: `${minWidth}px`,
+                width: `${width}px`,
               }}
               type={type}
               value={value}
@@ -388,6 +401,10 @@ export interface InputProps {
   id?: string;
   /** The label above the input field */
   label?: string;
+  showLabelIcon?: boolean;
+  tooltipText?: string;
+  minWidth?: number;
+  width?: number;
 
   /** Want to hide the label completely? */
   hideLabel?: boolean;

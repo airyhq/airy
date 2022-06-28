@@ -39,7 +39,7 @@ icon={<ChannelsUI />}
 title='Connectors'
 iconInvertible={true}
 description='With the Control Center UI you can connect your connectors via UI'
-link='http://airy.core/ui/control-center/introduction'
+link='http://localhost/ui/control-center/introduction'
 />
 
 ## Sources guides

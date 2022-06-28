@@ -31,7 +31,7 @@ const Webhooks = (props: WebhooksProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-  const [notificationText, setNotificatioNText] = useState('');
+  const [notificationText, setNotificationText] = useState('');
   const [notifcationColor, setNotifcationColor] = useState('');
   const {t} = useTranslation();
 
@@ -45,8 +45,8 @@ const Webhooks = (props: WebhooksProps) => {
 
   const handleNotification = (show: boolean, error: boolean) => {
     error
-      ? (setNotificatioNText(t('errorOccurred')), setNotifcationColor('#d51548'))
-      : (setNotificatioNText(t('successfullySubscribed')), setNotifcationColor('#0da36b'));
+      ? (setNotificationText(t('errorOccurred')), setNotifcationColor('#d51548'))
+      : (setNotificationText(t('successfullySubscribed')), setNotifcationColor('#0da36b'));
     setShowSuccessNotification(show);
   };
 

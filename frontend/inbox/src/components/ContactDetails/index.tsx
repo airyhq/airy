@@ -1,18 +1,22 @@
 import React, {useState, useEffect, SetStateAction} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {getContactDetails, updateContactDetails} from '../../../../../actions';
-import {StateModel} from '../../../../../reducers';
+import {getContactDetails, updateContactDetails} from '../../actions';
+import {StateModel} from '../../reducers';
 import {getInfoDetailsPayload, fillContactInfo} from './util';
 import {UpdateContactDetailsRequestPayload} from 'httpclient/src';
-import {Contact, Source} from 'model';
+import {Contact} from 'model';
 import {ContactInfoPoint} from './ContactInfoPoint';
 import {Expandable} from './Expandable';
-import {Button, ConnectorAvatar} from 'components';
-import {Link} from 'react-router-dom';
-import {INBOX_CONVERSATIONS_ROUTE} from '../../../../../routes/routes';
+import {Button} from 'components';
+import {ConversationsForContact} from './ConversationsForContact';
 import styles from './index.module.scss';
 import {cyContactSaveButton} from 'handles';
 import {useTranslation} from 'react-i18next';
+
+export interface ConversationInfoForContact {
+  id: string;
+  connector: string;
+}
 
 const mapDispatchToProps = {
   getContactDetails,
@@ -29,18 +33,13 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ContactDetailsProps = {
   contact?: Contact;
-  conversationId: string;
+  conversationId?: string;
   isEditing: boolean;
   getUpdatedInfo: () => void;
   editingCanceled: boolean;
   getIsExpanded: (isExpanded: boolean) => void;
   setContactIdConvMetadata?: React.Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
-
-export interface ConversationInfoForContact {
-  id: string;
-  connector: string;
-}
 
 const ContactDetails = (props: ContactDetailsProps) => {
   const {
@@ -67,8 +66,7 @@ const ContactDetails = (props: ContactDetailsProps) => {
   const [organization, setOrganization] = useState(contacts[contact?.id]?.organizationName || `${t('companyName')}`);
   const [newContactCollapsed, setNewContactCollapsed] = useState<boolean | string>(existingContact);
   const [existingContactCollapsed, setExistingContactCollapsed] = useState<boolean | string>(existingContact);
-  const [conversationsForContact, setConversationsForContact] = useState([]);
-  const [areOthersConversationForContact, setAreOthersConversationForContact] = useState(false);
+  const [areAvailableConversationForContact, setAreAvailableConversationForContact] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const totalInfoPoints = 6;
   const visibleInfoPointsNewContact = 1;
@@ -78,23 +76,11 @@ const ContactDetails = (props: ContactDetailsProps) => {
     : totalInfoPoints - visibleInfoPointsExistingContact;
 
   useEffect(() => {
-    getContactId();
+    fetchContactDetailsAndStoreId();
     setExpanded(false);
-    setAreOthersConversationForContact(false);
-    setConversationsForContact([]);
+    setAreAvailableConversationForContact(false);
+    setContactId('');
   }, [conversationId, contact?.id]);
-
-  const getContactId = async () => {
-    try {
-      const contactId = conversationId
-        ? await getContactDetails({conversationId: conversationId})
-        : await getContactDetails({id: contact?.id});
-      setContactId(contactId);
-      setContactIdConvMetadata(contactId);
-    } catch (error) {
-      return error;
-    }
-  };
 
   useEffect(() => {
     if (contacts && contacts[contact?.id || contactId]) {
@@ -108,9 +94,8 @@ const ContactDetails = (props: ContactDetailsProps) => {
         setOrganization
       );
       updateContactType(contacts[contact?.id || contactId]);
-      setConversationsForContact(formatConversationsForContact(contacts[contact?.id || contactId].conversations));
     }
-  }, [contact?.id, conversationId, contactId]);
+  }, [conversationId, contactId]);
 
   useEffect(() => {
     if (isEditing) removeDefaultTextWhenEditing();
@@ -131,20 +116,28 @@ const ContactDetails = (props: ContactDetailsProps) => {
     }
   }, [editingCanceled]);
 
-  const formatConversationsForContact = (convObj: {[key: string]: string}) => {
-    const conversationsForContactArr = [];
-
-    for (const idProperty in convObj) {
-      if (Object?.entries(contacts[contact?.id || contactId]?.conversations).length > 1) {
-        setAreOthersConversationForContact(true);
-        const convInfo = {} as ConversationInfoForContact;
-        convInfo.id = idProperty;
-        convInfo.connector = convObj[idProperty];
-        conversationsForContactArr.push(convInfo);
+  useEffect(() => {
+    const currentContact = contacts[contactId] || contact;
+    if (contactId && currentContact && currentContact?.conversations) {
+      if (setContactIdConvMetadata) setContactIdConvMetadata(contactId);
+      const conversationsForContactArr = Object.entries(currentContact?.conversations);
+      if (conversationId && conversationsForContactArr.length > 2) {
+        setAreAvailableConversationForContact(true);
+      }
+      if (!conversationId && conversationsForContactArr.length >= 1) {
+        setAreAvailableConversationForContact(true);
       }
     }
+  }, [contacts, contactId]);
 
-    return conversationsForContactArr;
+  const fetchContactDetailsAndStoreId = async () => {
+    if (conversationId && !contact?.id) {
+      const contactId = await getContactDetails({conversationId: conversationId});
+      setContactId(contactId);
+    } else {
+      await getContactDetails({id: contact.id});
+      setContactId(contact.id);
+    }
   };
 
   const removeDefaultTextWhenEditing = () => {
@@ -249,19 +242,11 @@ const ContactDetails = (props: ContactDetailsProps) => {
         )}
       </form>
 
-      {areOthersConversationForContact && conversationsForContact && (
-        <div className={styles.contactConversationList}>
-          <span>{t('otherConversationsContact')}</span>
-          <div className={styles.iconsContainer}>
-            {conversationsForContact.map((conversationInfo: ConversationInfoForContact) => (
-              <button type="button" key={conversationInfo.id}>
-                <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversationInfo.id}`}>
-                  <ConnectorAvatar source={conversationInfo.connector as Source} />
-                </Link>
-              </button>
-            ))}
-          </div>
-        </div>
+      {contacts && contactId && contacts[contactId] && areAvailableConversationForContact && (
+        <ConversationsForContact
+          conversationId={conversationId}
+          conversationsForContact={contacts[contactId].conversations}
+        />
       )}
     </>
   );

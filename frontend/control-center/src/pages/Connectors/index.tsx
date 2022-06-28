@@ -16,11 +16,7 @@ const mapDispatchToProps = {
   listChannels,
 };
 
-const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannelsConnected(state)),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
@@ -34,11 +30,11 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (props.channels.length === 0) {
+    if (channels.length === 0) {
       props.listChannels();
     }
     setPageTitle(pageTitle);
-  }, [props.channels.length]);
+  }, [channels.length]);
 
   return (
     <div className={styles.channelsWrapper}>

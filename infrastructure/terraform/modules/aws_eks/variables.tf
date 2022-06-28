@@ -1,24 +1,15 @@
 variable "region" {
-  description = "the AWS region in which resources are created, you must set the availability_zones variable as well if you define this value to something other than the default"
+  description = "The AWS region in which resources are created"
   default     = "eu-west-1"
 }
 
-variable "aws_access_key" {
-  description = "AWS Access Key"
-}
-
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
+variable "aws_profile" {
+  description = "The AWS profile associated with your credentials (default = 'default')"
 }
 
 variable "ssh_key" {
   description = "The name of the ssh key to use, e.g. \"airytf\""
   default     = "~/.ssh/id_rsa"
-}
-
-variable "profile" {
-  description = "AWS profile that is used for authentication"
-  default     = "airy-prod"
 }
 
 variable "vpc_id" {
@@ -49,7 +40,7 @@ variable "node_group_size" {
 }
 
 variable "cluster_version" {
-  default = "1.21"
+  default = "1.22"
 }
 
 variable "core_id" {
@@ -61,7 +52,7 @@ variable "namespace" {
 }
 
 variable "kubeconfig_output_path" {
-  default = "../main/.kubeconfig"
+  default = "../airy-core/.kubeconfig"
 }
 
 variable "fargate_profiles" {

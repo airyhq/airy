@@ -8,6 +8,7 @@ import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import ContactInformation from './ContactInformation';
 import ContactListItem from './ContactListItem';
+import {EmptyState} from './EmptyState';
 import styles from './index.module.scss';
 
 const mapStateToProps = (state: StateModel) => ({
@@ -85,56 +86,62 @@ const Contacts = (props: ContactsProps) => {
 
   return (
     <>
-      <div className={styles.wrapper}>
-        <div className={styles.headline}>
-          <div>
-            <h1 className={styles.headlineText}>Contacts</h1>
-          </div>
-        </div>
-        <div className={styles.container}>
-          <div className={styles.containerHeadline}>
-            <h1>{t('contactName')}</h1>
-            <h1>{t('conversations')}</h1>
-            <h1>{t('manage')}</h1>
-          </div>
-          <div className={styles.contactContent}>
-            <div className={styles.contactList}>
-              {currentTableData.map((contact: Contact) => (
-                <ContactListItem
-                  key={contact.id}
-                  contact={contact}
-                  setContact={handleContact}
-                  setConversationId={handleConversationId}
-                  setEditModeOn={handleEditMode}
-                  setCancelEdit={handleCancelEditing}
-                  setCurrentVisibleContactId={setCurrentVisibleContactId}
-                  currentVisibleContactId={currentVisibleContactId}
+      {contacts.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <>
+          <div className={styles.wrapper}>
+            <div className={styles.headline}>
+              <div>
+                <h1 className={styles.headlineText}>Contacts</h1>
+              </div>
+            </div>
+            <div className={styles.container}>
+              <div className={styles.containerHeadline}>
+                <h1>{t('contactName')}</h1>
+                <h1>{t('conversations')}</h1>
+                <h1>{t('manage')}</h1>
+              </div>
+              <div className={styles.contactContent}>
+                <div className={styles.contactList}>
+                  {currentTableData.map((contact: Contact) => (
+                    <ContactListItem
+                      key={contact.id}
+                      contact={contact}
+                      setContact={handleContact}
+                      setConversationId={handleConversationId}
+                      setEditModeOn={handleEditMode}
+                      setCancelEdit={handleCancelEditing}
+                      setCurrentVisibleContactId={setCurrentVisibleContactId}
+                      currentVisibleContactId={currentVisibleContactId}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className={styles.paginationContainer}>
+                <Pagination
+                  totalCount={paginationData?.total}
+                  pageSize={listPageSize}
+                  pageCount={contacts.length >= pageSize ? pageSize : contacts.length}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
                 />
-              ))}
+              </div>
             </div>
           </div>
-          <div className={styles.paginationContainer}>
-            <Pagination
-              totalCount={paginationData?.total}
-              pageSize={listPageSize}
-              pageCount={contacts.length >= pageSize ? pageSize : contacts.length}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+          <div className={contactInformationVisible ? styles.contactColumnAnimateIn : styles.contactColumnAnimateOut}>
+            <ContactInformation
+              conversationId={conversationId}
+              contact={currentContact}
+              editModeOn={editModeOn}
+              setEditModeOn={handleEditMode}
+              cancelEdit={cancelEdit}
+              setContactInformationVisible={setContactInformationVisible}
+              contactInformationVisible={contactInformationVisible}
             />
           </div>
-        </div>
-      </div>
-      <div className={contactInformationVisible ? styles.contactColumnAnimateIn : styles.contactColumnAnimateOut}>
-        <ContactInformation
-          conversationId={conversationId}
-          contact={currentContact}
-          editModeOn={editModeOn}
-          setEditModeOn={handleEditMode}
-          cancelEdit={cancelEdit}
-          setContactInformationVisible={setContactInformationVisible}
-          contactInformationVisible={contactInformationVisible}
-        />
-      </div>
+        </>
+      )}
     </>
   );
 };

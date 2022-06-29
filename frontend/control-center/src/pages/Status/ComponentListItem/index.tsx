@@ -17,7 +17,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
   const {healthy, componentName, enabled, services, index, loading, setLoading} = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   const wrapperSection = useRef(null);
   const defaultHeight = 50;
@@ -37,6 +37,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
     if (!isPopUpOpen) setIsExpanded(!isExpanded);
     setCurrentIndex(index);
     props.setCurrentIndex(index);
+    console.log('curren: ', currentIndex);
   };
 
   return (

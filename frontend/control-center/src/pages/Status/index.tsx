@@ -32,7 +32,7 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.getClientConfig();
     setLoading(false);
-  }, [currentIndex]);
+  }, [components?.[currentIndex]?.[1].enabled, currentIndex]);
 
   setInterval(() => {
     props.getClientConfig();

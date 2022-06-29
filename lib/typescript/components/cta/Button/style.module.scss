@@ -86,6 +86,8 @@
 
 .linkButton {
   @include font-base;
+  display: flex;
+  align-items: center;
   border: none;
   background: transparent;
   text-decoration: underline;

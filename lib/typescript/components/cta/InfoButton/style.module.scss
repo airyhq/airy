@@ -5,6 +5,8 @@
   width: 18px;
   height: 18px;
   margin-right: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .blueIcon {
@@ -24,6 +26,7 @@
   border-radius: 8px;
   cursor: pointer;
   border: none;
+  background:transparent;
 }
 
 .greyButton {

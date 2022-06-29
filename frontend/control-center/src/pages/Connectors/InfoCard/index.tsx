@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {SourceInfo} from '../../../components/SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {CATALOG_ROUTE} from '../../../routes/routes';
+import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
 import {Button, SettingsModal} from 'components';
 import {Source} from 'model';
 import {useTranslation} from 'react-i18next';
@@ -36,6 +36,8 @@ const InfoCard = (props: InfoCardProps) => {
   const [modalTitle, setModalTitle] = useState('');
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
+  const CATALOG_PAGE = window.location.pathname.includes(CATALOG_ROUTE);
 
   useEffect(() => {
     const title = isInstalled ? t('uninstall') + ' ' + sourceInfo.title : sourceInfo.title + ' ' + t('installed');
@@ -60,8 +62,13 @@ const InfoCard = (props: InfoCardProps) => {
     updateItemList(!isInstalled, sourceInfo.type);
   };
 
+  const handleCardClick = () => {
+    navigate(sourceInfo.newChannelRoute);
+  }
+
   return (
     <div
+    onClick={CONNECTORS_PAGE ? handleCardClick : null}
       className={`
         ${styles.channelCard} 
         ${
@@ -71,6 +78,7 @@ const InfoCard = (props: InfoCardProps) => {
             ? styles.installed
             : styles.notInstalled
         } 
+        ${CONNECTORS_PAGE ? styles.cardConnectors : '' }
       `}
     >
       <div
@@ -97,7 +105,7 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
       </div>
 
-      {window.location.pathname.includes(CATALOG_ROUTE) && (
+      {CATALOG_PAGE && (
         <>
           {!installed && <p>{sourceInfo.description}</p>}
           <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={toggleInstallation}>
@@ -108,7 +116,6 @@ const InfoCard = (props: InfoCardProps) => {
 
       {enabled && (
         <Button
-          onClick={() => navigate(sourceInfo.newChannelRoute)}
           styleVariant="extra-small"
           className={`${styles.installationButton} ${
             enabled === 'Enabled' ? styles.buttonEnabled : styles.buttonNotConfigured

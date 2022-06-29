@@ -142,7 +142,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                 <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
 
                 <div className={styles.textInfo}>
-                  <p>
+                  <div className={styles.descriptionDocs}>
                     {connectorInfo && connectorInfo?.description}{' '}
                     <InfoButton
                       borderOff={true}
@@ -150,7 +150,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       link={connectorInfo && connectorInfo?.docs}
                       text={t('infoButtonText')}
                     />
-                  </p>
+                  </div>
                   <Button styleVariant="normal" type="button" onClick={openModal} style={{padding: '20px 40px'}}>
                     {isEnabled ? t('disableComponent') : t('Enable')}
                   </Button>

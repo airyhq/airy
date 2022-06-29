@@ -21,10 +21,13 @@
   @include font-base;
   display: flex;
   align-items: center;
+  text-decoration: underline;
   color: var(--color-text-contrast);
   font-weight: bold;
 
-  &:hover {
+  &:hover, 
+  &:active,
+  &:visited{
     text-decoration: underline;
     color: var(--color-text-contrast);
   }
@@ -35,7 +38,7 @@
   flex-direction: column;
   position: absolute;
   padding-left: 10px;
-  margin: 88px 1.5em 0 191px;
+  margin: 108px 1.5em 0 191px;
   width: 85%;
   h1 {
     @include font-xl;
@@ -72,6 +75,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.descriptionDocs {
+  display: flex;
+  align-items:center;
 }
 
 .connectorDetails {
@@ -237,8 +245,8 @@
 }
 
 .enableModalContainerWrapper {
-  width: 60%;
-  height: 80%;
+  width: 50%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -262,7 +270,7 @@
 
 .enableModalContainer button {
   margin-top: 14px;
-  padding: 0 40px;
+  padding: 0 60px;
 }
 
 .headerModal {

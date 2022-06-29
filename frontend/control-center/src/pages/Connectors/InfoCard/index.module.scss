@@ -13,7 +13,6 @@
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
-
   p {
     @include font-xs;
     margin: 10px 0 0 0;
@@ -22,6 +21,16 @@
 
   button {
     margin-top: 14px;
+  }
+}
+
+.cardConnectors {
+  cursor:pointer;
+  &:hover {
+    border: 2px solid var(--color-airy-blue);
+    margin-left: -1px;
+    width: 261px;
+    cursor: pointer;
   }
 }
 
@@ -99,8 +108,8 @@
 }
 
 .enableModalContainerWrapper {
-  width: 60%;
-  height: 80%;
+  width: 50%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -124,7 +133,7 @@
 
 .enableModalContainer button {
   margin-top: 14px;
-  padding: 0 40px;
+  padding: 0 60px;
 }
 
 .headerModal {

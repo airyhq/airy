@@ -21,7 +21,7 @@ export const InfoButton = ({text, link, color, dataCy, style, borderOff}: Props)
       style={style}
       data-cy={dataCy}
     >
-      <InfoCircle className={`${styles.circleIcon} ${color === 'blue' ? styles.blueIcon : styles.greyIcon}`} />
+      <div className={styles.circleIcon} ><InfoCircle className={`${color === 'blue' ? styles.blueIcon : styles.greyIcon}`} /></div>
       <a
         href={link}
         target="_blank"

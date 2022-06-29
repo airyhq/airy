@@ -151,7 +151,12 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       text={t('infoButtonText')}
                     />
                   </div>
-                  <Button styleVariant="normal" type="button" onClick={openModal} style={{padding: '20px 40px'}}>
+                  <Button
+                    styleVariant="small"
+                    type="button"
+                    onClick={openModal}
+                    style={{padding: '20px 40px', marginTop: '-12px'}}
+                  >
                     {isEnabled ? t('disableComponent') : t('Enable')}
                   </Button>
                 </div>

@@ -127,6 +127,14 @@ const resources = {
       NotConfigured: 'Not Configured',
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
 
+      //Connectors
+      // instagramDescription: 'Connect multiple Instagram pages',
+      // googleDescription: 'Be there when people search',
+      // whatsappDescription: 'World #1 chat app',
+      // twilioSmsDescription: 'Deliver SMS with ease',
+      // facebookDescription: 'Connect multiple Facebook pages',
+      // chatpluginDescription: 'Best of class browser messenger',
+
       //Channels
       toConfigure: 'To configure',
       configure: 'Configure',
@@ -616,9 +624,9 @@ const resources = {
       SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
       ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
       to: 'bis',
-      fromCloudConsole: 'gegeben von das Cloud Console',
-      amountSuggestions: 'betrag für Vorschläge',
-      amountReplies: 'betrag für Antworte',
+      fromCloudConsole: 'gegeben von der Cloud Console',
+      amountSuggestions: 'Anzahl der Vorschläge',
+      amountReplies: 'Anzahl der Antworten',
 
       //Facebook Messenger
 
@@ -1321,8 +1329,8 @@ const resources = {
       AddProjectId: 'Añadir el ID del proyecto',
       GoogleApplicationCredentials: 'Google Application Credentials',
       AddGoogleApplicationCredentials: 'Añadir los Google Application Credentials',
-      SuggestionConfidenceLevel: 'Nivel de confianza de la sugerencia',
-      ReplyConfidenceLevel: 'Nivel de confianza de respuesta',
+      SuggestionConfidenceLevel: 'Nivel de confianza para sugerencias',
+      ReplyConfidenceLevel: 'Nivel de confianza para respuestas',
       to: 'a',
       fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',

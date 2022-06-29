@@ -143,7 +143,9 @@
 }
 
 .popUpSubtitle {
-  color: var(--color-text-gray);
+  color: var(--color-text-contrast);
+  text-align: center;
+  width: 80%;
 }
 
 .enableModalContainer p {

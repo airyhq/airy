@@ -64,11 +64,11 @@ const InfoCard = (props: InfoCardProps) => {
 
   const handleCardClick = () => {
     navigate(sourceInfo.newChannelRoute);
-  }
+  };
 
   return (
     <div
-    onClick={CONNECTORS_PAGE ? handleCardClick : null}
+      onClick={CONNECTORS_PAGE ? handleCardClick : null}
       className={`
         ${styles.channelCard} 
         ${
@@ -78,7 +78,7 @@ const InfoCard = (props: InfoCardProps) => {
             ? styles.installed
             : styles.notInstalled
         } 
-        ${CONNECTORS_PAGE ? styles.cardConnectors : '' }
+        ${CONNECTORS_PAGE ? styles.cardConnectors : ''}
       `}
     >
       <div

@@ -133,7 +133,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
-            style={{padding: '0 40Px'}}
+            style={{padding: '0 60Px'}}
             type="submit"
             onClick={() => triggerEnableDisableAction(false)}
           >

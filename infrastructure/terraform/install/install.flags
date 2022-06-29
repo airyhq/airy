@@ -1,0 +1,2 @@
+PROVIDER=aws-eks
+WORKSPACE="../"

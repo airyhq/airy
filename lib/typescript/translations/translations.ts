@@ -244,6 +244,7 @@ const resources = {
       installCodeNpm2: ' library here:',
 
       //Dialogflow
+      dialogflowDescription: 'Conversational AI with virtual agents',
       projectID: 'Project ID',
       AddProjectId: 'Add the project id',
       GoogleApplicationCredentials: 'Google Application Credentials',
@@ -607,6 +608,7 @@ const resources = {
       installCodeNpm2: '-Bibliothek hier installieren:',
 
       //Dialogflow
+      dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
       projectID: 'Projekt-ID',
       AddProjectId: 'Projekt-ID hinzufügen',
       GoogleApplicationCredentials: 'Google Application Credentials',
@@ -942,6 +944,7 @@ const resources = {
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
 
       //Dialogflow
+      dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
       projectID: 'ID du project',
       AddProjectId: "Ajouter l'ID du project",
       GoogleApplicationCredentials: 'références de votre app Google',
@@ -1313,6 +1316,7 @@ const resources = {
       installCodeNpm2: ' aquí:',
 
       //Dialogflow
+      dialogflowDescription: 'IA conversacional con agentes virtuales',
       projectID: 'ID del proyecto',
       AddProjectId: 'Añadir el ID del proyecto',
       GoogleApplicationCredentials: 'Google Application Credentials',

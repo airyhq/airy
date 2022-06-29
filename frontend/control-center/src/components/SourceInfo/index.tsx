@@ -7,6 +7,7 @@ import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
+import {useTranslation} from 'react-i18next';
 import {
   cyChannelsChatPluginAddButton,
   cyChannelsFacebookAddButton,
@@ -42,6 +43,7 @@ export type SourceInfo = {
 };
 
 export const getSourcesInfo = (): SourceInfo[] => {
+  const {t} = useTranslation();
   return [
     {
       type: Source.chatPlugin,
@@ -125,7 +127,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.dialogflow,
       channel: false,
       title: 'Dialogflow',
-      description: 'Conversational AI with virtual agents',
+      description: t('dialogflowDescription'),
       image: <DialogflowIcon />,
       newChannelRoute: CONNECTORS_DIALOGFLOW_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/dialogflow',

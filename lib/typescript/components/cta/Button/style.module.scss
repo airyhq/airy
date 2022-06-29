@@ -28,7 +28,7 @@
   &:disabled {
     cursor: not-allowed;
     color: var(--color-text-gray) !important;
-    background-color: var(--color-light-gray) !important;
+    background-color: var(--color-background-gray) !important;
     border: none;
   }
 }

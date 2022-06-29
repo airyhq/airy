@@ -66,7 +66,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   }, [config, connectorInfo]);
 
-  //the component is customizable: here return with connector connection to make
+  //the component is customizable: return in this function the connection for each connector
   const createNewConnection = (...args: string[]) => {
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
@@ -94,7 +94,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   };
 
-  //the component is customizable: here return with connect form of each connector
+  //the component is customizable: return in this function the connect form of each connector
   const PageContent = () => {
     if (connector === Source.dialogflow) {
       return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;

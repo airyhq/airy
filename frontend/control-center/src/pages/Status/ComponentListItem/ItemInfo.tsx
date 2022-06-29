@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-
 import {enableDisableComponent} from '../../../actions';
+import {StateModel} from '../../../reducers';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
+import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
 import {SettingsModal, Button, Toggle} from 'components';
 import styles from './index.module.scss';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 type ComponentInfoProps = {
@@ -27,8 +27,29 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
+const formatName = (name: string) => {
+  if (name.includes('enterprise')) {
+    name = name.replace('enterprise-', '');
+  }
+  if (name.includes('sources')) {
+    name = name.replace('sources-', '');
+  }
+  return name;
+};
+
+const isConfigurableConnector = (name: string) => {
+  return (
+    (name.includes('sources') || name.includes('enterprise')) &&
+    !name.includes('salesforce') &&
+    !name.includes('mobile') &&
+    !name.includes('zendesk')
+  );
+};
+
 const ItemInfo = (props: ComponentInfoProps) => {
   const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
+
+  const connectorInstalltionConfig = useSelector((state: StateModel) => state.data.connector[formatName(itemName)]);
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -80,7 +101,15 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
+            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig ? (
+              <UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />
+            ) : healthy && enabled ? (
+              <CheckmarkIcon className={styles.icons} />
+            ) : healthy && !enabled ? (
+              <UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />
+            ) : (
+              <UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />
+            )}
           </div>
 
           {isComponent && (
@@ -104,7 +133,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
-            style={{width: '45%'}}
+            style={{padding: '0 60Px'}}
             type="submit"
             onClick={() => triggerEnableDisableAction(false)}
           >

@@ -9,7 +9,7 @@ import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './TwilioConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE, CATALOG_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 
@@ -34,9 +34,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
   const [nameInput, setNameInput] = useState(channel?.metadata?.name || '');
   const [imageUrlInput, setImageUrlInput] = useState(channel?.metadata?.imageUrl || '');
 
-  const CONNECTED_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CONNECTED_ROUTE
-    : CATALOG_CONNECTED_ROUTE;
+  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNumberInput(e.target.value);

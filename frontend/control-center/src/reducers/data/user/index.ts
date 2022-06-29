@@ -6,7 +6,7 @@ type Action = ActionType<typeof actions>;
 
 const userReducer: any = (state = {}, action: Action): User | {} => {
   switch (action.type) {
-    case getType(actions.saveClientConfig):
+    case getType(actions.saveClientConfigAction):
       return {
         ...action.payload.userProfile,
       };

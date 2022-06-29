@@ -4,6 +4,7 @@ import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
+import {Source} from 'model';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -11,10 +12,11 @@ interface CatalogItemListProps {
   list: SourceInfo[];
   installedConnectors: boolean;
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
+  updateItemList: (installed: boolean, type: Source) => void;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, setDisplayDialogFromSource} = props;
+  const {list, installedConnectors, setDisplayDialogFromSource, updateItemList} = props;
   const config = useSelector((state: StateModel) => state.data.config);
   const {t} = useTranslation();
 
@@ -27,6 +29,7 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
       <div className={styles.connectorList}>
         {list.map(infoItem => (
           <InfoCard
+            updateItemList={updateItemList}
             installed={installedConnectors}
             style={InfoCardStyle.normal}
             key={infoItem.type}

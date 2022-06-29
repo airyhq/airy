@@ -5,7 +5,7 @@
   @include font-m;
   color: var(--color-text-contrast);
   margin-bottom: 16px;
-  padding-right: 32px;
+  text-align: center;
 }
 
 .headline {
@@ -32,6 +32,5 @@
 }
 
 .closeIcon {
-  width: 10px;
-  height: 10px;
+  width: 18px;
 }

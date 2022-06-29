@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {Channel, Source} from 'model';
+import {Channel, Source, getSourceForComponent} from 'model';
 import InfoCard, {InfoCardStyle} from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels} from '../../actions/channel';
 import {setPageTitle} from '../../services/pageTitle';
+import {getConnectorsConfiguration} from '../../actions';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
@@ -14,24 +15,28 @@ import {ChannelCard} from './ChannelCard';
 
 const mapDispatchToProps = {
   listChannels,
+  getConnectorsConfiguration,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
+  const {listChannels, getConnectorsConfiguration} = props;
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const components = useSelector((state: StateModel) => state.data.config.components);
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();
   const pageTitle = 'Connectors';
 
   useEffect(() => {
-    setSourcesInfo(getSourcesInfo(pageTitle));
+    setSourcesInfo(getSourcesInfo());
+    getConnectorsConfiguration();
   }, []);
 
   useEffect(() => {
     if (channels.length === 0) {
-      props.listChannels();
+      listChannels();
     }
     setPageTitle(pageTitle);
   }, [channels.length]);
@@ -50,8 +55,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
           <EmptyStateConnectors />
         ) : (
           <>
-            {sourcesInfo.map(
-              (infoItem: SourceInfo, index: number) =>
+            {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
+              return (
                 (channelsBySource(infoItem.type).length > 0 && infoItem.channel && (
                   <ChannelCard
                     sourceInfo={infoItem}
@@ -70,8 +75,26 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                       }}
                     />
                   </div>
-                ))
-            )}
+                )) ||
+                (getSourceForComponent(infoItem.type) &&
+                  components &&
+                  components[infoItem.configKey] &&
+                  !infoItem.channel && (
+                    <div style={{display: 'flex'}} key={infoItem.type}>
+                      <InfoCard
+                        installed={true}
+                        enabled={components[infoItem.configKey].enabled ? 'Enabled' : 'Not Configured'}
+                        style={InfoCardStyle.normal}
+                        key={infoItem.type}
+                        sourceInfo={infoItem}
+                        addChannelAction={() => {
+                          navigate(infoItem.channelsListRoute);
+                        }}
+                      />
+                    </div>
+                  ))
+              );
+            })}
           </>
         )}
       </div>

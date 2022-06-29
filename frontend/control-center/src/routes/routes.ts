@@ -8,15 +8,10 @@ export const CONNECTORS_TWILIO_SMS_ROUTE = '/connectors/twilio.sms';
 export const CONNECTORS_TWILIO_WHATSAPP_ROUTE = '/connectors/twilio.whatsapp';
 export const CONNECTORS_GOOGLE_ROUTE = '/connectors/google';
 export const CONNECTORS_INSTAGRAM_ROUTE = '/connectors/instagram';
+export const CONNECTORS_DIALOGFLOW_ROUTE = '/connectors/dialogflow';
+export const CONNECTORS_ZENDESK_ROUTE = '/connectors/zendesk';
 
 export const CATALOG_ROUTE = '/catalog';
-export const CATALOG_CONNECTED_ROUTE = '/catalog/connected';
-export const CATALOG_FACEBOOK_ROUTE = '/catalog/facebook';
-export const CATALOG_CHAT_PLUGIN_ROUTE = '/catalog/chatplugin';
-export const CATALOG_TWILIO_SMS_ROUTE = '/catalog/twilio.sms';
-export const CATALOG_TWILIO_WHATSAPP_ROUTE = '/catalog/twilio.whatsapp';
-export const CATALOG_GOOGLE_ROUTE = '/catalog/google';
-export const CATALOG_INSTAGRAM_ROUTE = '/catalog/instagram';
 
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONNECTED_ROUTE = '/inbox/connected';

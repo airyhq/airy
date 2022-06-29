@@ -124,8 +124,22 @@ const resources = {
       //Control-Center
       disableComponent: 'Disable',
       disableComponentText: 'Are you sure you want to disable this component?',
+      Enabled: 'Enabled',
+      Enable: 'Enable',
+      NotConfigured: 'Not Configured',
+      uninstallComponentText: 'Are you sure you want to uninstall this component?',
+
+      //Connectors
+      // instagramDescription: 'Connect multiple Instagram pages',
+      // googleDescription: 'Be there when people search',
+      // whatsappDescription: 'World #1 chat app',
+      // twilioSmsDescription: 'Deliver SMS with ease',
+      // facebookDescription: 'Connect multiple Facebook pages',
+      // chatpluginDescription: 'Best of class browser messenger',
 
       //Channels
+      toConfigure: 'To configure',
+      configure: 'Configure',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -166,7 +180,7 @@ const resources = {
       undoStep: 'Undo',
       deleteChannel: 'Do you really want to delete this channel?',
       addChanne: 'Add channel',
-      infoButtonText: 'more information about this source',
+      infoButtonText: 'more information',
       addChatplugin: 'Add Airy Live Chat to your website and application',
       displayName: 'Display Name',
       addDisplayName: 'Add a name',
@@ -215,6 +229,9 @@ const resources = {
       create: 'Create',
       customize: 'Customize',
       install: 'Install',
+      uninstall: 'Uninstall',
+      uninstalled: 'uninstalled',
+
       addAName: 'Add a name',
       settings: 'Settings',
       installCustomize: 'Install & Customize',
@@ -235,6 +252,19 @@ const resources = {
         'You will be able to access the code to include in your header later after you are done customising.',
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
+
+      //Dialogflow
+      dialogflowDescription: 'Conversational AI with virtual agents',
+      projectID: 'Project ID',
+      AddProjectId: 'Add the project id',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      fromCloudConsole: 'given by the Cloud Console',
+      amountSuggestions: 'amount for suggestions',
+      amountReplies: 'amount for replies',
+      to: 'to',
 
       //Facebook Messenger
 
@@ -317,6 +347,7 @@ const resources = {
       componentName: 'Component Name',
       healthStatus: 'Health Status',
       enabled: 'Enabled',
+      enabledLowerCase: 'enabled',
 
       //Webhooks
 
@@ -471,8 +502,15 @@ const resources = {
       //Control-Center
       disableComponent: 'Deaktivieren',
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
+      Enabled: 'Aktiviert',
+      Enable: 'Aktivieren',
+      NotConfigured: 'Nicht konfiguriert',
+      uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
+      Update: 'Aktualisieren',
 
       //Channels
+      toConfigure: 'konfigurieren',
+      configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
       facebookTitle: 'Facebook Messenger',
@@ -512,7 +550,7 @@ const resources = {
       sample: 'Muster',
       deleteChannel: 'Wollen Sie diesen Kanal wirklich löschen?',
       addChanne: 'Kanal hinzufügen',
-      infoButtonText: 'mehr Informationen über diese Quelle',
+      infoButtonText: 'mehr Informationen',
       addChatplugin: 'Fügen Sie Airy Live Chat zu Ihrer Website und Anwendung hinzu',
       displayName: 'Anzeige Name',
       addDisplayName: 'Namen hinzufügen',
@@ -561,6 +599,8 @@ const resources = {
       create: 'Erstellen',
       customize: 'Anpassen',
       install: 'Installieren',
+      uninstall: 'Deinstallieren',
+      uninstalled: 'deinstalliert',
       addAName: 'Namen hinzufügen',
       settings: 'Einstellungen',
       installCustomize: 'Installieren & Anpassen',
@@ -581,6 +621,19 @@ const resources = {
         'Sie können auf den Code zugreifen, den Sie später in Ihre Kopfzeile einfügen können, wenn Sie mit den Anpassungen fertig sind.',
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
+
+      //Dialogflow
+      dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
+      projectID: 'Projekt-ID',
+      AddProjectId: 'Projekt-ID hinzufügen',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Google Application Credentials hinzufügen',
+      SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
+      ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
+      to: 'bis',
+      fromCloudConsole: 'gegeben von der Cloud Console',
+      amountSuggestions: 'Anzahl der Vorschläge',
+      amountReplies: 'Anzahl der Antworten',
 
       //Facebook Messenger
 
@@ -663,6 +716,7 @@ const resources = {
       componentName: 'Komponenten Name',
       healthStatus: 'Gesundheitszustand',
       enabled: 'Aktiviert',
+      enabledLowerCase: 'aktiviert',
 
       //Webhooks
 
@@ -804,9 +858,16 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
-      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
+      Enabled: 'Activé',
+      Enable: 'Activer',
+      NotConfigured: 'Non configuré',
+      uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
+      Update: 'Mettre à jour',
 
       //Channels
+      toConfigure: 'configuration',
+      configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
       facebookTitle: 'Facebook Messenger',
@@ -846,7 +907,7 @@ const resources = {
       sample: 'Echantillon',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
-      infoButtonText: `plus d'informations sur cette source`,
+      infoButtonText: `plus d'informations`,
       addChatplugin: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
       displayName: `Nom d'affichage`,
       addDisplayName: 'Ajouter un nom',
@@ -895,10 +956,26 @@ const resources = {
       create: 'Créer',
       customize: 'Personnaliser',
       install: 'Installer',
+      uninstall: 'Désinstaller',
+      uninstalled: 'désinstallé',
       addAName: 'Ajouter un nom',
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Dialogflow
+      dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
+      projectID: 'ID du project',
+      AddProjectId: "Ajouter l'ID du project",
+      GoogleApplicationCredentials: 'références de votre app Google',
+      googleAppCredentialsTooltip: 'références de la Cloud Console',
+      AddGoogleApplicationCredentials: 'Ajouter les Google Application Credentials',
+      SuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
+      ReplyConfidenceLevel: 'Niveau de confiance des réponses',
+      fromCloudConsole: 'donné(s) par la Cloud Console',
+      amountSuggestions: 'niveau pour les suggestions',
+      amountReplies: 'niveau pour les réponses',
+      to: 'à',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -997,6 +1074,7 @@ const resources = {
       componentName: 'Nom du composant',
       healthStatus: 'État de santé',
       enabled: 'Activé',
+      enabledLowerCase: 'activé',
 
       //Webhooks
 
@@ -1142,8 +1220,15 @@ const resources = {
       //Control-Center
       disableComponent: 'Desactivar',
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
+      Enabled: 'Activado',
+      Enable: 'Activar',
+      NotConfigured: 'No configurado',
+      uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
+      Update: 'Actualizar',
 
       //Channels
+      toConfigure: 'configurar',
+      configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
       facebookTitle: 'Facebook Messenger',
@@ -1183,7 +1268,7 @@ const resources = {
       sample: 'Muestra',
       deleteChannel: '¿Realmente quieres borrar este canal?',
       addChanne: 'Añadir canal',
-      infoButtonText: 'más información sobre esta fuente',
+      infoButtonText: 'más información',
       addChatplugin: 'Añade Airy Live Chat a tu sitio web y aplicación',
       displayName: 'Nombre de la pantalla',
       addDisplayName: 'Añadir un nombre',
@@ -1232,6 +1317,8 @@ const resources = {
       create: 'Crear',
       customize: 'Personalizar',
       install: 'Instalar',
+      uninstall: 'Desinstalar',
+      uninstalled: 'desinstalado',
       addAName: 'Añadir un nombre',
       settings: 'Ajustes',
       installCustomize: 'Instalar & personalizar',
@@ -1253,8 +1340,20 @@ const resources = {
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
 
-      //Facebook Messenger
+      //Dialogflow
+      dialogflowDescription: 'IA conversacional con agentes virtuales',
+      projectID: 'ID del proyecto',
+      AddProjectId: 'Añadir el ID del proyecto',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Añadir los Google Application Credentials',
+      SuggestionConfidenceLevel: 'Nivel de confianza para sugerencias',
+      ReplyConfidenceLevel: 'Nivel de confianza para respuestas',
+      to: 'a',
+      fromCloudConsole: 'dado por la Cloud Console',
+      amountSuggestions: 'nivel para sugerencias',
+      amountReplies: 'nivel para respuestas',
 
+      //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',
       facebookConfiguration: 'La fuente de Facebook requiere la siguiente configuración:',
       facebookConfigurationText:
@@ -1334,6 +1433,7 @@ const resources = {
       componentName: 'Nombre del componente',
       healthStatus: 'Estado de salud',
       enabled: 'Activado',
+      enabledLowerCase: 'activado',
 
       //Webhooks
 

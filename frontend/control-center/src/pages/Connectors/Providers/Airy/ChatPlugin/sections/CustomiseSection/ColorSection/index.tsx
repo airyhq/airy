@@ -450,6 +450,5 @@ export const ColorSection = (props: ColorSectionProps) => {
         )}
       </div>
     </div>
-    // </div>
   );
 };

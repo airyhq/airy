@@ -69,11 +69,13 @@
 }
 
 .inputTitle {
-  @include font-base;
+  @include font-s-bold;
   display: flex;
   color: var(--color-text-contrast);
-  margin-bottom: 8px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  height: 35px;
 
   svg {
     margin-left: 6px;
@@ -214,12 +216,12 @@
 }
 
 .infoCircleText {
-  @include font-base;
+  @include font-s-bold;
   display: none;
   background: var(--color-tooltip-gray);
   border-radius: 4px;
   margin-left: 4px;
-  padding: 0 6px;
+  padding: 4px 6px;
   color: var(--color-text-contrast);
 }
 

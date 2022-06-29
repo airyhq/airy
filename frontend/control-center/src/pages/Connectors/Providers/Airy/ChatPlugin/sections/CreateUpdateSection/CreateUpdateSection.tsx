@@ -8,7 +8,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel} from 'model';
 
-import {CATALOG_CONNECTED_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../../../routes/routes';
 
 const mapDispatchToProps = {
   updateChannel,
@@ -29,9 +29,7 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const CONNECTED_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CONNECTED_ROUTE
-    : CATALOG_CONNECTED_ROUTE;
+  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl}).then(() => {

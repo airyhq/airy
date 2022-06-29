@@ -2,18 +2,17 @@ import React, {useEffect, useState} from 'react';
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
-import {allChannelsConnected} from '../../selectors/channels';
 import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
 import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
-import {Channel, Source} from 'model';
+import {Source, getSourceForComponent} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 
 const Catalog = () => {
-  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const connectors = useSelector((state: StateModel) => state.data.config.components);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
   const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
   const [installedConnectors, setInstalledConnectors] = useState([]);
@@ -22,18 +21,52 @@ const Catalog = () => {
 
   useEffect(() => {
     setPageTitle(pageTitle);
-    setSourcesInfo(getSourcesInfo(pageTitle));
+    setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {
-    sourcesInfo.map((infoItem: SourceInfo) => {
-      if (channelsBySource(infoItem.type).length === 0) {
-        setNotInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      } else {
-        setInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      }
-    });
-  }, [sourcesInfo]);
+    if (sourcesInfo.length > 0 && Object.entries(connectors).length > 0) {
+      const installedList = [];
+      const sourcesInfosClone = [...sourcesInfo];
+
+      Object.entries(connectors).map(elem => {
+        if (getSourceForComponent(elem[0])) {
+          installedList.push(getSourceForComponent(elem[0]));
+        }
+      });
+
+      const isComponentInstalled = (elem: SourceInfo) =>
+        installedList.includes(elem.type) ||
+        (elem.type === Source.instagram && installedList.includes('facebook')) ||
+        elem.type === Source.twilioWhatsApp ||
+        (Source.twilioSMS && installedList.includes('twilio'));
+
+      const installedComponents = sourcesInfosClone.filter((elem: SourceInfo) => isComponentInstalled(elem));
+      const notInstalledComponents = sourcesInfosClone.filter((elem: SourceInfo) => !isComponentInstalled(elem));
+
+      setInstalledConnectors(installedComponents);
+      setNotInstalledConnectors(notInstalledComponents);
+    }
+  }, [sourcesInfo, connectors]);
+
+  //mock up of install/uninstall api: remove when backend is added
+  const updateItemList = (installed: boolean, type: Source) => {
+    if (!installed) {
+      const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => {
+        if (elem.type === type) setNotInstalledConnectors(prevState => [...prevState, elem]);
+        return elem.type !== type;
+      });
+      setInstalledConnectors(updatedInstalledList);
+    }
+
+    if (installed) {
+      const updatedNotInstalledList = notInstalledConnectors.filter((elem: SourceInfo) => {
+        if (elem.type === type) setInstalledConnectors(prevState => [...prevState, elem]);
+        return elem.type !== type;
+      });
+      setNotInstalledConnectors(updatedNotInstalledList);
+    }
+  };
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -51,8 +84,6 @@ const Catalog = () => {
     return null;
   };
 
-  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
-
   return (
     <div className={styles.catalogWrapper}>
       <div className={styles.catalogHeadline}>
@@ -69,6 +100,7 @@ const Catalog = () => {
             list={notInstalledConnectors}
             installedConnectors={false}
             setDisplayDialogFromSource={setDisplayDialogFromSource}
+            updateItemList={updateItemList}
           />
         )}
 
@@ -77,6 +109,7 @@ const Catalog = () => {
             list={installedConnectors}
             installedConnectors
             setDisplayDialogFromSource={setDisplayDialogFromSource}
+            updateItemList={updateItemList}
           />
         )}
       </div>

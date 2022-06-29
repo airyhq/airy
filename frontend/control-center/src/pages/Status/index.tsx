@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
-import {getClientConfig} from '../../actions/config';
+import {getClientConfig, getConnectorsConfiguration} from '../../actions';
 import {StateModel} from '../../reducers';
 import {ComponentListItem} from './ComponentListItem';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
@@ -10,21 +10,21 @@ import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getClientConfig,
+  getConnectorsConfiguration,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const Status = (props: ConnectedProps<typeof connector>) => {
+  const {getClientConfig, getConnectorsConfiguration} = props;
   const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
   const [spinAnim, setSpinAnim] = useState(true);
   const {t} = useTranslation();
 
   useEffect(() => {
     setPageTitle('Status');
-  }, []);
-
-  useEffect(() => {
-    props.getClientConfig();
+    getClientConfig();
+    getConnectorsConfiguration();
   }, []);
 
   setInterval(() => {

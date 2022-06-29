@@ -334,6 +334,9 @@ const resources = {
       updating: 'Updating...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALL EVENTS',
+      subscribe: 'Subscribe',
+      noWebhooks: 'No Webhooks Found',
+      noWebhooksText: `You don't have any Webhooks installed, please `,
 
       //Inbox
 
@@ -677,6 +680,9 @@ const resources = {
       updating: 'Aktualisieren...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALLE EVENTS',
+      subscribe: 'Abonnieren',
+      noWebhooks: 'Keine Webhooks gefunden',
+      noWebhooksText: 'Sie haben keine Webhooks installiert, bitte ',
     },
   },
   fr: {
@@ -1008,6 +1014,9 @@ const resources = {
       updating: 'Mise à jour...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TOUS LES ÉVÉNEMENTS',
+      subscribe: 'Inscrire',
+      noWebhooks: 'Pas de Webhooks trouvés',
+      noWebhooksText: `Vous n'avez pas de Webhooks installé, veuillez vous `,
     },
   },
   es: {
@@ -1342,6 +1351,9 @@ const resources = {
       updating: 'Actualizar...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TODOS LOS EVENTOS',
+      subscribe: 'Suscripción',
+      noWebhooks: 'No se han encontrado webhooks',
+      noWebhooksText: 'No tiene instalado ningún Webhooks, por favor, ',
     },
   },
 };

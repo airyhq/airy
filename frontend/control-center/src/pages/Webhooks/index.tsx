@@ -7,6 +7,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {listWebhooks, subscribeWebhook, updateWebhook} from '../../actions/webhook';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
+import {EmptyState} from './EmptyState';
 import styles from './index.module.scss';
 import SubscriptionModal from './SubscriptionModal';
 import WebhooksListItem from './WebhooksListItem';
@@ -118,9 +119,12 @@ const Webhooks = (props: WebhooksProps) => {
     );
   };
 
+  const handleNewWebhook = (openModal: boolean) => {
+    setNewWebhook(openModal);
+  };
+
   return (
     <>
-      {showSuccessNotification && <SuccessfulSubscribed />}
       {newWebhook && (
         <SettingsModal close={() => setNewWebhook(false)} title={t('subscribeWebhook')} style={{fontSize: '40px'}}>
           <SubscriptionModal
@@ -132,34 +136,41 @@ const Webhooks = (props: WebhooksProps) => {
           />
         </SettingsModal>
       )}
-      <div className={styles.webhooksWrapper}>
-        <div className={styles.webhooksHeadline}>
-          <div className={styles.headlineContainer}>
-            <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-            <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, minWidth: '176px', height: '40px'}}>
-              {t('subscribeWebhook')}
-            </Button>
+      {webhooks.length === 0 ? (
+        <EmptyState setNewWebhook={handleNewWebhook} />
+      ) : (
+        <>
+          {showSuccessNotification && <SuccessfulSubscribed />}
+          <div className={styles.webhooksWrapper}>
+            <div className={styles.webhooksHeadline}>
+              <div className={styles.headlineContainer}>
+                <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
+                <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, minWidth: '176px', height: '40px'}}>
+                  {t('subscribeWebhook')}
+                </Button>
+              </div>
+            </div>
+            <div className={styles.listHeader}>
+              <h2>URL</h2>
+              <h2>Name</h2>
+              <h2>Events</h2>
+              <h2>Status</h2>
+            </div>
+            <div>
+              {webhooks &&
+                webhooks.map((webhook: Webhook, index) => (
+                  <WebhooksListItem
+                    webhook={webhook}
+                    switchId={`${index}`}
+                    key={index}
+                    upsertWebhook={upsertWebhook}
+                    setShowNotification={handleNotification}
+                  />
+                ))}
+            </div>
           </div>
-        </div>
-        <div className={styles.listHeader}>
-          <h2>URL</h2>
-          <h2>Name</h2>
-          <h2>Events</h2>
-          <h2>Status</h2>
-        </div>
-        <div>
-          {webhooks &&
-            webhooks.map((webhook: Webhook, index) => (
-              <WebhooksListItem
-                webhook={webhook}
-                switchId={`${index}`}
-                key={index}
-                upsertWebhook={upsertWebhook}
-                setShowNotification={handleNotification}
-              />
-            ))}
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

@@ -33,6 +33,7 @@ package-lock.json
 
 # Kubernetes
 .kubeconfig
+kube.conf
 
 # Misc
 .DS_Store

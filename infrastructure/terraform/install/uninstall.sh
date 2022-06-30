@@ -2,15 +2,17 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-source ./install.flags
+# shellcheck source=/dev/null
+source "./install.flags"
 
 if [ -z ${PROVIDER+x} ]; then
   echo "PROVIDER is not set. Exiting."
   exit 1
 fi
 
-if [ -f ${PROVIDER}/variables.sh ]; then
-    source ${PROVIDER}/variables.sh
+if [ -f "${PROVIDER}"/variables.sh ]; then
+  # shellcheck source=/dev/null
+  source "${PROVIDER}"/variables.sh
 fi
 
 read -p "Uninstall airy-core from provider ${PROVIDER} [y/n]?" -n 1 -r

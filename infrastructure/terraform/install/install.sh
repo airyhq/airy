@@ -2,7 +2,8 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-source ./install.flags
+# shellcheck source=/dev/null
+source "./install.flags"
 
 if [ -z ${PROVIDER+x} ]; then
   echo "PROVIDER is not set. Exiting."
@@ -14,12 +15,13 @@ if [ -z ${WORKSPACE+x} ]; then
   exit 1
 fi
 
-if [ -f ${PROVIDER}/variables.sh ]; then
-    source ${PROVIDER}/variables.sh
+if [ -f "${PROVIDER}"/variables.sh ]; then
+    # shellcheck source=/dev/null
+    source "${PROVIDER}"/variables.sh
 fi
 
-if [ ! -f ${WORKSPACE}/airy.yaml ]; then
-    touch ${WORKSPACE}/airy.yaml
+if [ ! -f "${WORKSPACE}"/airy.yaml ]; then
+    touch "${WORKSPACE}"/airy.yaml
 fi
 
 read -p "Install airy-core on provider ${PROVIDER} [y/n]?" -n 1 -r
@@ -29,7 +31,7 @@ if [[ ! ${REPLY} =~ ^[yY]$ ]]; then
   exit 1
 fi
 
-cd ${PROVIDER} 2>/dev/null || ( echo "Terraform directory ${PROVIDER} doesn't exist"; exit 1)
+cd "${PROVIDER}" 2>/dev/null || ( echo "Terraform directory ${PROVIDER} doesn't exist"; exit 1)
 terraform init
 terraform apply -auto-approve
 

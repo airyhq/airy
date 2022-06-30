@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {enableDisableComponent} from '../../../actions';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {StateModel} from '../../../reducers';
+import {enableDisableComponent} from '../../../actions/config';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
-import {SettingsModal, Button, Toggle} from 'components';
+import {SettingsModal, Button, Toggle, SimpleLoader} from 'components';
 import styles from './index.module.scss';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -19,6 +19,9 @@ type ComponentInfoProps = {
   isExpanded: boolean;
   enabled?: boolean;
   setIsPopUpOpen: (value: boolean) => void;
+  currentIndex?: number;
+  loading?: boolean;
+  setLoading?: Dispatch<SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -47,9 +50,19 @@ const isConfigurableConnector = (name: string) => {
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
-
   const connectorInstalltionConfig = useSelector((state: StateModel) => state.data.connector[formatName(itemName)]);
+  const {
+    healthy,
+    itemName,
+    isComponent,
+    isExpanded,
+    enabled,
+    setIsPopUpOpen,
+    enableDisableComponent,
+    currentIndex,
+    loading,
+    setLoading,
+  } = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -62,6 +75,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
     setComponentEnabled(enabled);
     setEnablePopupVisible(false);
     setIsPopUpOpen(false);
+    setLoading(true);
   };
 
   const onEnableComponent = (enabled: boolean) => {

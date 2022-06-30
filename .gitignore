@@ -27,12 +27,13 @@ package-lock.json
 *.tfstate
 *.tfstate.backup
 *.tfvars
-*.tfstate.*.backup
+*.tfstate.*
 .terraform.tfstate.lock.info
 .terraform.lock.hcl
 
 # Kubernetes
 .kubeconfig
+kube.conf
 
 # Misc
 .DS_Store

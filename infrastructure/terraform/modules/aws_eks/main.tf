@@ -1,6 +1,6 @@
 provider "aws" {
-  region     = var.region
-  profile    = var.aws_profile
+  region  = var.aws_region
+  profile = var.aws_profile
 }
 
 locals {
@@ -16,7 +16,7 @@ module "vpc" {
   name = var.vpc_name
   cidr = "10.0.0.0/16"
 
-  azs             = ["${var.region}a", "${var.region}b", "${var.region}c"]
+  azs             = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
   private_subnets = var.private_subnets
   public_subnets  = var.public_subnets
 
@@ -27,7 +27,7 @@ module "vpc" {
 
   single_nat_gateway = true
 
-  tags = merge(var.tags, {Terraform = "true"})
+  tags = merge(var.tags, { Terraform = "true" })
 }
 
 locals {
@@ -55,9 +55,7 @@ module "eks" {
   vpc_id                 = local.vpc.id
   subnets                = [local.vpc.private_subnets[0], local.vpc.public_subnets[1]]
   fargate_subnets        = [local.vpc.private_subnets[0]]
-  kubeconfig_output_path = var.kubeconfig_output_path
-  kubeconfig_api_version = "client.authentication.k8s.io/v1beta1"
-  write_kubeconfig       = true
+  write_kubeconfig       = false
   map_users              = var.kubernetes_users
   tags                   = var.tags
 
@@ -77,7 +75,7 @@ module "eks" {
   fargate_profiles = {
 
 
-     default = {
+    default = {
       name = "default"
       selectors = [
         {
@@ -108,9 +106,26 @@ resource "aws_eks_fargate_profile" "namespaces" {
   tags                   = var.tags
 
   selector {
-      namespace = var.fargate_profiles[count.index]
-      labels = {
-        WorkerType = "fargate"
-      }
+    namespace = var.fargate_profiles[count.index]
+    labels = {
+      WorkerType = "fargate"
+    }
   }
+}
+
+resource "null_resource" "write_kubeconfig_file" {
+  triggers = {
+    id              = var.core_id
+    kubeconfig_path = var.kubeconfig_output_path
+    aws_profile     = var.aws_profile
+    aws_region      = var.aws_region
+  }
+
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --name ${self.triggers.id} --alias ${self.triggers.id} --kubeconfig ${self.triggers.kubeconfig_path} --profile ${self.triggers.aws_profile} --region ${self.triggers.aws_region}"
+  }
+
+  depends_on = [
+    module.eks
+  ]
 }

@@ -19,8 +19,6 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   const {getClientConfig, getConnectorsConfiguration} = props;
   const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
   const [spinAnim, setSpinAnim] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -28,11 +26,6 @@ const Status = (props: ConnectedProps<typeof connector>) => {
     getClientConfig();
     getConnectorsConfiguration();
   }, []);
-
-  useEffect(() => {
-    props.getClientConfig();
-    setLoading(false);
-  }, [components?.[currentIndex]?.[1].enabled, currentIndex]);
 
   setInterval(() => {
     props.getClientConfig();
@@ -66,10 +59,6 @@ const Status = (props: ConnectedProps<typeof connector>) => {
             enabled={component[1].enabled}
             services={component[1].services}
             componentName={component[0]}
-            index={index}
-            setCurrentIndex={setCurrentIndex}
-            loading={loading}
-            setLoading={setLoading}
           />
         ))}
       </div>

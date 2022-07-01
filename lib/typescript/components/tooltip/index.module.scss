@@ -1,0 +1,41 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.tooltipContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  //   margin-left: 50%;
+}
+
+.tooltipContent {
+  @include font-s-bold;
+  display: none;
+  background: var(--color-tooltip-gray);
+  border-radius: 4px;
+  margin-left: 4px;
+  padding: 4px 6px;
+  color: var(--color-text-contrast);
+  max-width: 180px;
+  position: relative;
+  margin-left: 16px;
+}
+
+.tooltip {
+  margin-left: 32px;
+}
+
+.hoverElement:hover ~ .tooltipContent {
+  display: flex;
+}
+
+.hoverElement ~ .tooltipContent::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--color-tooltip-gray) transparent transparent;
+}

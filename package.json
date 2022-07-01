@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^14.2.1",
     "@types/jest": "^28.1.2",
     "audio-recorder-polyfill": "^0.4.1",
-    "camelcase-keys": "^8.0.1",
+    "camelcase-keys": "^7.0.2",
     "core-js": "3.23.2",
     "emoji-mart": "3.0.1",
     "form-data": "^4.0.0",

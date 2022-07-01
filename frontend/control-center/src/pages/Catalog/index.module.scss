@@ -4,7 +4,8 @@
 .catalogWrapper {
   background: var(--color-background-white);
   color: var(--color-text-contrast);
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   padding: 32px;
   margin: 88px 1.5em 0 191px;
   height: calc(100vh - 88px);

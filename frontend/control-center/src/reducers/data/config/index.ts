@@ -5,7 +5,7 @@ import {getClusterVersion, getComponents} from 'model';
 type Action = ActionType<typeof actions>;
 
 export type Config = {
-  components: {[key: string]: {enabled: boolean; healthy: boolean; services: {name: string; healthy: boolean}[]}};
+  components: {[key: string]: {enabled?: boolean; healthy?: boolean; services?: {name: string; healthy: boolean}[]}};
   clusterVersion: string;
 };
 

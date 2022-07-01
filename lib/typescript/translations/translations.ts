@@ -348,6 +348,10 @@ const resources = {
       healthStatus: 'Health Status',
       enabled: 'Enabled',
       enabledLowerCase: 'enabled',
+      healthy: 'Healthy',
+      notHealthy: 'Not Healthy',
+      needsConfiguration: 'Needs Configuration',
+      disabled: 'Disabled',
 
       //Webhooks
 
@@ -717,6 +721,10 @@ const resources = {
       healthStatus: 'Gesundheitszustand',
       enabled: 'Aktiviert',
       enabledLowerCase: 'aktiviert',
+      healthy: 'Gesund',
+      notHealthy: 'Nicht Gesund',
+      needsConfiguration: 'Erfordert Konfiguration',
+      disabled: 'Deaktiviert',
 
       //Webhooks
 
@@ -1075,6 +1083,10 @@ const resources = {
       healthStatus: 'État de santé',
       enabled: 'Activé',
       enabledLowerCase: 'activé',
+      healthy: 'Santé',
+      notHealthy: 'Non Sain',
+      needsConfiguration: 'Configuration des besoins',
+      disabled: 'Désactivé',
 
       //Webhooks
 
@@ -1434,6 +1446,10 @@ const resources = {
       healthStatus: 'Estado de salud',
       enabled: 'Activado',
       enabledLowerCase: 'activado',
+      healthy: 'Saludable',
+      notHealthy: 'No es Saludable',
+      needsConfiguration: 'Configuración de las necesidades',
+      disabled: 'Discapacitados',
 
       //Webhooks
 

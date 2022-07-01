@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
 
@@ -28,53 +28,53 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
-  useEffect(() => {
-    //we keep it disabled for now!
-    setInboxEnabled(false);
-  }, [props.components]);
-
-  const [inboxEnabled, setInboxEnabled] = useState(props.components[ConfigServices.frontendInbox]?.enabled || false);
+  const webhooksEnabled = props.components[ConfigServices.integrationWebhook]?.enabled || false;
+  const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled || false;
+  const showLine = inboxEnabled || webhooksEnabled;
 
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
         <div className={`${styles.align} ${isActive(STATUS_ROUTE) ? styles.active : ''}`}>
           <Link to={STATUS_ROUTE} className={`${styles.link} ${isActive(STATUS_ROUTE) ? styles.active : ''}`}>
-            <StatusIcon width={'20px'} height={'20px'} />
+            <StatusIcon width={20} height={20} />
             <span className={styles.iconText}>Status</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
           <Link to={CONNECTORS_ROUTE} className={`${styles.link} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
-            <ConnectorsIcon width={'20px'} height={'20px'} />
+            <ConnectorsIcon width={20} height={20} />
             <span className={styles.iconText}>Connectors</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>
           <Link to={CATALOG_ROUTE} className={`${styles.link} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>
-            <CatalogIcon width={'18px'} height={'18px'} />
+            <CatalogIcon width={18} height={18} />
             <span className={styles.iconText}>Catalog</span>
           </Link>
         </div>
-        <div className={`${styles.align} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''}`}>
-          <Link to={WEBHOOKS_ROUTE} className={`${styles.link} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''}`}>
-            <WebhooksIcon width={'20px'} height={'20px'} />
-            <span className={styles.iconText}>Webhooks</span>
-          </Link>
-        </div>
+        <div className={showLine ? styles.borderActive : styles.inactive} />
         <>
-          <div
-            className={`${!inboxEnabled && styles.inactive}`}
-            style={{width: '95%', background: 'rgba(115, 115, 115, 0.2)', height: '0.3px', marginTop: '11px'}}
-          />
           <div
             className={`${styles.align} ${isActive(INBOX_ROUTE) ? styles.active : ''} ${
               !inboxEnabled && styles.inactive
             }`}
           >
             <Link to={INBOX_ROUTE} className={`${styles.link} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>
-              <InboxIcon width={'20px'} height={'20px'} />
+              <InboxIcon width={20} height={20} />
               <span className={styles.iconText}>Inbox</span>
+            </Link>
+          </div>
+        </>
+        <>
+          <div
+            className={`${styles.align} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''} ${
+              !webhooksEnabled && styles.inactive
+            }`}
+          >
+            <Link to={WEBHOOKS_ROUTE} className={`${styles.link} ${isActive(WEBHOOKS_ROUTE) ? styles.active : ''}`}>
+              <WebhooksIcon width={20} height={20} />
+              <span className={styles.iconText}>Webhooks</span>
             </Link>
           </div>
         </>

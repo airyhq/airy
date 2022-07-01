@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {enableDisableComponent} from '../../../actions';
 import {StateModel} from '../../../reducers';
+import {enableDisableComponent} from '../../../actions/config';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
-import {SettingsModal, Button, Toggle} from 'components';
+import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import styles from './index.module.scss';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -28,10 +28,10 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const formatName = (name: string) => {
-  if (name.includes('enterprise')) {
+  if (name?.includes('enterprise')) {
     name = name.replace('enterprise-', '');
   }
-  if (name.includes('sources')) {
+  if (name?.includes('sources')) {
     name = name.replace('sources-', '');
   }
   return name;
@@ -47,9 +47,8 @@ const isConfigurableConnector = (name: string) => {
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
-
   const connectorInstalltionConfig = useSelector((state: StateModel) => state.data.connector[formatName(itemName)]);
+  const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -102,13 +101,33 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
           <div className={styles.healthyStatus}>
             {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig ? (
-              <UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('needsConfiguration')}
+              />
             ) : healthy && enabled ? (
-              <CheckmarkIcon className={styles.icons} />
+              <Tooltip
+                hoverElement={<CheckmarkIcon className={styles.icons} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('healthy')}
+              />
             ) : healthy && !enabled ? (
-              <UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('notHealthy')}
+              />
             ) : (
-              <UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('disabled')}
+              />
             )}
           </div>
 

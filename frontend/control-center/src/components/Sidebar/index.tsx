@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
 
@@ -28,12 +28,6 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
-  useEffect(() => {
-    //we keep it disabled for now!
-    // setInboxEnabled(false);
-  }, [props.components]);
-
-  // const [inboxEnabled, setInboxEnabled] = useState(props.components[ConfigServices.frontendInbox]?.enabled || false);
   const webhooksEnabled = props.components[ConfigServices.integrationWebhook]?.enabled || false;
   const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled || false;
   const showLine = inboxEnabled || webhooksEnabled;

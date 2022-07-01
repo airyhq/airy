@@ -24,17 +24,13 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	// Load authentication middleware only if auth env is present
 	authEnabled := false
 	systemToken := os.Getenv("systemToken")
-	if systemToken != "" {
-		klog.Info("adding system token auth")
-		middleware := NewSystemTokenMiddleware(systemToken)
-		r.Use(middleware.Middleware)
-	}
-
 	jwtSecret := os.Getenv("jwtSecret")
-	if jwtSecret != "" {
+	if systemToken != "" && jwtSecret != "" {
+		klog.Info("adding system token auth")
+		r.Use(NewSystemTokenMiddleware(systemToken).Middleware)
+
 		klog.Info("adding jwt auth")
-		middleware := NewJwtMiddleware(jwtSecret)
-		r.Use(middleware.Middleware)
+		r.Use(NewJwtMiddleware(jwtSecret).Middleware)
 		authEnabled = true
 	}
 

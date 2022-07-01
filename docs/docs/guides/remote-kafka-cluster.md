@@ -16,7 +16,7 @@ like so:
 
 ```yaml
 kafka:
-  bootstrapServers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
+  brokers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
 ```
 
 Since the external Kafka cluster needs to be accessible over the internet it is a good idea to enable authentication.
@@ -26,7 +26,7 @@ This should leave you with a single line JAAS configuration string that you also
 
 ```yaml
 kafka:
-  bootstrapServers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
+  brokers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
   authJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"Grace\" password=\"trustno1\";"
 ```
 

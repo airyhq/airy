@@ -14,7 +14,7 @@ import (
 func ApplyConfigMap(
 	configmapName string,
 	namespace string,
-	cmData map[string]string,
+	data map[string]string,
 	labels map[string]string,
 	annotations map[string]string,
 	clientset *kubernetes.Clientset,
@@ -29,28 +29,54 @@ func ApplyConfigMap(
 					Labels:      labels,
 					Annotations: annotations,
 				},
-				Data: cmData,
+				Data: data,
 			}, v1.CreateOptions{})
 		return err
-	} else {
-		if cmData != nil && len(cmData) > 0 {
-			cm.Data = cmData
-		}
-		if cm.Labels == nil {
-			cm.Labels = make(map[string]string)
-		}
-		for k, v := range labels {
-			cm.Labels[k] = v
-		}
-		if cm.Annotations == nil {
-			cm.Annotations = make(map[string]string)
-		}
-		for k, v := range annotations {
-			cm.Annotations[k] = v
-		}
-		_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
+	}
+
+	if data != nil && len(data) > 0 {
+		cm.Data = data
+	}
+	if cm.Labels == nil {
+		cm.Labels = make(map[string]string)
+	}
+	for k, v := range labels {
+		cm.Labels[k] = v
+	}
+	if cm.Annotations == nil {
+		cm.Annotations = make(map[string]string)
+	}
+	for k, v := range annotations {
+		cm.Annotations[k] = v
+	}
+	_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
+	return err
+}
+
+func MergeConfigMap(
+	configmapName string,
+	namespace string,
+	data map[string]string,
+	clientset *kubernetes.Clientset,
+) error {
+	cm, _ := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), configmapName, v1.GetOptions{})
+	if cm.GetName() == "" {
+		_, err := clientset.CoreV1().ConfigMaps(namespace).Create(context.TODO(),
+			&corev1.ConfigMap{
+				ObjectMeta: v1.ObjectMeta{
+					Name:      configmapName,
+					Namespace: namespace,
+				},
+				Data: data,
+			}, v1.CreateOptions{})
 		return err
 	}
+
+	if data != nil && len(data) > 0 {
+		cm.Data = data
+	}
+	_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
+	return err
 }
 
 func DeleteConfigMap(configmapName string, namespace string, clientset *kubernetes.Clientset) error {

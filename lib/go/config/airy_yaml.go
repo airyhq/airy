@@ -25,6 +25,15 @@ type SecurityConf struct {
 	Oidc           map[string]string `yaml:"oidc,omitempty" json:"oidc,omitempty"`
 }
 
+type KafkaConf struct {
+	Brokers           string `yaml:"brokers,omitempty" json:"brokers,omitempty"`
+	CommitIntervalMs  string `yaml:"commitIntervalMs" json:"commitIntervalMs"`
+	MinimumReplicas   string `yaml:"minimumReplicas" json:"minimumReplicas"`
+	Zookeeper         string `yaml:"zookeeper" json:"zookeeper"`
+	SchemaRegistryUrl string `yaml:"schemaRegistryUrl" json:"schemaRegistryUrl"`
+	AuthJaas          string `yaml:"authJaas" json:"authJaas"`
+}
+
 type ComponentsConf map[string]map[string]string
 
 type AiryConf struct {
@@ -36,4 +45,5 @@ type AiryConf struct {
 
 type ClusterConfig struct {
 	Security SecurityConf `json:"security"`
+	Kafka    KafkaConf    `json:"kafka"`
 }

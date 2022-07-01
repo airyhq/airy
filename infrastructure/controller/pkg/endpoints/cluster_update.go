@@ -37,13 +37,24 @@ func (s *ClusterUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	secData := config.GetSecurityData(conf.ClusterConfig.Security)
 	if len(secData) != 0 {
-		applyErr := k8s.ApplyConfigMap("security", s.namespace, secData, map[string]string{}, map[string]string{}, s.clientSet)
-		if applyErr != nil {
+		err := k8s.ApplyConfigMap("security", s.namespace, secData, map[string]string{}, map[string]string{}, s.clientSet)
+		if err != nil {
 			klog.Error("Unable to apply configuration for \"security\"\nError:\n" + err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		response.ClusterConfig["security"] = true
+	}
+
+	kafkaData := config.GetKafkaData(conf.ClusterConfig.Kafka)
+	if len(kafkaData) != 0 {
+		applyErr := k8s.MergeConfigMap("kafka-config", s.namespace, kafkaData, s.clientSet)
+		if applyErr != nil {
+			klog.Error("Unable to apply configuration for \"kafka\"\nError:\n" + err.Error())
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		response.ClusterConfig["kafka"] = true
 	}
 
 	resp, _ := json.Marshal(response)

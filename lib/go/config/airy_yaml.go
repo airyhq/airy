@@ -40,6 +40,7 @@ type AiryConf struct {
 	Global     GlobalConf                `yaml:"global"`
 	Ingress    IngressConf               `yaml:"ingress"`
 	Security   SecurityConf              `yaml:"security"`
+	Kafka      KafkaConf                 `yaml:"kafka"`
 	Components map[string]ComponentsConf `yaml:"components,omitempty"`
 }
 

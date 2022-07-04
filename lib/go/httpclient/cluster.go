@@ -14,6 +14,10 @@ func (c *Client) ClusterUpdate(conf config.AiryConf) (payloads.ClusterUpdateResp
 	if len(secData) != 0 {
 		cluster.ClusterConfig.Security = conf.Security
 	}
+	kafkaData := config.GetKafkaData(conf.Kafka)
+	if len(kafkaData) != 0 {
+		cluster.ClusterConfig.Kafka = conf.Kafka
+	}
 
 	payload, err := json.Marshal(cluster)
 	if err != nil {

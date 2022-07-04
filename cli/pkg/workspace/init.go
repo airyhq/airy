@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
+	getter "github.com/hashicorp/go-getter"
 	"github.com/spf13/viper"
 )
 
@@ -47,7 +47,7 @@ func getConfigPath(path string) string {
 	return path
 }
 
-func Create(path string, data template.Variables) (ConfigDir, error) {
+func Create(path string, data template.Variables, providerName string) (ConfigDir, error) {
 	path = getConfigPath(path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		err = os.MkdirAll(path, 0755)
@@ -66,5 +66,17 @@ func Create(path string, data template.Variables) (ConfigDir, error) {
 
 	// Init viper config
 	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
+	if providerName == "aws"{
+		remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
+		dst := path + "/terraform"
+		var gitGetter = &getter.Client{
+			Src: remoteUrl,
+			Dst: dst,
+			Dir: true,
+		}
+	
+		if err := gitGetter.Get(); err != nil {
+			fmt.Printf("err %v", err)
+		}
 	return ConfigDir{Path: path}, err
 }

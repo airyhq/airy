@@ -39,7 +39,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag name',
+      color: 'Color',
       addATag: 'Add a tag',
+      addTag: 'Add tag',
       addTagName: 'Please enter a tag name',
       tagAlreadyAdded: 'Tag already added',
       addCapital: 'Add',
@@ -55,6 +58,15 @@ const resources = {
       enterTagName: 'Please enter a tag name',
       editTag: 'Edit tag',
       deleteTag: 'Delete tag',
+      deleteTagTextTitle: 'Are you sure you want to permanently delete this tag?',
+      deleteTagText: `You're about to permanently delete `,
+      deleteTagText2: ` from your organization's tags.`,
+      deleteTagText3: 'This action cannot be undone.',
+      deleteTagText4:
+        ' Once you delete the tag, no one in your organization will be able to use it. It will also removed from all corresponding contacts.',
+      deleteTagText5: 'Type ',
+      deleteTagText6: ' to confirm:',
+      deleteTagConfirm: `Please type 'DELETE' in the input field before deleting`,
 
       //Contact
       setName: 'Set Name',
@@ -372,11 +384,8 @@ const resources = {
       subscribe: 'Subscribe',
       noWebhooks: 'No Webhooks Found',
       noWebhooksText: `You don't have any Webhooks installed, please `,
-
-      //Inbox
-
-      //Tags
-      deleteTagText: 'Are you sure you want to permanently delete this tag?',
+      customHeader: 'Customer Header',
+      signKey: 'Sign key',
     },
   },
   de: {
@@ -419,7 +428,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Name',
+      color: 'Farbe',
       addATag: 'Einen Tag hinzufügen',
+      addTag: 'Tag hinzufügen',
       addTagName: 'Bitte geben Sie einen Tag-Namen ein',
       tagAlreadyAdded: 'Tag bereits hinzugefügt',
       addCapital: 'Hinzufügen',
@@ -435,6 +447,15 @@ const resources = {
       enterTagName: 'Bitte geben Sie einen Tag-Namen ein',
       editTag: 'Tag bearbeiten',
       deleteTag: 'Tag löschen',
+      deleteTagTextTitle: 'Sind Sie sicher, dass Sie diesen Tag dauerhaft löschen wollen?',
+      deleteTagText: 'Sie sind im Begriff ',
+      deleteTagText2: ` dauerhaft aus Ihrer Organisation zu löschen.`,
+      deleteTagText3: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+      deleteTagText4:
+        ' Sobald Sie das Tag gelöscht haben, kann es niemand in Ihrer Organisation mehr verwenden. Es wird auch aus allen entsprechenden Kontakten entfernt.',
+      deleteTagText5: 'Tippen Sie ',
+      deleteTagText6: ' um zu bestätigen',
+      deleteTagConfirm: `Bitte geben Sie vor dem Löschen 'DELETE' in das Eingabefeld ein`,
 
       //Contact
       setName: 'Name festlegen',
@@ -745,6 +766,8 @@ const resources = {
       subscribe: 'Abonnieren',
       noWebhooks: 'Keine Webhooks gefunden',
       noWebhooksText: 'Sie haben keine Webhooks installiert, bitte ',
+      customHeader: 'Kundenkopfzeile',
+      signKey: 'Signierschlüssel',
     },
   },
   fr: {
@@ -783,7 +806,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Nom',
+      color: 'Couleur',
       addATag: 'Ajouter une étiquette',
+      addTag: 'Ajouter une étiquette',
       addTagName: `Veuillez entrer un nom d'étiquette`,
       tagAlreadyAdded: 'Étiquette déjà ajoutée',
       addCapital: 'Ajouter',
@@ -799,6 +825,14 @@ const resources = {
       enterTagName: `Veuillez entrer un nom d'étiquette`,
       editTag: `Modifier l'étiquette`,
       deleteTag: `Supprimer l'étiquette`,
+      deleteTagTextTitle: 'Êtes-vous sûr de vouloir supprimer définitivement ce tag?',
+      deleteTagText: `Vous êtes sur le point de supprimer définitivement `,
+      deleteTagText2: ` à partir des balises de votre organisation.`,
+      deleteTagText3: 'Cette action ne peut être annulée.',
+      deleteTagText4: ` Une fois que vous aurez supprimé le tag, personne dans votre organisation ne pourra l'utiliser. Il sera également supprimé de tous les contacts correspondants.`,
+      deleteTagText5: 'Tapez dans ',
+      deleteTagText6: ' pour confirmer:',
+      deleteTagConfirm: `Veuillez taper 'DELETE' dans le champ de saisie avant de procéder à la suppression.`,
 
       //Contact
       setName: 'Ajouter un nom',
@@ -1107,6 +1141,8 @@ const resources = {
       subscribe: 'Inscrire',
       noWebhooks: 'Pas de Webhooks trouvés',
       noWebhooksText: `Vous n'avez pas de Webhooks installé, veuillez vous `,
+      customHeader: 'En-tête du client',
+      signKey: 'Touche de signature',
     },
   },
   es: {
@@ -1146,7 +1182,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Nombre',
+      color: 'Color',
       addATag: 'Añadir una etiqueta',
+      addTag: 'Añadir etiqueta',
       addTagName: 'Por favor, introduzca un nombre de etiqueta',
       tagAlreadyAdded: 'Etiqueta ya añadida',
       addCapital: 'Añadir',
@@ -1162,6 +1201,15 @@ const resources = {
       enterTagName: 'Por favor, introduzca un nombre de etiqueta',
       editTag: 'Editar etiqueta',
       deleteTag: 'Eliminar la etiqueta',
+      deleteTagTextTitle: '¿Estás seguro de que quieres eliminar permanentemente esta etiqueta?',
+      deleteTagText: 'Estás a punto de eliminar permanentemente ',
+      deleteTagText2: ' de las etiquetas de su organización.',
+      deleteTagText3: 'Esta acción no se puede deshacer.',
+      deleteTagText4:
+        ' Una vez que elimine la etiqueta, nadie en su organización podrá utilizarla. También se eliminará de todos los contactos correspondientes',
+      deleteTagText5: 'Escriba ',
+      deleteTagText6: ' para confirmar:',
+      deleteTagConfirm: `Por favor, escriba 'DELETE' en el campo de entrada antes de borrar`,
 
       //Contact
       setName: 'Editar Nombre',
@@ -1470,6 +1518,8 @@ const resources = {
       subscribe: 'Suscripción',
       noWebhooks: 'No se han encontrado webhooks',
       noWebhooksText: 'No tiene instalado ningún Webhooks, por favor, ',
+      customHeader: 'Cabecera del cliente',
+      signKey: 'Clave de la firma',
     },
   },
 };

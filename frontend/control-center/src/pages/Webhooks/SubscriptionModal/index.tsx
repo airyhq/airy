@@ -183,11 +183,11 @@ const SubscriptionModal = (props: SubscriptionModalProps) => {
         </div>
         <div className={styles.headerKeyContainer}>
           <div className={styles.headerKeyItem}>
-            <span>(Customer Header)*</span>
+            <span>({t('customHeader')})*</span>
             <input value={newHeaders} onChange={event => setNewHeaders(event.target.value)}></input>
           </div>
           <div className={styles.headerKeyItem}>
-            <span>*Sign key</span>
+            <span>*{t('signKey')}</span>
             <input value={newSignatureKey} onChange={event => setNewSignatureKey(event.target.value)} />
           </div>
         </div>

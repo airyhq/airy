@@ -129,7 +129,9 @@
 }
 
 .confirmDeleteActions {
+  display: flex;
   text-align: center;
+  justify-content: space-evenly;
 
   button {
     margin-right: 16px;

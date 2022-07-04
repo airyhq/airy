@@ -62,6 +62,8 @@ type KubeConfig struct {
 }
 
 func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
+	fmt.Fprintf(p.w, "Hello... is it me your looking for???")
+	console.Exit("Arman :)")
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		console.Exit(err)

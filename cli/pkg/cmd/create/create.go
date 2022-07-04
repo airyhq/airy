@@ -65,7 +65,7 @@ func create(cmd *cobra.Command, args []string) {
 	overrides.Version = version
 	overrides.Namespace = namespace
 	overrides.TrackingDisabled = disableTracking
-	dir, err := workspace.Create(workspacePath, overrides)
+	dir, err := workspace.Create(workspacePath, overrides, providerName)
 	if err != nil {
 		console.Exit("could not initialize Airy workspace directory", err)
 	}

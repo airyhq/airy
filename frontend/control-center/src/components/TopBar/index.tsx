@@ -17,7 +17,7 @@ import {env} from '../../env';
 import {useAnimation} from 'render';
 import {useTranslation} from 'react-i18next';
 import i18next from 'i18next';
-import {Language} from 'model/Config';
+import {ConfigServices, Language} from 'model/Config';
 
 interface TopBarProps {
   isAdmin: boolean;
@@ -26,6 +26,7 @@ interface TopBarProps {
 const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
   version: state.data.config.clusterVersion,
+  components: state.data.config.components,
 });
 
 const logoutUrl = `${env.API_HOST}/logout`;
@@ -43,6 +44,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [chevronLanguageAnim, setChevronLanguageAnim] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem('language') || Language.english);
   const {t} = useTranslation();
+  const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled || false;
 
   useLayoutEffect(() => {
     handleLanguage(localStorage.getItem('language'));
@@ -222,12 +224,14 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
               {isAccountDropdownOn && (
                 <ListenOutsideClick onOuterClick={toggleAccountDropdown}>
                   <div className={styles.dropdownContainer}>
-                    <a href={inboxUrl} className={styles.dropdownLine}>
-                      <span className={styles.dropdownIconInbox}>
-                        <AiryLogo />
-                      </span>
-                      <span>Inbox</span>
-                    </a>
+                    {inboxEnabled && (
+                      <a href={inboxUrl} className={styles.dropdownLine}>
+                        <span className={styles.dropdownIconInbox}>
+                          <AiryLogo />
+                        </span>
+                        <span>Inbox</span>
+                      </a>
+                    )}
                     <a href={logoutUrl} className={styles.dropdownLine}>
                       <span className={styles.dropdownIcon}>
                         <LogoutIcon />

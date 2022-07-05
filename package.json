@@ -62,7 +62,7 @@
     "@types/resize-observer-browser": "^0.1.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
-    "babel-jest": "^28.1.1",
+    "babel-jest": "^28.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",

@@ -3,10 +3,10 @@ package workspace
 import (
 	"cli/pkg/workspace/template"
 	"fmt"
-	"os"
-	"path/filepath"
 	getter "github.com/hashicorp/go-getter"
 	"github.com/spf13/viper"
+	"os"
+	"path/filepath"
 )
 
 func Init(path string) (ConfigDir, error) {
@@ -66,7 +66,7 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 
 	// Init viper config
 	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
-	if providerName == "aws"{
+	if providerName == "aws" {
 		remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
 		dst := path + "/terraform"
 		var gitGetter = &getter.Client{
@@ -74,9 +74,13 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 			Dst: dst,
 			Dir: true,
 		}
-	
+
 		if err := gitGetter.Get(); err != nil {
 			fmt.Printf("err %v", err)
 		}
+		return ConfigDir{Path: path}, err
+	}
+
+	// TODO
 	return ConfigDir{Path: path}, err
 }

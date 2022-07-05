@@ -66,7 +66,7 @@ func main() {
 	log.Println("Updating go.sum using go get")
 
 	out, err = exec.Command("bazel", "run", "//:gazelle", "--", "update-repos",
-		"-from_file=go.mod", "-prune", "-to_macro=go_repositories.bzl%go_repositories").CombinedOutput()
+		"-from_file=go.mod", "-prune", "-build_file_proto_mode=disable_global", "-to_macro=go_repositories.bzl%go_repositories").CombinedOutput()
 	if err != nil {
 		log.Fatal(string(out))
 	}

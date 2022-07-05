@@ -10,6 +10,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"os/exec"
 	"strings"
 	"text/template"
 	"time"
@@ -49,6 +50,18 @@ func (p *provider) GetOverrides() tmpl.Variables {
 	return tmpl.Variables{
 		LoadbalancerAnnotations: map[string]string{"service.beta.kubernetes.io/aws-load-balancer-type": "nlb"},
 	}
+}
+
+func (p *provider) CheckEnvironment() (bool, string) {
+	necessaryBinaries := [2]string{"aws", "terraform"}
+	for _, binary := range necessaryBinaries {
+		_, err := exec.LookPath(binary)
+		if err != nil {
+			errMsg := fmt.Sprintf("Please check %s\nError - %s", binary, err)
+			return false, errMsg
+		}
+	}
+	return true, ""
 }
 
 func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {

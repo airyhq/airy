@@ -21,6 +21,7 @@ const (
 type Provider interface {
 	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
 	GetOverrides() template.Variables
+	CheckEnvironment() (bool, string)
 	PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error
 }
 

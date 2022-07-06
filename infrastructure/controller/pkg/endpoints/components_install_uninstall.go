@@ -15,12 +15,12 @@ import (
 	"k8s.io/klog"
 )
 
-type ComponentsInstall struct {
+type ComponentsInstallUninstall struct {
 	cli       helmCli.Client
 	namespace string
 }
 
-func MustNewComponentsInstall(namespace string, kubeConfig *rest.Config) ComponentsInstall {
+func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config) ComponentsInstallUninstall {
 	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
 		Options: &helmCli.Options{
 			Namespace: namespace,
@@ -40,10 +40,10 @@ func MustNewComponentsInstall(namespace string, kubeConfig *rest.Config) Compone
 		log.Fatal(err)
 	}
 
-	return ComponentsInstall{namespace: namespace, cli: cli}
+	return ComponentsInstallUninstall{namespace: namespace, cli: cli}
 }
 
-func (s *ComponentsInstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -57,27 +57,38 @@ func (s *ComponentsInstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	release, err := s.cli.InstallOrUpgradeChart(
-		r.Context(),
-		&helmCli.ChartSpec{
-			ReleaseName: releaseName,
-			ChartName:   chartName,
-			Namespace:   s.namespace,
-			UpgradeCRDs: true,
-			Atomic:      true,
-			Replace:     true,
-		},
-		nil,
-	)
-	if err != nil {
-		klog.Error("Component not found: ", err.Error())
-		w.WriteHeader(http.StatusNotFound)
+	chartSpec := &helmCli.ChartSpec{
+		ReleaseName: releaseName,
+		ChartName:   chartName,
+		Namespace:   s.namespace,
+		UpgradeCRDs: true,
+		Replace:     true,
+	}
+
+	if r.URL.Path == "/components.install" {
+		_, err := s.cli.InstallOrUpgradeChart(
+			r.Context(),
+			chartSpec,
+			nil,
+		)
+		if err != nil {
+			klog.Error("Component not found: ", err.Error())
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+	} else if r.URL.Path == "/components.uninstall" {
+		err := s.cli.UninstallRelease(chartSpec)
+		if err != nil {
+			klog.Error("Component not installed: ", err.Error())
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	klog.Info(fmt.Sprintf("%#v", release))
-
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusAccepted)
 }
 
 func getChartNameFromBlob(blob []byte) (string, string, error) {

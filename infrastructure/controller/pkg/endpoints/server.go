@@ -58,8 +58,9 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstall := MustNewComponentsInstall(namespace, kubeConfig)
-	r.Handle("/components.install", &componentsInstall)
+	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig)
+	r.Handle("/components.install", &componentsInstallUninstall)
+	r.Handle("/components.uninstall", &componentsInstallUninstall)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

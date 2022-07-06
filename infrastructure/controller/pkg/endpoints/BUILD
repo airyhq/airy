@@ -8,7 +8,7 @@ go_library(
         "cluster_update.go",
         "components_delete.go",
         "components_get.go",
-        "components_install.go",
+        "components_install_uninstall.go",
         "components_update.go",
         "cors.go",
         "server.go",

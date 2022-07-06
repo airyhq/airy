@@ -3,10 +3,11 @@ package workspace
 import (
 	"cli/pkg/workspace/template"
 	"fmt"
-	getter "github.com/hashicorp/go-getter"
-	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
+
+	getter "github.com/hashicorp/go-getter"
+	"github.com/spf13/viper"
 )
 
 func Init(path string) (ConfigDir, error) {
@@ -63,12 +64,16 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
-
 	// Init viper config
 	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
+
+	if err != nil {
+		return ConfigDir{}, err
+	}
+
 	if providerName == "aws" {
 		remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
-		dst := path + "/terraform"
+		dst := getConfigPath(path) + "/terraform"
 		var gitGetter = &getter.Client{
 			Src: remoteUrl,
 			Dst: dst,
@@ -76,11 +81,16 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 		}
 
 		if err := gitGetter.Get(); err != nil {
-			fmt.Printf("err %v", err)
+			return ConfigDir{path}, err
 		}
-		return ConfigDir{Path: path}, err
-	}
 
-	// TODO
+		message := fmt.Sprintf("PROVIDER=aws-eks\nWORKSPACE=%s", getConfigPath(path))
+		fmt.Println(message)
+
+		err := os.WriteFile(getConfigPath(path)+"/terraform/install.flags", []byte(message), 0777)
+		if err != nil {
+			return ConfigDir{}, err
+		}
+	}
 	return ConfigDir{Path: path}, err
 }

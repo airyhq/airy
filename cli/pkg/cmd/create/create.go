@@ -67,9 +67,14 @@ func create(cmd *cobra.Command, args []string) {
 	overrides.TrackingDisabled = disableTracking
 	dir, err := workspace.Create(workspacePath, overrides, providerName)
 	if err != nil {
-		console.Exit("could not initialize Airy workspace directory", err)
+		console.Exit("Could not initialize Airy workspace directory", err)
 	}
 	fmt.Println("📁 Initialized Airy workspace directory at", dir.GetPath("."))
+
+	//err := provider.PreInstallation(dir.GetPath(".")); err != nil{
+	//	console.Exit("Could not set up files for install in Airy workspace directory", err)
+	//}
+
 	if initOnly {
 		os.Exit(0)
 	}

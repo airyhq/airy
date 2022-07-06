@@ -11,7 +11,6 @@ go_library(
     deps = [
         "//cli/pkg/workspace/template",
         "//lib/go/config",
-        "@com_github_hashicorp_go_getter//:go-getter",
         "@com_github_spf13_viper//:viper",
         "@in_gopkg_yaml_v2//:yaml_v2",
     ],

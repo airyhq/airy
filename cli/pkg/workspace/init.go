@@ -3,10 +3,11 @@ package workspace
 import (
 	"cli/pkg/workspace/template"
 	"fmt"
-	getter "github.com/hashicorp/go-getter"
-	"github.com/spf13/viper"
 	"os"
+	"os/exec"
 	"path/filepath"
+
+	"github.com/spf13/viper"
 )
 
 func Init(path string) (ConfigDir, error) {
@@ -47,7 +48,7 @@ func getConfigPath(path string) string {
 	return path
 }
 
-func Create(path string, data template.Variables, providerName string) (ConfigDir, error) {
+func Create(path string, data template.Variables) (ConfigDir, error) {
 	path = getConfigPath(path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		err = os.MkdirAll(path, 0755)
@@ -63,24 +64,17 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
-
 	// Init viper config
 	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
-	if providerName == "aws" {
-		remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
-		dst := path + "/terraform"
-		var gitGetter = &getter.Client{
-			Src: remoteUrl,
-			Dst: dst,
-			Dir: true,
-		}
-
-		if err := gitGetter.Get(); err != nil {
-			fmt.Printf("err %v", err)
-		}
-		return ConfigDir{Path: path}, err
-	}
-
-	// TODO
 	return ConfigDir{Path: path}, err
+}
+
+func CheckBinaries(binaryList []string) error {
+	for _, binary := range binaryList {
+		_, err := exec.LookPath(binary)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

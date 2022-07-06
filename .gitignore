@@ -30,6 +30,7 @@ package-lock.json
 *.tfstate.*
 .terraform.tfstate.lock.info
 .terraform.lock.hcl
+/terraform
 
 # Kubernetes
 .kubeconfig

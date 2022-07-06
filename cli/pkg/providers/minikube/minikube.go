@@ -44,11 +44,14 @@ func (p *provider) GetOverrides() template.Variables {
 	}
 }
 
-func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
-	if err := checkInstallation(); err != nil {
-		return kube.KubeCtx{}, err
-	}
+func (p *provider) CheckEnvironment() error {
+	return workspace.CheckBinaries([]string{"minikube"})
+}
+func (p *provider) PreInstallation(workspace string) (string, error) {
+	return workspace, nil
+}
 
+func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	if err := p.startCluster(providerConfig); err != nil {
 		return kube.KubeCtx{}, err
 	}
@@ -61,11 +64,6 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	ctx := kube.New(filepath.Join(homeDir, ".kube", "config"), profile)
 	p.context = ctx
 	return ctx, nil
-}
-
-func checkInstallation() error {
-	_, err := exec.LookPath(minikube)
-	return err
 }
 
 func (p *provider) startCluster(providerConfig map[string]string) error {

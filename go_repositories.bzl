@@ -309,6 +309,8 @@ def go_repositories():
         importpath = "github.com/bshuster-repo/logrus-logstash-hook",
         sum = "h1:e+C0SB5R1pu//O4MQ3f9cFuPGoOVeF2fE4Og9otCc70=",
         version = "v1.0.0",
+    )
+    go_repository(
         name = "com_github_bgentry_go_netrc",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bgentry/go-netrc",
@@ -715,13 +717,6 @@ def go_repositories():
         version = "v1.1.1",
     )
     go_repository(
-        name = "com_github_docopt_docopt_go",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/docopt/docopt-go",
-        sum = "h1:bWDMxwH3px2JBh6AyO7hdCn/PkvCZXii8TGj7sbtEbQ=",
-        version = "v0.0.0-20180111231733-ee0de3bc6815",
-    )
-    go_repository(
         name = "com_github_elazarl_goproxy",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/elazarl/goproxy",
@@ -831,13 +826,6 @@ def go_repositories():
     )
 
     go_repository(
-        name = "com_github_elazarl_goproxy",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/elazarl/goproxy",
-        sum = "h1:yUdfgN0XgIJw7foRItutHYUIhlcKzcSf5vDpdhQAKTc=",
-        version = "v0.0.0-20180725130230-947c36da3153",
-    )
-    go_repository(
         name = "com_github_emicklei_go_restful",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/emicklei/go-restful",
@@ -852,20 +840,6 @@ def go_repositories():
         version = "v3.8.0",
     )
 
-    go_repository(
-        name = "com_github_envoyproxy_go_control_plane",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/envoyproxy/go-control-plane",
-        sum = "h1:xvqufLtNVwAhN8NMyWklVgxnWohi+wtMGQMhtxexlm0=",
-        version = "v0.10.2-0.20220325020618-49ff273808a1",
-    )
-    go_repository(
-        name = "com_github_emicklei_go_restful",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/emicklei/go-restful",
-        sum = "h1:8KpYO/Xl/ZudZs5RNOEhWMBY4hmzlZhhRd9cu+jrZP4=",
-        version = "v2.15.0+incompatible",
-    )
     go_repository(
         name = "com_github_envoyproxy_go_control_plane",
         build_file_proto_mode = "disable_global",
@@ -2010,13 +1984,6 @@ def go_repositories():
         importpath = "github.com/mitchellh/cli",
         sum = "h1:PvH+lL2B7IQ101xQL63Of8yFS2y+aDlsFcsqNc+u/Kw=",
         version = "v1.1.2",
-    )
-    go_repository(
-        name = "com_github_mattn_go_runewidth",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/mattn/go-runewidth",
-        sum = "h1:2BvfKmzob6Bmd4YsL0zygOqfdFnK7GR4QL06Do4/p7Y=",
-        version = "v0.0.4",
     )
 
     go_repository(

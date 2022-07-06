@@ -71,9 +71,9 @@ func create(cmd *cobra.Command, args []string) {
 	}
 	fmt.Println("📁 Initialized Airy workspace directory at", dir.GetPath("."))
 
-	//err := provider.PreInstallation(dir.GetPath(".")); err != nil{
-	//	console.Exit("Could not set up files for install in Airy workspace directory", err)
-	//}
+	err := provider.PreInstallation(dir.GetPath(".")); err != nil{
+		console.Exit("Could not set up files for install in Airy workspace directory", err)
+	}
 
 	if initOnly {
 		os.Exit(0)

@@ -45,6 +45,10 @@ func (p *provider) GetOverrides() template.Variables {
 	}
 }
 
+func (p *provider) PreInstallation(workspace string) error {
+	return nil
+}
+
 func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err

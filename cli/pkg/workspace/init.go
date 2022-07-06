@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	getter "github.com/hashicorp/go-getter"
 	"github.com/spf13/viper"
 )
 
@@ -69,28 +68,6 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 
 	if err != nil {
 		return ConfigDir{}, err
-	}
-
-	if providerName == "aws" {
-		remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
-		dst := getConfigPath(path) + "/terraform"
-		var gitGetter = &getter.Client{
-			Src: remoteUrl,
-			Dst: dst,
-			Dir: true,
-		}
-
-		if err := gitGetter.Get(); err != nil {
-			return ConfigDir{path}, err
-		}
-
-		message := fmt.Sprintf("PROVIDER=aws-eks\nWORKSPACE=%s", getConfigPath(path))
-		fmt.Println(message)
-
-		err := os.WriteFile(getConfigPath(path)+"/terraform/install.flags", []byte(message), 0666)
-		if err != nil {
-			return ConfigDir{}, err
-		}
 	}
 	return ConfigDir{Path: path}, err
 }

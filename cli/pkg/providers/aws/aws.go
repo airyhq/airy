@@ -14,8 +14,6 @@ import (
 	"text/template"
 	"time"
 
-	"gopkg.in/segmentio/analytics-go.v3"
-
 	"github.com/TwinProduction/go-color"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -25,6 +23,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/hashicorp/go-getter"
+	getter "github.com/hashicorp/go-getter"
+	"gopkg.in/segmentio/analytics-go.v3"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyz")
@@ -50,7 +51,28 @@ func (p *provider) GetOverrides() tmpl.Variables {
 		LoadbalancerAnnotations: map[string]string{"service.beta.kubernetes.io/aws-load-balancer-type": "nlb"},
 	}
 }
+func (p *provider) PreInstallation(workspacePath string) error {
+	remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
+	dst := workspacePath + "/terraform"
+	var gitGetter = &getter.Client{
+		Src: remoteUrl,
+		Dst: dst,
+		Dir: true,
+	}
 
+	if err := gitGetter.Get(); err != nil {
+		return err
+	}
+
+	message := fmt.Sprintf("PROVIDER=aws-eks\nWORKSPACE=%s", workspacePath)
+	fmt.Println(message)
+
+	err := os.WriteFile(workspacePath+"/terraform/install.flags", []byte(message), 0666)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
 	return nil
 }

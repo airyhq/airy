@@ -52,16 +52,15 @@ func (p *provider) GetOverrides() tmpl.Variables {
 	}
 }
 
-func (p *provider) CheckEnvironment() (bool, string) {
+func (p *provider) IsEnvironmentValid() (bool, error) {
 	necessaryBinaries := [2]string{"aws", "terraform"}
 	for _, binary := range necessaryBinaries {
 		_, err := exec.LookPath(binary)
 		if err != nil {
-			errMsg := fmt.Sprintf("Please check %s\nError - %s", binary, err)
-			return false, errMsg
+			return false, err
 		}
 	}
-	return true, ""
+	return true, nil
 }
 
 func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {

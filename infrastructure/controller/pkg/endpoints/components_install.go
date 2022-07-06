@@ -2,29 +2,30 @@ package endpoints
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/airyhq/airy/lib/go/payloads"
 	helmCli "github.com/mittwald/go-helm-client"
 	"helm.sh/helm/v3/pkg/repo"
-	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/klog"
 )
 
 type ComponentsInstall struct {
 	cli       helmCli.Client
-	clientSet *kubernetes.Clientset
+	namespace string
 }
 
-func MustNewComponentsInstall(clientSet *kubernetes.Clientset, namespace string, kubeConfig string) ComponentsInstall {
-	cli, err := helmCli.NewClientFromKubeConf(&helmCli.KubeConfClientOptions{
+func MustNewComponentsInstall(namespace string, kubeConfig *rest.Config) ComponentsInstall {
+	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
 		Options: &helmCli.Options{
 			Namespace: namespace,
 		},
-		KubeContext: "",
-		KubeConfig:  []byte(kubeConfig),
+		RestConfig: kubeConfig,
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +40,7 @@ func MustNewComponentsInstall(clientSet *kubernetes.Clientset, namespace string,
 		log.Fatal(err)
 	}
 
-	return ComponentsInstall{clientSet: clientSet, cli: cli}
+	return ComponentsInstall{namespace: namespace, cli: cli}
 }
 
 func (s *ComponentsInstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -49,22 +50,47 @@ func (s *ComponentsInstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var installComponent payloads.ComponentsInstallRequestPayload
-
-	err = json.Unmarshal(body, &installComponent)
-	if err != nil || installComponent.Name == "" {
+	chartName, releaseName, err := getChartNameFromBlob(body)
+	if err != nil {
+		klog.Error(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	release, err := s.cli.ListDeployedReleases()
+	release, err := s.cli.InstallOrUpgradeChart(
+		r.Context(),
+		&helmCli.ChartSpec{
+			ReleaseName: releaseName,
+			ChartName:   chartName,
+			Namespace:   s.namespace,
+			UpgradeCRDs: true,
+			Atomic:      true,
+			Replace:     true,
+		},
+		nil,
+	)
 	if err != nil {
-		klog.Error("Component not found: %s", err.Error())
+		klog.Error("Component not found: ", err.Error())
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	klog.Info("%#v", release)
+	klog.Info(fmt.Sprintf("%#v", release))
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func getChartNameFromBlob(blob []byte) (string, string, error) {
+	var installComponent payloads.ComponentsInstallRequestPayload
+
+	if err := json.Unmarshal(blob, &installComponent); err != nil {
+		return "", "", fmt.Errorf("Invalid chart name %s", err.Error())
+	}
+
+	s := strings.Split(installComponent.Name, "/")
+	if len(s) != 2 {
+		return "", "", fmt.Errorf("Invalid chart name %s", s)
+	}
+
+	return installComponent.Name, s[1], nil
 }

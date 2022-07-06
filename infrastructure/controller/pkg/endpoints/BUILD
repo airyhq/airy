@@ -25,6 +25,7 @@ go_library(
         "@com_github_mittwald_go_helm_client//:go-helm-client",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
+        "@io_k8s_client_go//rest:go_default_library",
         "@io_k8s_klog//:klog",
         "@sh_helm_helm_v3//pkg/repo",
     ],

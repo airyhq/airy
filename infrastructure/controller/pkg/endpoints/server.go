@@ -9,9 +9,10 @@ import (
 	"k8s.io/klog"
 
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 )
 
-func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig string) {
+func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.Config) {
 	r := mux.NewRouter()
 
 	if allowedOrigins := os.Getenv("allowedOrigins"); allowedOrigins != "" {
@@ -57,7 +58,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig string)
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstall := MustNewComponentsInstall(clientSet, namespace, kubeConfig)
+	componentsInstall := MustNewComponentsInstall(namespace, kubeConfig)
 	r.Handle("/components.install", &componentsInstall)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

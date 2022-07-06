@@ -1,16 +1,20 @@
 package endpoints
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
+	"github.com/airyhq/airy/lib/go/payloads"
 	helmCli "github.com/mittwald/go-helm-client"
 	"helm.sh/helm/v3/pkg/repo"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/klog"
 )
 
 type ComponentsInstall struct {
-	cli       *helmCli.Client
+	cli       helmCli.Client
 	clientSet *kubernetes.Clientset
 }
 
@@ -35,9 +39,32 @@ func MustNewComponentsInstall(clientSet *kubernetes.Clientset, namespace string,
 		log.Fatal(err)
 	}
 
-	return ComponentsInstall{clientSet: clientSet, cli: &cli}
+	return ComponentsInstall{clientSet: clientSet, cli: cli}
 }
 
 func (s *ComponentsInstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
+	var installComponent payloads.ComponentsInstallRequestPayload
+
+	err = json.Unmarshal(body, &installComponent)
+	if err != nil || installComponent.Name == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	release, err := s.cli.ListDeployedReleases()
+	if err != nil {
+		klog.Error("Component not found: %s", err.Error())
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	klog.Info("%#v", release)
+
+	w.WriteHeader(http.StatusOK)
 }

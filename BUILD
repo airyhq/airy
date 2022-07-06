@@ -181,6 +181,7 @@ exports_files(
 # gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix
+# gazelle:exclude infrastructure/terraform
 gazelle(name = "gazelle")
 
 nogo(

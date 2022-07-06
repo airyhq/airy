@@ -87,7 +87,7 @@ func Create(path string, data template.Variables, providerName string) (ConfigDi
 		message := fmt.Sprintf("PROVIDER=aws-eks\nWORKSPACE=%s", getConfigPath(path))
 		fmt.Println(message)
 
-		err := os.WriteFile(getConfigPath(path)+"/terraform/install.flags", []byte(message), 0777)
+		err := os.WriteFile(getConfigPath(path)+"/terraform/install.flags", []byte(message), 0666)
 		if err != nil {
 			return ConfigDir{}, err
 		}

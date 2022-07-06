@@ -60,7 +60,7 @@ func main() {
 	defer close(stop)
 	go configMapController.Run(1, stop)
 
-	go endpoints.Serve(clientSet, namespace)
+	go endpoints.Serve(clientSet, namespace, kubeConfig)
 
 	// Wait forever
 	select {}

@@ -563,7 +563,7 @@ def go_repositories():
     )
     go_repository(
         name = "com_github_google_gnostic",
-        build_file_proto_mode = "disable",
+        build_file_proto_mode = "disable_global",
         importpath = "github.com/google/gnostic",
         sum = "h1:ZK/5VhkoX835RikCHpSUJV9a+S3e1zLh59YnyWeBW+0=",
         version = "v0.6.9",
@@ -1535,24 +1535,24 @@ def go_repositories():
         build_file_proto_mode = "disable_global",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/api",
-        sum = "h1:J0hann2hfxWr1hinZIDefw7Q96wmCBx6SSB8IY0MdDg=",
-        version = "v0.24.0",
+        sum = "h1:g518dPU/L7VRLxWfcadQn2OnsiGWVOadTLpdnqgY2OI=",
+        version = "v0.24.2",
     )
     go_repository(
         name = "io_k8s_apimachinery",
         build_file_proto_mode = "disable_global",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/apimachinery",
-        sum = "h1:ydFCyC/DjCvFCHK5OPMKBlxayQytB8pxy8YQInd5UyQ=",
-        version = "v0.24.0",
+        sum = "h1:5QlH9SL2C8KMcrNJPor+LbXVTaZRReml7svPEh4OKDM=",
+        version = "v0.24.2",
     )
     go_repository(
         name = "io_k8s_client_go",
         build_file_proto_mode = "legacy",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/client-go",
-        sum = "h1:lbE4aB1gTHvYFSwm6eD3OF14NhFDKCejlnsGYlSJe5U=",
-        version = "v0.24.0",
+        sum = "h1:CoXFSf8if+bLEbinDqN9ePIDGzcLtqhfd6jpfnwGOFA=",
+        version = "v0.24.2",
     )
     go_repository(
         name = "io_k8s_gengo",
@@ -1731,10 +1731,9 @@ def go_repositories():
     go_repository(
         name = "org_golang_x_mod",
         build_file_proto_mode = "disable_global",
-        build_naming_convention = "go_default_library",
         importpath = "golang.org/x/mod",
-        sum = "h1:OJxoQ/rynoF0dcCdI7cLPktw/hR2cueqYfjm43oqK38=",
-        version = "v0.5.1",
+        sum = "h1:kQgndtyPBW/JIYERgdxfwMYh3AVStj88WQTlNDi2a+o=",
+        version = "v0.6.0-dev.0.20220106191415-9b9b3d81d5e3",
     )
 
     go_repository(

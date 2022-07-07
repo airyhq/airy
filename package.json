@@ -19,7 +19,7 @@
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.5",
     "lodash-es": "^4.17.21",
-    "preact": "^10.8.2",
+    "preact": "^10.9.0",
     "react": "18.2.0",
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@babel/core": "7.18.6",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.18.6",
     "@babel/plugin-transform-spread": "^7.18.6",
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.16.7",

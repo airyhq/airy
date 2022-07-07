@@ -54,7 +54,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "not able to read body")
+		fmt.Fprintf(w, `{"error": "not able to read body"}`)
 		return
 	}
 
@@ -62,7 +62,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 	if err != nil {
 		klog.Error(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "invalid component name")
+		fmt.Fprintf(w, `{"error": "invalid component name"}`)
 		return
 	}
 

@@ -1,5 +1,5 @@
 apiVersion: v2
 appVersion: "1.0"
 description: A Helm chart for the Viber source
-name: viber
+name: sources-viber
 version: 0-develop

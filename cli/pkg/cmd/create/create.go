@@ -68,12 +68,12 @@ func create(cmd *cobra.Command, args []string) {
 	isValidEnv, err := provider.IsEnvironmentValid()
 
 	if !isValidEnv {
-		console.Exit("Please check if the install requirements are set up", err)
+		console.Exit("please check if the install requirements are set up", err)
 	}
 
 	dir, err := workspace.Create(workspacePath, overrides)
 	if err != nil {
-		console.Exit("Could not initialize Airy workspace directory", err)
+		console.Exit("could not initialize Airy workspace directory", err)
 	}
 	fmt.Println("📁 Initialized Airy workspace directory at", dir.GetPath("."))
 	if initOnly {

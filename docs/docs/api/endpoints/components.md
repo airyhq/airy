@@ -164,7 +164,7 @@ Install a new component.
 
 ## Uninstall
 
-Install an existing component.
+Uninstall an existing component.
 
 `POST /components.uninstall`
 

@@ -12,7 +12,7 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.Config) {
+func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.Config, repoFilePath string) {
 	r := mux.NewRouter()
 
 	if allowedOrigins := os.Getenv("allowedOrigins"); allowedOrigins != "" {
@@ -58,7 +58,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig)
+	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig, repoFilePath)
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 

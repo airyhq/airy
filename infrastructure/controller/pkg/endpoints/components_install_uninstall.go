@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/airyhq/airy/lib/go/payloads"
@@ -21,7 +20,7 @@ type ComponentsInstallUninstall struct {
 	namespace string
 }
 
-func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config) ComponentsInstallUninstall {
+func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config, reposFilePath string) ComponentsInstallUninstall {
 	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
 		Options: &helmCli.Options{
 			Namespace: namespace,
@@ -32,33 +31,20 @@ func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config
 		log.Fatal(err)
 	}
 
-	//NOTE: For now we are setting the repos here. But in the future we could get them from an external configuration
-	chartRepoCore := repo.Entry{
-		Name: "airy-core",
-		URL:  "https://helm.airy.co",
-	}
-	if err := cli.AddOrUpdateChartRepo(chartRepoCore); err != nil {
+	repos, err := getReposFromFile(reposFilePath)
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	//NOTE: We Look for user and password for airy-enterprise. If found we add it to our helm client.
-	//      This could be move to a DB or get from an external configuration. And put behind a paywall
-	username := os.Getenv("ENTERPRISE_REPO_USERNAME")
-	password := os.Getenv("ENTERPRISE_REPO_PASSWORD")
-
-	if username != "" && password != "" {
-		klog.Info("Add airy-enterprise help repo")
-
-		chartRepoEnterprise := repo.Entry{
-			Name:               "airy-enterprise",
-			URL:                "https://enterprise.helm.airy.co",
-			Username:           username,
-			Password:           password,
-			PassCredentialsAll: true,
+	for _, r := range repos {
+		if r.Password != "" {
+			r.PassCredentialsAll = true
 		}
-		if err := cli.AddOrUpdateChartRepo(chartRepoEnterprise); err != nil {
+
+		if err := cli.AddOrUpdateChartRepo(r); err != nil {
 			log.Fatal(err)
 		}
+		klog.Info("Added ", r.Name, " repo")
 	}
 
 	return ComponentsInstallUninstall{namespace: namespace, cli: cli}
@@ -127,4 +113,21 @@ func getChartNameFromBlob(blob []byte) (string, string, error) {
 	}
 
 	return installComponent.Name, s[1], nil
+}
+
+func getReposFromFile(filePath string) ([]repo.Entry, error) {
+	blob, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	repos := struct {
+		Repositories []repo.Entry `json:"repositories"`
+	}{}
+
+	if err := json.Unmarshal(blob, &repos); err != nil {
+		return nil, err
+	}
+
+	return repos.Repositories, nil
 }

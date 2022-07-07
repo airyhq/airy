@@ -25,10 +25,12 @@ import (
 func main() {
 	var kubeConfig string
 	var master string
+	var repoFilePath string
 
 	// Check if kubernetes configuration is provided, otherwise use serviceAccount
 	flag.StringVar(&kubeConfig, "kubeconfig", "", "absolute path to the kubeConfig file")
 	flag.StringVar(&master, "master", "", "master url")
+	flag.StringVar(&repoFilePath, "repo-file-path", "/repositories.json", "absolute path to the repo file")
 	flag.Parse()
 
 	// Create connection
@@ -60,7 +62,7 @@ func main() {
 	defer close(stop)
 	go configMapController.Run(1, stop)
 
-	go endpoints.Serve(clientSet, namespace, config)
+	go endpoints.Serve(clientSet, namespace, config, repoFilePath)
 
 	// Wait forever
 	select {}

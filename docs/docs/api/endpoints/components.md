@@ -162,7 +162,6 @@ Install a new component.
 
 **(201) Success Response Payload**
 
-
 ## Uninstall
 
 Install an existing component.
@@ -178,4 +177,7 @@ Install an existing component.
 ```
 
 **(201) Success Response Payload**
+
+```
+
 ```

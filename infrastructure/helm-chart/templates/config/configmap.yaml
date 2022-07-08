@@ -5,9 +5,11 @@ metadata:
 data:
   {{- if .Values.security.systemToken }}
   systemToken: {{ .Values.security.systemToken | quote }}
-  {{- end }}
   jwtSecret: {{ default (randAlphaNum 128) .Values.security.jwtSecret | quote }}
+  {{- end }}
+  {{- if .Values.security.allowedOrigins }}
   allowedOrigins: {{ .Values.security.allowedOrigins | quote }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap

@@ -7,7 +7,7 @@ global:
     letsencrypt: false
 security:
   systemToken: ""
-  allowedOrigins: "*"
+  allowedOrigins: ""
 config:
   kafka:
     brokers: "kafka-headless:9092"

@@ -62,6 +62,11 @@ http_archive(
     ],
 )
 
+load("//:go_repositories.bzl", "go_repositories")
+
+# gazelle:repository_macro go_repositories.bzl%go_repositories
+go_repositories()
+
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
@@ -166,11 +171,6 @@ git_repository(
 load("@com_github_ash2k_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
-
-load("//:go_repositories.bzl", "go_repositories")
-
-# gazelle:repository_macro go_repositories.bzl%go_repositories
-go_repositories()
 
 http_archive(
     name = "rules_pkg",

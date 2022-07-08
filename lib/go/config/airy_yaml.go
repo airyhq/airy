@@ -22,7 +22,7 @@ type SecurityConf struct {
 	SystemToken    string            `yaml:"systemToken,omitempty" json:"system_token,omitempty"`
 	AllowedOrigins string            `yaml:"allowedOrigins" json:"allowed_origins"`
 	JwtSecret      string            `yaml:"jwtSecret" json:"jwt_secret"`
-	Oidc           map[string]string `yaml:"oidc,omitempty" json:"oidc,omitempty`
+	Oidc           map[string]string `yaml:"oidc,omitempty" json:"oidc,omitempty"`
 }
 
 type ComponentsConf map[string]map[string]string

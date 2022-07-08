@@ -17,6 +17,10 @@ type ComponentsDeleteRequestPayload struct {
 	Components []string `json:"components,omitempty"`
 }
 
+type ComponentsInstallRequestPayload struct {
+	Name string `json:"name,omitempty"`
+}
+
 type ComponentsDeleteResponsePayload struct {
 	Components map[string]bool `json:"components,omitempty"`
 }

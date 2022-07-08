@@ -8,6 +8,7 @@ go_library(
         "cluster_update.go",
         "components_delete.go",
         "components_get.go",
+        "components_install_uninstall.go",
         "components_update.go",
         "cors.go",
         "server.go",
@@ -21,9 +22,12 @@ go_library(
         "//lib/go/payloads",
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
+        "@com_github_mittwald_go_helm_client//:go-helm-client",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
+        "@io_k8s_client_go//rest:go_default_library",
         "@io_k8s_klog//:klog",
+        "@sh_helm_helm_v3//pkg/repo",
     ],
 )
 

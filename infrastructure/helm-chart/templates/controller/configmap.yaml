@@ -9,7 +9,7 @@ data:
       "repositories": [
         {
           "name": "airy-core",
-          "url": "https://github.com/airyhq/airy/tree/develop/infrastructure/helm-chart/charts/components/charts"
+          "url": "https://helm.airy.co"
         }
       ]
     }

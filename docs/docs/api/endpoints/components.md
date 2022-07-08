@@ -156,23 +156,15 @@ Install a new component.
 
 ```json
 {
-  "name": "sources-chat-plugin"
+  "name": "airy-core/sources-chatplugin"
 }
 ```
 
-**Sample response**
-
-The response includes the name of the component that was installed with an indication of the process was completed successfully (true) or not (false).
-
-```json5
-{
-  "sources-chat-plugin": true
-}
-```
+**(201) Success Response Payload**
 
 ## Uninstall
 
-Install an existing component.
+Uninstall an existing component.
 
 `POST /components.uninstall`
 
@@ -180,16 +172,12 @@ Install an existing component.
 
 ```json
 {
-  "name": "sources-chat-plugin"
+  "name": "airy-enterprise/dialogflow-connector"
 }
 ```
 
-**Sample response**
+**(201) Success Response Payload**
 
-The response includes the name of the component that was uninstalled with an indication of the process was completed successfully (true) or not (false).
+```
 
-```json5
-{
-  "sources-chat-plugin": true
-}
 ```

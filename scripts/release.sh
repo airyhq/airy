@@ -45,7 +45,8 @@ create_release_drafter() {
     command git checkout release/"${release_number}"
     git pull origin release/"${release_number}"
     command git checkout -b changelog/"${release_number}"
-    command git push origin changelog/"${release_number}"    
+    command git push origin changelog/"${release_number}"
+    command git checkout release/"${release_number}"
 }
 
 finish() {

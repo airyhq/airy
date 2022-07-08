@@ -34,11 +34,6 @@ spec:
           - configMapRef:
               name: "{{ .Values.component }}"
         env:
-        - name: allowedOrigins
-          valueFrom:
-            configMapKeyRef:
-              name: security
-              key: allowedOrigins
         - name: jwtSecret
           valueFrom:
             configMapKeyRef:

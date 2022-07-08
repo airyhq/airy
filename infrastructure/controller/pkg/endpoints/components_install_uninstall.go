@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -11,16 +12,24 @@ import (
 	"github.com/airyhq/airy/lib/go/payloads"
 	helmCli "github.com/mittwald/go-helm-client"
 	"helm.sh/helm/v3/pkg/repo"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog"
 )
 
 type ComponentsInstallUninstall struct {
 	cli       helmCli.Client
+	clientSet *kubernetes.Clientset
 	namespace string
 }
 
-func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config, reposFilePath string) ComponentsInstallUninstall {
+func MustNewComponentsInstallUninstall(
+	namespace string,
+	kubeConfig *rest.Config,
+	clientSet *kubernetes.Clientset,
+	reposFilePath string,
+) ComponentsInstallUninstall {
 	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
 		Options: &helmCli.Options{
 			Namespace: namespace,
@@ -47,7 +56,7 @@ func MustNewComponentsInstallUninstall(namespace string, kubeConfig *rest.Config
 		klog.Info("Added ", r.Name, " repo")
 	}
 
-	return ComponentsInstallUninstall{namespace: namespace, cli: cli}
+	return ComponentsInstallUninstall{namespace: namespace, cli: cli, clientSet: clientSet}
 }
 
 func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -66,12 +75,20 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	globals, err := s.getGlobals(r.Context())
+	if err != nil {
+		klog.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	chartSpec := &helmCli.ChartSpec{
 		ReleaseName: releaseName,
 		ChartName:   chartName,
 		Namespace:   s.namespace,
 		UpgradeCRDs: true,
 		Replace:     true,
+		ValuesYaml:  globals,
 	}
 
 	if r.URL.Path == "/components.install" {
@@ -98,6 +115,23 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 	}
 
 	w.WriteHeader(http.StatusAccepted)
+}
+
+func (s *ComponentsInstallUninstall) getGlobals(ctx context.Context) (string, error) {
+	configMap, err := s.clientSet.CoreV1().ConfigMaps(s.namespace).Get(ctx, "core-config", metav1.GetOptions{})
+	if err != nil {
+		return "", err
+	}
+
+	var globals string
+	if configMap.Data != nil {
+		globals = configMap.Data["global.yaml"]
+	}
+	if globals == "" {
+		return "", fmt.Errorf("globals not found")
+	}
+
+	return globals, nil
 }
 
 func getChartNameFromBlob(blob []byte) (string, string, error) {

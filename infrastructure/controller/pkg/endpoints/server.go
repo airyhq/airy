@@ -58,7 +58,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig, repoFilePath)
+	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig, clientSet, repoFilePath)
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 

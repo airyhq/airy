@@ -4,7 +4,7 @@ import * as actions from '../../../actions/connector';
 type Action = ActionType<typeof actions>;
 
 export type ConnectorsConfig = {
-  [key: string]: {[key: string]: string};
+  [key: string]: any;
 };
 
 const defaultState = {};
@@ -15,12 +15,12 @@ export default function connectorsReducer(state = defaultState, action: Action):
       return {
         ...state,
         ...action.payload.components.sources,
-        ...action.payload.components.enterprise,
+        ['dialogflow-connector']: {...action.payload.components.dialogflow.connector},
       };
     case getType(actions.updateConnectorConfigurationAction): {
       let name = action.payload.components[0].name;
       if (name.includes('enterprise')) {
-        name = name = name.replace('enterprise-', '');
+        name = name.replace('enterprise-', '');
       }
       return {
         ...state,

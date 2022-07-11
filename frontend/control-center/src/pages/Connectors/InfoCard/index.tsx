@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
 import {Button, SettingsModal} from 'components';
+import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {Source} from 'model';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
@@ -25,13 +26,23 @@ type InfoCardProps = {
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
-  //TO DO: add action to install/uninstall component
+  installComponent,
+  uninstallComponent,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {sourceInfo, addChannelAction, installed, style, updateItemList, enabled} = props;
+  const {
+    sourceInfo,
+    addChannelAction,
+    installed,
+    style,
+    enabled,
+    installComponent,
+    uninstallComponent,
+    updateItemList,
+  } = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -46,19 +57,20 @@ const InfoCard = (props: InfoCardProps) => {
   }, [isInstalled]);
 
   const toggleInstallation = () => {
-    //TO DO: call action to install/uninstall component here
     setIsModalVisible(true);
+
+    if (!isInstalled) {
+      installComponent({name: `${sourceInfo.repository}/${sourceInfo.configKey}`});
+    }
   };
 
-  const cancelInstallationToggle = () => {
-    //for installing components, we install even if the user passes the config
-    if (!isInstalled) {
-      confirmInstallationToggle();
-    }
-    setIsModalVisible(false);
-  };
+  const cancelInstallationToggle = () => setIsModalVisible(false);
 
   const confirmInstallationToggle = () => {
+    if (isInstalled) {
+      uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.configKey}`});
+    }
+    setIsModalVisible(false);
     setIsInstalled(!isInstalled);
     updateItemList(!isInstalled, sourceInfo.type);
   };
@@ -119,15 +131,15 @@ const InfoCard = (props: InfoCardProps) => {
 
       {isModalVisible && (
         <SettingsModal
-          Icon={!installed ? (CheckmarkIcon as React.ElementType) : null}
+          Icon={!isInstalled ? (CheckmarkIcon as React.ElementType) : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={modalTitle}
           close={cancelInstallationToggle}
           headerClassName={styles.headerModal}
         >
-          {installed && <p> {t('uninstallComponentText')} </p>}
-          {!installed ? (
+          {isInstalled && <p> {t('uninstallComponentText')} </p>}
+          {!isInstalled ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>
               {t('toConfigure')}
             </Button>

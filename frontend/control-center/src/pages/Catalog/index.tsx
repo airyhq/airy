@@ -49,7 +49,7 @@ const Catalog = () => {
     }
   }, [sourcesInfo, connectors]);
 
-  //mock up of install/uninstall api: remove when backend is added
+  //mock up of install/uninstall components list api: remove when components.list api is added
   const updateItemList = (installed: boolean, type: Source) => {
     if (!installed) {
       const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => {

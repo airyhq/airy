@@ -30,6 +30,7 @@ import {
   ListContactsRequestPayload,
   EnableDisableComponentRequestPayload,
   UpdateComponentConfigurationRequestPayload,
+  InstallUninstallComponentRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -71,6 +72,8 @@ import {
   enableDisableComponentDef,
   updateComponentConfigurationDef,
   getComponentsDef,
+  installComponentDef,
+  uninstallComponentDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -261,6 +264,10 @@ export class HttpClient {
   public updateComponentConfiguration = this.getRequest<UpdateComponentConfigurationRequestPayload>(
     updateComponentConfigurationDef
   );
+
+  public installComponent = this.getRequest<InstallUninstallComponentRequestPayload>(installComponentDef);
+
+  public uninstallComponent = this.getRequest<InstallUninstallComponentRequestPayload>(uninstallComponentDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

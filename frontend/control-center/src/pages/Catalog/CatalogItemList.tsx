@@ -35,7 +35,9 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
             key={infoItem.type}
             sourceInfo={infoItem}
             addChannelAction={() => {
-              if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
+              const componentConfigKey =
+                infoItem.repository === 'enterprise' ? 'enterprise-' + infoItem.configKey : infoItem.configKey;
+              if (config.components[componentConfigKey] && config.components[componentConfigKey].enabled) {
                 installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute);
               } else {
                 setDisplayDialogFromSource(infoItem.type);

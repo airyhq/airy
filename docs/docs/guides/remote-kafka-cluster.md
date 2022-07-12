@@ -19,7 +19,7 @@ in the target cluster are already created.
 :::
 
 First up you need to gather the addresses of your Kafka clusters bootstrap servers and add them to your `airy.yaml` file
-like so: 
+like so:
 
 ```yaml
 kafka:
@@ -34,7 +34,7 @@ This should leave you with a single line JAAS configuration string that you also
 ```yaml
 kafka:
   brokers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
-  authJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"Grace\" password=\"trustno1\";"
+  authJaas: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="Grace" password="trustno1";'
 ```
 
 If you want to also use your own schema registry you can also add it to this config under the `schemaRegistryUrl` key:
@@ -42,7 +42,7 @@ If you want to also use your own schema registry you can also add it to this con
 ```yaml
 kafka:
   brokers: kafka-broker-1.example.com:9092,kafka-broker-2.example.com:9092
-  authJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"Grace\" password=\"trustno1\";"
+  authJaas: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="Grace" password="trustno1";'
   schemaRegistryUrl: http://schema-registry.example.com:8081
 ```
 
@@ -55,4 +55,3 @@ kubectl get cm kafka-config -o=jsonpath="{.data.KAFKA_SCHEMA_REGISTRY_URL}"
 
 Finally, you can apply this configuration by running the `airy config apply` command. Once you have verified that everything is
 working you can scale down the default Kafka cluster by running the `kubectl scale sts kafka --replicas 0` command.
-

@@ -1,7 +1,7 @@
 export interface Components {
   components: {
     [key: string]: {
-      [key: string]: any;
+      [key: string]: string;
     };
   };
 }

@@ -28,7 +28,6 @@ type SecurityConf struct {
 type KafkaConf struct {
 	Brokers           string `yaml:"brokers,omitempty" json:"brokers,omitempty"`
 	CommitIntervalMs  string `yaml:"commitIntervalMs" json:"commitIntervalMs"`
-	MinimumReplicas   string `yaml:"minimumReplicas" json:"minimumReplicas"`
 	Zookeeper         string `yaml:"zookeeper" json:"zookeeper"`
 	SchemaRegistryUrl string `yaml:"schemaRegistryUrl" json:"schemaRegistryUrl"`
 	AuthJaas          string `yaml:"authJaas" json:"authJaas"`

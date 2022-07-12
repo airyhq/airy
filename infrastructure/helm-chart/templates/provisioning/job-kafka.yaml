@@ -11,18 +11,11 @@ spec:
       - name: create-topics
         image: "{{ .Values.provisioning.kafka.image }}:{{ .Values.provisioning.kafka.imageTag }}"
         command: ["/bin/sh", "/opt/provisioning/create-topics.sh"]
-        env:
-        - name: ZOOKEEPER
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: ZOOKEEPER
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
+        envFrom:
+        - configMapRef:
+            name: kafka-config
        {{ if .Values.provisioning.kafka.namespaceTopics }}
+        env:
         - name: AIRY_CORE_NAMESPACE
           value: {{ .Release.Namespace }}
        {{ end }}

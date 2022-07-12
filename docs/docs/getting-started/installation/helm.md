@@ -257,18 +257,17 @@ helm install airy airy/airy --timeout 10m --namespace airy
 
 ### Kafka
 
-The default installation creates its own Kafka cluster. This section explains how to deploy `Airy Core` on an existing Kafka cluster:
+The default installation creates its own Kafka cluster. This section explains how to deploy `Airy Core` using an existing Kafka cluster:
 
 The default settings in the `Airy Core platform`, on how to access the Kafka resources, can be overwritten in your `airy.yaml` file:
 
-```sh
-# Default settings
+```yaml
 config:
   kafka:
     brokers: "kafka-headless:9092"
     zookeepers: "zookeeper:2181"
     schemaRegistryUrl: "http://schema-registry:8081"
-    commitInterval: 1000
+    authJaas: "sasl authentication string" # optional
 ```
 
 Run the following command to create the `Airy` platform without the bundled installation of Kafka, Zookeeper and the Schema registry.

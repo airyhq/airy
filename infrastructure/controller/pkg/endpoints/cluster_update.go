@@ -47,6 +47,7 @@ func (s *ClusterUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	kafkaData := config.GetKafkaData(conf.ClusterConfig.Kafka)
+	
 	if len(kafkaData) != 0 {
 		applyErr := k8s.MergeConfigMap("kafka-config", s.namespace, kafkaData, s.clientSet)
 		if applyErr != nil {

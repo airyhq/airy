@@ -21,7 +21,6 @@ import (
 const (
 	minikube      = "minikube"
 	profile       = "airy-core"
-	hostAlias     = "airy.core"
 	dockerRuntime = " --container-runtime=containerd"
 )
 

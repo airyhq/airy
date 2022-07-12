@@ -2,7 +2,6 @@ package httpclient
 
 import (
 	"encoding/json"
-
 	"github.com/airyhq/airy/lib/go/config"
 	"github.com/airyhq/airy/lib/go/payloads"
 )

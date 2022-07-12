@@ -11,10 +11,6 @@ func GetKafkaData(s KafkaConf) map[string]string {
 		m["KAFKA_COMMIT_INTERVAL_MS"] = s.CommitIntervalMs
 	}
 
-	if s.MinimumReplicas != "" {
-		m["KAFKA_MINIMUM_REPLICAS"] = s.MinimumReplicas
-	}
-
 	if s.Zookeeper != "" {
 		m["ZOOKEEPER"] = s.Zookeeper
 	}

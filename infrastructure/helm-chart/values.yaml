@@ -1,8 +1,8 @@
 global:
   containerRegistry: ghcr.io/airyhq
   busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
-  host:
-  apiHost:
+  host: airy.core
+  apiHost: airy.core
   ingress:
     letsencrypt: false
 security:

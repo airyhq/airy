@@ -43,5 +43,5 @@ cypress
 coverage
 
 # Airy config files
-airy.yaml
-cli.yaml
+airy_dev/airy.yaml
+airy_dev/cli.yaml

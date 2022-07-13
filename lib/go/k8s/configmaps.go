@@ -53,32 +53,6 @@ func ApplyConfigMap(
 	return err
 }
 
-func MergeConfigMap(
-	configmapName string,
-	namespace string,
-	data map[string]string,
-	clientset *kubernetes.Clientset,
-) error {
-	cm, _ := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), configmapName, v1.GetOptions{})
-	if cm.GetName() == "" {
-		_, err := clientset.CoreV1().ConfigMaps(namespace).Create(context.TODO(),
-			&corev1.ConfigMap{
-				ObjectMeta: v1.ObjectMeta{
-					Name:      configmapName,
-					Namespace: namespace,
-				},
-				Data: data,
-			}, v1.CreateOptions{})
-		return err
-	}
-
-	if data != nil && len(data) > 0 {
-		cm.Data = data
-	}
-	_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
-	return err
-}
-
 func DeleteConfigMap(configmapName string, namespace string, clientset *kubernetes.Clientset) error {
 	cm, _ := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), configmapName, v1.GetOptions{})
 	if cm.GetName() != "" {

@@ -21,7 +21,7 @@ public class KafkaCoreConfig {
     @Lazy
     @Scope("prototype")
     public <K, V> KafkaProducer<K, V> kafkaProducer(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl,
-                                                    @Value("${kafka.sasl.jaas.config:}") final String jaasConfig) {
+                                                    @Value("${AUTH_JAAS:#{null}}") final String jaasConfig) {
         final Properties props = new Properties();
 
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
@@ -44,7 +44,7 @@ public class KafkaCoreConfig {
     @Lazy
     @Scope("prototype")
     public <K, V> KafkaConsumerWrapper<K, V> kafkaConsumer(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl,
-                                                           @Value("${kafka.sasl.jaas.config:}") final String jaasConfig) {
+                                                           @Value("${kafka.sasl.jaas.config:#{null}}") final String jaasConfig) {
         return new KafkaConsumerWrapper<K, V>(brokers, schemaRegistryUrl)
                 .withAuthJaas(jaasConfig);
     }

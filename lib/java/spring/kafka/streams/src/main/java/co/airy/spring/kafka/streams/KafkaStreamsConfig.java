@@ -27,7 +27,7 @@ public class KafkaStreamsConfig {
     @Value("${kafka.rpc-host:}")
     private String rpcHost;
 
-    @Value("${kafka.sasl.jaas.config:}")
+    @Value("${AUTH_JAAS:#{null}}")
     private String jaasConfig;
 
     @Value("${kafka.rpc-port:0}")

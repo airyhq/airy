@@ -33,15 +33,10 @@ import java.util.concurrent.TimeUnit;
 
 public class KafkaStreamsWrapper {
     private static final Logger log = AiryLoggerFactory.getLogger(KafkaStreamsWrapper.class);
-
     private final HealthCheckRunner healthCheckRunnerThread;
-
     private final String brokers;
     private final String schemaRegistryUrl;
-
     private String jaasConfig;
-
-    // private final String saslConfig;
     private long commitIntervalInMs;
     private long suppressIntervalInMs;
     private int threadCount;

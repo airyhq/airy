@@ -18,10 +18,11 @@ func ApplyConfigMap(
 	labels map[string]string,
 	annotations map[string]string,
 	clientset *kubernetes.Clientset,
+	ctx context.Context,
 ) error {
 	cm, _ := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), configmapName, v1.GetOptions{})
 	if cm.GetName() == "" {
-		_, err := clientset.CoreV1().ConfigMaps(namespace).Create(context.TODO(),
+		_, err := clientset.CoreV1().ConfigMaps(namespace).Create(ctx,
 			&corev1.ConfigMap{
 				ObjectMeta: v1.ObjectMeta{
 					Name:        configmapName,
@@ -49,7 +50,7 @@ func ApplyConfigMap(
 	for k, v := range annotations {
 		cm.Annotations[k] = v
 	}
-	_, err := clientset.CoreV1().ConfigMaps(namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
+	_, err := clientset.CoreV1().ConfigMaps(namespace).Update(ctx, cm, v1.UpdateOptions{})
 	return err
 }
 

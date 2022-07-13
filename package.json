@@ -78,7 +78,7 @@
     "minimist": "^1.2.6",
     "prettier": "^2.7.1",
     "react-hot-loader": "^4.13.0",
-    "react-test-renderer": "^18.1.0",
+    "react-test-renderer": "^18.2.0",
     "sass-loader": "^13.0.0",
     "sass": "^1.53.0",
     "style-loader": "^3.3.1",

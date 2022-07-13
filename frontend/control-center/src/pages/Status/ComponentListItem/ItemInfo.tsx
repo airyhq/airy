@@ -47,7 +47,7 @@ const isConfigurableConnector = (name: string) => {
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const connectorInstalltionConfig = useSelector((state: StateModel) => state.data.connector[formatName(itemName)]);
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
@@ -55,6 +55,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
+  const connectorInstalltionConfig = connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -114,7 +115,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 hoverElementWidth={20}
                 tooltipContent={t('healthy')}
               />
-            ) : healthy && !enabled ? (
+            ) : !healthy && enabled ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
                 hoverElementHeight={20}

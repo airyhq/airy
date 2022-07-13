@@ -2,11 +2,16 @@ import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {HttpClientInstance} from '../../httpClient';
 import {InstallUninstallComponentRequestPayload} from 'httpclient/src';
+import {componentsListMock, ComponentList} from './componentsListMock';
 
-//TO DO: add catalog reducer when components.list endpoint is added
-
+const LIST_COMPONENT = '@@catalog/LIST_COMPONENT';
 const INSTALL_COMPONENT = '@@catalog/INSTALL_COMPONENT';
 const UNINSTALL_COMPONENT = '@@catalog/UNINSTALL_COMPONENT';
+
+export const listComponentsAction = createAction(
+  LIST_COMPONENT,
+  (componentsList: ComponentList) => componentsList
+)<ComponentList>();
 
 export const installComponentAction = createAction(
   INSTALL_COMPONENT,
@@ -17,6 +22,12 @@ export const uninstallComponentAction = createAction(
   UNINSTALL_COMPONENT,
   (uninstalledComponent: InstallUninstallComponentRequestPayload) => uninstalledComponent
 )<InstallUninstallComponentRequestPayload>();
+
+
+export const listComponents = () => (dispatch: Dispatch<any>) => {
+  //fix this when components.list endpoint has been added
+  dispatch(listComponentsAction(componentsListMock));
+}
 
 export const installComponent =
   (installComponentRequestPayload: InstallUninstallComponentRequestPayload) => (dispatch: Dispatch<any>) => {

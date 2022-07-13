@@ -22,7 +22,7 @@ type InfoCardProps = {
   installed: boolean;
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
-  updateItemList?: (installed: boolean, type: Source) => void;
+  updateItemList?: (installed: boolean, componentName:string) => void;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -60,7 +60,7 @@ const InfoCard = (props: InfoCardProps) => {
     setIsModalVisible(true);
 
     if (!isInstalled) {
-      installComponent({name: `${sourceInfo.repository}/${sourceInfo.configKey}`});
+      installComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
     }
   };
 
@@ -68,11 +68,11 @@ const InfoCard = (props: InfoCardProps) => {
 
   const confirmInstallationToggle = () => {
     if (isInstalled) {
-      uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.configKey}`});
+      uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
     }
     setIsModalVisible(false);
     setIsInstalled(!isInstalled);
-    updateItemList(!isInstalled, sourceInfo.type);
+    updateItemList(!isInstalled, sourceInfo.componentName);
   };
 
   const handleCardClick = () => {
@@ -83,7 +83,7 @@ const InfoCard = (props: InfoCardProps) => {
     <div
       onClick={CONNECTORS_PAGE ? handleCardClick : null}
       className={`
-        ${styles.channelCard} 
+        ${styles.infoCard} 
         ${
           style === InfoCardStyle.expanded
             ? styles.isExpandedContainer

@@ -7,10 +7,12 @@ import channels, {ChannelsState} from './channels';
 import {Webhook} from 'model/Webhook';
 import webhooks from './webhooks';
 import connector, {ConnectorsConfig} from './connector';
+import catalog from './catalog';
 
 export * from './channels';
 export * from './config';
 export * from './connector';
+export * from './catalog';
 export * from './user';
 
 export type DataState = {
@@ -18,6 +20,7 @@ export type DataState = {
   channels: ChannelsState;
   config: Config;
   connector: ConnectorsConfig;
+  catalog: any;
   webhooks: Webhook;
 };
 
@@ -26,6 +29,7 @@ const reducers: Reducer = combineReducers<DataState>({
   channels,
   config,
   connector,
+  catalog,
   webhooks,
 });
 

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
@@ -8,11 +9,20 @@ import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioReq
 import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
-import {Source, getSourceForComponent} from 'model';
+import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
+import {listComponents} from '../../actions/catalog';
 
-const Catalog = () => {
+const mapDispatchToProps = {
+  listComponents,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+const Catalog = (props: ConnectedProps<typeof connector>) => {
+  const {listComponents} = props;
   const connectors = useSelector((state: StateModel) => state.data.config.components);
+  const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
   const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
   const [installedConnectors, setInstalledConnectors] = useState([]);
@@ -20,51 +30,51 @@ const Catalog = () => {
   const pageTitle = 'Catalog';
 
   useEffect(() => {
+    listComponents();
     setPageTitle(pageTitle);
     setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {
-    if (sourcesInfo.length > 0 && Object.entries(connectors).length > 0) {
-      const installedList = [];
-      const sourcesInfosClone = [...sourcesInfo];
+    if (sourcesInfo.length > 0 && Object.entries(catalogList).length > 0) {
 
-      Object.entries(connectors).map(elem => {
-        if (getSourceForComponent(elem[0])) {
-          installedList.push(getSourceForComponent(elem[0]));
+      let installedComponents = [];
+      let uninstalledComponents = [];
+
+      Object.entries(catalogList).filter((componentElem:any) => {
+        if(componentElem[1].installed === true){
+          installedComponents = installedComponents.concat(findComponent(componentElem[0]));
         }
-      });
 
-      const isComponentInstalled = (elem: SourceInfo) =>
-        installedList.includes(elem.type) ||
-        (elem.type === Source.instagram && installedList.includes('facebook')) ||
-        elem.type === Source.twilioWhatsApp ||
-        (Source.twilioSMS && installedList.includes('twilio'));
-
-      const installedComponents = sourcesInfosClone.filter((elem: SourceInfo) => isComponentInstalled(elem));
-      const notInstalledComponents = sourcesInfosClone.filter((elem: SourceInfo) => !isComponentInstalled(elem));
+        if(componentElem[1].installed === false){
+          uninstalledComponents = uninstalledComponents.concat(findComponent(componentElem[0]));
+        }
+      })
 
       setInstalledConnectors(installedComponents);
-      setNotInstalledConnectors(notInstalledComponents);
+      setNotInstalledConnectors(uninstalledComponents);
     }
   }, [sourcesInfo, connectors]);
 
-  //mock up of install/uninstall components list api: remove when components.list api is added
-  const updateItemList = (installed: boolean, type: Source) => {
+  const findComponent = (name: string) => {
+    return sourcesInfo.filter(elem => elem.componentName === name)
+  }
+
+  const updateItemList = (installed: boolean, componentName: string) => {
     if (!installed) {
-      const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => {
-        if (elem.type === type) setNotInstalledConnectors(prevState => [...prevState, elem]);
-        return elem.type !== type;
-      });
+      const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => elem.componentName !== componentName);
+      const updatedNotInstalledList = notInstalledConnectors.concat(findComponent(componentName));
+
       setInstalledConnectors(updatedInstalledList);
+      setNotInstalledConnectors(updatedNotInstalledList);
     }
 
     if (installed) {
-      const updatedNotInstalledList = notInstalledConnectors.filter((elem: SourceInfo) => {
-        if (elem.type === type) setInstalledConnectors(prevState => [...prevState, elem]);
-        return elem.type !== type;
-      });
+      const updatedNotInstalledList = notInstalledConnectors.filter((elem: SourceInfo) => elem.componentName !== componentName);
+      const updatedInstalledList = installedConnectors.concat(findComponent(componentName));
+
       setNotInstalledConnectors(updatedNotInstalledList);
+      setInstalledConnectors(updatedInstalledList);
     }
   };
 
@@ -117,4 +127,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default connector(Catalog);

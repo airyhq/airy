@@ -33,11 +33,10 @@ import java.util.concurrent.TimeUnit;
 
 public class KafkaStreamsWrapper {
     private static final Logger log = AiryLoggerFactory.getLogger(KafkaStreamsWrapper.class);
-
     private final HealthCheckRunner healthCheckRunnerThread;
-
     private final String brokers;
     private final String schemaRegistryUrl;
+    private String jaasConfig;
     private long commitIntervalInMs;
     private long suppressIntervalInMs;
     private int threadCount;
@@ -69,6 +68,11 @@ public class KafkaStreamsWrapper {
         this.schemaRegistryUrl = schemaRegistryUrl;
         testMode = System.getenv("TEST_TARGET") != null;
         healthCheckRunnerThread = new HealthCheckRunner(testMode);
+    }
+
+    public KafkaStreamsWrapper withJaasConfig(String jaasConfig) {
+        this.jaasConfig = jaasConfig;
+        return this;
     }
 
     public KafkaStreamsWrapper withCommitIntervalInMs(final long commitIntervalInMs) {
@@ -205,7 +209,6 @@ public class KafkaStreamsWrapper {
 
     public synchronized void start(final Topology topology, final String appId) throws IllegalStateException, StreamsException {
         final Properties props = new Properties();
-
         //Default Properties
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, appId);
         props.put(StreamsConfig.CLIENT_ID_CONFIG, appId);
@@ -217,6 +220,12 @@ public class KafkaStreamsWrapper {
         props.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, testMode ? 4 : threadCount);
         props.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class);
         props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, Long.MAX_VALUE);
+
+        if (this.jaasConfig != null) {
+            props.put("security.protocol", "SASL_SSL");
+            props.put("sasl.mechanism", "PLAIN");
+            props.put("sasl.jaas.config", jaasConfig);
+        }
 
         props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, this.maxRequestSize);
         props.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, this.fetchMaxBytes);

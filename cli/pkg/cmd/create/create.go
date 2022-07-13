@@ -100,7 +100,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("setting up Helm failed with err: ", err)
 	}
 
-	fmt.Println("🚀 Starting core with default components")
+	fmt.Println("🚀 Starting airy with default components")
 
 	if err := helm.InstallCharts(); err != nil {
 		console.Exit("installing Helm charts failed with err: ", err)

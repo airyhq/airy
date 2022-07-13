@@ -4,6 +4,7 @@ load("//tools/build:java_library.bzl", "custom_java_library")
 custom_java_library(
     name = "spring-kafka-streams",
     srcs = glob(["src/main/java/co/airy/spring/kafka/streams/**/*.java"]),
+    resources = ["src/main/resources/kafka-streams.properties"],
     visibility = ["//visibility:public"],
     exports = [
         "//lib/java/kafka/streams:kafka-streams",

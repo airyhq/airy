@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: provisioning-topics
   annotations:
-    "helm.sh/hook": "post-install,post-upgrade"  
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   template:
     spec:
@@ -11,21 +11,14 @@ spec:
       - name: create-topics
         image: "{{ .Values.provisioning.kafka.image }}:{{ .Values.provisioning.kafka.imageTag }}"
         command: ["/bin/sh", "/opt/provisioning/create-topics.sh"]
-        env:
-        - name: ZOOKEEPER
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: ZOOKEEPER
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
+        envFrom:
+        - configMapRef:
+            name: kafka-config
        {{ if .Values.provisioning.kafka.namespaceTopics }}
+        env:
         - name: AIRY_CORE_NAMESPACE
           value: {{ .Release.Namespace }}
-       {{ end }}  
+       {{ end }}
         volumeMounts:
         - name: kafka-create-topics
           mountPath: /opt/provisioning
@@ -34,17 +27,9 @@ spec:
         image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: kafka-config
-              key: KAFKA_BROKERS
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

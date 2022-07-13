@@ -33,22 +33,9 @@ spec:
                 name: security
             - configMapRef:
                 name: core-config
+            - configMapRef:
+                name: kafka-config
           env:
-          - name: KAFKA_BROKERS
-            valueFrom:
-              configMapKeyRef:
-                name: kafka-config
-                key: KAFKA_BROKERS
-          - name: KAFKA_SCHEMA_REGISTRY_URL
-            valueFrom:
-              configMapKeyRef:
-                name: kafka-config
-                key: KAFKA_SCHEMA_REGISTRY_URL
-          - name: KAFKA_COMMIT_INTERVAL_MS
-            valueFrom:
-              configMapKeyRef:
-                name: kafka-config
-                key: KAFKA_COMMIT_INTERVAL_MS
           - name: TWILIO_AUTH_TOKEN
             valueFrom:
               configMapKeyRef:
@@ -74,17 +61,9 @@ spec:
         image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: kafka-config
-              key: KAFKA_BROKERS
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
           - name: provisioning-scripts
             mountPath: /opt/provisioning
@@ -125,22 +104,10 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.eventsRouter.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: kafka-config
         env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_SCHEMA_REGISTRY_URL
-        - name: KAFKA_COMMIT_INTERVAL_MS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_COMMIT_INTERVAL_MS
         - name: TWILIO_AUTH_TOKEN
           valueFrom:
             configMapKeyRef:
@@ -164,17 +131,9 @@ spec:
         image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: kafka-config
-              key: KAFKA_BROKERS
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

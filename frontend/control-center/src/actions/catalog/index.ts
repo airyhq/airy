@@ -23,11 +23,10 @@ export const uninstallComponentAction = createAction(
   (uninstalledComponent: InstallUninstallComponentRequestPayload) => uninstalledComponent
 )<InstallUninstallComponentRequestPayload>();
 
-
 export const listComponents = () => (dispatch: Dispatch<any>) => {
   //fix this when components.list endpoint has been added
   dispatch(listComponentsAction(componentsListMock));
-}
+};
 
 export const installComponent =
   (installComponentRequestPayload: InstallUninstallComponentRequestPayload) => (dispatch: Dispatch<any>) => {

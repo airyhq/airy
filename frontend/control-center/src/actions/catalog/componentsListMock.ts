@@ -7,8 +7,8 @@ interface ComponentInfo {
 
 export interface ComponentList {
   components: {
-    [key: string]: ComponentInfo
-  }
+    [key: string]: ComponentInfo;
+  };
 }
 
 export const componentsListMock: ComponentList = {
@@ -33,5 +33,5 @@ export const componentsListMock: ComponentList = {
       repository: 'enterprise',
       installed: true,
     },
-  }
+  },
 };

@@ -55,7 +55,8 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
-  const connectorInstalltionConfig = connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
+  const connectorInstalltionConfig =
+    connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});

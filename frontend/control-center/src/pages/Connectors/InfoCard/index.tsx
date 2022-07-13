@@ -5,7 +5,6 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
 import {Button, SettingsModal} from 'components';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
-import {Source} from 'model';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../ConfigStatusButton';
@@ -22,7 +21,7 @@ type InfoCardProps = {
   installed: boolean;
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
-  updateItemList?: (installed: boolean, componentName:string) => void;
+  updateItemList?: (installed: boolean, componentName: string) => void;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -56,7 +55,7 @@ const InfoCard = (props: InfoCardProps) => {
     setModalTitle(title);
   }, [isInstalled]);
 
-  const toggleInstallation = () => {
+  const openInstallModal = () => {
     setIsModalVisible(true);
 
     if (!isInstalled) {
@@ -64,15 +63,22 @@ const InfoCard = (props: InfoCardProps) => {
     }
   };
 
-  const cancelInstallationToggle = () => setIsModalVisible(false);
-
-  const confirmInstallationToggle = () => {
-    if (isInstalled) {
-      uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
-    }
-    setIsModalVisible(false);
+  const toggleInstallation = () => {
     setIsInstalled(!isInstalled);
     updateItemList(!isInstalled, sourceInfo.componentName);
+  };
+
+  const cancelInstallationToggle = () => {
+    setIsModalVisible(false);
+
+    if (!isInstalled) toggleInstallation();
+  };
+
+  const confirmUninstall = () => {
+    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
+
+    setIsModalVisible(false);
+    toggleInstallation();
   };
 
   const handleCardClick = () => {
@@ -121,7 +127,7 @@ const InfoCard = (props: InfoCardProps) => {
       {CATALOG_PAGE && (
         <>
           {!installed && <p>{sourceInfo.description}</p>}
-          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={toggleInstallation}>
+          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
             {!isInstalled ? t('install') : t('uninstall')}
           </Button>
         </>
@@ -144,7 +150,7 @@ const InfoCard = (props: InfoCardProps) => {
               {t('toConfigure')}
             </Button>
           ) : (
-            <Button styleVariant="normal" type="submit" onClick={confirmInstallationToggle}>
+            <Button styleVariant="normal" type="submit" onClick={confirmUninstall}>
               {t('uninstall')}
             </Button>
           )}

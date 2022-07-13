@@ -37,19 +37,18 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     if (sourcesInfo.length > 0 && Object.entries(catalogList).length > 0) {
-
       let installedComponents = [];
       let uninstalledComponents = [];
 
-      Object.entries(catalogList).filter((componentElem:any) => {
-        if(componentElem[1].installed === true){
+      Object.entries(catalogList).filter((componentElem: any) => {
+        if (componentElem[1].installed === true) {
           installedComponents = installedComponents.concat(findComponent(componentElem[0]));
         }
 
-        if(componentElem[1].installed === false){
+        if (componentElem[1].installed === false) {
           uninstalledComponents = uninstalledComponents.concat(findComponent(componentElem[0]));
         }
-      })
+      });
 
       setInstalledConnectors(installedComponents);
       setNotInstalledConnectors(uninstalledComponents);
@@ -57,12 +56,14 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, [sourcesInfo, connectors]);
 
   const findComponent = (name: string) => {
-    return sourcesInfo.filter(elem => elem.componentName === name)
-  }
+    return sourcesInfo.filter(elem => elem.componentName === name);
+  };
 
   const updateItemList = (installed: boolean, componentName: string) => {
     if (!installed) {
-      const updatedInstalledList = installedConnectors.filter((elem: SourceInfo) => elem.componentName !== componentName);
+      const updatedInstalledList = installedConnectors.filter(
+        (elem: SourceInfo) => elem.componentName !== componentName
+      );
       const updatedNotInstalledList = notInstalledConnectors.concat(findComponent(componentName));
 
       setInstalledConnectors(updatedInstalledList);
@@ -70,7 +71,9 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     }
 
     if (installed) {
-      const updatedNotInstalledList = notInstalledConnectors.filter((elem: SourceInfo) => elem.componentName !== componentName);
+      const updatedNotInstalledList = notInstalledConnectors.filter(
+        (elem: SourceInfo) => elem.componentName !== componentName
+      );
       const updatedInstalledList = installedConnectors.concat(findComponent(componentName));
 
       setNotInstalledConnectors(updatedNotInstalledList);

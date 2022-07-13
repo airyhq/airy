@@ -59,7 +59,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
 
   useEffect(() => {
-    console.log('connectorConfig useEffect');
     getConnectorsConfiguration();
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);

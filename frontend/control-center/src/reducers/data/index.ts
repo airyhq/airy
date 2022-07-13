@@ -7,7 +7,7 @@ import channels, {ChannelsState} from './channels';
 import {Webhook} from 'model/Webhook';
 import webhooks from './webhooks';
 import connector, {ConnectorsConfig} from './connector';
-import catalog from './catalog';
+import catalog, {CatalogConfig} from './catalog';
 
 export * from './channels';
 export * from './config';
@@ -20,7 +20,7 @@ export type DataState = {
   channels: ChannelsState;
   config: Config;
   connector: ConnectorsConfig;
-  catalog: any;
+  catalog: CatalogConfig;
   webhooks: Webhook;
 };
 

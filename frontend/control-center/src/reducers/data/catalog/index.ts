@@ -3,12 +3,9 @@ import * as actions from '../../../actions/catalog';
 
 type Action = ActionType<typeof actions>;
 
-// export interface Catalog {{
-//   name: string;
-//   repository: string;
-//   installed: boolean;
-// }
-// }[]
+export interface CatalogConfig {
+  [key: string]: {repository: string; installed: boolean};
+}
 
 const defaultState = {};
 
@@ -16,7 +13,7 @@ const formatName = (name: string) => {
   return name.split('/').pop();
 };
 
-export default function connectorsReducer(state = defaultState, action: Action) {
+export default function connectorsReducer(state = defaultState, action: Action): CatalogConfig {
   switch (action.type) {
     case getType(actions.listComponentsAction):
       return {

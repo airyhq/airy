@@ -40,7 +40,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       let installedComponents = [];
       let uninstalledComponents = [];
 
-      Object.entries(catalogList).filter((componentElem: any) => {
+      Object.entries(catalogList).filter((componentElem: [string, {repository: string; installed: boolean}]) => {
         if (componentElem[1].installed === true) {
           installedComponents = installedComponents.concat(findComponent(componentElem[0]));
         }
@@ -56,7 +56,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, [sourcesInfo, connectors]);
 
   const findComponent = (name: string) => {
-    return sourcesInfo.filter(elem => elem.componentName === name);
+    return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
   };
 
   const updateItemList = (installed: boolean, componentName: string) => {

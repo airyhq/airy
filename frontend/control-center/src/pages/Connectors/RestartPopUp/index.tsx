@@ -34,12 +34,7 @@ const RestartPopUp = (props: RestartPopUpProps) => {
       headerClassName={styles.headerModal}
     >
       <p>{t('restartComponentUpdate')}</p>
-      <Button
-        styleVariant="normal"
-        type="submit"
-        onClick={restartComponent}
-        style={{marginTop: '60px', padding: '0 60px'}}
-      >
+      <Button styleVariant="normal" type="submit" onClick={restartComponent} className={styles.restartButton}>
         {t('restart')}
       </Button>
     </SettingsModal>

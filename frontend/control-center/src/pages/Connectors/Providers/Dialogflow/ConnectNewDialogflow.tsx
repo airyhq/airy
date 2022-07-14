@@ -4,6 +4,7 @@ import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
 import styles from './index.module.scss';
+import RestartPopUp from '../../RestartPopUp';
 import {useTranslation} from 'react-i18next';
 
 type ConnectNewDialogflowProps = {
@@ -24,11 +25,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
     componentInfo?.suggestionConfidenceLevel || ''
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const {t} = useTranslation();
 
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
+    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (

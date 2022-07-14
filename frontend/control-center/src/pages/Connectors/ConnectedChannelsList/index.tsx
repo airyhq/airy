@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {listChannels} from '../../../actions/channel';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
@@ -39,7 +40,14 @@ import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
 
-const ConnectedChannelsList = () => {
+const mapDispatchToProps = {
+  listChannels,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
+  const {listChannels} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -69,6 +77,10 @@ const ConnectedChannelsList = () => {
     const lastPageIndex = firstPageIndex + pageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, channels.length]);
+
+  useEffect(() => {
+    listChannels();
+  }, []);
 
   useEffect(() => {
     getInfo();
@@ -219,4 +231,4 @@ const ConnectedChannelsList = () => {
   );
 };
 
-export default ConnectedChannelsList;
+export default connector(ConnectedChannelsList);

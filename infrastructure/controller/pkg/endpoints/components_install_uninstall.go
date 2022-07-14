@@ -5,58 +5,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/airyhq/airy/lib/go/payloads"
 	helmCli "github.com/mittwald/go-helm-client"
-	"helm.sh/helm/v3/pkg/repo"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
 	"k8s.io/klog"
 )
 
 type ComponentsInstallUninstall struct {
-	cli       helmCli.Client
-	clientSet *kubernetes.Clientset
-	namespace string
-}
-
-func MustNewComponentsInstallUninstall(
-	namespace string,
-	kubeConfig *rest.Config,
-	clientSet *kubernetes.Clientset,
-	reposFilePath string,
-) ComponentsInstallUninstall {
-	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
-		Options: &helmCli.Options{
-			Namespace: namespace,
-		},
-		RestConfig: kubeConfig,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	repos, err := getReposFromFile(reposFilePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, r := range repos {
-		if r.Password != "" {
-			r.PassCredentialsAll = true
-		}
-
-		if err := cli.AddOrUpdateChartRepo(r); err != nil {
-			log.Fatal(err)
-		}
-		klog.Info("Added ", r.Name, " repo")
-	}
-
-	return ComponentsInstallUninstall{namespace: namespace, cli: cli, clientSet: clientSet}
+	Cli       helmCli.Client
+	ClientSet *kubernetes.Clientset
+	Namespace string
 }
 
 func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -85,14 +47,14 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 	chartSpec := &helmCli.ChartSpec{
 		ReleaseName: releaseName,
 		ChartName:   chartName,
-		Namespace:   s.namespace,
+		Namespace:   s.Namespace,
 		UpgradeCRDs: true,
 		Replace:     true,
 		ValuesYaml:  globals,
 	}
 
 	if r.URL.Path == "/components.install" {
-		_, err := s.cli.InstallOrUpgradeChart(
+		_, err := s.Cli.InstallOrUpgradeChart(
 			r.Context(),
 			chartSpec,
 			nil,
@@ -103,7 +65,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 			return
 		}
 	} else if r.URL.Path == "/components.uninstall" {
-		err := s.cli.UninstallRelease(chartSpec)
+		err := s.Cli.UninstallRelease(chartSpec)
 		if err != nil {
 			klog.Error("Component not installed: ", err.Error())
 			w.WriteHeader(http.StatusNotFound)
@@ -118,7 +80,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 }
 
 func (s *ComponentsInstallUninstall) getGlobals(ctx context.Context) (string, error) {
-	configMap, err := s.clientSet.CoreV1().ConfigMaps(s.namespace).Get(ctx, "core-config", metav1.GetOptions{})
+	configMap, err := s.ClientSet.CoreV1().ConfigMaps(s.Namespace).Get(ctx, "core-config", metav1.GetOptions{})
 	if err != nil {
 		return "", err
 	}
@@ -147,21 +109,4 @@ func getChartNameFromBlob(blob []byte) (string, string, error) {
 	}
 
 	return installComponent.Name, s[1], nil
-}
-
-func getReposFromFile(filePath string) ([]repo.Entry, error) {
-	blob, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	repos := struct {
-		Repositories []repo.Entry `json:"repositories"`
-	}{}
-
-	if err := json.Unmarshal(blob, &repos); err != nil {
-		return nil, err
-	}
-
-	return repos.Repositories, nil
 }

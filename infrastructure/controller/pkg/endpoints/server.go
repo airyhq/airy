@@ -1,11 +1,15 @@
 package endpoints
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
+	helmCli "github.com/mittwald/go-helm-client"
+	"helm.sh/helm/v3/pkg/repo"
 	"k8s.io/klog"
 
 	"k8s.io/client-go/kubernetes"
@@ -54,9 +58,63 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstallUninstall := MustNewComponentsInstallUninstall(namespace, kubeConfig, clientSet, repoFilePath)
+	helmCli := mustGetHelmClient(namespace, kubeConfig, clientSet, repoFilePath)
+
+	componentsInstallUninstall := ComponentsInstallUninstall{Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
+}
+
+func mustGetHelmClient(
+	namespace string,
+	kubeConfig *rest.Config,
+	clientSet *kubernetes.Clientset,
+	reposFilePath string,
+) helmCli.Client {
+	cli, err := helmCli.NewClientFromRestConf(&helmCli.RestConfClientOptions{
+		Options: &helmCli.Options{
+			Namespace: namespace,
+		},
+		RestConfig: kubeConfig,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	repos, err := getReposFromFile(reposFilePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, r := range repos {
+		if r.Password != "" {
+			r.PassCredentialsAll = true
+		}
+
+		if err := cli.AddOrUpdateChartRepo(r); err != nil {
+			log.Fatal(err)
+		}
+		klog.Info("Added ", r.Name, " repo")
+	}
+
+	return cli
+}
+
+func getReposFromFile(filePath string) ([]repo.Entry, error) {
+	blob, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	repos := struct {
+		Repositories []repo.Entry `json:"repositories"`
+	}{}
+
+	if err := json.Unmarshal(blob, &repos); err != nil {
+		return nil, err
+	}
+
+	return repos.Repositories, nil
 }

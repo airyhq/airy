@@ -265,6 +265,16 @@ const resources = {
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
 
+      //Zendesk
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
+
       //Dialogflow
       dialogflowDescription: 'Conversational AI with virtual agents',
       projectID: 'Project ID',
@@ -647,6 +657,16 @@ const resources = {
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
 
+      //Zendesk
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
+
       //Dialogflow
       dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
       projectID: 'Projekt-ID',
@@ -1004,6 +1024,16 @@ const resources = {
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Zendesk
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
 
       //Dialogflow
       dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
@@ -1399,6 +1429,16 @@ const resources = {
         'Podrá acceder al código para incluirlo en su cabecera más tarde, cuando haya terminado de personalizarlo.',
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
+
+      //Zendesk
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
 
       //Dialogflow
       dialogflowDescription: 'IA conversacional con agentes virtuales',

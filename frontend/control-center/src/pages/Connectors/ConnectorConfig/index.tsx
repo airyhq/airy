@@ -17,6 +17,7 @@ import {Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
+import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 
@@ -99,6 +100,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     if (connector === Source.dialogflow) {
       return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
     }
+
+    if (connector === Source.zendesk) {
+      return <ConnectNewZendesk createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+    }
   };
 
   const enableDisableComponentToggle = () => {
@@ -143,7 +148,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
                 <div className={styles.textInfo}>
                   <div className={styles.descriptionDocs}>
-                    {connectorInfo && connectorInfo?.description}{' '}
+                    {connectorInfo && <p>{connectorInfo?.description}</p>}
                     <InfoButton
                       borderOff={true}
                       color="blue"

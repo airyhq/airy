@@ -7,6 +7,7 @@ import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo.svg';
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
+import {ReactComponent as ZendeskIcon} from 'assets/images/icons/zendeskLogo.svg';
 import {useTranslation} from 'react-i18next';
 import {
   cyChannelsChatPluginAddButton,
@@ -16,6 +17,7 @@ import {
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsInstagramAddButton,
   cyChannelsDialogflowAddButton,
+  cyChannelsZendeskAddButton,
 } from 'handles';
 import {
   CONNECTORS_CONNECTED_ROUTE,
@@ -26,6 +28,7 @@ import {
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
   CONNECTORS_DIALOGFLOW_ROUTE,
+  CONNECTORS_ZENDESK_ROUTE,
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -37,6 +40,8 @@ export type SourceInfo = {
   newChannelRoute: string;
   channelsListRoute: string;
   configKey: string;
+  componentName: string;
+  repository: string;
   itemInfoString: string;
   dataCyAddChannelButton: string;
   docs: string;
@@ -49,7 +54,7 @@ interface DescriptionComponentProps {
 const DescriptionComponent = (props: DescriptionComponentProps) => {
   const {description} = props;
   const {t} = useTranslation();
-  return <p>{t(description)}</p>;
+  return <>{t(description)}</>;
 };
 
 export const getSourcesInfo = (): SourceInfo[] => {
@@ -62,7 +67,9 @@ export const getSourcesInfo = (): SourceInfo[] => {
       image: <AiryAvatarIcon />,
       newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',
-      configKey: 'sources-chat-plugin',
+      configKey: 'sources-chatplugin',
+      componentName: 'sources-chatplugin',
+      repository: 'airy-core',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsChatPluginAddButton,
       docs: 'https://airy.co/docs/core/sources/chatplugin/overview',
@@ -76,6 +83,8 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_FACEBOOK_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/facebook',
       configKey: 'sources-facebook',
+      componentName: 'sources-facebook',
+      repository: 'airy-core',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsFacebookAddButton,
       docs: 'https://airy.co/docs/core/sources/facebook',
@@ -89,6 +98,8 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',
       configKey: 'sources-twilio',
+      componentName: 'sources-twilio',
+      repository: 'airy-core',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
       docs: 'https://airy.co/docs/core/sources/sms-twilio',
@@ -102,6 +113,8 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
       configKey: 'sources-twilio',
+      componentName: 'sources-twilio',
+      repository: 'airy-core',
       itemInfoString: 'phones',
       dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
       docs: 'https://airy.co/docs/core/sources/whatsapp-twilio',
@@ -115,6 +128,8 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_GOOGLE_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/google',
       configKey: 'sources-google',
+      componentName: 'sources-google',
+      repository: 'airy-core',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsGoogleAddButton,
       docs: 'https://airy.co/docs/core/sources/google',
@@ -128,6 +143,8 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_INSTAGRAM_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/instagram',
       configKey: 'sources-facebook',
+      componentName: 'sources-facebook',
+      repository: 'airy-core',
       itemInfoString: 'channels',
       dataCyAddChannelButton: cyChannelsInstagramAddButton,
       docs: 'https://airy.co/docs/core/sources/instagram',
@@ -141,9 +158,26 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_DIALOGFLOW_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/dialogflow',
       configKey: 'enterprise-dialogflow-connector',
-      itemInfoString: 'channels',
+      componentName: 'dialogflow-connector',
+      repository: 'enterprise',
+      itemInfoString: 'connectors',
       dataCyAddChannelButton: cyChannelsDialogflowAddButton,
       docs: 'https://dialogflow.cloud.google.com/cx/projects',
+    },
+    {
+      type: Source.zendesk,
+      channel: false,
+      title: 'Zendesk',
+      description: 'Champions of customer service',
+      image: <ZendeskIcon />,
+      newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',
+      configKey: 'enterprise-zendesk-connector',
+      componentName: 'zendesk-connector',
+      repository: 'enterprise',
+      itemInfoString: 'connectors',
+      dataCyAddChannelButton: cyChannelsZendeskAddButton,
+      docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
     },
   ];
 };

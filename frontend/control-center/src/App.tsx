@@ -14,6 +14,7 @@ import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
 import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
 import DialogflowConnect from './pages/Connectors/Providers/Dialogflow/DialogflowConnect';
+import ZendeskConnect from './pages/Connectors/Providers/Zendesk/ZendeskConnect';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
 import Catalog from './pages/Catalog';
@@ -55,7 +56,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
             <Route path={`google/:channelId`} element={<GoogleConnect />} />
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-            <Route path={`dialogflow/:channelId`} element={<DialogflowConnect />} />
+            <Route path={`dialogflow/new`} element={<DialogflowConnect />} />
+            <Route path={`zendesk/new`} element={<ZendeskConnect />} />
 
             <Route index element={<Connectors />} />
           </Route>

@@ -14,7 +14,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//lib/go/config",
-        "@com_github_iancoleman_strcase//:go_default_library",
+        "@com_github_iancoleman_strcase//:strcase",
     ],
 )
 

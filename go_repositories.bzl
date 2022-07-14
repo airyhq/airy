@@ -3072,6 +3072,14 @@ def go_repositories():
         version = "v0.0.0-20211129171323-c02415ce4185",
     )
     go_repository(
+        name = "io_k8s_helm",
+        build_file_proto_mode = "disable_global",
+        importpath = "k8s.io/helm",
+        sum = "h1:Bpn6o1wKLYqKM3+Osh8e+1/K2g/GsQJ4F4yNF2+deao=",
+        version = "v2.17.0+incompatible",
+    )
+
+    go_repository(
         name = "io_k8s_klog",
         build_file_proto_mode = "disable_global",
         importpath = "k8s.io/klog",

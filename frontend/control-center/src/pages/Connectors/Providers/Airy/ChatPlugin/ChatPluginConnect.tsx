@@ -22,6 +22,7 @@ import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from './sections/InstallSection/InstallSection';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {
@@ -152,7 +153,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     <div className={styles.container}>
       <div className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <LinkButton onClick={() => navigate(-1)} type="button">
+          <LinkButton onClick={() => navigate(`${CONNECTORS_CONNECTED_ROUTE}/chatplugin`)} type="button">
             <ArrowLeftIcon className={styles.backIcon} />
           </LinkButton>
           <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>

@@ -16,15 +16,21 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [token, setToken] = useState(componentInfo?.token || '');
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const {t} = useTranslation();
 
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createNewConnection(domain, token, username);
+    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
-    <ConnectNewForm>
+    <ConnectNewForm
+      componentName="enterprise-zendesk-connector"
+      isUpdateModalVisible={isUpdateModalVisible}
+      setIsUpdateModalVisible={setIsUpdateModalVisible}
+    >
       <div className={styles.formRow}>
         <Input
           type="text"

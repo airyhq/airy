@@ -43,12 +43,14 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   }, [channels.length]);
 
   const isComponentEnabled = (componentName: string, configKey: string) => {
-    const componentConfigured = Object.keys(connectors[componentName]).length > 0;
-    return connectors[componentName] && componentConfigured && components[configKey].enabled
-      ? 'Enabled'
-      : !componentConfigured && components[configKey].enabled
-      ? 'Not Configured'
-      : 'Disabled';
+    if (connectors[componentName]) {
+      const componentConfigured = Object.keys(connectors[componentName]).length > 0;
+      return connectors[componentName] && componentConfigured && components[configKey].enabled
+        ? 'Enabled'
+        : !componentConfigured && components[configKey].enabled
+        ? 'Not Configured'
+        : 'Disabled';
+    }
   };
   return (
     <div className={styles.channelsWrapper}>
@@ -74,7 +76,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   />
                 )) ||
                 (channelsBySource(infoItem.type).length > 0 && !infoItem.channel && (
-                  <div style={{display: 'flex'}} key={infoItem.type}>
+                  <div className={styles.cardContainer} key={infoItem.type}>
                     <InfoCard
                       installed
                       style={InfoCardStyle.expanded}
@@ -89,10 +91,10 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   components &&
                   components[infoItem.configKey] &&
                   !infoItem.channel && (
-                    <div style={{display: 'flex'}} key={infoItem.type}>
+                    <div className={styles.cardContainer} key={infoItem.type}>
                       <InfoCard
                         installed={true}
-                        enabled={isComponentEnabled(infoItem.componentName, infoItem.configKey)}
+                        enabled={isComponentEnabled(infoItem?.componentName, infoItem?.configKey)}
                         style={InfoCardStyle.normal}
                         key={infoItem.type}
                         sourceInfo={infoItem}

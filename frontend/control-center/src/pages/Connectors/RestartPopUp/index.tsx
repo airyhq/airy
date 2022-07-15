@@ -21,9 +21,9 @@ const RestartPopUp = (props: RestartPopUpProps) => {
   const {t} = useTranslation();
 
   const restartComponent = async () => {
-    closeRestartPopUp();
     await enableDisableComponent({components: [{name: componentName, enabled: false}]});
     await enableDisableComponent({components: [{name: componentName, enabled: true}]});
+    setTimeout(() => closeRestartPopUp(), 1000);
   };
 
   return (

@@ -4,7 +4,6 @@ import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
 import styles from './index.module.scss';
-import RestartPopUp from '../../RestartPopUp';
 import {useTranslation} from 'react-i18next';
 
 type ConnectNewDialogflowProps = {
@@ -26,6 +25,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+
   const {t} = useTranslation();
 
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +35,11 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
   };
 
   return (
-    <ConnectNewForm>
+    <ConnectNewForm
+      componentName="enterprise-dialogflow-connector"
+      isUpdateModalVisible={isUpdateModalVisible}
+      setIsUpdateModalVisible={setIsUpdateModalVisible}
+    >
       <div className={styles.formRow}>
         <Input
           type="text"
@@ -112,13 +116,6 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
       >
         {isEnabled ? t('Update') : t('configure')}
       </Button>
-
-      {isUpdateModalVisible && (
-        <RestartPopUp
-          componentName="enterprise-dialogflow-connector"
-          closeRestartPopUp={() => setIsUpdateModalVisible(false)}
-        />
-      )}
     </ConnectNewForm>
   );
 };

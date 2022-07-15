@@ -19,8 +19,9 @@ type ComponentsList struct {
 
 //NOTE: We don't know yet how or where some properties like AvailableFor/Categories/Price
 //      are going to get stores, so for now they are defined but not used
-type responesPayload struct {
-	Name         string `json:"name"`
+
+type componentsDetails struct {
+	Name         string `json:"-"`
 	Description  string `json:"description"`
 	Installed    bool   `json:"installed"`
 	AvailableFor string `json:"availableFor"`
@@ -36,7 +37,7 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	components := make([]*responesPayload, 0, len(deployedCharts))
+	components := make(map[string]*componentsDetails)
 	seen := make(map[string]struct{})
 	for _, chart := range s.Index.All() {
 		if _, ok := seen[chart.Name]; ok {
@@ -44,12 +45,12 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		seen[chart.Name] = struct{}{}
 
-		c := &responesPayload{
+		c := &componentsDetails{
 			Name:      chart.Name,
 			Installed: deployedCharts[chart.Chart.Name],
 		}
 
-		components = append(components, c)
+		components[chart.Name] = c
 	}
 
 	blob, err := json.Marshal(map[string]interface{}{"components": components})

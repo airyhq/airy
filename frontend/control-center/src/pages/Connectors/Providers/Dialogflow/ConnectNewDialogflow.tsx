@@ -112,6 +112,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
       >
         {isEnabled ? t('Update') : t('configure')}
       </Button>
+
+      {isUpdateModalVisible && (
+        <RestartPopUp
+          componentName="enterprise-dialogflow-connector"
+          closeRestartPopUp={() => setIsUpdateModalVisible(false)}
+        />
+      )}
     </ConnectNewForm>
   );
 };

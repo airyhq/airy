@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
@@ -12,6 +11,8 @@ import {CatalogItemList} from './CatalogItemList';
 import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import {listComponents} from '../../actions/catalog';
+import {removePrefix} from '../../services';
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {
   listComponents,
@@ -42,11 +43,11 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
 
       Object.entries(catalogList).filter((componentElem: [string, {repository: string; installed: boolean}]) => {
         if (componentElem[1].installed === true) {
-          installedComponents = installedComponents.concat(findComponent(componentElem[0]));
+          installedComponents = installedComponents.concat(findComponent(removePrefix(componentElem[0])));
         }
 
         if (componentElem[1].installed === false) {
-          uninstalledComponents = uninstalledComponents.concat(findComponent(componentElem[0]));
+          uninstalledComponents = uninstalledComponents.concat(findComponent(removePrefix(componentElem[0])));
         }
       });
 

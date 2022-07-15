@@ -2,7 +2,7 @@ import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {HttpClientInstance} from '../../httpClient';
 import {InstallUninstallComponentRequestPayload} from 'httpclient/src';
-import {componentsListMock, ComponentList} from './componentsListMock';
+import {Components} from 'model';
 
 const LIST_COMPONENT = '@@catalog/LIST_COMPONENT';
 const INSTALL_COMPONENT = '@@catalog/INSTALL_COMPONENT';
@@ -10,8 +10,8 @@ const UNINSTALL_COMPONENT = '@@catalog/UNINSTALL_COMPONENT';
 
 export const listComponentsAction = createAction(
   LIST_COMPONENT,
-  (componentsList: ComponentList) => componentsList
-)<ComponentList>();
+  (componentsList: Components) => componentsList
+)<Components>();
 
 export const installComponentAction = createAction(
   INSTALL_COMPONENT,
@@ -24,8 +24,10 @@ export const uninstallComponentAction = createAction(
 )<InstallUninstallComponentRequestPayload>();
 
 export const listComponents = () => (dispatch: Dispatch<any>) => {
-  //fix this when components.list endpoint has been added
-  dispatch(listComponentsAction(componentsListMock));
+  return HttpClientInstance.listComponents().then(response => {
+    dispatch(listComponentsAction(response));
+    return Promise.resolve(true);
+  });
 };
 
 export const installComponent =

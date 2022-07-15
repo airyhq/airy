@@ -168,7 +168,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.zendesk,
       channel: false,
       title: 'Zendesk',
-      description: 'Champions of customer service',
+      description: <DescriptionComponent description="zendeskDescription" />,
       image: <ZendeskIcon />,
       newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',

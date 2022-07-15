@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
-import styles from './ConnectNewDialogflow.module.scss';
+import {ConnectNewForm} from '../../ConnectNewForm';
+import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
 type ConnectNewDialogflowProps = {
@@ -23,66 +24,62 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
   };
 
   return (
-    <div className={styles.formWrapper}>
-      <div className={styles.settings}>
-        <form>
-          <div className={styles.formRow}>
-            <Input
-              type="text"
-              name="domain"
-              value={domain}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)}
-              label={t('ZendeskSubDomain')}
-              placeholder={t('AddDomain')}
-              showLabelIcon
-              tooltipText={t('ZendeskDomain')}
-              required
-              height={32}
-              fontClass="font-base"
-            />
-          </div>
-
-          <div className={styles.formRow}>
-            <Input
-              type="text"
-              name="username"
-              value={username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-              label={t('username')}
-              placeholder={t('AddUsername')}
-              showLabelIcon
-              tooltipText={t('ZendeskUsername')}
-              required
-              height={32}
-              fontClass="font-base"
-            />
-          </div>
-          <div className={styles.formRow}>
-            <Input
-              type="text"
-              name="token"
-              value={token}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setToken(e.target.value)}
-              label={t('APIToken')}
-              placeholder={t('APIToken')}
-              showLabelIcon
-              tooltipText={t('ZendeskToken')}
-              required
-              height={32}
-              fontClass="font-base"
-            />
-          </div>
-          <Button
-            styleVariant="small"
-            type="button"
-            disabled={!domain || !username || !token}
-            style={{padding: '20px 60px'}}
-            onClick={e => submitConfigData(e)}
-          >
-            {isEnabled ? t('Update') : t('configure')}
-          </Button>
-        </form>
+    <ConnectNewForm>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="domain"
+          value={domain}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)}
+          label={t('ZendeskSubDomain')}
+          placeholder={t('AddDomain')}
+          showLabelIcon
+          tooltipText={t('ZendeskDomain')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
       </div>
-    </div>
+
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="username"
+          value={username}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+          label={t('username')}
+          placeholder={t('AddUsername')}
+          showLabelIcon
+          tooltipText={t('ZendeskUsername')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="token"
+          value={token}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setToken(e.target.value)}
+          label={t('APIToken')}
+          placeholder={t('APIToken')}
+          showLabelIcon
+          tooltipText={t('ZendeskToken')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <Button
+        styleVariant="small"
+        type="button"
+        disabled={!domain || !username || !token}
+        style={{padding: '20px 60px'}}
+        onClick={e => submitConfigData(e)}
+      >
+        {isEnabled ? t('Update') : t('configure')}
+      </Button>
+    </ConnectNewForm>
   );
 };

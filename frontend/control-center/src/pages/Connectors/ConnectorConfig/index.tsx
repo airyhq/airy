@@ -18,6 +18,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
+import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 
@@ -47,12 +48,12 @@ type ConnectorConfigProps = {
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {connector, enableDisableComponent, updateConnectorConfiguration, config} = props;
+
   const {channelId} = useParams();
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
-
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -67,12 +68,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   }, [config, connectorInfo]);
 
-  //the component is customizable: return in this function the connection for each connector
   const createNewConnection = (...args: string[]) => {
+    let payload: UpdateComponentConfigurationRequestPayload;
+
     if (connector === Source.dialogflow) {
       const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
 
-      const payload: UpdateComponentConfigurationRequestPayload = {
+      payload = {
         components: [
           {
             name: connectorInfo && connectorInfo?.configKey,
@@ -86,16 +88,33 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           },
         ],
       };
-
-      updateConnectorConfiguration(payload).then(() => {
-        if (!isEnabled) {
-          setConfigurationModal(true);
-        }
-      });
     }
+
+    if (connector === Source.zendesk) {
+      const [domain, username, token] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && connectorInfo?.configKey,
+            enabled: true,
+            data: {
+              domain: domain,
+              token: token,
+              username: username,
+            },
+          },
+        ],
+      };
+    }
+
+    updateConnectorConfiguration(payload).then(() => {
+      if (!isEnabled) {
+        setConfigurationModal(true);
+      }
+    });
   };
 
-  //the component is customizable: return in this function the connect form of each connector
   const PageContent = () => {
     if (connector === Source.dialogflow) {
       return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
@@ -141,10 +160,22 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         <section className={styles.connectorDetails}>
           <div className={styles.titleIconDetails}>
             <div className={styles.textIconContainer}>
-              <div className={styles.connectorIcon}>{connectorInfo && connectorInfo?.image}</div>
+              <div
+                className={`${styles.connectorIcon} ${
+                  connectorInfo && connectorInfo?.title !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
+                }`}
+              >
+                {connectorInfo && connectorInfo?.image}
+              </div>
 
               <div className={styles.textContainer}>
-                <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+                <div className={styles.componentTitle}>
+                  <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+                  <ConfigStatusButton
+                    enabled={isEnabled ? 'Enabled' : !isEnabled ? 'Disabled' : 'Not Configured'}
+                    customStyle={styles.configStatusButton}
+                  />
+                </div>
 
                 <div className={styles.textInfo}>
                   <div className={styles.descriptionDocs}>

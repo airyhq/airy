@@ -7,6 +7,7 @@ import {Button, SettingsModal} from 'components';
 import {Source} from 'model';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
+import {ConfigStatusButton} from '../ConfigStatusButton';
 import styles from './index.module.scss';
 
 export enum InfoCardStyle {
@@ -18,7 +19,7 @@ type InfoCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
   installed: boolean;
-  enabled?: 'Enabled' | 'Not Configured';
+  enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
   updateItemList?: (installed: boolean, type: Source) => void;
 } & ConnectedProps<typeof connector>;
@@ -114,16 +115,7 @@ const InfoCard = (props: InfoCardProps) => {
         </>
       )}
 
-      {enabled && (
-        <Button
-          styleVariant="extra-small"
-          className={`${styles.installationButton} ${
-            enabled === 'Enabled' ? styles.buttonEnabled : styles.buttonNotConfigured
-          }`}
-        >
-          {t(`${enabled}`)}
-        </Button>
-      )}
+      {enabled && <ConfigStatusButton enabled={enabled} />}
 
       {isModalVisible && (
         <SettingsModal

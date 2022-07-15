@@ -67,9 +67,27 @@
   width: 100%;
 }
 
+.componentTitle {
+  display: flex;
+  width: min-content;
+  align-items: center;
+}
+
+.configStatusButton {
+  cursor: auto;
+}
+
 .connectorIcon {
-  width: 50px;
-  margin-right: 24px;
+  width: 75px;
+  margin-right: 15px;
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.connectorIconOffsetTop {
+  margin-top: 12px;
 }
 
 .textInfo {
@@ -162,6 +180,7 @@
 .headlineText {
   color: var(--color-text-contrast);
   flex-grow: 1;
+  margin-right: 8px;
 }
 
 .overview {

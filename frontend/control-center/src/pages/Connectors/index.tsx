@@ -24,6 +24,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const {listChannels, getConnectorsConfiguration} = props;
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const components = useSelector((state: StateModel) => state.data.config.components);
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();
@@ -41,6 +42,14 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
     setPageTitle(pageTitle);
   }, [channels.length]);
 
+  const isComponentEnabled = (componentName: string, configKey: string) => {
+    const componentConfigured = Object.keys(connectors[componentName]).length > 0;
+    return connectors[componentName] && componentConfigured && components[configKey].enabled
+      ? 'Enabled'
+      : !componentConfigured && components[configKey].enabled
+      ? 'Not Configured'
+      : 'Disabled';
+  };
   return (
     <div className={styles.channelsWrapper}>
       {sourcesInfo.length > 0 && (
@@ -83,7 +92,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <div style={{display: 'flex'}} key={infoItem.type}>
                       <InfoCard
                         installed={true}
-                        enabled={components[infoItem.configKey].enabled ? 'Enabled' : 'Not Configured'}
+                        enabled={isComponentEnabled(infoItem.componentName, infoItem.configKey)}
                         style={InfoCardStyle.normal}
                         key={infoItem.type}
                         sourceInfo={infoItem}

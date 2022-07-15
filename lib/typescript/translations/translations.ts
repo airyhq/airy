@@ -265,6 +265,17 @@ const resources = {
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
 
+      //Zendesk
+      zendeskDescription: 'Make customers happy via text, mobile, phone, email, live chat, social media.',
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
+
       //Dialogflow
       dialogflowDescription: 'Conversational AI with virtual agents',
       projectID: 'Project ID',
@@ -647,6 +658,17 @@ const resources = {
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
 
+      //Zendesk
+      zendeskDescription: 'Machen Sie Kunden glücklich per SMS, E-Mail, Live-Chat, Social Media.',
+      ZendeskSubDomain: 'Zendesk Subdomäne',
+      AddDomain: 'Domäne hinzufügen',
+      ZendeskDomain: 'Ihre Zendesk-Subdomäne',
+      username: 'Benutzername',
+      AddUsername: 'Benutzername hinzufügen',
+      ZendeskUsername: 'Ihr Zendesk Benutzername',
+      ZendeskToken: 'Ihr Zendesk-API-Token',
+      APIToken: 'API-Token',
+
       //Dialogflow
       dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
       projectID: 'Projekt-ID',
@@ -1004,6 +1026,17 @@ const resources = {
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Zendesk
+      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, reseaux sociaux.",
+      ZendeskSubDomain: 'Sous-domaine Zendesk',
+      AddDomain: 'Ajouter un domaine',
+      ZendeskDomain: 'Ton sous-domaine Zendesk',
+      username: "Nom d'utilisateur",
+      AddUsername: "Ajouter un nom d'utilisateur",
+      ZendeskUsername: "Ton nom d'utilisateur Zendesk",
+      ZendeskToken: 'Un token API Zendesk associée à ton utilisateur',
+      APIToken: 'Token API',
 
       //Dialogflow
       dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
@@ -1399,6 +1432,18 @@ const resources = {
         'Podrá acceder al código para incluirlo en su cabecera más tarde, cuando haya terminado de personalizarlo.',
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
+
+      //Zendesk
+      zendeskDescription:
+        'Mantén a tus clientes satisfechos a través de mensajes de texto, correos electrónicos, chat en vivo.',
+      ZendeskSubDomain: 'subdominio Zendesk',
+      AddDomain: 'Añadir el subdominio',
+      ZendeskDomain: 'Tu subdominio Zendesk',
+      username: 'nombre de usuario',
+      AddUsername: 'Añadir el nombre de usuario',
+      ZendeskUsername: 'Tu nombre de usuario Zendesk',
+      ZendeskToken: 'Un token de API Zendesk asociado a tu usuario',
+      APIToken: 'Token de API',
 
       //Dialogflow
       dialogflowDescription: 'IA conversacional con agentes virtuales',

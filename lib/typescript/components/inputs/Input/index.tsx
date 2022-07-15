@@ -345,7 +345,7 @@ class InputComponent extends Component<InputProps, IState> {
             showCounter: showCounter,
           })
         ) : (
-          <div className={styles.input}>
+          <div className={`${styles.input} ${tooltipText ? styles.tooltipMargin : ''}`}>
             <input
               id={id}
               ref={inputRef || this.inputRef}

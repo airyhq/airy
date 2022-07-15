@@ -1,15 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.newPageParagraph {
-  margin: 24px 0;
-  color: var(--color-text-gray);
-}
-
-.formWrapper {
-  align-self: center;
-}
-
 .formRow {
   margin-bottom: 16px;
 
@@ -22,8 +13,4 @@
       display: block;
     }
   }
-}
-
-.settings {
-  width: 29rem;
 }

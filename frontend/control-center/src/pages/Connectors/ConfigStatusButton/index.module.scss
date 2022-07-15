@@ -1,0 +1,30 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.installationButton {
+  border-radius: 20px;
+  color: white;
+  border: none;
+  width: max-content;
+}
+
+.buttonEnabled,
+.buttonEnabled:hover,
+.buttonEnabled:active,
+.buttonEnabled:visited {
+  background: var(--color-soft-green);
+}
+
+.buttonNotConfigured,
+.buttonNotConfigured:hover,
+.buttonNotConfigured:active,
+.buttonNotConfigured:visited {
+  background: var(--color-not-configured-orange);
+}
+
+.buttonDisabled,
+.buttonDisabled:hover,
+.buttonDisabled:active,
+.buttonDisabled:visited {
+  background: var(--color-text-gray);
+}

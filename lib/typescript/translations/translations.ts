@@ -4,6 +4,11 @@ import {initReactI18next} from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'This field cannot be empty.',
+      invalidURL: 'The URL is invalid',
+      invalidEmail: 'This doesn’t look like an email address.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Start typing...',
       cancel: 'Cancel',
@@ -145,7 +150,7 @@ const resources = {
 
       //Channels
       toConfigure: 'To configure',
-      configure: 'Configure',
+      configure: 'Apply Configuration',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -283,8 +288,20 @@ const resources = {
       amountReplies: 'amount for replies',
       to: 'to',
 
-      //Facebook Messenger
+      //Salesforce
+      salesforceDescription:
+        "Increase sales performance with the world's No. 1 CRM platform for business of all sizes.",
+      salesforceOrgUrl: 'Organization URL',
+      yourSalesforceOrgUrl: 'Your Salesforce organization URL',
+      salesforceOrgUrlExample: 'Example: https://org.my.salesforce.com',
+      Username: 'Username',
+      yourSalesforceUsername: 'Your Salesforce username',
+      Password: 'Password',
+      yourSalesforcePassword: 'Your Salesforce password',
+      securityToken: 'Security Token',
+      yourSalesforceSecurityToken: 'Your Salesforce Security Token',
 
+      //Facebook Messenger
       connectMessenger: 'Connect Messenger',
       facebookConfiguration: 'The Facebook source requires the following configuration:',
       facebookConfigurationText:
@@ -296,7 +313,6 @@ const resources = {
       facebookConfigurationText5: 'for more information.',
 
       //Google Business Messages
-
       agentId: 'Agent ID',
       googleAgentPlaceholder: 'Add the agent ID provided by your Google Partner',
       connectGoogle: 'Connect Google Business Messages',
@@ -308,7 +324,6 @@ const resources = {
       googleConfigurationText3: 'for more information.',
 
       //Instagram
-
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
       instagramAccountPlaceholder: 'Add the Facebook Page ID',
       instagramAccountId: 'ID of the Instagram account',
@@ -324,7 +339,6 @@ const resources = {
       instagramConfigurationText6: 'for more information.',
 
       //Twilio
-
       twilioPhoneNumber: 'Twilio Phone Number',
       twilioPhoneNumberPlaceholder: 'Purchased Number +123456789',
       connectSmsNumber: 'Connect Sms Number',
@@ -345,7 +359,6 @@ const resources = {
       updateWhatsappNumber: 'Update Whatsapp Number',
 
       //Connectors
-
       noResults: 'Result not found.',
       noResultsTerm: 'Try to search for a different term.',
       noConnectorsFound: 'No Connectors Found',
@@ -355,11 +368,9 @@ const resources = {
       notInstalled: 'Not Installed',
 
       //NotFound
-
       notFound: `Oops! We couldn't find that here.`,
 
       //Status
-
       status: 'Status',
       componentName: 'Component Name',
       healthStatus: 'Health Status',
@@ -371,7 +382,6 @@ const resources = {
       disabled: 'Disabled',
 
       //Webhooks
-
       errorOccurred: 'Error occurred',
       successfullySubscribed: 'Successfully Subscribed!',
       subscribeWebhook: 'Subscribe Webhook',
@@ -395,6 +405,11 @@ const resources = {
   },
   de: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Dieses Feld kann nicht leer sein.',
+      invalidURL: 'Die URL ist ungültig',
+      invalidEmail: 'Ungültige E-Mail-Adresse',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Eingabe...',
       cancel: 'Abbrechen',
@@ -678,8 +693,20 @@ const resources = {
       amountSuggestions: 'Anzahl der Vorschläge',
       amountReplies: 'Anzahl der Antworten',
 
-      //Facebook Messenger
+      //Salesforce
+      salesforceDescription:
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+      salesforceOrgUrl: 'Organisations-URL',
+      yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
+      salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
+      Username: 'Benutzername',
+      yourSalesforceUsername: 'Ihr Salesforce-Benutzername',
+      Password: 'Passwort',
+      yourSalesforcePassword: 'Ihr Salesforce-Passwort',
+      securityToken: 'Sicherheitstoken',
+      yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
+      //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
       facebookConfiguration: 'Die Facebook-Quelle erfordert die folgende Konfiguration:',
       facebookConfigurationText:
@@ -691,7 +718,6 @@ const resources = {
       facebookConfigurationText5: 'für weitere Informationen.',
 
       //Google Business Messages
-
       agentId: 'Agent ID',
       googleAgentPlaceholder: 'Fügen Sie die von Ihrem Google-Partner bereitgestellte Agent-ID hinzu',
       connectGoogle: 'Google Business-Nachrichten verbinden',
@@ -703,7 +729,6 @@ const resources = {
       googleConfigurationText3: 'für weitere Informationen.',
 
       //Instagram
-
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
       instagramAccountPlaceholder: 'Hinzufügen der Facebook-Seiten-ID',
       instagramAccountId: 'ID des Instagram-Kontos',
@@ -719,7 +744,6 @@ const resources = {
       instagramConfigurationText6: 'für weitere Informationen.',
 
       //Twilio
-
       twilioPhoneNumber: 'Twilio-Telefonnummer',
       twilioPhoneNumberPlaceholder: 'Gekaufte Nummer +123456789',
       connectSmsNumber: 'Sms-Nummer verbinden',
@@ -740,7 +764,6 @@ const resources = {
       updateWhatsappNumber: 'Whatsapp-Nummer aktualisieren',
 
       //Connectors
-
       noResults: 'Ergebnis nicht gefunden.',
       noResultsTerm: 'Versuchen Sie, nach einem anderen Begriff zu suchen.',
       noConnectorsFound: 'Keine Konnektoren gefunden',
@@ -750,11 +773,9 @@ const resources = {
       notInstalled: 'Nicht Installiert',
 
       //NotFound
-
       notFound: 'Huch! Das konnten wir hier nicht finden.',
 
       //Status
-
       status: 'Status',
       componentName: 'Komponenten Name',
       healthStatus: 'Gesundheitszustand',
@@ -766,7 +787,6 @@ const resources = {
       disabled: 'Deaktiviert',
 
       //Webhooks
-
       errorOccurred: 'Fehler aufgetreten',
       successfullySubscribed: 'Erfolgreich abonniert!',
       subscribeWebhook: 'Webhook abonnieren',
@@ -790,6 +810,11 @@ const resources = {
   },
   fr: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Ce champ ne peut pas être vide.',
+      invalidURL: 'URL non valide',
+      invalidEmail: 'Adresse e-mail non valide',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Engagez une conversation...',
       cancel: 'Annuler',
@@ -1026,7 +1051,7 @@ const resources = {
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
 
       //Zendesk
-      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, reseaux sociaux.",
+      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, réseaux sociaux.",
       ZendeskSubDomain: 'Sous-domaine Zendesk',
       AddDomain: 'Ajouter un domaine',
       ZendeskDomain: 'Ton sous-domaine Zendesk',
@@ -1050,6 +1075,18 @@ const resources = {
       amountReplies: 'niveau pour les réponses',
       to: 'à',
 
+      //Salesforce
+      salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
+      salesforceOrgUrl: 'URL',
+      yourSalesforceOrgUrl: 'URL Salesforce de votre organisation',
+      salesforceOrgUrlExample: 'Exemple : https://org.my.salesforce.com',
+      Username: "Nom d'utilisateur",
+      yourSalesforceUsername: "Nom d'utilisateur Salesforce",
+      Password: 'Mot de passe',
+      yourSalesforcePassword: 'Mot de passe Salesforce',
+      securityToken: 'Jeton de sécurité',
+      yourSalesforceSecurityToken: 'Jeton de sécurité Salesforce',
+
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
       facebookPageIdPlaceholder: `Ajoutez l'ID de la page Facebook`,
@@ -1069,7 +1106,6 @@ const resources = {
       installCodeNpm2: ' ici:',
 
       //Facebook Messenger
-
       connectMessenger: 'Connecter le Messenger',
       facebookConfiguration: 'La source Facebook nécessite la configuration suivante:',
       facebookConfigurationText: `Un identifiant et un secret d'application pour que la plateforme puisse renvoyer des messages via votre application Facebook.`,
@@ -1080,7 +1116,6 @@ const resources = {
       facebookConfigurationText5: `pour plus d'informations.`,
 
       //Google Business Messages
-
       agentId: `ID de l'agent`,
       googleAgentPlaceholder: `Ajoutez l'identifiant de l'agent fourni par votre partenaire Google`,
       connectGoogle: 'Connecter les messages Google Business',
@@ -1092,7 +1127,6 @@ const resources = {
       googleConfigurationText3: `pour plus d'informations.`,
 
       //Instagram
-
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
       instagramAccountPlaceholder: `Ajoutez l'ID de la page Facebook`,
       instagramAccountId: 'ID du compte Instagram',
@@ -1107,7 +1141,6 @@ const resources = {
       instagramConfigurationText6: `pour plus d'informations.`,
 
       //Twilio
-
       twilioPhoneNumber: 'Numéro de téléphone de Twilio',
       twilioPhoneNumberPlaceholder: 'Numéro acheté +123456789',
       connectSmsNumber: 'Connecter le numéro Sms',
@@ -1128,7 +1161,6 @@ const resources = {
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
       //Connectors
-
       noResults: 'Résultat non trouvé.',
       noResultsTerm: 'Essayez de rechercher un autre terme.',
       noConnectorsFound: 'Aucun connecteur trouvé',
@@ -1138,11 +1170,9 @@ const resources = {
       notInstalled: 'Non installé(s)',
 
       //NotFound
-
       notFound: 'Oups! Page non trouvée.',
 
       //Status
-
       status: 'Statut',
       componentName: 'Nom du composant',
       healthStatus: 'État de santé',
@@ -1154,7 +1184,6 @@ const resources = {
       disabled: 'Désactivé',
 
       //Webhooks
-
       errorOccurred: `Une erreur s'est produite`,
       successfullySubscribed: 'Souscription réussie!',
       subscribeWebhook: 'Inscrire un webhook',
@@ -1178,6 +1207,11 @@ const resources = {
   },
   es: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'El campo de texto no puede estar vacío.',
+      invalidURL: 'La URL no es válida',
+      invalidEmail: 'Dirección de correo electrónico no válida',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Empezar a escribir...',
       cancel: 'Cancelar',
@@ -1458,6 +1492,18 @@ const resources = {
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
 
+      //Salesforce
+      salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
+      salesforceOrgUrl: 'URL de la organización',
+      yourSalesforceOrgUrl: 'La URL de su organización de Salesforce',
+      salesforceOrgUrlExample: 'Ejemplo: https://org.my.salesforce.com',
+      Username: 'Nombre de usuario',
+      yourSalesforceUsername: 'Su nombre de usuario de Salesforce',
+      Password: 'Contraseña',
+      yourSalesforcePassword: 'Su contraseña de Salesforce',
+      securityToken: 'Token de seguridad',
+      yourSalesforceSecurityToken: 'Su token de seguridad de Salesforce',
+
       //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',
       facebookConfiguration: 'La fuente de Facebook requiere la siguiente configuración:',
@@ -1470,7 +1516,6 @@ const resources = {
       facebookConfigurationText5: 'para más información.',
 
       //Google Business Messages
-
       agentId: 'Identificación del agente',
       googleAgentPlaceholder: 'Añade el ID de agente proporcionado por tu Google Partner',
       connectGoogle: 'Conectar los mensajes de Google Business',
@@ -1482,7 +1527,6 @@ const resources = {
       googleConfigurationText3: 'para más información.',
 
       //Instagram
-
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
       instagramAccountPlaceholder: 'Añade el ID de la página de Facebook',
       instagramAccountId: 'ID de la cuenta de Instagram',
@@ -1498,7 +1542,6 @@ const resources = {
       instagramConfigurationText6: 'para más información.',
 
       //Twilio
-
       twilioPhoneNumber: 'Número de teléfono de Twilio',
       twilioPhoneNumberPlaceholder: 'Número de compra +123456789',
       connectSmsNumber: 'Conectar número Sms',
@@ -1519,7 +1562,6 @@ const resources = {
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
       //Connectors
-
       noResults: 'Resultado no encontrado.',
       noResultsTerm: 'Intente buscar un término diferente.',
       noConnectorsFound: 'No se han encontrado conectores',
@@ -1529,11 +1571,9 @@ const resources = {
       notInstalled: 'No Instalado(s)',
 
       //NotFound
-
       notFound: '¡Uy! No pudimos encontrarlo aquí.',
 
       //Status
-
       status: 'Estatus',
       componentName: 'Nombre del componente',
       healthStatus: 'Estado de salud',
@@ -1545,7 +1585,6 @@ const resources = {
       disabled: 'Discapacitados',
 
       //Webhooks
-
       errorOccurred: 'Se ha producido un error',
       successfullySubscribed: '¡Suscrito con éxito!',
       subscribeWebhook: 'Suscripción de Webhook',

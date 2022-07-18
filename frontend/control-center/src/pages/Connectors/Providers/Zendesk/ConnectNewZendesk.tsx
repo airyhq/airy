@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
+import {cyChannelsZendeskAddButton} from 'handles';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -83,6 +84,7 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
         disabled={!domain || !username || !token}
         style={{padding: '20px 60px'}}
         onClick={e => submitConfigData(e)}
+        dataCy={cyChannelsZendeskAddButton}
       >
         {isEnabled ? t('Update') : t('configure')}
       </Button>

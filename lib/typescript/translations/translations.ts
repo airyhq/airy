@@ -1495,7 +1495,7 @@ const resources = {
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
       salesforceOrgUrl: 'URL de la organización',
-      yourSalesforceOrgUrl: 'La URL Salesforce de su organización',
+      yourSalesforceOrgUrl: 'La URL de su organización de Salesforce',
       salesforceOrgUrlExample: 'Ejemplo: https://org.my.salesforce.com',
       Username: 'Nombre de usuario',
       yourSalesforceUsername: 'Su nombre de usuario de Salesforce',

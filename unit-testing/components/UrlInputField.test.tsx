@@ -13,7 +13,7 @@ test('verifies valid URLs', async () => {
 
   fireEvent.change(input, {target: {value: 'airy.co'}});
 
-  expect(inputHint).toHaveTextContent('The URL is invalid');
+  expect(inputHint).toHaveTextContent('invalidURL');
 
   fireEvent.change(input, {target: {value: 'https://airy.co'}});
 

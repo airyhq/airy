@@ -6,6 +6,8 @@ const resources = {
     translation: {
       //Input Component
       fieldCannotBeEmpty: 'This field cannot be empty.',
+      invalidURL: 'The URL is invalid',
+      invalidEmail: 'This doesn’t look like an email address.',
 
       //Chatplugin
       sendMessageInputPlaceholder: 'Start typing...',
@@ -148,7 +150,7 @@ const resources = {
 
       //Channels
       toConfigure: 'To configure',
-      configure: 'Configure',
+      configure: 'Apply Configuration',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -405,6 +407,8 @@ const resources = {
     translation: {
       //Input Component
       fieldCannotBeEmpty: 'Dieses Feld kann nicht leer sein.',
+      invalidURL: 'Die URL ist ungültig',
+      invalidEmail: 'Ungültige E-Mail-Adresse',
 
       //Chatplugin
       sendMessageInputPlaceholder: 'Eingabe...',
@@ -808,6 +812,8 @@ const resources = {
     translation: {
       //Input Component
       fieldCannotBeEmpty: 'Ce champ ne peut pas être vide.',
+      invalidURL: 'URL non valide',
+      invalidEmail: 'Adresse e-mail non valide',
 
       //Chatplugin
       sendMessageInputPlaceholder: 'Engagez une conversation...',
@@ -1203,6 +1209,8 @@ const resources = {
     translation: {
       //Input Component
       fieldCannotBeEmpty: 'El campo de texto no puede estar vacío.',
+      invalidURL: 'La URL no es válida',
+      invalidEmail: 'Dirección de correo electrónico no válida',
 
       //Chatplugin
       sendMessageInputPlaceholder: 'Empezar a escribir...',

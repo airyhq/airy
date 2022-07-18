@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Button, Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
+import {cyChannelsDialogflowAddButton} from 'handles';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -113,6 +114,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
         disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
         style={{padding: '20px 60px'}}
         onClick={e => submitConfigData(e)}
+        dataCy={cyChannelsDialogflowAddButton}
       >
         {isEnabled ? t('Update') : t('configure')}
       </Button>

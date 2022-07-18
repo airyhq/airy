@@ -36,7 +36,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
     >
       <div className={styles.formRow}>
         <Input
-          type="text"
+          type="url"
           name="url"
           value={url}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}

@@ -50,9 +50,9 @@ class InputComponent extends Component<InputProps, IState> {
 
   translateResult = (type, validity) => {
     if (validity.valueMissing) {
-      return <Translation text="fieldCannotBeEmpty" />;
+      return 'fieldCannotBeEmpty';
     } else if (type === 'url' && validity.typeMismatch) {
-      return 'The URL is invalid';
+      return 'invalidURL';
     } else {
       return validity.valid;
     }
@@ -67,7 +67,7 @@ class InputComponent extends Component<InputProps, IState> {
     if (inputElement.type === 'email') {
       if (!inputElement.validity.valid) {
         this.setState({
-          validationResult: 'This doesn’t look like an email address.',
+          validationResult: 'invalidEmail',
         });
       } else {
         this.setState({validationResult: true});
@@ -111,9 +111,9 @@ class InputComponent extends Component<InputProps, IState> {
 
     if (!new RegExp('^https?://(.*)').test(inputElement.value)) {
       this.setState({
-        validationResult: 'The URL is invalid',
+        validationResult: 'invalidURL',
       });
-      inputElement.setCustomValidity('The URL is invalid');
+      inputElement.setCustomValidity('invalidURL');
     } else {
       inputElement.setCustomValidity('');
     }
@@ -398,7 +398,11 @@ class InputComponent extends Component<InputProps, IState> {
           </div>
         )}
         <div className={styles.inputHint} data-testid="input-hint">
-          {typeof validationResult === 'string' || wasBlurred || showErrors ? validationResult : hint}
+          {typeof validationResult === 'string' || wasBlurred || showErrors ? (
+            <Translation text={validationResult as string} />
+          ) : (
+            hint
+          )}
         </div>
       </label>
     );

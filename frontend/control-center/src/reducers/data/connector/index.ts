@@ -20,7 +20,7 @@ export default function connectorsReducer(state = defaultState, action: Action):
     case getType(actions.updateConnectorConfigurationAction): {
       let name = action.payload.components[0].name;
       if (name.includes('enterprise')) {
-        name = name = name.replace('enterprise-', '');
+        name = name.replace('enterprise-', '');
       }
       return {
         ...state,

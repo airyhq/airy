@@ -37,3 +37,6 @@ export * from './deleteContact';
 export * from './enableDisableComponent';
 export * from './updateComponentConfiguration';
 export * from './getComponents';
+export * from './installComponent';
+export * from './uninstallComponent';
+export * from './listComponents';

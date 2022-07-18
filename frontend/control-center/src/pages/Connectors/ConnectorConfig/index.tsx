@@ -11,6 +11,7 @@ import {
   disconnectChannel,
   updateConnectorConfiguration,
   enableDisableComponent,
+  getConnectorsConfiguration,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
 import {Source} from 'model';
@@ -34,6 +35,7 @@ const mapDispatchToProps = {
   disconnectChannel,
   updateConnectorConfiguration,
   enableDisableComponent,
+  getConnectorsConfiguration,
 };
 
 const mapStateToProps = (state: StateModel) => ({
@@ -47,7 +49,7 @@ type ConnectorConfigProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, enableDisableComponent, updateConnectorConfiguration, config} = props;
+  const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
 
   const {channelId} = useParams();
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
@@ -57,6 +59,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
 
   useEffect(() => {
+    getConnectorsConfiguration();
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
     setConnectorInfo({...connectorSourceInfo[0]});

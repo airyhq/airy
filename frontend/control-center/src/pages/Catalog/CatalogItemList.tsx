@@ -4,7 +4,6 @@ import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
-import {Source} from 'model';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -12,7 +11,7 @@ interface CatalogItemListProps {
   list: SourceInfo[];
   installedConnectors: boolean;
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
-  updateItemList: (installed: boolean, type: Source) => void;
+  updateItemList: (installed: boolean, componentName: string) => void;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {

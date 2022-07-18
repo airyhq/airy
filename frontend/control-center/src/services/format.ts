@@ -32,3 +32,5 @@ export const getComponentName = (itemName: string) => {
     .join(' ');
   return capitalizeTitle(formatteComponentName);
 };
+
+export const removePrefix = (name: string) => name.split('/').pop();

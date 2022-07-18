@@ -2,7 +2,7 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/z-index.scss';
 
-.channelCard {
+.infoCard {
   width: 260px;
   margin-bottom: 28px;
   margin-right: 36px;
@@ -22,16 +22,21 @@
   button {
     margin-top: 14px;
   }
-}
 
-.cardConnectors {
-  cursor: pointer;
   &:hover {
     border: 2px solid var(--color-airy-blue);
+    cursor: pointer;
     margin-left: -1px;
     width: 261px;
-    cursor: pointer;
   }
+}
+
+.installed {
+  height: 98px;
+}
+
+.notInstalled {
+  height: 118px;
 }
 
 .channelLogoInstagram {

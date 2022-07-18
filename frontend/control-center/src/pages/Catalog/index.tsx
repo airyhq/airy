@@ -54,7 +54,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       setInstalledConnectors(installedComponents);
       setNotInstalledConnectors(uninstalledComponents);
     }
-  }, [sourcesInfo, connectors]);
+  }, [sourcesInfo, connectors, catalogList]);
 
   const findComponent = (name: string) => {
     return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);

@@ -10,6 +10,7 @@ export const CONNECTORS_GOOGLE_ROUTE = '/connectors/google';
 export const CONNECTORS_INSTAGRAM_ROUTE = '/connectors/instagram';
 export const CONNECTORS_DIALOGFLOW_ROUTE = '/connectors/dialogflow';
 export const CONNECTORS_ZENDESK_ROUTE = '/connectors/zendesk';
+export const CONNECTORS_SALESFORCE_ROUTE = '/connectors/salesforce';
 
 export const CATALOG_ROUTE = '/catalog';
 

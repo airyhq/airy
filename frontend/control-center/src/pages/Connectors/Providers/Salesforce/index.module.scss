@@ -1,0 +1,24 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.formWrapper {
+  align-self: center;
+}
+
+.settings {
+  width: 29rem;
+}
+
+.formRow {
+  margin-bottom: 16px;
+
+  label {
+    @include font-s;
+  }
+
+  &:hover {
+    .actionToolTip {
+      display: block;
+    }
+  }
+}

@@ -9,6 +9,7 @@ export enum Source {
   viber = 'viber',
   zendesk = 'zendesk',
   dialogflow = 'dialogflow',
+  salesforce = 'salesforce',
 }
 
 export const prettifySource = (source: string) =>

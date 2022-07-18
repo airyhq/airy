@@ -8,6 +8,7 @@ import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/googleLogo
 import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as DialogflowIcon} from 'assets/images/icons/dialogflowLogo.svg';
 import {ReactComponent as ZendeskIcon} from 'assets/images/icons/zendeskLogo.svg';
+import {ReactComponent as SalesforceIcon} from 'assets/images/icons/salesforceLogo.svg';
 import {useTranslation} from 'react-i18next';
 import {
   cyChannelsChatPluginAddButton,
@@ -18,6 +19,7 @@ import {
   cyChannelsInstagramAddButton,
   cyChannelsDialogflowAddButton,
   cyChannelsZendeskAddButton,
+  cyChannelsSalesforceAddButton,
 } from 'handles';
 import {
   CONNECTORS_CONNECTED_ROUTE,
@@ -29,6 +31,7 @@ import {
   CONNECTORS_INSTAGRAM_ROUTE,
   CONNECTORS_DIALOGFLOW_ROUTE,
   CONNECTORS_ZENDESK_ROUTE,
+  CONNECTORS_SALESFORCE_ROUTE,
 } from '../../routes/routes';
 
 export type SourceInfo = {
@@ -178,6 +181,21 @@ export const getSourcesInfo = (): SourceInfo[] => {
       itemInfoString: 'connectors',
       dataCyAddChannelButton: cyChannelsZendeskAddButton,
       docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
+    },
+    {
+      type: Source.salesforce,
+      channel: false,
+      title: 'Salesforce',
+      description: <DescriptionComponent description="salesforceDescription" />,
+      image: <SalesforceIcon />,
+      newChannelRoute: CONNECTORS_SALESFORCE_ROUTE + '/new',
+      channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/salesforce',
+      configKey: 'enterprise-salesforce-contacts-ingestion',
+      componentName: 'salesforce-contacts-ingestion',
+      repository: 'enterprise',
+      itemInfoString: 'connectors',
+      dataCyAddChannelButton: cyChannelsSalesforceAddButton,
+      docs: 'https://airy.co/docs/enterprise/apps/salesforce-contacts-ingestion/how-it-works',
     },
   ];
 };

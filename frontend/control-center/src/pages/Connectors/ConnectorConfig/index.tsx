@@ -19,6 +19,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
+import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
@@ -111,6 +112,25 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
     }
 
+    if (connector === Source.salesforce) {
+      const [url, username, password, securityToken] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && connectorInfo?.configKey,
+            enabled: true,
+            data: {
+              url: url,
+              username: username,
+              password: password,
+              securityToken: securityToken,
+            },
+          },
+        ],
+      };
+    }
+
     updateConnectorConfiguration(payload).then(() => {
       if (!isEnabled) {
         setConfigurationModal(true);
@@ -125,6 +145,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
     if (connector === Source.zendesk) {
       return <ConnectNewZendesk createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+    }
+
+    if (connector === Source.salesforce) {
+      return <ConnectNewSalesforce createNewConnection={createNewConnection} isEnabled={isEnabled} />;
     }
   };
 
@@ -214,7 +238,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           </div>
           <div className={styles.line} />
         </div>
-        <div style={{paddingTop: '28px', paddingLeft: '32px'}}>
+        <div className={styles.pageContentContainer}>
           <PageContent />
         </div>
       </div>

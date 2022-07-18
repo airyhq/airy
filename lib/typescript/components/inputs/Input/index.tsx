@@ -1,10 +1,15 @@
 import React, {Component, Fragment} from 'react';
-
-import styles from './style.module.scss';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
+import {useTranslation} from 'react-i18next';
+import styles from './style.module.scss';
+
+const Translation = ({text}: {text: string}) => {
+  const {t} = useTranslation();
+  return <>{t(text)}</>;
+};
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -45,7 +50,7 @@ class InputComponent extends Component<InputProps, IState> {
 
   translateResult = (type, validity) => {
     if (validity.valueMissing) {
-      return 'This field cannot be empty.';
+      return <Translation text="fieldCannotBeEmpty" />;
     } else if (type === 'url' && validity.typeMismatch) {
       return 'The URL is invalid';
     } else {

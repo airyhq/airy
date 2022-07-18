@@ -195,7 +195,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       repository: 'enterprise',
       itemInfoString: 'connectors',
       dataCyAddChannelButton: cyChannelsSalesforceAddButton,
-      docs: 'https://airy.co/docs/enterprise/apps/salesforce-contacts-ingestion/how-it-works',
+      docs: 'https://airy.co/docs/enterprise/apps/salesforce-contacts-ingestion/deployment',
     },
   ];
 };

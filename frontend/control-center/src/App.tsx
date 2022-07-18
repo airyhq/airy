@@ -15,6 +15,7 @@ import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
 import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
 import DialogflowConnect from './pages/Connectors/Providers/Dialogflow/DialogflowConnect';
 import ZendeskConnect from './pages/Connectors/Providers/Zendesk/ZendeskConnect';
+import SalesforceConnect from './pages/Connectors/Providers/Salesforce/SalesforceConnect';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
 import Catalog from './pages/Catalog';
@@ -58,6 +59,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
             <Route path={`dialogflow/new`} element={<DialogflowConnect />} />
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
+            <Route path={`salesforce/new`} element={<SalesforceConnect />} />
 
             <Route index element={<Connectors />} />
           </Route>

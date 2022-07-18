@@ -40,10 +40,10 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
           name="url"
           value={url}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}
-          label={t('salesforceUrl')}
-          placeholder={t('yourOrgUrl')}
+          label={t('salesforceOrgUrl')}
+          placeholder={t('yourSalesforceOrgUrl')}
           showLabelIcon
-          tooltipText={t('yourOrgUrl')}
+          tooltipText={t('salesforceOrgUrlExample')}
           required
           height={32}
           fontClass="font-base"
@@ -56,7 +56,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
           name="username"
           value={username}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-          label={t('SalesforceUsername')}
+          label={t('Username')}
           placeholder={t('yourSalesforceUsername')}
           showLabelIcon
           tooltipText={t('yourSalesforceUsername')}
@@ -71,7 +71,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
           name="password"
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          label={t('SalesforcePassword')}
+          label={t('Password')}
           placeholder={t('yourSalesforcePassword')}
           showLabelIcon
           tooltipText={t('yourSalesforcePassword')}

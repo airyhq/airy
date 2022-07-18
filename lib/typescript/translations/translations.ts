@@ -4,6 +4,9 @@ import {initReactI18next} from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'This field cannot be empty.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Start typing...',
       cancel: 'Cancel',
@@ -283,8 +286,20 @@ const resources = {
       amountReplies: 'amount for replies',
       to: 'to',
 
-      //Facebook Messenger
+      //Salesforce
+      salesforceDescription:
+        "Increase sales performance with the world's No. 1 CRM platform for business of all sizes.",
+      salesforceOrgUrl: 'Organization URL',
+      yourSalesforceOrgUrl: 'Your Salesforce organization URL',
+      salesforceOrgUrlExample: 'Example: https://org.my.salesforce.com',
+      Username: 'Username',
+      yourSalesforceUsername: 'Your Salesforce username',
+      Password: 'Password',
+      yourSalesforcePassword: 'Your Salesforce password',
+      securityToken: 'Security Token',
+      yourSalesforceSecurityToken: 'Your Salesforce Security Token',
 
+      //Facebook Messenger
       connectMessenger: 'Connect Messenger',
       facebookConfiguration: 'The Facebook source requires the following configuration:',
       facebookConfigurationText:
@@ -395,6 +410,9 @@ const resources = {
   },
   de: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Dieses Feld kann nicht leer sein.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Eingabe...',
       cancel: 'Abbrechen',
@@ -678,8 +696,20 @@ const resources = {
       amountSuggestions: 'Anzahl der Vorschläge',
       amountReplies: 'Anzahl der Antworten',
 
-      //Facebook Messenger
+      //Salesforce
+      salesforceDescription:
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+      salesforceOrgUrl: 'Organisations-URL',
+      yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
+      salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
+      Username: 'Benutzername',
+      yourSalesforceUsername: 'Ihr Salesforce-Benutzername',
+      Password: 'Passwort',
+      yourSalesforcePassword: 'Ihr Salesforce-Passwort',
+      securityToken: 'Sicherheitstoken',
+      yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
+      //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
       facebookConfiguration: 'Die Facebook-Quelle erfordert die folgende Konfiguration:',
       facebookConfigurationText:
@@ -691,7 +721,6 @@ const resources = {
       facebookConfigurationText5: 'für weitere Informationen.',
 
       //Google Business Messages
-
       agentId: 'Agent ID',
       googleAgentPlaceholder: 'Fügen Sie die von Ihrem Google-Partner bereitgestellte Agent-ID hinzu',
       connectGoogle: 'Google Business-Nachrichten verbinden',
@@ -790,6 +819,9 @@ const resources = {
   },
   fr: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Ce champ ne peut pas être vide.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Engagez une conversation...',
       cancel: 'Annuler',
@@ -1026,7 +1058,7 @@ const resources = {
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
 
       //Zendesk
-      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, reseaux sociaux.",
+      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, réseaux sociaux.",
       ZendeskSubDomain: 'Sous-domaine Zendesk',
       AddDomain: 'Ajouter un domaine',
       ZendeskDomain: 'Ton sous-domaine Zendesk',
@@ -1049,6 +1081,18 @@ const resources = {
       amountSuggestions: 'niveau pour les suggestions',
       amountReplies: 'niveau pour les réponses',
       to: 'à',
+
+      //Salesforce
+      salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
+      salesforceOrgUrl: 'URL',
+      yourSalesforceOrgUrl: 'URL Salesforce de votre organisation',
+      salesforceOrgUrlExample: 'Exemple : https://org.my.salesforce.com',
+      Username: "Nom d'utilisateur",
+      yourSalesforceUsername: "Nom d'utilisateur Salesforce",
+      Password: 'Mot de passe',
+      yourSalesforcePassword: 'Mot de passe Salesforce',
+      securityToken: 'Jeton de sécurité',
+      yourSalesforceSecurityToken: 'Jeton de sécurité Salesforce',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -1178,6 +1222,9 @@ const resources = {
   },
   es: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'El campo de texto no puede estar vacío.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Empezar a escribir...',
       cancel: 'Cancelar',
@@ -1457,6 +1504,19 @@ const resources = {
       fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
+
+      //Salesforce
+      salesforceDescription:
+        'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo para empresas de todos los tamaños.',
+      salesforceOrgUrl: 'URL de la organización',
+      yourSalesforceOrgUrl: 'La URL Salesforce de su organización',
+      salesforceOrgUrlExample: 'Ejemplo: https://org.my.salesforce.com',
+      Username: 'Nombre de usuario',
+      yourSalesforceUsername: 'Su nombre de usuario de Salesforce',
+      Password: 'Contraseña',
+      yourSalesforcePassword: 'Su contraseña de Salesforce',
+      securityToken: 'Token de seguridad',
+      yourSalesforceSecurityToken: 'Su token de seguridad de Salesforce',
 
       //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',

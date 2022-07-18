@@ -24,15 +24,22 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
     componentInfo?.suggestionConfidenceLevel || ''
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+
   const {t} = useTranslation();
 
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
+    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
-    <ConnectNewForm>
+    <ConnectNewForm
+      componentName="enterprise-dialogflow-connector"
+      isUpdateModalVisible={isUpdateModalVisible}
+      setIsUpdateModalVisible={setIsUpdateModalVisible}
+    >
       <div className={styles.formRow}>
         <Input
           type="text"

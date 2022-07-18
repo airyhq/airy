@@ -140,14 +140,8 @@ const resources = {
       Enable: 'Enable',
       NotConfigured: 'Not Configured',
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
-
-      //Connectors
-      // instagramDescription: 'Connect multiple Instagram pages',
-      // googleDescription: 'Be there when people search',
-      // whatsappDescription: 'World #1 chat app',
-      // twilioSmsDescription: 'Deliver SMS with ease',
-      // facebookDescription: 'Connect multiple Facebook pages',
-      // chatpluginDescription: 'Best of class browser messenger',
+      restart: 'Restart',
+      restartComponentUpdate: 'We will restart the component to apply your update.',
 
       //Channels
       toConfigure: 'To configure',
@@ -543,6 +537,8 @@ const resources = {
       NotConfigured: 'Nicht konfiguriert',
       uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
       Update: 'Aktualisieren',
+      restart: 'Neu starten',
+      restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
 
       //Channels
       toConfigure: 'konfigurieren',
@@ -928,6 +924,8 @@ const resources = {
       NotConfigured: 'Non configuré',
       uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
       Update: 'Mettre à jour',
+      restart: 'Redémarrer',
+      restartComponentUpdate: 'Nous allons redémarrer le composant pour appliquer votre mise à jour.',
 
       //Channels
       toConfigure: 'configuration',
@@ -1318,6 +1316,8 @@ const resources = {
       NotConfigured: 'No configurado',
       uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
       Update: 'Actualizar',
+      restart: 'Reiniciar',
+      restartComponentUpdate: 'Reiniciaremos el componente para aplicar su actualización.',
 
       //Channels
       toConfigure: 'configurar',

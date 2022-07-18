@@ -6,7 +6,7 @@ import styles from './style.module.scss';
 
 type SettingsModalProps = {
   close: () => void;
-  title: string;
+  title?: string;
   children: any;
   wrapperClassName?: string;
   containerClassName?: string;
@@ -29,7 +29,7 @@ export const SettingsModal = (props: SettingsModalProps) => {
     >
       <div className={containerClassName}>
         {Icon ? <Icon className={styles.icon} /> : ''}
-        <ModalHeader title={title} close={close} style={style} headerClassName={headerClassName} />
+        <ModalHeader title={title ?? ''} close={close} style={style} headerClassName={headerClassName} />
         {children}
       </div>
     </Modal>

@@ -1,0 +1,31 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.modalContainerWrapper {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 60%;
+
+  p {
+    text-align: center;
+    color: var(--color-text-contrast);
+    @include font-xl;
+    font-weight: 800;
+  }
+}
+
+.restartButton {
+  margin-top: 60px;
+  padding: 0 60px;
+}

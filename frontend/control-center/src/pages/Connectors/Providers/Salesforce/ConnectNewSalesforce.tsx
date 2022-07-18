@@ -30,7 +30,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
 
   return (
     <ConnectNewForm
-      componentName="enterprise-dialogflow-connector"
+      componentName="enterprise-salesforce-contacts-ingestion"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
     >

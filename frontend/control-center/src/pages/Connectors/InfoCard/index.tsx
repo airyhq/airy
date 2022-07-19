@@ -22,6 +22,7 @@ type InfoCardProps = {
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
   updateItemList?: (installed: boolean, componentName: string) => void;
+  setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -41,6 +42,7 @@ const InfoCard = (props: InfoCardProps) => {
     installComponent,
     uninstallComponent,
     updateItemList,
+    setIsInstalledToggled,
   } = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -56,6 +58,7 @@ const InfoCard = (props: InfoCardProps) => {
   }, [isInstalled]);
 
   const openInstallModal = () => {
+    setIsInstalledToggled(true);
     setIsModalVisible(true);
 
     if (!isInstalled) {

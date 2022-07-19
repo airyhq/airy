@@ -1,6 +1,5 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/catalog';
-import {removePrefix} from '../../../services';
 
 type Action = ActionType<typeof actions>;
 
@@ -18,21 +17,19 @@ export default function connectorsReducer(state = defaultState, action: Action):
         ...action.payload.components,
       };
     case getType(actions.installComponentAction): {
-      const formattedName = removePrefix(action.payload.name);
       return {
         ...state,
-        [formattedName]: {
-          ...state[formattedName],
+        [action.payload.name]: {
+          ...state[action.payload.name],
           installed: true,
         },
       };
     }
     case getType(actions.uninstallComponentAction): {
-      const formattedName = removePrefix(action.payload.name);
       return {
         ...state,
-        [formattedName]: {
-          ...state[formattedName],
+        [action.payload.name]: {
+          ...state[action.payload.name],
           installed: false,
         },
       };

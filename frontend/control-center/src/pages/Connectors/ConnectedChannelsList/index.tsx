@@ -33,6 +33,7 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
+  CONNECTORS_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
@@ -141,10 +142,10 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
+      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(CONNECTORS_ROUTE)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          {connectorsRoute ? t('channelsCapital') : ''}
+          {connectorsRoute ? t('Connectors') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>

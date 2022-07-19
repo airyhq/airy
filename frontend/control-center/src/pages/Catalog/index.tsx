@@ -10,6 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
 import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
+import {SimpleLoader} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
 import styles from './index.module.scss';
@@ -22,12 +23,12 @@ const connector = connect(null, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {listComponents} = props;
-  const connectors = useSelector((state: StateModel) => state.data.config.components);
   const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
   const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
   const [installedConnectors, setInstalledConnectors] = useState([]);
   const [sourcesInfo, setSourcesInfo] = useState([]);
+  const [isInstallToggled, setIsInstalledToggled] = useState(false);
   const pageTitle = 'Catalog';
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (sourcesInfo.length > 0 && Object.entries(catalogList).length > 0) {
+    if (sourcesInfo.length > 0 && !isInstallToggled) {
       let installedComponents = [];
       let uninstalledComponents = [];
 
@@ -54,7 +55,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       setInstalledConnectors(installedComponents);
       setNotInstalledConnectors(uninstalledComponents);
     }
-  }, [sourcesInfo, connectors, catalogList]);
+  }, [sourcesInfo, catalogList, isInstallToggled]);
 
   const findComponent = (name: string) => {
     return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
@@ -109,12 +110,15 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       <div className={styles.listWrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
 
+        {notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
+
         {notInstalledConnectors.length > 0 && (
           <CatalogItemList
             list={notInstalledConnectors}
             installedConnectors={false}
             setDisplayDialogFromSource={setDisplayDialogFromSource}
             updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
 
@@ -124,6 +128,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
             installedConnectors
             setDisplayDialogFromSource={setDisplayDialogFromSource}
             updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
       </div>

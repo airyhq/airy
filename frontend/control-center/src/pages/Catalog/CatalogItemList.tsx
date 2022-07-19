@@ -15,8 +15,7 @@ interface CatalogItemListProps {
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, setDisplayDialogFromSource, updateItemList} = props;
-  const config = useSelector((state: StateModel) => state.data.config);
+  const {list, installedConnectors, updateItemList} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
@@ -33,13 +32,9 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
             style={InfoCardStyle.normal}
             key={infoItem.type}
             sourceInfo={infoItem}
-            addChannelAction={() => {
-              if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute);
-              } else {
-                setDisplayDialogFromSource(infoItem.type);
-              }
-            }}
+            addChannelAction={() =>
+              installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute)
+            }
           />
         ))}
       </div>

@@ -359,6 +359,7 @@ const resources = {
       updateWhatsappNumber: 'Update Whatsapp Number',
 
       //Connectors
+      connectors: 'Connectors',
       noResults: 'Result not found.',
       noResultsTerm: 'Try to search for a different term.',
       noConnectorsFound: 'No Connectors Found',
@@ -764,6 +765,7 @@ const resources = {
       updateWhatsappNumber: 'Whatsapp-Nummer aktualisieren',
 
       //Connectors
+      connectors: 'Konnektoren',
       noResults: 'Ergebnis nicht gefunden.',
       noResultsTerm: 'Versuchen Sie, nach einem anderen Begriff zu suchen.',
       noConnectorsFound: 'Keine Konnektoren gefunden',
@@ -1161,6 +1163,7 @@ const resources = {
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
       //Connectors
+      connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
       noResultsTerm: 'Essayez de rechercher un autre terme.',
       noConnectorsFound: 'Aucun connecteur trouvé',
@@ -1562,6 +1565,7 @@ const resources = {
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
       //Connectors
+      connectors: 'Conectores',
       noResults: 'Resultado no encontrado.',
       noResultsTerm: 'Intente buscar un término diferente.',
       noConnectorsFound: 'No se han encontrado conectores',

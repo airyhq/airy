@@ -6,6 +6,7 @@ import InfoCard, {InfoCardStyle} from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels} from '../../actions/channel';
+import {listComponents} from '../../actions/catalog';
 import {setPageTitle} from '../../services/pageTitle';
 import {getConnectorsConfiguration} from '../../actions';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
@@ -16,12 +17,13 @@ import {ChannelCard} from './ChannelCard';
 const mapDispatchToProps = {
   listChannels,
   getConnectorsConfiguration,
+  listComponents,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {listChannels, getConnectorsConfiguration} = props;
+  const {listChannels, getConnectorsConfiguration, listComponents} = props;
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const components = useSelector((state: StateModel) => state.data.config.components);
   const connectors = useSelector((state: StateModel) => state.data.connector);
@@ -33,6 +35,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     setSourcesInfo(getSourcesInfo());
     getConnectorsConfiguration();
+    listComponents();
   }, []);
 
   useEffect(() => {

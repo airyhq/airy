@@ -13,6 +13,7 @@ import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
 import {ChannelCard} from './ChannelCard';
+import {SimpleLoader} from 'components';
 
 const mapDispatchToProps = {
   listChannels,
@@ -27,6 +28,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const components = useSelector((state: StateModel) => state.data.config.components);
   const connectors = useSelector((state: StateModel) => state.data.connector);
+  const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     setSourcesInfo(getSourcesInfo());
     getConnectorsConfiguration();
-    listComponents();
+    if (Object.entries(catalogList).length === 0) listComponents();
   }, []);
 
   useEffect(() => {
@@ -55,12 +57,20 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         : 'Disabled';
     }
   };
+
+  const isComponentInstalled = (repository: string, componentName: string) => {
+    const prefix = repository === 'enterprise' ? 'airy-enterprise' : 'airy-core';
+    const componentNameCatalog = prefix + '/' + componentName;
+    return catalogList[componentNameCatalog] && catalogList[componentNameCatalog].installed === true;
+  };
+
   return (
     <div className={styles.channelsWrapper}>
       {sourcesInfo.length > 0 && (
         <div className={styles.channelsHeadline}>
           <div>
             <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+            {Object.entries(catalogList).length === 0 && <SimpleLoader />}
           </div>
         </div>
       )}
@@ -71,29 +81,34 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
           <>
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
               return (
-                (channelsBySource(infoItem.type).length > 0 && infoItem.channel && (
-                  <ChannelCard
-                    sourceInfo={infoItem}
-                    channelsToShow={channelsBySource(infoItem.type).length}
-                    key={index}
-                  />
-                )) ||
-                (channelsBySource(infoItem.type).length > 0 && !infoItem.channel && (
-                  <div className={styles.cardContainer} key={infoItem.type}>
-                    <InfoCard
-                      installed
-                      style={InfoCardStyle.expanded}
+                (channelsBySource(infoItem.type).length > 0 &&
+                  infoItem.channel &&
+                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
+                    <ChannelCard
                       sourceInfo={infoItem}
-                      addChannelAction={() => {
-                        navigate(infoItem.channelsListRoute);
-                      }}
+                      channelsToShow={channelsBySource(infoItem.type).length}
+                      key={index}
                     />
-                  </div>
-                )) ||
+                  )) ||
+                (channelsBySource(infoItem.type).length > 0 &&
+                  !infoItem.channel &&
+                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
+                    <div className={styles.cardContainer} key={infoItem.type}>
+                      <InfoCard
+                        installed
+                        style={InfoCardStyle.expanded}
+                        sourceInfo={infoItem}
+                        addChannelAction={() => {
+                          navigate(infoItem.channelsListRoute);
+                        }}
+                      />
+                    </div>
+                  )) ||
                 (getSourceForComponent(infoItem.type) &&
                   components &&
                   components[infoItem.configKey] &&
-                  !infoItem.channel && (
+                  !infoItem.channel &&
+                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <div className={styles.cardContainer} key={infoItem.type}>
                       <InfoCard
                         installed={true}

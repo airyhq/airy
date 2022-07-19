@@ -53,7 +53,13 @@ public class Application {
                 "    then\n" +
                 "      AIRY_CORE_NAMESPACE=\"${AIRY_CORE_NAMESPACE}.\"\n" +
                 "      echo \"Using ${AIRY_CORE_NAMESPACE} to namespace topics\"\n" +
-                "    fi";
+                "    fi\n\n" +
+                "    if [ -n \"${AUTH_JAAS}\" ]\n" +
+                "    then\n" +
+                "      export KAFKA_OPTS=\"-Dsasl.jaas.config=\"$AUTH_JAAS\n" +
+                "      echo \"Using jaas authentication for connecting to Kafka\"\n" +
+                "    fi\n"
+                ;
 
         TopicsFinder finder = new TopicsFinder();
 

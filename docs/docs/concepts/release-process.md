@@ -24,7 +24,7 @@ Once a release day comes, we execute the following steps:
   - `wget https://airy-core-binaries.s3.amazonaws.com/$VERSION-rc/darwin/amd64/airy`
   - `chmod +x airy`
 - We test the release using `./airy create --provider=minikube`.
-- We run the Cypress tests with the command `./node_modules/.bin/cypress open -C integration/cypress.json`
+- We run the Cypress tests with the command `./node_modules/.bin/cypress open -C integration/cypress.config.ts`
   Note that:
   - Any additional hot-fix is committed directly to the release branch
   - You must wait for all the images to be pushed via CI

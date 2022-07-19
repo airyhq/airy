@@ -10,10 +10,11 @@ interface CatalogItemListProps {
   installedConnectors: boolean;
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
   updateItemList: (installed: boolean, componentName: string) => void;
+  setIsInstalledToggled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, updateItemList} = props;
+  const {list, installedConnectors, updateItemList, setIsInstalledToggled} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
             style={InfoCardStyle.normal}
             key={infoItem.type}
             sourceInfo={infoItem}
+            setIsInstalledToggled={setIsInstalledToggled}
             addChannelAction={() =>
               installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute)
             }

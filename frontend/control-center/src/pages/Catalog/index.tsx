@@ -62,8 +62,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   };
 
   const updateItemList = (installed: boolean, componentName: string) => {
-    setIsInstalledToggled(true);
-
     if (!installed) {
       const updatedInstalledList = installedConnectors.filter(
         (elem: SourceInfo) => elem.componentName !== componentName
@@ -120,6 +118,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
             installedConnectors={false}
             setDisplayDialogFromSource={setDisplayDialogFromSource}
             updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
 
@@ -129,6 +128,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
             installedConnectors
             setDisplayDialogFromSource={setDisplayDialogFromSource}
             updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
       </div>

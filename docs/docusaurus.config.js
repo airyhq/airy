@@ -25,9 +25,9 @@ module.exports = {
       logo: {
         alt: 'Airy Documentation',
         src: 'img/logo_light.svg',
-        srcDark: 'img/logo_dark.svg',    
-        href: 'https://airy.co',   
-        target: '_self', 
+        srcDark: 'img/logo_dark.svg',
+        href: 'https://airy.co',
+        target: '_self',
       },
       items: [
         {

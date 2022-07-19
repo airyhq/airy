@@ -25,7 +25,9 @@ module.exports = {
       logo: {
         alt: 'Airy Documentation',
         src: 'img/logo_light.svg',
-        srcDark: 'img/logo_dark.svg',
+        srcDark: 'img/logo_dark.svg',    
+        href: 'https://airy.co',   
+        target: '_self', 
       },
       items: [
         {
@@ -34,15 +36,51 @@ module.exports = {
         },
         {
           target: '_self',
-          label: 'Airy Core',
+          label: 'Why Airy?',
           position: 'left',
-          to: '/',
+          to: 'https://airy.co/',
         },
         {
           target: '_self',
-          label: 'Airy Enterprise',
+          label: 'Developers',
           position: 'left',
-          href: 'https://airy.co/docs/enterprise/',
+          href: 'https://airy.co/developers',
+        },
+        {
+          target: '_self',
+          label: 'Blog',
+          position: 'left',
+          to: 'https://blog.airy.co/',
+        },
+        {
+          target: '_self',
+          label: 'Core Docs',
+          position: 'left',
+          href: 'https://airy.co/docs/core/',
+        },
+        {
+          target: '_self',
+          label: 'Enterprise Docs',
+          position: 'left',
+          to: 'https://airy.co/docs/enterprise/',
+        },
+        {
+          target: '_self',
+          label: 'Solutions',
+          position: 'left',
+          href: 'https://airy.co/solutions',
+        },
+        {
+          target: '_self',
+          label: 'Customer Stories',
+          position: 'left',
+          to: 'https://airy.co/customer-stories',
+        },
+        {
+          target: '_self',
+          label: 'Pricing',
+          position: 'left',
+          href: 'https://airy.co/pricing',
         },
         {
           href: 'https://github.com/airyhq/airy',

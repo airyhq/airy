@@ -22,7 +22,7 @@ type InfoCardProps = {
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
   updateItemList?: (installed: boolean, componentName: string) => void;
-  setIsInstalledToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {

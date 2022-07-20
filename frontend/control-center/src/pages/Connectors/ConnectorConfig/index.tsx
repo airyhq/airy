@@ -95,7 +95,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
 
     if (connector === Source.zendesk) {
-      const [domain, username, token] = args;
+      const [domain, token, username] = args;
 
       payload = {
         components: [

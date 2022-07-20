@@ -8,6 +8,7 @@ import styles from './style.module.scss';
 
 const Translation = ({text}: {text: string}) => {
   const {t} = useTranslation();
+  if (typeof text !== 'string') return;
   return <>{t(text)}</>;
 };
 

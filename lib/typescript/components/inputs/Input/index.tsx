@@ -398,7 +398,7 @@ class InputComponent extends Component<InputProps, IState> {
           </div>
         )}
         <div className={styles.inputHint} data-testid="input-hint">
-          {typeof validationResult === 'string' || wasBlurred || showErrors ? (
+          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? (
             <Translation text={validationResult as string} />
           ) : (
             hint

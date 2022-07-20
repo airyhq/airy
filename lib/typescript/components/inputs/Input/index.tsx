@@ -8,6 +8,7 @@ import styles from './style.module.scss';
 
 const Translation = ({text}: {text: string}) => {
   const {t} = useTranslation();
+  if (typeof text !== 'string') return;
   return <>{t(text)}</>;
 };
 
@@ -398,7 +399,7 @@ class InputComponent extends Component<InputProps, IState> {
           </div>
         )}
         <div className={styles.inputHint} data-testid="input-hint">
-          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? (
+          {typeof validationResult === 'string' || wasBlurred || showErrors ? (
             <Translation text={validationResult as string} />
           ) : (
             hint

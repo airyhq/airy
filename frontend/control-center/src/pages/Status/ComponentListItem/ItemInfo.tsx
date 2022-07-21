@@ -102,7 +102,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig ? (
+            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig && healthy ? ( 
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
                 hoverElementHeight={20}

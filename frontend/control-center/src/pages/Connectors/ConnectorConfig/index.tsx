@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps, useSelector } from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
 import {Button, SettingsModal} from 'components';
@@ -53,11 +53,29 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
 
   const {channelId} = useParams();
+  const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [isConfigured, setIsConfigured] = useState(false);
   const {t} = useTranslation();
+
+  useEffect(() => {
+    console.log('isConfigured', isConfigured);
+}, [isConfigured]);
+
+  useEffect(() => {
+    if(connectorInfo && connectorConfiguration && connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]){
+      console.log('connectorInfo', connectorInfo);
+      console.log('connectorConfig', connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]);
+      console.log('connectorConfig obj entries ', Object.entries(connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]));
+  
+      if( Object.entries(connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]).length > 0){
+        setIsConfigured(true);
+      }
+    }
+  }, [connectorInfo, connectorConfiguration])
 
   useEffect(() => {
     getConnectorsConfiguration();
@@ -198,6 +216,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div className={styles.textContainer}>
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+
+                  {}
                   <ConfigStatusButton
                     enabled={isEnabled ? 'Enabled' : !isEnabled ? 'Disabled' : 'Not Configured'}
                     customStyle={styles.configStatusButton}

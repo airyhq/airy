@@ -4,7 +4,6 @@ metadata:
   name: kafka-config
 data:
   KAFKA_BROKERS: {{ .Values.config.kafka.brokers }}
-  KAFKA_MINIMUM_REPLICAS: "1"
   ZOOKEEPER: {{ .Values.config.kafka.zookeepers }}
   KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.config.kafka.schemaRegistryUrl }}
   KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.config.kafka.commitInterval }}"

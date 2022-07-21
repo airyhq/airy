@@ -2,7 +2,7 @@ import React, {CSSProperties, ReactNode} from 'react';
 
 import styles from './style.module.scss';
 
-type styleVariantType = 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
+type styleVariantType = 'extra-small' | 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
 type ButtonProps = {
   children: ReactNode;
   onClick?: (event?) => void;
@@ -10,13 +10,28 @@ type ButtonProps = {
   disabled?: boolean;
   styleVariant?: styleVariantType;
   style?: CSSProperties;
+  className?: string;
   tabIndex?: any;
   dataCy?: string;
+  buttonRef?: any;
 };
 
-export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy, style}: ButtonProps) => {
+export const Button = ({
+  children,
+  onClick,
+  type,
+  styleVariant,
+  disabled,
+  tabIndex,
+  dataCy,
+  style,
+  className,
+  buttonRef,
+}: ButtonProps) => {
   const styleFor = (variant: styleVariantType) => {
     switch (variant) {
+      case 'extra-small':
+        return styles.extraSmallButton;
       case 'small':
         return styles.smallButton;
       case 'outline':
@@ -36,10 +51,11 @@ export const Button = ({children, onClick, type, styleVariant, disabled, tabInde
 
   return (
     <button
+      ref={buttonRef ?? null}
       type={type || 'button'}
       style={style}
       disabled={disabled || false}
-      className={styleFor(styleVariant)}
+      className={`${styleFor(styleVariant)} ${className}`}
       onClick={onClick}
       tabIndex={tabIndex}
       data-cy={dataCy}

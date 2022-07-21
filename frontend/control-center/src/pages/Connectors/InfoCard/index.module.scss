@@ -2,30 +2,42 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/z-index.scss';
 
-.channelCard {
+.infoCard {
   width: 260px;
-  height: 100px;
   margin-bottom: 28px;
   margin-right: 36px;
+  padding: 12px 0 12px 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
+  p {
+    @include font-xs;
+    margin: 10px 0 0 0;
+    color: var(--color-text-gray);
+    max-width: 95%;
+  }
+
+  button {
+    margin-top: 14px;
+  }
+
   &:hover {
     border: 2px solid var(--color-airy-blue);
+    cursor: pointer;
     margin-left: -1px;
     width: 261px;
-    cursor: pointer;
   }
 }
 
-.notInstalled {
-  height: 96px;
+.installed {
+  height: 98px;
 }
 
-.installed {
-  height: 64px;
+.notInstalled {
+  height: 118px;
 }
 
 .channelLogoInstagram {
@@ -39,57 +51,27 @@
 }
 
 .textDetails {
-  width: 60%;
   margin-left: 10px;
   h1 {
     @include font-s;
     color: var(--color-text-contrast);
     font-weight: 600;
     letter-spacing: 0;
-    max-width: 90%;
-  }
-
-  p {
-    @include font-xs;
-    margin: 5px 0 0 0;
-    color: var(--color-text-gray);
-    max-width: 90%;
   }
 }
 
 .channelLogoTitleContainer {
-  width: 230px;
   display: flex;
-  justify-content: center;
-  border-radius: 10px;
-  border: 2px solid transparent;
-}
-
-.channelLogoTitleContainerInstalled {
-  height: 64px;
   align-items: center;
+  border-radius: 10px;
 
   .channelLogo {
-    height: 30px;
-    width: 30px;
+    display: flex;
+    align-items: center;
     svg {
-      width: 30px;
-      height: 30px;
-    }
-  }
-}
-
-.channelLogoTitleContainerNotInstalled {
-  height: 96px;
-  align-items: flex-start;
-  padding-top: 18px;
-
-  .channelLogo {
-    height: 40px;
-    width: 40px;
-    svg {
-      width: 40px;
-      height: 40px;
+      width: 34px;
+      max-height: 30px;
+      fill: var(--color-text-contrast);
     }
   }
 }
@@ -130,4 +112,37 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.enableModalContainerWrapper {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.enableModalContainer button {
+  margin-top: 14px;
+  padding: 0 60px;
+}
+
+.headerModal {
+  @include font-xl;
 }

@@ -1,39 +1,87 @@
 import React, {useEffect, useState} from 'react';
-import styles from './index.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {useSelector} from 'react-redux';
-import {allChannelsConnected} from '../../selectors/channels';
 import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
 import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
 import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
-import {Channel, Source} from 'model';
+import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
+import {SimpleLoader} from 'components';
+import {listComponents} from '../../actions/catalog';
+import {removePrefix} from '../../services';
+import styles from './index.module.scss';
 
-const Catalog = () => {
-  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+const mapDispatchToProps = {
+  listComponents,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+const Catalog = (props: ConnectedProps<typeof connector>) => {
+  const {listComponents} = props;
+  const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
   const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
   const [installedConnectors, setInstalledConnectors] = useState([]);
   const [sourcesInfo, setSourcesInfo] = useState([]);
+  const [isInstallToggled, setIsInstalledToggled] = useState(false);
   const pageTitle = 'Catalog';
 
   useEffect(() => {
+    listComponents();
     setPageTitle(pageTitle);
-    setSourcesInfo(getSourcesInfo(pageTitle));
+    setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {
-    sourcesInfo.map((infoItem: SourceInfo) => {
-      if (channelsBySource(infoItem.type).length === 0) {
-        setNotInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      } else {
-        setInstalledConnectors(prevArr => [...prevArr, infoItem]);
-      }
-    });
-  }, [sourcesInfo]);
+    if (sourcesInfo.length > 0 && !isInstallToggled) {
+      let installedComponents = [];
+      let uninstalledComponents = [];
+
+      Object.entries(catalogList).filter((componentElem: [string, {repository: string; installed: boolean}]) => {
+        if (componentElem[1].installed === true) {
+          installedComponents = installedComponents.concat(findComponent(removePrefix(componentElem[0])));
+        }
+
+        if (componentElem[1].installed === false) {
+          uninstalledComponents = uninstalledComponents.concat(findComponent(removePrefix(componentElem[0])));
+        }
+      });
+
+      setInstalledConnectors(installedComponents);
+      setNotInstalledConnectors(uninstalledComponents);
+    }
+  }, [sourcesInfo, catalogList, isInstallToggled]);
+
+  const findComponent = (name: string) => {
+    return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
+  };
+
+  const updateItemList = (installed: boolean, componentName: string) => {
+    if (!installed) {
+      const updatedInstalledList = installedConnectors.filter(
+        (elem: SourceInfo) => elem.componentName !== componentName
+      );
+      const updatedNotInstalledList = notInstalledConnectors.concat(findComponent(componentName));
+
+      setInstalledConnectors(updatedInstalledList);
+      setNotInstalledConnectors(updatedNotInstalledList);
+    }
+
+    if (installed) {
+      const updatedNotInstalledList = notInstalledConnectors.filter(
+        (elem: SourceInfo) => elem.componentName !== componentName
+      );
+      const updatedInstalledList = installedConnectors.concat(findComponent(componentName));
+
+      setNotInstalledConnectors(updatedNotInstalledList);
+      setInstalledConnectors(updatedInstalledList);
+    }
+  };
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -51,8 +99,6 @@ const Catalog = () => {
     return null;
   };
 
-  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
-
   return (
     <div className={styles.catalogWrapper}>
       <div className={styles.catalogHeadline}>
@@ -64,11 +110,15 @@ const Catalog = () => {
       <div className={styles.listWrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
 
+        {notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
+
         {notInstalledConnectors.length > 0 && (
           <CatalogItemList
             list={notInstalledConnectors}
             installedConnectors={false}
             setDisplayDialogFromSource={setDisplayDialogFromSource}
+            updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
 
@@ -77,6 +127,8 @@ const Catalog = () => {
             list={installedConnectors}
             installedConnectors
             setDisplayDialogFromSource={setDisplayDialogFromSource}
+            updateItemList={updateItemList}
+            setIsInstalledToggled={setIsInstalledToggled}
           />
         )}
       </div>
@@ -84,4 +136,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default connector(Catalog);

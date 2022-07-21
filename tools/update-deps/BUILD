@@ -12,8 +12,8 @@ go_library(
     importpath = "github.com/airyhq/airy/tools/update-deps",
     visibility = ["//visibility:private"],
     deps = [
-        "@org_golang_x_mod//modfile:go_default_library",
-        "@org_golang_x_mod//semver:go_default_library",
+        "@org_golang_x_mod//modfile",
+        "@org_golang_x_mod//semver",
     ],
 )
 

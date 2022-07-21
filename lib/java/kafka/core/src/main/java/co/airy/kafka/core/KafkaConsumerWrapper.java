@@ -21,6 +21,8 @@ public class KafkaConsumerWrapper<K, V> {
 
     private KafkaConsumer<K, V> consumer;
 
+    private String jaasConfig;
+
     public KafkaConsumerWrapper(final String brokers, final String schemaRegistryUrl) {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
@@ -29,6 +31,16 @@ public class KafkaConsumerWrapper<K, V> {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaHybridDeserializer.class);
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
+    }
+
+    public KafkaConsumerWrapper<K,V> withAuthJaas(String jaasConfig) {
+        this.jaasConfig = jaasConfig;
+        if(jaasConfig != null) {
+            props.put("security.protocol", "SASL_SSL");
+            props.put("sasl.mechanism", "PLAIN");
+            props.put("sasl.jaas.config", jaasConfig);
+        }
+        return this;
     }
 
     public void subscribe(final String appId, final Collection<String> topics) {

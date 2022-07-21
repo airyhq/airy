@@ -6,15 +6,17 @@ import styles from './style.module.scss';
 
 type SettingsModalProps = {
   close: () => void;
-  title: string;
+  title?: string;
   children: any;
-  style?: CSSProperties;
   wrapperClassName?: string;
   containerClassName?: string;
+  Icon?: React.ElementType | null;
+  headerClassName?: string;
+  style?: CSSProperties;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {close, title, children, style, wrapperClassName, containerClassName} = props;
+  const {close, title, children, headerClassName, wrapperClassName, style, containerClassName, Icon} = props;
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}
@@ -25,8 +27,9 @@ export const SettingsModal = (props: SettingsModalProps) => {
       shouldCloseOnOverlayClick={true}
       onRequestClose={close}
     >
-      <div style={style} className={containerClassName}>
-        <ModalHeader title={title} close={close} style={style} />
+      <div className={containerClassName}>
+        {Icon ? <Icon className={styles.icon} /> : ''}
+        <ModalHeader title={title ?? ''} close={close} style={style} headerClassName={headerClassName} />
         {children}
       </div>
     </Modal>

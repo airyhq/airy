@@ -3,3 +3,14 @@ appVersion: "1.0"
 description: A Helm chart for the Airy Core official sources
 name: sources
 version: 1.0
+dependencies:
+  - name: sources-chatplugin
+    condition: sources-chatplugin.installed
+  - name: sources-facebook
+    condition: sources-facebook.enabled
+  - name: sources-google
+    condition: sources-google.enabled
+  - name: sources-twilio
+    condition: sources-twilio.enabled
+  - name: sources-viber
+    condition: sources-viber.enabled

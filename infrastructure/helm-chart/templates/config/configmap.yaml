@@ -5,9 +5,11 @@ metadata:
 data:
   {{- if .Values.security.systemToken }}
   systemToken: {{ .Values.security.systemToken | quote }}
-  {{- end }}
   jwtSecret: {{ default (randAlphaNum 128) .Values.security.jwtSecret | quote }}
+  {{- end }}
+  {{- if .Values.security.allowedOrigins }}
   allowedOrigins: {{ .Values.security.allowedOrigins | quote }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -24,3 +26,11 @@ data:
 {{- if .Values.global.apiHost }}
   API_HOST: {{ .Values.global.apiHost }}
 {{- end }}
+  global.yaml: |
+    global:
+      containerRegistry: {{ .Values.global.containerRegistry }}
+      busyboxImage: {{ .Values.global.busyboxImage }}
+      host: {{ .Values.global.host }}
+      apiHost: {{ .Values.global.apiHost }}
+      ingress:
+        letsencrypt: {{ .Values.global.ingress.letsencrypt }}

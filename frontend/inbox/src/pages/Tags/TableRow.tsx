@@ -37,13 +37,17 @@ const TableRowComponent = (props: TableRowProps) => {
     color: '',
   });
   const {t} = useTranslation();
+  const [newName, setNewName] = useState('');
+  const [newColor, setNewColor] = useState('');
 
   const handleUpdate = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.persist();
       if (e.target.name === 'tag_name') {
+        setNewName(e.target.value);
         setTagState({...tagState, name: e.target && e.target.value});
       } else {
+        setNewColor(e.target.value as TagColor);
         setTagState({...tagState, color: e.target && (e.target.value as TagColor)});
       }
     },
@@ -103,7 +107,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <tr key={tag.id} className={styles.isEditing}>
         <td style={{width: '30%'}} className={styles.tableCell}>
           <input
-            value={tagState.name}
+            value={newName || tagState.name}
             name="tag_name"
             onChange={handleUpdate}
             onKeyPress={onTagKeyPressed}
@@ -114,7 +118,12 @@ const TableRowComponent = (props: TableRowProps) => {
           />
         </td>
         <td style={{width: '30%'}}>
-          <ColorSelector id={tag.id} handleUpdate={handleUpdate} color={tagState.color} editing={isEditing} />
+          <ColorSelector
+            id={tag.id}
+            handleUpdate={handleUpdate}
+            color={newColor || tagState.color}
+            editing={isEditing}
+          />
         </td>
         <td style={{width: '15%'}} />
         <td style={{width: '25%'}}>
@@ -134,10 +143,10 @@ const TableRowComponent = (props: TableRowProps) => {
   return (
     <tr key={tag.id} className={styles.tableRow} onClick={() => setTagState({...tag, edit: true})}>
       <td style={{width: '30%', maxWidth: '1px'}} className={styles.tableCell}>
-        <Tag tag={{id: tag.id, color: tag.color as TagColor, name: tag.name}} />
+        <Tag tag={{id: tag.id, color: (newColor as TagColor) || (tag.color as TagColor), name: newName || tag.name}} />
       </td>
       <td style={{width: '30%'}}>
-        <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />
+        <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(newColor || tag.color)}`}} />
       </td>
       <td style={{width: '15%'}} />
       <td style={{width: '25%'}}>

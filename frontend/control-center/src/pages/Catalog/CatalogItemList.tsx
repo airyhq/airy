@@ -1,7 +1,5 @@
 import React from 'react';
 import InfoCard, {InfoCardStyle} from '../Connectors/InfoCard';
-import {StateModel} from '../../reducers';
-import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';
@@ -11,11 +9,12 @@ interface CatalogItemListProps {
   list: SourceInfo[];
   installedConnectors: boolean;
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
+  updateItemList: (installed: boolean, componentName: string) => void;
+  setIsInstalledToggled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, setDisplayDialogFromSource} = props;
-  const config = useSelector((state: StateModel) => state.data.config);
+  const {list, installedConnectors, updateItemList, setIsInstalledToggled} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
@@ -27,17 +26,15 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
       <div className={styles.connectorList}>
         {list.map(infoItem => (
           <InfoCard
+            updateItemList={updateItemList}
             installed={installedConnectors}
             style={InfoCardStyle.normal}
             key={infoItem.type}
             sourceInfo={infoItem}
-            addChannelAction={() => {
-              if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
-                installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute);
-              } else {
-                setDisplayDialogFromSource(infoItem.type);
-              }
-            }}
+            setIsInstalledToggled={setIsInstalledToggled}
+            addChannelAction={() =>
+              installedConnectors ? navigate(infoItem.channelsListRoute) : navigate(infoItem.newChannelRoute)
+            }
           />
         ))}
       </div>

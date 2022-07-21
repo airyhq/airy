@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-
-import {enableDisableComponent} from '../../../actions';
+import {StateModel} from '../../../reducers';
+import {enableDisableComponent} from '../../../actions/config';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {ReactComponent as UncheckedIcon} from 'assets/images/icons/serviceUnhealthy.svg';
+import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
-import {SettingsModal, Button, Toggle} from 'components';
+import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import styles from './index.module.scss';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 type ComponentInfoProps = {
@@ -27,7 +27,27 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
+const formatName = (name: string) => {
+  if (name?.includes('enterprise')) {
+    name = name.replace('enterprise-', '');
+  }
+  if (name?.includes('sources')) {
+    name = name.replace('sources-', '');
+  }
+  return name;
+};
+
+const isConfigurableConnector = (name: string) => {
+  return (
+    (name.includes('sources') || name.includes('enterprise')) &&
+    !name.includes('salesforce') &&
+    !name.includes('mobile') &&
+    !name.includes('zendesk')
+  );
+};
+
 const ItemInfo = (props: ComponentInfoProps) => {
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
@@ -35,6 +55,8 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
+  const connectorInstalltionConfig =
+    connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -80,7 +102,35 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {healthy ? <CheckmarkIcon className={styles.icons} /> : <UncheckedIcon className={styles.icons} />}
+            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig ? (
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('needsConfiguration')}
+              />
+            ) : healthy && enabled ? (
+              <Tooltip
+                hoverElement={<CheckmarkIcon className={styles.icons} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('healthy')}
+              />
+            ) : !healthy && enabled ? (
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('notHealthy')}
+              />
+            ) : (
+              <Tooltip
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
+                hoverElementHeight={20}
+                hoverElementWidth={20}
+                tooltipContent={t('disabled')}
+              />
+            )}
           </div>
 
           {isComponent && (
@@ -104,7 +154,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
-            style={{width: '45%'}}
+            style={{padding: '0 60Px'}}
             type="submit"
             onClick={() => triggerEnableDisableAction(false)}
           >

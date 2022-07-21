@@ -2,7 +2,6 @@ package httpclient
 
 import (
 	"encoding/json"
-
 	"github.com/airyhq/airy/lib/go/config"
 	"github.com/airyhq/airy/lib/go/payloads"
 )
@@ -13,6 +12,10 @@ func (c *Client) ClusterUpdate(conf config.AiryConf) (payloads.ClusterUpdateResp
 	secData := config.GetSecurityData(conf.Security)
 	if len(secData) != 0 {
 		cluster.ClusterConfig.Security = conf.Security
+	}
+	kafkaData := config.GetKafkaData(conf.Kafka)
+	if len(kafkaData) != 0 {
+		cluster.ClusterConfig.Kafka = conf.Kafka
 	}
 
 	payload, err := json.Marshal(cluster)

@@ -58,7 +58,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
         - name: SERVICE_NAME
-          value: sources-chatplugin
+          value: "{{ .Values.component }}"
         - name: SERVICE_PORT
           value: "80"
         volumeMounts:

@@ -145,47 +145,6 @@
   }
 }
 
-.colorContainer {
-  display: flex;
-}
-
-.dropdownInputContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.colorPickerContainer {
-  display: flex;
-  align-items: center;
-}
-
-.colorPickers {
-  display: flex;
-  height: 32px;
-  align-items: center;
-  padding-left: 8px;
-}
-
-.inputsContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.hexTitle {
-  margin-top: 6px;
-  margin-bottom: 5px;
-}
-
-.colorSample {
-  display: flex;
-  flex-direction: column;
-}
-
-.sampleTitle {
-  margin-top: 6px;
-  margin-bottom: 12px;
-}
-
 .borderLine {
   height: 1px;
   width: 80%;

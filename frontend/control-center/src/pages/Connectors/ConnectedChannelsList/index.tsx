@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {listChannels} from '../../../actions/channel';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
@@ -32,12 +33,7 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-  CATALOG_FACEBOOK_ROUTE,
-  CATALOG_CHAT_PLUGIN_ROUTE,
-  CATALOG_TWILIO_SMS_ROUTE,
-  CATALOG_TWILIO_WHATSAPP_ROUTE,
-  CATALOG_GOOGLE_ROUTE,
-  CATALOG_INSTAGRAM_ROUTE,
+  CONNECTORS_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
@@ -45,7 +41,14 @@ import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
 
-const ConnectedChannelsList = () => {
+const mapDispatchToProps = {
+  listChannels,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
+  const {listChannels} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -77,6 +80,10 @@ const ConnectedChannelsList = () => {
   }, [currentPage, pageSize, channels.length]);
 
   useEffect(() => {
+    listChannels();
+  }, []);
+
+  useEffect(() => {
     getInfo();
   }, [source]);
 
@@ -86,42 +93,42 @@ const ConnectedChannelsList = () => {
       case Source.facebook:
         setName(t('facebookTitle'));
         setDescription(t('facebookDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        ROUTE = CONNECTORS_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        ROUTE = CONNECTORS_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
         setDescription(t('twilioWhatsappDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsInstagramList);
         break;
@@ -135,10 +142,10 @@ const ConnectedChannelsList = () => {
 
   return (
     <div className={styles.wrapper}>
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
+      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(CONNECTORS_ROUTE)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
-          {connectorsRoute ? t('channelsCapital') : ''}
+          {connectorsRoute ? t('Connectors') : ''}
         </div>
       </LinkButton>
       <div className={styles.headlineRow}>
@@ -225,4 +232,4 @@ const ConnectedChannelsList = () => {
   );
 };
 
-export default ConnectedChannelsList;
+export default connector(ConnectedChannelsList);

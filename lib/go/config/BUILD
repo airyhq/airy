@@ -7,6 +7,7 @@ go_library(
     srcs = [
         "airy_yaml.go",
         "components.go",
+        "kafka.go",
         "security.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/config",

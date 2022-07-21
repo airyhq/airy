@@ -1,4 +1,4 @@
-variable "region" {
+variable "aws_region" {
   description = "The AWS region in which resources are created"
   default     = "eu-west-1"
 }
@@ -52,7 +52,8 @@ variable "namespace" {
 }
 
 variable "kubeconfig_output_path" {
-  default = "../airy-core/.kubeconfig"
+  type        = string
+  description = "The location of the kubeconfig file"
 }
 
 variable "fargate_profiles" {

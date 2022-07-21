@@ -17,11 +17,12 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CATALOG_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from './sections/InstallSection/InstallSection';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {
@@ -52,9 +53,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const imageUrl = currentChannel?.metadata?.imageUrl || '';
   const navigate = useNavigate();
   const {t} = useTranslation();
-  const CHAT_PLUGIN_ROUTE = location.pathname.includes('connectors')
-    ? CONNECTORS_CHAT_PLUGIN_ROUTE
-    : CATALOG_CHAT_PLUGIN_ROUTE;
+  const CHAT_PLUGIN_ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -154,7 +153,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     <div className={styles.container}>
       <div className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <LinkButton onClick={() => navigate(-1)} type="button">
+          <LinkButton onClick={() => navigate(`${CONNECTORS_CONNECTED_ROUTE}/chatplugin`)} type="button">
             <ArrowLeftIcon className={styles.backIcon} />
           </LinkButton>
           <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>

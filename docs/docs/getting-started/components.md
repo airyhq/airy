@@ -22,6 +22,8 @@ Airy Core comes with all the components you need for a fully-featured conversati
 
 <Image lightModePath="img/getting-started/components-light.png" darkModePath="img/getting-started/components-dark.png"/>
 
+## Component types
+
 Airy Core contains the following core components:
 
 <ButtonBoxList>
@@ -68,3 +70,9 @@ Airy Core contains the following core components:
     link='/integrations/rasa-assistant'
 />
 </ButtonBoxList>
+
+## Installation
+
+For installation purposes Airy Core is packaged in a Helm chart which creates all the necessary Kubernetes resources. However, every component is an independent entity and can be installed or uninstalled separately. Every component is packaged in its own independent Helm chart and belongs to a `repository`. By default, the `airy-core` repository is added with the components that can be found under `infrastructure/helm-chart/charts/components/charts`.
+
+Some components are installed by default, while others can be added or removed later, depending on the particular use case. Components can be managed through the `Control center` or through the [components](/api/endpoints/components) and [repositories](/api/endpoints/repositories) API endpoints.

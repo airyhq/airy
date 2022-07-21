@@ -41,3 +41,12 @@ resource "helm_release" "airy_core" {
 
 }
 
+data "kubernetes_service" "ingress" {
+  metadata {
+    name      = "ingress-nginx-controller"
+    namespace = "kube-system"
+  }
+  depends_on = [
+    helm_release.airy_core
+  ]
+}

@@ -23,12 +23,6 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-  CATALOG_FACEBOOK_ROUTE,
-  CATALOG_CHAT_PLUGIN_ROUTE,
-  CATALOG_TWILIO_SMS_ROUTE,
-  CATALOG_TWILIO_WHATSAPP_ROUTE,
-  CATALOG_GOOGLE_ROUTE,
-  CATALOG_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {useTranslation} from 'react-i18next';
@@ -62,37 +56,37 @@ const ChannelsList = () => {
       case Source.facebook:
         setName(t('facebookTitle'));
         setDescription(t('facebookDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_FACEBOOK_ROUTE : CATALOG_FACEBOOK_ROUTE;
+        ROUTE = CONNECTORS_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_GOOGLE_ROUTE : CATALOG_GOOGLE_ROUTE;
+        ROUTE = CONNECTORS_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_SMS_ROUTE : CATALOG_TWILIO_SMS_ROUTE;
+        ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
         setDescription(t('twilioWhatsappDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_TWILIO_WHATSAPP_ROUTE : CATALOG_TWILIO_WHATSAPP_ROUTE;
+        ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_CHAT_PLUGIN_ROUTE : CATALOG_CHAT_PLUGIN_ROUTE;
+        ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
-        ROUTE = connectorsRoute ? CONNECTORS_INSTAGRAM_ROUTE : CATALOG_INSTAGRAM_ROUTE;
+        ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         break;
     }

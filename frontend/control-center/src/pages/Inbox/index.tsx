@@ -27,7 +27,7 @@ const Inbox = (props: ConnectedProps<typeof connector>) => {
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
 
   useEffect(() => {
-    setSourcesInfo(getSourcesInfo('Inbox'));
+    setSourcesInfo(getSourcesInfo());
   }, []);
 
   useEffect(() => {

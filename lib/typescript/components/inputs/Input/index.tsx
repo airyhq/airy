@@ -1,10 +1,16 @@
 import React, {Component, Fragment} from 'react';
-
-import styles from './style.module.scss';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as SmileyIcon} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
+import {useTranslation} from 'react-i18next';
+import styles from './style.module.scss';
+
+const Translation = ({text}: {text: string}) => {
+  const {t} = useTranslation();
+  if (typeof text !== 'string') return;
+  return <>{t(text)}</>;
+};
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
@@ -45,9 +51,9 @@ class InputComponent extends Component<InputProps, IState> {
 
   translateResult = (type, validity) => {
     if (validity.valueMissing) {
-      return 'This field cannot be empty.';
+      return 'fieldCannotBeEmpty';
     } else if (type === 'url' && validity.typeMismatch) {
-      return 'The URL is invalid';
+      return 'invalidURL';
     } else {
       return validity.valid;
     }
@@ -62,7 +68,7 @@ class InputComponent extends Component<InputProps, IState> {
     if (inputElement.type === 'email') {
       if (!inputElement.validity.valid) {
         this.setState({
-          validationResult: 'This doesn’t look like an email address.',
+          validationResult: 'invalidEmail',
         });
       } else {
         this.setState({validationResult: true});
@@ -106,9 +112,9 @@ class InputComponent extends Component<InputProps, IState> {
 
     if (!new RegExp('^https?://(.*)').test(inputElement.value)) {
       this.setState({
-        validationResult: 'The URL is invalid',
+        validationResult: 'invalidURL',
       });
-      inputElement.setCustomValidity('The URL is invalid');
+      inputElement.setCustomValidity('invalidURL');
     } else {
       inputElement.setCustomValidity('');
     }
@@ -284,6 +290,9 @@ class InputComponent extends Component<InputProps, IState> {
       showCounter,
       onFocus,
       dataCy,
+      min,
+      max,
+      step,
     } = this.props;
 
     const {validationResult, wasBlurred} = this.state;
@@ -342,7 +351,7 @@ class InputComponent extends Component<InputProps, IState> {
             showCounter: showCounter,
           })
         ) : (
-          <div className={styles.input}>
+          <div className={`${styles.input} ${tooltipText ? styles.tooltipMargin : ''}`}>
             <input
               id={id}
               ref={inputRef || this.inputRef}
@@ -370,6 +379,9 @@ class InputComponent extends Component<InputProps, IState> {
               pattern={pattern}
               inputMode={inputmode}
               data-cy={dataCy}
+              step={step}
+              min={min}
+              max={max}
             />
             {this.props.renderEmojiPicker ? (
               <div className={styles.emojiWrapper}>
@@ -387,7 +399,11 @@ class InputComponent extends Component<InputProps, IState> {
           </div>
         )}
         <div className={styles.inputHint} data-testid="input-hint">
-          {typeof validationResult === 'string' || wasBlurred || showErrors ? validationResult : hint}
+          {typeof validationResult === 'string' || wasBlurred || showErrors ? (
+            <Translation text={validationResult as string} />
+          ) : (
+            hint
+          )}
         </div>
       </label>
     );
@@ -399,6 +415,10 @@ export interface InputProps {
   renderEmojiPicker?: (onSelect: (emoji: string) => void) => JSX.Element;
 
   id?: string;
+  step?: number;
+  min?: number;
+  max?: number;
+
   /** The label above the input field */
   label?: string;
   showLabelIcon?: boolean;

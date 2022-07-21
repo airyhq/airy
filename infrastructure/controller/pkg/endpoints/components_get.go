@@ -35,7 +35,7 @@ func (s *ClusterGet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(blob)
 }
 
-var secretMatcher = regexp.MustCompile(`(?i)secret|key|token`)
+var secretMatcher = regexp.MustCompile(`(?i)secret|key|token|credentials`)
 
 func maskSecrets(data map[string]string) map[string]string {
 	mask := func(s string) string {

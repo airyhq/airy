@@ -45,6 +45,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
 
       {services.map((service, index) => (
         <ItemInfo
+          enabled={enabled}
           healthy={service.healthy}
           itemName={service.name}
           isComponent={false}

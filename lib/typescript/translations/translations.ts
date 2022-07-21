@@ -4,6 +4,11 @@ import {initReactI18next} from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'This field cannot be empty.',
+      invalidURL: 'The URL is invalid',
+      invalidEmail: 'This doesn’t look like an email address.',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Start typing...',
       cancel: 'Cancel',
@@ -39,7 +44,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag name',
+      color: 'Color',
       addATag: 'Add a tag',
+      addTag: 'Add tag',
       addTagName: 'Please enter a tag name',
       tagAlreadyAdded: 'Tag already added',
       addCapital: 'Add',
@@ -55,6 +63,15 @@ const resources = {
       enterTagName: 'Please enter a tag name',
       editTag: 'Edit tag',
       deleteTag: 'Delete tag',
+      deleteTagTextTitle: 'Are you sure you want to permanently delete this tag?',
+      deleteTagText: `You're about to permanently delete `,
+      deleteTagText2: ` from your organization's tags.`,
+      deleteTagText3: 'This action cannot be undone.',
+      deleteTagText4:
+        ' Once you delete the tag, no one in your organization will be able to use it. It will also removed from all corresponding contacts.',
+      deleteTagText5: 'Type ',
+      deleteTagText6: ' to confirm:',
+      deleteTagConfirm: `Please type 'DELETE' in the input field before deleting`,
 
       //Contact
       setName: 'Set Name',
@@ -75,6 +92,8 @@ const resources = {
       conversations: 'Conversations',
       deleteContact: 'Delete Contact',
       deleteContactText: 'Are you sure you want to delete this contact?',
+      noContacts: 'No Contacts',
+      emptyContacts: 'Empty Contact List',
 
       //Status
       all: 'All',
@@ -122,8 +141,16 @@ const resources = {
       //Control-Center
       disableComponent: 'Disable',
       disableComponentText: 'Are you sure you want to disable this component?',
+      Enabled: 'Enabled',
+      Enable: 'Enable',
+      NotConfigured: 'Not Configured',
+      uninstallComponentText: 'Are you sure you want to uninstall this component?',
+      restart: 'Restart',
+      restartComponentUpdate: 'We will restart the component to apply your update.',
 
       //Channels
+      toConfigure: 'To configure',
+      configure: 'Apply Configuration',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Best of class browser messenger',
       facebookTitle: 'Facebook Messenger',
@@ -164,7 +191,7 @@ const resources = {
       undoStep: 'Undo',
       deleteChannel: 'Do you really want to delete this channel?',
       addChanne: 'Add channel',
-      infoButtonText: 'more information about this source',
+      infoButtonText: 'more information',
       addChatplugin: 'Add Airy Live Chat to your website and application',
       displayName: 'Display Name',
       addDisplayName: 'Add a name',
@@ -213,6 +240,9 @@ const resources = {
       create: 'Create',
       customize: 'Customize',
       install: 'Install',
+      uninstall: 'Uninstall',
+      uninstalled: 'uninstalled',
+
       addAName: 'Add a name',
       settings: 'Settings',
       installCustomize: 'Install & Customize',
@@ -234,8 +264,44 @@ const resources = {
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
 
-      //Facebook Messenger
+      //Zendesk
+      zendeskDescription: 'Make customers happy via text, mobile, phone, email, live chat, social media.',
+      ZendeskSubDomain: 'Zendesk Subdomain',
+      AddDomain: 'Add domain',
+      ZendeskDomain: 'Your zendesk subdomain',
+      username: 'Username',
+      AddUsername: 'Add Username',
+      ZendeskUsername: 'Your zendesk username',
+      ZendeskToken: 'A zendesk API token associated to your user',
+      APIToken: 'API Token',
 
+      //Dialogflow
+      dialogflowDescription: 'Conversational AI with virtual agents',
+      projectID: 'Project ID',
+      AddProjectId: 'Add the project id',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
+      SuggestionConfidenceLevel: 'Suggestion Confidence Level',
+      ReplyConfidenceLevel: 'Reply Confidence Level',
+      fromCloudConsole: 'given by the Cloud Console',
+      amountSuggestions: 'amount for suggestions',
+      amountReplies: 'amount for replies',
+      to: 'to',
+
+      //Salesforce
+      salesforceDescription:
+        "Increase sales performance with the world's No. 1 CRM platform for business of all sizes.",
+      salesforceOrgUrl: 'Organization URL',
+      yourSalesforceOrgUrl: 'Your Salesforce organization URL',
+      salesforceOrgUrlExample: 'Example: https://org.my.salesforce.com',
+      Username: 'Username',
+      yourSalesforceUsername: 'Your Salesforce username',
+      Password: 'Password',
+      yourSalesforcePassword: 'Your Salesforce password',
+      securityToken: 'Security Token',
+      yourSalesforceSecurityToken: 'Your Salesforce Security Token',
+
+      //Facebook Messenger
       connectMessenger: 'Connect Messenger',
       facebookConfiguration: 'The Facebook source requires the following configuration:',
       facebookConfigurationText:
@@ -247,7 +313,6 @@ const resources = {
       facebookConfigurationText5: 'for more information.',
 
       //Google Business Messages
-
       agentId: 'Agent ID',
       googleAgentPlaceholder: 'Add the agent ID provided by your Google Partner',
       connectGoogle: 'Connect Google Business Messages',
@@ -259,7 +324,6 @@ const resources = {
       googleConfigurationText3: 'for more information.',
 
       //Instagram
-
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
       instagramAccountPlaceholder: 'Add the Facebook Page ID',
       instagramAccountId: 'ID of the Instagram account',
@@ -275,7 +339,6 @@ const resources = {
       instagramConfigurationText6: 'for more information.',
 
       //Twilio
-
       twilioPhoneNumber: 'Twilio Phone Number',
       twilioPhoneNumberPlaceholder: 'Purchased Number +123456789',
       connectSmsNumber: 'Connect Sms Number',
@@ -296,7 +359,7 @@ const resources = {
       updateWhatsappNumber: 'Update Whatsapp Number',
 
       //Connectors
-
+      connectors: 'Connectors',
       noResults: 'Result not found.',
       noResultsTerm: 'Try to search for a different term.',
       noConnectorsFound: 'No Connectors Found',
@@ -306,18 +369,20 @@ const resources = {
       notInstalled: 'Not Installed',
 
       //NotFound
-
       notFound: `Oops! We couldn't find that here.`,
 
       //Status
-
       status: 'Status',
       componentName: 'Component Name',
       healthStatus: 'Health Status',
       enabled: 'Enabled',
+      enabledLowerCase: 'enabled',
+      healthy: 'Healthy',
+      notHealthy: 'Not Healthy',
+      needsConfiguration: 'Needs Configuration',
+      disabled: 'Disabled',
 
       //Webhooks
-
       errorOccurred: 'Error occurred',
       successfullySubscribed: 'Successfully Subscribed!',
       subscribeWebhook: 'Subscribe Webhook',
@@ -332,15 +397,20 @@ const resources = {
       updating: 'Updating...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALL EVENTS',
-
-      //Inbox
-
-      //Tags
-      deleteTagText: 'Are you sure you want to permanently delete this tag?',
+      subscribe: 'Subscribe',
+      noWebhooks: 'No Webhooks Found',
+      noWebhooksText: `You don't have any Webhooks installed, please `,
+      customHeader: 'Customer Header',
+      signKey: 'Sign key',
     },
   },
   de: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Dieses Feld kann nicht leer sein.',
+      invalidURL: 'Die URL ist ungültig',
+      invalidEmail: 'Ungültige E-Mail-Adresse',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Eingabe...',
       cancel: 'Abbrechen',
@@ -379,7 +449,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Name',
+      color: 'Farbe',
       addATag: 'Einen Tag hinzufügen',
+      addTag: 'Tag hinzufügen',
       addTagName: 'Bitte geben Sie einen Tag-Namen ein',
       tagAlreadyAdded: 'Tag bereits hinzugefügt',
       addCapital: 'Hinzufügen',
@@ -395,6 +468,15 @@ const resources = {
       enterTagName: 'Bitte geben Sie einen Tag-Namen ein',
       editTag: 'Tag bearbeiten',
       deleteTag: 'Tag löschen',
+      deleteTagTextTitle: 'Sind Sie sicher, dass Sie diesen Tag dauerhaft löschen wollen?',
+      deleteTagText: 'Sie sind im Begriff ',
+      deleteTagText2: ` dauerhaft aus Ihrer Organisation zu löschen.`,
+      deleteTagText3: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+      deleteTagText4:
+        ' Sobald Sie das Tag gelöscht haben, kann es niemand in Ihrer Organisation mehr verwenden. Es wird auch aus allen entsprechenden Kontakten entfernt.',
+      deleteTagText5: 'Tippen Sie ',
+      deleteTagText6: ' um zu bestätigen',
+      deleteTagConfirm: `Bitte geben Sie vor dem Löschen 'DELETE' in das Eingabefeld ein`,
 
       //Contact
       setName: 'Name festlegen',
@@ -415,6 +497,8 @@ const resources = {
       noResultsConverstation: 'keine Ergebnisse',
       deleteContact: 'Kontakt löschen',
       deleteContactText: 'Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?',
+      noContacts: 'Keine Kontakte',
+      emptyContacts: 'Leere Kontaktliste',
 
       //Status
       all: 'Alle',
@@ -464,8 +548,17 @@ const resources = {
       //Control-Center
       disableComponent: 'Deaktivieren',
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
+      Enabled: 'Aktiviert',
+      Enable: 'Aktivieren',
+      NotConfigured: 'Nicht konfiguriert',
+      uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
+      Update: 'Aktualisieren',
+      restart: 'Neu starten',
+      restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
 
       //Channels
+      toConfigure: 'konfigurieren',
+      configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
       facebookTitle: 'Facebook Messenger',
@@ -505,7 +598,7 @@ const resources = {
       sample: 'Muster',
       deleteChannel: 'Wollen Sie diesen Kanal wirklich löschen?',
       addChanne: 'Kanal hinzufügen',
-      infoButtonText: 'mehr Informationen über diese Quelle',
+      infoButtonText: 'mehr Informationen',
       addChatplugin: 'Fügen Sie Airy Live Chat zu Ihrer Website und Anwendung hinzu',
       displayName: 'Anzeige Name',
       addDisplayName: 'Namen hinzufügen',
@@ -554,6 +647,8 @@ const resources = {
       create: 'Erstellen',
       customize: 'Anpassen',
       install: 'Installieren',
+      uninstall: 'Deinstallieren',
+      uninstalled: 'deinstalliert',
       addAName: 'Namen hinzufügen',
       settings: 'Einstellungen',
       installCustomize: 'Installieren & Anpassen',
@@ -575,8 +670,44 @@ const resources = {
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
 
-      //Facebook Messenger
+      //Zendesk
+      zendeskDescription: 'Machen Sie Kunden glücklich per SMS, E-Mail, Live-Chat, Social Media.',
+      ZendeskSubDomain: 'Zendesk Subdomäne',
+      AddDomain: 'Domäne hinzufügen',
+      ZendeskDomain: 'Ihre Zendesk-Subdomäne',
+      username: 'Benutzername',
+      AddUsername: 'Benutzername hinzufügen',
+      ZendeskUsername: 'Ihr Zendesk Benutzername',
+      ZendeskToken: 'Ihr Zendesk-API-Token',
+      APIToken: 'API-Token',
 
+      //Dialogflow
+      dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
+      projectID: 'Projekt-ID',
+      AddProjectId: 'Projekt-ID hinzufügen',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Google Application Credentials hinzufügen',
+      SuggestionConfidenceLevel: 'Vorschlagsvertrauensniveau',
+      ReplyConfidenceLevel: 'Konfidenzniveau der Antwort',
+      to: 'bis',
+      fromCloudConsole: 'gegeben von der Cloud Console',
+      amountSuggestions: 'Anzahl der Vorschläge',
+      amountReplies: 'Anzahl der Antworten',
+
+      //Salesforce
+      salesforceDescription:
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+      salesforceOrgUrl: 'Organisations-URL',
+      yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
+      salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
+      Username: 'Benutzername',
+      yourSalesforceUsername: 'Ihr Salesforce-Benutzername',
+      Password: 'Passwort',
+      yourSalesforcePassword: 'Ihr Salesforce-Passwort',
+      securityToken: 'Sicherheitstoken',
+      yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+
+      //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
       facebookConfiguration: 'Die Facebook-Quelle erfordert die folgende Konfiguration:',
       facebookConfigurationText:
@@ -588,7 +719,6 @@ const resources = {
       facebookConfigurationText5: 'für weitere Informationen.',
 
       //Google Business Messages
-
       agentId: 'Agent ID',
       googleAgentPlaceholder: 'Fügen Sie die von Ihrem Google-Partner bereitgestellte Agent-ID hinzu',
       connectGoogle: 'Google Business-Nachrichten verbinden',
@@ -600,7 +730,6 @@ const resources = {
       googleConfigurationText3: 'für weitere Informationen.',
 
       //Instagram
-
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
       instagramAccountPlaceholder: 'Hinzufügen der Facebook-Seiten-ID',
       instagramAccountId: 'ID des Instagram-Kontos',
@@ -616,7 +745,6 @@ const resources = {
       instagramConfigurationText6: 'für weitere Informationen.',
 
       //Twilio
-
       twilioPhoneNumber: 'Twilio-Telefonnummer',
       twilioPhoneNumberPlaceholder: 'Gekaufte Nummer +123456789',
       connectSmsNumber: 'Sms-Nummer verbinden',
@@ -637,7 +765,7 @@ const resources = {
       updateWhatsappNumber: 'Whatsapp-Nummer aktualisieren',
 
       //Connectors
-
+      connectors: 'Konnektoren',
       noResults: 'Ergebnis nicht gefunden.',
       noResultsTerm: 'Versuchen Sie, nach einem anderen Begriff zu suchen.',
       noConnectorsFound: 'Keine Konnektoren gefunden',
@@ -647,18 +775,20 @@ const resources = {
       notInstalled: 'Nicht Installiert',
 
       //NotFound
-
       notFound: 'Huch! Das konnten wir hier nicht finden.',
 
       //Status
-
       status: 'Status',
       componentName: 'Komponenten Name',
       healthStatus: 'Gesundheitszustand',
       enabled: 'Aktiviert',
+      enabledLowerCase: 'aktiviert',
+      healthy: 'Gesund',
+      notHealthy: 'Nicht Gesund',
+      needsConfiguration: 'Erfordert Konfiguration',
+      disabled: 'Deaktiviert',
 
       //Webhooks
-
       errorOccurred: 'Fehler aufgetreten',
       successfullySubscribed: 'Erfolgreich abonniert!',
       subscribeWebhook: 'Webhook abonnieren',
@@ -673,10 +803,20 @@ const resources = {
       updating: 'Aktualisieren...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALLE EVENTS',
+      subscribe: 'Abonnieren',
+      noWebhooks: 'Keine Webhooks gefunden',
+      noWebhooksText: 'Sie haben keine Webhooks installiert, bitte ',
+      customHeader: 'Kundenkopfzeile',
+      signKey: 'Signierschlüssel',
     },
   },
   fr: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'Ce champ ne peut pas être vide.',
+      invalidURL: 'URL non valide',
+      invalidEmail: 'Adresse e-mail non valide',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Engagez une conversation...',
       cancel: 'Annuler',
@@ -711,7 +851,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Nom',
+      color: 'Couleur',
       addATag: 'Ajouter une étiquette',
+      addTag: 'Ajouter une étiquette',
       addTagName: `Veuillez entrer un nom d'étiquette`,
       tagAlreadyAdded: 'Étiquette déjà ajoutée',
       addCapital: 'Ajouter',
@@ -727,6 +870,14 @@ const resources = {
       enterTagName: `Veuillez entrer un nom d'étiquette`,
       editTag: `Modifier l'étiquette`,
       deleteTag: `Supprimer l'étiquette`,
+      deleteTagTextTitle: 'Êtes-vous sûr de vouloir supprimer définitivement ce tag?',
+      deleteTagText: `Vous êtes sur le point de supprimer définitivement `,
+      deleteTagText2: ` à partir des balises de votre organisation.`,
+      deleteTagText3: 'Cette action ne peut être annulée.',
+      deleteTagText4: ` Une fois que vous aurez supprimé le tag, personne dans votre organisation ne pourra l'utiliser. Il sera également supprimé de tous les contacts correspondants.`,
+      deleteTagText5: 'Tapez dans ',
+      deleteTagText6: ' pour confirmer:',
+      deleteTagConfirm: `Veuillez taper 'DELETE' dans le champ de saisie avant de procéder à la suppression.`,
 
       //Contact
       setName: 'Ajouter un nom',
@@ -747,6 +898,8 @@ const resources = {
       conversations: 'Conversations',
       deleteContact: 'Supprimer le Contact',
       deleteContactText: 'Êtes-vous sûr de vouloir supprimer ce contact?',
+      noContacts: 'Aucun contact',
+      emptyContacts: 'Liste de contacts vide',
 
       //Status
       all: 'Tous',
@@ -792,9 +945,18 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
-      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant?',
+      disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
+      Enabled: 'Activé',
+      Enable: 'Activer',
+      NotConfigured: 'Non configuré',
+      uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
+      Update: 'Mettre à jour',
+      restart: 'Redémarrer',
+      restartComponentUpdate: 'Nous allons redémarrer le composant pour appliquer votre mise à jour.',
 
       //Channels
+      toConfigure: 'configuration',
+      configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
       facebookTitle: 'Facebook Messenger',
@@ -834,7 +996,7 @@ const resources = {
       sample: 'Echantillon',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
-      infoButtonText: `plus d'informations sur cette source`,
+      infoButtonText: `plus d'informations`,
       addChatplugin: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
       displayName: `Nom d'affichage`,
       addDisplayName: 'Ajouter un nom',
@@ -883,10 +1045,49 @@ const resources = {
       create: 'Créer',
       customize: 'Personnaliser',
       install: 'Installer',
+      uninstall: 'Désinstaller',
+      uninstalled: 'désinstallé',
       addAName: 'Ajouter un nom',
       settings: 'Paramètres',
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
+
+      //Zendesk
+      zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, réseaux sociaux.",
+      ZendeskSubDomain: 'Sous-domaine Zendesk',
+      AddDomain: 'Ajouter un domaine',
+      ZendeskDomain: 'Ton sous-domaine Zendesk',
+      username: "Nom d'utilisateur",
+      AddUsername: "Ajouter un nom d'utilisateur",
+      ZendeskUsername: "Ton nom d'utilisateur Zendesk",
+      ZendeskToken: 'Un token API Zendesk associée à ton utilisateur',
+      APIToken: 'Token API',
+
+      //Dialogflow
+      dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
+      projectID: 'ID du project',
+      AddProjectId: "Ajouter l'ID du project",
+      GoogleApplicationCredentials: 'références de votre app Google',
+      googleAppCredentialsTooltip: 'références de la Cloud Console',
+      AddGoogleApplicationCredentials: 'Ajouter les Google Application Credentials',
+      SuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
+      ReplyConfidenceLevel: 'Niveau de confiance des réponses',
+      fromCloudConsole: 'donné(s) par la Cloud Console',
+      amountSuggestions: 'niveau pour les suggestions',
+      amountReplies: 'niveau pour les réponses',
+      to: 'à',
+
+      //Salesforce
+      salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
+      salesforceOrgUrl: 'URL',
+      yourSalesforceOrgUrl: 'URL Salesforce de votre organisation',
+      salesforceOrgUrlExample: 'Exemple : https://org.my.salesforce.com',
+      Username: "Nom d'utilisateur",
+      yourSalesforceUsername: "Nom d'utilisateur Salesforce",
+      Password: 'Mot de passe',
+      yourSalesforcePassword: 'Mot de passe Salesforce',
+      securityToken: 'Jeton de sécurité',
+      yourSalesforceSecurityToken: 'Jeton de sécurité Salesforce',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -907,7 +1108,6 @@ const resources = {
       installCodeNpm2: ' ici:',
 
       //Facebook Messenger
-
       connectMessenger: 'Connecter le Messenger',
       facebookConfiguration: 'La source Facebook nécessite la configuration suivante:',
       facebookConfigurationText: `Un identifiant et un secret d'application pour que la plateforme puisse renvoyer des messages via votre application Facebook.`,
@@ -918,7 +1118,6 @@ const resources = {
       facebookConfigurationText5: `pour plus d'informations.`,
 
       //Google Business Messages
-
       agentId: `ID de l'agent`,
       googleAgentPlaceholder: `Ajoutez l'identifiant de l'agent fourni par votre partenaire Google`,
       connectGoogle: 'Connecter les messages Google Business',
@@ -930,7 +1129,6 @@ const resources = {
       googleConfigurationText3: `pour plus d'informations.`,
 
       //Instagram
-
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
       instagramAccountPlaceholder: `Ajoutez l'ID de la page Facebook`,
       instagramAccountId: 'ID du compte Instagram',
@@ -945,7 +1143,6 @@ const resources = {
       instagramConfigurationText6: `pour plus d'informations.`,
 
       //Twilio
-
       twilioPhoneNumber: 'Numéro de téléphone de Twilio',
       twilioPhoneNumberPlaceholder: 'Numéro acheté +123456789',
       connectSmsNumber: 'Connecter le numéro Sms',
@@ -966,7 +1163,7 @@ const resources = {
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
       //Connectors
-
+      connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
       noResultsTerm: 'Essayez de rechercher un autre terme.',
       noConnectorsFound: 'Aucun connecteur trouvé',
@@ -976,18 +1173,20 @@ const resources = {
       notInstalled: 'Non installé(s)',
 
       //NotFound
-
       notFound: 'Oups! Page non trouvée.',
 
       //Status
-
       status: 'Statut',
       componentName: 'Nom du composant',
       healthStatus: 'État de santé',
       enabled: 'Activé',
+      enabledLowerCase: 'activé',
+      healthy: 'Santé',
+      notHealthy: 'Non Sain',
+      needsConfiguration: 'Configuration des besoins',
+      disabled: 'Désactivé',
 
       //Webhooks
-
       errorOccurred: `Une erreur s'est produite`,
       successfullySubscribed: 'Souscription réussie!',
       subscribeWebhook: 'Inscrire un webhook',
@@ -1002,10 +1201,20 @@ const resources = {
       updating: 'Mise à jour...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TOUS LES ÉVÉNEMENTS',
+      subscribe: 'Inscrire',
+      noWebhooks: 'Pas de Webhooks trouvés',
+      noWebhooksText: `Vous n'avez pas de Webhooks installé, veuillez vous `,
+      customHeader: 'En-tête du client',
+      signKey: 'Touche de signature',
     },
   },
   es: {
     translation: {
+      //Input Component
+      fieldCannotBeEmpty: 'El campo de texto no puede estar vacío.',
+      invalidURL: 'La URL no es válida',
+      invalidEmail: 'Dirección de correo electrónico no válida',
+
       //Chatplugin
       sendMessageInputPlaceholder: 'Empezar a escribir...',
       cancel: 'Cancelar',
@@ -1041,7 +1250,10 @@ const resources = {
       //Conversation
 
       //Tag
+      tagName: 'Tag Nombre',
+      color: 'Color',
       addATag: 'Añadir una etiqueta',
+      addTag: 'Añadir etiqueta',
       addTagName: 'Por favor, introduzca un nombre de etiqueta',
       tagAlreadyAdded: 'Etiqueta ya añadida',
       addCapital: 'Añadir',
@@ -1057,6 +1269,15 @@ const resources = {
       enterTagName: 'Por favor, introduzca un nombre de etiqueta',
       editTag: 'Editar etiqueta',
       deleteTag: 'Eliminar la etiqueta',
+      deleteTagTextTitle: '¿Estás seguro de que quieres eliminar permanentemente esta etiqueta?',
+      deleteTagText: 'Estás a punto de eliminar permanentemente ',
+      deleteTagText2: ' de las etiquetas de su organización.',
+      deleteTagText3: 'Esta acción no se puede deshacer.',
+      deleteTagText4:
+        ' Una vez que elimine la etiqueta, nadie en su organización podrá utilizarla. También se eliminará de todos los contactos correspondientes',
+      deleteTagText5: 'Escriba ',
+      deleteTagText6: ' para confirmar:',
+      deleteTagConfirm: `Por favor, escriba 'DELETE' en el campo de entrada antes de borrar`,
 
       //Contact
       setName: 'Editar Nombre',
@@ -1077,6 +1298,8 @@ const resources = {
       conversations: 'Conversaciones',
       deleteContact: 'Eliminar el Contacto',
       deleteContactText: '¿Estás seguro de que quieres eliminar este contacto?',
+      noContacts: 'No hay contactos',
+      emptyContacts: 'Lista de contactos vacía',
 
       //Status
       all: 'Todo',
@@ -1125,8 +1348,17 @@ const resources = {
       //Control-Center
       disableComponent: 'Desactivar',
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
+      Enabled: 'Activado',
+      Enable: 'Activar',
+      NotConfigured: 'No configurado',
+      uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
+      Update: 'Actualizar',
+      restart: 'Reiniciar',
+      restartComponentUpdate: 'Reiniciaremos el componente para aplicar su actualización.',
 
       //Channels
+      toConfigure: 'configurar',
+      configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
       facebookTitle: 'Facebook Messenger',
@@ -1166,7 +1398,7 @@ const resources = {
       sample: 'Muestra',
       deleteChannel: '¿Realmente quieres borrar este canal?',
       addChanne: 'Añadir canal',
-      infoButtonText: 'más información sobre esta fuente',
+      infoButtonText: 'más información',
       addChatplugin: 'Añade Airy Live Chat a tu sitio web y aplicación',
       displayName: 'Nombre de la pantalla',
       addDisplayName: 'Añadir un nombre',
@@ -1215,6 +1447,8 @@ const resources = {
       create: 'Crear',
       customize: 'Personalizar',
       install: 'Instalar',
+      uninstall: 'Desinstalar',
+      uninstalled: 'desinstalado',
       addAName: 'Añadir un nombre',
       settings: 'Ajustes',
       installCustomize: 'Instalar & personalizar',
@@ -1236,8 +1470,44 @@ const resources = {
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
 
-      //Facebook Messenger
+      //Zendesk
+      zendeskDescription:
+        'Mantén a tus clientes satisfechos a través de mensajes de texto, correos electrónicos, chat en vivo.',
+      ZendeskSubDomain: 'subdominio Zendesk',
+      AddDomain: 'Añadir el subdominio',
+      ZendeskDomain: 'Tu subdominio Zendesk',
+      username: 'nombre de usuario',
+      AddUsername: 'Añadir el nombre de usuario',
+      ZendeskUsername: 'Tu nombre de usuario Zendesk',
+      ZendeskToken: 'Un token de API Zendesk asociado a tu usuario',
+      APIToken: 'Token de API',
 
+      //Dialogflow
+      dialogflowDescription: 'IA conversacional con agentes virtuales',
+      projectID: 'ID del proyecto',
+      AddProjectId: 'Añadir el ID del proyecto',
+      GoogleApplicationCredentials: 'Google Application Credentials',
+      AddGoogleApplicationCredentials: 'Añadir los Google Application Credentials',
+      SuggestionConfidenceLevel: 'Nivel de confianza para sugerencias',
+      ReplyConfidenceLevel: 'Nivel de confianza para respuestas',
+      to: 'a',
+      fromCloudConsole: 'dado por la Cloud Console',
+      amountSuggestions: 'nivel para sugerencias',
+      amountReplies: 'nivel para respuestas',
+
+      //Salesforce
+      salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
+      salesforceOrgUrl: 'URL de la organización',
+      yourSalesforceOrgUrl: 'La URL de su organización de Salesforce',
+      salesforceOrgUrlExample: 'Ejemplo: https://org.my.salesforce.com',
+      Username: 'Nombre de usuario',
+      yourSalesforceUsername: 'Su nombre de usuario de Salesforce',
+      Password: 'Contraseña',
+      yourSalesforcePassword: 'Su contraseña de Salesforce',
+      securityToken: 'Token de seguridad',
+      yourSalesforceSecurityToken: 'Su token de seguridad de Salesforce',
+
+      //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',
       facebookConfiguration: 'La fuente de Facebook requiere la siguiente configuración:',
       facebookConfigurationText:
@@ -1249,7 +1519,6 @@ const resources = {
       facebookConfigurationText5: 'para más información.',
 
       //Google Business Messages
-
       agentId: 'Identificación del agente',
       googleAgentPlaceholder: 'Añade el ID de agente proporcionado por tu Google Partner',
       connectGoogle: 'Conectar los mensajes de Google Business',
@@ -1261,7 +1530,6 @@ const resources = {
       googleConfigurationText3: 'para más información.',
 
       //Instagram
-
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
       instagramAccountPlaceholder: 'Añade el ID de la página de Facebook',
       instagramAccountId: 'ID de la cuenta de Instagram',
@@ -1277,7 +1545,6 @@ const resources = {
       instagramConfigurationText6: 'para más información.',
 
       //Twilio
-
       twilioPhoneNumber: 'Número de teléfono de Twilio',
       twilioPhoneNumberPlaceholder: 'Número de compra +123456789',
       connectSmsNumber: 'Conectar número Sms',
@@ -1298,7 +1565,7 @@ const resources = {
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
       //Connectors
-
+      connectors: 'Conectores',
       noResults: 'Resultado no encontrado.',
       noResultsTerm: 'Intente buscar un término diferente.',
       noConnectorsFound: 'No se han encontrado conectores',
@@ -1308,18 +1575,20 @@ const resources = {
       notInstalled: 'No Instalado(s)',
 
       //NotFound
-
       notFound: '¡Uy! No pudimos encontrarlo aquí.',
 
       //Status
-
       status: 'Estatus',
       componentName: 'Nombre del componente',
       healthStatus: 'Estado de salud',
       enabled: 'Activado',
+      enabledLowerCase: 'activado',
+      healthy: 'Saludable',
+      notHealthy: 'No es Saludable',
+      needsConfiguration: 'Configuración de las necesidades',
+      disabled: 'Discapacitados',
 
       //Webhooks
-
       errorOccurred: 'Se ha producido un error',
       successfullySubscribed: '¡Suscrito con éxito!',
       subscribeWebhook: 'Suscripción de Webhook',
@@ -1334,6 +1603,11 @@ const resources = {
       updating: 'Actualizar...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TODOS LOS EVENTOS',
+      subscribe: 'Suscripción',
+      noWebhooks: 'No se han encontrado webhooks',
+      noWebhooksText: 'No tiene instalado ningún Webhooks, por favor, ',
+      customHeader: 'Cabecera del cliente',
+      signKey: 'Clave de la firma',
     },
   },
 };

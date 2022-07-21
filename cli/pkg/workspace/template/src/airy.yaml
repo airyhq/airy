@@ -1,6 +1,3 @@
-security:
-  allowedOrigins: '*'
-  jwtSecret: {{ randAlphaNum 128 }}
 {{- if .Host }}
 global:
   host: {{ .Host }}

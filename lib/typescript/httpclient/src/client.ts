@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template, Contact} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template, Contact, Components} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -29,6 +29,8 @@ import {
   UpdateWebhookRequestPayload,
   ListContactsRequestPayload,
   EnableDisableComponentRequestPayload,
+  UpdateComponentConfigurationRequestPayload,
+  InstallUninstallComponentRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -68,6 +70,11 @@ import {
   listContactsDef,
   deleteContactDef,
   enableDisableComponentDef,
+  updateComponentConfigurationDef,
+  getComponentsDef,
+  installComponentDef,
+  uninstallComponentDef,
+  componentsListDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -252,6 +259,18 @@ export class HttpClient {
   public deleteContact = this.getRequest<string>(deleteContactDef);
 
   public enableDisableComponent = this.getRequest<EnableDisableComponentRequestPayload>(enableDisableComponentDef);
+
+  public getComponents = this.getRequest<void, Components>(getComponentsDef);
+
+  public updateComponentConfiguration = this.getRequest<UpdateComponentConfigurationRequestPayload>(
+    updateComponentConfigurationDef
+  );
+
+  public installComponent = this.getRequest<InstallUninstallComponentRequestPayload>(installComponentDef);
+
+  public uninstallComponent = this.getRequest<InstallUninstallComponentRequestPayload>(uninstallComponentDef);
+
+  public listComponents = this.getRequest<void, Components>(componentsListDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

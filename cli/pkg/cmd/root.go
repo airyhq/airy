@@ -117,7 +117,7 @@ func init() {
 	apihost := ""
 	RootCmd.PersistentFlags().StringVar(&apihost, "apihost", "", "Airy Core HTTP API endpoint")
 	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
-	viper.SetDefault("apihost", "http://airy.core")
+	viper.SetDefault("apihost", "http://localhost")
 
 	RootCmd.PersistentFlags().StringVar(&cliConfigDir, "workspace", "", "workspace directory of an Airy core instance (default is the cwd)")
 	RootCmd.AddCommand(api.APICmd)

@@ -44,7 +44,7 @@ public class Application {
                 "\n" +
                 "    ZOOKEEPER=${ZOOKEEPER:-zookeeper:2181}\n" +
                 "    PARTITIONS=${PARTITIONS:-10}\n" +
-                "    REPLICAS=${REPLICAS:-1}\n" +
+                "    REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}\n" +
                 "    AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +
                 "\n" +
                 "    echo \"Creating Kafka topics\"\n" +

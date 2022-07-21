@@ -112,3 +112,72 @@ The list of the deleted components is returned.
   }
 }
 ```
+
+## List
+
+List all the components, both installed and not installed.
+
+`POST /components.list`
+
+**Sample request**
+
+```json
+{
+  "repository": "airy-core" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "components": [
+    {
+      "name": "sources-facebook",
+      "repository": "airy-core",
+      "installed": true
+    },
+    {
+      "name": "sources-google",
+      "repository": "airy-core",
+      "installed": false
+    }
+  ]
+}
+```
+
+## Install
+
+Install a new component.
+
+`POST /components.install`
+
+**Sample request**
+
+```json
+{
+  "name": "airy-core/sources-chatplugin"
+}
+```
+
+**(201) Success Response Payload**
+
+## Uninstall
+
+Uninstall an existing component.
+
+`POST /components.uninstall`
+
+**Sample request**
+
+```json
+{
+  "name": "airy-enterprise/dialogflow-connector"
+}
+```
+
+**(201) Success Response Payload**
+
+```
+
+```

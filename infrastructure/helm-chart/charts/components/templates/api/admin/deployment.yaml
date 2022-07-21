@@ -30,6 +30,8 @@ spec:
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
+              name: kafka-config
+          - configMapRef:
               name: security
           - configMapRef:
               name: core-config
@@ -44,21 +46,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels['app']
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_SCHEMA_REGISTRY_URL
-        - name: KAFKA_COMMIT_INTERVAL_MS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_COMMIT_INTERVAL_MS
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -76,17 +63,9 @@ spec:
         image: "{{ .Values.global.busyboxImage }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: kafka-config
-              key: KAFKA_BROKERS
-        - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

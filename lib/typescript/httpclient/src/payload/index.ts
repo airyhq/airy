@@ -29,3 +29,5 @@ export * from './SubscribeWebhookRequestPayload';
 export * from './UnsubscribeWebhookRequestPayload';
 export * from './UpdateWebhookRequestPayload';
 export * from './EnableDisableComponentRequestPayload';
+export * from './UpdateComponentConfigurationRequestPayload';
+export * from './InstallUninstallComponentRequestPayload';

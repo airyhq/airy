@@ -19,8 +19,8 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
   const [password, setPassword] = useState(componentInfo?.password || '');
   const [securityToken, setSecurityToken] = useState(componentInfo?.securityToken || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-
   const {t} = useTranslation();
+  const isUrlValid = url && (url.startsWith('https') || url.startsWith('http'));
 
   const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,7 +98,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
       <Button
         styleVariant="small"
         type="button"
-        disabled={!url || !username || !password || !securityToken}
+        disabled={!isUrlValid || !username || !password || !securityToken}
         style={{padding: '20px 60px'}}
         onClick={e => submitConfigData(e)}
         dataCy={cyChannelsSalesforceAddButton}

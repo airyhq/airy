@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/airyhq/airy/infrastructure/controller/pkg/db"
 	"github.com/gorilla/mux"
 	helmCli "github.com/mittwald/go-helm-client"
 	"helm.sh/helm/v3/pkg/repo"
@@ -67,7 +68,8 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 
-	componentsList := ComponentsList{Cli: helmCli, ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
+	db := db.MustNewDB()
+	componentsList := ComponentsList{Cli: helmCli, ClientSet: clientSet, Namespace: namespace, Index: helmIndex, DB: &db}
 	r.Handle("/components.list", &componentsList)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

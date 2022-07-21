@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/airyhq/airy/infrastructure/controller/pkg/db"
 	helmCli "github.com/mittwald/go-helm-client"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/helm/cmd/helm/search"
@@ -15,6 +16,7 @@ type ComponentsList struct {
 	ClientSet *kubernetes.Clientset
 	Namespace string
 	Index     *search.Index
+	DB        *db.DB
 }
 
 //NOTE: We don't know yet how or where some properties like AvailableFor/Categories/Price
@@ -37,7 +39,13 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	components := make(map[string]*componentsDetails)
+	components, err := s.DB.GetComponentsData()
+	if err != nil {
+		klog.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	seen := make(map[string]struct{})
 	for _, chart := range s.Index.All() {
 		if _, ok := seen[chart.Name]; ok {
@@ -45,12 +53,10 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		seen[chart.Name] = struct{}{}
 
-		c := &componentsDetails{
-			Name:      chart.Name,
-			Installed: deployedCharts[chart.Chart.Name],
+		if components[chart.Name] == nil {
+			components[chart.Name] = make(map[string]interface{})
 		}
-
-		components[chart.Name] = c
+		components[chart.Name]["installed"] = deployedCharts[chart.Chart.Name]
 	}
 
 	blob, err := json.Marshal(map[string]interface{}{"components": components})

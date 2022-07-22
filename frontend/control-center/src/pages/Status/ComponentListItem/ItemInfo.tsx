@@ -5,6 +5,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {getSourcesInfo} from '../../../components/SourceInfo';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
@@ -38,13 +39,14 @@ const formatName = (name: string) => {
 };
 
 const isConfigurableConnector = (name: string) => {
-  return (
-    (name.includes('sources') || name.includes('enterprise')) &&
-    !name.includes('salesforce') &&
-    !name.includes('mobile') &&
-    !name.includes('zendesk')
-  );
-};
+  let isConfigurable = false;
+
+  getSourcesInfo().forEach(elem => {
+    if(elem.configKey === name) isConfigurable = true;
+  });
+
+  return isConfigurable;
+}
 
 const ItemInfo = (props: ComponentInfoProps) => {
   const connectors = useSelector((state: StateModel) => state.data.connector);
@@ -55,8 +57,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
-  const connectorInstalltionConfig =
-    connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
+
+  const isComponentConfigurable = isConfigurableConnector(itemName);
+
+  const isComponentConfigured =
+    connectors[formatName(itemName)] &&
+    isComponentConfigurable &&
+    Object.keys(connectors[formatName(itemName)]).length > 0;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -86,8 +93,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 <div
                   className={`${styles.arrowDownIcon} ${
                     isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose
-                  }`}
-                >
+                  }`}>
                   <ArrowRight width={8} />
                 </div>
                 <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
@@ -102,7 +108,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig && healthy ? ( 
+            {isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured  ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
                 hoverElementHeight={20}
@@ -133,7 +139,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
             )}
           </div>
 
-          {isComponent && (
+          {isComponent && ((isComponentConfigurable && isComponentConfigured) || !isComponentConfigurable || (isComponentConfigurable && !healthy)) && (
             <div className={styles.enabled}>
               <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
             </div>
@@ -149,15 +155,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
           close={() => {
             setEnablePopupVisible(false);
             setIsPopUpOpen(false);
-          }}
-        >
+          }}>
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
             style={{padding: '0 60Px'}}
             type="submit"
-            onClick={() => triggerEnableDisableAction(false)}
-          >
+            onClick={() => triggerEnableDisableAction(false)}>
             {t('disableComponent')}
           </Button>
         </SettingsModal>

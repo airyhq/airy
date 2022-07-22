@@ -42,11 +42,11 @@ const isConfigurableConnector = (name: string) => {
   let isConfigurable = false;
 
   getSourcesInfo().forEach(elem => {
-    if(elem.configKey === name) isConfigurable = true;
+    if (elem.configKey === name) isConfigurable = true;
   });
 
   return isConfigurable;
-}
+};
 
 const ItemInfo = (props: ComponentInfoProps) => {
   const connectors = useSelector((state: StateModel) => state.data.connector);
@@ -58,11 +58,9 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
 
-  const isComponentConfigurable = isConfigurableConnector(itemName);
-
   const isComponentConfigured =
     connectors[formatName(itemName)] &&
-    isComponentConfigurable &&
+    isConfigurableConnector(itemName) &&
     Object.keys(connectors[formatName(itemName)]).length > 0;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
@@ -93,7 +91,8 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 <div
                   className={`${styles.arrowDownIcon} ${
                     isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose
-                  }`}>
+                  }`}
+                >
                   <ArrowRight width={8} />
                 </div>
                 <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
@@ -108,7 +107,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured  ? (
+            {isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
                 hoverElementHeight={20}
@@ -139,11 +138,14 @@ const ItemInfo = (props: ComponentInfoProps) => {
             )}
           </div>
 
-          {isComponent && ((isComponentConfigurable && isComponentConfigured) || !isComponentConfigurable || (isComponentConfigurable && !healthy)) && (
-            <div className={styles.enabled}>
-              <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
-            </div>
-          )}
+          {isComponent &&
+            ((isConfigurableConnector(itemName) && isComponentConfigured) ||
+              !isConfigurableConnector(itemName) ||
+              (isConfigurableConnector(itemName) && !healthy)) && (
+              <div className={styles.enabled}>
+                <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
+              </div>
+            )}
         </div>
       )}
 
@@ -155,13 +157,15 @@ const ItemInfo = (props: ComponentInfoProps) => {
           close={() => {
             setEnablePopupVisible(false);
             setIsPopUpOpen(false);
-          }}>
+          }}
+        >
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
             style={{padding: '0 60Px'}}
             type="submit"
-            onClick={() => triggerEnableDisableAction(false)}>
+            onClick={() => triggerEnableDisableAction(false)}
+          >
             {t('disableComponent')}
           </Button>
         </SettingsModal>

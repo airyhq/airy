@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {connect, ConnectedProps, useSelector } from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
 import {Button, SettingsModal} from 'components';
@@ -63,19 +63,26 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useEffect(() => {
     console.log('isConfigured', isConfigured);
-}, [isConfigured]);
+  }, [isConfigured]);
 
   useEffect(() => {
-    if(connectorInfo && connectorConfiguration && connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]){
+    if (
+      connectorInfo &&
+      connectorConfiguration &&
+      connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]
+    ) {
       console.log('connectorInfo', connectorInfo);
-      console.log('connectorConfig', connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]);
-      console.log('connectorConfig obj entries ', Object.entries(connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]));
-  
-      if( Object.entries(connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]).length > 0){
+      console.log('connectorConfig', connectorConfiguration[connectorInfo.componentName]);
+      console.log('connectorConfig obj entries ', Object.entries(connectorConfiguration[connectorInfo.componentName]));
+
+      if (
+        Object.entries(connectorConfiguration[connectorInfo.componentName]) &&
+        Object.entries(connectorConfiguration[connectorInfo.componentName]).length > 0
+      ) {
         setIsConfigured(true);
       }
     }
-  }, [connectorInfo, connectorConfiguration])
+  }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
     getConnectorsConfiguration();
@@ -234,14 +241,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       text={t('infoButtonText')}
                     />
                   </div>
-                  <Button
-                    styleVariant="small"
-                    type="button"
-                    onClick={openModal}
-                    style={{padding: '20px 40px', marginTop: '-12px'}}
-                  >
-                    {isEnabled ? t('disableComponent') : t('Enable')}
-                  </Button>
+
+                  {isConfigured && (
+                    <Button
+                      styleVariant="small"
+                      type="button"
+                      onClick={openModal}
+                      style={{padding: '20px 40px', marginTop: '-12px'}}
+                    >
+                      {isEnabled ? t('disableComponent') : t('Enable')}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

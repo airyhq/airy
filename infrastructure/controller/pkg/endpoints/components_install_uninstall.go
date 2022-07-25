@@ -52,6 +52,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		Namespace:   s.Namespace,
 		UpgradeCRDs: true,
 		Replace:     true,
+		Force:       true,
 		ValuesYaml:  globals,
 	}
 

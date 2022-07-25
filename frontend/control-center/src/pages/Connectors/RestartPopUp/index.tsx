@@ -23,11 +23,12 @@ const RestartPopUp = (props: RestartPopUpProps) => {
 
   const restartComponent = async e => {
     e.preventDefault();
-    closeRestartPopUp();
 
     enableSubmitConfigData();
     await enableDisableComponent({components: [{name: componentName, enabled: false}]});
     await enableDisableComponent({components: [{name: componentName, enabled: true}]});
+
+    closeRestartPopUp();
   };
 
   return (

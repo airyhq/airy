@@ -229,8 +229,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div className={styles.textContainer}>
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
-
-                  {}
                   <ConfigStatusButton
                     enabled={isEnabled ? 'Enabled' : !isEnabled ? 'Disabled' : 'Not Configured'}
                     customStyle={styles.configStatusButton}

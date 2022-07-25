@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {Button, Input} from 'components';
+import {Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
-import {cyChannelsDialogflowAddButton} from 'handles';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -49,6 +48,9 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
+      disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
+      isConfigured={isConfigured}
+      updateConfig={updateConfig}
     >
       <div className={styles.formRow}>
         <Input
@@ -117,16 +119,6 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           fontClass="font-base"
         />
       </div>
-      <Button
-        styleVariant="small"
-        type="button"
-        disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
-        style={{padding: '20px 60px'}}
-        onClick={e => updateConfig(e)}
-        dataCy={cyChannelsDialogflowAddButton}
-      >
-        {isConfigured ? t('Update') : t('configure')}
-      </Button>
     </ConnectNewForm>
   );
 };

@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {Button, Input} from 'components';
+import {Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
-import {cyChannelsSalesforceAddButton} from 'handles';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
@@ -42,6 +41,9 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
+      disabled={!isUrlValid || !username || !password || !securityToken}
+      isConfigured={isConfigured}
+      updateConfig={updateConfig}
     >
       <div className={styles.formRow}>
         <Input
@@ -104,16 +106,6 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
           fontClass="font-base"
         />
       </div>
-      <Button
-        styleVariant="small"
-        type="button"
-        disabled={!isUrlValid || !username || !password || !securityToken}
-        style={{padding: '20px 60px'}}
-        onClick={e => updateConfig(e)}
-        dataCy={cyChannelsSalesforceAddButton}
-      >
-        {isConfigured ? t('Update') : t('configure')}
-      </Button>
     </ConnectNewForm>
   );
 };

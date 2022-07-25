@@ -59,10 +59,15 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const {t} = useTranslation();
 
   const isComponentConfigured =
-    itemName.includes('sources') ||
-    (connectors[formatName(itemName)] &&
-      isConfigurableConnector(itemName) &&
-      Object.keys(connectors[formatName(itemName)]).length > 0);
+    connectors[formatName(itemName)] &&
+    isConfigurableConnector(itemName) &&
+    Object.keys(connectors[formatName(itemName)]).length > 0;
+
+  //status
+  const needsConfig = isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured;
+  const isRunning = healthy && enabled;
+  const isNotHealthy = !healthy && enabled;
+  const isDisabled = !enabled;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -77,7 +82,6 @@ const ItemInfo = (props: ComponentInfoProps) => {
       setIsPopUpOpen(false);
       return;
     }
-
     setEnablePopupVisible(true);
     setIsPopUpOpen(true);
   };
@@ -108,21 +112,21 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured ? (
+            {needsConfig ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('needsConfiguration')}
               />
-            ) : healthy && enabled ? (
+            ) : isRunning ? (
               <Tooltip
                 hoverElement={<CheckmarkIcon className={styles.icons} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('healthy')}
               />
-            ) : !healthy && enabled ? (
+            ) : isNotHealthy ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
                 hoverElementHeight={20}
@@ -130,7 +134,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 tooltipContent={t('notHealthy')}
               />
             ) : (
-              !enabled && (
+              isDisabled && (
                 <Tooltip
                   hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
                   hoverElementHeight={20}
@@ -141,14 +145,11 @@ const ItemInfo = (props: ComponentInfoProps) => {
             )}
           </div>
 
-          {isComponent &&
-            ((isConfigurableConnector(itemName) && isComponentConfigured) ||
-              !isConfigurableConnector(itemName) ||
-              (isConfigurableConnector(itemName) && !healthy)) && (
-              <div className={styles.enabled}>
-                <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
-              </div>
-            )}
+          {!needsConfig && (
+            <div className={styles.enabled}>
+              <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
+            </div>
+          )}
         </div>
       )}
 

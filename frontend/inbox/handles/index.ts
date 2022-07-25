@@ -19,14 +19,14 @@ export const cyTagsTableRowDisplayDeleteModal = 'tagsTableRowDisplayDeleteModal'
 export const cyTagsTableRowDisplayDeleteModalInput = 'tagsTableRowDisplayDeleteModalInput';
 export const cyTagsTableRowDisplayDeleteModalButton = 'tagsTableRowDisplayDeleteModalButton';
 
+export const cyConnectorAddButton = 'connectorAddButton';
+
 export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
 export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';
 export const cyChannelsTwilioSmsAddButton = 'channelsTwilioSmsAddButton';
 export const cyChannelsTwilioWhatsappAddButton = 'channelsTwilioWhatsappAddButton';
 export const cyChannelsGoogleAddButton = 'channelsGoogleAddButton';
-export const cyChannelsDialogflowAddButton = 'channelsDialogflowAddButton';
-export const cyChannelsZendeskAddButton = 'channelsZendeskAddButton';
-export const cyChannelsSalesforceAddButton = 'channelsSalesforceAddButton';
+
 export const cyChannelsChatPluginList = 'channelsChatPluginList';
 export const cyChannelsFacebookList = 'channelsFacebookList';
 export const cyChannelsTwilioSmsList = 'channelsTwilioSmsList';

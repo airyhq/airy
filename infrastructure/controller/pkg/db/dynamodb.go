@@ -2,8 +2,10 @@ package db
 
 import (
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
@@ -16,10 +18,21 @@ type DB struct {
 }
 
 func MustNewDB() DB {
-	//NOTE: The credentials are defined in the default ~/.aws folder
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
+	accessKey, keyOk := os.LookupEnv("DYNAMODB_ACCESS_KEY_ID")
+	secretKey, secretOk := os.LookupEnv("DYNAMODB_SECRET_ACCESS_KEY")
+	if !keyOk || !secretOk {
+		log.Fatal("dynamodb credentials not found")
+	}
+
+	sess := session.Must(session.NewSession(
+		aws.NewConfig().WithCredentials(
+			credentials.NewStaticCredentials(
+				accessKey,
+				secretKey,
+				"",
+			),
+		).WithRegion("us-east-1"),
+	))
 	svc := dynamodb.New(sess)
 
 	_, err := svc.DescribeTable(&dynamodb.DescribeTableInput{

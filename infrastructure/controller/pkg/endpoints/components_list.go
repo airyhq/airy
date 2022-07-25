@@ -19,18 +19,6 @@ type ComponentsList struct {
 	DB        *db.DB
 }
 
-//NOTE: We don't know yet how or where some properties like AvailableFor/Categories/Price
-//      are going to get stores, so for now they are defined but not used
-
-type componentsDetails struct {
-	Name         string `json:"-"`
-	Description  string `json:"description"`
-	Installed    bool   `json:"installed"`
-	AvailableFor string `json:"availableFor"`
-	Categories   string `json:"categories"`
-	Price        string `json:"price"`
-}
-
 func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	deployedCharts, err := s.getDeployedCharts()
 	if err != nil {

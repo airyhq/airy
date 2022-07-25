@@ -64,14 +64,14 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	r.Handle("/cluster.update", clusterUpdate)
 
 	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
-	_ = cache.MustNewDeployedCharts()
+	deployedCharts := cache.MustNewDeployedCharts(helmCli)
 
 	componentsInstallUninstall := ComponentsInstallUninstall{Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 
 	db := db.MustNewDB()
-	componentsList := ComponentsList{Cli: helmCli, ClientSet: clientSet, Namespace: namespace, Index: helmIndex, DB: &db}
+	componentsList := ComponentsList{DeployedCharts: deployedCharts, ClientSet: clientSet, Namespace: namespace, Index: helmIndex, DB: &db}
 	r.Handle("/components.list", &componentsList)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

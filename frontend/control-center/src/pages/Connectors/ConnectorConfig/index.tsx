@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
 import {Button, SettingsModal} from 'components';
@@ -53,11 +53,24 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
 
   const {channelId} = useParams();
+  const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [isConfigured, setIsConfigured] = useState(false);
   const {t} = useTranslation();
+
+  useEffect(() => {
+    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
+      if (
+        Object.entries(connectorConfiguration[connectorInfo.componentName]) &&
+        Object.entries(connectorConfiguration[connectorInfo.componentName]).length > 0
+      ) {
+        setIsConfigured(true);
+      }
+    }
+  }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
     getConnectorsConfiguration();
@@ -84,10 +97,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             name: connectorInfo && connectorInfo?.configKey,
             enabled: true,
             data: {
-              project_id: projectId,
-              dialogflow_credentials: appCredentials,
-              suggestion_confidence_level: suggestionConfidenceLevel,
-              reply_confidence_level: replyConfidenceLevel,
+              projectId: projectId,
+              dialogflowCredentials: appCredentials,
+              suggestionConfidenceLevel: suggestionConfidenceLevel,
+              replyConfidenceLevel: replyConfidenceLevel,
             },
           },
         ],
@@ -140,15 +153,33 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const PageContent = () => {
     if (connector === Source.dialogflow) {
-      return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewDialogflow
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.zendesk) {
-      return <ConnectNewZendesk createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewZendesk
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.salesforce) {
-      return <ConnectNewSalesforce createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewSalesforce
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
   };
 
@@ -214,14 +245,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       text={t('infoButtonText')}
                     />
                   </div>
-                  <Button
-                    styleVariant="small"
-                    type="button"
-                    onClick={openModal}
-                    style={{padding: '20px 40px', marginTop: '-12px'}}
-                  >
-                    {isEnabled ? t('disableComponent') : t('Enable')}
-                  </Button>
+
+                  {isConfigured && (
+                    <Button
+                      styleVariant="small"
+                      type="button"
+                      onClick={openModal}
+                      style={{padding: '20px 40px', marginTop: '-12px'}}
+                    >
+                      {isEnabled ? t('disableComponent') : t('Enable')}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

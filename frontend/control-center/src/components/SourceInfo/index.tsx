@@ -17,9 +17,6 @@ import {
   cyChannelsTwilioSmsAddButton,
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsInstagramAddButton,
-  cyChannelsDialogflowAddButton,
-  cyChannelsZendeskAddButton,
-  cyChannelsSalesforceAddButton,
 } from 'handles';
 import {
   CONNECTORS_CONNECTED_ROUTE,
@@ -46,7 +43,7 @@ export type SourceInfo = {
   componentName: string;
   repository: string;
   itemInfoString: string;
-  dataCyAddChannelButton: string;
+  dataCyAddChannelButton?: string;
   docs: string;
 };
 
@@ -164,7 +161,6 @@ export const getSourcesInfo = (): SourceInfo[] => {
       componentName: 'dialogflow-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsDialogflowAddButton,
       docs: 'https://dialogflow.cloud.google.com/cx/projects',
     },
     {
@@ -179,7 +175,6 @@ export const getSourcesInfo = (): SourceInfo[] => {
       componentName: 'zendesk-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsZendeskAddButton,
       docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
     },
     {
@@ -194,7 +189,6 @@ export const getSourcesInfo = (): SourceInfo[] => {
       componentName: 'salesforce-contacts-ingestion',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsSalesforceAddButton,
       docs: 'https://airy.co/docs/enterprise/apps/salesforce-contacts-ingestion/deployment',
     },
   ];

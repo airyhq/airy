@@ -5,6 +5,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {getSourcesInfo} from '../../../components/SourceInfo';
 import {getComponentName} from '../../../services';
 import {getSourceForComponent} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
@@ -38,25 +39,35 @@ const formatName = (name: string) => {
 };
 
 const isConfigurableConnector = (name: string) => {
-  return (
-    (name.includes('sources') || name.includes('enterprise')) &&
-    !name.includes('salesforce') &&
-    !name.includes('mobile') &&
-    !name.includes('zendesk')
-  );
+  let isConfigurable = false;
+
+  getSourcesInfo().forEach(elem => {
+    if (elem.configKey === name) isConfigurable = true;
+  });
+
+  return isConfigurable;
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const connectors = useSelector((state: StateModel) => state.data.connector);
   const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
-  const connectorInstalltionConfig =
-    connectors[formatName(itemName)] && Object.keys(connectors[formatName(itemName)]).length > 0;
+
+  const isComponentConfigured =
+    connectors[formatName(itemName)] &&
+    isConfigurableConnector(itemName) &&
+    Object.keys(connectors[formatName(itemName)]).length > 0;
+
+  //status
+  const needsConfig = isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured;
+  const isRunning = healthy && enabled;
+  const isNotHealthy = !healthy && enabled;
+  const isDisabled = !enabled;
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -71,7 +82,6 @@ const ItemInfo = (props: ComponentInfoProps) => {
       setIsPopUpOpen(false);
       return;
     }
-
     setEnablePopupVisible(true);
     setIsPopUpOpen(true);
   };
@@ -102,21 +112,21 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {isComponent && isConfigurableConnector(itemName) && enabled && !connectorInstalltionConfig ? (
+            {needsConfig ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('needsConfiguration')}
               />
-            ) : healthy && enabled ? (
+            ) : isRunning ? (
               <Tooltip
                 hoverElement={<CheckmarkIcon className={styles.icons} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('healthy')}
               />
-            ) : !healthy && enabled ? (
+            ) : isNotHealthy ? (
               <Tooltip
                 hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
                 hoverElementHeight={20}
@@ -124,16 +134,18 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 tooltipContent={t('notHealthy')}
               />
             ) : (
-              <Tooltip
-                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
-                hoverElementHeight={20}
-                hoverElementWidth={20}
-                tooltipContent={t('disabled')}
-              />
+              isDisabled && (
+                <Tooltip
+                  hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
+                  hoverElementHeight={20}
+                  hoverElementWidth={20}
+                  tooltipContent={t('disabled')}
+                />
+              )
             )}
           </div>
 
-          {isComponent && (
+          {!needsConfig && (
             <div className={styles.enabled}>
               <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
             </div>

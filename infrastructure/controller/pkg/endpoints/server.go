@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/infrastructure/controller/pkg/db"
 	"github.com/gorilla/mux"
 	helmCli "github.com/mittwald/go-helm-client"
@@ -63,6 +64,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	r.Handle("/cluster.update", clusterUpdate)
 
 	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
+	_ = cache.MustNewDeployedCharts()
 
 	componentsInstallUninstall := ComponentsInstallUninstall{Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)

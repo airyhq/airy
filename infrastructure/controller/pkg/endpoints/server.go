@@ -66,7 +66,7 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
 	deployedCharts := cache.MustNewDeployedCharts(helmCli)
 
-	componentsInstallUninstall := ComponentsInstallUninstall{Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
+	componentsInstallUninstall := ComponentsInstallUninstall{DeployedCharts: deployedCharts, Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 

@@ -48,10 +48,13 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 		r.Use(authMiddleware.Middleware)
 	}
 
+	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
+	deployedCharts := cache.MustNewDeployedCharts(helmCli)
+
 	services := &Services{clientSet: clientSet, namespace: namespace}
 	r.Handle("/services", services)
 
-	componentsUpdate := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
+	componentsUpdate := &ComponentsUpdate{DeployedCharts: deployedCharts, clientSet: clientSet, namespace: namespace}
 	r.Handle("/components.update", componentsUpdate)
 
 	componentsDelete := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
@@ -62,9 +65,6 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
-
-	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
-	deployedCharts := cache.MustNewDeployedCharts(helmCli)
 
 	componentsInstallUninstall := ComponentsInstallUninstall{DeployedCharts: deployedCharts, Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)

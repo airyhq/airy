@@ -67,6 +67,7 @@ func (db *DB) GetComponentsData() (map[string]map[string]interface{}, error) {
 			}
 		}
 
+		c["installed"] = false
 		componentsDetails[*name.S] = c
 	}
 

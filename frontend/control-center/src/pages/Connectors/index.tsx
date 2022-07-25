@@ -59,8 +59,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   };
 
   const isComponentInstalled = (repository: string, componentName: string) => {
-    const prefix = repository === 'enterprise' ? 'airy-enterprise' : 'airy-core';
-    const componentNameCatalog = prefix + '/' + componentName;
+    const componentNameCatalog = repository + '/' + componentName;
     return catalogList[componentNameCatalog] && catalogList[componentNameCatalog].installed === true;
   };
 

@@ -10,9 +10,10 @@ import styles from './index.module.scss';
 type ConnectNewSalesforceProps = {
   createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNewSalesforceProps) => {
+export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigured}: ConnectNewSalesforceProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['salesforce-contacts-ingestion']);
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -22,10 +23,17 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
   const {t} = useTranslation();
   const isUrlValid = url && (url.startsWith('https') || url.startsWith('http'));
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
     createNewConnection(url, username, password, securityToken);
-    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
@@ -33,6 +41,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
       componentName="enterprise-salesforce-contacts-ingestion"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
     >
       <div className={styles.formRow}>
         <Input
@@ -100,10 +109,10 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
         type="button"
         disabled={!isUrlValid || !username || !password || !securityToken}
         style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
+        onClick={e => updateConfig(e)}
         dataCy={cyChannelsSalesforceAddButton}
       >
-        {isEnabled ? t('Update') : t('configure')}
+        {isConfigured ? t('Update') : t('configure')}
       </Button>
     </ConnectNewForm>
   );

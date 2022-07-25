@@ -62,19 +62,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
 
   useEffect(() => {
-    console.log('isConfigured', isConfigured);
-  }, [isConfigured]);
-
-  useEffect(() => {
-    if (
-      connectorInfo &&
-      connectorConfiguration &&
-      connectorConfiguration[`${connectorInfo.repository}/${connectorInfo.componentName}`]
-    ) {
-      console.log('connectorInfo', connectorInfo);
-      console.log('connectorConfig', connectorConfiguration[connectorInfo.componentName]);
-      console.log('connectorConfig obj entries ', Object.entries(connectorConfiguration[connectorInfo.componentName]));
-
+    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
       if (
         Object.entries(connectorConfiguration[connectorInfo.componentName]) &&
         Object.entries(connectorConfiguration[connectorInfo.componentName]).length > 0
@@ -109,10 +97,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             name: connectorInfo && connectorInfo?.configKey,
             enabled: true,
             data: {
-              project_id: projectId,
-              dialogflow_credentials: appCredentials,
-              suggestion_confidence_level: suggestionConfidenceLevel,
-              reply_confidence_level: replyConfidenceLevel,
+              projectId: projectId,
+              dialogflowCredentials: appCredentials,
+              suggestionConfidenceLevel: suggestionConfidenceLevel,
+              replyConfidenceLevel: replyConfidenceLevel,
             },
           },
         ],
@@ -165,15 +153,33 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const PageContent = () => {
     if (connector === Source.dialogflow) {
-      return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewDialogflow
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.zendesk) {
-      return <ConnectNewZendesk createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewZendesk
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.salesforce) {
-      return <ConnectNewSalesforce createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewSalesforce
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
   };
 

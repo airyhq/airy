@@ -7,6 +7,7 @@ interface ConnectNewFormProps {
   componentName: string;
   isUpdateModalVisible: boolean;
   setIsUpdateModalVisible: React.Dispatch<SetStateAction<boolean>>;
+  enableSubmitConfigData: () => void;
 }
 
 export const ConnectNewForm = ({
@@ -14,6 +15,7 @@ export const ConnectNewForm = ({
   componentName,
   isUpdateModalVisible,
   setIsUpdateModalVisible,
+  enableSubmitConfigData,
 }: ConnectNewFormProps) => {
   return (
     <section className={styles.formWrapper}>
@@ -21,7 +23,11 @@ export const ConnectNewForm = ({
         <form>{children}</form>
       </div>
       {isUpdateModalVisible && (
-        <RestartPopUp componentName={componentName} closeRestartPopUp={() => setIsUpdateModalVisible(false)} />
+        <RestartPopUp
+          componentName={componentName}
+          closeRestartPopUp={() => setIsUpdateModalVisible(false)}
+          enableSubmitConfigData={enableSubmitConfigData}
+        />
       )}
     </section>
   );

@@ -14,16 +14,20 @@ const connector = connect(null, mapDispatchToProps);
 type RestartPopUpProps = {
   closeRestartPopUp: () => void;
   componentName: string;
+  enableSubmitConfigData: () => void;
 } & ConnectedProps<typeof connector>;
 
 const RestartPopUp = (props: RestartPopUpProps) => {
-  const {closeRestartPopUp, componentName, enableDisableComponent} = props;
+  const {closeRestartPopUp, componentName, enableDisableComponent, enableSubmitConfigData} = props;
   const {t} = useTranslation();
 
-  const restartComponent = async () => {
+  const restartComponent = async e => {
+    e.preventDefault();
+    closeRestartPopUp();
+
+    enableSubmitConfigData();
     await enableDisableComponent({components: [{name: componentName, enabled: false}]});
     await enableDisableComponent({components: [{name: componentName, enabled: true}]});
-    closeRestartPopUp();
   };
 
   return (
@@ -34,7 +38,7 @@ const RestartPopUp = (props: RestartPopUpProps) => {
       headerClassName={styles.headerModal}
     >
       <p>{t('restartComponentUpdate')}</p>
-      <Button styleVariant="normal" type="submit" onClick={restartComponent} className={styles.restartButton}>
+      <Button styleVariant="normal" type="submit" onClick={e => restartComponent(e)} className={styles.restartButton}>
         {t('restart')}
       </Button>
     </SettingsModal>

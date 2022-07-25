@@ -15,9 +15,10 @@ type ConnectNewDialogflowProps = {
     replyConfidenceLevel: string
   ) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['dialogflow-connector']);
   const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
   const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -29,10 +30,17 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
 
   const {t} = useTranslation();
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
     createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
-    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
@@ -40,6 +48,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
       componentName="enterprise-dialogflow-connector"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
     >
       <div className={styles.formRow}>
         <Input
@@ -113,10 +122,10 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
         type="button"
         disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
         style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
+        onClick={e => updateConfig(e)}
         dataCy={cyChannelsDialogflowAddButton}
       >
-        {isEnabled ? t('Update') : t('configure')}
+        {isConfigured ? t('Update') : t('configure')}
       </Button>
     </ConnectNewForm>
   );

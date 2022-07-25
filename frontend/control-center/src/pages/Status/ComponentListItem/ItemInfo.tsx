@@ -49,8 +49,8 @@ const isConfigurableConnector = (name: string) => {
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const connectors = useSelector((state: StateModel) => state.data.connector);
   const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const [channelSource] = useState(itemName && getSourceForComponent(itemName));
   const [componentName] = useState(itemName && getComponentName(itemName));
   const [componentEnabled, setComponentEnabled] = useState(enabled);
@@ -59,9 +59,10 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const {t} = useTranslation();
 
   const isComponentConfigured =
-    connectors[formatName(itemName)] &&
-    isConfigurableConnector(itemName) &&
-    Object.keys(connectors[formatName(itemName)]).length > 0;
+    itemName.includes('sources') ||
+    (connectors[formatName(itemName)] &&
+      isConfigurableConnector(itemName) &&
+      Object.keys(connectors[formatName(itemName)]).length > 0);
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});
@@ -129,12 +130,14 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 tooltipContent={t('notHealthy')}
               />
             ) : (
-              <Tooltip
-                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
-                hoverElementHeight={20}
-                hoverElementWidth={20}
-                tooltipContent={t('disabled')}
-              />
+              !enabled && (
+                <Tooltip
+                  hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
+                  hoverElementHeight={20}
+                  hoverElementWidth={20}
+                  tooltipContent={t('disabled')}
+                />
+              )
             )}
           </div>
 

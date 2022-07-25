@@ -10,9 +10,10 @@ import {useTranslation} from 'react-i18next';
 type ConnectNewDialogflowProps = {
   createNewConnection: (domain: string, token: string, username: string) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['zendesk-connector']);
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -20,10 +21,17 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const {t} = useTranslation();
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
     createNewConnection(domain, token, username);
-    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
@@ -31,6 +39,7 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
       componentName="enterprise-zendesk-connector"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
     >
       <div className={styles.formRow}>
         <Input
@@ -83,10 +92,10 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
         type="button"
         disabled={!domain || !username || !token}
         style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
+        onClick={e => updateConfig(e)}
         dataCy={cyChannelsZendeskAddButton}
       >
-        {isEnabled ? t('Update') : t('configure')}
+        {isConfigured ? t('Update') : t('configure')}
       </Button>
     </ConnectNewForm>
   );

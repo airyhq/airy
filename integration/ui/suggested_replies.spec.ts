@@ -1,10 +1,11 @@
 import {cySuggestionsButton, cySuggestionsList, cyMessageSendButton, cyMessageList} from 'handles';
+import { env } from 'process';
 
 describe('adds two suggested replies to a message and sends one of the suggested replies to a chatplugin conversation', () => {
   it('adds two suggested replies to a message and sends one suggested reply', () => {
     cy.request({
       method: 'POST',
-      url: '/messages.suggestReplies',
+      url: Cypress.env('baseRequestUrl') + '/messages.suggestReplies',
       headers: {
         'Content-Type': 'application/json',
       },

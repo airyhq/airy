@@ -10,7 +10,7 @@ spec:
       containers:
       - name: create-topics
         image: "{{ .Values.provisioning.kafka.image }}:{{ .Values.provisioning.kafka.imageTag }}"
-        command: ["/bin/sh", "/opt/provisioning/create-topics.sh"]
+        command: ["/bin/bash", "/opt/provisioning/create-topics.sh"]
         envFrom:
         - configMapRef:
             name: kafka-config

@@ -1,5 +1,5 @@
 import React from 'react';
-import InfoCard, {InfoCardStyle} from '../Connectors/InfoCard';
+import InfoCard, {InfoCardStyle} from '../../components/InfoCard';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
 import styles from './index.module.scss';

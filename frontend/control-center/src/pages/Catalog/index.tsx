@@ -10,7 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
 import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
-import {SimpleLoader} from 'components';
+import {SimpleLoader, TabPanel} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
 import styles from './index.module.scss';
@@ -99,6 +99,30 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     return null;
   };
 
+  const InstalledComponents = () => {
+    return(
+        <CatalogItemList
+          list={installedConnectors}
+          installedConnectors
+          setDisplayDialogFromSource={setDisplayDialogFromSource}
+          updateItemList={updateItemList}
+          setIsInstalledToggled={setIsInstalledToggled}
+        />
+    )
+  }
+
+  const UnInstalledComponents = () => {
+    return(
+      <CatalogItemList
+      list={notInstalledConnectors}
+      installedConnectors={false}
+      setDisplayDialogFromSource={setDisplayDialogFromSource}
+      updateItemList={updateItemList}
+      setIsInstalledToggled={setIsInstalledToggled}
+    />
+    )
+  }
+
   return (
     <div className={styles.catalogWrapper}>
       <div className={styles.catalogHeadline}>
@@ -112,25 +136,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
 
         {notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
 
-        {notInstalledConnectors.length > 0 && (
-          <CatalogItemList
-            list={notInstalledConnectors}
-            installedConnectors={false}
-            setDisplayDialogFromSource={setDisplayDialogFromSource}
-            updateItemList={updateItemList}
-            setIsInstalledToggled={setIsInstalledToggled}
-          />
-        )}
-
-        {installedConnectors.length > 0 && (
-          <CatalogItemList
-            list={installedConnectors}
-            installedConnectors
-            setDisplayDialogFromSource={setDisplayDialogFromSource}
-            updateItemList={updateItemList}
-            setIsInstalledToggled={setIsInstalledToggled}
-          />
-        )}
+        <TabPanel PageContentOne={<UnInstalledComponents />} PageContentTwo={InstalledComponents} />
       </div>
     </div>
   );

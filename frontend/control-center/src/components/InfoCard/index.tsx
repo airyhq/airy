@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {SourceInfo} from '../../../components/SourceInfo';
+import {SourceInfo} from '../SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
+import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../routes/routes';
 import {Button, SettingsModal} from 'components';
-import {installComponent, uninstallComponent} from '../../../actions/catalog';
+import {installComponent, uninstallComponent} from '../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {ConfigStatusButton} from '../ConfigStatusButton';
+import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
 import styles from './index.module.scss';
 import {ComponentStatus} from '..';
 

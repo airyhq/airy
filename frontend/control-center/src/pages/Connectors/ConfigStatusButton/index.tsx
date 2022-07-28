@@ -2,9 +2,10 @@ import React from 'react';
 import {Button} from 'components';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
+import {ComponentStatus} from '..';
 
 interface ConfigStatusButtonProps {
-  enabled: 'Enabled' | 'Not Configured' | 'Disabled';
+  enabled: ComponentStatus;
   customStyle?: string;
 }
 
@@ -16,9 +17,9 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
     <Button
       styleVariant="extra-small"
       className={`${styles.installationButton} ${customStyle ?? ''} ${
-        enabled === 'Enabled'
+        enabled === ComponentStatus.enabled
           ? styles.buttonEnabled
-          : enabled === 'Not Configured'
+          : enabled === ComponentStatus.notConfigured
           ? styles.buttonNotConfigured
           : styles.buttonDisabled
       }`}

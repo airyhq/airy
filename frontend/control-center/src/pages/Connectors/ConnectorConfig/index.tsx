@@ -23,6 +23,15 @@ import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
+import ConnectedChannelsList from '../ConnectedChannelsList';
+import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
+import InstagramConnect from '../Providers/Instagram/InstagramConnect';
+import GoogleConnect from '../Providers/Google/GoogleConnect';
+import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
+import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
+import {ComponentStatus} from '..';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -46,19 +55,22 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConnectorConfigProps = {
-  connector: Source;
+  connector?: Source;
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
 
-  const {channelId} = useParams();
+  const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [isConfigured, setIsConfigured] = useState(false);
+  const [lineTitle, setLineTitle] = useState('');
+  const [backTitle, setBackTitle] = useState('Connectors');
+  const [backRoute, setBackRoute] = useState('');
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -76,8 +88,24 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     getConnectorsConfiguration();
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
-    setConnectorInfo({...connectorSourceInfo[0]});
-  }, []);
+
+    channelId === 'new'
+      ? connector === Source.chatPlugin
+        ? setLineTitle(t('Create'))
+        : setLineTitle(t('addChannel'))
+      : setLineTitle(t('Configuration'));
+
+    source
+      ? (setConnectorInfo(sourceInfoArr.filter(item => item.type === source)[0]), setLineTitle(t('channelsCapital')))
+      : setConnectorInfo(connectorSourceInfo[0]);
+
+    channelId
+      ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfo[0].type}`), setBackTitle(t('back')))
+      : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
+
+    console.log('SOURCE::: ', source);
+    console.log('channelId::: ', channelId);
+  }, [source]);
 
   useEffect(() => {
     if (config && connectorInfo) {
@@ -181,6 +209,27 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         />
       );
     }
+
+    if (connector === Source.chatPlugin) {
+      return <ChatPluginConnect />;
+    }
+    if (connector === Source.facebook) {
+      return <FacebookConnect />;
+    }
+    if (connector === Source.instagram) {
+      return <InstagramConnect />;
+    }
+    if (connector === Source.google) {
+      return <GoogleConnect />;
+    }
+    if (connector === Source.twilioSMS) {
+      return <TwilioSmsConnect />;
+    }
+    if (connector === Source.twilioWhatsApp) {
+      return <TwilioWhatsappConnect />;
+    }
+
+    return <ConnectedChannelsList />;
   };
 
   const enableDisableComponentToggle = () => {
@@ -205,11 +254,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     <div className={styles.container}>
       <section className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <Link to="/connectors">
+          <Link to={backRoute}>
             <LinkButton type="button">
               <div className={styles.linkButtonContainer}>
                 <ArrowLeftIcon className={styles.backIcon} />
-                {t('Connectors')}
+                {backTitle}
               </div>
             </LinkButton>
           </Link>
@@ -230,7 +279,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
                   <ConfigStatusButton
-                    enabled={isEnabled ? 'Enabled' : !isEnabled ? 'Disabled' : 'Not Configured'}
+                    enabled={
+                      isEnabled
+                        ? ComponentStatus.enabled
+                        : !isEnabled
+                        ? ComponentStatus.disabled
+                        : ComponentStatus.notConfigured
+                    }
                     customStyle={styles.configStatusButton}
                   />
                 </div>
@@ -264,15 +319,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       </section>
 
       <div className={styles.wrapper}>
-        <div className={styles.channelsLineContainer}>
-          <div className={styles.channelsLineItems}>
-            <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
-              {channelId === 'new' ? t('Enable') : t('Configuration')}
-            </span>
+        {connector !== Source.chatPlugin && (
+          <div className={styles.channelsLineContainer}>
+            <div className={styles.channelsLineItems}>
+              <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
+                {lineTitle}
+              </span>
+            </div>
+            <div className={styles.line} />
           </div>
-          <div className={styles.line} />
-        </div>
-        <div className={styles.pageContentContainer}>
+        )}
+        <div className={connector !== Source.chatPlugin ? styles.pageContentContainer : ''}>
           <PageContent />
         </div>
       </div>

@@ -15,6 +15,12 @@ import {EmptyStateConnectors} from './EmptyStateConnectors';
 import {ChannelCard} from './ChannelCard';
 import {SimpleLoader} from 'components';
 
+export enum ComponentStatus {
+  enabled = 'Enabled',
+  notConfigured = 'Not Configured',
+  disabled = 'Disabled',
+}
+
 const mapDispatchToProps = {
   listChannels,
   getConnectorsConfiguration,
@@ -49,12 +55,13 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   const isComponentEnabled = (componentName: string, configKey: string) => {
     if (connectors[componentName]) {
-      const componentConfigured = Object.keys(connectors[componentName]).length > 0;
+      const componentConfigured = Object.keys(connectors[componentName]).length > 0 || connectors[Source.chatPlugin];
+
       return connectors[componentName] && componentConfigured && components[configKey].enabled
-        ? 'Enabled'
+        ? ComponentStatus.enabled
         : !componentConfigured && components[configKey].enabled
-        ? 'Not Configured'
-        : 'Disabled';
+        ? ComponentStatus.notConfigured
+        : ComponentStatus.disabled;
     }
   };
 
@@ -86,6 +93,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <ChannelCard
                       sourceInfo={infoItem}
                       channelsToShow={channelsBySource(infoItem.type).length}
+                      enabled={isComponentEnabled(infoItem?.type, infoItem?.configKey)}
                       key={index}
                     />
                   )) ||

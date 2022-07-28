@@ -63,7 +63,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.chatPlugin,
       channel: true,
       title: 'Airy Live Chat',
-      description: <DescriptionComponent description="facebookDescription" />,
+      description: <DescriptionComponent description="chatpluginDescription" />,
       image: <AiryAvatarIcon />,
       newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',

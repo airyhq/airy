@@ -80,11 +80,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
       </div>
 
       {deletePopupVisible && (
-        <SettingsModal
-          style={{maxWidth: '420px'}}
-          title={t('confirmDisconnectChannelTitle')}
-          close={togglePopupVisibility}
-        >
+        <SettingsModal title={t('confirmDisconnectChannelTitle')} close={togglePopupVisibility}>
           <div className={styles.disconnectModal}>
             <p>{t('confirmDisconnectChannelText')}</p>
             <p>

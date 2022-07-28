@@ -7,13 +7,12 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
-import {LinkButton, InfoButton} from 'components';
+import {LinkButton} from 'components';
 import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 
 import styles from './ChatPluginConnect.module.scss';
 
@@ -22,7 +21,6 @@ import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from './sections/InstallSection/InstallSection';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 import {ChatpluginConfig, DefaultConfig} from 'model';
 
 export enum Pages {
@@ -151,17 +149,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.headlineContainer}>
-        <div className={styles.backButtonContainer}>
-          <LinkButton onClick={() => navigate(`${CONNECTORS_CONNECTED_ROUTE}/chatplugin`)} type="button">
-            <ArrowLeftIcon className={styles.backIcon} />
-          </LinkButton>
-          <h1 className={styles.headlineText}>{t('chatpluginTitle')}</h1>
-        </div>
-        <div className={styles.infoBox}>
-          <InfoButton link="https://airy.co/docs/core/sources/chatplugin/overview" text={t('infoButtonText')} />
-        </div>
-      </div>
       <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>

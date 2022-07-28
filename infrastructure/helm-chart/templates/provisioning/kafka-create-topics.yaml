@@ -17,47 +17,69 @@ data:
     set -euo pipefail
     IFS=$'\n\t'
 
-    ZOOKEEPER=${ZOOKEEPER:-zookeeper:2181}
+
+    if [ -z "${ZOOKEEPER+x}" ]; then
+        if [ -z "${KAFKA_BROKERS+x}" ]; then
+            echo "Neither ZOOKEEPER nor KAFKA_BROKERS is set. Exiting."
+            exit 1
+        fi
+        CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)
+        echo "ZOOKEEPER is not set, using --bootstrap-server option instead"
+      else
+        CONNECTION_OPTS=(--zookeeper $ZOOKEEPER)
+    fi
+
+
     PARTITIONS=${PARTITIONS:-10}
     REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}
     AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}
 
-    echo "Creating Kafka topics"
-
-    if [ -n "${AIRY_CORE_NAMESPACE}" ]
-    then
+    if [ -n "${AIRY_CORE_NAMESPACE}" ]; then
       AIRY_CORE_NAMESPACE="${AIRY_CORE_NAMESPACE}."
       echo "Using ${AIRY_CORE_NAMESPACE} to namespace topics"
     fi
 
+    if [ -n "${AUTH_JAAS}" ]; then
+      cat <<EOF > /opt/kafka/jaas.config
+        security.protocol=SASL_SSL
+        sasl.jaas.config=$AUTH_JAAS
+        sasl.mechanism=PLAIN
+    EOF
+      CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
+      echo "Using jaas authentication for connecting to Kafka"
+    fi
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.channels" 
+    echo "Creating Kafka topics"
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.contacts" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.messages" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.metadata" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.channels" 
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.contacts" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.sources" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.messages" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.metadata" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.templates" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.users" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.sources" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.webhooks-v0.29.0" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}ops.application.logs" 
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.templates" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.facebook.events" 
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.users" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.google.events" 
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.webhooks-v0.29.0" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.twilio.events" 
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}ops.application.logs" 
 
-    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.viber.events" 
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.facebook.events" 
+
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.google.events" 
+
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.twilio.events" 
+
+    kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.viber.events" 
 

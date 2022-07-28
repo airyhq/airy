@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './index.module.scss';
 
 export enum Pages {
@@ -11,15 +11,22 @@ interface TabsPanelProps {
   PageContentOne: any;
   PageContentTwo: any;
   PageContentThree?: any;
+  pageTitleOne:string;
+  pageTitleTwo:string;
+  pageTitleThree?:string;
 
 }
 
 export const TabPanel = (props: TabsPanelProps) => {
-  const {PageContentOne, PageContentTwo, PageContentThree} = props;
+  const {PageContentOne, PageContentTwo, PageContentThree, pageTitleOne, pageTitleTwo, pageTitleThree} = props;
   const [currentPage, setCurrentPage] = useState('');
 
-  const showPageOne = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    showPageOne();
+  },[])
+
+  const showPageOne = (event?: React.MouseEvent<HTMLAnchorElement>) => {
+   if(event) event.preventDefault();
     setCurrentPage(Pages.pageOne);
   };
 
@@ -45,29 +52,31 @@ export const TabPanel = (props: TabsPanelProps) => {
   };
 
   return (
-    <div className={styles.wrapper} style={{width: '60%'}}>
-      <div className={styles.channelsLineContainer}>
-        <div className={styles.channelsLineItems}>
+    <div className={styles.tabsPanelWrapper}>
+      <div className={styles.tabsPanelContainer}>
+        <div className={styles.tabsPanelItems}>
           <span
-            className={currentPage === Pages.pageOne ? styles.activeItem : styles.inactiveItem}
+            className={currentPage === Pages.pageOne ? styles.activeTabItem : styles.inactiveTabItem}
             onClick={showPageOne}>
+              {pageTitleOne}
           </span>
           <span
-            className={currentPage === Pages.pageTwo ? styles.activeItem : styles.inactiveItem}
+            className={currentPage === Pages.pageTwo ? styles.activeTabItem : styles.inactiveTabItem}
             onClick={showPageTwo}>
+               {pageTitleTwo}
           </span>
 
           {PageContentThree && (
             <span
-              className={currentPage === Pages.pageThree ? styles.activeItem : styles.inactiveItem}
+              className={currentPage === Pages.pageThree ? styles.activeTabItem : styles.inactiveTabItem}
               onClick={showPageThree}>
+                   {pageTitleThree}
             </span>
           )}
         </div>
         <div className={styles.line} />
         <PageContent />
       </div>
-      <div></div>
     </div>
   );
 };

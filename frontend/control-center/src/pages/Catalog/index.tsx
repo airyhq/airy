@@ -10,7 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
 import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
-import {SimpleLoader, TabPanel} from 'components';
+import {TabPanel, ContentWrapper} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
 import styles from './index.module.scss';
@@ -100,45 +100,53 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   };
 
   const InstalledComponents = () => {
-    return(
-        <CatalogItemList
-          list={installedConnectors}
-          installedConnectors
-          setDisplayDialogFromSource={setDisplayDialogFromSource}
-          updateItemList={updateItemList}
-          setIsInstalledToggled={setIsInstalledToggled}
-        />
-    )
-  }
+    return (
+      <CatalogItemList
+        list={installedConnectors}
+        installedConnectors
+        setDisplayDialogFromSource={setDisplayDialogFromSource}
+        updateItemList={updateItemList}
+        setIsInstalledToggled={setIsInstalledToggled}
+      />
+    );
+  };
 
   const UnInstalledComponents = () => {
-    return(
+    return (
       <CatalogItemList
-      list={notInstalledConnectors}
-      installedConnectors={false}
-      setDisplayDialogFromSource={setDisplayDialogFromSource}
-      updateItemList={updateItemList}
-      setIsInstalledToggled={setIsInstalledToggled}
-    />
-    )
-  }
+        list={notInstalledConnectors}
+        installedConnectors={false}
+        setDisplayDialogFromSource={setDisplayDialogFromSource}
+        updateItemList={updateItemList}
+        setIsInstalledToggled={setIsInstalledToggled}
+      />
+    );
+  };
+
+  //{notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
 
   return (
-    <div className={styles.catalogWrapper}>
-      <div className={styles.catalogHeadline}>
-        <div>
-          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
+    <ContentWrapper
+      transparent={true}
+      header={
+        <div className={styles.catalogHeadline}>
+            <h1 className={styles.catalogHeadlineText}>Catalog</h1>
         </div>
-      </div>
+      }
+      content={
+        <div className={styles.catalogWrapper}>
+          <div className={styles.listWrapper}>
+            {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
 
-      <div className={styles.listWrapper}>
-        {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-
-        {notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
-
-        <TabPanel PageContentOne={<UnInstalledComponents />} PageContentTwo={InstalledComponents} />
-      </div>
-    </div>
+            <TabPanel
+              pageTitleOne="Not Installed"
+              pageTitleTwo="Installed"
+              PageContentOne={<UnInstalledComponents />}
+              PageContentTwo={InstalledComponents}
+            />
+          </div>
+        </div>
+      }></ContentWrapper>
   );
 };
 

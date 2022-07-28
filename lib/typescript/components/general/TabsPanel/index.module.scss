@@ -1,127 +1,17 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.wrapper {
+.tabsPanelWrapper {
   background: var(--color-background-white);
   color: var(--color-text-contrast);
   display: block;
   border-radius: 10px;
   width: 100%;
-  margin: 162px 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-}
-
-.headlineContainer {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  padding-left: 10px;
-  margin: 88px 1.5em 0 191px;
-  h1 {
-    @include font-xl;
-    font-weight: bold;
-  }
-  button {
-    height: 20px;
-    background: transparent;
-  }
-}
-
-.backButtonContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-}
-
-.infoBox {
-  margin: 0;
-  button {
-    padding-left: 4px;
-    border: none;
-  }
-  svg {
-    color: var(--color-text-gray);
-  }
-  h1 {
-    @include font-xl;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-}
-
-.backButton {
-  display: block;
-  margin-bottom: 16px;
-  cursor: pointer;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.backIcon {
-  width: 24px;
-  background: transparent;
-  path {
-    fill: var(--color-text-gray);
-  }
-  margin-right: 8px;
-}
-
-.formWrapper {
-  display: flex;
-}
-
-.headlineText {
-  color: var(--color-text-contrast);
-  flex-grow: 1;
-}
-
-.overview {
-  margin-top: 32px;
-}
-
-.listItem {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.listChannelName {
-  flex-grow: 1;
-  border-bottom: 1px solid var(--color-light-gray);
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-}
-
-.listButtons {
-  display: flex;
-  border-bottom: 1px solid var(--color-light-gray);
-  height: 50px;
-  align-items: center;
-}
-
-.listButtonEdit {
-  margin-right: 8px;
-  font-weight: normal;
-}
-
-.channelImage {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 100%;
-}
-
-.channelsLineContainer {
+.tabsPanelContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -130,11 +20,11 @@
   }
 }
 
-.channelsLineItems {
+.tabsPanelItems {
   display: flex;
 }
 
-.activeItem {
+.activeTabItem {
   display: flex;
   justify-content: center;
   margin-top: 16px;
@@ -150,7 +40,7 @@
   }
 }
 
-.inactiveItem {
+.inactiveTabItem {
   display: flex;
   justify-content: center;
   margin-top: 16px;

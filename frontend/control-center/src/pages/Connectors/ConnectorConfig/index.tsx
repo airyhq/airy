@@ -102,9 +102,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     channelId
       ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfo[0].type}`), setBackTitle(t('back')))
       : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
-
-    console.log('SOURCE::: ', source);
-    console.log('channelId::: ', channelId);
   }, [source]);
 
   useEffect(() => {

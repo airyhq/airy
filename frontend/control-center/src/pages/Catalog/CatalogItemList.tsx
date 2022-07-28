@@ -2,6 +2,7 @@ import React from 'react';
 import InfoCard, {InfoCardStyle} from '../../components/InfoCard';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
+import {SimpleLoader} from 'components';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -11,17 +12,18 @@ interface CatalogItemListProps {
   setDisplayDialogFromSource: React.Dispatch<React.SetStateAction<string>>;
   updateItemList: (installed: boolean, componentName: string) => void;
   setIsInstalledToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 }
 
 export const CatalogItemList = (props: CatalogItemListProps) => {
-  const {list, installedConnectors, updateItemList, setIsInstalledToggled} = props;
+  const {list, installedConnectors, updateItemList, setIsInstalledToggled, loading} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
 
   return (
     <section className={styles.connectorContainer}>
-      <h2>{installedConnectors ? t('installed') : t('notInstalled')}</h2>
+      {loading && <SimpleLoader />}
 
       <div className={styles.connectorList}>
         {list.map(infoItem => (

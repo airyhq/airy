@@ -13,6 +13,7 @@ import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
 import {TabPanel, ContentWrapper} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
+import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -29,13 +30,32 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const [installedConnectors, setInstalledConnectors] = useState([]);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const [isInstallToggled, setIsInstalledToggled] = useState(false);
+  const [loading, setLoading] = useState(true)
   const pageTitle = 'Catalog';
+  const {t} = useTranslation();
 
   useEffect(() => {
     listComponents();
     setPageTitle(pageTitle);
     setSourcesInfo(getSourcesInfo());
   }, []);
+
+  useEffect(() => {
+    console.log('catalogList', catalogList);
+  }, [catalogList])
+
+  useEffect(() => {
+    console.log('installedConnectors', installedConnectors);
+  }, [installedConnectors])
+
+  useEffect(() => {
+    console.log('notInstalledConnectors', notInstalledConnectors);
+    if(notInstalledConnectors.length === 0 && installedConnectors.length === 0){
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [notInstalledConnectors, installedConnectors])
 
   useEffect(() => {
     if (sourcesInfo.length > 0 && !isInstallToggled) {
@@ -107,6 +127,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
         setDisplayDialogFromSource={setDisplayDialogFromSource}
         updateItemList={updateItemList}
         setIsInstalledToggled={setIsInstalledToggled}
+        loading={loading}
       />
     );
   };
@@ -119,11 +140,12 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
         setDisplayDialogFromSource={setDisplayDialogFromSource}
         updateItemList={updateItemList}
         setIsInstalledToggled={setIsInstalledToggled}
+        loading={loading}
       />
     );
   };
 
-  //{notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
+  
 
   return (
     <ContentWrapper
@@ -138,11 +160,13 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
           <div className={styles.listWrapper}>
             {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
 
+
+
             <TabPanel
-              pageTitleOne="Not Installed"
-              pageTitleTwo="Installed"
+              pageTitleOne={t('notInstalled') as string}
+              pageTitleTwo={t('installed') as string}
               PageContentOne={<UnInstalledComponents />}
-              PageContentTwo={InstalledComponents}
+              PageContentTwo={<InstalledComponents />}
             />
           </div>
         </div>

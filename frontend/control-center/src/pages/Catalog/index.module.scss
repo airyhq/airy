@@ -6,7 +6,6 @@
   color: var(--color-text-contrast);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  padding: 32px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
@@ -20,7 +19,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--color-text-contrast);
-  margin-top: 24px;
+  margin-top: 28px;
 }
 
 .catalogHeadlineText {
@@ -37,6 +36,7 @@
 .connectorContainer {
   width: 100%;
   padding-top: 14px;
+  padding-left: 20px;
 
   h2 {
     @include font-l;

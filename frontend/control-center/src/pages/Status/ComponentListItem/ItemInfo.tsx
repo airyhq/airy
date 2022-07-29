@@ -151,7 +151,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
             )}
           </div>
 
-          {!needsConfig && (
+          {isComponent && !needsConfig && (
             <div className={styles.enabled}>
               <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
             </div>

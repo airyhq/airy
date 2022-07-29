@@ -1,11 +1,10 @@
 import {cySuggestionsButton, cySuggestionsList, cyMessageSendButton, cyMessageList} from 'handles';
-import { env } from 'process';
 
 describe('adds two suggested replies to a message and sends one of the suggested replies to a chatplugin conversation', () => {
   it('adds two suggested replies to a message and sends one suggested reply', () => {
     cy.request({
       method: 'POST',
-      url: Cypress.env('baseRequestUrl') + '/messages.suggestReplies',
+      url: '/messages.suggestReplies',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -25,7 +24,7 @@ describe('adds two suggested replies to a message and sends one of the suggested
       cy.visit(`/inbox/inbox/conversations/${Cypress.env('conversationId')}`);
       cy.url().should('include', '/inbox');
 
-      cy.get(`[data-cy=${cySuggestionsButton}]`).should('be.visible').click();
+      cy.get(`[data-cy=${cySuggestionsButton}]`).first().click({force: true});
 
       cy.get(`[data-cy=${cySuggestionsList}]`).contains('Welcome!').click({force: true});
 

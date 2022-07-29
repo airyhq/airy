@@ -1,8 +1,4 @@
-import {
-  cySearchButton,
-  cySearchField,
-  cyConversationList,
-} from 'handles';
+import {cySearchButton, cySearchField, cyConversationList} from 'handles';
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {

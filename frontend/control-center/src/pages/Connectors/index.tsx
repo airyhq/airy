@@ -127,7 +127,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                         }}
                       />
                     </div>
-                  )) 
+                  ))
               );
             })}
           </>

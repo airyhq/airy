@@ -2,12 +2,11 @@ import {defineConfig} from 'cypress';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://airy.core',
+    baseUrl: 'http://localhost',
     specPattern: 'integration/**/*.spec.?s',
     supportFile: 'integration/commands/index.ts',
   },
   env: {
-    requestBaseUrl: 'http://airy.core',
     chatPluginName: 'Cypress Chatplugin',
     tagName: 'Cypress Tag',
     searchQuery: 'Cypress Filter',

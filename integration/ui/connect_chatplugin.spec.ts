@@ -7,7 +7,7 @@ describe('Connect chatplugin channel', () => {
     cy.url().should('include', '/control-center/connectors');
     cy.connectChatPluginConnector();
 
-    cy.url().should('include', '/control-center/connectors/connected');
+    cy.url().should('include', '/control-center/connectors');
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
   });

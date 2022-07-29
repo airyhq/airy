@@ -10,11 +10,11 @@ import {ComponentStatus} from '..';
 type ChannelCardProps = {
   sourceInfo: SourceInfo;
   channelsToShow?: number;
-  enabled?: ComponentStatus;
+  componentStatus?: ComponentStatus;
 };
 
 export const ChannelCard = (props: ChannelCardProps) => {
-  const {sourceInfo, channelsToShow, enabled} = props;
+  const {sourceInfo, channelsToShow, componentStatus} = props;
   const {t} = useTranslation();
 
   return (
@@ -25,7 +25,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
           {sourceInfo.title}
         </div>
         <div className={styles.linkContainer}>
-          {enabled && <ConfigStatusButton enabled={enabled} />}
+          {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
           <span>
             {channelsToShow} {channelsToShow === 1 ? t('channel') : t('channels')}
           </span>

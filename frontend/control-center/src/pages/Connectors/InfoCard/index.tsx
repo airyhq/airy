@@ -20,7 +20,7 @@ type InfoCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
   installed: boolean;
-  enabled?: ComponentStatus;
+  componentStatus?: ComponentStatus;
   style: InfoCardStyle;
   updateItemList?: (installed: boolean, componentName: string) => void;
   setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,7 +39,7 @@ const InfoCard = (props: InfoCardProps) => {
     addChannelAction,
     installed,
     style,
-    enabled,
+    componentStatus,
     installComponent,
     uninstallComponent,
     updateItemList,
@@ -137,7 +137,7 @@ const InfoCard = (props: InfoCardProps) => {
         </>
       )}
 
-      {enabled && <ConfigStatusButton enabled={enabled} />}
+      {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
 
       {isModalVisible && (
         <SettingsModal

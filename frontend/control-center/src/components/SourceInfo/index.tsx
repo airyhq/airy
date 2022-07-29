@@ -175,7 +175,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       componentName: 'zendesk-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
+      docs: 'https://airy.co/docs/enterprise/apps/zendesk/installation',
     },
     {
       type: Source.salesforce,

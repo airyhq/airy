@@ -202,6 +202,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
+      successfullyCreatedChannel: 'Channel has been successfully created',
       addCodeTagHead: 'Add this code inside the tag ',
       copyCode: 'Copy code',
       headerTextColor: 'Header Text Color',
@@ -610,6 +611,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
+      successfullyCreatedChannel: 'Der Kanal wurde erfolgreich erstellt',
       addCodeTagHead: 'Fügen Sie diesen Code innerhalb des Tags ein ',
       copyCode: 'Code kopieren',
       headerTextColor: 'Textfarbe der Kopfzeile',
@@ -1009,6 +1011,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
+      successfullyCreatedChannel: 'Le canal a été créé avec succès',
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
       copyCode: 'Copier le code',
       headerTextColor: `Couleur du texte de l'en-tête`,
@@ -1412,6 +1415,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
+      successfullyCreatedChannel: 'El canal ha sido creado con éxito',
       addCodeTagHead: 'Añade este código dentro de la etiqueta ',
       copyCode: 'Copiar código',
       headerTextColor: 'Color del texto de la cabecera',

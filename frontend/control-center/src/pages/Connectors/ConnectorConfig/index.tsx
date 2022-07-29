@@ -31,7 +31,7 @@ import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import {ComponentStatus} from '..';
+import {getComponentStatus} from '../../../services/getComponentStatus';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -86,6 +86,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useEffect(() => {
     getConnectorsConfiguration();
+    (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
 
@@ -276,13 +277,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
                   <ConfigStatusButton
-                    enabled={
-                      isEnabled
-                        ? ComponentStatus.enabled
-                        : !isEnabled
-                        ? ComponentStatus.disabled
-                        : ComponentStatus.notConfigured
-                    }
+                    componentStatus={getComponentStatus(isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
                 </div>

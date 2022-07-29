@@ -5,26 +5,35 @@ import styles from './index.module.scss';
 import {ComponentStatus} from '..';
 
 interface ConfigStatusButtonProps {
-  enabled: ComponentStatus;
+  componentStatus: ComponentStatus;
   customStyle?: string;
 }
 
 export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
-  const {enabled, customStyle} = props;
+  const {componentStatus, customStyle} = props;
   const {t} = useTranslation();
 
   return (
     <Button
       styleVariant="extra-small"
       className={`${styles.installationButton} ${customStyle ?? ''} ${
-        enabled === ComponentStatus.enabled
-          ? styles.buttonEnabled
-          : enabled === ComponentStatus.notConfigured
+        componentStatus === ComponentStatus.notConfigured
           ? styles.buttonNotConfigured
+          : componentStatus === ComponentStatus.enabled
+          ? styles.buttonEnabled
           : styles.buttonDisabled
       }`}
     >
-      {t(`${enabled}`)}
+      {/* <Button
+      styleVariant="extra-small"
+      className={`${styles.installationButton} ${customStyle ?? ''} ${
+        componentStatus === ComponentStatus.enabled
+          ? styles.buttonEnabled
+          : componentStatus === ComponentStatus.notConfigured
+          ? styles.buttonNotConfigured
+          : styles.buttonDisabled
+      }`}> */}
+      {t(`${componentStatus}`)}
     </Button>
   );
 };

@@ -234,3 +234,31 @@ header {
     margin: 0 8px;
   }
 }
+
+.deleteModalContainer {
+  background: var(--color-background-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 650px;
+  height: 320px;
+  border-radius: 20px;
+}
+
+.deleteModalContent {
+  @include font-base;
+  p {
+    color: var(--color-text-contrast);
+  }
+  a {
+    color: var(--color-airy-blue);
+  }
+}
+
+.deleteModalHeader {
+  @include font-l;
+}
+
+.disconnectButton {
+  border-radius: 10px;
+}

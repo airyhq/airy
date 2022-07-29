@@ -7,16 +7,17 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 
-import {LinkButton} from 'components';
-import {Channel} from 'model';
+import {Button, LinkButton, SettingsModal} from 'components';
+import {Channel, Source} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 
 import styles from './ChatPluginConnect.module.scss';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
@@ -46,7 +47,9 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {channelId} = useParams();
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
-  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
+  const [currentPage, setCurrentPage] = useState(channelId !== 'new' ? Pages.customization : Pages.createUpdate);
+  const [showCreatedModal, setShowCreatedModal] = useState(false);
+  const [currentChannelId, setCurrentChannelId] = useState('');
   const displayName = currentChannel?.metadata?.name || '';
   const imageUrl = currentChannel?.metadata?.imageUrl || '';
   const navigate = useNavigate();
@@ -62,7 +65,8 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }),
       })
       .then((id: string) => {
-        navigate(`${CHAT_PLUGIN_ROUTE}/${id}`);
+        setCurrentChannelId(id);
+        setShowCreatedModal(true);
       });
   };
 
@@ -85,6 +89,16 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const showInstall = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setCurrentPage(Pages.install);
+  };
+
+  const handleCustomize = () => {
+    navigate(`${CHAT_PLUGIN_ROUTE}/${currentChannelId}`);
+    setShowCreatedModal(false);
+  };
+
+  const handleClose = () => {
+    setShowCreatedModal(false);
+    navigate(`${CONNECTORS_CONNECTED_ROUTE}/${Source.chatPlugin}`);
   };
 
   const PageContent = () => {
@@ -187,6 +201,20 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
           <PageContent />
         </div>
       </div>
+      {showCreatedModal && (
+        <SettingsModal
+          Icon={CheckmarkIcon as React.ElementType}
+          wrapperClassName={styles.enableModalContainerWrapper}
+          containerClassName={styles.enableModalContainer}
+          title={t('successfullyCreatedChannel')}
+          close={handleClose}
+          headerClassName={styles.headerModal}
+        >
+          <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
+            {t('customize')}
+          </Button>
+        </SettingsModal>
+      )}
     </div>
   );
 };

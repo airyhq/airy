@@ -3,9 +3,8 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions';
 
-import {Button, Input, LinkButton, UrlInputField, InfoButton} from 'components';
+import {Button, Input, UrlInputField} from 'components';
 import {Channel, Source} from 'model';
-import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './TwilioConnect.module.scss';
 
@@ -26,7 +25,7 @@ const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
-  const {channel, source, pageTitle, buttonText, infoLink, connectTwilioWhatsapp, connectTwilioSms} = props;
+  const {channel, source, buttonText, connectTwilioWhatsapp, connectTwilioSms} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
@@ -74,14 +73,6 @@ const TwilioConnect = (props: TwilioConnectProps) => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>{pageTitle}</h1>
-      <div>
-        <InfoButton link={infoLink} text={t('infoButtonText')} color="grey" />
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeft className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
-      </div>
       <form className={styles.formContainer}>
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>

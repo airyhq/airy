@@ -16,6 +16,7 @@ export const SampleInput = (props: SampleInputProps) => {
       type="text"
       name={name}
       value={value}
+      hideLabel={true}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
       }}

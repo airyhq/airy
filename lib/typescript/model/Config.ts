@@ -16,7 +16,7 @@ export enum ConfigServices {
   integrationSourceApi = 'integration-source-api',
   integrationWebhook = 'integration-webhook',
   mediaResolver = 'media-resolver',
-  sourcesChatPlugin = 'sources-chat-plugin',
+  sourcesChatPlugin = 'sources-chatplugin',
   sourcesFacebook = 'sources-facebook',
   sourcesGoogle = 'sources-google',
   sourcesTwilio = 'sources-twilio',

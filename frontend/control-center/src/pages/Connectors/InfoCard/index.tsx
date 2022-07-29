@@ -9,6 +9,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import styles from './index.module.scss';
+import {ComponentStatus} from '..';
 
 export enum InfoCardStyle {
   normal = 'normal',
@@ -19,7 +20,7 @@ type InfoCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
   installed: boolean;
-  enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
+  componentStatus?: ComponentStatus;
   style: InfoCardStyle;
   updateItemList?: (installed: boolean, componentName: string) => void;
   setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,7 +39,7 @@ const InfoCard = (props: InfoCardProps) => {
     addChannelAction,
     installed,
     style,
-    enabled,
+    componentStatus,
     installComponent,
     uninstallComponent,
     updateItemList,
@@ -136,7 +137,7 @@ const InfoCard = (props: InfoCardProps) => {
         </>
       )}
 
-      {enabled && <ConfigStatusButton enabled={enabled} />}
+      {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
 
       {isModalVisible && (
         <SettingsModal

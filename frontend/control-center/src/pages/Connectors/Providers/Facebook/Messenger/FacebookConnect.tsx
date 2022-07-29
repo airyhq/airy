@@ -4,9 +4,8 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectFacebookChannel} from '../../../../../actions/channel';
 
-import {Button, Input, LinkButton, InfoButton} from 'components';
+import {Button, Input} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './FacebookConnect.module.scss';
 
@@ -69,15 +68,6 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>Facebook Messenger</h1>
-      <div>
-        <InfoButton link="https://airy.co/docs/core/sources/facebook" text={t('infoButtonText')} color="grey" />
-
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
-      </div>
       <div className={styles.inputContainer}>
         <Input
           id="id"

@@ -7,7 +7,7 @@ import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getSourcesInfo} from '../../../components/SourceInfo';
 import {getComponentName} from '../../../services';
-import {getSourceForComponent} from 'model';
+import {ConfigServices, getSourceForComponent} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import styles from './index.module.scss';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
@@ -64,7 +64,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
     Object.keys(connectors[formatName(itemName)]).length > 0;
 
   //status
-  const needsConfig = isComponent && enabled && healthy && isConfigurableConnector(itemName) && !isComponentConfigured;
+  const needsConfig =
+    isComponent &&
+    enabled &&
+    healthy &&
+    isConfigurableConnector(itemName) &&
+    !isComponentConfigured &&
+    itemName !== ConfigServices.sourcesChatPlugin;
   const isRunning = healthy && enabled;
   const isNotHealthy = !healthy && enabled;
   const isDisabled = !enabled;

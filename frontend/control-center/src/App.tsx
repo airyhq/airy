@@ -26,6 +26,13 @@ import Status from './pages/Status';
 import Inbox from './pages/Inbox';
 import ChannelsList from './pages/Inbox/ChannelsList';
 import InboxOutlet from './pages/Inbox/InboxOutlet';
+import ConnectorChatplugin from './pages/Connectors/Providers/Airy/ChatPlugin/ConnectorChatplugin';
+import ConnectorConfig from './pages/Connectors/ConnectorConfig';
+import ConnectorFacebook from './pages/Connectors/Providers/Facebook/Messenger/ConnectorFacebook';
+import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/ConnectorTwilioSms';
+import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
+import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle';
+import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -50,13 +57,13 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
 
           <Route path={`${CONNECTORS_ROUTE}/*`} element={<ConnectorsOutlet />}>
-            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
-            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
-            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
-            <Route path={`google/:channelId`} element={<GoogleConnect />} />
-            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
+            <Route path={`facebook/:channelId`} element={<ConnectorFacebook />} />
+            <Route path={`chatplugin/:channelId`} element={<ConnectorChatplugin />} />
+            <Route path={`connected/:source`} element={<ConnectorConfig />} />
+            <Route path={`twilio.sms/:channelId`} element={<ConnectorTwilioSms />} />
+            <Route path={`twilio.whatsapp/:channelId`} element={<ConnectorTwilioWhatsapp />} />
+            <Route path={`google/:channelId`} element={<ConnectorGoogle />} />
+            <Route path={`instagram/:channelId`} element={<ConnectorInstagram />} />
             <Route path={`dialogflow/new`} element={<DialogflowConnect />} />
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
             <Route path={`salesforce/new`} element={<SalesforceConnect />} />

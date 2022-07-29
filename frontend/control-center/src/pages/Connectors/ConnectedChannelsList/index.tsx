@@ -9,15 +9,13 @@ import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
 
-import {SearchField, LinkButton} from 'components';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
+import {SearchField} from 'components';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
 import {
-  cyChannelsFormBackButton,
   cyConnectorsAddNewButton,
   cyChannelsChatPluginList,
   cyChannelsFacebookList,
@@ -33,9 +31,7 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-  CONNECTORS_ROUTE,
 } from '../../../routes/routes';
-import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
@@ -56,15 +52,12 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
   const listPageSize = 8;
-  const connectorsRoute = location.pathname.includes('connectors');
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -91,43 +84,31 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName(t('facebookTitle'));
-        setDescription(t('facebookDescription'));
         ROUTE = CONNECTORS_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
-        setName(t('googleTitle'));
-        setDescription(t('googleDescription'));
         ROUTE = CONNECTORS_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
-        setName(t('twilioSmsTitle'));
-        setDescription(t('twilioSmsDescription'));
         ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
-        setName(t('twilioWhatsappTitle'));
-        setDescription(t('twilioWhatsappDescription'));
         ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
-        setName(t('chatpluginTitle'));
-        setDescription(t('chatpluginDescription'));
         ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
-        setName(t('instagramTitle'));
-        setDescription(t('instagramDescription'));
         ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsInstagramList);
@@ -142,21 +123,6 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(CONNECTORS_ROUTE)} type="button">
-        <div className={styles.linkButtonContainer}>
-          <ArrowLeftIcon className={styles.backIcon} />
-          {connectorsRoute ? t('Connectors') : ''}
-        </div>
-      </LinkButton>
-      <div className={styles.headlineRow}>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-          <div style={{height: '64px', width: '64px'}}>{getChannelAvatar(source)}</div>
-          <div style={{display: 'flex', flexDirection: 'column', marginLeft: '16px'}}>
-            <h1 className={styles.headline}>{name}</h1>
-            <h2 className={styles.description}>{description}</h2>
-          </div>
-        </div>
-      </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
           <div className={styles.searchField}>

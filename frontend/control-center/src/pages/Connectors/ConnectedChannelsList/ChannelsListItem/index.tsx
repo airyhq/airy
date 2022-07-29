@@ -81,11 +81,13 @@ const ChannelListItem = (props: ChannelListItemProps) => {
 
       {deletePopupVisible && (
         <SettingsModal
-          style={{maxWidth: '420px'}}
           title={t('confirmDisconnectChannelTitle')}
           close={togglePopupVisibility}
+          wrapperClassName={styles.deleteModalContainer}
+          containerClassName={styles.deleteModalContent}
+          headerClassName={styles.deleteModalHeader}
         >
-          <div className={styles.disconnectModal}>
+          <div>
             <p>{t('confirmDisconnectChannelText')}</p>
             <p>
               {t('confirmDisconnectChannelProblem')}
@@ -96,7 +98,12 @@ const ChannelListItem = (props: ChannelListItemProps) => {
               <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
                 {t('cancel')}
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={disconnectChannel}>
+              <Button
+                styleVariant="warning"
+                type="submit"
+                onClick={disconnectChannel}
+                className={styles.disconnectButton}
+              >
                 {t('disconnectChannel')}
               </Button>
             </div>

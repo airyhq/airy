@@ -12,7 +12,7 @@ describe('Websocket test', () => {
 
     cy.request({
       method: 'POST',
-      url: Cypress.env('baseRequestUrl') + '/conversations.list',
+      url: '/conversations.list',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -25,7 +25,7 @@ describe('Websocket test', () => {
 
       cy.request({
         method: 'POST',
-        url: Cypress.env('baseRequestUrl') + '/messages.send',
+        url: '/messages.send',
         headers: {
           'Content-Type': 'application/json',
         },

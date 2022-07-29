@@ -28,7 +28,6 @@ export const SettingsModal = (props: SettingsModalProps) => {
     Icon,
     dataCyCloseButton,
   } = props;
-  console.log('SETTINGS dataCyCloseButton', dataCyCloseButton);
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}

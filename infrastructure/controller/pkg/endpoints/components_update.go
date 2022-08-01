@@ -2,10 +2,13 @@ package endpoints
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 
+	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/airyhq/airy/lib/go/payloads"
 	"k8s.io/client-go/kubernetes"
@@ -13,8 +16,9 @@ import (
 )
 
 type ComponentsUpdate struct {
-	clientSet *kubernetes.Clientset
-	namespace string
+	DeployedCharts *cache.DeployedCharts
+	clientSet      *kubernetes.Clientset
+	namespace      string
 }
 
 func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -36,6 +40,13 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	responseComponents.Components = make(map[string]bool)
 
 	for _, component := range requestComponents.Components {
+		if !s.isComponentInstalled(component.Name) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(fmt.Sprintf(`{"error": "component %s is not installed"}`, component.Name)))
+			return
+		}
+
 		labels := map[string]string{
 			"core.airy.co/component": component.Name,
 		}
@@ -57,4 +68,18 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(resp)
+}
+
+//NOTE: Prevent the upload of a configmap if the component is not present
+func (s *ComponentsUpdate) isComponentInstalled(configName string) bool {
+	name := getNameFromConfigMapName(configName)
+	deployedCharts := s.DeployedCharts.GetDeployedCharts()
+
+	return deployedCharts[name]
+}
+
+func getNameFromConfigMapName(name string) string {
+	c := strings.Split(name, "-")
+
+	return strings.Join(c[1:], "-")
 }

@@ -36,7 +36,7 @@ public class KafkaStreamsConfig {
     @Value("${kafka.session.timeout.ms:30000}")
     private int sessionTimeoutMs;
 
-    @Value("${kafka.replication.factor:3}")
+    @Value("${kafka.replication.factor:1}")
     private int replicationFactor;
 
     @Value("${kafka.heartbeat.interval.ms:10000}")

@@ -3,6 +3,20 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.47.1
+
+#### Hotfix
+
+* [[#3510](https://github.com/airyhq/airy/issues/3510)] Fix Kafka replication factor setting
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.47.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.47.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.47.1/windows/amd64/airy.exe)
+
 ## 0.47.0
 
 #### Changes
@@ -1222,6 +1236,3 @@ You can download the Airy CLI for your operating system from the following links
 ## Hotfix 0.26.2
 
 [[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites
-## Hotfix 0.26.1
-
-[[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config

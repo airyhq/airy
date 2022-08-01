@@ -60,6 +60,7 @@ type componentsData struct {
 }
 
 func getComponentsDetailsFromCloud() (map[string]map[string]interface{}, error) {
+	//NOTE: This is a temporary solution before doing the refactoring
 	resp, err := http.Get("https://93l1ztafga.execute-api.us-east-1.amazonaws.com")
 	if err != nil {
 		return nil, err

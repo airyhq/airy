@@ -43,8 +43,6 @@ func (s *DeployedCharts) refreshScheduler() {
 		case <-s.refresh:
 		case <-time.After(10 * time.Minute):
 		}
-		//FIXME: remove log
-		klog.Info("Refreshing cache")
 		s.refreshDeployedCharts()
 	}
 }

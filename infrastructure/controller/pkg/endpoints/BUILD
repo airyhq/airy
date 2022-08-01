@@ -19,7 +19,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//infrastructure/controller/pkg/cache",
-        "//infrastructure/controller/pkg/db",
         "//lib/go/config",
         "//lib/go/k8s",
         "//lib/go/payloads",

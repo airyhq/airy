@@ -2,10 +2,11 @@ package endpoints
 
 import (
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
-	"github.com/airyhq/airy/infrastructure/controller/pkg/db"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/helm/cmd/helm/search"
 	"k8s.io/klog"
@@ -15,14 +16,13 @@ type ComponentsList struct {
 	ClientSet      *kubernetes.Clientset
 	Namespace      string
 	Index          *search.Index
-	DB             *db.DB
 	DeployedCharts *cache.DeployedCharts
 }
 
 func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	deployedCharts := s.DeployedCharts.GetDeployedCharts()
 
-	components, err := s.DB.GetComponentsData()
+	components, err := getComponentsDetailsFromCloud()
 	if err != nil {
 		klog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
@@ -51,4 +51,54 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(blob)
+}
+
+type componentsData struct {
+	Count        int                 `json:"Count"`
+	Items        []map[string]string `json:"Items"`
+	ScannedCount int                 `json:"ScannedCount"`
+}
+
+func getComponentsDetailsFromCloud() (map[string]map[string]interface{}, error) {
+	resp, err := http.Get("https://93l1ztafga.execute-api.us-east-1.amazonaws.com")
+	if err != nil {
+		return nil, err
+	}
+
+	blob, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s", blob)
+	}
+
+	var data componentsData
+	err = json.Unmarshal(blob, &data)
+	if err != nil {
+		return nil, err
+	}
+
+	componentsDetails := make(map[string]map[string]interface{})
+	for _, item := range data.Items {
+		name, ok := item["name"]
+		if !ok || name == "" {
+			continue
+		}
+
+		c := make(map[string]interface{})
+		for k, v := range item {
+			//NOTE: For now we are assuming that all the values are strings
+			if v != "" {
+				c[k] = v
+			}
+		}
+
+		c["installed"] = false
+		componentsDetails[name] = c
+	}
+
+	return componentsDetails, nil
 }

@@ -24,7 +24,7 @@
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
-    "react-i18next": "^11.18.1",
+    "react-i18next": "^11.18.3",
     "react-markdown": "^8.0.2",
     "react-modal": "^3.14.4",
     "react-redux": "8.0.2",
@@ -38,7 +38,7 @@
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.18.6",
+    "@babel/core": "7.18.9",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
     "@babel/plugin-transform-spread": "^7.18.9",

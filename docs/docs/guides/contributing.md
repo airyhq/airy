@@ -80,6 +80,36 @@ re-pin dependencies using the following command:
 REPIN=1 bazel run @unpinned_maven//:pin
 ```
 
+### Working with golang
+
+We use [Gazelle](https://github.com/bazelbuild/bazel-gazelle) to manage golang based projects and dependencies in our code.
+Gazelle allows you to work within a projects directory as if it were a regular golang project.
+After changing code or adding/removing dependencies you have to run `bazel run //:gazelle` in order to update the project's `BUILD` files.
+
+#### Updating dependencies
+
+One essential advantage of mono repositories is that they allow you to deliver one version of each external dependency across the entire company.
+This is however outside the scope of Gazelle which only takes care of syncing build files and does not take into account a global dependency structure.
+Therefore, if you updated a subproject's `go.mod` file you need to run a custom tool that we built in order to perform the merge:
+
+```sh
+bazel run //tools/update-deps
+```
+
+You can learn more about how it works [here](https://github.com/airyhq/airy/tree/main/tools/update-deps). 
+
+#### Troubleshooting
+
+The `update-deps` tool uses gazelle to update the global `go_repositories.bzl` file adding one [`go_repository` rule](https://github.com/bazelbuild/bazel-gazelle/blob/master/repository.md#go_repository) for each dependency.
+When encountering a build issue you can go through the following steps to try to solve it:
+
+1. Use community resources: [Gazelle docs](https://github.com/bazelbuild/bazel-gazelle), [Golang module docs](https://go.dev/ref/mod), the #go channel of the [Bazel slack](https://slack.bazel.build/) 
+2. Each dependency has an `importpath` that needs to be unique, e.g. `sigs.k8s.io/json`. If there is a build conflict within the dependencies it is likely that some dependency is out of date and brings in a sub-dependency with a conflicting import path.
+3. Load order: Bazel reads the `WORKSPACE` file in a sequential manner. That means if some rule is loaded before our call to `go_repositories()` it would overwrite the version of a go module that we are trying to load. This behavior is improved in Bazel's [new module system](https://bazel.build/docs/bzlmod).
+4. Use `go mod graph` to understand who is bringing in a dependency. This can be useful to understanding why a troublesome dependency is imported and how to update it.
+5. Check that the `build_file_proto_mode` is set to `disable_global` for the dependency that is causing the issue. It is currently set to this value by default when running the `update-deps` tool, but Gazelle is capable of tracking some custom changes that you make to this file.
+
+
 ### Exploring the code base
 
 Bazel has an extensive [query

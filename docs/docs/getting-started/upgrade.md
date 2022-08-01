@@ -71,6 +71,14 @@ Copying the configuration file in the Airy Core K8s cluster.
 If you used Helm to deploy `Airy Core`, you can upgrade with the `helm upgrade` command:
 
 ```sh
+helm repo add airy https://helm.airy.co
+helm repo update
+helm upgrade airy airy/airy --values ./airy.yaml --timeout 10m
+```
+
+or to upgrade to a specific version:
+
+```sh
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
 helm upgrade airy https://helm.airy.co/charts/airy-${VERSION}.tgz --values ./airy.yaml
 ```

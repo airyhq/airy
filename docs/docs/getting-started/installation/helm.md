@@ -210,6 +210,7 @@ Deploy Airy Core with the latest version. You can also configure a specific vers
 
 ```sh
 helm repo add airy https://helm.airy.co
+helm repo update
 helm install airy airy/airy --timeout 10m
 ```
 

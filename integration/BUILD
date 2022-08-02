@@ -27,6 +27,7 @@ nodejs_binary(
         "//integration/chat-plugin",
         "//integration/commands",
         "//integration/ui",
+        "@npm//@types/node",
         "@npm//cypress",
     ],
     entry_point = {

@@ -12,6 +12,7 @@ app_deps = [
     "//:jackson",
     "//:lombok",
     "//backend/model/message",
+    "//:feign",
     "//lib/java/log",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/core:spring-core",

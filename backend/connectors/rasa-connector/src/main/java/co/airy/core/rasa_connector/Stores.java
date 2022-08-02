@@ -1,4 +1,4 @@
-// Store - Class that gives you access to Kafka
+// Store - Class that gives you access to Kafka Store(s)
 package co.airy.core.rasa_connector;
 
 import co.airy.avro.communication.Message;
@@ -31,7 +31,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> System.out.println(messageId + message.toString()));
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> System.out.println(messageId + message.getContent()));
 
         streams.start(builder.build(), appId);
     }

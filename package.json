@@ -14,7 +14,7 @@
     "core-js": "3.24.0",
     "emoji-mart": "3.0.1",
     "form-data": "^4.0.0",
-    "i18next": "^21.8.14",
+    "i18next": "^21.8.16",
     "isomorphic-fetch": "^3.0.0",
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.5",

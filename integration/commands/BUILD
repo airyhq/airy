@@ -7,7 +7,6 @@ package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
     name = "commands",
-    srcs = ["index.ts"],
     tsconfig = {
         "compilerOptions": {
             "types": [

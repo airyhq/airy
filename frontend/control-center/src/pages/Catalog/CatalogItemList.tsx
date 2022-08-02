@@ -1,5 +1,6 @@
 import React from 'react';
 import InfoCard, {InfoCardStyle} from '../../components/InfoCard';
+import CatalogCard from './CatalogCard';
 import {useNavigate} from 'react-router-dom';
 import {SourceInfo} from '../../components/SourceInfo';
 import {SimpleLoader} from 'components';
@@ -27,7 +28,7 @@ export const CatalogItemList = (props: CatalogItemListProps) => {
 
       <div className={styles.connectorList}>
         {list.map(infoItem => (
-          <InfoCard
+          <CatalogCard
             updateItemList={updateItemList}
             installed={installedConnectors}
             style={InfoCardStyle.normal}

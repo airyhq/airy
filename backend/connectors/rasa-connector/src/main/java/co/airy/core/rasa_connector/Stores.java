@@ -13,14 +13,17 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import static co.airy.model.message.MessageRepository.isNewMessage;
+import java.lang.String;
 
 @Component
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "rasa-connector";
     private final KafkaStreamsWrapper streams;
+    private RasaConnectorService rasaConnectorService;
 
-    Stores(KafkaStreamsWrapper streams) {
+    Stores(KafkaStreamsWrapper streams, RasaConnectorService rasaConnectorService) {
         this.streams = streams;
+        this.rasaConnectorService = rasaConnectorService;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> System.out.println(messageId + message.getContent()));
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> rasaConnectorService.parse(message));
 
         streams.start(builder.build(), appId);
     }

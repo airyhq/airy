@@ -5,8 +5,9 @@
   },
   "include": [
     "./frontend/**/*",
-    "./lib/typescript/**/*"
+    "./lib/typescript/**/*",
+    "./integration/commands/*/*.ts"
   ],
-  "types": ["node", "jest", "@testing-library/jest-dom"],
+  "types": ["node", "jest", "@testing-library/jest-dom", "cypress"],
   "rootDirs": ["."]
 }

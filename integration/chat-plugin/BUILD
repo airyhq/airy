@@ -14,7 +14,6 @@ ts_web_library(
                 "esnext",
                 "dom",
             ],
-            "typeRoots": ["../commands/index.ts"],
             "types": [
                 "cypress",
                 "node",

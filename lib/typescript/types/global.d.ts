@@ -52,3 +52,13 @@ declare module '*.json';
 declare type Dictionary<T> = {
   [key: string]: T;
 };
+
+declare namespace Cypress {
+  interface Chainable {
+    createChatPluginConversation(): Chainable<Element>;
+    editContactDetails(): Chainable<Element>;
+    connectChatPluginConnector(): Chainable<Element>;
+    editDisplayName(): Chainable<Element>;
+    listConversationsForContact(): Chainable<Element>;
+  }
+}

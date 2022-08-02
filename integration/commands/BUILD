@@ -10,10 +10,6 @@ ts_web_library(
     srcs = glob(["*.spec.ts"]),
     tsconfig = {
         "compilerOptions": {
-            "lib": [
-                "esnext",
-                "dom",
-            ],
             "types": [
                 "cypress",
                 "node",

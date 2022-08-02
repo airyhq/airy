@@ -89,6 +89,8 @@ const InfoCard = (props: InfoCardProps) => {
     navigate(sourceInfo.newChannelRoute);
   };
 
+  const CheckmarkIcon = () => <div className={styles.checkmarkIcon}><CheckmarkIcon /></div>;
+
   return (
     <div
       onClick={CONNECTORS_PAGE ? handleCardClick : null}

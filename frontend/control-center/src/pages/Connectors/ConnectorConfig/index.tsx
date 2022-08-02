@@ -248,6 +248,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     setConfigurationModal(true);
   };
 
+  const CheckmarkIcon = () => <div className={styles.checkmarkIcon}><CheckmarkIcon /></div>;
+
   return (
     <div className={styles.container}>
       <section className={styles.headlineContainer}>

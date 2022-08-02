@@ -63,6 +63,11 @@
 .availability {
   display: flex;
   align-items: center;
+  color: var(--color-airy-blue);
+
+  svg {
+    fill: var(--color-airy-blue);
+  }
 
   div {
     width: 20px;
@@ -143,6 +148,10 @@
   align-items: center;
   @include font-l;
 
+  svg {
+    fill: var(--color-soft-green);
+  }
+
   p {
     max-width: 70%;
     text-align: center;
@@ -162,4 +171,13 @@
 
 .descriptionInfo {
   height: 50%;
+
+
+  button {
+    border: 1px solid var(--color-airy-blue);
+    border-radius:20Px;
+    background:transparent;
+    color:  var(--color-airy-blue);
+    padding: 5px;
+  }
 }

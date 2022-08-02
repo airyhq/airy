@@ -136,10 +136,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  svg {
-    fill: var(--color-soft-green);
-  }
 }
 
 .enableModalContainer div {
@@ -155,4 +151,11 @@
 .enableModalContainer p {
   @include font-l;
   margin-bottom: 30px;
+}
+
+.runningHealthy {
+  fill: var(--color-soft-green);
+ svg {
+   fill: var(--color-soft-green);
+ }
 }

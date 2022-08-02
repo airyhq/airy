@@ -93,14 +93,6 @@ const CatalogCard = (props: InfoCardProps) => {
       onClick={CONNECTORS_PAGE ? handleCardClick : null}
       className={`
         ${styles.infoCard} 
-        ${
-          style === InfoCardStyle.expanded
-            ? styles.isExpandedContainer
-            : installed
-            ? styles.installed
-            : styles.notInstalled
-        } 
-        ${CONNECTORS_PAGE ? styles.cardConnectors : ''}
       `}
     >
       <div
@@ -116,6 +108,10 @@ const CatalogCard = (props: InfoCardProps) => {
         `}
         >
           {sourceInfo.image}
+
+          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
+            {!isInstalled ? t('install') : t('uninstall')}
+          </Button>
         </div>
         <div
           className={`
@@ -124,17 +120,22 @@ const CatalogCard = (props: InfoCardProps) => {
         `}
         >
           <h1>{sourceInfo.title}</h1>
+
+          <p>Categories: "Machine Learning & Conversation UI" </p>
         </div>
       </div>
 
-      {CATALOG_PAGE && (
-        <>
-          {!installed && <p>{sourceInfo.description}</p>}
-          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
-            {!isInstalled ? t('install') : t('uninstall')}
-          </Button>
-        </>
-      )}
+      <div className={styles.descriptionInfo}>
+        <p>{sourceInfo.description}</p>
+        <p className={styles.availability}>
+          {' '}
+          <div>
+            <CheckmarkIcon />
+          </div>
+          Available For:{' '}
+        </p>
+        <button>Open-Source</button> <button>Cloud</button> <button>Enterprise</button>
+      </div>
 
       {enabled && <ConfigStatusButton enabled={enabled} />}
 

@@ -30,7 +30,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const [installedConnectors, setInstalledConnectors] = useState([]);
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const [isInstallToggled, setIsInstalledToggled] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const pageTitle = 'Catalog';
   const {t} = useTranslation();
 
@@ -42,20 +42,20 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     console.log('catalogList', catalogList);
-  }, [catalogList])
+  }, [catalogList]);
 
   useEffect(() => {
     console.log('installedConnectors', installedConnectors);
-  }, [installedConnectors])
+  }, [installedConnectors]);
 
   useEffect(() => {
     console.log('notInstalledConnectors', notInstalledConnectors);
-    if(notInstalledConnectors.length === 0 && installedConnectors.length === 0){
+    if (notInstalledConnectors.length === 0 && installedConnectors.length === 0) {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [notInstalledConnectors, installedConnectors])
+  }, [notInstalledConnectors, installedConnectors]);
 
   useEffect(() => {
     if (sourcesInfo.length > 0 && !isInstallToggled) {
@@ -145,22 +145,18 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     );
   };
 
-  
-
   return (
     <ContentWrapper
       transparent={true}
       header={
         <div className={styles.catalogHeadline}>
-            <h1 className={styles.catalogHeadlineText}>Catalog</h1>
+          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
         </div>
       }
       content={
         <div className={styles.catalogWrapper}>
           <div className={styles.listWrapper}>
             {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-
-
 
             <TabPanel
               pageTitleOne={t('notInstalled') as string}
@@ -170,7 +166,8 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
             />
           </div>
         </div>
-      }></ContentWrapper>
+      }
+    ></ContentWrapper>
   );
 };
 

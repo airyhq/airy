@@ -7,13 +7,12 @@
   height: 248px;
   margin-bottom: 28px;
   margin-right: 36px;
-  padding: 12px 0 12px 20px;
+  padding: 6px 12px 12px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   border: 1px solid var(--color-dark-elements-gray);
-  border-radius: 10px;
   background-color: var(--color-background-blue);
+  border-radius: 10px;
   p {
     @include font-xs;
     margin: 10px 0 0 0;
@@ -29,7 +28,7 @@
     border: 2px solid var(--color-airy-blue);
     cursor: pointer;
     margin-left: -1px;
-    width: 261px;
+    width: 341px;
   }
 }
 
@@ -61,17 +60,30 @@
   }
 }
 
-.channelLogoTitleContainer {
+.availability {
   display: flex;
   align-items: center;
-  border-radius: 10px;
+
+  div {
+    width: 20px;
+    margin-right: 5px;
+  }
+}
+
+.channelLogoTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  height: 50%;
+  border-bottom: 1px solid var(--color-light-gray);
 
   .channelLogo {
     display: flex;
     align-items: center;
+    background: yellow;
+    flex-direction: column;
+    height: 100%;
     svg {
-      width: 34px;
-      max-height: 30px;
+      width: 50px;
       fill: var(--color-text-contrast);
     }
   }
@@ -146,4 +158,8 @@
 
 .headerModal {
   @include font-xl;
+}
+
+.descriptionInfo {
+  height: 50%;
 }

@@ -11,10 +11,9 @@ interface TabsPanelProps {
   PageContentOne: any;
   PageContentTwo: any;
   PageContentThree?: any;
-  pageTitleOne:string;
-  pageTitleTwo:string;
-  pageTitleThree?:string;
-
+  pageTitleOne: string;
+  pageTitleTwo: string;
+  pageTitleThree?: string;
 }
 
 export const TabPanel = (props: TabsPanelProps) => {
@@ -23,10 +22,10 @@ export const TabPanel = (props: TabsPanelProps) => {
 
   useEffect(() => {
     showPageOne();
-  },[])
+  }, []);
 
   const showPageOne = (event?: React.MouseEvent<HTMLAnchorElement>) => {
-   if(event) event.preventDefault();
+    if (event) event.preventDefault();
     setCurrentPage(Pages.pageOne);
   };
 
@@ -45,7 +44,7 @@ export const TabPanel = (props: TabsPanelProps) => {
       case Pages.pageOne:
         return PageContentOne;
       case Pages.pageTwo:
-        return PageContentTwo
+        return PageContentTwo;
       case Pages.pageThree:
         return PageContentThree;
     }
@@ -57,20 +56,23 @@ export const TabPanel = (props: TabsPanelProps) => {
         <div className={styles.tabsPanelItems}>
           <span
             className={currentPage === Pages.pageOne ? styles.activeTabItem : styles.inactiveTabItem}
-            onClick={showPageOne}>
-              {pageTitleOne}
+            onClick={showPageOne}
+          >
+            {pageTitleOne}
           </span>
           <span
             className={currentPage === Pages.pageTwo ? styles.activeTabItem : styles.inactiveTabItem}
-            onClick={showPageTwo}>
-               {pageTitleTwo}
+            onClick={showPageTwo}
+          >
+            {pageTitleTwo}
           </span>
 
           {PageContentThree && (
             <span
               className={currentPage === Pages.pageThree ? styles.activeTabItem : styles.inactiveTabItem}
-              onClick={showPageThree}>
-                   {pageTitleThree}
+              onClick={showPageThree}
+            >
+              {pageTitleThree}
             </span>
           )}
         </div>

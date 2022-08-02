@@ -1,13 +1,5 @@
 import {cyEditDisplayNameIcon, cyDisplayName, cyDisplayNameInput, cyEditDisplayNameCheckmark} from 'handles';
 
-declare global {
-  namespace Cypress {
-    interface Chainable<Subject> {
-      editDisplayName(): Chainable<Subject>;
-    }
-  }
-}
-
 export const editDisplayName = (): void => {
   cy.get(`[data-cy=${cyEditDisplayNameIcon}]`).click({force: true});
   cy.wait(500);

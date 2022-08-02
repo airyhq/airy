@@ -10,14 +10,6 @@ import {
   cyContactExtendable,
 } from 'handles';
 
-declare global {
-  namespace Cypress {
-    interface Chainable<Subject> {
-      editContactDetails(): Chainable<Subject>;
-    }
-  }
-}
-
 export const editContactDetails = (): void => {
   it('displays default values if there is no information', () => {
     cy.get(`[data-cy=${cyContactEmail}]`).clear();

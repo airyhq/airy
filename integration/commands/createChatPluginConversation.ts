@@ -9,14 +9,6 @@ import {
 } from 'handles';
 import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
-declare global {
-  namespace Cypress {
-    interface Chainable<Subject> {
-      createChatPluginConversation(): Chainable<Subject>;
-    }
-  }
-}
-
 export const connectChatPluginConnector = (): void => {
   cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
   cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).first().click({force: true});

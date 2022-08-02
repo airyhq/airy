@@ -88,25 +88,30 @@ const CatalogCard = (props: InfoCardProps) => {
     navigate(sourceInfo.newChannelRoute);
   };
 
+  const CheckmarkIcon = () => {
+    return (
+      <div className={styles.checkmarkIcon}>
+        <CheckmarkIcon />
+      </div>
+    );
+  };
+
   return (
     <div
       onClick={CONNECTORS_PAGE ? handleCardClick : null}
       className={`
         ${styles.infoCard} 
-      `}
-    >
+      `}>
       <div
         className={`
           ${styles.channelLogoTitleContainer} 
           ${style === InfoCardStyle.expanded ? styles.isExpandedContainer : ''}          
-        `}
-      >
+        `}>
         <div
           className={`
           ${styles.channelLogo}
           ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
-        `}
-        >
+        `}>
           {sourceInfo.image}
 
           <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
@@ -117,8 +122,7 @@ const CatalogCard = (props: InfoCardProps) => {
           className={`
           ${styles.textDetails}
           ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
-        `}
-        >
+        `}>
           <h1>{sourceInfo.title}</h1>
 
           <p>Categories: "Machine Learning & Conversation UI" </p>
@@ -129,7 +133,7 @@ const CatalogCard = (props: InfoCardProps) => {
         <p>{sourceInfo.description}</p>
         <p className={styles.availability}>
           {' '}
-          <div>
+          <div className={styles.checkmarkIcon}>
             <CheckmarkIcon />
           </div>
           Available For:{' '}
@@ -146,8 +150,7 @@ const CatalogCard = (props: InfoCardProps) => {
           containerClassName={styles.enableModalContainer}
           title={modalTitle}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}
-        >
+          headerClassName={styles.headerModal}>
           {isInstalled && <p> {t('uninstallComponentText')} </p>}
           {!isInstalled ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>

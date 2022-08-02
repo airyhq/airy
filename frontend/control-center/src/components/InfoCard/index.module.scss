@@ -130,9 +130,7 @@
   align-items: center;
   @include font-l;
 
-  svg {
-    fill: var(--color-soft-green);
-  }
+
 
   p {
     max-width: 70%;
@@ -149,6 +147,13 @@
 
 .headerModal {
   @include font-xl;
+}
+
+.checkmarkIcon {
+  fill: var(--color-soft-green);
+  svg {
+    fill: var(--color-soft-green);
+  }
 }
 
 

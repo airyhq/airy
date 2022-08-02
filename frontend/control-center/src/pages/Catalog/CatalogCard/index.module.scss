@@ -148,10 +148,6 @@
   align-items: center;
   @include font-l;
 
-  svg {
-    fill: var(--color-soft-green);
-  }
-
   p {
     max-width: 70%;
     text-align: center;
@@ -181,3 +177,12 @@
     padding: 5px;
   }
 }
+
+
+.checkmarkIcon {
+  fill: var(--color-soft-green);
+  svg {
+    fill: var(--color-soft-green);
+  }
+}
+

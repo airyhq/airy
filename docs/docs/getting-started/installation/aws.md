@@ -97,7 +97,7 @@ If you want to use Airy Core with auto-generated HTTPS certificates, refer to th
 
 :::
 
-Now you can run this command, which will create `Airy Core` in your AWS account:
+Now you can run the following command in your Airy workspace, which will create a Kubernetes cluster with `Airy Core` in your AWS account:
 
 ```bash
 airy create --provider=aws

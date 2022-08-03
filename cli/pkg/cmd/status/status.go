@@ -21,6 +21,7 @@ var StatusCmd = &cobra.Command{
 
 func status(cmd *cobra.Command, args []string) {
 	c := httpclient.NewClient(viper.GetString("apihost"), viper.GetString("authToken"))
+
 	res, err := c.Config()
 
 	if err != nil {

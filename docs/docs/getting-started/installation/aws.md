@@ -105,14 +105,11 @@ airy create --provider=aws
 
 This will execute the following actions:
 
-1. Create the `my-airy` directory and populate it with the configuration that
-   the CLI will need. All subsequent commands need to either be run from this
-   directory or use the `--workspace` flag.
-2. Download two Terraform modules inside the `terraform` directory in the workspace. First module is for creating the EKS cluster, the second is for deploying `Airy  Core` on that cluster.
-3. Run the `install.sh` bash script inside the `terraform` directory.
-4. Create an EKS cluster in your AWS account (applying the `aws-eks` state).
-5. Deploy `Airy Core` in that cluster (applying the `airy-core` state).
-6. Print URLs for accessing the UI and API.
+1. Download two Terraform modules inside the `terraform` directory in the workspace. First module is for creating the EKS cluster, the second is for deploying `Airy Core` on that cluster.
+2. Run the `install.sh` bash script inside the `terraform` directory.
+3. Create an EKS cluster in your AWS account (applying the `aws-eks` state).
+4. Deploy `Airy Core` in that cluster (applying the `airy-core` state).
+5. Print URLs for accessing the UI and API.
 
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).

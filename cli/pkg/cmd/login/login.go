@@ -29,7 +29,7 @@ func login(cmd *cobra.Command, args []string) {
 	}
 
 	fmt.Print("Enter your system token: ")
-	byteToken, err := term.ReadPassword(syscall.Stdin)
+	byteToken, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		console.Exit(err)
 	}

@@ -45,6 +45,12 @@
   padding: 4px 16px;
 }
 
+.greenButton {
+  @extend .extraSmallButton;
+  background-color: var(--color-soft-green);
+
+}
+
 .smallButton {
   @extend .button;
   @include font-base;

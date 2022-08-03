@@ -9,6 +9,8 @@ import {ReactComponent as TwilioAvatar} from 'assets/images/icons/twilioLogo.svg
 import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberLogoFilled.svg';
 import {ReactComponent as ZendeskAvatar} from 'assets/images/icons/zendeskLogo.svg';
 import {ReactComponent as DialogflowAvatar} from 'assets/images/icons/dialogflowLogo.svg';
+import {ReactComponent as SalesforceAvatar} from 'assets/images/icons/salesforceLogo.svg';
+
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
@@ -29,25 +31,36 @@ const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source
 };
 
 export const getChannelAvatar = (source: string) => {
-  switch (source) {
+    switch(source) {
     case Source.facebook:
+    case 'Facebook Messenger':
       return <FacebookAvatar />;
     case Source.google:
+    case 'Google Business Messages':
       return <GoogleAvatar />;
     case Source.twilioSMS:
+    case 'Twilio SMS':
       return <SmsAvatar />;
     case Source.twilioWhatsApp:
+    case 'WhatsApp Business Cloud':
       return <WhatsappAvatar />;
     case Source.twilio:
       return <TwilioAvatar />;
     case Source.instagram:
+    case 'Instagram':
       return <InstagramAvatar />;
     case Source.viber:
+    case 'Viber':
       return <ViberAvatar />;
     case Source.zendesk:
+    case 'Zendesk':
       return <ZendeskAvatar />;
     case Source.dialogflow:
+    case 'Dialogflow':
       return <DialogflowAvatar />;
+    case Source.salesforce:
+    case 'Salesforce':
+      return <SalesforceAvatar />;
     default:
       return <AiryAvatar />;
   }

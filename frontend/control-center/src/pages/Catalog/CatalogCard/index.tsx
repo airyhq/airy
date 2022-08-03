@@ -8,6 +8,20 @@ import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../../pages/Connectors/ConfigStatusButton';
+import {Source} from 'model';
+import {
+  CONNECTORS_FACEBOOK_ROUTE,
+  CONNECTORS_TWILIO_SMS_ROUTE,
+  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
+  CONNECTORS_CHAT_PLUGIN_ROUTE,
+  CONNECTORS_GOOGLE_ROUTE,
+  CONNECTORS_INSTAGRAM_ROUTE,
+  CONNECTORS_DIALOGFLOW_ROUTE,
+  CONNECTORS_ZENDESK_ROUTE,
+  CONNECTORS_SALESFORCE_ROUTE,
+} from '../../../routes/routes';
+import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {findSourceForComponent} from '../index';
 import styles from './index.module.scss';
 
 export enum InfoCardStyle {
@@ -16,11 +30,11 @@ export enum InfoCardStyle {
 }
 
 type InfoCardProps = {
-  sourceInfo: SourceInfo;
-  addChannelAction: () => void;
-  installed: boolean;
+  componentInfo?: any;
+  addChannelAction?: () => void;
+  installed?: boolean;
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
-  style: InfoCardStyle;
+  style?: InfoCardStyle;
   updateItemList?: (installed: boolean, componentName: string) => void;
   setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
@@ -32,11 +46,55 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
+interface DescriptionComponentProps {
+  description: string;
+}
+
+const DescriptionComponent = (props: DescriptionComponentProps) => {
+  const {description} = props;
+  const {t} = useTranslation();
+  return <>{t(description)}</>;
+};
+
+const packagedItems = [
+  Source.chatPlugin,
+  Source.facebook,
+  Source.twilioSMS,
+  Source.twilioWhatsApp,
+  Source.google,
+  Source.instagram,
+  Source.dialogflow,
+  Source.zendesk,
+  Source.salesforce,
+];
+
+const findRouteForComponent = (displayName: string) => {
+  switch (displayName) {
+    case 'Airy Chat Plugin':
+      return CONNECTORS_CHAT_PLUGIN_ROUTE;
+    case 'Facebook Messenger':
+      return CONNECTORS_FACEBOOK_ROUTE;
+    case 'Twilio SMS':
+      return CONNECTORS_TWILIO_SMS_ROUTE;
+    case 'Twilio WhatsApp':
+      return CONNECTORS_TWILIO_WHATSAPP_ROUTE;
+    case 'Google Business Messages':
+      return CONNECTORS_GOOGLE_ROUTE;
+    case 'Instagram':
+      return CONNECTORS_INSTAGRAM_ROUTE;
+    case 'Dialogflow':
+      return CONNECTORS_DIALOGFLOW_ROUTE;
+    case 'Salesforce':
+      return CONNECTORS_SALESFORCE_ROUTE;
+    case 'Zendesk':
+      return CONNECTORS_ZENDESK_ROUTE;
+  }
+};
+
 const CatalogCard = (props: InfoCardProps) => {
   const {
-    sourceInfo,
+    componentInfo,
     addChannelAction,
-    installed,
     style,
     enabled,
     installComponent,
@@ -44,6 +102,7 @@ const CatalogCard = (props: InfoCardProps) => {
     updateItemList,
     setIsInstalledToggled,
   } = props;
+  const installed = componentInfo.installed === true;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -52,8 +111,12 @@ const CatalogCard = (props: InfoCardProps) => {
   const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
   const CATALOG_PAGE = window.location.pathname.includes(CATALOG_ROUTE);
 
+  console.log('sourceforCompo', findSourceForComponent(componentInfo.displayName));
+
   useEffect(() => {
-    const title = isInstalled ? t('uninstall') + ' ' + sourceInfo.title : sourceInfo.title + ' ' + t('installed');
+    const title = isInstalled
+      ? t('uninstall') + ' ' + componentInfo.displayName
+      : componentInfo.displayName + ' ' + t('installed');
     setModalTitle(title);
   }, [isInstalled]);
 
@@ -62,13 +125,13 @@ const CatalogCard = (props: InfoCardProps) => {
     setIsModalVisible(true);
 
     if (!isInstalled) {
-      installComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
+      installComponent({name: componentInfo.name});
     }
   };
 
   const toggleInstallation = () => {
     setIsInstalled(!isInstalled);
-    updateItemList(!isInstalled, sourceInfo.componentName);
+    updateItemList(!isInstalled, componentInfo.displayName);
   };
 
   const cancelInstallationToggle = () => {
@@ -78,22 +141,15 @@ const CatalogCard = (props: InfoCardProps) => {
   };
 
   const confirmUninstall = () => {
-    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
+    uninstallComponent({name: componentInfo.name});
 
     setIsModalVisible(false);
     toggleInstallation();
   };
 
   const handleCardClick = () => {
-    navigate(sourceInfo.newChannelRoute);
-  };
-
-  const CheckmarkIcon = () => {
-    return (
-      <div className={styles.checkmarkIcon}>
-        <CheckmarkIcon />
-      </div>
-    );
+    const connectorRoute = findRouteForComponent(componentInfo.displayName);
+    navigate(connectorRoute + '/new');
   };
 
   return (
@@ -102,50 +158,42 @@ const CatalogCard = (props: InfoCardProps) => {
       className={`
         ${styles.infoCard} 
       `}>
-      <div
-        className={`
-          ${styles.channelLogoTitleContainer} 
-          ${style === InfoCardStyle.expanded ? styles.isExpandedContainer : ''}          
-        `}>
-        <div
-          className={`
-          ${styles.channelLogo}
-          ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
-        `}>
-          {sourceInfo.image}
+      <div className={styles.channelLogoTitleContainer}>
+        <div className={styles.channelLogo}>
+          {getChannelAvatar(componentInfo.displayName)}
 
-          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
-            {!isInstalled ? t('install') : t('uninstall')}
+          <Button styleVariant={isInstalled ? 'green' : 'extra-small'} type="submit" onClick={openInstallModal}>
+            {componentInfo.installed ? t('install').toUpperCase() : t('open').toUpperCase()}
           </Button>
         </div>
-        <div
-          className={`
-          ${styles.textDetails}
-          ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
-        `}>
-          <h1>{sourceInfo.title}</h1>
+        <div className={styles.textDetails}>
+          <h1>{componentInfo.displayName}</h1>
 
-          <p>Categories: "Machine Learning & Conversation UI" </p>
+          <p> <span >Categories:</span> {componentInfo.category} </p>
         </div>
       </div>
 
       <div className={styles.descriptionInfo}>
-        <p>{sourceInfo.description}</p>
+        <p>
+          <DescriptionComponent
+            description={findSourceForComponent(componentInfo.displayName)?.replace('.', '') + 'Description'}
+          />
+        </p>
         <p className={styles.availability}>
           {' '}
-          <div className={styles.checkmarkIcon}>
+          <div className={styles.availabilityCheckmarkIcon}>
             <CheckmarkIcon />
           </div>
           Available For:{' '}
         </p>
-        <button>Open-Source</button> <button>Cloud</button> <button>Enterprise</button>
+        {componentInfo?.availableFor &&
+          componentInfo.availableFor.split(',').map((elem: string) => <button>{elem}</button>)}
       </div>
 
       {enabled && <ConfigStatusButton enabled={enabled} />}
-
       {isModalVisible && (
         <SettingsModal
-          Icon={!isInstalled ? (CheckmarkIcon as React.ElementType) : null}
+          Icon={!isInstalled ? <CheckmarkIcon className={styles.checkmarkIcon}/>  : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={modalTitle}

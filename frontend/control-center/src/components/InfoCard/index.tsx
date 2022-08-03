@@ -89,8 +89,6 @@ const InfoCard = (props: InfoCardProps) => {
     navigate(sourceInfo.newChannelRoute);
   };
 
-  const CheckmarkIcon = () => <div className={styles.checkmarkIcon}><CheckmarkIcon /></div>;
-
   return (
     <div
       onClick={CONNECTORS_PAGE ? handleCardClick : null}
@@ -143,7 +141,7 @@ const InfoCard = (props: InfoCardProps) => {
 
       {isModalVisible && (
         <SettingsModal
-          Icon={!isInstalled ? (CheckmarkIcon as React.ElementType) : null}
+          Icon={!isInstalled ? <CheckmarkIcon className={styles.checkmarkIcon}/> : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={modalTitle}

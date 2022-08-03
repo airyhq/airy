@@ -3,13 +3,19 @@
 
 .catalogWrapper {
   background: var(--color-background-white);
-  color: var(--color-text-contrast);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  padding: 32px;
+  margin: 88px 1.5em 0 191px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
+}
+
+.catalogListContainer {
+  display:flex;
+  flex-wrap: wrap;
 }
 
 .catalogHeadline {
@@ -25,6 +31,7 @@
 .catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
+  margin-bottom:15Px;
 }
 
 .listWrapper {

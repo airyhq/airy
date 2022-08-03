@@ -7,18 +7,13 @@
   height: 248px;
   margin-bottom: 28px;
   margin-right: 36px;
-  padding: 6px 12px 12px 20px;
+  padding: 17px 15px 17px 15px;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-dark-elements-gray);
   background-color: var(--color-background-blue);
   border-radius: 10px;
-  p {
-    @include font-xs;
-    margin: 10px 0 0 0;
-    color: var(--color-text-gray);
-    max-width: 95%;
-  }
+  @include font-s;
 
   button {
     margin-top: 14px;
@@ -27,8 +22,21 @@
   &:hover {
     border: 2px solid var(--color-airy-blue);
     cursor: pointer;
-    margin-left: -1px;
     width: 341px;
+    margin-left: -1px;
+
+  }
+}
+
+.textDetails {
+  p {
+    @include font-s;
+    margin: 10px 0 0 0;
+    color: var(--color-text-gray);
+  }
+
+  span {
+    font-weight:bold;
   }
 }
 
@@ -63,15 +71,22 @@
 .availability {
   display: flex;
   align-items: center;
+  font-weight:800;
   color: var(--color-airy-blue);
+  @include font-s-bold;
+  margin-top:20Px;
 
-  svg {
+
+
+  .availabilityCheckmarkIcon {
     fill: var(--color-airy-blue);
   }
 
   div {
     width: 20px;
     margin-right: 5px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -84,7 +99,6 @@
   .channelLogo {
     display: flex;
     align-items: center;
-    background: yellow;
     flex-direction: column;
     height: 100%;
     svg {
@@ -167,6 +181,7 @@
 
 .descriptionInfo {
   height: 50%;
+  margin-top:10Px;
 
 
   button {
@@ -175,14 +190,14 @@
     background:transparent;
     color:  var(--color-airy-blue);
     padding: 5px;
+    margin-right: 5px;
   }
 }
 
 
 .checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
   fill: var(--color-soft-green);
-  svg {
-    fill: var(--color-soft-green);
-  }
 }
 

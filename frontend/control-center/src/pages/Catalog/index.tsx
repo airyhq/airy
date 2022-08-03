@@ -14,6 +14,7 @@ import {TabPanel, ContentWrapper} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
 import {useTranslation} from 'react-i18next';
+import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -21,6 +22,29 @@ const mapDispatchToProps = {
 };
 
 const connector = connect(null, mapDispatchToProps);
+
+export const findSourceForComponent = (displayName: string) => {
+  switch (displayName) {
+    case 'Airy Chat Plugin':
+      return Source.chatPlugin;
+    case 'Facebook Messenger':
+      return  Source.facebook;
+    case 'Twilio SMS':
+      return Source.twilioSMS;
+    case 'Twilio WhatsApp':
+      return Source.twilioWhatsApp;
+    case 'Google Business Messages':
+      return Source.google;
+    case 'Instagram':
+      return Source.instagram;
+    case 'Dialogflow':
+      return Source.dialogflow;
+    case 'Salesforce':
+      return Source.salesforce;
+    case 'Zendesk':
+      return Source.zendesk;
+  }
+}
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {listComponents} = props;
@@ -34,48 +58,32 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const pageTitle = 'Catalog';
   const {t} = useTranslation();
 
+  const catalogArrObjEntries = Object.entries(catalogList);
+  const catalogArrObjKeys = Object.keys(catalogList);
+  const catalogArrObjValues = Object.values(catalogList);
+
+  // console.log('catalogArrObjEntries', catalogArrObjEntries);
+  // console.log('catalogArrObjKeys', catalogArrObjKeys);
+  console.log('catalogArrObjValues', catalogArrObjValues);
+
+  //remove this once all components have been packaged
+  const packagedItems = [
+    Source.chatPlugin,
+    Source.facebook,
+    Source.twilioSMS,
+    Source.twilioWhatsApp,
+    Source.google,
+    Source.instagram,
+    Source.dialogflow,
+    Source.zendesk,
+    Source.salesforce,
+  ];
+
   useEffect(() => {
     listComponents();
     setPageTitle(pageTitle);
     setSourcesInfo(getSourcesInfo());
   }, []);
-
-  useEffect(() => {
-    console.log('catalogList', catalogList);
-  }, [catalogList]);
-
-  useEffect(() => {
-    console.log('installedConnectors', installedConnectors);
-  }, [installedConnectors]);
-
-  useEffect(() => {
-    console.log('notInstalledConnectors', notInstalledConnectors);
-    if (notInstalledConnectors.length === 0 && installedConnectors.length === 0) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [notInstalledConnectors, installedConnectors]);
-
-  useEffect(() => {
-    if (sourcesInfo.length > 0 && !isInstallToggled) {
-      let installedComponents = [];
-      let uninstalledComponents = [];
-
-      Object.entries(catalogList).filter((componentElem: [string, {repository: string; installed: boolean}]) => {
-        if (componentElem[1].installed === true) {
-          installedComponents = installedComponents.concat(findComponent(removePrefix(componentElem[0])));
-        }
-
-        if (componentElem[1].installed === false) {
-          uninstalledComponents = uninstalledComponents.concat(findComponent(removePrefix(componentElem[0])));
-        }
-      });
-
-      setInstalledConnectors(installedComponents);
-      setNotInstalledConnectors(uninstalledComponents);
-    }
-  }, [sourcesInfo, catalogList, isInstallToggled]);
 
   const findComponent = (name: string) => {
     return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
@@ -119,55 +127,24 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     return null;
   };
 
-  const InstalledComponents = () => {
-    return (
-      <CatalogItemList
-        list={installedConnectors}
-        installedConnectors
-        setDisplayDialogFromSource={setDisplayDialogFromSource}
-        updateItemList={updateItemList}
-        setIsInstalledToggled={setIsInstalledToggled}
-        loading={loading}
-      />
-    );
-  };
-
-  const UnInstalledComponents = () => {
-    return (
-      <CatalogItemList
-        list={notInstalledConnectors}
-        installedConnectors={false}
-        setDisplayDialogFromSource={setDisplayDialogFromSource}
-        updateItemList={updateItemList}
-        setIsInstalledToggled={setIsInstalledToggled}
-        loading={loading}
-      />
-    );
-  };
-
   return (
-    <ContentWrapper
-      transparent={true}
-      header={
-        <div className={styles.catalogHeadline}>
-          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
-        </div>
-      }
-      content={
-        <div className={styles.catalogWrapper}>
-          <div className={styles.listWrapper}>
-            {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
+    <section className={styles.catalogWrapper}>
+      <h1 className={styles.catalogHeadlineText}>Catalog</h1>
 
-            <TabPanel
-              pageTitleOne={t('notInstalled') as string}
-              pageTitleTwo={t('installed') as string}
-              PageContentOne={<UnInstalledComponents />}
-              PageContentTwo={<InstalledComponents />}
+    <section className={styles.catalogListContainer}>
+      {Object.values(catalogList).map((infoItem: any) => {
+        if(findSourceForComponent(infoItem.displayName)){
+          return (
+            <CatalogCard
+              updateItemList={updateItemList}
+              componentInfo={infoItem}
+              setIsInstalledToggled={setIsInstalledToggled}
             />
-          </div>
-        </div>
-      }
-    ></ContentWrapper>
+          );
+        }
+      })}
+      </section>
+    </section>
   );
 };
 

@@ -13,10 +13,7 @@ ts_web_library(
                 "esnext",
                 "dom",
             ],
-            "types": [
-                "cypress",
-                "node",
-            ],
+            "types": ["cypress"],
         },
     },
     deps = [

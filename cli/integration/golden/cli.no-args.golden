@@ -9,6 +9,7 @@ Available Commands:
   config      Manages an Airy Core instance via airy.yaml
   create      Creates an instance of Airy Core
   help        Help about any command
+  login       Authenticates your workspace with Airy core and stores the credentials.
   status      Reports the status of an Airy Core instance
   ui          Opens the Airy Core UI in your local browser
   upgrade     Upgrades an instance of Airy Core

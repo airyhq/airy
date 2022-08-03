@@ -24,9 +24,7 @@ var ConfigCmd = &cobra.Command{
 }
 
 func getConfig(cmd *cobra.Command, args []string) {
-	systemToken := viper.GetString("systemToken")
-	c := httpclient.NewClient(viper.GetString("apihost"))
-	c.Token = systemToken
+	c := httpclient.NewClient(viper.GetString("apihost"), viper.GetString("authToken"))
 
 	res, err := c.ComponentsGet()
 	if err != nil {
@@ -54,14 +52,12 @@ func ApplyConfig(workspacePath string) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	systemToken := viper.GetString("systemToken")
+
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {
 		console.Exit("error parsing configuration file: ", err)
 	}
-	c := httpclient.NewClient(viper.GetString("apihost"))
-
-	c.Token = systemToken
+	c := httpclient.NewClient(viper.GetString("apihost"), viper.GetString("authToken"))
 
 	resComponents, err := c.ComponentsUpdate(conf)
 	if err != nil {

@@ -9,6 +9,10 @@ ts_web_library(
     name = "commands",
     tsconfig = {
         "compilerOptions": {
+            "lib": [
+                "esnext",
+                "dom",
+            ],
             "types": [
                 "cypress",
                 "node",

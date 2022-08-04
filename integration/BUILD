@@ -25,7 +25,7 @@ nodejs_binary(
     data = [
         ":cypress.config.ts",
         "//integration/chat-plugin",
-        "//integration/commands",
+        "//integration/support",
         "//integration/ui",
         "@npm//@types/node",
         "@npm//cypress",

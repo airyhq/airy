@@ -31,7 +31,7 @@ const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source
 };
 
 export const getChannelAvatar = (source: string) => {
-    switch(source) {
+  switch (source) {
     case Source.facebook:
     case 'Facebook Messenger':
       return <FacebookAvatar />;

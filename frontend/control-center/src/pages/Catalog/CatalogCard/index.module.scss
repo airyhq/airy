@@ -2,9 +2,9 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/z-index.scss';
 
-.infoCard {
+.catalogCard {
   width: 340px;
-  height:248px;
+  height: 248px;
   margin-bottom: 28px;
   margin-right: 36px;
   padding: 0px 12px 0px 20px;
@@ -13,82 +13,25 @@
   background-color: var(--color-background-blue);
   border-radius: 10px;
   border: 1px solid var(--color-dark-elements-gray);
-  outline: 2px solid transparent; 
+  outline: 2px solid transparent;
   @include font-s;
   transition: all 0.1s;
 
   &:hover {
     outline: 2px solid var(--color-airy-blue);
     border: 1px solid transparent;
-    cursor:pointer;
-
+    cursor: pointer;
   }
 }
 
-.textDetails {
-  p {
-    @include font-s;
-    margin: 10px 0 0 0;
-    color: var(--color-text-gray);
-  }
-
-  span {
-    font-weight:bold;
-  }
-}
-
-.installed {
-  height: 98px;
-}
-
-.notInstalled {
-  height: 118px;
-}
-
-.channelLogoInstagram {
-  margin-right: 10px;
-  height: 40px;
-  width: 40px;
-  svg {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-.textDetails {
-  margin-left: 10px;
-  h1 {
-    @include font-s-bold;
-    color: var(--color-text-contrast);
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-}
-
-.availability {
-  display: flex;
-  align-items: center;
-  color: var(--color-airy-blue);
-  @include font-s;
-  margin-top:16px;
-    svg {
-      fill: var(--color-airy-blue);
-      width: 14px;
-      margin-right: 5px;
-      display: flex;
-      align-items: center;
-    }
-  
-}
-
-.channelLogoTitleContainer {
+.cardLogoTitleContainer {
   display: flex;
   align-items: flex-start;
   height: 50%;
   border-bottom: 1px solid var(--color-light-gray);
-  margin-top:15px;
+  margin-top: 15px;
 
-  .channelLogo {
+  .componentLogo {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -98,48 +41,76 @@
     }
 
     svg {
-      height:55px;
+      height: 55px;
       fill: var(--color-text-contrast);
     }
   }
 }
 
-.isExpandedCard {
-  height: 100px;
-  width: 260px;
-  &:hover {
-    border: 2px solid var(--color-airy-blue);
-    margin-left: -1px;
-    width: 261px;
-  }
-}
-
-.isExpandedContainer {
-  height: 100px;
-  width: 260px;
-  padding: 6px 0 0 0;
-  flex-direction: column;
-  align-items: start;
-  &:hover {
-    width: 261px;
-  }
-}
-
-.isExpandedLogo {
-  min-width: 40px;
-  max-width: 100%;
-  margin: 0 18px;
-}
-
-.isExpandedDetails {
-  width: 100%;
-  margin-left: 18px;
+.componentInfo {
+  margin-left: 10px;
   h1 {
-    @include font-base;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include font-s-bold;
+    color: var(--color-text-contrast);
+    font-weight: 600;
+    letter-spacing: 0;
   }
+
+  p {
+    @include font-s;
+    margin: 10px 0 0 0;
+    color: var(--color-text-gray);
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.descriptionInfo {
+  height: 50%;
+  margin-top: 10px;
+
+  p {
+    width: 98%;
+    color: var(--color-text-contrast);
+  }
+
+  button {
+    border: 1px solid var(--color-airy-blue);
+    @include font-xs;
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-airy-blue);
+    padding: 5px;
+    margin-right: 5px;
+    margin-top: 8px;
+  }
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  @include font-s;
+  margin-top: 16px;
+  svg {
+    fill: var(--color-airy-blue);
+    width: 14px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.bolded {
+  font-weight: 800;
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
 }
 
 .enableModalContainerWrapper {
@@ -166,43 +137,6 @@
   }
 }
 
-.enableModalContainer button {
-  margin-top: 14px;
-  padding: 0 60px;
-}
-
 .headerModal {
   @include font-xl;
 }
-
-.descriptionInfo {
-  height: 50%;
-  margin-top:10Px;
-
-  p {
-    width: 98%;
-  }
-
-  button {
-    border: 1px solid var(--color-airy-blue);
-    @include font-xs;
-    border-radius:20Px;
-    background:transparent;
-    color:  var(--color-airy-blue);
-    padding: 5px;
-    margin-right: 5px;
-    margin-top: 8px;
-  }
-}
-
-
-.checkmarkIcon {
-  width: 15%;
-  margin-bottom: 30px;
-  fill: var(--color-soft-green);
-}
-
-.bolded {
-  font-weight:800;
-}
-

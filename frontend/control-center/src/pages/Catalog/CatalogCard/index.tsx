@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {ComponentInfo} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, SettingsModal} from 'components';
-import {installComponent, uninstallComponent} from '../../../actions/catalog';
+import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
@@ -17,13 +17,12 @@ type CatalogCardProps = {
 
 const mapDispatchToProps = {
   installComponent,
-  uninstallComponent,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const CatalogCard = (props: CatalogCardProps) => {
-  const {componentInfo} = props;
+  const {componentInfo, installComponent} = props;
   const [isInstalled, setIsInstalled] = useState(componentInfo.installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const {t} = useTranslation();
@@ -40,6 +39,10 @@ const CatalogCard = (props: CatalogCardProps) => {
   const cancelInstallationToggle = () => {
     setIsModalVisible(false);
     setIsInstalled(!isInstalled);
+  };
+
+  const availabilityFormatted = (str: string) => {
+    return str.includes(' - ') ? componentInfo.availableFor.split('-') : componentInfo.availableFor.split(',');
   };
 
   const CatalogCardButton = () => {
@@ -65,21 +68,18 @@ const CatalogCard = (props: CatalogCardProps) => {
   };
 
   return (
-    <article
-      className={`
-        ${styles.infoCard} 
-      `}>
-      <section className={styles.channelLogoTitleContainer}>
-        <div className={styles.channelLogo}>
-          {getChannelAvatar(componentInfo.displayName)} 
+    <article className={styles.catalogCard}>
+      <section className={styles.cardLogoTitleContainer}>
+        <div className={styles.componentLogo}>
+          {getChannelAvatar(componentInfo.displayName)}
           <CatalogCardButton />
         </div>
-        <div className={styles.textDetails}>
+        <div className={styles.componentInfo}>
           <h1>{componentInfo.displayName}</h1>
 
           <p>
             {' '}
-            <span className={styles.bolded}>Categories:</span> {componentInfo.category}{' '}
+            <span className={styles.bolded}>{t('categories')}</span> {componentInfo.category}{' '}
           </p>
         </div>
       </section>
@@ -92,10 +92,12 @@ const CatalogCard = (props: CatalogCardProps) => {
         </p>
         <p className={`${styles.availability} ${styles.bolded}`}>
           <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
-          Available for:
+          {t('availableFor')}:
         </p>
         {componentInfo?.availableFor &&
-          componentInfo.availableFor.split(',').map((service: string) => <button>{service}</button>)}
+          availabilityFormatted(componentInfo.availableFor).map((service: string) => (
+            <button key={service}>{service}</button>
+          ))}
       </div>
 
       {isModalVisible && (
@@ -105,11 +107,9 @@ const CatalogCard = (props: CatalogCardProps) => {
           containerClassName={styles.enableModalContainer}
           title={`${componentInfo.displayName} ${t('installed')}`}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}>
-          <Button
-            styleVariant="normal"
-            type="submit"
-            onClick={() => navigate(NEW_CHANNEL_ROUTE)}>
+          headerClassName={styles.headerModal}
+        >
+          <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_CHANNEL_ROUTE)}>
             {t('toConfigure')}
           </Button>
         </SettingsModal>

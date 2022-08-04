@@ -370,6 +370,10 @@ const resources = {
       installed: 'Installed',
       notInstalled: 'Not Installed',
 
+      //Catalog
+      categories: 'Categories',
+      availableFor: 'Available for',
+
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
 
@@ -778,6 +782,10 @@ const resources = {
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
 
+      //Catalog
+      categories: 'Kategorien',
+      availableFor: 'Verfügbar für',
+
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
 
@@ -1177,6 +1185,10 @@ const resources = {
       noConnectorsFoundMore: 'et explorer davantage.',
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
+
+      //Catalog
+      categories: 'Catégories',
+      availableFor: 'Disponible pour',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1581,6 +1593,10 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
+
+      //Catalog
+      categories: 'Categorías',
+      availableFor: 'Disponible para',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

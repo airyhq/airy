@@ -193,5 +193,3 @@ export const getSourcesInfo = (): SourceInfo[] => {
     },
   ];
 };
-
-

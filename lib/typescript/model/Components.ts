@@ -14,4 +14,4 @@ export interface ComponentInfo {
   description: string;
   category: string;
   price: string;
-};
+}

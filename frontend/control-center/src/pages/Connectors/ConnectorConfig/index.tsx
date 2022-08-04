@@ -328,7 +328,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
       {configurationModal && (
         <SettingsModal
-          Icon={!isEnabled ?  <CheckmarkIcon className={styles.checkmarkIcon}/> : null}
+          Icon={!isEnabled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={

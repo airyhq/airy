@@ -2,14 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {SourceInfo} from '../SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE} from '../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../routes/routes';
 import {Button, SettingsModal} from 'components';
 import {installComponent, uninstallComponent} from '../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
 import styles from './index.module.scss';
-import {ComponentStatus} from '..';
 
 export enum InfoCardStyle {
   normal = 'normal',
@@ -20,10 +19,8 @@ type InfoCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
   installed: boolean;
-  componentStatus?: ComponentStatus;
+  enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
   style: InfoCardStyle;
-  updateItemList?: (installed: boolean, componentName: string) => void;
-  setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -34,42 +31,21 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {
-    sourceInfo,
-    addChannelAction,
-    installed,
-    style,
-    componentStatus,
-    installComponent,
-    uninstallComponent,
-    updateItemList,
-    setIsInstalledToggled,
-  } = props;
+  const {sourceInfo, addChannelAction, installed, style, enabled, uninstallComponent} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const {t} = useTranslation();
   const navigate = useNavigate();
   const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
-  const CATALOG_PAGE = window.location.pathname.includes(CATALOG_ROUTE);
 
   useEffect(() => {
     const title = isInstalled ? t('uninstall') + ' ' + sourceInfo.title : sourceInfo.title + ' ' + t('installed');
     setModalTitle(title);
   }, [isInstalled]);
 
-  const openInstallModal = () => {
-    setIsInstalledToggled(true);
-    setIsModalVisible(true);
-
-    if (!isInstalled) {
-      installComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
-    }
-  };
-
   const toggleInstallation = () => {
     setIsInstalled(!isInstalled);
-    updateItemList(!isInstalled, sourceInfo.componentName);
   };
 
   const cancelInstallationToggle = () => {
@@ -128,20 +104,11 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
       </div>
 
-      {CATALOG_PAGE && (
-        <>
-          {!installed && <p>{sourceInfo.description}</p>}
-          <Button styleVariant={isInstalled ? 'outline' : 'extra-small'} type="submit" onClick={openInstallModal}>
-            {!isInstalled ? t('install') : t('uninstall')}
-          </Button>
-        </>
-      )}
-
-      {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
+      {enabled && <ConfigStatusButton enabled={enabled} />}
 
       {isModalVisible && (
         <SettingsModal
-          Icon={!isInstalled ? <CheckmarkIcon className={styles.checkmarkIcon}/> : null}
+          Icon={!isInstalled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={modalTitle}

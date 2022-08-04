@@ -14,45 +14,13 @@
 }
 
 .catalogListContainer {
-  display:flex;
-  flex-wrap: wrap;
-}
-
-.catalogHeadline {
-  @include font-xl;
-  font-weight: 900;
-  letter-spacing: 0;
   display: flex;
-  justify-content: space-between;
-  color: var(--color-text-contrast);
-  margin-top: 28px;
+  flex-wrap: wrap;
 }
 
 .catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
-  margin-bottom:15Px;
-}
-
-.listWrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.connectorContainer {
-  width: 100%;
-  padding-top: 14px;
-  padding-left: 20px;
-
-  h2 {
-    @include font-l;
-    font-weight: 700;
-    margin-bottom: 14px;
-  }
-}
-
-.connectorList {
-  display: flex;
-  flex-wrap: wrap;
+  margin-bottom: 15px;
+  color: var(--color-text-contrast);
 }

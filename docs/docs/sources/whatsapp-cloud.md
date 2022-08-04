@@ -1,6 +1,6 @@
 ---
-title: WhatsApp via Twilio
-sidebar_label: Twilio WhatsApp
+title: WhatsApp
+sidebar_label: WhatsApp
 ---
 
 import TLDR from "@site/src/components/TLDR";
@@ -20,7 +20,7 @@ Connect with **2 billion WhatsApp users** via messages and templates.
 
 </TLDR>
 
-The Whatsapp cloud API has finally been released for general use and you can now connect it with Airy.
+The Whatsapp cloud API has finally been released for general use and you can now connect it to Airy.
 
 :::tip What you will learn
 
@@ -57,58 +57,70 @@ At the end of which you should have the following:
 
 After you also complete step 2 you have now verified that you can send messages from that test phone number to.
 
-Next we also need to obtain a long-lived user access token that Airy will use to send messages to Whatsapp:
-
-1. Go to the [Facebook Graph explorer](https://developers.facebook.com/tools/explorer)
-2. Select your app and "User access token", and copy the automatically generated token
-3. Go to the Facebook token debugger and put in your token
-4. Click "Extend token" and copy the new token
-
+Before proceeding go to your app dashboard and note down the id and secret of your app.
+Airy will use these to generate long-lived access tokens and fetch conversation metadata on your behalf.
 
 ## Step 2: Install the Whatsapp cloud source
 
 Here we assume that you already have a running Airy core instance ([get started](getting-started/installation/introduction)).
 Now in order to use this source you have to first install it either by navigating to the [control center](/ui/control-center/connectors) or by directly calling the components installation API like so:
 
-```
-POST /components.install
+```POST /components.install```
+```json
 {
   "name": "airy-core/sources-whatsapp"
 }
-``` 
+```
 
 ## Step 3: Configure the Whatsapp cloud source
 
 Now that the source is installed we can enable and configure it using the values obtained in the creation of the test phone number.
 For this you can again either use the control center UI or make the following call to the components API:
 
-```
-POST /components.update
-
+```POST /components.update```
+```json5
 {
   "components": [
     {
       "name": "sources-whatsapp",
       "enabled": true,
       "data": {
-        "token": "access token obtained in step 1",
-        "webhook_secret": "a random secret created by you"
+        "appId": "The id of your meta app",
+        "appSecret": "The secret of your meta app",
+        "webhookSecret": "a random secret created by you"
       }
     }
   ]
 }
-``` 
+```
 
 Note down the `webhook_secret` and use it when registering your webhook.
 
-
-## Step 4: Connect a phone number to Airy
+## Step 4: Connect the webhook
 
 TBD
 
 ## Step 5: Connect a phone number to Airy
 
-TBD
+Airy manages different connections of a messaging source as [channels](/getting-started/glossary.md#channel).
+So in order to connect a phone number to Airy you need to create a channel.
+You can do so by either using the control center UI or by using the API:
+
+<ButtonBox
+icon={<BoltSVG />}
+title='Channels endpoint'
+description='Connect a Whatsapp phone number to your Airy Core instance through the Channels endpoint'
+link='api/endpoints/channels#whatsapp'
+/>
+
+<br />
+
+import ConnectWhatsapp from '../api/endpoints/connect-whatsapp.mdx'
+
+<ConnectWhatsapp />
+
+You can get a user token associated to your app using the [Facebook graph explorer](https://developers.facebook.com/tools/explorer).
+
 
 ## Step 6: Send and receive messages with the Inbox UI
 

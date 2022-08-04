@@ -4,26 +4,27 @@
 
 .infoCard {
   width: 340px;
-  height: 248px;
+  height:248px;
   margin-bottom: 28px;
   margin-right: 36px;
-  padding: 17px 15px 17px 15px;
+  padding: 0px 0 12px 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-dark-elements-gray);
   background-color: var(--color-background-blue);
   border-radius: 10px;
+  border: 1px solid var(--color-dark-elements-gray);
+  outline: 2px solid transparent; 
   @include font-s;
+  transition: all 0.1s;
 
   button {
     margin-top: 14px;
   }
 
   &:hover {
-    border: 2px solid var(--color-airy-blue);
-    cursor: pointer;
-    width: 341px;
-    margin-left: -1px;
+    outline: 2px solid var(--color-airy-blue);
+    border: 1px solid transparent;
+    cursor:pointer;
 
   }
 }
@@ -95,14 +96,15 @@
   align-items: flex-start;
   height: 50%;
   border-bottom: 1px solid var(--color-light-gray);
+  margin-top:20px;
 
   .channelLogo {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 100%;
+    height: 106px;
     svg {
-      width: 50px;
+      height:55px;
       fill: var(--color-text-contrast);
     }
   }
@@ -181,8 +183,11 @@
 
 .descriptionInfo {
   height: 50%;
-  margin-top:10Px;
+  margin-top:14Px;
 
+  p {
+    width: 98%;
+  }
 
   button {
     border: 1px solid var(--color-airy-blue);

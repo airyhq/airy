@@ -2,7 +2,16 @@ import React, {CSSProperties, ReactNode} from 'react';
 
 import styles from './style.module.scss';
 
-type styleVariantType = 'extra-small' | 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text' | 'green';
+type styleVariantType =
+  | 'extra-small'
+  | 'small'
+  | 'normal'
+  | 'outline'
+  | 'outline-big'
+  | 'warning'
+  | 'link'
+  | 'text'
+  | 'green';
 type ButtonProps = {
   children: ReactNode;
   onClick?: (event?) => void;
@@ -32,8 +41,8 @@ export const Button = ({
     switch (variant) {
       case 'extra-small':
         return styles.extraSmallButton;
-        case 'green':
-          return styles.greenButton;
+      case 'green':
+        return styles.greenButton;
       case 'small':
         return styles.smallButton;
       case 'outline':
@@ -60,8 +69,7 @@ export const Button = ({
       className={`${styleFor(styleVariant)} ${className}`}
       onClick={onClick}
       tabIndex={tabIndex}
-      data-cy={dataCy}
-    >
+      data-cy={dataCy}>
       {children}
     </button>
   );

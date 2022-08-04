@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-whatsapp-connector
+  labels:
+    app: sources-whatsapp-connector
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-whatsapp-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-whatsapp-connector
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.connector.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: kafka-config
+            - configMapRef:
+                name: security
+            - configMapRef:
+                name: core-config
+            - configMapRef:
+                name: "{{ .Values.component }}"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 120
+          resources:
+{{ toYaml .Values.connector.resources | indent 12 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+          - name: provisioning-scripts
+            mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-whatsapp-events-router
+  labels:
+    app: sources-whatsapp-events-router
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-whatsapp-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-whatsapp-events-router
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.eventsRouter.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        env:
+        - name: WHATSAPP_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Values.component }}"
+              key: appId
+        - name: SERVICE_NAME
+          value: whatsapp-events-router
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          failureThreshold: 3
+        resources:
+{{ toYaml .Values.eventsRouter.resources | indent 10 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

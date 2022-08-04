@@ -1,0 +1,9 @@
+component: sources-whatsapp
+mandatory: false
+enabled: true
+connector:
+  image: sources/whatsapp-connector
+  resources: {}
+eventsRouter:
+  image: sources/whatsapp-events-router
+  resources: {}

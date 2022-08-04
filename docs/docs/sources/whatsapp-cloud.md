@@ -65,7 +65,8 @@ Airy will use these to generate long-lived access tokens and fetch conversation 
 Here we assume that you already have a running Airy core instance ([get started](getting-started/installation/introduction)).
 Now in order to use this source you have to first install it either by navigating to the [control center](/ui/control-center/connectors) or by directly calling the components installation API like so:
 
-```POST /components.install```
+`POST /components.install`
+
 ```json
 {
   "name": "airy-core/sources-whatsapp"
@@ -77,7 +78,8 @@ Now in order to use this source you have to first install it either by navigatin
 Now that the source is installed we can enable and configure it using the values obtained in the creation of the test phone number.
 For this you can again either use the control center UI or make the following call to the components API:
 
-```POST /components.update```
+`POST /components.update`
+
 ```json5
 {
   "components": [
@@ -120,7 +122,6 @@ import ConnectWhatsapp from '../api/endpoints/connect-whatsapp.mdx'
 <ConnectWhatsapp />
 
 You can get a user token associated to your app using the [Facebook graph explorer](https://developers.facebook.com/tools/explorer).
-
 
 ## Step 6: Send and receive messages with the Inbox UI
 

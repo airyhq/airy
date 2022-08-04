@@ -4,7 +4,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost',
     specPattern: 'integration/**/*.spec.?s',
-    supportFile: 'integration/commands/index.ts',
+    supportFile: 'integration/support/index.ts',
   },
   env: {
     chatPluginName: 'Cypress Chatplugin',

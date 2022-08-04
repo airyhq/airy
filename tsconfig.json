@@ -6,8 +6,7 @@
   "include": [
     "./frontend/**/*",
     "./lib/typescript/**/*",
-    "./integration"
   ],
-  "types": ["node", "@testing-library/jest-dom", "jest", "cypress"],
+  "types": ["node", "@testing-library/jest-dom", "jest"],
   "rootDirs": ["."]
 }

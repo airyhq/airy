@@ -13,7 +13,9 @@ ts_web_library(
                 "esnext",
                 "dom",
             ],
-            "types": ["cypress"],
+            "types": [
+                "cypress",
+            ],
         },
     },
     deps = [

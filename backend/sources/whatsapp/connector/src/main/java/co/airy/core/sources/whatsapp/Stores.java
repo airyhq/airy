@@ -65,16 +65,14 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         channelStream.toTable(Materialized.as(channelsStore));
 
-        final List<String> sources = List.of("whatsapp", "instagram");
-
         // Channels table
         KTable<String, Channel> channelsTable = channelStream
-                .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
+                .filter((sourceChannelId, channel) -> "whatsapp".equals(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Whatsapp messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
-                .filter((messageId, message) -> message != null && sources.contains(message.getSource()))
+                .filter((messageId, message) -> message != null && "whatsapp".equals(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
 

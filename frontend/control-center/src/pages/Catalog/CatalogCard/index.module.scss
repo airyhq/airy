@@ -7,7 +7,7 @@
   height:248px;
   margin-bottom: 28px;
   margin-right: 36px;
-  padding: 0px 0 12px 20px;
+  padding: 0px 12px 0px 20px;
   display: flex;
   flex-direction: column;
   background-color: var(--color-background-blue);
@@ -16,10 +16,6 @@
   outline: 2px solid transparent; 
   @include font-s;
   transition: all 0.1s;
-
-  button {
-    margin-top: 14px;
-  }
 
   &:hover {
     outline: 2px solid var(--color-airy-blue);
@@ -62,7 +58,7 @@
 .textDetails {
   margin-left: 10px;
   h1 {
-    @include font-s;
+    @include font-s-bold;
     color: var(--color-text-contrast);
     font-weight: 600;
     letter-spacing: 0;
@@ -72,23 +68,17 @@
 .availability {
   display: flex;
   align-items: center;
-  font-weight:800;
   color: var(--color-airy-blue);
-  @include font-s-bold;
-  margin-top:20Px;
-
-
-
-  .availabilityCheckmarkIcon {
-    fill: var(--color-airy-blue);
-  }
-
-  div {
-    width: 20px;
-    margin-right: 5px;
-    display: flex;
-    align-items: center;
-  }
+  @include font-s;
+  margin-top:16px;
+    svg {
+      fill: var(--color-airy-blue);
+      width: 14px;
+      margin-right: 5px;
+      display: flex;
+      align-items: center;
+    }
+  
 }
 
 .channelLogoTitleContainer {
@@ -96,13 +86,17 @@
   align-items: flex-start;
   height: 50%;
   border-bottom: 1px solid var(--color-light-gray);
-  margin-top:20px;
+  margin-top:15px;
 
   .channelLogo {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 106px;
+
+    button {
+      margin-top: 14px;
+    }
+
     svg {
       height:55px;
       fill: var(--color-text-contrast);
@@ -183,7 +177,7 @@
 
 .descriptionInfo {
   height: 50%;
-  margin-top:14Px;
+  margin-top:10Px;
 
   p {
     width: 98%;
@@ -191,11 +185,13 @@
 
   button {
     border: 1px solid var(--color-airy-blue);
+    @include font-xs;
     border-radius:20Px;
     background:transparent;
     color:  var(--color-airy-blue);
     padding: 5px;
     margin-right: 5px;
+    margin-top: 8px;
   }
 }
 
@@ -204,5 +200,9 @@
   width: 15%;
   margin-bottom: 30px;
   fill: var(--color-soft-green);
+}
+
+.bolded {
+  font-weight:800;
 }
 

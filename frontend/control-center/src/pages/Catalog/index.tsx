@@ -10,7 +10,6 @@ import {setPageTitle} from '../../services/pageTitle';
 import {CatalogItemList} from './CatalogItemList';
 import {Source} from 'model';
 import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
-import {TabPanel, ContentWrapper} from 'components';
 import {listComponents} from '../../actions/catalog';
 import {removePrefix} from '../../services';
 import {useTranslation} from 'react-i18next';
@@ -66,19 +65,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   // console.log('catalogArrObjKeys', catalogArrObjKeys);
   console.log('catalogArrObjValues', catalogArrObjValues);
 
-  //remove this once all components have been packaged
-  const packagedItems = [
-    Source.chatPlugin,
-    Source.facebook,
-    Source.twilioSMS,
-    Source.twilioWhatsApp,
-    Source.google,
-    Source.instagram,
-    Source.dialogflow,
-    Source.zendesk,
-    Source.salesforce,
-  ];
-
   useEffect(() => {
     listComponents();
     setPageTitle(pageTitle);
@@ -87,44 +73,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
 
   const findComponent = (name: string) => {
     return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
-  };
-
-  const updateItemList = (installed: boolean, componentName: string) => {
-    if (!installed) {
-      const updatedInstalledList = installedConnectors.filter(
-        (elem: SourceInfo) => elem.componentName !== componentName
-      );
-      const updatedNotInstalledList = notInstalledConnectors.concat(findComponent(componentName));
-
-      setInstalledConnectors(updatedInstalledList);
-      setNotInstalledConnectors(updatedNotInstalledList);
-    }
-
-    if (installed) {
-      const updatedNotInstalledList = notInstalledConnectors.filter(
-        (elem: SourceInfo) => elem.componentName !== componentName
-      );
-      const updatedInstalledList = installedConnectors.concat(findComponent(componentName));
-
-      setNotInstalledConnectors(updatedNotInstalledList);
-      setInstalledConnectors(updatedInstalledList);
-    }
-  };
-
-  const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
-    switch (source) {
-      case Source.facebook:
-        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.google:
-        return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.twilioSMS:
-      case Source.twilioWhatsApp:
-        return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.instagram:
-        return <InstagramRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-    }
-
-    return null;
   };
 
   return (
@@ -136,9 +84,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
         if(findSourceForComponent(infoItem.displayName)){
           return (
             <CatalogCard
-              updateItemList={updateItemList}
               componentInfo={infoItem}
-              setIsInstalledToggled={setIsInstalledToggled}
             />
           );
         }

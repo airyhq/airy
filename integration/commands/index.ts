@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 import {connectChatPluginConnector, createChatPluginConversation} from './createChatPluginConversation';
 import {editContactDetails} from './editContactDetails';
 import {editDisplayName} from './editDisplayName';

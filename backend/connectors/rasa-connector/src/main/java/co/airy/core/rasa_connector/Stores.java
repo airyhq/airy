@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import static co.airy.model.message.MessageRepository.isNewMessage;
-import java.lang.String;
 
 @Component
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
@@ -29,12 +28,11 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
         //Called after the instructor
-
         final StreamsBuilder builder = new StreamsBuilder();
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> rasaConnectorService.parse(message));
+        ).filter((messageId, message) -> message != null && isNewMessage(message)).peek((messageId, message) -> rasaConnectorService.send(message));
 
         streams.start(builder.build(), appId);
     }

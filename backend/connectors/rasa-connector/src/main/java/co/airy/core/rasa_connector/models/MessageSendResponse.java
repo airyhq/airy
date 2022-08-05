@@ -1,4 +1,4 @@
-package co.airy.core.rasa_connector.modelParse;
+package co.airy.core.rasa_connector.models;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,17 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.lang.String;
-
-
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-
-public class ParseMessage {
+public class MessageSendResponse {
+    private String recipient_id;
     private String text;
-    private String messageId;
 }

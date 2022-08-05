@@ -1,29 +1,27 @@
 package co.airy.core.rasa_connector;
-import co.airy.avro.communication.Message;
-import co.airy.log.AiryLoggerFactory;
 
-import co.airy.core.rasa_connector.modelParse.ParseMessage;
+import co.airy.avro.communication.Message;
+import co.airy.core.rasa_connector.models.MessageSend;
+import co.airy.core.rasa_connector.models.MessageSendResponse;
+import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
-
-import java.lang.String;
-import java.util.Optional;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RasaConnectorService {
     //private final apiToken;
-    private final String rasaRestUrl = "https://2343-90-187-94-193.eu.ngrok.io";
-    private final RasaClient rasaClient;
+    private final String rasaRestUrl = "https://061d-90-187-94-193.eu.ngrok.io"; //TODO: ask how to inject from resources
+    private RasaClient rasaClient;
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger log = AiryLoggerFactory.getLogger(RasaConnectorService.class);
@@ -32,11 +30,19 @@ public class RasaConnectorService {
         this.rasaClient = bootstrapRasaClient(rasaRestUrl);
     }
 
-    //@Async("threadPoolTaskExecutor")
-    public void parse(Message message) {
-        this.rasaClient.parseModel(ParseMessage.builder()
-                .text(getTextFromContent(message.getContent()))
-                .messageId(message.getId()).build());
+    //@Async("threadPoolTaskExecutor") TODO: Ask Chris howto import this from cloud and where to place it.
+    public void send(Message message) {
+        try {
+            List<MessageSendResponse> messageResp = this.rasaClient.sendMessage(MessageSend.builder()
+                    .message(getTextFromContent(message.getContent()))
+                    .sender(message.getId())
+                    .build());
+
+            log.info("Response: {}", messageResp.get(0).getText());
+        }
+        catch (Exception e){
+            log.error(String.format("unexpected exception for message id %s %s", message.getId(), e.toString()));
+        }
     }
     // Add API token later
     private RasaClient bootstrapRasaClient(String rasaRestUrl) {
@@ -51,6 +57,8 @@ public class RasaConnectorService {
 //                })
                 .target(RasaClient.class, rasaRestUrl);
     }
+
+    // Helper method from Juan used in pushednotification & dialougeflow
     private String getTextFromContent(String content) {
         String text = "";
 

@@ -1,11 +1,16 @@
 package co.airy.core.rasa_connector;
-import co.airy.core.rasa_connector.modelParse.ParseMessage;
+
+import co.airy.core.rasa_connector.models.MessageSend;
+import co.airy.core.rasa_connector.models.MessageSendResponse;
 import feign.Headers;
 import feign.RequestLine;
 
+import java.util.List;
+
+
 public interface RasaClient {
-    @RequestLine("POST /model/parse")
+    @RequestLine("POST /webhooks/rest/webhook")
     @Headers("Content-Type: application/json")
-    void parseModel(ParseMessage content);
+    List<MessageSendResponse> sendMessage(MessageSend content);
 
 }

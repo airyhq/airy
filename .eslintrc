@@ -26,6 +26,12 @@
         "properties": "never"
       }
     ],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-ignore": "allow-with-description"
+      }
+    ],
     "react/prop-types": 0,
     "@typescript-eslint/no-unused-vars": [
       "error",

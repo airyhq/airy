@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
-// @ts-ignore
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
+// @ts-ignore: Missing type declarataions for this module
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/templateAlt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
@@ -14,7 +14,6 @@ import {getInputAcceptedFilesForSource, supportsAudioRecordingMp3} from '../../.
 import styles from './InputOptions.module.scss';
 import {useTranslation} from 'react-i18next';
 import {ListenOutsideClick} from 'components';
-
 
 type Props = {
   source: Source;
@@ -152,7 +151,7 @@ export const InputOptions = (props: Props) => {
       )}
       {isShowingEmojiDrawer && (
         <ListenOutsideClick onOuterClick={() => setIsShowingEmojiDrawer(false)} className={styles.emojiDrawer}>
-          <Picker data={data} theme={localStorage.getItem('theme')} previewPosition={"none"} onEmojiSelect={addEmoji} />
+          <Picker data={data} theme={localStorage.getItem('theme')} previewPosition={'none'} onEmojiSelect={addEmoji} />
         </ListenOutsideClick>
       )}
 

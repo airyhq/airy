@@ -38,6 +38,7 @@ module.exports = {
           ],
         },
         'sources/facebook',
+        'sources/whatsapp-cloud',
         'sources/instagram',
         'sources/google',
         'sources/whatsapp-twilio',

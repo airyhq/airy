@@ -121,7 +121,7 @@ List all the components, both installed and not installed.
 
 **Sample request**
 
-```json
+```json5
 {
   "repository": "airy-core" // optional
 }

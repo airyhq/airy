@@ -126,6 +126,12 @@ import ConnectInstagram from './connect-instagram.mdx'
 
 <ConnectInstagram />
 
+### Facebook
+
+import ConnectWhatsapp from './connect-whatsapp.mdx'
+
+<ConnectWhatsapp />
+
 ### Google
 
 import ConnectGoogle from './connect-google.mdx'

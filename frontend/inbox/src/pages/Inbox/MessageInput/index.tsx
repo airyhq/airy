@@ -531,7 +531,6 @@ const MessageInput = (props: Props) => {
               setInput={setInput}
               selectTemplate={selectTemplate}
               focusInput={focusInput}
-              sendMessages={sendMessages}
               selectFile={selectFile}
               isFileLoaded={isFileLoaded}
               canSendMedia={canSendMedia}

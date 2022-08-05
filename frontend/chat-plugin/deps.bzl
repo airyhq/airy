@@ -20,5 +20,7 @@ npm_deps = [
     "@npm//react-dom",
     "@npm//camelcase-keys",
     "@npm//emoji-mart",
+    "@npm//@emoji-mart/data",
+    "@npm//@emoji-mart/react",
     "@npm//react-i18next",
 ]

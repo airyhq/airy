@@ -1,14 +1,13 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
-import {Picker} from 'emoji-mart';
-import 'emoji-mart/css/emoji-mart.css';
+// @ts-ignore
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/templateAlt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import {ReactComponent as MicrophoneOutline} from 'assets/images/icons/microphoneOutline.svg';
 import {ReactComponent as MicrophoneFilled} from 'assets/images/icons/microphoneFilled.svg';
 import TemplateSelector from '../TemplateSelector';
-import {sendMessages} from '../../../actions/messages';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
 import {getInputAcceptedFilesForSource, supportsAudioRecordingMp3} from '../../../services/types/attachmentsTypes';
@@ -16,9 +15,6 @@ import styles from './InputOptions.module.scss';
 import {useTranslation} from 'react-i18next';
 import {ListenOutsideClick} from 'components';
 
-const mapDispatchToProps = {sendMessages};
-
-const connector = connect(null, mapDispatchToProps);
 
 type Props = {
   source: Source;
@@ -41,7 +37,7 @@ type Props = {
   audioRecordingPaused: boolean;
   isAudioRecordingPaused: (status: boolean) => void;
   audioRecordingCanceled?: boolean;
-} & ConnectedProps<typeof connector>;
+};
 
 export const InputOptions = (props: Props) => {
   const {
@@ -156,7 +152,7 @@ export const InputOptions = (props: Props) => {
       )}
       {isShowingEmojiDrawer && (
         <ListenOutsideClick onOuterClick={() => setIsShowingEmojiDrawer(false)} className={styles.emojiDrawer}>
-          <Picker theme={localStorage.getItem('theme')} showPreview={false} onSelect={addEmoji} title="Emoji" />
+          <Picker data={data} theme={localStorage.getItem('theme')} previewPosition={"none"} onEmojiSelect={addEmoji} />
         </ListenOutsideClick>
       )}
 

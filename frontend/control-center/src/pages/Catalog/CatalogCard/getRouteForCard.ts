@@ -34,11 +34,11 @@ export const getConnectedRouteForComponent = (displayName: string) => {
     case 'Instagram':
       return CONNECTORS_INSTAGRAM_CONNECTED_ROUTE;
     case 'Dialogflow':
-      return CONNECTORS_DIALOGFLOW_CONNECTED_ROUTE;
+      return CONNECTORS_DIALOGFLOW_ROUTE + '/new';
     case 'Salesforce':
-      return CONNECTORS_SALESFORCE_CONNECTED_ROUTE;
+      return CONNECTORS_SALESFORCE_ROUTE + '/new';
     case 'Zendesk':
-      return CONNECTORS_ZENDESK_CONNECTED_ROUTE;
+      return CONNECTORS_ZENDESK_ROUTE + '/new';
   }
 };
 

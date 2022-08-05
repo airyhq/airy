@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo} from 'model';
+import {ComponentInfo, getSourceForComponent} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, SettingsModal} from 'components';
 import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {findSourceForComponent} from '../index';
 import {getConnectedRouteForComponent, getNewChannelRouteForComponent} from './getRouteForCard';
 import styles from './index.module.scss';
 
@@ -67,6 +66,12 @@ const CatalogCard = (props: CatalogCardProps) => {
     return <>{t(description)}</>;
   };
 
+  const getDescriptionSourceName = (name: string, displayName: string) => {
+    if (displayName.includes('SMS')) return 'twiliosms';
+    if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
+    return getSourceForComponent(name)?.replace('.', '');
+  };
+
   return (
     <article className={styles.catalogCard}>
       <section className={styles.cardLogoTitleContainer}>
@@ -85,11 +90,14 @@ const CatalogCard = (props: CatalogCardProps) => {
       </section>
 
       <div className={styles.descriptionInfo}>
-        <p>
-          <DescriptionComponent
-            description={findSourceForComponent(componentInfo.displayName)?.replace('.', '') + 'Description'}
-          />
-        </p>
+        {componentInfo.name && (
+          <p>
+            <DescriptionComponent
+              description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
+            />
+          </p>
+        )}
+
         <p className={`${styles.availability} ${styles.bolded}`}>
           <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
           {t('availableFor')}:

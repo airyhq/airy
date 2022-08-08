@@ -32,7 +32,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message)).peek((messageId, message) -> rasaConnectorService.send(message));
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> rasaConnectorService.send(message));
 
         streams.start(builder.build(), appId);
     }

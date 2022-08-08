@@ -26,9 +26,10 @@ public class RasaConnectorService {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger log = AiryLoggerFactory.getLogger(RasaConnectorService.class);
-
-    RasaConnectorService(){
+    private final MessageHandler messageHandler;
+    RasaConnectorService(MessageHandler messageHandler){
         this.rasaClient = bootstrapRasaClient(rasaRestUrl);
+        this.messageHandler = messageHandler;
     }
 
     @Async("threadPoolTaskExecutor")
@@ -40,6 +41,7 @@ public class RasaConnectorService {
                     .build());
 
             log.info("Response: {}", messageResp.get(0).getText());
+            messageHandler.giveReply(message, messageResp.get(0));
         }
         catch (Exception e){
             log.error(String.format("unexpected exception for message id %s %s", message.getId(), e.toString()));

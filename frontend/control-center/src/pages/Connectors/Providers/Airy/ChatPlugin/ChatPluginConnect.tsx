@@ -203,7 +203,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       </div>
       {showCreatedModal && (
         <SettingsModal
-          Icon={CheckmarkIcon as React.ElementType}
+          Icon={CheckmarkIcon}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={t('successfullyCreatedChannel')}

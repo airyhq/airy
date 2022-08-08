@@ -5,6 +5,9 @@ export const CONNECTORS_FACEBOOK_ROUTE = '/connectors/facebook';
 export const CONNECTORS_CHAT_PLUGIN_ROUTE = '/connectors/chatplugin';
 export const CONNECTORS_TWILIO_SMS_ROUTE = '/connectors/twilio.sms';
 export const CONNECTORS_TWILIO_WHATSAPP_ROUTE = '/connectors/twilio.whatsapp';
+//change this when adding WhatsApp Cloud
+export const CONNECTORS_WHATSAPP_BUSINESS_CLOUD_ROUTE = '/connectors';
+//
 export const CONNECTORS_GOOGLE_ROUTE = '/connectors/google';
 export const CONNECTORS_INSTAGRAM_ROUTE = '/connectors/instagram';
 export const CONNECTORS_DIALOGFLOW_ROUTE = '/connectors/dialogflow';
@@ -16,6 +19,9 @@ export const CONNECTORS_FACEBOOK_CONNECTED_ROUTE = '/connectors/connected/facebo
 export const CONNECTORS_CHAT_PLUGIN_CONNECTED_ROUTE = '/connectors/connected/chatplugin';
 export const CONNECTORS_TWILIO_SMS_CONNECTED_ROUTE = '/connectors/connected/twilio.sms';
 export const CONNECTORS_TWILIO_WHATSAPP_CONNECTED_ROUTE = '/connectors/connected/twilio.whatsapp';
+//change this when adding WhatsApp Cloud
+export const CONNECTORS_WHATSAPP_BUSINESS_CLOUD_CONNECTED_ROUTE = '/connectors';
+//
 export const CONNECTORS_GOOGLE_CONNECTED_ROUTE = '/connectors/connected/google';
 export const CONNECTORS_INSTAGRAM_CONNECTED_ROUTE = '/connectors/connected/instagram';
 

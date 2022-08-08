@@ -3,6 +3,7 @@ import {
   CONNECTORS_FACEBOOK_CONNECTED_ROUTE,
   CONNECTORS_TWILIO_SMS_CONNECTED_ROUTE,
   CONNECTORS_TWILIO_WHATSAPP_CONNECTED_ROUTE,
+  CONNECTORS_WHATSAPP_BUSINESS_CLOUD_CONNECTED_ROUTE,
   CONNECTORS_GOOGLE_CONNECTED_ROUTE,
   CONNECTORS_INSTAGRAM_CONNECTED_ROUTE,
   CONNECTORS_FACEBOOK_ROUTE,
@@ -14,6 +15,7 @@ import {
   CONNECTORS_DIALOGFLOW_ROUTE,
   CONNECTORS_ZENDESK_ROUTE,
   CONNECTORS_SALESFORCE_ROUTE,
+  CONNECTORS_WHATSAPP_BUSINESS_CLOUD_ROUTE,
 } from '../../../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
@@ -24,8 +26,10 @@ export const getConnectedRouteForComponent = (displayName: string) => {
       return CONNECTORS_FACEBOOK_CONNECTED_ROUTE;
     case 'Twilio SMS':
       return CONNECTORS_TWILIO_SMS_CONNECTED_ROUTE;
-    case 'WhatsApp Business Cloud':
+    case 'Twilio WhatsApp':
       return CONNECTORS_TWILIO_WHATSAPP_CONNECTED_ROUTE;
+    case 'WhatsApp Business Cloud':
+      return CONNECTORS_WHATSAPP_BUSINESS_CLOUD_CONNECTED_ROUTE;
     case 'Google Business Messages':
       return CONNECTORS_GOOGLE_CONNECTED_ROUTE;
     case 'Instagram':
@@ -47,8 +51,10 @@ export const getNewChannelRouteForComponent = (displayName: string) => {
       return CONNECTORS_FACEBOOK_ROUTE + '/new';
     case 'Twilio SMS':
       return CONNECTORS_TWILIO_SMS_ROUTE + '/new';
-    case 'WhatsApp Business Cloud':
+    case 'Twilio WhatsApp':
       return CONNECTORS_TWILIO_WHATSAPP_ROUTE + '/new';
+    case 'WhatsApp Business Cloud':
+      return CONNECTORS_WHATSAPP_BUSINESS_CLOUD_ROUTE + '/new';
     case 'Google Business Messages':
       return CONNECTORS_GOOGLE_ROUTE + '/new';
     case 'Instagram':

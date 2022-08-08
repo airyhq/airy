@@ -12,6 +12,7 @@ import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
 import org.slf4j.Logger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Service
 public class RasaConnectorService {
     //private final apiToken;
-    private final String rasaRestUrl = "https://061d-90-187-94-193.eu.ngrok.io"; //TODO: ask how to inject from resources
+    private final String rasaRestUrl = "https://03fb-90-187-94-193.eu.ngrok.io"; //TODO: ask Juan how to inject from resources
     private RasaClient rasaClient;
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -30,7 +31,7 @@ public class RasaConnectorService {
         this.rasaClient = bootstrapRasaClient(rasaRestUrl);
     }
 
-    //@Async("threadPoolTaskExecutor") TODO: Ask Chris howto import this from cloud and where to place it.
+    @Async("threadPoolTaskExecutor")
     public void send(Message message) {
         try {
             List<MessageSendResponse> messageResp = this.rasaClient.sendMessage(MessageSend.builder()

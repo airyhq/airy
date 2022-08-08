@@ -20,6 +20,7 @@ type InfoCardProps = {
   addChannelAction: () => void;
   installed: boolean;
   enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
+  componentStatus?: any;
   style: InfoCardStyle;
 } & ConnectedProps<typeof connector>;
 

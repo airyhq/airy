@@ -8,9 +8,9 @@ export enum Pages {
 }
 
 interface TabsPanelProps {
-  PageContentOne: any;
-  PageContentTwo: any;
-  PageContentThree?: any;
+  PageContentOne: JSX.Element;
+  PageContentTwo: JSX.Element;
+  PageContentThree?: JSX.Element;
   pageTitleOne: string;
   pageTitleTwo: string;
   pageTitleThree?: string;

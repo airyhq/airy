@@ -29,6 +29,8 @@ const CatalogCard = (props: CatalogCardProps) => {
 
   const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.displayName);
   const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
+  console.log('displayName', componentInfo.displayName);
+  console.log('NEW_CHANNEL_ROUTE', NEW_CHANNEL_ROUTE);
 
   const openInstallModal = () => {
     setIsModalVisible(true);

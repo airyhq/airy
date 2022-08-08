@@ -72,6 +72,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [backTitle, setBackTitle] = useState('Connectors');
   const [backRoute, setBackRoute] = useState('');
   const {t} = useTranslation();
+  const isInstalled = true;
 
   useEffect(() => {
     if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
@@ -277,7 +278,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
                   <ConfigStatusButton
-                    componentStatus={getComponentStatus(isConfigured, isEnabled)}
+                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
                 </div>

@@ -13,12 +13,13 @@ config:
     brokers: "kafka-headless:9092"
     zookeepers: "zookeeper:2181"
     authJaas: ""
+    minimumReplicas: 1
     schemaRegistryUrl: "http://schema-registry:8081"
     commitInterval: 1000
 provisioning:
   kafka:
     image: ghcr.io/airyhq/infrastructure/kafka
-    imageTag: 2.7.0
+    imageTag: 3.2.0
     namespaceTopics: false
 tools:
   segment:

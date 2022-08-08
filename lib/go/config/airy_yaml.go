@@ -31,6 +31,7 @@ type KafkaConf struct {
 	Zookeeper         string `yaml:"zookeeper" json:"zookeeper"`
 	SchemaRegistryUrl string `yaml:"schemaRegistryUrl" json:"schemaRegistryUrl"`
 	AuthJaas          string `yaml:"authJaas" json:"authJaas"`
+	MinimumReplicas   string `yaml:"minimumReplicas" json:"minimumReplicas"`
 }
 
 type ComponentsConf map[string]map[string]string

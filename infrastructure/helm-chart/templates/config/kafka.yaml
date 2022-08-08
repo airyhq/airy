@@ -7,6 +7,9 @@ data:
 {{- if .Values.config.kafka.authJaas }}
   AUTH_JAAS: {{ .Values.config.kafka.authJaas }}
 {{- end }}
+  KAFKA_MINIMUM_REPLICAS: "{{ .Values.config.kafka.minimumReplicas }}"
+{{- if .Values.config.kafka.zookeepers }}
   ZOOKEEPER: {{ .Values.config.kafka.zookeepers }}
+{{- end }}
   KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.config.kafka.schemaRegistryUrl }}
   KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.config.kafka.commitInterval }}"

@@ -42,9 +42,9 @@ data:
 
     if [ -n "${AUTH_JAAS}" ]; then
       cat <<EOF > /opt/kafka/jaas.config
-        security.protocol=SASL_SSL
-        sasl.jaas.config=$AUTH_JAAS
-        sasl.mechanism=PLAIN
+    security.protocol=SASL_SSL
+    sasl.jaas.config=$AUTH_JAAS
+    sasl.mechanism=PLAIN
     EOF
       CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
       echo "Using jaas authentication for connecting to Kafka"

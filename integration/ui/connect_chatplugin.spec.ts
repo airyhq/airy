@@ -1,16 +1,16 @@
 import {cyChannelsFormBackButton, cyChannelsChatPluginList} from 'handles';
 
-// declare global {
-//   namespace Cypress {
-//     interface Chainable<Subject> {
-//       createChatPluginConversation(): Chainable<Subject>;
-//       editContactDetails(): Chainable<Subject>;
-//       connectChatPluginConnector(): Chainable<Subject>;
-//       editDisplayName(): Chainable<Subject>;
-//       listConversationsForContact(): Chainable<Subject>;
-//     }
-//   }
-// }
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      createChatPluginConversation(): Chainable<Subject>;
+      editContactDetails(): Chainable<Subject>;
+      connectChatPluginConnector(): Chainable<Subject>;
+      editDisplayName(): Chainable<Subject>;
+      listConversationsForContact(): Chainable<Subject>;
+    }
+  }
+}
 
 describe('Connect chatplugin channel', () => {
   it('Connect chatplugin channel', () => {

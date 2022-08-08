@@ -10,8 +10,8 @@ go_library(
         "//cli/pkg/kube",
         "//cli/pkg/workspace",
         "//cli/pkg/workspace/template",
+        "//lib/go/tools",
+        "@com_github_hashicorp_go_getter//:go-getter",
         "@in_gopkg_segmentio_analytics_go_v3//:analytics-go_v3",
-        "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
-        "@io_k8s_client_go//util/homedir:go_default_library",
     ],
 )

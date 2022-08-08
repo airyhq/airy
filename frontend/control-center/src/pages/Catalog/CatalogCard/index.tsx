@@ -29,8 +29,6 @@ const CatalogCard = (props: CatalogCardProps) => {
 
   const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.displayName);
   const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
-  console.log('displayName', componentInfo.displayName);
-  console.log('NEW_CHANNEL_ROUTE', NEW_CHANNEL_ROUTE);
 
   const openInstallModal = () => {
     setIsModalVisible(true);
@@ -42,9 +40,7 @@ const CatalogCard = (props: CatalogCardProps) => {
     setIsInstalled(!isInstalled);
   };
 
-  const availabilityFormatted = (str: string) => {
-    return str.includes(' - ') ? componentInfo.availableFor.split('-') : componentInfo.availableFor.split(',');
-  };
+  const availabilityFormatted = (availability: string) => availability.split(',');
 
   const CatalogCardButton = () => {
     if (isInstalled) {

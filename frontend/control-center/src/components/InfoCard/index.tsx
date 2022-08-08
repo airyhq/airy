@@ -8,6 +8,7 @@ import {installComponent, uninstallComponent} from '../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
+import {ComponentStatus} from '../../pages/Connectors';
 import styles from './index.module.scss';
 
 export enum InfoCardStyle {
@@ -19,8 +20,7 @@ type InfoCardProps = {
   sourceInfo: SourceInfo;
   addChannelAction: () => void;
   installed: boolean;
-  enabled?: 'Enabled' | 'Not Configured' | 'Disabled';
-  componentStatus?: any;
+  componentStatus?: ComponentStatus;
   style: InfoCardStyle;
 } & ConnectedProps<typeof connector>;
 
@@ -32,7 +32,7 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {sourceInfo, addChannelAction, installed, style, enabled, uninstallComponent} = props;
+  const {sourceInfo, addChannelAction, installed, style, uninstallComponent, componentStatus} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -105,7 +105,7 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
       </div>
 
-      {enabled && <ConfigStatusButton enabled={enabled} />}
+      {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
 
       {isModalVisible && (
         <SettingsModal

@@ -35,5 +35,10 @@ export const getSourceForComponent = (item: string) => {
   let componentName = itemArr.join(' ').replace(/ /g, '');
   if (componentName === 'chatplugin') componentName = 'chatPlugin';
   if (componentName === 'whatsappbusinesscloud') componentName = 'twilioWhatsApp';
+  if (componentName === 'salesforcecontactsingestion') componentName = 'salesforce';
+
+  console.log('componentName', componentName);
+
+  console.log('get info for compo', Source[componentName]);
   return Source[componentName];
 };

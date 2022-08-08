@@ -9,7 +9,7 @@ type ContentWrapperProps = {
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  let {transparent, content, header, variantHeight} = props;
+  const {transparent, content, header, variantHeight} = props;
 
   return (
     <>

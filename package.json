@@ -8,7 +8,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@reduxjs/toolkit": "^1.8.3",
     "@stomp/stompjs": "^6.1.2",
-    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.2",
     "@types/jest": "^28.1.6",
     "audio-recorder-polyfill": "^0.4.1",

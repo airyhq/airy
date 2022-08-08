@@ -12,6 +12,7 @@ config:
   kafka:
     brokers: "kafka-headless:9092"
     zookeepers: "zookeeper:2181"
+    authJaas: ""
     schemaRegistryUrl: "http://schema-registry:8081"
     commitInterval: 1000
 provisioning:

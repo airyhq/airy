@@ -76,11 +76,6 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         ) : (
           <>
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
-              console.log(
-                'connectors[infoItem.componentName]',
-                infoItem.componentName,
-                connectors && connectors[infoItem?.componentName]
-              );
               return (
                 (channelsBySource(infoItem.type).length > 0 &&
                   infoItem.channel &&

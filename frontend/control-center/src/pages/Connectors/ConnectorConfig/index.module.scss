@@ -298,11 +298,12 @@
   }
 }
 
-.enableModalContainer button {
-  margin-top: 14px;
-  padding: 0 60px;
-}
-
 .headerModal {
   @include font-xl;
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
 }

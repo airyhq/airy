@@ -24,15 +24,6 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
           : styles.buttonDisabled
       }`}
     >
-      {/* <Button
-      styleVariant="extra-small"
-      className={`${styles.installationButton} ${customStyle ?? ''} ${
-        componentStatus === ComponentStatus.enabled
-          ? styles.buttonEnabled
-          : componentStatus === ComponentStatus.notConfigured
-          ? styles.buttonNotConfigured
-          : styles.buttonDisabled
-      }`}> */}
       {t(`${componentStatus}`)}
     </Button>
   );

@@ -3,7 +3,6 @@
 
 .catalogWrapper {
   background: var(--color-background-white);
-  color: var(--color-text-contrast);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   padding: 32px;
@@ -14,40 +13,14 @@
   width: 100%;
 }
 
-.catalogHeadline {
-  @include font-xl;
-  font-weight: 900;
-  letter-spacing: 0;
+.catalogListContainer {
   display: flex;
-  justify-content: space-between;
-  color: var(--color-text-contrast);
-  margin-bottom: 36px;
+  flex-wrap: wrap;
 }
 
 .catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
-}
-
-.listWrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.connectorContainer {
-  width: 100%;
-  border-top: 1px solid var(--color-light-gray);
-  padding-top: 14px;
-
-  h2 {
-    @include font-l;
-    font-weight: 700;
-    margin-bottom: 14px;
-  }
-}
-
-.connectorList {
-  display: flex;
-  flex-wrap: wrap;
+  margin-bottom: 15px;
+  color: var(--color-text-contrast);
 }

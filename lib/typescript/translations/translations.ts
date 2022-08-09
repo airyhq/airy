@@ -152,17 +152,17 @@ const resources = {
       toConfigure: 'To configure',
       configure: 'Apply Configuration',
       chatpluginTitle: 'Chat Plugin',
-      chatpluginDescription: 'Best of class browser messenger',
+      chatpluginDescription: 'Best of class browser messenger.',
       facebookTitle: 'Facebook Messenger',
-      facebookDescription: 'Connect multiple Facebook pages',
+      facebookDescription: 'Connect multiple Facebook pages.',
       googleTitle: 'Google Business Messages',
-      googleDescription: 'Be there when people search',
+      googleDescription: 'Be there when people search.',
       instagramTitle: 'Instagram',
-      instagramDescription: 'Connect multiple Instagram pages',
+      instagramDescription: 'Connect multiple Instagram pages.',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Deliver SMS with ease',
+      twiliosmsDescription: 'Deliver SMS with ease.',
       twilioWhatsappTitle: 'WhatsApp',
-      twilioWhatsappDescription: 'World #1 chat app',
+      twilioWhatsappDescription: 'World #1 chat app.',
       channel: 'channel',
       channels: 'channels',
       channelsCapital: 'Channels',
@@ -370,6 +370,10 @@ const resources = {
       installed: 'Installed',
       notInstalled: 'Not Installed',
 
+      //Catalog
+      categories: 'Categories',
+      availableFor: 'Available for',
+
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
 
@@ -570,7 +574,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Mehrere Instagram-Seiten verbinden',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'SMS-Versand mit Leichtigkeit',
+      twiliosmsDescription: 'SMS-Versand mit Leichtigkeit',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Weltweite Chat-App Nr. 1',
       channel: 'Kanal',
@@ -778,6 +782,10 @@ const resources = {
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
 
+      //Catalog
+      categories: 'Kategorien',
+      availableFor: 'Verfügbar für',
+
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
 
@@ -970,7 +978,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Connecter plusieurs pages Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envoyez des SMS en toute simplicité',
+      twiliosmsDescription: 'Envoyez des SMS en toute simplicité',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Première application de chat au monde',
       channel: 'canal',
@@ -1178,6 +1186,10 @@ const resources = {
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
 
+      //Catalog
+      categories: 'Catégories',
+      availableFor: 'Disponible pour',
+
       //NotFound
       notFound: 'Oups! Page non trouvée.',
 
@@ -1374,7 +1386,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Conectar varias páginas de Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envío de SMS con facilidad',
+      twiliosmsDescription: 'Envío de SMS con facilidad',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'La aplicación de mensajería número 1 del mundo',
       channel: 'canal',
@@ -1581,6 +1593,10 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
+
+      //Catalog
+      categories: 'Categorías',
+      availableFor: 'Disponible para',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

@@ -51,7 +51,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          {channel.connected && <CheckMarkFilledIcon height={20} width={20} />}
+          {channel.connected && <CheckMarkFilledIcon className={styles.checkmarkIcon} height={20} width={20} />}
           <div className={styles.channelName}>{channel.metadata?.name}</div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           <div className={styles.listButtons}>

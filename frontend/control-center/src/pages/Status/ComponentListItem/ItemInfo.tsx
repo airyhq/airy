@@ -127,7 +127,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
               />
             ) : isRunning ? (
               <Tooltip
-                hoverElement={<CheckmarkIcon className={styles.icons} />}
+                hoverElement={<CheckmarkIcon className={`${styles.icons} ${styles.runningHealthy}`} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('healthy')}

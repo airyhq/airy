@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/lib/go/k8s"
@@ -72,14 +71,7 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //NOTE: Prevent the upload of a configmap if the component is not present
 func (s *ComponentsUpdate) isComponentInstalled(configName string) bool {
-	name := getNameFromConfigMapName(configName)
 	deployedCharts := s.DeployedCharts.GetDeployedCharts()
 
-	return deployedCharts[name]
-}
-
-func getNameFromConfigMapName(name string) string {
-	c := strings.Split(name, "-")
-
-	return strings.Join(c[1:], "-")
+	return deployedCharts[configName]
 }

@@ -1,6 +1,9 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+.backButton button {
+  background:transparent;
+}
 
 .linkButtonContainer {
     @include font-base;
@@ -9,7 +12,6 @@
     text-decoration: underline;
     color: var(--color-text-contrast);
     font-weight: bold;
-    background:transparent;
   
     &:hover,
     &:active,
@@ -57,6 +59,7 @@
     align-items:center;
     width:100%;
     margin-top:20px;
+    padding-right: 16px;
   }
 
   .logoIcon {
@@ -66,5 +69,6 @@
   .installButton {
     width: 152px;
     height: 50px;
-    margin-top:20px;
+    margin-top:10px;
+    @include font-base;
 }

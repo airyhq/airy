@@ -36,7 +36,7 @@ export const CatalogProductPage = () => {
   const SideColumnContent = () => {
     return (
       <>
-        <Link to={CATALOG_ROUTE}>
+        <Link className={styles.backButton} to={CATALOG_ROUTE}>
           <LinkButton type="button">
             <div className={styles.linkButtonContainer}>
               <ArrowLeftIcon className={styles.backIcon} />

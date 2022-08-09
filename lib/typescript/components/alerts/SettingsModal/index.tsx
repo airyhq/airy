@@ -13,21 +13,10 @@ type SettingsModalProps = {
   Icon?: React.ReactElement | null;
   headerClassName?: string;
   style?: CSSProperties;
-  dataCyCloseButton?: string;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {
-    close,
-    title,
-    children,
-    headerClassName,
-    wrapperClassName,
-    style,
-    containerClassName,
-    Icon,
-    dataCyCloseButton,
-  } = props;
+  const {close, title, children, headerClassName, wrapperClassName, style, containerClassName, Icon} = props;
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}

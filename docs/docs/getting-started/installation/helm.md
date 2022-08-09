@@ -106,10 +106,10 @@ For more information refer to the [official DigitalOcean Guide](https://docs.dig
 `Airy Core` can be created on Minikube with predefined settings, using the [Airy CLI](/cli/introduction). However, if you want to create your custom Minikube instance, for example with custom settings for CPU and RAM, you can also do that with the [Minikube](https://minikube.sigs.k8s.io/docs/start/) utility:
 
 ```sh
-minikube -p airy start --driver=virtualbox --cpus=4 --memory=7168 --extra-config=apiserver.service-nodeport-range=1-65535
+minikube -p airy start --driver=docker --cpus=4 --memory=7168 --extra-config=apiserver.service-node-port-range=1-65535
 ```
 
-The `apiserver.service-nodeport-range` settings is needed if you want to use port 80 on the Minikube VM as the NodePort for the ingress controller service.
+The `apiserver.service-node-port-range` settings is needed if you want to use port 80 on the Minikube VM as the NodePort for the ingress controller service.
 
 For more information refer to the [official Minikube Documentation](https://minikube.sigs.k8s.io/docs/start/).
 
@@ -236,6 +236,20 @@ ingress-controller:
   letsencryptEmail: "mymail@myhostname.com"
 ```
 
+:::note
+
+The above suggested airy.yaml file works only for cloud installation. For Minikube installation the should be done by running the Airy CLI with --init-only or by running the default airy.yaml file shown below:
+
+```sh
+global:
+  host: localhost
+ingress-controller:
+  ngrokEnabled: true
+```
+
+:::
+
+
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:
 
 ```sh
@@ -349,6 +363,17 @@ contextname: gke_us-central1-c_awesomechat
 kubeconfig: /home/user/.kube/config
 namespace: default
 ```
+
+:::note
+
+The above suggested cli.yaml file works only for cloud installation. For Minikube installation the should be done by running the Airy CLI with --init-only or by running the default cli.yaml file shown below:
+
+```sh
+apihost: http://localhost
+```
+
+:::
+
 
 ## Upgrade
 

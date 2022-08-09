@@ -78,6 +78,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
               return (
                 (channelsBySource(infoItem.type).length > 0 &&
+                connectors &&
+                  connectors[infoItem.componentName] &&
+                  Object.keys(connectors[infoItem?.componentName]) &&
                   infoItem.channel &&
                   isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <ChannelCard

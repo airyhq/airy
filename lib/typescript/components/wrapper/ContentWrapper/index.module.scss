@@ -16,16 +16,19 @@
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
+  margin-bottom: 48px;
+}
 
-  margin-bottom: 24px;
+.headerMedium {
+  height: 75px;
 }
 
 .headerBig {
   height: 160px;
 }
 
-.headerMedium {
-  height: 75px;
+.headerLarge {
+  height: 170px;
 }
 
 .transparentContent {
@@ -37,6 +40,10 @@
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
+}
+
+.leftOffset {
+  margin-left:196px;
 }
 
 .colored {

@@ -5,11 +5,12 @@ type ContentWrapperProps = {
   transparent: boolean;
   content: React.ReactNode;
   header?: React.ReactNode;
-  variantHeight?: 'big' | 'medium';
+  variantHeight?: 'medium' | 'big' | 'large';
+  leftOffset?: boolean;
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  const {transparent, content, header, variantHeight} = props;
+  const {transparent, content, header, variantHeight, leftOffset} = props;
 
   return (
     <>
@@ -17,12 +18,12 @@ export const ContentWrapper = (props: ContentWrapperProps) => {
         <div className={styles.transparent}>
           <div
             className={`${styles.transparentHeader} ${
-              variantHeight === 'big' ? styles.headerBig : styles.headerMedium
+              variantHeight === 'medium' ? styles.headerMedium : variantHeight === 'big' ? styles.headerBig : styles.headerLarge
             }`}
           >
             {header}
           </div>
-          <div className={styles.transparentContent}>{content}</div>
+          <div className={`${styles.transparentContent} ${leftOffset ?  styles.leftOffset : ''}`}>{content}</div>
         </div>
       ) : (
         <div className={styles.colored}>{content}</div>

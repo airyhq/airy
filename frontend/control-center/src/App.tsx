@@ -33,6 +33,7 @@ import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/Connecto
 import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
 import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle';
 import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
+import {CatalogProductPage} from './pages/Catalog/CatalogProductPage';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -79,6 +80,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
             <Route path={`google/:channelId`} element={<GoogleConnect />} />
             <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
+
+            <Route path={`:componentName`} element={<CatalogProductPage />} />
             <Route index element={<Catalog />} />
           </Route>
 

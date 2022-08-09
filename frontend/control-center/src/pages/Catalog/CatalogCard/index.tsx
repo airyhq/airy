@@ -7,7 +7,7 @@ import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {getConnectedRouteForComponent, getNewChannelRouteForComponent} from './getRouteForCard';
+import {getConnectedRouteForComponent, getNewChannelRouteForComponent, getCatalogProductRouteForComponent} from './getRouteForCard';
 import styles from './index.module.scss';
 
 type CatalogCardProps = {
@@ -71,7 +71,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   };
 
   return (
-    <article className={styles.catalogCard}>
+    <article className={styles.catalogCard} onClick={() => navigate(getCatalogProductRouteForComponent(componentInfo.displayName),{state: {componentInfo}} )}>
       <section className={styles.cardLogoTitleContainer}>
         <div className={styles.componentLogo}>
           {getChannelAvatar(componentInfo.displayName)}

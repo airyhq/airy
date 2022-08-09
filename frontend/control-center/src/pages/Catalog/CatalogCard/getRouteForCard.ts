@@ -16,6 +16,16 @@ import {
   CONNECTORS_ZENDESK_ROUTE,
   CONNECTORS_SALESFORCE_ROUTE,
   CONNECTORS_WHATSAPP_BUSINESS_CLOUD_ROUTE,
+  CATALOG_FACEBOOK_ROUTE,
+  CATALOG_CHAT_PLUGIN_ROUTE,
+  CATALOG_TWILIO_SMS_ROUTE,
+  CATALOG_TWILIO_WHATSAPP_ROUTE,
+  CATALOG_WHATSAPP_BUSINESS_CLOUD_ROUTE,
+  CATALOG_GOOGLE_ROUTE,
+  CATALOG_INSTAGRAM_ROUTE,
+  CATALOG_DIALOGFLOW_ROUTE,
+  CATALOG_ZENDESK_ROUTE,
+  CATALOG_SALESFORCE_ROUTE,
 } from '../../../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
@@ -65,5 +75,31 @@ export const getNewChannelRouteForComponent = (displayName: string) => {
       return CONNECTORS_SALESFORCE_ROUTE + '/new';
     case 'Zendesk':
       return CONNECTORS_ZENDESK_ROUTE + '/new';
+  }
+};
+
+
+export const getCatalogProductRouteForComponent = (displayName: string) => {
+  switch (displayName) {
+    case 'Airy Chat Plugin':
+      return CATALOG_CHAT_PLUGIN_ROUTE;
+    case 'Facebook Messenger':
+      return CATALOG_FACEBOOK_ROUTE;
+    case 'Twilio SMS':
+      return CATALOG_TWILIO_SMS_ROUTE;
+    case 'Twilio WhatsApp':
+      return CATALOG_TWILIO_WHATSAPP_ROUTE;
+    case 'WhatsApp Business Cloud':
+      return CATALOG_WHATSAPP_BUSINESS_CLOUD_ROUTE;
+    case 'Google Business Messages':
+      return CATALOG_GOOGLE_ROUTE;
+    case 'Instagram':
+      return CATALOG_INSTAGRAM_ROUTE;
+    case 'Dialogflow':
+      return CATALOG_DIALOGFLOW_ROUTE;
+    case 'Salesforce':
+      return CATALOG_SALESFORCE_ROUTE;
+    case 'Zendesk':
+      return CATALOG_ZENDESK_ROUTE;
   }
 };

@@ -26,6 +26,16 @@ export const CONNECTORS_GOOGLE_CONNECTED_ROUTE = '/connectors/connected/google';
 export const CONNECTORS_INSTAGRAM_CONNECTED_ROUTE = '/connectors/connected/instagram';
 
 export const CATALOG_ROUTE = '/catalog';
+export const CATALOG_FACEBOOK_ROUTE = '/catalog/facebook';
+export const CATALOG_CHAT_PLUGIN_ROUTE = '/catalog/chatplugin';
+export const CATALOG_TWILIO_SMS_ROUTE = '/catalog/twilio.sms';
+export const CATALOG_TWILIO_WHATSAPP_ROUTE = '/catalog/twilio.whatsapp';
+export const CATALOG_WHATSAPP_BUSINESS_CLOUD_ROUTE = '/catalog/whatsappBusinessCloud';
+export const CATALOG_GOOGLE_ROUTE = '/catalog/google';
+export const CATALOG_INSTAGRAM_ROUTE = '/catalog/instagram';
+export const CATALOG_DIALOGFLOW_ROUTE = '/catalog/dialogflow';
+export const CATALOG_ZENDESK_ROUTE = '/catalog/zendesk';
+export const CATALOG_SALESFORCE_ROUTE = '/catalog/salesforce';
 
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONNECTED_ROUTE = '/inbox/connected';

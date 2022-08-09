@@ -3,7 +3,6 @@ package k8s
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -79,35 +78,21 @@ func GetComponentsConfigMaps(
 	namespace string,
 	clientSet *kubernetes.Clientset,
 	valueTransformer func(map[string]string) map[string]string,
-) (map[string]map[string]interface{}, error) {
+) (map[string]interface{}, error) {
 	configmapList, err := clientSet.CoreV1().ConfigMaps(namespace).List(ctx, v1.ListOptions{LabelSelector: "core.airy.co/component"})
 	if err != nil {
 		return nil, fmt.Errorf("Unable to list config maps. Error: %s\n", err)
 	}
 
-	components := make(map[string]map[string]interface{})
+	components := make(map[string]interface{})
 	for _, configmap := range configmapList.Items {
 		label, ok := configmap.Labels["core.airy.co/component"]
 		if !ok {
 			continue
 		}
 
-		componentsGroup, componentName := getComponentFromLabel(label)
-
-		componentsGroupContent, ok := components[componentsGroup]
-		if !ok {
-			componentsGroupContent = make(map[string]interface{})
-			components[componentsGroup] = componentsGroupContent
-		}
-
-		componentsGroupContent[componentName] = valueTransformer(configmap.Data)
+		components[label] = valueTransformer(configmap.Data)
 	}
 
 	return components, nil
-}
-
-func getComponentFromLabel(l string) (string, string) {
-	c := strings.Split(l, "-")
-
-	return c[0], strings.Join(c[1:], "-")
 }

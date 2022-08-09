@@ -118,6 +118,7 @@ module.exports = {
         'guides/monitoring',
         'guides/backup',
         'guides/component-reset',
+        'guides/remote-kafka-cluster',
       ],
     },
     'changelog',

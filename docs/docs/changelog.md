@@ -3,6 +3,20 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.47.2
+
+#### Hotfix
+
+* [[#3553](https://github.com/airyhq/airy/issues/3553)] Fix using a custom Kafka when installing Airy via Helm
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.47.2/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.47.2/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.47.2/windows/amd64/airy.exe)
+
 ## 0.47.1
 
 #### Hotfix
@@ -1233,6 +1247,3 @@ You can download the Airy CLI for your operating system from the following links
 ## Hotfix 0.26.3
 
 [[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
-## Hotfix 0.26.2
-
-[[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites

@@ -80,7 +80,7 @@ func (p *provider) startCluster(providerConfig map[string]string) error {
 	cpusArg := "--cpus=" + minikubeCpus
 	memoryArg := "--memory=" + minikubeMemory
 	args := []string{"start", "--extra-config=apiserver.service-node-port-range=1-65535", "--ports=80:80", driverArg, runtimeArg, cpusArg, memoryArg}
-	// Prevent minikube download progress bar from polluting the output
+	// Prevent minikube download progress bar from polluting the output by downloading silently first
 	_, err := runGetOutput(append(args, "--download-only")...)
 	if err != nil {
 		return fmt.Errorf("downloading minikube files err: %v", err)

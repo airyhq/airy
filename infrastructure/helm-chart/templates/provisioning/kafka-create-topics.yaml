@@ -30,6 +30,19 @@ data:
       echo "Using ${AIRY_CORE_NAMESPACE} to namespace topics"
     fi
 
+    if [ -n "${AUTH_JAAS}" ]; then
+      cat <<EOF > /opt/kafka/jaas.config
+    security.protocol=SASL_SSL
+    sasl.jaas.config=$AUTH_JAAS
+    sasl.mechanism=PLAIN
+    EOF
+      CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
+      echo "Using jaas authentication for connecting to Kafka"
+    fi
+
+    echo "Creating Kafka topics"
+
+
 
     kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.channels" 
 

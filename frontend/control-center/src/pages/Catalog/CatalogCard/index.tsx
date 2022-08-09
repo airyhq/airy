@@ -20,6 +20,20 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
+export const availabilityFormatted = (availability: string) => availability.split(',');
+
+export const DescriptionComponent = (props: {description: string}) => {
+  const {description} = props;
+  const {t} = useTranslation();
+  return <>{t(description)}</>;
+};
+
+export const getDescriptionSourceName = (name: string, displayName: string) => {
+  if (displayName.includes('SMS')) return 'twiliosms';
+  if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
+  return getSourceForComponent(name)?.replace('.', '');
+};
+
 const CatalogCard = (props: CatalogCardProps) => {
   const {componentInfo, installComponent} = props;
   const [isInstalled, setIsInstalled] = useState(componentInfo.installed);
@@ -40,8 +54,6 @@ const CatalogCard = (props: CatalogCardProps) => {
     setIsInstalled(!isInstalled);
   };
 
-  const availabilityFormatted = (availability: string) => availability.split(',');
-
   const CatalogCardButton = () => {
     if (isInstalled) {
       return (
@@ -58,18 +70,6 @@ const CatalogCard = (props: CatalogCardProps) => {
     );
   };
 
-  const DescriptionComponent = (props: {description: string}) => {
-    const {description} = props;
-    const {t} = useTranslation();
-    return <>{t(description)}</>;
-  };
-
-  const getDescriptionSourceName = (name: string, displayName: string) => {
-    if (displayName.includes('SMS')) return 'twiliosms';
-    if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
-    return getSourceForComponent(name)?.replace('.', '');
-  };
-
   return (
     <article className={styles.catalogCard} onClick={() => navigate(getCatalogProductRouteForComponent(componentInfo.displayName),{state: {componentInfo}} )}>
       <section className={styles.cardLogoTitleContainer}>
@@ -82,7 +82,7 @@ const CatalogCard = (props: CatalogCardProps) => {
 
           <p>
             {' '}
-            <span className={styles.bolded}>{t('categories')}</span> {componentInfo.category}{' '}
+            <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
           </p>
         </div>
       </section>

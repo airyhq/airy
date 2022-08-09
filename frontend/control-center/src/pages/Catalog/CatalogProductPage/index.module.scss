@@ -1,22 +1,71 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.backButton button {
+
+.heading {
+  margin-left: 200px;
+  height: 100%;
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+  margin-top:24px;
+
+
+  h1 {
+    @include font-l;
+    font-weight:900;
+    line-height: 24px;
+
+  }
+
+  p{
+    @include font-base;
+    margin: 5px 0 0 0;
+    color: var(--color-text-gray);
+  }
+}
+
+.componentDescription {
+padding-left:30Px;
+  h1 {
+    @include font-m;
+    font-weight:800;
+    margin:20px 0;
+  }
+
+  p {
+    width:80%;
+  }
+
+}
+
+.backButton{
+  text-decoration: none;
+
+  &:hover,
+  &:active,
+  &:visited {
+    text-decoration: none;
+    color: var(--color-text-contrast);
+  }
+  
+ button {
   background:transparent;
+ }
 }
 
 .linkButtonContainer {
     @include font-base;
     display: flex;
     align-items: center;
-    text-decoration: underline;
+    text-decoration: none;
     color: var(--color-text-contrast);
     font-weight: bold;
   
     &:hover,
     &:active,
     &:visited {
-      text-decoration: underline;
+      text-decoration: none;
       color: var(--color-text-contrast);
     }
   }
@@ -71,4 +120,57 @@
     height: 50px;
     margin-top:10px;
     @include font-base;
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  @include font-s;
+  margin-top: 16px;
+  svg {
+    fill: var(--color-airy-blue);
+    width: 14px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.bolded {
+  font-weight: 800;
+}
+
+.details {
+  p {
+    width: 95%;
+    color: var(--color-text-contrast);
+    @include font-s;
+    word-wrap: break-word
+
+
+  }
+
+  button {
+    border: 1px solid var(--color-airy-blue);
+    @include font-xs;
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-airy-blue);
+    padding: 4px 14px;
+    margin-right: 5px;
+    margin-top: 8px;
+  }
+
+  .detailInfo {
+    margin-bottom:15px;
+  }
+
+  section a,
+  section a:hover,
+  section a:visited,
+  section a:active {
+    color: var(--color-airy-blue);
+    text-decoration: none;
+  }
 }

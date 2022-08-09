@@ -7,6 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {Link, useParams} from 'react-router-dom';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {CATALOG_ROUTE} from '../../../routes/routes';
+import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
 import styles from './index.module.scss';
 
 export const CatalogProductPage = () => {
@@ -21,16 +22,25 @@ export const CatalogProductPage = () => {
 
   const ProductContent = () => {
     return (
-      <section>
-        <h1>PRODUCT CONTENT</h1>
+      <section className={styles.componentDescription}>
+        <h1>{t('Description')}</h1>
+        <p>{componentInfo.description}</p>
       </section>
     );
   };
 
 
-  //{componentInfo?.displayName
   const ProductHeader = () => {
-    return <h1></h1>;
+    return (
+    <section className={styles.heading}>
+      <h1>{componentInfo?.displayName}</h1>
+        <p>
+            <DescriptionComponent
+              description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
+            />
+          </p>
+    </section>
+    );
   };
 
   const SideColumnContent = () => {
@@ -44,12 +54,42 @@ export const CatalogProductPage = () => {
             </div>
           </LinkButton>
         </Link>
-        <div className={styles.detailsComponentLogo}>
+        <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
           <Button className={styles.installButton} styleVariant={componentInfo?.installed ? 'warning' : 'green'}>
             {componentInfo?.installed ? t('uninstall') : t('install')}
           </Button>
-        </div>
+        </section>
+        <section className={styles.details}>
+
+          <section className={styles.detailInfo}>
+            <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+            {componentInfo?.availableFor &&
+              availabilityFormatted(componentInfo.availableFor).map((service: string) => (
+                <button key={service}>{service}</button>
+              ))}
+          </section>
+
+          <section className={styles.detailInfo}>
+            <p className={styles.bolded}>{t('categories')}:</p>
+            {componentInfo?.category &&
+              availabilityFormatted(componentInfo?.category).map((categoryItem: string) => (
+                <button key={categoryItem}>{categoryItem}</button>
+              ))}
+          </section>
+
+          <section className={styles.detailInfo}>
+            <p className={styles.bolded}>{t('Price')}:</p>
+            <button key={componentInfo?.price}>{componentInfo?.price}</button>
+            </section>
+
+            <section>
+            <p className={styles.bolded}>
+              {t('Airy Doc Reference')}: <br/> <a href={componentInfo?.docs} target="_blank" rel="noopener noreferrer">{componentInfo?.docs}</a>
+            </p>
+          </section>
+
+        </section>
       </>
     );
   };

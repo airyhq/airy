@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.component }}"
+  name: "{{ .Values.components.api.websocket.name }}"
   labels:
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.mandatory }}"
-    core.airy.co/component: "{{ .Values.component }}"
+    core.airy.co/mandatory: "{{ .Values.components.api.websocket.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.api.websocket.name }}"
   annotations:
-    core.airy.co/enabled: "{{ .Values.enabled }}"
+    core.airy.co/enabled: "{{ .Values.components.api.websocket.enabled }}"

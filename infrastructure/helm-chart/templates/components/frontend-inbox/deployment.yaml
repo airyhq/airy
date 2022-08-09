@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-control-center
+  name: "{{ .Values.components.frontend.inbox.name }}"
   labels:
-    app: frontend-control-center
+    app: "{{ .Values.components.frontend.inbox.name }}"
     type: frontend
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.mandatory }}"
-    core.airy.co/component: "{{ .Values.component }}"
+    core.airy.co/mandatory: "{{ .Values.components.frontend.inbox.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.frontend.inbox.name }}"
   annotations:
     core.airy.co/config-items-mandatory: "API_HOST"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-control-center
+      app: "{{ .Values.components.frontend.inbox.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,15 +23,15 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend-control-center
+        app: "{{ .Values.components.frontend.inbox.name }}"
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.frontend.inbox.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
-        {{- if .Values.global.apiHost }}
+        {{- if .Values.global.apiHost }}        
         - name: API_HOST
           valueFrom:
             configMapKeyRef:
@@ -40,7 +40,7 @@ spec:
         {{- end }}
         envFrom:
           - configMapRef:
-              name: "{{ .Values.component }}"
+              name: "{{ .Values.components.frontend.inbox.name }}"
         livenessProbe:
           httpGet:
             path: /health
@@ -52,7 +52,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.components.frontend.inbox.resources | indent 10 }}
       volumes:
         - name: provisioning-scripts
           configMap:

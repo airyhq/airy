@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.component }}
+  name: {{ .Values.components.api.communication.name }}
   labels:
     core.airy.co/prometheus: spring
 spec:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: {{ .Values.component }}
+    app: {{ .Values.components.api.communication.name }}

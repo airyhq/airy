@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.components.api.communication.name }}"
+  labels:
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.components.api.communication.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.api.communication.name }}"
+  annotations:
+    core.airy.co/enabled: "{{ .Values.components.api.communication.enabled }}"

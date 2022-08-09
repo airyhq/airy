@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-admin
+  name: "{{ .Values.components.api.communication.name }}"
   labels:
-    app: api-admin
+    app: "{{ .Values.components.api.communication.name }}"
     type: api
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.api.admin.mandatory }}"
-    core.airy.co/component: "{{ .Values.api.admin.component }}"
+    core.airy.co/mandatory: "{{ .Values.components.api.communication.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.api.communication.name }}"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-admin
+      app: "{{ .Values.components.api.communication.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,31 +21,20 @@ spec:
   template:
     metadata:
       labels:
-        app: api-admin
+        app: "{{ .Values.components.api.communication.name }}"
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.api.admin.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.communication.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
-              name: kafka-config
-          - configMapRef:
               name: security
           - configMapRef:
-              name: core-config
+              name: kafka-config
           - configMapRef:
-              name: "{{ .Values.api.admin.component }}"
-        env:
-        - name: KUBERNETES_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: KUBERNETES_APP
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['app']
+              name: "{{ .Values.components.api.communication.name }}"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -57,7 +46,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.api.admin.resources | indent 10 }}
+{{ toYaml .Values.components.api.communication.resources | indent 10 }}
       initContainers:
       - name: wait
         image: "{{ .Values.global.busyboxImage }}"

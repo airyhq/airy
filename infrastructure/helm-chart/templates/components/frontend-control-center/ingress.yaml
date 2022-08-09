@@ -17,7 +17,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-control-center
+                name: "{{ .Values.components.frontend.control_center.name }}"
                 port:
                   number: 80
 {{- if .Values.global.host }}
@@ -50,14 +50,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-control-center
+                name: "{{ .Values.components.frontend.control_center.name }}"
                 port:
                   number: 80
           - path: /ui
             pathType: Prefix
             backend:
               service:
-                name: frontend-control-center
+                name: "{{ .Values.components.frontend.control_center.name }}"
                 port:
                   number: 80
 {{- if .Values.global.host }}

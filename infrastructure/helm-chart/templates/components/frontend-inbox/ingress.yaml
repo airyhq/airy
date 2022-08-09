@@ -17,7 +17,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-inbox
+                name: "{{ .Values.components.frontend.inbox.name }}"
                 port:
                   number: 80
 {{- if .Values.global.host }}

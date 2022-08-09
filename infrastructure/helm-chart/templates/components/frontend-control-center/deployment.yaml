@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-inbox
+  name: "{{ .Values.components.frontend.control_center.name }}"
   labels:
-    app: frontend-inbox
+    app: "{{ .Values.components.frontend.control_center.name }}"
     type: frontend
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.mandatory }}"
-    core.airy.co/component: "{{ .Values.component }}"
+    core.airy.co/mandatory: "{{ .Values.components.frontend.control_center.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.frontend.control_center.name }}"
   annotations:
     core.airy.co/config-items-mandatory: "API_HOST"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-inbox
+      app: "{{ .Values.components.frontend.control_center.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,15 +23,15 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend-inbox
+        app: "{{ .Values.components.frontend.control_center.name }}"
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.frontend.control_center.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
-        {{- if .Values.global.apiHost }}        
+        {{- if .Values.global.apiHost }}
         - name: API_HOST
           valueFrom:
             configMapKeyRef:
@@ -40,7 +40,7 @@ spec:
         {{- end }}
         envFrom:
           - configMapRef:
-              name: "{{ .Values.component }}"
+              name: "{{ .Values.components.frontend.control_center.name }}"
         livenessProbe:
           httpGet:
             path: /health
@@ -52,7 +52,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.components.frontend.control_center.resources | indent 10 }}
       volumes:
         - name: provisioning-scripts
           configMap:

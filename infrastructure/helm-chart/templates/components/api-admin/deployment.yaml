@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-communication
+  name: "{{ .Values.components.api.admin.name }}"
   labels:
-    app: api-communication
+    app: "{{ .Values.components.api.admin.name }}"
     type: api
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.mandatory }}"
-    core.airy.co/component: "{{ .Values.component }}"
+    core.airy.co/mandatory: "{{ .Values.components.api.admin.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.api.admin.name }}"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-communication
+      app: "{{ .Values.components.api.admin.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,20 +21,31 @@ spec:
   template:
     metadata:
       labels:
-        app: api-communication
+        app: "{{ .Values.components.api.admin.name }}"
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.admin.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
-              name: security
-          - configMapRef:
               name: kafka-config
           - configMapRef:
-              name: "{{ .Values.component }}"
+              name: security
+          - configMapRef:
+              name: core-config
+          - configMapRef:
+              name: "{{ .Values.components.api.admin.name }}"
+        env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: KUBERNETES_APP
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['app']
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -46,7 +57,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.components.api.admin.resources | indent 10 }}
       initContainers:
       - name: wait
         image: "{{ .Values.global.busyboxImage }}"

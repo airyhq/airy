@@ -56,7 +56,6 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   }, [channels.length]);
 
   const isComponentInstalled = (repository: string, componentName: string) => {
-    if (repository === 'airy-enterprise') componentName = 'enterprise-' + componentName;
     const componentNameCatalog = repository + '/' + componentName;
     return catalogList[componentNameCatalog] && catalogList[componentNameCatalog].installed === true;
   };
@@ -86,7 +85,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                       channelsToShow={channelsBySource(infoItem.type).length}
                       componentStatus={getComponentStatus(
                         isInstalled,
-                        Object.keys(connectors[infoItem.type]).length > 0 || infoItem.type === Source.chatPlugin,
+                        Object.keys(connectors[infoItem.componentName]).length > 0 ||
+                          infoItem.type === Source.chatPlugin,
                         components[infoItem.configKey].enabled
                       )}
                       key={index}
@@ -107,9 +107,6 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     </div>
                   )) ||
                 (getSourceForComponent(infoItem.type) &&
-                  connectors &&
-                  connectors[infoItem.componentName] &&
-                  Object.keys(connectors[infoItem?.componentName]) &&
                   components &&
                   components[infoItem.configKey] &&
                   !infoItem.channel &&

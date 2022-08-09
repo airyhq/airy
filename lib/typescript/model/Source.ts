@@ -21,8 +21,6 @@ export const prettifySource = (source: string) =>
 export const getSourceForComponent = (item: string) => {
   let formattedItem;
 
-  console.log('item', item);
-
   if (item.includes('airy-core') || item.includes('airy-enterprise')) {
     formattedItem = item.split('/')[1];
   } else {
@@ -36,9 +34,5 @@ export const getSourceForComponent = (item: string) => {
   if (componentName === 'chatplugin') componentName = 'chatPlugin';
   if (componentName === 'whatsappbusinesscloud') componentName = 'twilioWhatsApp';
   if (componentName === 'salesforcecontactsingestion') componentName = 'salesforce';
-
-  console.log('componentName', componentName);
-
-  console.log('get info for compo', Source[componentName]);
   return Source[componentName];
 };

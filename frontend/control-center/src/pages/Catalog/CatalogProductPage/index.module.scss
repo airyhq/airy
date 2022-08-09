@@ -1,0 +1,70 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+
+.linkButtonContainer {
+    @include font-base;
+    display: flex;
+    align-items: center;
+    text-decoration: underline;
+    color: var(--color-text-contrast);
+    font-weight: bold;
+    background:transparent;
+  
+    &:hover,
+    &:active,
+    &:visited {
+      text-decoration: underline;
+      color: var(--color-text-contrast);
+    }
+  }
+  
+  .backIcon {
+    width: 20px;
+    background: transparent;
+    path {
+      fill: var(--color-text-gray);
+    }
+    margin-right: 8px;
+  }
+
+  .backButtonContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  
+    div {
+      @include font-base;
+      font-weight: 400;
+      text-decoration: none;
+    }
+  
+    a {
+      @include font-base;
+      text-decoration: none;
+    }
+  
+    button {
+      background: transparent;
+      color: var(--color-airy-blue);
+    }
+  }
+
+  .detailsComponentLogo {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    width:100%;
+    margin-top:20px;
+  }
+
+  .logoIcon {
+    width:120px;
+  }
+
+  .installButton {
+    width: 152px;
+    height: 50px;
+    margin-top:20px;
+}

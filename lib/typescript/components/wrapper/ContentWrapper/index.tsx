@@ -7,10 +7,11 @@ type ContentWrapperProps = {
   header?: React.ReactNode;
   variantHeight?: 'medium' | 'big' | 'large';
   leftOffset?: boolean;
+  sideColumn?: React.ReactNode;
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  const {transparent, content, header, variantHeight, leftOffset} = props;
+  const {transparent, content, header, variantHeight, leftOffset, sideColumn} = props;
 
   return (
     <>
@@ -23,6 +24,7 @@ export const ContentWrapper = (props: ContentWrapperProps) => {
           >
             {header}
           </div>
+            <section className={styles.sideColumn}>{sideColumn}</section>
           <div className={`${styles.transparentContent} ${leftOffset ?  styles.leftOffset : ''}`}>{content}</div>
         </div>
       ) : (

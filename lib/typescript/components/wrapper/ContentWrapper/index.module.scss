@@ -31,6 +31,13 @@
   height: 170px;
 }
 
+.sideColumn {
+  width: 196px;
+  height: 100%;
+  position: absolute;
+}
+
+
 .transparentContent {
   background: var(--color-background-white);
   color: var(--color-text-contrast);

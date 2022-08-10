@@ -17,7 +17,14 @@ data:
     set -euo pipefail
     IFS=$'\n\t'
 
-    ZOOKEEPER=${ZOOKEEPER:-zookeeper:2181}
+
+    if [ -z "${KAFKA_BROKERS+x}" ]; then
+      echo "KAFKA_BROKERS is not set. Exiting."
+      exit 1
+    else
+      CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)
+    fi
+
     PARTITIONS=${PARTITIONS:-10}
     REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}
     AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}

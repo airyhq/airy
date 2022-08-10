@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import {ContentWrapper, Button, LinkButton} from 'components';
 //import {ComponentInfo} from 'model';
 import {useLocation} from 'react-router-dom';
@@ -8,9 +9,18 @@ import {Link, useParams} from 'react-router-dom';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {CATALOG_ROUTE} from '../../../routes/routes';
 import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
+import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import styles from './index.module.scss';
 
-export const CatalogProductPage = () => {
+const mapDispatchToProps = {
+  installComponent,
+  uninstallComponent
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+export const CatalogProductPage = (props: ConnectedProps<typeof connector>) => {
+  const { installComponent, uninstallComponent} = props;
   const location: any = useLocation();
   const {t} = useTranslation();
   const {

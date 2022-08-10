@@ -42,15 +42,15 @@ padding-left:30Px;
 .backButton{
   text-decoration: none;
 
-  &:hover,
-  &:active,
-  &:visited {
-    text-decoration: none;
-    color: var(--color-text-contrast);
-  }
-  
  button {
   background:transparent;
+  color: var(--color-text-contrast);
+ }
+
+ &:hover,
+ &:active,
+ &:visited {
+   text-decoration: underline;
  }
 }
 
@@ -143,10 +143,8 @@ padding-left:30Px;
 
 .details {
   p {
-    width: 95%;
     color: var(--color-text-contrast);
     @include font-s;
-    word-wrap: break-word
 
 
   }
@@ -171,6 +169,11 @@ padding-left:30Px;
   section a:visited,
   section a:active {
     color: var(--color-airy-blue);
+    word-break: break-word;
+    hyphens:auto;
     text-decoration: none;
+    display:inline-block;
+    width:80%;
   }
 }
+

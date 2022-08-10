@@ -249,7 +249,6 @@ ingress-controller:
 
 :::
 
-
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:
 
 ```sh
@@ -373,7 +372,6 @@ apihost: http://localhost
 ```
 
 :::
-
 
 ## Upgrade
 

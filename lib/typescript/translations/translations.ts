@@ -566,7 +566,7 @@ const resources = {
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
 
       //Channels
-      toConfigure: 'konfigurieren',
+      toConfigure: 'Konfigurieren',
       configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
@@ -707,7 +707,7 @@ const resources = {
 
       //Salesforce
       salesforceDescription:
-        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen.',
       salesforceOrgUrl: 'Organisations-URL',
       yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
       salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',

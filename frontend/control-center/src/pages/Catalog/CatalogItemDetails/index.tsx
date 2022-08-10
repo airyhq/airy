@@ -137,7 +137,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
           <section>
             <p className={styles.bolded}>
-              {t('Airy Doc Reference')}: <br />{' '}
+              Airy Docs: <br />{' '}
               <a href={componentInfo?.docs} target="_blank" rel="noopener noreferrer">
                 {componentInfo?.docs}
               </a>

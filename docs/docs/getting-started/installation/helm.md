@@ -106,7 +106,7 @@ For more information refer to the [official DigitalOcean Guide](https://docs.dig
 `Airy Core` can be created on Minikube with predefined settings, using the [Airy CLI](/cli/introduction). However, if you want to create your custom Minikube instance, for example with custom settings for CPU and RAM, you can also do that with the [Minikube](https://minikube.sigs.k8s.io/docs/start/) utility:
 
 ```sh
-minikube -p airy start --driver=virtualbox --cpus=4 --memory=7168 --extra-config=apiserver.service-nodeport-range=1-65535
+minikube start -p airy--driver=docker --cpus=4 --memory=7168 --ports=80:80 --extra-config=apiserver.service-node-port-range=1-65535
 ```
 
 The `apiserver.service-nodeport-range` settings is needed if you want to use port 80 on the Minikube VM as the NodePort for the ingress controller service.

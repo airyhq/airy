@@ -67,9 +67,9 @@ public class Application {
                 "\n" +
                 "    if [ -n \"${AUTH_JAAS}\" ]; then\n" +
                 "      cat <<EOF > /opt/kafka/jaas.config\n" +
-                "        security.protocol=SASL_SSL\n" +
-                "        sasl.jaas.config=$AUTH_JAAS\n" +
-                "        sasl.mechanism=PLAIN\n" +
+                "    security.protocol=SASL_SSL\n" +
+                "    sasl.jaas.config=$AUTH_JAAS\n" +
+                "    sasl.mechanism=PLAIN\n" +
                 "    EOF\n" +
                 "      CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)\n" +
                 "      echo \"Using jaas authentication for connecting to Kafka\"\n" +

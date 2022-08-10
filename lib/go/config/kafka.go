@@ -23,5 +23,9 @@ func GetKafkaData(s KafkaConf) map[string]string {
 		m["AUTH_JAAS"] = s.AuthJaas
 	}
 
+	if s.MinimumReplicas != "" {
+		m["KAFKA_MINIMUM_REPLICAS"] = s.MinimumReplicas
+	}
+
 	return m
 }

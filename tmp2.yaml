@@ -1,0 +1,131 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "batch.kubernetes.io/job-tracking": "",
+      "helm.sh/hook": "post-install,post-upgrade"
+    },
+    "creationTimestamp": "2022-08-08T20:17:25Z",
+    "generation": 1,
+    "labels": {
+      "controller-uid": "a04b3a04-e2cf-4cdf-ac6c-b76950c3b110",
+      "job-name": "provisioning-topics"
+    },
+    "name": "provisioning-topics",
+    "namespace": "default",
+    "resourceVersion": "4881",
+    "uid": "0644d3d4-f408-48b7-9683-46791ac90ad1"
+  },
+  "spec": {
+    "backoffLimit": 3,
+    "completionMode": "NonIndexed",
+    "completions": 1,
+    "parallelism": 1,
+    "suspend": false,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null
+      },
+      "spec": {
+        "containers": [
+          {
+            "command": [
+              "/bin/bash",
+              "/opt/provisioning/create-topics.sh"
+            ],
+            "envFrom": [
+              {
+                "configMapRef": {
+                  "name": "kafka-config"
+                }
+              }
+            ],
+            "image": "ghcr.io/airyhq/infrastructure/kafka:3.2.0",
+            "imagePullPolicy": "IfNotPresent",
+            "name": "create-topics",
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "volumeMounts": [
+              {
+                "mountPath": "/opt/provisioning",
+                "name": "kafka-create-topics"
+              }
+            ]
+          }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "initContainers": [
+          {
+            "command": [
+              "/bin/sh",
+              "/opt/provisioning/wait-for-minimum-kafkas.sh"
+            ],
+            "envFrom": [
+              {
+                "configMapRef": {
+                  "name": "kafka-config"
+                }
+              }
+            ],
+            "image": "ghcr.io/airyhq/infrastructure/busybox:latest",
+            "imagePullPolicy": "IfNotPresent",
+            "name": "wait",
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "volumeMounts": [
+              {
+                "mountPath": "/opt/provisioning",
+                "name": "provisioning-scripts"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Never",
+        "schedulerName": "default-scheduler",
+        "securityContext": {},
+        "terminationGracePeriodSeconds": 30,
+        "volumes": [
+          {
+            "configMap": {
+              "defaultMode": 420,
+              "name": "provisioning-scripts"
+            },
+            "name": "provisioning-scripts"
+          },
+          {
+            "configMap": {
+              "defaultMode": 420,
+              "name": "kafka-create-topics"
+            },
+            "name": "kafka-create-topics"
+          },
+          {
+            "configMap": {
+              "defaultMode": 420,
+              "name": "kafka-config"
+            },
+            "name": "kafka-config"
+          }
+        ]
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastProbeTime": "2022-08-08T20:17:41Z",
+        "lastTransitionTime": "2022-08-08T20:17:41Z",
+        "message": "Job has reached the specified backoff limit",
+        "reason": "BackoffLimitExceeded",
+        "status": "True",
+        "type": "Failed"
+      }
+    ],
+    "failed": 4,
+    "startTime": "2022-08-08T20:17:25Z",
+    "uncountedTerminatedPods": {}
+  }
+}

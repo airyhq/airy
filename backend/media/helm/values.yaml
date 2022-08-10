@@ -1,0 +1,9 @@
+name: media-resolver
+mandatory: false
+enabled: false
+image: media/resolver
+resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

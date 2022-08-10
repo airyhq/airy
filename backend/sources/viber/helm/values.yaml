@@ -1,0 +1,10 @@
+name: sources-viber
+mandatory: false
+enabled: false
+connector:
+  image: sources/viber-connector
+  resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

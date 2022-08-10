@@ -1,0 +1,9 @@
+name: api-contacts
+mandatory: false
+enabled: true
+image: api/contacts
+resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

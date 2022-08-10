@@ -1,9 +1,0 @@
-component: integration-webhook
-mandatory: false
-enabled: true
-consumer:
-  image: webhook/consumer
-  resources: {}
-publisher:
-  image: webhook/publisher
-  resources: {}

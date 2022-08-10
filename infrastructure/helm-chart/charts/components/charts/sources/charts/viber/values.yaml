@@ -1,6 +1,0 @@
-component: sources-viber
-mandatory: false
-enabled: true
-connector:
-  image: sources/viber-connector
-  resources: {}

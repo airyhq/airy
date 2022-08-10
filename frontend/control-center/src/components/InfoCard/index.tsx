@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
-import {SourceInfo} from '../../../components/SourceInfo';
+import {SourceInfo} from '../../components/SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {CONNECTORS_ROUTE} from '../../routes/routes';
@@ -158,7 +158,7 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
       </div>
 
-      {CATALOG_PAGE && (
+      {/* {CATALOG_PAGE && (
         <>
           {!installed && <p>{sourceInfo.description}</p>}
           <Button
@@ -175,7 +175,7 @@ const InfoCard = (props: InfoCardProps) => {
               : t('uninstall')}
           </Button>
         </>
-      )}
+      )} */}
 
       {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
 

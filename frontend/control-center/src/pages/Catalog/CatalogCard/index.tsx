@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, getSourceForComponent} from 'model';
+import {ComponentInfo, getSourceForComponent, NotificationModel} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, SettingsModal} from 'components';
 import {installComponent} from '../../../actions/catalog';
@@ -16,6 +16,7 @@ import styles from './index.module.scss';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
+  setNotification?: Dispatch<SetStateAction<NotificationModel>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -39,9 +40,11 @@ export const getDescriptionSourceName = (name: string, displayName: string) => {
 };
 
 const CatalogCard = (props: CatalogCardProps) => {
-  const {componentInfo, installComponent} = props;
+  const {componentInfo, installComponent, setNotification} = props;
   const [isInstalled, setIsInstalled] = useState(componentInfo.installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isInstalling, setIsInstalling] = useState(false);
+  const [isUninstalling, setIsUninstalling] = useState(false);
   const {t} = useTranslation();
   const navigate = useNavigate();
 
@@ -49,8 +52,23 @@ const CatalogCard = (props: CatalogCardProps) => {
   const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
 
   const openInstallModal = () => {
-    setIsModalVisible(true);
-    installComponent({name: componentInfo.name});
+    setIsInstalling(true);
+    installComponent({name: componentInfo.name})
+      .then(() => {
+        setNotification({show: true, successful: true, text: t('successfullyInstalled')});
+        setIsModalVisible(true);
+        setIsInstalling(false);
+        setTimeout(() => {
+          setNotification({show: false});
+        }, 4000);
+      })
+      .catch(() => {
+        setNotification({show: true, successful: false, text: t('failedInstall')});
+        setIsInstalling(false);
+        setTimeout(() => {
+          setNotification({show: false});
+        }, 4000);
+      });
   };
 
   const cancelInstallationToggle = () => {
@@ -68,9 +86,18 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
 
     return (
-      <Button styleVariant="green" onClick={openInstallModal}>
-        {t('install').toUpperCase()}
+      <Button styleVariant="green" type="submit" onClick={openInstallModal} disabled={isInstalling || isUninstalling}>
+        {isInstalling
+          ? t('installing')
+          : isUninstalling
+          ? t('uninstalling')
+          : !isInstalled
+          ? t('install')
+          : t('uninstall')}
       </Button>
+      // <Button styleVariant="green" onClick={openInstallModal}>
+      //   {t('install').toUpperCase()}
+      // </Button>
     );
   };
 
@@ -120,8 +147,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           containerClassName={styles.enableModalContainer}
           title={`${componentInfo.displayName} ${t('installed')}`}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}
-        >
+          headerClassName={styles.headerModal}>
           <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_CHANNEL_ROUTE)}>
             {t('toConfigure')}
           </Button>

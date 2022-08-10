@@ -26,16 +26,10 @@ const connector = connect(null, mapDispatchToProps);
 const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {listComponents} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState([]);
+  const [notification, setNotification] = useState<NotificationModel>(null);
   const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
-  const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
-  const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
-  const [installedConnectors, setInstalledConnectors] = useState([]);
-  const [sourcesInfo, setSourcesInfo] = useState([]);
-  const [notification, setNotification] = useState<NotificationModel>(null);
-  const [isInstallToggled, setIsInstalledToggled] = useState(false);
-  const pageTitle = 'Catalog';
 
   useEffect(() => {
     listComponents();
@@ -59,7 +53,9 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
         {orderedCatalogList &&
           orderedCatalogList.map((infoItem: ComponentInfo) => {
             if (infoItem?.name && !infoItem.name.includes('viber') && getSourceForComponent(infoItem.name)) {
-              return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
+              return (
+                <CatalogCard componentInfo={infoItem} key={infoItem.displayName} setNotification={setNotification} />
+              );
             }
           })}
       </section>

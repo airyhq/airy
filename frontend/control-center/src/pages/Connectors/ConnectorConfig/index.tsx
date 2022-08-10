@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
-import {Button, SettingsModal} from 'components';
+import {Button, Notification, SettingsModal} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
 import {
@@ -14,7 +14,7 @@ import {
   getConnectorsConfiguration,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
-import {Source} from 'model';
+import {NotificationModel, Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
@@ -66,6 +66,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
+  const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
@@ -233,23 +234,55 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
-    setIsEnabled(!isEnabled);
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
       .then(() => {
-        console.log('connectorInfo', connectorInfo);
-        console.log('connectorInfo', connectorInfo?.configKey);
-        console.log('SUCCESSFULL');
+        setIsEnabled(!isEnabled);
+        setNotification({
+          show: true,
+          successful: true,
+          text: isEnabled ? t('successfullyDisabled') : t('successfullyEnabled'),
+        });
+        setTimeout(() => {
+          setNotification({show: false});
+        }, 4000);
       })
-      .catch(error => {
-        console.log('ERROR: ', error);
+      .catch(() => {
+        setNotification({
+          show: true,
+          successful: false,
+          text: isEnabled ? t('failedDisabled') : t('failedEnabled'),
+        });
+        setTimeout(() => {
+          setNotification({show: false});
+        }, 4000);
       });
   };
 
   const closeConfigurationModal = () => {
     setConfigurationModal(false);
     if (!isEnabled) {
-      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
-      setIsEnabled(true);
+      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]})
+        .then(() => {
+          setIsEnabled(true);
+          setNotification({
+            show: true,
+            successful: true,
+            text: t('successfullyEnabled'),
+          });
+          setTimeout(() => {
+            setNotification({show: false});
+          }, 4000);
+        })
+        .catch(() => {
+          setNotification({
+            show: true,
+            successful: false,
+            text: t('failedEnabled'),
+          });
+          setTimeout(() => {
+            setNotification({show: false});
+          }, 4000);
+        });
     }
   };
 
@@ -277,8 +310,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div
                 className={`${styles.connectorIcon} ${
                   connectorInfo && connectorInfo?.title !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}
-              >
+                }`}>
                 {connectorInfo && connectorInfo?.image}
               </div>
 
@@ -307,8 +339,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       styleVariant="small"
                       type="button"
                       onClick={openModal}
-                      style={{padding: '20px 40px', marginTop: '-12px'}}
-                    >
+                      style={{padding: '20px 40px', marginTop: '-12px'}}>
                       {isEnabled ? t('disableComponent') : t('Enable')}
                     </Button>
                   )}
@@ -335,6 +366,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         </div>
       </div>
 
+      {notification?.show && (
+        <Notification show={notification.show} successful={notification.successful} text={notification.text} />
+      )}
+
       {configurationModal && (
         <SettingsModal
           Icon={!isEnabled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
@@ -344,8 +379,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}
-        >
+          headerClassName={styles.headerModal}>
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

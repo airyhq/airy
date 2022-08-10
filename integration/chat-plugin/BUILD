@@ -23,6 +23,7 @@ ts_web_library(
     deps = [
         "//frontend/chat-plugin/handles:chat-plugin-handles",
         "//frontend/inbox/handles",
+        "@npm//@types/node",
         "@npm//cypress",
     ],
 )

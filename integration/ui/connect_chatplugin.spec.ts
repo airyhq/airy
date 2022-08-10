@@ -15,11 +15,11 @@ declare global {
 describe('Connect chatplugin channel', () => {
   it('Connect chatplugin channel', () => {
     cy.visit('/control-center/connectors');
-    cy.wait(500);
+    cy.wait(8000);
     cy.url().should('include', '/control-center/connectors');
     cy.connectChatPluginConnector();
 
-    cy.url().should('include', '/control-center/connectors/connected');
+    cy.url().should('include', '/control-center/connectors');
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
   });

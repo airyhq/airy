@@ -13,10 +13,21 @@ type SettingsModalProps = {
   Icon?: React.ReactElement | null;
   headerClassName?: string;
   style?: CSSProperties;
+  dataCyCloseButton?: string;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {close, title, children, headerClassName, wrapperClassName, style, containerClassName, Icon} = props;
+  const {
+    close,
+    title,
+    children,
+    headerClassName,
+    wrapperClassName,
+    style,
+    containerClassName,
+    Icon,
+    dataCyCloseButton,
+  } = props;
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}
@@ -29,7 +40,13 @@ export const SettingsModal = (props: SettingsModalProps) => {
     >
       <div className={containerClassName}>
         {Icon ? Icon : ''}
-        <ModalHeader title={title ?? ''} close={close} style={style} headerClassName={headerClassName} />
+        <ModalHeader
+          title={title ?? ''}
+          close={close}
+          style={style}
+          headerClassName={headerClassName}
+          dataCyCloseButton={dataCyCloseButton}
+        />
         {children}
       </div>
     </Modal>

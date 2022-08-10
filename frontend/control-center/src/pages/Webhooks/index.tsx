@@ -1,3 +1,4 @@
+import {Notification} from 'components';
 import {SettingsModal} from 'components/alerts/SettingsModal';
 import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
@@ -33,7 +34,7 @@ const Webhooks = (props: WebhooksProps) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [notificationText, setNotificationText] = useState('');
-  const [notifcationColor, setNotifcationColor] = useState('');
+  const [notificationSuccessful, setNotificationSuccessful] = useState(false);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -46,8 +47,8 @@ const Webhooks = (props: WebhooksProps) => {
 
   const handleNotification = (show: boolean, error: boolean) => {
     error
-      ? (setNotificationText(t('errorOccurred')), setNotifcationColor('#d51548'))
-      : (setNotificationText(t('successfullySubscribed')), setNotifcationColor('#0da36b'));
+      ? (setNotificationText(t('errorOccurred')), setNotificationSuccessful(false))
+      : (setNotificationText(t('successfullySubscribed')), setNotificationSuccessful(true));
     setShowSuccessNotification(show);
   };
 
@@ -96,29 +97,6 @@ const Webhooks = (props: WebhooksProps) => {
     );
   };
 
-  const SuccessfulSubscribed = () => {
-    return (
-      <div
-        className={showSuccessNotification && styles.translateYAnimIn}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          left: '50%',
-          marginLeft: '-120px',
-          height: '40px',
-          width: '240px',
-          zIndex: 9999,
-          background: notifcationColor,
-          borderRadius: '10px',
-        }}
-      >
-        <span className={styles.successfullySubscribed}>{notificationText}</span>
-      </div>
-    );
-  };
-
   const handleNewWebhook = (openModal: boolean) => {
     setNewWebhook(openModal);
   };
@@ -140,7 +118,9 @@ const Webhooks = (props: WebhooksProps) => {
         <EmptyState setNewWebhook={handleNewWebhook} />
       ) : (
         <>
-          {showSuccessNotification && <SuccessfulSubscribed />}
+          {showSuccessNotification && (
+            <Notification show={showSuccessNotification} successful={notificationSuccessful} text={notificationText} />
+          )}
           <div className={styles.webhooksWrapper}>
             <div className={styles.webhooksHeadline}>
               <div className={styles.headlineContainer}>

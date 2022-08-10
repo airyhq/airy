@@ -234,7 +234,15 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
     setIsEnabled(!isEnabled);
-    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]});
+    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
+      .then(() => {
+        console.log('connectorInfo', connectorInfo);
+        console.log('connectorInfo', connectorInfo?.configKey);
+        console.log('SUCCESSFULL');
+      })
+      .catch(error => {
+        console.log('ERROR: ', error);
+      });
   };
 
   const closeConfigurationModal = () => {

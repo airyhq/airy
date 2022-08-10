@@ -7,6 +7,7 @@ export * from './Content';
 export * from './Conversation';
 export * from './Message';
 export * from './Metadata';
+export * from './Notification';
 export * from './Pagination';
 export * from './Source';
 export * from './SuggestedReply';

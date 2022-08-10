@@ -8,6 +8,8 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 import static co.airy.model.message.MessageRepository.isNewMessage;
 
 @Component
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "rasa-connector";
     private final KafkaStreamsWrapper streams;
     private RasaConnectorService rasaConnectorService;
@@ -32,7 +34,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true).peek((messageId, message) -> rasaConnectorService.send(message));
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true)
+                .peek((messageId, message) -> rasaConnectorService.send(message));
 
         streams.start(builder.build(), appId);
     }
@@ -43,4 +46,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
             streams.close();
         }
     }
+
+    @Override
+    public Health health() {
+        return Health.up().build();
+    }
+
 }

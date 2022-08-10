@@ -55,13 +55,9 @@ public class RasaConnectorService {
                 .decoder(new JacksonDecoder())
                 .logger(new feign.Logger.ErrorLogger())
                 .logLevel(feign.Logger.Level.FULL)
-//                .requestInterceptor(requestTemplate -> {
-//                    requestTemplate.header(HttpHeaders.AUTHORIZATION, String.format("Basic %s", apiToken));
-//                })
                 .target(RasaClient.class, rasaRestUrl);
     }
 
-    // Helper method from Juan used in pushednotification & dialougeflow
     private String getTextFromContent(String content) {
         String text = "";
 

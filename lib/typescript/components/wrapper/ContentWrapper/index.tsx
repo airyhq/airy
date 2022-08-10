@@ -6,12 +6,12 @@ type ContentWrapperProps = {
   content: React.ReactNode;
   header?: React.ReactNode;
   variantHeight?: 'medium' | 'big' | 'large';
-  leftOffset?: boolean;
-  sideColumn?: React.ReactNode;
+  isSideColumn?: boolean;
+  sideColumnContent?: React.ReactNode;
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  const {transparent, content, header, variantHeight, leftOffset, sideColumn} = props;
+  const {transparent, content, header, variantHeight, isSideColumn, sideColumnContent} = props;
 
   return (
     <>
@@ -19,13 +19,17 @@ export const ContentWrapper = (props: ContentWrapperProps) => {
         <div className={styles.transparent}>
           <div
             className={`${styles.transparentHeader} ${
-              variantHeight === 'medium' ? styles.headerMedium : variantHeight === 'big' ? styles.headerBig : styles.headerLarge
+              variantHeight === 'medium'
+                ? styles.headerMedium
+                : variantHeight === 'big'
+                ? styles.headerBig
+                : styles.headerLarge
             }`}
           >
             {header}
           </div>
-            <section className={styles.sideColumn}>{sideColumn}</section>
-          <div className={`${styles.transparentContent} ${leftOffset ?  styles.leftOffset : ''}`}>{content}</div>
+          <section className={styles.sideColumn}>{sideColumnContent}</section>
+          <div className={`${styles.transparentContent} ${isSideColumn ? styles.leftOffset : ''}`}>{content}</div>
         </div>
       ) : (
         <div className={styles.colored}>{content}</div>

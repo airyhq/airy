@@ -1,0 +1,205 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.heading {
+  margin-left: 200px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 24px;
+
+  h1 {
+    @include font-l;
+    font-weight: 900;
+    line-height: 24px;
+  }
+
+  p {
+    @include font-base;
+    margin: 5px 0 0 0;
+    color: var(--color-text-gray);
+  }
+}
+
+.componentDescription {
+  padding-left: 30px;
+  h1 {
+    @include font-m;
+    font-weight: 800;
+    margin: 20px 0;
+  }
+
+  p {
+    width: 80%;
+  }
+}
+
+.backButton {
+  text-decoration: none;
+
+  button {
+    background: transparent;
+    color: var(--color-text-contrast);
+  }
+
+  &:hover,
+  &:active,
+  &:visited {
+    text-decoration: underline;
+  }
+}
+
+.linkButtonContainer {
+  @include font-base;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-text-contrast);
+  font-weight: bold;
+
+  &:hover,
+  &:active,
+  &:visited {
+    text-decoration: none;
+    color: var(--color-text-contrast);
+  }
+}
+
+.backIcon {
+  width: 20px;
+  background: transparent;
+  path {
+    fill: var(--color-text-gray);
+  }
+  margin-right: 8px;
+}
+
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    @include font-base;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a {
+    @include font-base;
+    text-decoration: none;
+  }
+
+  button {
+    background: transparent;
+    color: var(--color-airy-blue);
+  }
+}
+
+.detailsComponentLogo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  padding-right: 16px;
+}
+
+.logoIcon {
+  width: 120px;
+}
+
+.installButton {
+  width: 152px;
+  height: 50px;
+  margin-top: 10px;
+  @include font-base;
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  @include font-s;
+  margin-top: 16px;
+  svg {
+    fill: var(--color-airy-blue);
+    width: 14px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.bolded {
+  font-weight: 800;
+}
+
+.details {
+  p {
+    color: var(--color-text-contrast);
+    @include font-s;
+  }
+
+  button {
+    border: 1px solid var(--color-airy-blue);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-airy-blue);
+    padding: 4px 12px;
+    margin-right: 5px;
+    margin-top: 8px;
+  }
+
+  .detailInfo {
+    margin-bottom: 20px;
+  }
+
+  section a,
+  section a:hover,
+  section a:visited,
+  section a:active {
+    color: var(--color-airy-blue);
+    word-break: break-word;
+    hyphens: auto;
+    text-decoration: none;
+    display: inline-block;
+    width: 80%;
+  }
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
+}
+
+.enableModalContainerWrapper {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.headerModal {
+  @include font-xl;
+}

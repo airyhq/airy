@@ -12,7 +12,7 @@ type styleVariantType =
   | 'link'
   | 'text'
   | 'green';
-  
+
 type ButtonProps = {
   children: ReactNode;
   onClick?: (event?) => void;

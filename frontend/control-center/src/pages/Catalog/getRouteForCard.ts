@@ -26,7 +26,7 @@ import {
   CATALOG_DIALOGFLOW_ROUTE,
   CATALOG_ZENDESK_ROUTE,
   CATALOG_SALESFORCE_ROUTE,
-} from '../../../routes/routes';
+} from '../../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
   switch (displayName) {
@@ -77,7 +77,6 @@ export const getNewChannelRouteForComponent = (displayName: string) => {
       return CONNECTORS_ZENDESK_ROUTE + '/new';
   }
 };
-
 
 export const getCatalogProductRouteForComponent = (displayName: string) => {
   switch (displayName) {

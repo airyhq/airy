@@ -33,7 +33,7 @@ import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/Connecto
 import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
 import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle';
 import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
-import {CatalogProductPage} from './pages/Catalog/CatalogProductPage';
+import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 
 const mapDispatchToProps = {
   getClientConfig,

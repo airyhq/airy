@@ -75,28 +75,6 @@
   margin-right: 8px;
 }
 
-.backButtonContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-
-  div {
-    @include font-base;
-    font-weight: 400;
-    text-decoration: none;
-  }
-
-  a {
-    @include font-base;
-    text-decoration: none;
-  }
-
-  button {
-    background: transparent;
-    color: var(--color-airy-blue);
-  }
-}
-
 .detailsComponentLogo {
   display: flex;
   flex-direction: column;
@@ -116,25 +94,6 @@
   height: 50px;
   margin-top: 10px;
   @include font-base;
-}
-
-.availability {
-  display: flex;
-  align-items: center;
-  color: var(--color-airy-blue);
-  @include font-s;
-  margin-top: 16px;
-  svg {
-    fill: var(--color-airy-blue);
-    width: 14px;
-    margin-right: 5px;
-    display: flex;
-    align-items: center;
-  }
-}
-
-.bolded {
-  font-weight: 800;
 }
 
 .details {
@@ -168,6 +127,25 @@
     display: inline-block;
     width: 80%;
   }
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  @include font-s;
+  margin-top: 20px;
+  svg {
+    fill: var(--color-airy-blue);
+    width: 14px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.bolded {
+  font-weight: 800;
 }
 
 .checkmarkIcon {

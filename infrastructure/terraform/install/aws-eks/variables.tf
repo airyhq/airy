@@ -1,5 +1,5 @@
 variable "aws_profile" {
-  description = "The AWS Profile associated with your credentials (default = 'default')"
+  description = "The AWS Profile associated with your credentials"
 }
 
 variable "aws_region" {

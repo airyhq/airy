@@ -37,6 +37,7 @@ export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButto
 export const cyConnectorsAddNewButton = 'connectorsAddNewButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
+export const cyChannelCreatedChatPluginCloseButton = 'channelCreatedChatPluginCloseButton';
 export const cyChannelsFormBackButton = 'channelsFormBackButton';
 
 export const cyOpenStateButton = 'openStateButton';

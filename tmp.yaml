@@ -5,7 +5,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install, pre-upgrade"
     "helm.sh/hook-weight": "2"
-  namespace: {{ .Release.Namespace }}
+  namespace: default
 data:
   create-topics.sh: |
     #!/bin/bash
@@ -48,6 +48,7 @@ data:
     EOF
       CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
       echo "Using jaas authentication for connecting to Kafka"
+      cat /opt/kafka/jaas.config
     fi
 
     echo "Creating Kafka topics"
@@ -85,4 +86,4 @@ data:
     kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.viber.events" 
 
     kafka-topics.sh --create --if-not-exists "${CONNECTION_OPTS[@]}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.whatsapp.events" 
-
+    

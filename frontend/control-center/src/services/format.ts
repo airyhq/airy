@@ -26,11 +26,11 @@ export const getComponentName = (itemName: string) => {
     return formatName(itemName);
   }
 
-  const formatteComponentName = itemName
+  const formattedComponentName = itemName
     .split('-')
     .filter(element => element !== 'sources' && element !== 'connector' && element !== 'frontend')
     .join(' ');
-  return capitalizeTitle(formatteComponentName);
+  return capitalizeTitle(formattedComponentName);
 };
 
 export const removePrefix = (name: string) => name.split('/').pop();

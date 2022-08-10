@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Channel, Source, getSourceForComponent} from 'model';
-import InfoCard, {InfoCardStyle} from './InfoCard';
+import InfoCard, {InfoCardStyle} from '../../components/InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels} from '../../actions/channel';
@@ -40,6 +40,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const [sourcesInfo, setSourcesInfo] = useState([]);
   const navigate = useNavigate();
   const pageTitle = 'Connectors';
+  const isInstalled = true;
 
   useEffect(() => {
     setSourcesInfo(getSourcesInfo());
@@ -83,7 +84,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                       sourceInfo={infoItem}
                       channelsToShow={channelsBySource(infoItem.type).length}
                       componentStatus={getComponentStatus(
-                        Object.keys(connectors[infoItem.type]).length > 0 || infoItem.type === Source.chatPlugin,
+                        isInstalled,
+                        Object.keys(connectors[infoItem.componentName]).length > 0 ||
+                          infoItem.type === Source.chatPlugin,
                         components[infoItem.configKey].enabled
                       )}
                       key={index}
@@ -112,6 +115,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                       <InfoCard
                         installed={true}
                         componentStatus={getComponentStatus(
+                          isInstalled,
                           Object.keys(connectors[infoItem.componentName]).length > 0,
                           components[infoItem.configKey].enabled
                         )}

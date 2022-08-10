@@ -15,6 +15,7 @@ export const EmptyState = (props: EmptyStateProps) => {
   return (
     <ContentWrapper
       transparent={false}
+      variantHeight="big"
       content={
         <div className={styles.container}>
           <div className={styles.contentContainer}>

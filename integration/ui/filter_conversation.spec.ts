@@ -1,15 +1,4 @@
-import {
-  cySearchButton,
-  cySearchField,
-  cyConversationList,
-  cyChannelsChatPluginAddButton,
-  cyChannelsChatPluginFormNameInput,
-  cyChannelsChatPluginFormSubmitButton,
-  cyChannelsFormBackButton,
-  cyConnectorsAddNewButton,
-} from 'handles';
-
-import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
+import {cySearchButton, cySearchField, cyConversationList} from 'handles';
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {

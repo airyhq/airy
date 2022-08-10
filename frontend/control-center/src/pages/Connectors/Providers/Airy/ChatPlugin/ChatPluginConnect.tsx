@@ -6,6 +6,7 @@ import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
+import {cyChannelCreatedChatPluginCloseButton} from 'handles';
 
 import {Button, LinkButton, SettingsModal} from 'components';
 import {Channel, Source} from 'model';
@@ -203,12 +204,13 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       </div>
       {showCreatedModal && (
         <SettingsModal
-          Icon={CheckmarkIcon as React.ElementType}
+          Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={t('successfullyCreatedChannel')}
           close={handleClose}
           headerClassName={styles.headerModal}
+          dataCyCloseButton={cyChannelCreatedChatPluginCloseButton}
         >
           <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
             {t('customize')}

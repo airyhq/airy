@@ -6,15 +6,16 @@ check_pkg(name = "buildifier")
 package(default_visibility = ["//visibility:public"])
 
 ts_web_library(
-    name = "commands",
-    srcs = glob(["*.spec.ts"]),
+    name = "support",
     tsconfig = {
         "compilerOptions": {
             "lib": [
                 "esnext",
                 "dom",
             ],
-            "types": ["cypress"],
+            "types": [
+                "cypress",
+            ],
         },
     },
     deps = [

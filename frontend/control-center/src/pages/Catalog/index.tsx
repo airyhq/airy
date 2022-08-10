@@ -1,18 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
-import {StateModel} from '../../reducers';
-import {useSelector} from 'react-redux';
-import {FacebookMessengerRequirementsDialog} from '../Connectors/Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
-import {GoogleBusinessMessagesRequirementsDialog} from '../Connectors/Providers/Google/GoogleBusinessMessagesRequirementsDialog';
-import {TwilioRequirementsDialog} from '../Connectors/Providers/Twilio/TwilioRequirementsDialog';
-import {InstagramRequirementsDialog} from '../Connectors/Providers/Instagram/InstagramRequirementsDialog';
-import {setPageTitle} from '../../services/pageTitle';
-import {CatalogItemList} from './CatalogItemList';
-import {Source} from 'model';
-import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
-import {SimpleLoader} from 'components';
+import React, {useState, useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listComponents} from '../../actions/catalog';
-import {removePrefix} from '../../services';
+import {StateModel} from '../../reducers';
+import {setPageTitle} from '../../services';
+import {ComponentInfo, getSourceForComponent} from 'model';
+import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -23,116 +16,38 @@ const connector = connect(null, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {listComponents} = props;
+  const [orderedCatalogList, setOrderedCatalogList] = useState([]);
   const catalogList = useSelector((state: StateModel) => state.data.catalog);
-  const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
-  const [notInstalledConnectors, setNotInstalledConnectors] = useState([]);
-  const [installedConnectors, setInstalledConnectors] = useState([]);
-  const [sourcesInfo, setSourcesInfo] = useState([]);
-  const [isInstallToggled, setIsInstalledToggled] = useState(false);
-  const pageTitle = 'Catalog';
+  const {t} = useTranslation();
+  const catalogPageTitle = t('Catalog');
 
   useEffect(() => {
     listComponents();
-    setPageTitle(pageTitle);
-    setSourcesInfo(getSourcesInfo());
+    setPageTitle(catalogPageTitle);
   }, []);
 
   useEffect(() => {
-    if (sourcesInfo.length > 0 && !isInstallToggled) {
-      let installedComponents = [];
-      let uninstalledComponents = [];
+    setOrderedCatalogList(Object.values(catalogList).sort(sortByInstall));
+  }, [catalogList]);
 
-      Object.entries(catalogList).filter((componentElem: [string, {repository: string; installed: boolean}]) => {
-        if (componentElem[1].installed === true) {
-          installedComponents = installedComponents.concat(findComponent(removePrefix(componentElem[0])));
-        }
-
-        if (componentElem[1].installed === false) {
-          uninstalledComponents = uninstalledComponents.concat(findComponent(removePrefix(componentElem[0])));
-        }
-      });
-
-      setInstalledConnectors(installedComponents);
-      setNotInstalledConnectors(uninstalledComponents);
-    }
-  }, [sourcesInfo, catalogList, isInstallToggled]);
-
-  const findComponent = (name: string) => {
-    return sourcesInfo.filter((elem: SourceInfo) => elem.componentName === name);
-  };
-
-  const updateItemList = (installed: boolean, componentName: string) => {
-    if (!installed) {
-      const updatedInstalledList = installedConnectors.filter(
-        (elem: SourceInfo) => elem.componentName !== componentName
-      );
-      const updatedNotInstalledList = notInstalledConnectors.concat(findComponent(componentName));
-
-      setInstalledConnectors(updatedInstalledList);
-      setNotInstalledConnectors(updatedNotInstalledList);
-    }
-
-    if (installed) {
-      const updatedNotInstalledList = notInstalledConnectors.filter(
-        (elem: SourceInfo) => elem.componentName !== componentName
-      );
-      const updatedInstalledList = installedConnectors.concat(findComponent(componentName));
-
-      setNotInstalledConnectors(updatedNotInstalledList);
-      setInstalledConnectors(updatedInstalledList);
-    }
-  };
-
-  const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
-    switch (source) {
-      case Source.facebook:
-        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.google:
-        return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.twilioSMS:
-      case Source.twilioWhatsApp:
-        return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case Source.instagram:
-        return <InstagramRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-    }
-
-    return null;
+  const sortByInstall = (a: ComponentInfo) => {
+    if (a.installed) return 1;
+    return -1;
   };
 
   return (
-    <div className={styles.catalogWrapper}>
-      <div className={styles.catalogHeadline}>
-        <div>
-          <h1 className={styles.catalogHeadlineText}>Catalog</h1>
-        </div>
-      </div>
+    <section className={styles.catalogWrapper}>
+      <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
 
-      <div className={styles.listWrapper}>
-        {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-
-        {notInstalledConnectors.length === 0 && installedConnectors.length === 0 && <SimpleLoader />}
-
-        {notInstalledConnectors.length > 0 && (
-          <CatalogItemList
-            list={notInstalledConnectors}
-            installedConnectors={false}
-            setDisplayDialogFromSource={setDisplayDialogFromSource}
-            updateItemList={updateItemList}
-            setIsInstalledToggled={setIsInstalledToggled}
-          />
-        )}
-
-        {installedConnectors.length > 0 && (
-          <CatalogItemList
-            list={installedConnectors}
-            installedConnectors
-            setDisplayDialogFromSource={setDisplayDialogFromSource}
-            updateItemList={updateItemList}
-            setIsInstalledToggled={setIsInstalledToggled}
-          />
-        )}
-      </div>
-    </div>
+      <section className={styles.catalogListContainer}>
+        {orderedCatalogList &&
+          orderedCatalogList.map((infoItem: ComponentInfo) => {
+            if (infoItem?.name && !infoItem.name.includes('viber') && getSourceForComponent(infoItem.name)) {
+              return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
+            }
+          })}
+      </section>
+    </section>
   );
 };
 

@@ -7,12 +7,13 @@ type ModalHeaderProps = {
   close: (event: React.MouseEvent<HTMLButtonElement>) => void;
   headerClassName: string;
   style: CSSProperties;
+  dataCyCloseButton?: string;
 };
 
-const ModalHeader = ({title, close, headerClassName, style}: ModalHeaderProps) => {
+const ModalHeader = ({title, close, headerClassName, style, dataCyCloseButton}: ModalHeaderProps) => {
   return (
     <div className={styles.modalHeader}>
-      <button className={styles.closeButton} onClick={close}>
+      <button className={styles.closeButton} onClick={close} data-cy={dataCyCloseButton}>
         <CloseIcon className={styles.closeIcon} title="Close" />
       </button>
       <div style={style} className={`${styles.headline} ${headerClassName}`}>

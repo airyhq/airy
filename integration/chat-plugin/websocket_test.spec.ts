@@ -1,25 +1,20 @@
-import {cyInputbarTextarea, cyInputbarButton, cyChatPluginMessageList} from 'chat-plugin-handles';
+import {cyChatPluginMessageList} from 'chat-plugin-handles';
 
-import {
-  cyChannelsChatPluginAddButton,
-  cyConnectorsAddNewButton,
-  cyChannelsChatPluginFormNameInput,
-  cyChannelsChatPluginFormSubmitButton,
-} from 'handles';
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      createChatPluginConversation(): Chainable<Subject>;
+      editContactDetails(): Chainable<Subject>;
+      connectChatPluginConnector(): Chainable<Subject>;
+      editDisplayName(): Chainable<Subject>;
+      listConversationsForContact(): Chainable<Subject>;
+    }
+  }
+}
 
 describe('Websocket test', () => {
   it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
-    cy.visit('/control-center/connectors');
-    cy.wait(500);
-    cy.url().should('include', '/connectors');
-    cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-    cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
-    cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-
-    cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
-    cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
-    cy.get(`[data-cy=${cyInputbarButton}]`).click();
+    cy.createChatPluginConversation();
 
     cy.wait(500);
 

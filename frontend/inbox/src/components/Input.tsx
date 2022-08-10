@@ -1,12 +1,14 @@
 import React from 'react';
-import {Picker} from 'emoji-mart';
+// @ts-ignore: Missing type declarataions for this module
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import {Input as LibInput} from 'components';
 
 const renderPicker = onSelect => (
   <Picker
-    showPreview={false}
-    onSelect={onSelect}
-    title="Emoji"
+    data={data}
+    previewPosition="none"
+    onEmojiSelect={onSelect}
     style={{right: '28px', position: 'absolute', bottom: '-84px'}}
   />
 );

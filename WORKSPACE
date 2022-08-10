@@ -10,9 +10,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "59690a4136add960dcb65c2f2025dfda18f73890",
+    commit = "c7a0cc1b77b01c3fa26b77527cc7dd1597975b93",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1659431783 +0200",
+    shallow_since = "1659948620 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -190,4 +190,11 @@ load("@com_github_airyhq_bazel_tools//helm:helm.bzl", "helm_tool")
 
 helm_tool(
     name = "helm_binary",
+)
+
+### Minikube
+load("@com_github_airyhq_bazel_tools//minikube:minikube.bzl", "minikube_tool")
+
+minikube_tool(
+    name = "minikube_binary",
 )

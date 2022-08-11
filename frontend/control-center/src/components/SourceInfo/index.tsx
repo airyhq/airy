@@ -161,7 +161,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       componentName: 'enterprise-dialogflow-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      docs: 'https://dialogflow.cloud.google.com/cx/projects',
+      docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
     },
     {
       type: Source.zendesk,

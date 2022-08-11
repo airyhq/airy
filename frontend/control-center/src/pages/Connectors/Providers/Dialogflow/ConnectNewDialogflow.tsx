@@ -11,7 +11,10 @@ type ConnectNewDialogflowProps = {
     projectId: string,
     appCredentials: string,
     suggestionConfidenceLevel: string,
-    replyConfidenceLevel: string
+    replyConfidenceLevel: string,
+    processorWaitingTime: number,
+    processorCheckPeriod: number,
+    defaultLanguage: string
   ) => void;
   isEnabled: boolean;
   isConfigured: boolean;
@@ -26,10 +29,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-  const [connectorStoreMessagesProcessorMaxWaitMillis, setConnectorStoreMessagesProcessorMaxWaitMillis] = useState(componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '');
-  const [connectorStoreMessagesProcessorCheckPeriodMillis, setConnectorStoreMessagesProcessorCheckPeriodMillis] = useState(componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '');
-  const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || '');
-
+  const [processorWaitingTime, setProcessorWaitingTime] = useState(
+    componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || 5000
+  );
+  const [processorCheckPeriod, setProcessorCheckPeriod] = useState(
+    componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || 2500
+  );
+  const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
 
   const {t} = useTranslation();
 
@@ -43,7 +49,15 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
+    createNewConnection(
+      projectID,
+      appCredentials,
+      suggestionConfidenceLevel,
+      replyConfidenceLevel,
+      processorWaitingTime,
+      processorCheckPeriod,
+      defaultLanguage
+    );
   };
 
   return (
@@ -126,13 +140,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       <div className={styles.formRow}>
         <Input
           type="number"
-          name="ConnectorStoreMessagesProcessorMaxWaitMillis"
-          value={connectorStoreMessagesProcessorMaxWaitMillis}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConnectorStoreMessagesProcessorMaxWaitMillis(e.target.value)}
-          label={t('ConnectorStoreMessagesProcessorMaxWaitMillis')}
-          placeholder={t('ConnectorStoreMessagesProcessorMaxWaitMillis')}
+          name="ProcessorWaitingTime"
+          value={processorWaitingTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorWaitingTime(e.target.value)}
+          label={t('processorWaitingTime')}
+          placeholder={t('processorWaitingTime')}
           showLabelIcon
-          tooltipText={t('connectorStoreMessagesProcessorMaxWaitMillis')}
+          tooltipText={t('waitingDefault')}
           required
           height={32}
           fontClass="font-base"
@@ -141,14 +155,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       <div className={styles.formRow}>
         <Input
           type="number"
-          name="ConnectorStoreMessagesProcessorCheckPeriodMillis"
-          value={connectorStoreMessagesProcessorCheckPeriodMillis}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConnectorStoreMessagesProcessorCheckPeriodMillis(e.target.value)}
-          label={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
-          placeholder={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
+          name="processorCheckPeriod"
+          value={processorCheckPeriod}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorCheckPeriod(e.target.value)}
+          label={t('processorCheckPeriod')}
+          placeholder={t('processorCheckPeriod')}
           showLabelIcon
-          tooltipText={t('connectorStoreMessagesProcessorCheckPeriodMillis')}
-          tooltipLink="https://airy.co/docs/enterprise/apps/dialogflow/deployment"
+          tooltipText={t('checkDefault')}
           required
           height={32}
           fontClass="font-base"
@@ -160,10 +173,10 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           name="DefaultLanguage"
           value={defaultLanguage}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
-          label={t('DefaultLanguage')}
-          placeholder={t('DefaultLanguage')}
+          label={t('defaultLanguage')}
+          placeholder={t('defaultLanguage')}
           showLabelIcon
-          tooltipText={t('defaultLanguage')}
+          tooltipText={t('defaultLanguageTooltip')}
           tooltipLink="https://airy.co/docs/enterprise/apps/dialogflow/deployment"
           required
           height={32}

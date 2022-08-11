@@ -3,7 +3,7 @@ title: Contributing Components
 sidebar_label: Contributing Components
 ---
 
-:::warning 
+:::warning
 
 This functionality is under development. With these docs, we aim to elicit feedback from our community (you!) and focus our development efforts. Currently, we do not offer support for 3rd party components, but we are working toward supporting this.
 

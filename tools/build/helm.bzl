@@ -66,3 +66,30 @@ def helm_ruleset_core_version():
     helm_push(
         chart = ":package",
     )
+
+def helm_ruleset_version(version):
+    native.filegroup(
+        name = "files",
+        srcs = native.glob(
+            ["**/*"],
+            exclude = ["BUILD"],
+        ),
+        visibility = ["//visibility:public"],
+    )
+
+    pkg_tar(
+        name = "package",
+        srcs = [":files"],
+        extension = "tgz",
+        strip_prefix = "./",
+    )
+
+    helm_template_test(
+        name = "template",
+        chart = ":package",
+    )
+
+    helm_push_version(
+        chart = ":package",
+        version = version,
+    )

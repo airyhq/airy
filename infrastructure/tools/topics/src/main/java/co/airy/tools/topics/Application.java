@@ -42,7 +42,14 @@ public class Application {
                 "    set -euo pipefail\n" +
                 "    IFS=$'\\n\\t'\n" +
                 "\n" +
-                "    ZOOKEEPER=${ZOOKEEPER:-zookeeper:2181}\n" +
+                "\n" +
+                "    if [ -z \"${KAFKA_BROKERS+x}\" ]; then\n" +
+                "      echo \"KAFKA_BROKERS is not set. Exiting.\"\n" +
+                "      exit 1\n" +
+                "    else\n" +
+                "      CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)\n" +
+                "    fi\n" +
+                "\n" +
                 "    PARTITIONS=${PARTITIONS:-10}\n" +
                 "    REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}\n" +
                 "    AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +

@@ -78,6 +78,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
             {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
               return (
                 (channelsBySource(infoItem.type).length > 0 &&
+                  components &&
+                  components[infoItem.configKey] &&
                   connectors &&
                   connectors[infoItem.componentName] &&
                   Object.keys(connectors[infoItem?.componentName]) &&
@@ -90,7 +92,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                         isInstalled,
                         Object.keys(connectors[infoItem.componentName]).length > 0 ||
                           infoItem.type === Source.chatPlugin,
-                        components[infoItem.configKey].enabled
+                        components[infoItem.configKey]?.enabled
                       )}
                       key={index}
                     />
@@ -120,7 +122,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                         componentStatus={getComponentStatus(
                           isInstalled,
                           Object.keys(connectors[infoItem.componentName]).length > 0,
-                          components[infoItem.configKey].enabled
+                          components[infoItem?.configKey].enabled
                         )}
                         style={InfoCardStyle.normal}
                         key={infoItem.type}

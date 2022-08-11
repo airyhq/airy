@@ -1,5 +1,5 @@
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("@com_github_airyhq_bazel_tools//helm:helm.bzl", lib_helm_push = "helm_push", "helm_template_test")
+load("@com_github_airyhq_bazel_tools//helm:helm.bzl", "helm_template_test", lib_helm_push = "helm_push")
 
 def helm_push(chart):
     lib_helm_push(

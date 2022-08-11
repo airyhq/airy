@@ -250,8 +250,7 @@ class InputComponent extends Component<InputProps, IState> {
         ref={node => {
           this.node = node;
         }}
-        className={styles.emojiDrawer}
-      >
+        className={styles.emojiDrawer}>
         <Picker />
       </div>
     );
@@ -263,6 +262,7 @@ class InputComponent extends Component<InputProps, IState> {
       label,
       showLabelIcon,
       tooltipText,
+      tooltipLink,
       hideLabel,
       name,
       value,
@@ -312,10 +312,17 @@ class InputComponent extends Component<InputProps, IState> {
                 </Fragment>
               )}
               {showLabelIcon && (
-                <>
+                <div className={styles.infoCircleContainer}>
                   <InfoCircle width={20} className={styles.infoCircle} />
-                  {tooltipText && <span className={styles.infoCircleText}>{tooltipText}</span>}
-                </>
+                  {tooltipText && !tooltipLink && <span className={styles.infoCircleText}>{tooltipText}</span>}
+                  {tooltipLink && (
+                    <span className={styles.infoCircleText}>
+                      <a href={tooltipLink} target="_blank" rel="noopener noreferrer">
+                        {tooltipText}
+                      </a>
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           )}
@@ -390,8 +397,7 @@ class InputComponent extends Component<InputProps, IState> {
                   type="button"
                   onClick={this.handleEmojiDrawer}
                   disabled={this.props.maxLength - value.length <= 0}
-                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}
-                >
+                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
                   <SmileyIcon title="Emoji" className={styles.smileyIcon} />
                 </button>
               </div>
@@ -423,6 +429,7 @@ export interface InputProps {
   label?: string;
   showLabelIcon?: boolean;
   tooltipText?: string;
+  tooltipLink?: string;
   minWidth?: number;
   width?: number;
 

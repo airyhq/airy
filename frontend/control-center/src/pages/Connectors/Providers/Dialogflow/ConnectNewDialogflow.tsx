@@ -147,7 +147,8 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           label={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
           placeholder={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
           showLabelIcon
-          tooltipText={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
+          tooltipText={t('connectorStoreMessagesProcessorCheckPeriodMillis')}
+          tooltipLink="https://airy.co/docs/enterprise/apps/dialogflow/deployment"
           required
           height={32}
           fontClass="font-base"
@@ -163,6 +164,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           placeholder={t('DefaultLanguage')}
           showLabelIcon
           tooltipText={t('defaultLanguage')}
+          tooltipLink="https://airy.co/docs/enterprise/apps/dialogflow/deployment"
           required
           height={32}
           fontClass="font-base"

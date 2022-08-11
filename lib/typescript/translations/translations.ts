@@ -298,6 +298,11 @@ const resources = {
       amountSuggestions: 'amount for suggestions',
       amountReplies: 'amount for replies',
       to: 'to',
+      connectorStoreMessagesProcessorMaxWaitMillis:
+        'see docs:',
+      connectorStoreMessagesProcessorCheckPeriodMillis:
+        'see docs:',
+      defaultLanguage: 'Default language',
 
       //Salesforce
       salesforceDescription:
@@ -723,6 +728,11 @@ const resources = {
       fromCloudConsole: 'gegeben von der Cloud Console',
       amountSuggestions: 'Anzahl der Vorschläge',
       amountReplies: 'Anzahl der Antworten',
+      connectorStoreMessagesProcessorMaxWaitMillis:
+      'Zeit, bevor die Nachricht durch andere Konnektoren im Airy-Cluster angereichert werden kann, bevor sie an Dialogflow gesendet wird',
+    connectorStoreMessagesProcessorCheckPeriodMillis:
+      'Zeit, bevor die Nachricht von anderen Konnektoren angereichert werden kann, bevor sie an Dialogflow weitergeleitet wird',
+    defaultLanguage: 'Standardsprache',
 
       //Salesforce
       salesforceDescription:
@@ -1125,6 +1135,12 @@ const resources = {
       amountSuggestions: 'niveau pour les suggestions',
       amountReplies: 'niveau pour les réponses',
       to: 'à',
+      connectorStoreMessagesProcessorMaxWaitMillis:
+      "délai avant que le message puisse être enrichi par d'autres connecteurs avant de l'envoyer à Dialogflow",
+    connectorStoreMessagesProcessorCheckPeriodMillis:
+      "délai avant que le message puisse être enrichi par d'autres connecteurs avant de le transmettre à Dialogflow",
+      defaultLanguage: 'Langue utilisée par défault',
+
 
       //Salesforce
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
@@ -1562,6 +1578,10 @@ const resources = {
       fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
+      connectorStoreMessagesProcessorMaxWaitMillis:
+      'cantidad de tiempo antes de que el mensaje se pueda enriquecer con otros conectores en el clúster airy antes de enviarlo a Dialogflow',
+    connectorStoreMessagesProcessorCheckPeriodMillis: 'cantidad de tiempo antes de que otros conectores puedan enriquecer el mensaje antes de reenviarlo a Dialogflow',
+    defaultLanguage: 'idioma utilizado',
 
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',

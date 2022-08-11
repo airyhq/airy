@@ -230,13 +230,19 @@
   color: var(--color-text-contrast);
 }
 
-.infoCircle:hover ~ .infoCircleText {
+.infoCircleContainer:hover ~ .infoCircleText {
   display: flex;
+  position: relative;
+  left: 8px;
+  background:yellow;
+}
+
+.infoCircle:hover ~ .infoCircleText {
   position: relative;
   left: 8px;
 }
 
-.infoCircle ~ .infoCircleText::after {
+.infoCircleContainer ~ .infoCircleText::after {
   content: '';
   position: absolute;
   top: 50%;

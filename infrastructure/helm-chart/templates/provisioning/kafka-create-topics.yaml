@@ -18,17 +18,12 @@ data:
     IFS=$'\n\t'
 
 
-    if [ -z "${ZOOKEEPER+x}" ]; then
-        if [ -z "${KAFKA_BROKERS+x}" ]; then
-            echo "Neither ZOOKEEPER nor KAFKA_BROKERS is set. Exiting."
-            exit 1
-        fi
-        CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)
-        echo "ZOOKEEPER is not set, using --bootstrap-server option instead"
-      else
-        CONNECTION_OPTS=(--zookeeper $ZOOKEEPER)
+    if [ -z "${KAFKA_BROKERS+x}" ]; then
+      echo "KAFKA_BROKERS is not set. Exiting."
+      exit 1
+    else
+      CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)
     fi
-
 
     PARTITIONS=${PARTITIONS:-10}
     REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}

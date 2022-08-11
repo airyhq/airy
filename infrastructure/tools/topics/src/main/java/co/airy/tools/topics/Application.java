@@ -43,17 +43,12 @@ public class Application {
                 "    IFS=$'\\n\\t'\n" +
                 "\n" +
                 "\n" +
-                "    if [ -z \"${ZOOKEEPER+x}\" ]; then\n" +
-                "        if [ -z \"${KAFKA_BROKERS+x}\" ]; then\n" +
-                "            echo \"Neither ZOOKEEPER nor KAFKA_BROKERS is set. Exiting.\"\n" +
-                "            exit 1\n" +
-                "        fi\n" +
-                "        CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)\n" +
-                "        echo \"ZOOKEEPER is not set, using --bootstrap-server option instead\"\n" +
-                "      else\n" +
-                "        CONNECTION_OPTS=(--zookeeper $ZOOKEEPER)\n" +
+                "    if [ -z \"${KAFKA_BROKERS+x}\" ]; then\n" +
+                "      echo \"KAFKA_BROKERS is not set. Exiting.\"\n" +
+                "      exit 1\n" +
+                "    else\n" +
+                "      CONNECTION_OPTS=(--bootstrap-server $KAFKA_BROKERS)\n" +
                 "    fi\n" +
-                "\n" +
                 "\n" +
                 "    PARTITIONS=${PARTITIONS:-10}\n" +
                 "    REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}\n" +

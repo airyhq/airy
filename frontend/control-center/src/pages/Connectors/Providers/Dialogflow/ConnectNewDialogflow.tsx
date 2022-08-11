@@ -26,6 +26,10 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [connectorStoreMessagesProcessorMaxWaitMillis, setConnectorStoreMessagesProcessorMaxWaitMillis] = useState(componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '');
+  const [connectorStoreMessagesProcessorCheckPeriodMillis, setConnectorStoreMessagesProcessorCheckPeriodMillis] = useState(componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '');
+  const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || '');
+
 
   const {t} = useTranslation();
 
@@ -114,6 +118,51 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
           showLabelIcon
           tooltipText={t('amountReplies')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="ConnectorStoreMessagesProcessorMaxWaitMillis"
+          value={connectorStoreMessagesProcessorMaxWaitMillis}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConnectorStoreMessagesProcessorMaxWaitMillis(e.target.value)}
+          label={t('ConnectorStoreMessagesProcessorMaxWaitMillis')}
+          placeholder={t('ConnectorStoreMessagesProcessorMaxWaitMillis')}
+          showLabelIcon
+          tooltipText={t('connectorStoreMessagesProcessorMaxWaitMillis')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="ConnectorStoreMessagesProcessorCheckPeriodMillis"
+          value={connectorStoreMessagesProcessorCheckPeriodMillis}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConnectorStoreMessagesProcessorCheckPeriodMillis(e.target.value)}
+          label={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
+          placeholder={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
+          showLabelIcon
+          tooltipText={t('ConnectorStoreMessagesProcessorCheckPeriodMillis')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="DefaultLanguage"
+          value={defaultLanguage}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
+          label={t('DefaultLanguage')}
+          placeholder={t('DefaultLanguage')}
+          showLabelIcon
+          tooltipText={t('defaultLanguage')}
           required
           height={32}
           fontClass="font-base"

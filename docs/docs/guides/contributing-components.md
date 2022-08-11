@@ -9,7 +9,9 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy Core` is fundamentally a collection of components. When you install `Airy Core`, you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform. These core components are:
+`Airy Core` is fundamentally a collection of components. When you [install `Airy Core`](../getting-started/installation/introduction.md), you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform. 
+
+These core components are:
 
 1. airy-controller
 2. api-admin
@@ -18,20 +20,20 @@ This functionality is under development. With these docs, we aim to elicit feedb
 5. frontend-inbox
 6. frontend-control-center
 
-Airy's real value comes from the additional components you can install through our marketplace in the Control Center UI of your Airy Instance. This documentation is on the processes we follow to create, update and store our components.
+Airy's real value comes from the additional components you install through our marketplace in the Control Center UI of your Airy Instance. This documentation is on the processes we follow to create, update and store our components.
 
-## Components
+## A Component
 
-Airy is designed to support a plug-and-play architecture. Components can be added like blocks in the cluster. Components can provide four kinds of functionality:
+Airy is designed to support a plug-and-play architecture. Components once installed are be added as pods your cluster. Components can provide four kinds of functionality:
 
 1. Connector - i.e Rasa, DialogFlow - that [DEFINE]
 2. Source - i.e., Facebook, WhatsApp, SMS -
 3. API - i.e
 4. User Interface - i.e
 
-As a technical artifact, a component is a containerized application (we use Docker) packaged using Helm.
+As a technical artifact, a component is a containerized application (we use Docker) that is packaged and installed using Helm.
 
-The Helm charts and details about all components (except "Core" components) are stored in an external repository managed by Airy called [airy-/airy-components](https://github.com/airyhq/airy-/airy-components). Each directory represents a component.
+The Helm charts and details about all components (except "Core" components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up directories, where each directory represents a component.
 
 ## Component File Structure
 
@@ -44,7 +46,7 @@ Below is a model of the file stucture of a single component inside the `airy-com
 		/helm
 ```
 
-The `helm` directory contains the `values.yaml` file and all other templates/files needed to install the component onto a Kubernetes cluster using `helm`.
+The `helm` directory contains the `values.yaml` file and all other templates/files needed to make up the Helm package. 
 
 The `information.yaml` is the source-of-truth for every component. It includes a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
 

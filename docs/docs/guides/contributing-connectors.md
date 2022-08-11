@@ -9,7 +9,7 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy Core` is fundamentally a collection of components. When you install Airy, you install a set of "Core" components which create the minimum infrastructure to install other components. These "core" components are:
+`Airy Core` is fundamentally a collection of components. When you install `Airy Core`, you install a set of *core* components which create the minimum infrastructure to install other components and begin using the platform. These core components are:
 
 1. airy-controller
 2. api-admin
@@ -18,11 +18,11 @@ This functionality is under development. With these docs, we aim to elicit feedb
 5. frontend-inbox
 6. frontend-control-center
 
-Airy's actual value comes from the additional components you can install through our marketplace in the Control Center UI. This documentation is on the processes we follow to create, update and store our components.
+Airy's real value comes from the additional components you can install through our marketplace in the Control Center UI of your Airy Instance. This documentation is on the processes we follow to create, update and store our components.
 
 ## Components
 
-Airy is designed as plug-and-play architecture where components fit together in your cluster lego-blocks. Components can provide four kinds of functionality:
+Airy is designed to support a plug-and-play architecture. Components can be added like blocks in the cluster. Components can provide four kinds of functionality:
 
 1. Connector - i.e Rasa, DialogFlow - that [DEFINE]
 2. Source - i.e., Facebook, WhatsApp, SMS -
@@ -35,7 +35,7 @@ The Helm charts and details about all components (except "Core" components) are 
 
 ## Component File Structure
 
-Below is a model of a single component inside.
+Below is a model of the file stucture of a single component inside the `airy-components` repository.
 
 ```
 /airy-components
@@ -46,11 +46,11 @@ Below is a model of a single component inside.
 
 The `helm` directory contains the `values.yaml` file and all other templates/files needed to install the component onto a Kubernetes cluster using `helm`.
 
-The `information.yaml` contains the source-of-truth for the details of the component, including a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
+The `information.yaml` is the source-of-truth for every component. It includes a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
 
 :::note
 
-Since all components are maintained by Airy, the versioning of every component will be tied to the version of Airy. However, once we support 3rd party components, we will revisit our versioning system.
+Since all components are maintained by Airy, the versioning of every component is tied to the version of Airy. However, once we support 3rd party components, we will revisit our versioning system.
 
 ::::
 

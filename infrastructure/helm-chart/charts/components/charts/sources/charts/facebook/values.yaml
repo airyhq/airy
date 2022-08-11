@@ -1,9 +1,0 @@
-component: sources-facebook
-mandatory: false
-enabled: true
-connector:
-  image: sources/facebook-connector
-  resources: {}
-eventsRouter:
-  image: sources/facebook-events-router
-  resources: {}

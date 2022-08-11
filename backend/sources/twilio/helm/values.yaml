@@ -1,0 +1,13 @@
+name: sources-twilio
+mandatory: false
+enabled: false
+connector:
+  image: sources/twilio-connector
+  resources: {}
+eventsRouter:
+  image: sources/twilio-events-router
+  resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.components.frontend.inbox.name }}"
+  labels:
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.components.frontend.inbox.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.frontend.inbox.name }}"
+  annotations:
+    core.airy.co/enabled: "{{ .Values.components.frontend.inbox.enabled }}"

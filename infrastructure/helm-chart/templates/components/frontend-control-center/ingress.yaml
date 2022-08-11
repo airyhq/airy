@@ -1,0 +1,72 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-control-center'
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+ {{- if .Values.global.ingress.letsencrypt }}
+    cert-manager.io/cluster-issuer: 'letsencrypt'
+ {{- end }}
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /control-center(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Values.components.frontend.control_center.name }}"
+                port:
+                  number: 80
+{{- if .Values.global.host }}
+      host: {{ .Values.global.host }}
+ {{- if .Values.global.ingress.letsencrypt }}
+  tls:
+  - hosts:
+    - {{ .Values.global.host }}
+    secretName: airy-core-control-center
+ {{- end }}
+{{- end }}
+  ingressClassName: nginx
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-redirect'
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /start.html
+  {{- if .Values.global.ingress.letsencrypt }}
+    cert-manager.io/cluster-issuer: 'letsencrypt'
+  {{- end }}
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /$
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Values.components.frontend.control_center.name }}"
+                port:
+                  number: 80
+          - path: /ui
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Values.components.frontend.control_center.name }}"
+                port:
+                  number: 80
+{{- if .Values.global.host }}
+      host: {{ .Values.global.host }}
+ {{- if .Values.global.ingress.letsencrypt }}
+  tls:
+  - hosts:
+    - {{ .Values.global.host }}
+    secretName: airy-core-redirect
+ {{- end }}
+{{- end }}
+  ingressClassName: nginx

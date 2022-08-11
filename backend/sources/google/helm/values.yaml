@@ -1,0 +1,13 @@
+name: sources-google
+mandatory: false
+enabled: false
+connector:
+  image: sources/google-connector
+  resources: {}
+eventsRouter:
+  image: sources/google-events-router
+  resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

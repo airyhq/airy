@@ -1,0 +1,14 @@
+name: sources-chatplugin
+mandatory: false
+enabled: true
+backend:
+  image: sources/chat-plugin
+  resources: {}
+frontend:
+  image: frontend/chat-plugin
+  resources: {}
+global:
+  ingress:
+    letsencrypt: false
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest

@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-connector
+  labels:
+    app: sources-facebook-connector
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.name }}"
+spec:
+  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  selector:
+    matchLabels:
+      app: sources-facebook-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-connector
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.connector.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: kafka-config
+            - configMapRef:
+                name: security
+            - configMapRef:
+                name: core-config
+          env:
+          - name: FACEBOOK_WEBHOOK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.name }}"
+                key: webhookSecret
+          - name: FACEBOOK_APP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.name }}"
+                key: appId
+          - name: FACEBOOK_APP_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.name }}"
+                key: appSecret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 120
+          resources:
+{{ toYaml .Values.connector.resources | indent 12 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+          - name: provisioning-scripts
+            mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-events-router
+  labels:
+    app: sources-facebook-events-router
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.name }}"
+spec:
+  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  selector:
+    matchLabels:
+      app: sources-facebook-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-events-router
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.eventsRouter.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        env:
+        - name: FACEBOOK_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Values.name }}"
+              key: appId
+        - name: SERVICE_NAME
+          value: facebook-events-router
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          failureThreshold: 3
+        resources:
+{{ toYaml .Values.eventsRouter.resources | indent 10 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

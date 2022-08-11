@@ -1,5 +1,0 @@
-component: api-communication
-mandatory: false
-enabled: true
-image: api/communication
-resources: {}

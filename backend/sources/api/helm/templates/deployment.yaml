@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: .Values.name
+  labels:
+    app: .Values.name
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.name }}"
+spec:
+  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  selector:
+    matchLabels:
+      app: .Values.name
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: .Values.name
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: security
+          - configMapRef:
+              name: kafka-config
+          - configMapRef:
+              name: "{{ .Values.name }}"
+        env:
+        - name: jwtSecret
+          valueFrom:
+            configMapKeyRef:
+              name: security
+              key: jwtSecret
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          failureThreshold: 3
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

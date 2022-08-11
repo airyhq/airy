@@ -1,9 +1,0 @@
-component: sources-twilio
-mandatory: false
-enabled: true
-connector:
-  image: sources/twilio-connector
-  resources: {}
-eventsRouter:
-  image: sources/twilio-events-router
-  resources: {}

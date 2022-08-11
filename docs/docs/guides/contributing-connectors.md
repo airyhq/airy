@@ -9,7 +9,7 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy Core` is fundamentally a collection of components. When you install `Airy Core`, you install a set of *core* components which create the minimum infrastructure to install other components and begin using the platform. These core components are:
+`Airy Core` is fundamentally a collection of components. When you install `Airy Core`, you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform. These core components are:
 
 1. airy-controller
 2. api-admin

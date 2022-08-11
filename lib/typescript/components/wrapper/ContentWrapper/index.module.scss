@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   margin: 88px 16px 0 191px;
-  height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
@@ -13,30 +12,40 @@
   color: var(--color-text-contrast);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
-
-  margin-bottom: 24px;
-}
-
-.headerBig {
-  height: 160px;
+  margin-bottom: 48px;
 }
 
 .headerMedium {
   height: 75px;
 }
 
+.headerBig {
+  height: 160px;
+}
+
+.headerLarge {
+  height: 170px;
+}
+
+.sideColumn {
+  width: 196px;
+  height: 100%;
+  position: absolute;
+}
+
 .transparentContent {
   background: var(--color-background-white);
   color: var(--color-text-contrast);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-radius: 10px;
   height: calc(100vh - 88px);
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 100%;
+}
+
+.leftOffset {
+  margin-left: 196px;
 }
 
 .colored {

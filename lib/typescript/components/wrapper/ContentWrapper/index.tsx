@@ -5,11 +5,13 @@ type ContentWrapperProps = {
   transparent: boolean;
   content: React.ReactNode;
   header?: React.ReactNode;
-  variantHeight?: 'big' | 'medium';
+  variantHeight?: 'medium' | 'big' | 'large';
+  isSideColumn?: boolean;
+  sideColumnContent?: React.ReactNode;
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  const {transparent, content, header, variantHeight} = props;
+  const {transparent, content, header, variantHeight, isSideColumn, sideColumnContent} = props;
 
   return (
     <>
@@ -17,12 +19,17 @@ export const ContentWrapper = (props: ContentWrapperProps) => {
         <div className={styles.transparent}>
           <div
             className={`${styles.transparentHeader} ${
-              variantHeight === 'big' ? styles.headerBig : styles.headerMedium
+              variantHeight === 'medium'
+                ? styles.headerMedium
+                : variantHeight === 'big'
+                ? styles.headerBig
+                : styles.headerLarge
             }`}
           >
             {header}
           </div>
-          <div className={styles.transparentContent}>{content}</div>
+          <section className={styles.sideColumn}>{sideColumnContent}</section>
+          <div className={`${styles.transparentContent} ${isSideColumn ? styles.leftOffset : ''}`}>{content}</div>
         </div>
       ) : (
         <div className={styles.colored}>{content}</div>

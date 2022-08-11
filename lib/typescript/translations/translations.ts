@@ -373,6 +373,9 @@ const resources = {
       //Catalog
       categories: 'Categories',
       availableFor: 'Available for',
+      price: 'Price',
+      Free: 'Free',
+      Paid: 'Paid',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -563,7 +566,7 @@ const resources = {
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
 
       //Channels
-      toConfigure: 'konfigurieren',
+      toConfigure: 'Konfigurieren',
       configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
@@ -704,7 +707,7 @@ const resources = {
 
       //Salesforce
       salesforceDescription:
-        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen.',
       salesforceOrgUrl: 'Organisations-URL',
       yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
       salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
@@ -785,6 +788,9 @@ const resources = {
       //Catalog
       categories: 'Kategorien',
       availableFor: 'Verfügbar für',
+      price: 'Preis',
+      Free: 'Kostenlos',
+      Paid: 'Kostenpflichtig',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1189,6 +1195,9 @@ const resources = {
       //Catalog
       categories: 'Catégories',
       availableFor: 'Disponible pour',
+      price: 'Prix',
+      Free: 'Gratuit',
+      Paid: 'Payant',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1597,6 +1606,9 @@ const resources = {
       //Catalog
       categories: 'Categorías',
       availableFor: 'Disponible para',
+      price: 'Precio',
+      Free: 'Gratis',
+      Paid: 'Premium',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

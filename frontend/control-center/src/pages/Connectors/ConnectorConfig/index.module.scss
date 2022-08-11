@@ -16,6 +16,28 @@
   width: 100%;
 }
 
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    @include font-base;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a {
+    @include font-base;
+    text-decoration: none;
+  }
+
+  button {
+    background: transparent;
+    color: var(--color-airy-blue);
+  }
+}
+
 .linkButtonContainer {
   @include font-base;
   display: flex;
@@ -67,7 +89,6 @@
 
 .componentTitle {
   display: flex;
-  // width: min-content;
   align-items: center;
 }
 
@@ -109,28 +130,6 @@
 
 .titleIconDetails {
   display: flex;
-}
-
-.backButtonContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-
-  div {
-    @include font-base;
-    font-weight: 400;
-    text-decoration: none;
-  }
-
-  a {
-    @include font-base;
-    text-decoration: none;
-  }
-
-  button {
-    background: transparent;
-    color: var(--color-airy-blue);
-  }
 }
 
 .infoBox {

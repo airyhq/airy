@@ -9,7 +9,7 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy Core` is fundamentally a collection of components. When you [install `Airy Core`](../getting-started/installation/introduction.md), you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform. 
+`Airy Core` is fundamentally a collection of components. When you [install `Airy Core`](../getting-started/installation/introduction.md), you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform.
 
 These core components are:
 
@@ -46,7 +46,7 @@ Below is a model of the file stucture of a single component inside the `airy-com
 		/helm
 ```
 
-The `helm` directory contains the `values.yaml` file and all other templates/files needed to make up the Helm package. 
+The `helm` directory contains the `values.yaml` file and all other templates/files needed to make up the Helm package.
 
 The `information.yaml` is the source-of-truth for every component. It includes a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
 

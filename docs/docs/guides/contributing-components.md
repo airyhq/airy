@@ -22,22 +22,22 @@ These core components are:
 
 Airy's real value comes from the additional components you install through our marketplace in the Control Center UI of your Airy Instance. This documentation is on the processes we follow to create, update and store our components.
 
-## A Component
+## Components
 
-Airy is designed to support a plug-and-play architecture. Components once installed are be added as pods your cluster. Components can provide four kinds of functionality:
+Airy is designed to support a plug-and-play architecture. Components are installed and run as pods in your cluster. Components can provide four kinds of functionality:
 
-1. Connector - i.e Rasa, DialogFlow - that [DEFINE]
-2. Source - i.e., Facebook, WhatsApp, SMS -
+1. Connector - i.e Rasa, DialogFlow
+2. Source - i.e., Facebook, WhatsApp, SMS
 3. API - i.e
 4. User Interface - i.e
 
-As a technical artifact, a component is a containerized application (we use Docker) that is packaged and installed using Helm.
+As a technical artifact, each component is a containerized application that is packaged and can be installed. We use Docker and Helm for this.
 
-The Helm charts and details about all components (except "Core" components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up directories, where each directory represents a component.
+The Helm package and information on each components (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up directories where each one contains the component's Helm package and information on it.
 
-## Component File Structure
+## The Component File Structure
 
-Below is a model of the file stucture of a single component inside the `airy-components` repository.
+Below is a model of the file stucture of a single component inside the [`airy-components`](https://github.com/airyhq/airy-/airy-components) repository.
 
 ```
 /airy-components
@@ -46,7 +46,7 @@ Below is a model of the file stucture of a single component inside the `airy-com
 		/helm
 ```
 
-The `helm` directory contains the `values.yaml` file and all other templates/files needed to make up the Helm package.
+The `helm` directory contains all the files that make up the Helm package.
 
 The `information.yaml` is the source-of-truth for every component. It includes a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
 

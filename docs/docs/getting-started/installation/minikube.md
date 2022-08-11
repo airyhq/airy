@@ -51,7 +51,7 @@ The base URL for the [API](../../api/introduction.md) is the same to access the 
 To customize your Minikube instance, you can adjust the `driver`, `cpus` and `memory` attributes in the following manner:
 
 ```
-minikube -p airy-core start --driver=docker --cpus=3 --memory=7168 --container-runtime=containerd --ports=80:80 --extra-config=apiserver.service-node-port-range=1-65535
+airy create --provider=minikube --provider-config driver=docker,cpus=4,memory=8192 my-airy
 ```
 
 If you want to customize your `Airy Core` instance please see our [Configuration

@@ -12,8 +12,8 @@ type ConnectNewDialogflowProps = {
     appCredentials: string,
     suggestionConfidenceLevel: string,
     replyConfidenceLevel: string,
-    processorWaitingTime: number,
-    processorCheckPeriod: number,
+    processorWaitingTime: string,
+    processorCheckPeriod: string,
     defaultLanguage: string
   ) => void;
   isEnabled: boolean;
@@ -66,7 +66,15 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
+      disabled={
+        !projectID ||
+        !appCredentials ||
+        !suggestionConfidenceLevel ||
+        !replyConfidenceLevel ||
+        !processorWaitingTime ||
+        !processorCheckPeriod ||
+        !defaultLanguage
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
     >

@@ -9,7 +9,7 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy Core` is fundamentally a collection of components. When you [install `Airy Core`](../getting-started/installation/introduction.md), you install a set of _core_ components which create the minimum infrastructure to install other components and begin using the platform.
+`Airy` is fundamentally a collection of components. When you [install `Airy`](../getting-started/installation/introduction.md), you get a few components out-of-the-box which form the infrastructure to install other components and begin using the platform.
 
 These core components are:
 
@@ -24,14 +24,9 @@ Airy's real value comes from the additional components you install through our m
 
 ## Components
 
-Airy is designed to support a plug-and-play architecture. Components are installed and run as pods in your cluster. Components can provide four kinds of functionality:
+import ComponentDefinition from '../getting-started/componentDefinition.mdx'
 
-1. Connector - i.e Rasa, DialogFlow
-2. Source - i.e., Facebook, WhatsApp, SMS
-3. API - i.e
-4. User Interface - i.e
-
-As a technical artifact, each component is a containerized application that is packaged and can be installed. We use Docker and Helm for this.
+<ComponentDefinition/>
 
 The Helm package and information on each components (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up directories where each one contains the component's Helm package and information on it.
 
@@ -40,10 +35,11 @@ The Helm package and information on each components (except core components) are
 Below is a model of the file stucture of a single component inside the [`airy-components`](https://github.com/airyhq/airy-/airy-components) repository.
 
 ```
-/airy-components
-	/[COMPONENT_NAME]
-		information.yaml
-		/helm
+airy-components/
+└── [COMPONENT_NAME]/
+    ├── information.yaml
+    └── helm/
+        └── [HELM CHART]
 ```
 
 The `helm` directory contains all the files that make up the Helm package.

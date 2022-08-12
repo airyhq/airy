@@ -9,9 +9,7 @@ This functionality is under development. With these docs, we aim to elicit feedb
 
 :::
 
-`Airy` is fundamentally a collection of components. When you [install `Airy`](../getting-started/installation/introduction.md), you get a few components out-of-the-box which form the infrastructure to install other components and begin using the platform.
-
-These core components are:
+Airy's functions are provided by components ready for _plug and play_. With every [installation of Airy](../getting-started/installation/introduction.md) we bundle a few default components to get started:
 
 1. airy-controller
 2. api-admin
@@ -20,7 +18,8 @@ These core components are:
 5. frontend-inbox
 6. frontend-control-center
 
-Airy's real value comes from the additional components you install through our marketplace in the Control Center UI of your Airy Instance. This documentation is on the processes we follow to create, update and store our components.
+Airy's real value comes from the additional components you install through our catalog in the Control Center UI of your Airy Instance. 
+In the following, we will explain how to create, update and store components.
 
 ## Components
 
@@ -28,11 +27,11 @@ import ComponentDefinition from '../getting-started/componentDefinition.mdx'
 
 <ComponentDefinition/>
 
-The Helm package and information on each components (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up directories where each one contains the component's Helm package and information on it.
+The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up of directories where each directory contains a component's Helm package and information.
 
 ## The Component File Structure
 
-Below is a model of the file stucture of a single component inside the [`airy-components`](https://github.com/airyhq/airy-/airy-components) repository.
+Below is a model of the file structure of a single component inside the [`airy-components`](https://github.com/airyhq/airy-components) repository.
 
 ```
 airy-components/

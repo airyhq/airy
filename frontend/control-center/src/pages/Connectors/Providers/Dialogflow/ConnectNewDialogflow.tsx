@@ -30,10 +30,10 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [processorWaitingTime, setProcessorWaitingTime] = useState(
-    componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || 5000
+    componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000'
   );
   const [processorCheckPeriod, setProcessorCheckPeriod] = useState(
-    componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || 2500
+    componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500'
   );
   const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
 
@@ -185,7 +185,6 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           placeholder={t('defaultLanguage')}
           showLabelIcon
           tooltipText={t('defaultLanguageTooltip')}
-          tooltipLink="https://airy.co/docs/enterprise/apps/dialogflow/deployment"
           required
           height={32}
           fontClass="font-base"

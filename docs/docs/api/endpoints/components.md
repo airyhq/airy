@@ -172,7 +172,7 @@ Uninstall an existing component.
 
 ```json
 {
-  "name": "airy-enterprise/dialogflow-connector"
+  "name": "airy-enterprise/enterprise-dialogflow-connector"
 }
 ```
 

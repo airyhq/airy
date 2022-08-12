@@ -263,7 +263,6 @@ class InputComponent extends Component<InputProps, IState> {
       label,
       showLabelIcon,
       tooltipText,
-      tooltipLink,
       hideLabel,
       name,
       value,
@@ -424,7 +423,6 @@ export interface InputProps {
   label?: string;
   showLabelIcon?: boolean;
   tooltipText?: string;
-  tooltipLink?: string;
   minWidth?: number;
   width?: number;
 

@@ -121,7 +121,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
   }, [config, connectorInfo]);
 
-  const createNewConnection = (...args: (string | number)[]) => {
+  const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
 
     if (connector === Source.dialogflow) {

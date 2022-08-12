@@ -18,7 +18,7 @@ Airy's functions are provided by components ready for _plug and play_. With ever
 5. frontend-inbox
 6. frontend-control-center
 
-Airy's real value comes from the additional components you install through our catalog in the Control Center UI of your Airy Instance. 
+Airy's real value comes from the additional components you install through our catalog in the Control Center UI of your Airy Instance.
 In the following, we will explain how to create, update and store components.
 
 ## Components

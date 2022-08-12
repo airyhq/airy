@@ -43,7 +43,7 @@ npm_repositories = {
 
 npm_registry = npm_repositories[repo_type]
 
-npm_token = os.getenv('DEPLOY_NPM_EMAIL')
+npm_token = os.getenv('DEPLOY_NPM_TOKEN')
 
 if not npm_token:
     raise Exception(

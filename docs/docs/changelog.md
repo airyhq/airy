@@ -3,6 +3,20 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.47.4
+
+#### Hotfix
+
+* [[#3575](https://github.com/airyhq/airy/issues/3575)] Fix Kafka topics provisioning
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.47.4/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.47.4/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.47.4/windows/amd64/airy.exe)
+
 ## 0.47.3
 
 #### Hotfix

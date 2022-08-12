@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.joining;
 public class Application {
 
     public static void main(String[] args) {
-        String createTopicTemplate = "    kafka-topics.sh --create --if-not-exists --zookeeper \"${ZOOKEEPER}\" --replication-factor \"${REPLICAS}\" --partitions \"${PARTITIONS}\" --topic \"${AIRY_CORE_NAMESPACE}%s\" %s";
+        String createTopicTemplate = "    kafka-topics.sh --create --if-not-exists \"${CONNECTION_OPTS[@]}\" --replication-factor \"${REPLICAS}\" --partitions \"${PARTITIONS}\" --topic \"${AIRY_CORE_NAMESPACE}%s\" %s";
         String headerTemplate = "apiVersion: v1" +
                 "\n" +
                 "kind: ConfigMap" +
@@ -53,6 +53,7 @@ public class Application {
                 "    PARTITIONS=${PARTITIONS:-10}\n" +
                 "    REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}\n" +
                 "    AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +
+                "    AUTH_JAAS=${AUTH_JAAS:-}\n" +
                 "\n" +
                 "    echo \"Creating Kafka topics\"\n" +
                 "\n" +

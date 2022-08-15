@@ -1,8 +1,8 @@
 package endpoints
 
 import (
+	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -40,10 +40,8 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, component := range requestComponents.Components {
 		if !s.isComponentInstalled(component.Name) {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(fmt.Sprintf(`{"error": "component %s is not installed"}`, component.Name)))
-			return
+			klog.Error("Trying to apply configuration for a component that is not installed: " + component.Name)
+			continue
 		}
 
 		labels := map[string]string{
@@ -71,7 +69,10 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //NOTE: Prevent the upload of a configmap if the component is not present
 func (s *ComponentsUpdate) isComponentInstalled(configName string) bool {
-	deployedCharts := s.DeployedCharts.GetDeployedCharts()
-
+	deployedCharts, err := k8s.GetInstalledComponents(context.TODO(), s.namespace, s.clientSet)
+	if err != nil {
+		klog.Error("Unable to get installed components:\n" + err.Error())
+		return false
+	}
 	return deployedCharts[configName]
 }

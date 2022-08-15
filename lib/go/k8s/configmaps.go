@@ -73,6 +73,18 @@ func GetCmData(configmapName string, namespace string, clientset *kubernetes.Cli
 	return configMap.Data, nil
 }
 
+func GetInstalledComponents(ctx context.Context, namespace string, clientSet *kubernetes.Clientset) (map[string]bool, error) {
+	configmapList, err := clientSet.CoreV1().ConfigMaps(namespace).List(ctx, v1.ListOptions{LabelSelector: "core.airy.co/component"})
+	if err != nil {
+		return nil, fmt.Errorf("Unable to get the ConfigMaps for the components. Error: %s\n", err)
+	}
+	components := make(map[string]bool)
+	for _, configmap := range configmapList.Items {
+		components[configmap.Name] = true
+	}
+	return components, nil
+}
+
 func GetComponentsConfigMaps(
 	ctx context.Context,
 	namespace string,

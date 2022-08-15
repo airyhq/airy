@@ -14,7 +14,7 @@
     "audio-recorder-polyfill": "^0.4.1",
     "camelcase-keys": "^7.0.2",
     "core-js": "3.24.1",
-    "emoji-mart": "^5.2.0",
+    "emoji-mart": "^5.2.1",
     "form-data": "^4.0.0",
     "i18next": "^21.9.0",
     "isomorphic-fetch": "^3.0.0",

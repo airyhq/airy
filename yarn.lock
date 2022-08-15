@@ -3704,10 +3704,10 @@ emittery@^0.10.2:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.10.2.tgz#902eec8aedb8c41938c46e9385e9db7e03182933"
   integrity sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==
 
-emoji-mart@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.2.0.tgz#e6e30df81f75c6c5150f77a7c6714e05c3798e45"
-  integrity sha512-0ZTIbemlRjEV0ydF8lDqho2N5l4M7qdNFWGp+w3v32D+F6+DYsmuaZr/k4O79EBvqlDx6rx+B8jeaH2qa0ZNDQ==
+emoji-mart@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.2.1.tgz#eccd7d650e7bc042a07834a263b87c8153f214e5"
+  integrity sha512-q6lz1u8TrGrO5Bv8dL2Z5atTRQaci3YzUfbYN0MzlLmIKdRt3N6vNT7uvCWRKc1tERrI45sn0nQYk3g99cBr/w==
 
 emoji-regex@^8.0.0:
   version "8.0.0"

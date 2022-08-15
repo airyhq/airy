@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
-import {Button, SettingsModal} from 'components';
+import {Button, NotificationComponent, SettingsModal} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
 import {
@@ -14,7 +14,7 @@ import {
   getConnectorsConfiguration,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
-import {Source} from 'model';
+import {NotificationModel, Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
@@ -50,6 +50,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
+  components: state.data.config.components,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -59,14 +60,22 @@ type ConnectorConfigProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
+  const {
+    connector,
+    components,
+    enableDisableComponent,
+    updateConnectorConfiguration,
+    getConnectorsConfiguration,
+    config,
+  } = props;
 
   const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
   const [backTitle, setBackTitle] = useState('Connectors');
@@ -233,15 +242,43 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
-    setIsEnabled(!isEnabled);
-    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]});
+    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
+      .then(() => {
+        setIsEnabled(!isEnabled);
+        setNotification({
+          show: true,
+          successful: true,
+          text: isEnabled ? t('successfullyDisabled') : t('successfullyEnabled'),
+        });
+      })
+      .catch(() => {
+        setNotification({
+          show: true,
+          successful: false,
+          text: isEnabled ? t('failedDisabled') : t('failedEnabled'),
+        });
+      });
   };
 
   const closeConfigurationModal = () => {
     setConfigurationModal(false);
     if (!isEnabled) {
-      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
-      setIsEnabled(true);
+      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]})
+        .then(() => {
+          setIsEnabled(true);
+          setNotification({
+            show: true,
+            successful: true,
+            text: t('successfullyEnabled'),
+          });
+        })
+        .catch(() => {
+          setNotification({
+            show: true,
+            successful: false,
+            text: t('failedEnabled'),
+          });
+        });
     }
   };
 
@@ -326,6 +363,15 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           <PageContent />
         </div>
       </div>
+
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          successful={notification.successful}
+          text={notification.text}
+          setShowFalse={setNotification}
+        />
+      )}
 
       {configurationModal && (
         <SettingsModal

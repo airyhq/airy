@@ -24,3 +24,43 @@
   margin-bottom: 15px;
   color: var(--color-text-contrast);
 }
+
+.notificationAnimation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  margin-left: -120px;
+  height: 40px;
+  width: 240px;
+  z-index: 9999;
+  border-radius: 10px;
+}
+
+.notificationText {
+  @include font-base;
+  color: white;
+}
+
+@keyframes translateYIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(16px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+.translateYAnimIn {
+  animation: translateYIn 4s ease-in-out;
+}

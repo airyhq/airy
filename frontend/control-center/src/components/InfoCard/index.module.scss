@@ -115,12 +115,13 @@
 }
 
 .enableModalContainerWrapper {
-  width: 50%;
-  height: 70%;
+  height: 400px;
+  width: 550px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
 }
 
 .enableModalContainer {
@@ -136,6 +137,12 @@
     margin: 4px 0 20px 0;
     color: var(--color-text-contrast);
   }
+}
+
+.enableModalContainer button {
+  margin-top: 14px;
+  padding: 0 60px;
+  border-radius: 10px;
 }
 
 .headerModal {

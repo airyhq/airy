@@ -1,37 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
-import {ContentWrapper, Button, LinkButton, SettingsModal} from 'components';
+import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
 import {CATALOG_ROUTE} from '../../../routes/routes';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {getNewChannelRouteForComponent} from '../getRouteForCard';
-import {ComponentInfo} from 'model';
+import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import styles from './index.module.scss';
+import {StateModel} from '../../../reducers';
+
+const mapStateToProps = (state: StateModel) => ({
+  component: state.data.catalog,
+});
 
 const mapDispatchToProps = {
   installComponent,
   uninstallComponent,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 interface LocationState {
   componentInfo: ComponentInfo;
 }
 
 const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
-  const {installComponent, uninstallComponent} = props;
+  const {component, installComponent, uninstallComponent} = props;
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
-  const [isInstalled, setIsInstalled] = useState(componentInfo.installed);
+  const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
+  const [modal, setModal] = useState<Modal>(null);
+  const [isInstalling, setIsInstalling] = useState(false);
+  const [isUninstalling, setIsUninstalling] = useState(false);
+  const [notification, setNotification] = useState<NotificationModel>(null);
 
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -40,32 +48,44 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');
 
-  useEffect(() => {
-    const title = isInstalled ? uninstallText : installText;
-    setModalTitle(title);
-  }, [isInstalled]);
-
   const openModalInstall = () => {
-    setIsModalVisible(true);
-
-    if (!isInstalled) installComponent({name: `${componentInfo.name}`});
-  };
-
-  const toggleButtonInstallationStatus = () => {
-    setIsInstalled(!isInstalled);
+    if (!isInstalled) {
+      setIsInstalling(true);
+      installComponent({name: componentInfo.name})
+        .then(() => {
+          setModal({type: ModalType.install, title: installText});
+          setNotification({show: true, successful: true, text: t('successfullyInstalled')});
+          setIsModalVisible(true);
+        })
+        .catch(() => {
+          setNotification({show: true, successful: false, text: t('failedInstall')});
+        })
+        .finally(() => {
+          setIsInstalling(false);
+        });
+    } else {
+      setModal({type: ModalType.uninstall, title: uninstallText});
+      setIsModalVisible(true);
+    }
   };
 
   const cancelInstallationToggle = () => {
     setIsModalVisible(false);
-
-    if (!isInstalled) toggleButtonInstallationStatus();
   };
 
   const confirmUninstall = () => {
-    uninstallComponent({name: `${componentInfo.name}`});
-
+    setIsUninstalling(true);
     setIsModalVisible(false);
-    toggleButtonInstallationStatus();
+    uninstallComponent({name: `${componentInfo.name}`})
+      .then(() => {
+        setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
+      })
+      .catch(() => {
+        setNotification({show: true, successful: false, text: t('failedUninstall')});
+      })
+      .finally(() => {
+        setIsUninstalling(false);
+      });
   };
 
   const HeaderContent = () => {
@@ -107,9 +127,16 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           <Button
             onClick={openModalInstall}
             className={styles.installButton}
+            disabled={isInstalling || isUninstalling}
             styleVariant={isInstalled ? 'warning' : 'green'}
           >
-            {isInstalled ? t('uninstall') : t('install')}
+            {isInstalling
+              ? t('installing')
+              : isUninstalling
+              ? t('uninstalling')
+              : !isInstalled
+              ? t('install')
+              : t('uninstall')}
           </Button>
         </section>
 
@@ -147,21 +174,21 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         {isModalVisible && (
           <SettingsModal
-            Icon={!isInstalled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
+            Icon={modal.type === ModalType.install ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
             wrapperClassName={styles.enableModalContainerWrapper}
             containerClassName={styles.enableModalContainer}
-            title={modalTitle}
+            title={modal.title}
             close={cancelInstallationToggle}
             headerClassName={styles.headerModal}
           >
-            {isInstalled && <p> {t('uninstallComponentText')} </p>}
-            {!isInstalled ? (
-              <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_COMPONENT_INSTALL_ROUTE)}>
-                {t('toConfigure')}
-              </Button>
-            ) : (
+            {modal.type === ModalType.uninstall && <p> {t('uninstallComponentText')} </p>}
+            {modal.type === ModalType.uninstall ? (
               <Button styleVariant="normal" type="submit" onClick={confirmUninstall}>
                 {t('uninstall')}
+              </Button>
+            ) : (
+              <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_COMPONENT_INSTALL_ROUTE)}>
+                {t('toConfigure')}
               </Button>
             )}
           </SettingsModal>
@@ -171,14 +198,24 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   };
 
   return (
-    <ContentWrapper
-      header={<HeaderContent />}
-      sideColumnContent={<SideColumnContent />}
-      transparent
-      isSideColumn
-      content={<BodyContent />}
-      variantHeight="large"
-    />
+    <>
+      <ContentWrapper
+        header={<HeaderContent />}
+        sideColumnContent={<SideColumnContent />}
+        transparent
+        isSideColumn
+        content={<BodyContent />}
+        variantHeight="large"
+      />
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          setShowFalse={setNotification}
+        />
+      )}
+    </>
   );
 };
 

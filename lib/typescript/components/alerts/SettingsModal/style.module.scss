@@ -20,9 +20,11 @@
   transform: translate(-50%, -50%);
   border: none;
   background-color: var(--color-background-white);
-  border-radius: 7px;
   padding: 2em;
   outline: none;
+  min-height: 400px;
+  min-width: 550px;
+  border-radius: 20px;
 }
 
 .overlay {

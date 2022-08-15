@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {Channel, Source, getSourceForComponent} from 'model';
-import InfoCard, {InfoCardStyle} from '../../components/InfoCard';
+import {Channel, Source} from 'model';
+import InfoCard, {InfoCardStyle} from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
-import {listChannels} from '../../actions/channel';
-import {listComponents} from '../../actions/catalog';
+import {listChannels, listComponents, getConnectorsConfiguration} from '../../actions';
 import {setPageTitle} from '../../services/pageTitle';
-import {getConnectorsConfiguration} from '../../actions';
-import {getSourcesInfo, SourceInfo} from '../../components/SourceInfo';
-import styles from './index.module.scss';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
 import {ChannelCard} from './ChannelCard';
 import {SimpleLoader} from 'components';
-import {getComponentStatus} from '../../services/getComponentStatus';
+import {getComponentStatus, formatComponentNameToConfigKey} from '../../services';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../routes/routes';
+import styles from './index.module.scss';
 
 export enum ComponentStatus {
   enabled = 'Enabled',
   notConfigured = 'Not Configured',
   disabled = 'Disabled',
+}
+
+export interface ConnectorCardComponentInfo {
+  name: string;
+  displayName: string;
+  configKey: string;
+  source: string;
 }
 
 const mapDispatchToProps = {
@@ -32,116 +37,114 @@ const connector = connect(null, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
   const {listChannels, getConnectorsConfiguration, listComponents} = props;
+  const [connectorsPageList, setConnectorsPageList] = useState<[] | ConnectorCardComponentInfo[]>([]);
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const components = useSelector((state: StateModel) => state.data.config.components);
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
-  const [sourcesInfo, setSourcesInfo] = useState([]);
   const [hasInstalledComponents, setHasInstalledComponents] = useState(false);
   const navigate = useNavigate();
   const pageTitle = 'Connectors';
   const isInstalled = true;
 
+  const catalogListArr = Object.entries(catalogList);
+  const emptyCatalogList = catalogListArr.length === 0;
+
   useEffect(() => {
-    setSourcesInfo(getSourcesInfo());
-    getConnectorsConfiguration().catch((error: Error) => {
-      console.error(error);
-    });
-    if (Object.entries(catalogList).length === 0)
-      listComponents().catch((error: Error) => {
-        console.error(error);
+    getConnectorsConfiguration();
+    if (emptyCatalogList) {
+      listComponents();
+    } else {
+      const listArr = [];
+      catalogListArr.map(component => {
+        if (component[1].installed === true && component[1].source !== 'webhooks') {
+          setHasInstalledComponents(true);
+          listArr.push({
+            name: component[1].name,
+            displayName: component[1].displayName,
+            configKey: formatComponentNameToConfigKey(component[1].name),
+            source: component[1].source,
+          });
+        }
       });
-    if (Object.entries(catalogList).length > 0)
-      Object.entries(catalogList).map(component => {
-        component[1].installed === true && setHasInstalledComponents(true);
-      });
+
+      setConnectorsPageList(listArr);
+    }
   }, [catalogList]);
 
   useEffect(() => {
     if (channels.length === 0) {
-      listChannels().catch((error: Error) => {
-        console.error(error);
-      });
+      listChannels();
     }
     setPageTitle(pageTitle);
   }, [channels.length]);
 
-  const isComponentInstalled = (repository: string, componentName: string) => {
-    const componentNameCatalog = repository + '/' + componentName;
+  const isComponentInstalled = (componentNameCatalog: string) => {
     return catalogList[componentNameCatalog] && catalogList[componentNameCatalog].installed === true;
   };
 
   return (
     <div className={styles.channelsWrapper}>
-      {sourcesInfo.length > 0 && (
-        <div className={styles.channelsHeadline}>
-          <div>
-            <h1 className={styles.channelsHeadlineText}>Connectors</h1>
-            {Object.entries(catalogList).length === 0 && <SimpleLoader />}
-          </div>
+      <div className={styles.channelsHeadline}>
+        <div>
+          <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+          {emptyCatalogList && <SimpleLoader />}
         </div>
-      )}
+      </div>
       <div className={styles.wrapper}>
-        {!hasInstalledComponents && Object.entries(catalogList).length > 0 ? (
+        {!hasInstalledComponents && catalogListArr.length > 0 ? (
           <EmptyStateConnectors />
         ) : (
           <>
-            {sourcesInfo.map((infoItem: SourceInfo, index: number) => {
+            {connectorsPageList.map((item: {name: string; displayName: string; configKey: string; source: Source}) => {
               return (
                 (components &&
-                  components[infoItem?.configKey] &&
+                  components[item.configKey] &&
                   isInstalled &&
-                  connectors[infoItem.configKey] &&
-                  infoItem.channel &&
-                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
+                  connectors[item.configKey] &&
+                  isComponentInstalled(item.name) && (
                     <ChannelCard
-                      sourceInfo={infoItem}
-                      channelsToShow={channelsBySource(infoItem.type).length}
+                      componentInfo={item}
+                      channelsToShow={channelsBySource(item.source).length}
                       componentStatus={getComponentStatus(
                         isInstalled,
-                        Object.keys(connectors[infoItem.configKey]).length > 0 || infoItem.type === Source.chatPlugin,
-                        components[infoItem.configKey]?.enabled
+                        Object.keys(connectors[item.configKey]).length > 0 || item.source === Source.chatPlugin,
+                        components[item.configKey]?.enabled
                       )}
-                      key={index}
+                      key={item.displayName}
                     />
                   )) ||
-                (channelsBySource(infoItem.type).length > 0 &&
-                  !infoItem.channel &&
-                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
-                    <div className={styles.cardContainer} key={infoItem.type}>
-                      <InfoCard
-                        installed
-                        style={InfoCardStyle.expanded}
-                        sourceInfo={infoItem}
-                        addChannelAction={() => {
-                          navigate(infoItem.channelsListRoute);
-                        }}
-                      />
-                    </div>
-                  )) ||
-                (getSourceForComponent(infoItem.type) &&
-                  components &&
-                  components[infoItem.configKey] &&
-                  !infoItem.channel &&
-                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
-                    <div className={styles.cardContainer} key={infoItem.type}>
-                      <InfoCard
-                        installed={true}
-                        componentStatus={getComponentStatus(
-                          isInstalled,
-                          Object.keys(connectors[infoItem.configKey]).length > 0,
-                          components[infoItem?.configKey].enabled
-                        )}
-                        style={InfoCardStyle.normal}
-                        key={infoItem.type}
-                        sourceInfo={infoItem}
-                        addChannelAction={() => {
-                          navigate(infoItem.channelsListRoute);
-                        }}
-                      />
-                    </div>
-                  ))
+                (channelsBySource(item.source).length > 0 && isComponentInstalled(item.name) && (
+                  <div className={styles.cardContainer} key={item.displayName}>
+                    <InfoCard
+                      installed
+                      style={InfoCardStyle.expanded}
+                      componentInfo={item}
+                      addChannelAction={() => {
+                        navigate(CONNECTORS_CONNECTED_ROUTE + '/' + item.source);
+                      }}
+                    />
+                  </div>
+                )) ||
+                (components && isComponentInstalled(item.name) && connectors && connectors[item.configKey] && (
+                  <div className={styles.cardContainer} key={item.displayName}>
+                    <InfoCard
+                      installed={true}
+                      componentStatus={getComponentStatus(
+                        isInstalled,
+                        Object.keys(connectors[item.configKey]).length > 0,
+                        components[item?.configKey].enabled
+                      )}
+                      style={InfoCardStyle.normal}
+                      key={item.displayName}
+                      componentInfo={item}
+                      addChannelAction={() => {
+                        navigate(CONNECTORS_CONNECTED_ROUTE + '/' + item.source);
+                      }}
+                    />
+                  </div>
+                ))
               );
             })}
           </>

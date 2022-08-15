@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@emoji-mart/data": "^1.0.3",
-    "@emoji-mart/react": "^1.0.0",
+    "@emoji-mart/react": "^1.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@reduxjs/toolkit": "^1.8.3",
     "@stomp/stompjs": "^6.1.2",

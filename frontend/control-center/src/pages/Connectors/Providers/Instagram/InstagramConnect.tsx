@@ -3,9 +3,8 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectInstagramChannel} from '../../../../actions';
 
-import {Button, Input, LinkButton, InfoButton} from 'components';
+import {Button, Input} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './InstagramConnect.module.scss';
 
@@ -71,15 +70,6 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>Instagram</h1>
-      <div>
-        <InfoButton link="https://airy.co/docs/core/sources/instagram" text={t('infoButtonText')} color="grey" />
-
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
-      </div>
       <div className={styles.inputContainer}>
         <Input
           id="id"

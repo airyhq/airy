@@ -3,9 +3,8 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectGoogleChannel} from '../../../../actions';
 
-import {Button, Input, LinkButton, InfoButton} from 'components';
+import {Button, Input} from 'components';
 import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrowLeft.svg';
 
 import styles from './GoogleConnect.module.scss';
 
@@ -64,14 +63,6 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>{t('googleTitle')}</h1>
-      <div>
-        <InfoButton link="https://airy.co/docs/core/sources/google" text={t('infoButtonText')} color="grey" />
-        <LinkButton onClick={() => navigate(-1)} type="button">
-          <ArrowLeftIcon className={styles.backIcon} />
-          {t('back')}
-        </LinkButton>
-      </div>
       <div className={styles.inputContainer}>
         <Input
           id="id"

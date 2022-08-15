@@ -12,6 +12,7 @@ import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +22,17 @@ import java.util.Optional;
 @Service
 public class RasaConnectorService {
     //private final apiToken;
-    private final String rasaRestUrl = "https://03fb-90-187-94-193.eu.ngrok.io"; //TODO: ask Juan how to inject from resources
-    private RasaClient rasaClient;
+    private String rasaRestUrl;
+    private final RasaClient rasaClient;
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger log = AiryLoggerFactory.getLogger(RasaConnectorService.class);
     private final MessageHandler messageHandler;
-    RasaConnectorService(MessageHandler messageHandler){
+    RasaConnectorService(MessageHandler messageHandler,
+                         @Value("${rasa.rest-webhook-url}") String rasaRestUrl){
         this.rasaClient = bootstrapRasaClient(rasaRestUrl);
         this.messageHandler = messageHandler;
+        this.rasaRestUrl = rasaRestUrl;
     }
 
     @Async("threadPoolTaskExecutor")

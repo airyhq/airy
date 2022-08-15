@@ -11,7 +11,10 @@ type ConnectNewDialogflowProps = {
     projectId: string,
     appCredentials: string,
     suggestionConfidenceLevel: string,
-    replyConfidenceLevel: string
+    replyConfidenceLevel: string,
+    processorWaitingTime: string,
+    processorCheckPeriod: string,
+    defaultLanguage: string
   ) => void;
   isEnabled: boolean;
   isConfigured: boolean;
@@ -26,6 +29,13 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [processorWaitingTime, setProcessorWaitingTime] = useState(
+    componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000'
+  );
+  const [processorCheckPeriod, setProcessorCheckPeriod] = useState(
+    componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500'
+  );
+  const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
 
   const {t} = useTranslation();
 
@@ -39,7 +49,15 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
+    createNewConnection(
+      projectID,
+      appCredentials,
+      suggestionConfidenceLevel,
+      replyConfidenceLevel,
+      processorWaitingTime,
+      processorCheckPeriod,
+      defaultLanguage
+    );
   };
 
   return (
@@ -48,7 +66,15 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
+      disabled={
+        !projectID ||
+        !appCredentials ||
+        !suggestionConfidenceLevel ||
+        !replyConfidenceLevel ||
+        !processorWaitingTime ||
+        !processorCheckPeriod ||
+        !defaultLanguage
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
     >
@@ -114,6 +140,51 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
           showLabelIcon
           tooltipText={t('amountReplies')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="ProcessorWaitingTime"
+          value={processorWaitingTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorWaitingTime(e.target.value)}
+          label={t('processorWaitingTime')}
+          placeholder={t('processorWaitingTime')}
+          showLabelIcon
+          tooltipText={t('waitingDefault')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="processorCheckPeriod"
+          value={processorCheckPeriod}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorCheckPeriod(e.target.value)}
+          label={t('processorCheckPeriod')}
+          placeholder={t('processorCheckPeriod')}
+          showLabelIcon
+          tooltipText={t('checkDefault')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="DefaultLanguage"
+          value={defaultLanguage}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
+          label={t('defaultLanguage')}
+          placeholder={t('defaultLanguage')}
+          showLabelIcon
+          tooltipText={t('defaultLanguageTooltip')}
           required
           height={32}
           fontClass="font-base"

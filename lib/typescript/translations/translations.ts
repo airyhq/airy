@@ -298,6 +298,12 @@ const resources = {
       amountSuggestions: 'amount for suggestions',
       amountReplies: 'amount for replies',
       to: 'to',
+      processorWaitingTime: 'Processor waiting time',
+      processorCheckPeriod: 'Processor check period',
+      waitingDefault: 'Default value: 5000',
+      checkDefault: 'Default value: 2500',
+      defaultLanguage: 'Default language',
+      defaultLanguageTooltip: 'Default value: en',
 
       //Salesforce
       salesforceDescription:
@@ -723,6 +729,12 @@ const resources = {
       fromCloudConsole: 'gegeben von der Cloud Console',
       amountSuggestions: 'Anzahl der Vorschläge',
       amountReplies: 'Anzahl der Antworten',
+      processorWaitingTime: 'Prozessor Wartezeit',
+      processorCheckPeriod: 'Prozessorprüfungszeitraum',
+      waitingDefault: 'Standardwert: 5000',
+      checkDefault: 'Standardwert: 2500',
+      defaultLanguage: 'Standardsprache',
+      defaultLanguageTooltip: 'Standardwert: en',
 
       //Salesforce
       salesforceDescription:
@@ -1125,6 +1137,12 @@ const resources = {
       amountSuggestions: 'niveau pour les suggestions',
       amountReplies: 'niveau pour les réponses',
       to: 'à',
+      processorWaitingTime: 'Délai du processeur',
+      processorCheckPeriod: 'Délai de vérification du processeur',
+      waitingDefault: 'valeur par défaut: 5000',
+      checkDefault: 'valeur par défaut: 2500',
+      defaultLanguage: 'Langue utilisée',
+      defaultLanguageTooltip: 'valeur par défaut: en',
 
       //Salesforce
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
@@ -1562,6 +1580,12 @@ const resources = {
       fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
+      processorWaitingTime: 'Tiempo de espera del procesador',
+      processorCheckPeriod: 'Período de verificación del procesador',
+      waitingDefault: 'valor por defecto: 5000',
+      checkDefault: 'valor por defecto: 2500',
+      defaultLanguage: 'Idioma por defecto',
+      defaultLanguageTooltip: 'valor por defecto: en',
 
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',

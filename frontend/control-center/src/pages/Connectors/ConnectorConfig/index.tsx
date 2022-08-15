@@ -125,7 +125,15 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     let payload: UpdateComponentConfigurationRequestPayload;
 
     if (connector === Source.dialogflow) {
-      const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
+      const [
+        projectId,
+        appCredentials,
+        suggestionConfidenceLevel,
+        replyConfidenceLevel,
+        processorWaitingTime,
+        processorCheckPeriod,
+        defaultLanguage,
+      ] = args;
 
       payload = {
         components: [
@@ -137,6 +145,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               dialogflowCredentials: appCredentials,
               suggestionConfidenceLevel: suggestionConfidenceLevel,
               replyConfidenceLevel: replyConfidenceLevel,
+              connectorStoreMessagesProcessorMaxWaitMillis: processorWaitingTime,
+              connectorStoreMessagesProcessorCheckPeriodMillis: processorCheckPeriod,
+              connectorDefaultLanguage: defaultLanguage,
             },
           },
         ],

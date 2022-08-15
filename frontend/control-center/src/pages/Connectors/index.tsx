@@ -84,20 +84,15 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
               return (
                 (channelsBySource(infoItem.type).length > 0 &&
                   components &&
-                  components[infoItem.configKey] &&
-                  connectors &&
-                  connectors[infoItem.componentName] &&
-                  Object.keys(connectors[infoItem?.componentName]) &&
+                  components[infoItem?.configKey] &&
                   infoItem.channel &&
-                  isComponentInstalled(infoItem.repository, infoItem.componentName) &&
-                  connectors[infoItem?.type] && (
+                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <ChannelCard
                       sourceInfo={infoItem}
                       channelsToShow={channelsBySource(infoItem.type).length}
                       componentStatus={getComponentStatus(
                         isInstalled,
-                        Object.keys(connectors[infoItem.componentName]).length > 0 ||
-                          infoItem.type === Source.chatPlugin,
+                        Object.keys(connectors[infoItem.configKey]).length > 0 || infoItem.type === Source.chatPlugin,
                         components[infoItem.configKey]?.enabled
                       )}
                       key={index}
@@ -119,16 +114,14 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   )) ||
                 (getSourceForComponent(infoItem.type) &&
                   components &&
-                  components[infoItem.configKey] &&
                   !infoItem.channel &&
-                  isComponentInstalled(infoItem.repository, infoItem.componentName) &&
-                  connectors[infoItem?.componentName] && (
+                  isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <div className={styles.cardContainer} key={infoItem.type}>
                       <InfoCard
                         installed={true}
                         componentStatus={getComponentStatus(
                           isInstalled,
-                          Object.keys(connectors[infoItem.componentName]).length > 0,
+                          Object.keys(connectors[infoItem.configKey]).length > 0,
                           components[infoItem?.configKey].enabled
                         )}
                         style={InfoCardStyle.normal}

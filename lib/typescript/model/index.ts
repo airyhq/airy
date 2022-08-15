@@ -6,6 +6,7 @@ export * from './Contact';
 export * from './Content';
 export * from './Conversation';
 export * from './Message';
+export * from './Modal';
 export * from './Metadata';
 export * from './Notification';
 export * from './Pagination';

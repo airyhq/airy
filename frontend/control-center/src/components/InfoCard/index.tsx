@@ -1,5 +1,5 @@
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
-import {SourceInfo} from '../../components/SourceInfo';
+import React, {useState, useEffect} from 'react';
+import {SourceInfo} from '../SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {CONNECTORS_ROUTE} from '../../routes/routes';
@@ -10,7 +10,6 @@ import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
 import {ComponentStatus} from '../../pages/Connectors';
 import styles from './index.module.scss';
-import {NotificationModel} from 'model';
 
 export enum InfoCardStyle {
   normal = 'normal',
@@ -23,9 +22,6 @@ type InfoCardProps = {
   installed: boolean;
   componentStatus?: ComponentStatus;
   style: InfoCardStyle;
-  setNotification?: Dispatch<SetStateAction<NotificationModel>>;
-  updateItemList?: (installed: boolean, componentName: string) => void;
-  setIsInstalledToggled?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -36,23 +32,10 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {
-    sourceInfo,
-    addChannelAction,
-    installed,
-    style,
-    setNotification,
-    componentStatus,
-    installComponent,
-    uninstallComponent,
-    updateItemList,
-    setIsInstalledToggled,
-  } = props;
+  const {sourceInfo, addChannelAction, installed, style, uninstallComponent, componentStatus} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-  const [isInstalling, setIsInstalling] = useState(false);
-  const [isUninstalling, setIsUninstalling] = useState(false);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
@@ -62,61 +45,21 @@ const InfoCard = (props: InfoCardProps) => {
     setModalTitle(title);
   }, [isInstalled]);
 
-  const openInstallModal = () => {
-    setIsInstalledToggled(true);
-    isInstalled && setIsModalVisible(true);
-
-    if (!isInstalled) {
-      setIsInstalling(true);
-      installComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`})
-        .then(() => {
-          setNotification({show: true, successful: true, text: t('successfullyInstalled')});
-          setIsModalVisible(true);
-          toggleInstallation();
-          setIsInstalling(false);
-          setTimeout(() => {
-            setNotification({show: false});
-          }, 4000);
-        })
-        .catch(() => {
-          setNotification({show: true, successful: false, text: t('failedInstall')});
-          setIsInstalling(false);
-          setTimeout(() => {
-            setNotification({show: false});
-          }, 4000);
-        });
-    }
-  };
-
   const toggleInstallation = () => {
     setIsInstalled(!isInstalled);
   };
 
   const cancelInstallationToggle = () => {
     setIsModalVisible(false);
+
+    if (!isInstalled) toggleInstallation();
   };
 
   const confirmUninstall = () => {
-    setIsUninstalling(true);
-    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`})
-      .then(() => {
-        setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
-        toggleInstallation();
-        setIsInstalling(false);
-        setIsUninstalling(false);
-        setTimeout(() => {
-          setNotification({show: false});
-        }, 4000);
-      })
-      .catch(() => {
-        setNotification({show: true, successful: false, text: t('failedUninstall')});
-        setIsUninstalling(false);
-        setTimeout(() => {
-          setNotification({show: false});
-        }, 4000);
-      });
+    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
 
     setIsModalVisible(false);
+    toggleInstallation();
   };
 
   const handleCardClick = () => {
@@ -136,46 +79,31 @@ const InfoCard = (props: InfoCardProps) => {
             : styles.notInstalled
         } 
         ${CONNECTORS_PAGE ? styles.cardConnectors : ''}
-      `}>
+      `}
+    >
       <div
         className={`
           ${styles.channelLogoTitleContainer} 
           ${style === InfoCardStyle.expanded ? styles.isExpandedContainer : ''}          
-        `}>
+        `}
+      >
         <div
           className={`
           ${styles.channelLogo}
           ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
-        `}>
+        `}
+        >
           {sourceInfo.image}
         </div>
         <div
           className={`
           ${styles.textDetails}
           ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
-        `}>
+        `}
+        >
           <h1>{sourceInfo.title}</h1>
         </div>
       </div>
-
-      {/* {CATALOG_PAGE && (
-        <>
-          {!installed && <p>{sourceInfo.description}</p>}
-          <Button
-            styleVariant={isInstalled ? 'outline' : 'extra-small'}
-            type="submit"
-            onClick={openInstallModal}
-            disabled={isInstalling || isUninstalling}>
-            {isInstalling
-              ? t('installing')
-              : isUninstalling
-              ? t('uninstalling')
-              : !isInstalled
-              ? t('install')
-              : t('uninstall')}
-          </Button>
-        </>
-      )} */}
 
       {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
 
@@ -186,7 +114,8 @@ const InfoCard = (props: InfoCardProps) => {
           containerClassName={styles.enableModalContainer}
           title={modalTitle}
           close={cancelInstallationToggle}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {isInstalled && <p> {t('uninstallComponentText')} </p>}
           {!isInstalled ? (
             <Button styleVariant="normal" type="submit" onClick={addChannelAction}>

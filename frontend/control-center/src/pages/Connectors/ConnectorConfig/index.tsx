@@ -83,8 +83,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
   const isInstalled = true;
 
-  console.log('SJAIDOJSAOIJDASOIDL ', components[connectorInfo?.componentName]?.enabled);
-
   useEffect(() => {
     if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
       if (

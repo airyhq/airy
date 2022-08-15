@@ -26,6 +26,9 @@ export const NotificationComponent = (props: NotificationProps) => {
   const [notificationContainerWidth, setNotificationContainerWidth] = useState(240);
   const animType = type || NotificationType.fade;
   const notificationRef = useRef(null);
+  const colorAiryBlue = '#1578d4';
+  const colorSoftGreen = '#0da36b';
+  const colorRedAlert = '#d51548';
 
   setTimeout(() => {
     animType === NotificationType.fade && setShowFalse({show: false});
@@ -63,13 +66,15 @@ export const NotificationComponent = (props: NotificationProps) => {
         show && animType === NotificationType.fade ? styles.translateYAnimFade : styles.translateYAnimSticky
       } ${close && styles.translateYAnimStickyClose}`}
       style={{
-        background: successful === undefined || info ? '#1578d4' : successful ? '#0da36b' : '#d51548',
+        background: successful === undefined || info ? colorAiryBlue : successful ? colorSoftGreen : colorRedAlert,
         animationDuration: `${usedDuration}ms`,
         marginLeft: -(notificationContainerWidth / 2),
       }}
     >
       <div className={styles.contentContainer}>
-        <span className={styles.notificationText}>{text}</span>
+        <span className={styles.notificationText} style={type === NotificationType.sticky ? {marginRight: '16px'} : {}}>
+          {text}
+        </span>
         {type === NotificationType.sticky && (
           <div className={styles.stickyCloseButton} onClick={() => setClose(true)}>
             <CloseIcon height={12} width={12} color="#FFFFFF" />

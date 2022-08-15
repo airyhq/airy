@@ -1088,7 +1088,7 @@ const resources = {
       failedEnabled: `Échec de l'activation`,
       failedDisabled: 'Échec de la désactivation',
       install: 'Installer',
-      installing: 'Installer...',
+      installing: 'Installation...',
       successfullyInstalled: 'Installation réussie',
       successfullyUninstalled: 'Successfully uninstalled',
       failedInstall: `L'installation a échoué`,

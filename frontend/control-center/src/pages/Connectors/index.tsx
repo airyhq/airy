@@ -114,6 +114,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                   )) ||
                 (getSourceForComponent(infoItem.type) &&
                   components &&
+                  components[infoItem.configKey] &&
                   !infoItem.channel &&
                   isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <div className={styles.cardContainer} key={infoItem.type}>

@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
+	"github.com/airyhq/airy/lib/go/k8s"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/helm/cmd/helm/search"
 	"k8s.io/klog"
@@ -20,7 +21,7 @@ type ComponentsList struct {
 }
 
 func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	deployedCharts := s.DeployedCharts.GetDeployedCharts()
+	deployedCharts, err := k8s.GetInstalledComponents(r.Context(), s.Namespace, s.ClientSet)
 
 	components, err := getComponentsDetailsFromCloud()
 	if err != nil {

@@ -46,6 +46,13 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	chartVersion, err := s.getVersion(r.Context())
+	if err != nil {
+		klog.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	chartSpec := &helmCli.ChartSpec{
 		ReleaseName: releaseName,
 		ChartName:   chartName,
@@ -53,6 +60,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		UpgradeCRDs: true,
 		Replace:     true,
 		Force:       true,
+		Version:     chartVersion,
 		ValuesYaml:  globals,
 	}
 
@@ -98,6 +106,23 @@ func (s *ComponentsInstallUninstall) getGlobals(ctx context.Context) (string, er
 	}
 
 	return globals, nil
+}
+
+func (s *ComponentsInstallUninstall) getVersion(ctx context.Context) (string, error) {
+	configMap, err := s.ClientSet.CoreV1().ConfigMaps(s.Namespace).Get(ctx, "core-config", metav1.GetOptions{})
+	if err != nil {
+		return "", err
+	}
+
+	var version string
+	if configMap.Data != nil {
+		version = configMap.Data["APP_IMAGE_TAG"]
+	}
+	if version == "" {
+		return "", fmt.Errorf("unable to retrieve version")
+	}
+
+	return version, nil
 }
 
 func getChartNameFromBlob(blob []byte) (string, string, error) {

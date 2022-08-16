@@ -79,6 +79,30 @@ Airy Core contains the following components:
 
 ## Installation
 
-For installation purposes Airy Core is packaged in a Helm chart which creates all the necessary Kubernetes resources. However, every component is an independent entity and can be installed or uninstalled separately. Every component is packaged in its own independent Helm chart and belongs to a `repository`. By default, the `airy-core` repository is added with the components that can be found under `infrastructure/helm-chart/charts/components/charts`.
+For installation purposes Airy Core is packaged in a Helm chart which creates all the necessary Kubernetes resources. However, every component is an independent entity and can be installed or uninstalled separately. Every component is packaged in its own independent Helm chart and belongs to a `repository`. By default, the `airy-core` repository is added with the components that can be found under https://helm.airy.co.
 
-Some components are installed by default, while others can be added or removed later, depending on the particular use case. Components can be managed through the `Control center` or through the [components](/api/endpoints/components) and [repositories](/api/endpoints/repositories) API endpoints.
+You can see all the available components either from the `Catalog` in the `Control center`. From the `Control center` you can also install, uninstall, configure, enable or disable the components.
+
+The following components are part of `Airy Core` and they cannot be uninstalled:
+
+- airy-controller
+- api-admin
+- communication
+- api-websocket
+- frontend-inbox
+- frontend-control-center
+
+Here is a list of the open source components which can be added to `Airy Core`:
+
+- api-contacts
+- integration-source-api
+- integration-webhook
+- media-resolver
+- sources-chatplugin
+- sources-facebook
+- sources-google
+- sources-twilio
+- sources-viber
+- sources-whatsapp
+
+More information about the components API can be found [here](/api/endpoints/components).

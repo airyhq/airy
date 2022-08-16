@@ -7,7 +7,6 @@ import feign.RequestLine;
 
 import java.util.List;
 
-
 public interface RasaClient {
     @RequestLine("POST /webhooks/rest/webhook")
     @Headers("Content-Type: application/json")

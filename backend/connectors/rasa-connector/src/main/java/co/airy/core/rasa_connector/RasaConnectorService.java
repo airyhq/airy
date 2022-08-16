@@ -42,9 +42,15 @@ public class RasaConnectorService {
                     .message(getTextFromContent(message.getContent()))
                     .sender(message.getId())
                     .build());
-
-            log.info("Response: {}", messageResp.get(0).getText());
-            messageHandler.giveReply(message, messageResp.get(0));
+            // Unpack multiple response(s)
+            for (MessageSendResponse msg: messageResp) {
+                try {
+                    messageHandler.writeReplyToKafka(message, msg);
+                }
+                catch (Exception e){
+                    log.error(String.format("could not handle response for non-text data type for message id %s %s", msg.toString(), e.toString()));
+                }
+            }
         }
         catch (Exception e){
             log.error(String.format("unexpected exception for message id %s %s", message.getId(), e.toString()));

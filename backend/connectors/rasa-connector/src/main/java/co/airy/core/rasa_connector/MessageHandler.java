@@ -28,13 +28,14 @@ public class MessageHandler {
         producer.send(new ProducerRecord<>(applicationCommunicationMessages, message.getId(), message)).get();
     }
 
-    public void giveReply(Message message, MessageSendResponse response) throws Exception {
+    public void writeReplyToKafka(Message message, MessageSendResponse response) throws Exception {
         final Message reply = Message.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setChannelId(message.getChannelId())
                 //TODO: handle correctly the content for all sources
                 //      https://github.com/airyhq/cloud/issues/294
-                .setContent(mapper.writeValueAsString(Map.of("text", response.getText())))
+                // Write image URL instead of render it
+                .setContent(mapper.writeValueAsString(Map.of("text", (response.getText() != null) ? response.getText() : response.getImage())))
                 .setConversationId(message.getConversationId())
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)

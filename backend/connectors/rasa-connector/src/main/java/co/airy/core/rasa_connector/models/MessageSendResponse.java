@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class MessageSendResponse {
     private String recipient_id;
     private String text;
+    private String image;
 }

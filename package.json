@@ -10,7 +10,7 @@
     "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^28.1.6",
+    "@types/jest": "^28.1.7",
     "audio-recorder-polyfill": "^0.4.1",
     "camelcase-keys": "^7.0.2",
     "core-js": "3.24.1",

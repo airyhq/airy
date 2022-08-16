@@ -21,8 +21,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
 
-  console.log('Object.values(catalogList)', Object.entries(catalogList));
-
   useEffect(() => {
     listComponents();
     setPageTitle(catalogPageTitle);

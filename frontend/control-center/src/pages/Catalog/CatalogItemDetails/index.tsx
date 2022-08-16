@@ -159,7 +159,15 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
           <section className={styles.detailInfo}>
             <p className={styles.bolded}>{t('price')}:</p>
-            <button key={componentInfo?.price}>{t(componentInfo?.price)}</button>
+            <button key={componentInfo?.price}>
+              {componentInfo?.price === 'REQUEST ACCESS' ? (
+                <a href="mailto:componentsaccess@airy.co" target="_blank" rel="noreferrer">
+                  {t(componentInfo?.price)}
+                </a>
+              ) : (
+                t(componentInfo?.price)
+              )}
+            </button>
           </section>
 
           <section>

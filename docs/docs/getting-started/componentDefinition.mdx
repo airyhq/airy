@@ -1,13 +1,1 @@
-A component is a Helm Chart that can be installed on an Airy Cluster in order to extend its functionality.
-
-Components can be characterized by the functionality they enable:
-
-1. UI Components that provide new user interfaces in Airy.
-2. Connector Components that connect one or more third-party services with Airy to exchange data. 
-3. API Components that expose additional endpoints to Airy.
-
-:::note
-
-A Component can provide multiple functions (e.g., Connector & UI or UI & API) but usually has a single primary function. You can find a more detailed description of a specific component in the `description.yaml` file of the component in our [airy-components](https://github.com/airyhq/airy-components) respository.
-
-:::
+A component is a [Helm Chart](https://helm.sh/docs/topics/charts/) (a package of Kubernetes resources) that represents a functional unit in an Airy instance.

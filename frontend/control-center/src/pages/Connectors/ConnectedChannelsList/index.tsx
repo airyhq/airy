@@ -3,17 +3,13 @@ import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listChannels} from '../../../actions/channel';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
-
 import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
-
-import {Channel, Source} from 'model';
-
+import {Channel, ScreenDimensions, Source} from 'model';
 import {SearchField} from 'components';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
-
 import styles from './index.module.scss';
 import {
   cyConnectorsAddNewButton,
@@ -43,8 +39,12 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
-  const {listChannels} = props;
+type ConnectedChannelsListProps = {
+  offset?: number;
+} & ConnectedProps<typeof connector>;
+
+const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
+  const {listChannels, offset} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -57,23 +57,34 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
-  const listPageSize = 8;
+  const screenDimensions: ScreenDimensions = {height: screen.height, width: screen.width};
+  const ITEM_LINE_HEIGHT = 64;
+  const MARGIN_TOP = 128;
+  const PADDING_BOTTOM = 32;
+  const PAGINATION_HEIGHT = 54;
+  const ADDITIONAL_SPACE = 60;
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const pageSize = filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length;
   const [currentPage, setCurrentPage] = useState(1);
 
+  const listPageSize = Math.floor(
+    (screenDimensions.height - offset - MARGIN_TOP - PAGINATION_HEIGHT - PADDING_BOTTOM - ADDITIONAL_SPACE) /
+      ITEM_LINE_HEIGHT
+  );
+
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+    const firstPageIndex = (currentPage - 1) * listPageSize;
+    const lastPageIndex = firstPageIndex + listPageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, pageSize, channels.length]);
+  }, [currentPage, listPageSize, channels.length, filteredChannels.length]);
 
   useEffect(() => {
-    listChannels();
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
@@ -157,20 +168,11 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
           </button>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'space-between',
-          fontWeight: '700',
-          fontSize: '16px',
-          marginBottom: '24px',
-        }}
-      >
+      <div className={styles.columnTitle}>
         <span>{t('name')}</span>
         <span>{t('manage')}</span>
       </div>
-      <div className={styles.channelsList} data-cy={dataCyChannelList}>
+      <div data-cy={dataCyChannelList}>
         {filteredChannels.length > 0 ? (
           sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
             channel.metadata.name.toLowerCase()
@@ -189,7 +191,7 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
       <Pagination
         totalCount={filteredChannels.length}
         pageSize={listPageSize}
-        pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
+        pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
         currentPage={currentPage}
         onPageChange={page => setCurrentPage(page)}
         onSearch={searchText !== ''}

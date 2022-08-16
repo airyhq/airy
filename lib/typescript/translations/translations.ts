@@ -140,10 +140,14 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Disable',
+      disablingComponent: 'Disabling...',
+      disabledComponent: 'Disabled',
       disableComponentText: 'Are you sure you want to disable this component?',
-      Enabled: 'Enabled',
-      Enable: 'Enable',
-      NotConfigured: 'Not Configured',
+      enableComponent: 'Enable',
+      enabledComponent: 'Enabled',
+      enablingComponent: 'Enabling...',
+      enable: 'Enable',
+      notConfigured: 'Not Configured',
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
       restart: 'Restart',
       restartComponentUpdate: 'We will restart the component to apply your update.',
@@ -571,8 +575,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Deaktivieren',
+      disablingComponent: 'Deaktivieren...',
+      disabledComponent: 'Deaktiviert',
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
-      Enabled: 'Aktiviert',
+      enableComponent: 'Aktivieren',
+      enabledComponent: 'Aktiviert',
+      enablingComponent: 'Aktivieren...',
       Enable: 'Aktivieren',
       NotConfigured: 'Nicht konfiguriert',
       uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
@@ -994,8 +1002,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
+      disablingComponent: 'Désactiver...',
+      disabledComponent: 'Désactivé',
       disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
-      Enabled: 'Activé',
+      enableComponent: 'Activer',
+      enabledComponent: 'Activé',
+      enablingComponent: 'Activation...',
       Enable: 'Activer',
       NotConfigured: 'Non configuré',
       uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
@@ -1421,8 +1433,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Desactivar',
+      disablingComponent: 'Desactivar...',
+      disabledComponent: 'Discapacitados',
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
-      Enabled: 'Activado',
+      enableComponent: 'Activar',
+      enabledComponent: 'Activado',
+      enablingComponent: 'Activar...',
       Enable: 'Activar',
       NotConfigured: 'No configurado',
       uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',

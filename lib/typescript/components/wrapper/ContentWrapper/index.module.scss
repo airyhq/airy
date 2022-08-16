@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   margin: 88px 16px 0 191px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
 }
 
@@ -31,17 +30,16 @@
 
 .sideColumn {
   width: 196px;
-  height: 100%;
   position: absolute;
 }
 
 .transparentContent {
   background: var(--color-background-white);
   color: var(--color-text-contrast);
-  border-radius: 10px;
-  height: calc(100vh - 88px);
-  overflow-y: scroll;
-  overflow-x: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .leftOffset {

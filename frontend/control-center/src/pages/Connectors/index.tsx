@@ -46,7 +46,10 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     setSourcesInfo(getSourcesInfo());
     getConnectorsConfiguration();
-    if (Object.entries(catalogList).length === 0) listComponents();
+    if (Object.entries(catalogList).length === 0)
+      listComponents().catch((error: Error) => {
+        console.error(error);
+      });
     if (Object.entries(catalogList).length > 0)
       Object.entries(catalogList).map(component => {
         component[1].installed === true && setHasInstalledComponents(true);
@@ -85,6 +88,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                 (channelsBySource(infoItem.type).length > 0 &&
                   components &&
                   components[infoItem?.configKey] &&
+                  isInstalled &&
+                  connectors[infoItem.configKey] &&
                   infoItem.channel &&
                   isComponentInstalled(infoItem.repository, infoItem.componentName) && (
                     <ChannelCard

@@ -11,6 +11,7 @@ export * from './Metadata';
 export * from './Notification';
 export * from './Pagination';
 export * from './Source';
+export * from './Screen';
 export * from './SuggestedReply';
 export * from './Tag';
 export * from './Template';

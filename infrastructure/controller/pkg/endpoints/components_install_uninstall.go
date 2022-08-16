@@ -46,7 +46,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	chart_version, err := s.getVersion(r.Context())
+	chartVersion, err := s.getVersion(r.Context())
 	if err != nil {
 		klog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
@@ -60,7 +60,7 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		UpgradeCRDs: true,
 		Replace:     true,
 		Force:       true,
-		Version:     chart_version,
+		Version:     chartVersion,
 		ValuesYaml:  globals,
 	}
 

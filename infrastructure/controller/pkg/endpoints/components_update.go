@@ -39,7 +39,13 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	responseComponents.Components = make(map[string]bool)
 
 	for _, component := range requestComponents.Components {
-		if !s.isComponentInstalled(component.Name) {
+		componentInstalled, err := s.isComponentInstalled(component.Name)
+		if err != nil {
+			klog.Error("Unable to retrieve the status of the component:" + component.Name + "\nError:\n" + err.Error())
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		if !componentInstalled {
 			klog.Error("Trying to apply configuration for a component that is not installed: " + component.Name)
 			continue
 		}
@@ -50,8 +56,8 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		annotations := map[string]string{
 			"core.airy.co/enabled": strconv.FormatBool(component.Enabled),
 		}
-		applyErr := k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, annotations, s.clientSet, r.Context())
-		if applyErr != nil {
+		err = k8s.ApplyConfigMap(component.Name, s.namespace, payloads.ToCamelCase(component.Data), labels, annotations, s.clientSet, r.Context())
+		if err != nil {
 			klog.Error("Unable to apply configuration for component:" + component.Name + "\nError:\n" + err.Error())
 			responseComponents.Components[component.Name] = false
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -68,11 +74,11 @@ func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 //NOTE: Prevent the upload of a configmap if the component is not present
-func (s *ComponentsUpdate) isComponentInstalled(configName string) bool {
+func (s *ComponentsUpdate) isComponentInstalled(configName string) (bool, error) {
 	deployedCharts, err := k8s.GetInstalledComponents(context.TODO(), s.namespace, s.clientSet)
 	if err != nil {
 		klog.Error("Unable to get installed components:\n" + err.Error())
-		return false
+		return false, err
 	}
-	return deployedCharts[configName]
+	return deployedCharts[configName], nil
 }

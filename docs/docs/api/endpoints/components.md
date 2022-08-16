@@ -35,7 +35,7 @@ The list of the currently configured components is returned.
 
 ## Update
 
-Update the configuration of a list of components. The `data` section is optional
+Update the configuration of a list of components. The endpoint can accept configuration for multiple components at once. In a case when the configuration for a particular component cannot be applied (for example the component is not fully installed), that component will be omitted and the request will still return a `200`. This component will also not be in the response. The `data` section is optional.
 
 `POST /components.update`
 

@@ -36,6 +36,13 @@ export const CATALOG_INSTAGRAM_ROUTE = '/catalog/instagram';
 export const CATALOG_DIALOGFLOW_ROUTE = '/catalog/dialogflow';
 export const CATALOG_ZENDESK_ROUTE = '/catalog/zendesk';
 export const CATALOG_SALESFORCE_ROUTE = '/catalog/salesforce';
+export const CATALOG_CONGNIFY_ROUTE = '/catalog/congnify';
+export const CATALOG_AMELIA_ROUTE = '/catalog/amelia';
+export const CATALOG_FRONTEND_INBOX_ROUTE = '/catalog/frontend-inbox';
+export const CATALOG_RASA_ROUTE = '/catalog/rasa';
+export const CATALOG_WEBHOOKS_ROUTE = '/catalog/webhooks';
+export const CATALOG_MOBILE_ROUTE = '/catalog/mobile';
+export const CATALOG_VIBER_ROUTE = '/catalog/viber';
 
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONNECTED_ROUTE = '/inbox/connected';

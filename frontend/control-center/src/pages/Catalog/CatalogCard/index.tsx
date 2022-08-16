@@ -45,7 +45,7 @@ export const getDescriptionSourceName = (name: string, displayName: string) => {
 
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
-  const isInstalled = component[componentInfo?.name].installed;
+  const isInstalled = component[componentInfo?.name]?.installed || component?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);

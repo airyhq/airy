@@ -318,6 +318,27 @@ const resources = {
       securityToken: 'Security Token',
       yourSalesforceSecurityToken: 'Your Salesforce Security Token',
 
+      //Congnigy
+      congnigyDescription: 'A low-code UI for conversational AI',
+
+      //Rasa
+      rasaDescription: 'Open source conversational AI.',
+
+      //webhooks
+      webhooksDescription: 'Get notified when events happen.',
+
+      //amelia
+      ameliaDescription: 'An intelligent cognitive conversational chatbot.',
+
+      //mobile
+      mobileDescription: 'An Airy mobile app for your Inbox.',
+
+      //viber
+      viberDescription: 'The messaging app connecting over a billion people worldwide.',
+
+      //Inbox
+      frontendinboxDescription: 'An Inbox to view and organize all your conversations.',
+
       //Facebook Messenger
       connectMessenger: 'Connect Messenger',
       facebookConfiguration: 'The Facebook source requires the following configuration:',
@@ -1672,6 +1693,7 @@ const resources = {
       price: 'Precio',
       Free: 'Gratis',
       Paid: 'Premium',
+      ['REQUEST ACCESS']: 'REQUEST ACCESS',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

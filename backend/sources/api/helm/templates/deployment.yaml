@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: .Values.name
+  name: "{{ .Values.name }}"
   labels:
-    app: .Values.name
+    app: "{{ .Values.name }}"
     type: sources
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
@@ -12,7 +12,7 @@ spec:
   replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
   selector:
     matchLabels:
-      app: .Values.name
+      app: "{{ .Values.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: .Values.name
+        app: "{{ .Values.name }}"
     spec:
       containers:
       - name: app

@@ -15,7 +15,7 @@ import ComponentDefinition from '../getting-started/componentDefinition.mdx'
 
 <ComponentDefinition/>
 
-With every [installation of Airy](../getting-started/installation/introduction.md) we bundle a default components to get you started:
+With every [installation of Airy](../getting-started/installation/introduction.md) we bundle a set of default components to get you started:
 
 1. airy-controller
 2. api-admin
@@ -24,7 +24,7 @@ With every [installation of Airy](../getting-started/installation/introduction.m
 5. frontend-inbox
 6. frontend-control-center
 
-Airy also provides a marketplace of _plug and play_ components that extend the functionality of your Airy instance. You can install them through our catalog in the Control Center UI of your Airy Instance.
+Airy also provides a marketplace of _plug and play_ components that extend the functionality of your Airy instance. You can install them through the catalog page in the Control Center UI of your Airy Instance.
 
 In the following, we will explain how to create, update and store components.
 

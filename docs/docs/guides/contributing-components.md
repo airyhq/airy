@@ -15,7 +15,7 @@ import ComponentDefinition from '../getting-started/componentDefinition.mdx'
 
 <ComponentDefinition/>
 
-Airy components are ready for _plug and play_. With every [installation of Airy](../getting-started/installation/introduction.md) we bundle a few necessary components to get you started:
+With every [installation of Airy](../getting-started/installation/introduction.md) we bundle a default components to get you started:
 
 1. airy-controller
 2. api-admin
@@ -24,7 +24,8 @@ Airy components are ready for _plug and play_. With every [installation of Airy]
 5. frontend-inbox
 6. frontend-control-center
 
-Airy's real value comes from the additional components you install through our catalog in the Control Center UI of your Airy Instance.
+Airy also provides a marketplace of _plug and play_ components that extend the functionality of your Airy instance. You can install them through our catalog in the Control Center UI of your Airy Instance.
+
 In the following, we will explain how to create, update and store components.
 
 The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up of directories where each directory contains a component's Helm package its description.

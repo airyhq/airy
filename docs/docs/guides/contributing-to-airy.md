@@ -1,6 +1,6 @@
 ---
-title: Contributing
-sidebar_label: Contributing
+title: Contributing to Airy
+sidebar_label: Contributing to Airy
 ---
 
 We ❤️ every form of contribution. The following document aims to provide enough

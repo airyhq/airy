@@ -22,9 +22,15 @@ Airy Core comes with all the components you need for a fully-featured conversati
 
 <Image lightModePath="img/getting-started/components-light.png" darkModePath="img/getting-started/components-dark.png"/>
 
+## Definition
+
+import ComponentDefinition from '../getting-started/componentDefinition.mdx'
+
+<ComponentDefinition/>
+
 ## Component types
 
-Airy Core contains the following core components:
+Airy Core contains the following components:
 
 <ButtonBoxList>
 <ButtonBox

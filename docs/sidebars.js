@@ -115,7 +115,8 @@ module.exports = {
     },
     {
       '📚 Guides': [
-        'guides/contributing',
+        'guides/contributing-to-airy',
+        'guides/contributing-components',
         'guides/analytics-demo',
         'guides/monitoring',
         'guides/backup',

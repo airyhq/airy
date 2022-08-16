@@ -8,7 +8,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-Airy Core allows its [users](#user) to process messaging data from a variety of
+Airy allows its [users](#user) to process messaging data from a variety of
 [sources](#source), which are integrated via [source providers](#provider).
 Users connect sources via [channels](#channel). Once the channel is connected,
 Airy Core ingests source data and transforms them into
@@ -27,6 +27,12 @@ is the right place. Furthermore, it is worth underlining that the Avro data
 model and glossary do not correspond exactly. The former is the exact machine
 representation of the data we store and the latter is a conceptual artifact we
 created to discuss and solve problems.
+
+## Component
+
+import ComponentDefinition from './componentDefinition.mdx'
+
+<ComponentDefinition/>
 
 ## Channel
 

@@ -410,6 +410,8 @@ const resources = {
       installed: 'Installed',
       notInstalled: 'Not Installed',
 
+      noChannelsConnected: 'This connector does not have any connected channels yet.',
+
       //Catalog
       categories: 'Categories',
       availableFor: 'Available for',
@@ -867,6 +869,8 @@ const resources = {
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
 
+      noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
+
       //Catalog
       categories: 'Kategorien',
       availableFor: 'Verfügbar für',
@@ -1315,6 +1319,8 @@ const resources = {
       noConnectorsFoundMore: 'et explorer davantage.',
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
+
+      noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
 
       //Catalog
       categories: 'Catégories',
@@ -1768,6 +1774,8 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
+
+      noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
 
       //Catalog
       categories: 'Categorías',

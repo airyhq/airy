@@ -68,6 +68,8 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const areConnectedChannels = channels.length > 0 && filteredChannels.length > 0;
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const listPageSize = Math.floor(
@@ -169,7 +171,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         </div>
       </div>
       <div className={styles.columnTitle}>
-        <span>{t('name')}</span>
+        <span>{areConnectedChannels ? t('name') : ''}</span>
         <span>{t('manage')}</span>
       </div>
       <div data-cy={dataCyChannelList}>
@@ -181,21 +183,28 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
               <ChannelsListItem channel={channel} />
             </div>
           ))
-        ) : (
+        ) : channels.length > 0 ? (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
             <p>{t('noResultsTerm')}</p>
           </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
+          </div>
         )}
       </div>
-      <Pagination
-        totalCount={filteredChannels.length}
-        pageSize={listPageSize}
-        pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
-        currentPage={currentPage}
-        onPageChange={page => setCurrentPage(page)}
-        onSearch={searchText !== ''}
-      />
+
+      {areConnectedChannels && (
+        <Pagination
+          totalCount={filteredChannels.length}
+          pageSize={listPageSize}
+          pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
+          currentPage={currentPage}
+          onPageChange={page => setCurrentPage(page)}
+          onSearch={searchText !== ''}
+        />
+      )}
     </div>
   );
 };

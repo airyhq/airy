@@ -208,7 +208,7 @@ export const CustomiseSection = ({channelId, host, setChatpluginConfig}: Customi
               </>
             )}
             <a
-              href={`https://staging.airy.co/chatplugin/ui/example?channel_id=${channelId}`}
+              href={`https://${location.host}/chatplugin/ui/example?channel_id=${channelId}`}
               target="_blank"
               rel="noreferrer"
             >

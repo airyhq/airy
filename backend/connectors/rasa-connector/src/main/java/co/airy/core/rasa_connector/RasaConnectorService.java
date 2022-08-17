@@ -7,12 +7,7 @@ import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.Feign;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
-import feign.okhttp.OkHttpClient;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +17,15 @@ import java.util.Optional;
 @Service
 public class RasaConnectorService {
     //private final apiToken;
-    private String rasaRestUrl;
     private final RasaClient rasaClient;
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger log = AiryLoggerFactory.getLogger(RasaConnectorService.class);
     private final MessageHandler messageHandler;
     RasaConnectorService(MessageHandler messageHandler,
-                         @Value("${rasa.rest-webhook-url}") String rasaRestUrl){
-        this.rasaClient = bootstrapRasaClient(rasaRestUrl);
+                         RasaClient rasaClient){
+        this.rasaClient = rasaClient;
         this.messageHandler = messageHandler;
-        this.rasaRestUrl = rasaRestUrl;
     }
 
     @Async("threadPoolTaskExecutor")
@@ -43,30 +36,20 @@ public class RasaConnectorService {
                     .sender(message.getId())
                     .build());
             // Unpack multiple response(s)
-            for (MessageSendResponse msg: messageResp) {
+            for (MessageSendResponse reply: messageResp) {
                 try {
-                    messageHandler.writeReplyToKafka(message, msg);
+                    messageHandler.writeReplyToKafka(message, reply);
                 }
                 catch (Exception e){
-                    log.error(String.format("could not handle response for non-text data type for message id %s %s", msg.toString(), e.toString()));
+                    log.error(String.format("could not handle response for non-text data type for message id %s %s", reply.toString(), e.toString()));
                 }
             }
         }
         catch (Exception e){
-            log.error(String.format("unexpected exception for message id %s %s", message.getId(), e.toString()));
+            log.error(String.format("could not call the Rasa webhook for message id %s %s", message.getId(), e.toString()));
         }
     }
     // Add API token later
-    private RasaClient bootstrapRasaClient(String rasaRestUrl) {
-        return Feign.builder()
-                .client(new OkHttpClient())
-                .encoder(new JacksonEncoder())
-                .decoder(new JacksonDecoder())
-                .logger(new feign.Logger.ErrorLogger())
-                .logLevel(feign.Logger.Level.FULL)
-                .target(RasaClient.class, rasaRestUrl);
-    }
-
     private String getTextFromContent(String content) {
         String text = "";
 

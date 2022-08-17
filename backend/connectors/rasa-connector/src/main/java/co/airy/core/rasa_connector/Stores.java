@@ -4,6 +4,7 @@ package co.airy.core.rasa_connector;
 import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -34,7 +35,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact() == true)
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
                 .peek((messageId, message) -> rasaConnectorService.send(message));
 
         streams.start(builder.build(), appId);
@@ -52,4 +53,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return Health.up().build();
     }
 
+    // visible for testing
+    KafkaStreams.State getStreamState() {
+        return streams.state();
+    }
 }

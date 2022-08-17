@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, getSourceForComponent, NotificationModel} from 'model';
+import {ComponentInfo, NotificationModel, Source} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {installComponent} from '../../../actions/catalog';
@@ -37,11 +37,7 @@ export const DescriptionComponent = (props: {description: string}) => {
   return <>{t(description)}</>;
 };
 
-export const getDescriptionSourceName = (name: string, displayName: string) => {
-  if (displayName.includes('SMS')) return 'twiliosms';
-  if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
-  return getSourceForComponent(name)?.replace('.', '');
-};
+export const getDescriptionSourceName = (source: Source) => source.replace('.', '');
 
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
@@ -137,7 +133,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           {componentInfo.name && (
             <p>
               <DescriptionComponent
-                description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
+                description={getDescriptionSourceName(componentInfo.source) + 'Description'}
               />
             </p>
           )}

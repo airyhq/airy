@@ -6,12 +6,11 @@ import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.s
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getSourcesInfo} from '../../../components/SourceInfo';
-import {getComponentName} from '../../../services';
-import {ConfigServices, getSourceForComponent} from 'model';
+import {ConfigServices, Source} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
-import styles from './index.module.scss';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import styles from './index.module.scss';
 
 type ComponentInfoProps = {
   healthy: boolean;
@@ -20,6 +19,7 @@ type ComponentInfoProps = {
   isExpanded: boolean;
   enabled?: boolean;
   setIsPopUpOpen: (value: boolean) => void;
+  source?: Source;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -39,10 +39,10 @@ const isConfigurableConnector = (name: string) => {
 };
 
 const ItemInfo = (props: ComponentInfoProps) => {
-  const {healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
+  const {source, healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
   const connectors = useSelector((state: StateModel) => state.data.connector);
-  const [channelSource] = useState(itemName && getSourceForComponent(itemName));
-  const [componentName] = useState(itemName && getComponentName(itemName));
+  const [channelSource] = useState(source);
+  const [componentName] = useState(itemName);
   const [componentEnabled, setComponentEnabled] = useState(enabled);
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
@@ -50,6 +50,9 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
   const isComponentConfigured =
     connectors[itemName] && isConfigurableConnector(itemName) && Object.keys(connectors[itemName]).length > 0;
+
+  console.log('source', source);
+  console.log('channelSource', channelSource);
 
   //status
   const needsConfig =

@@ -1,5 +1,3 @@
-import {getSourceForComponent} from 'model';
-
 export const capitalizeTitle = (str: string) => {
   return str.split(' ').map(capitalize).join(' ');
 };
@@ -16,21 +14,6 @@ const formatName = (str: string) => {
     )
     .join(' ');
   return capitalizeTitle(name);
-};
-
-export const getComponentName = (itemName: string) => {
-  if (itemName.includes('frontend-ui')) {
-    return 'Airy Inbox';
-  }
-  if (getSourceForComponent(itemName) && !itemName.includes('enterprise')) {
-    return formatName(itemName);
-  }
-
-  const formattedComponentName = itemName
-    .split('-')
-    .filter(element => element !== 'sources' && element !== 'connector' && element !== 'frontend')
-    .join(' ');
-  return capitalizeTitle(formattedComponentName);
 };
 
 export const removePrefix = (name: string) => name.split('/').pop();

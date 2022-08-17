@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {Source} from 'model';
 import ItemInfo from './ItemInfo';
 import styles from './index.module.scss';
 
@@ -7,10 +8,11 @@ type ComponentsListProps = {
   componentName: string;
   services: {name: string; healthy: boolean}[];
   enabled: boolean;
+  source: Source;
 };
 
 export const ComponentListItem = (props: ComponentsListProps) => {
-  const {healthy, componentName, enabled, services} = props;
+  const {healthy, componentName, source, enabled, services} = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
@@ -41,6 +43,7 @@ export const ComponentListItem = (props: ComponentsListProps) => {
         isExpanded={isExpanded}
         enabled={enabled}
         setIsPopUpOpen={setIsPopUpOpen}
+        source={source}
       />
 
       {services.map((service, index) => (

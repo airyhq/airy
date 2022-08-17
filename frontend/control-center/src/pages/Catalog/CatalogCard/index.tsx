@@ -11,7 +11,7 @@ import {
   getConnectedRouteForComponent,
   getNewChannelRouteForComponent,
   getCatalogProductRouteForComponent,
-} from '../getRouteForCard';
+} from '../../../services/getRouteForCard';
 import styles from './index.module.scss';
 import {StateModel} from '../../../reducers';
 

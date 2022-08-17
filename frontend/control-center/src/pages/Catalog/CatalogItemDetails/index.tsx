@@ -9,7 +9,7 @@ import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} f
 import {CATALOG_ROUTE} from '../../../routes/routes';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {getNewChannelRouteForComponent} from '../getRouteForCard';
+import {getNewChannelRouteForComponent} from '../../../services/getRouteForCard';
 import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import styles from './index.module.scss';
 import {StateModel} from '../../../reducers';

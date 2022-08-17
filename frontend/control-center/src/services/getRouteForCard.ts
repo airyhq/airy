@@ -33,7 +33,7 @@ import {
   CATALOG_WEBHOOKS_ROUTE,
   CATALOG_MOBILE_ROUTE,
   CATALOG_VIBER_ROUTE,
-} from '../../routes/routes';
+} from '../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
   switch (displayName) {

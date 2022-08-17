@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {SourceInfo} from '../SourceInfo';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {CONNECTORS_ROUTE} from '../../routes/routes';
@@ -9,6 +8,10 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
 import {ComponentStatus} from '../../pages/Connectors';
+import {
+  getNewChannelRouteForComponent,
+} from '../../services/getRouteForCard';
+import {getChannelAvatar} from '../../components/ChannelAvatar';
 import styles from './index.module.scss';
 
 export enum InfoCardStyle {
@@ -17,7 +20,7 @@ export enum InfoCardStyle {
 }
 
 type InfoCardProps = {
-  sourceInfo: SourceInfo;
+  componentInfo: any;
   addChannelAction: () => void;
   installed: boolean;
   componentStatus?: ComponentStatus;
@@ -32,7 +35,7 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const InfoCard = (props: InfoCardProps) => {
-  const {sourceInfo, addChannelAction, installed, style, uninstallComponent, componentStatus} = props;
+  const {componentInfo, addChannelAction, installed, style, uninstallComponent, componentStatus} = props;
   const [isInstalled, setIsInstalled] = useState(installed);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -41,7 +44,7 @@ const InfoCard = (props: InfoCardProps) => {
   const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
 
   useEffect(() => {
-    const title = isInstalled ? t('uninstall') + ' ' + sourceInfo.title : sourceInfo.title + ' ' + t('installed');
+    const title = isInstalled ? t('uninstall') + ' ' + componentInfo.displayName : componentInfo.displayName + ' ' + t('installed');
     setModalTitle(title);
   }, [isInstalled]);
 
@@ -56,16 +59,20 @@ const InfoCard = (props: InfoCardProps) => {
   };
 
   const confirmUninstall = () => {
+<<<<<<< HEAD
     uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`}).catch((error: Error) => {
       console.error(error);
     });
+=======
+    uninstallComponent({name: componentInfo.name});
+>>>>>>> 638ddfad (clean-up wip)
 
     setIsModalVisible(false);
     toggleInstallation();
   };
 
   const handleCardClick = () => {
-    navigate(sourceInfo.newChannelRoute);
+    navigate(getNewChannelRouteForComponent(componentInfo.displayName));
   };
 
   return (
@@ -95,7 +102,7 @@ const InfoCard = (props: InfoCardProps) => {
           ${style === InfoCardStyle.expanded && styles.isExpandedLogo}
         `}
         >
-          {sourceInfo.image}
+          {getChannelAvatar(componentInfo.source)}
         </div>
         <div
           className={`
@@ -103,7 +110,7 @@ const InfoCard = (props: InfoCardProps) => {
           ${style === InfoCardStyle.expanded && styles.isExpandedDetails}
         `}
         >
-          <h1>{sourceInfo.title}</h1>
+          <h1>{componentInfo.displayName}</h1>
         </div>
       </div>
 

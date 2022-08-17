@@ -25,7 +25,8 @@ export const prettifySource = (source: string) =>
     .map(word => `${word[0].toUpperCase()}${word.slice(1)}`)
     .join(' ');
 
-export const getSourceForComponent = (item: string) => {
+
+export const getSourceForComponent = (item: string, displayName?: string) => {
   let formattedItem;
 
   if (item.includes('airy-core') || item.includes('airy-enterprise')) {
@@ -34,13 +35,18 @@ export const getSourceForComponent = (item: string) => {
     formattedItem = item;
   }
 
+  console.log('formattedItem', formattedItem);
+
   const itemArr = formattedItem
     .split('-')
     .filter(element => element !== 'enterprise' && element !== 'sources' && element !== 'connector');
+    console.log('itemArr', itemArr);
   let componentName = itemArr.join(' ').replace(/ /g, '');
   if (componentName === 'chatplugin') componentName = 'chatPlugin';
   if (componentName === 'whatsappbusinesscloud') componentName = 'twilioWhatsApp';
   if (componentName === 'salesforcecontactsingestion') componentName = 'salesforce';
+
+  console.log('SOURCE FOR componentName', componentName);
 
   return Source[componentName];
 };

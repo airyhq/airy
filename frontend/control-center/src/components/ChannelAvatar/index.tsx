@@ -6,7 +6,7 @@ import {ReactComponent as FacebookAvatar} from 'assets/images/icons/facebookMess
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyLogo.svg';
 import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as TwilioAvatar} from 'assets/images/icons/twilioLogo.svg';
-import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberLogoFilled.svg';
+import {ReactComponent as ViberAvatar} from 'assets/images/icons/viber.svg';
 import {ReactComponent as ZendeskAvatar} from 'assets/images/icons/zendeskLogo.svg';
 import {ReactComponent as DialogflowAvatar} from 'assets/images/icons/dialogflowLogo.svg';
 import {ReactComponent as SalesforceAvatar} from 'assets/images/icons/salesforceLogo.svg';

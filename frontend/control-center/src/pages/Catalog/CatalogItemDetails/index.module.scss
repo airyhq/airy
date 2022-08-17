@@ -91,6 +91,10 @@
   margin-bottom: 15px;
   display: flex;
   align-items: center;
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .installButton {

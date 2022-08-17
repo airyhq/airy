@@ -28,16 +28,6 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const formatName = (name: string) => {
-  if (name?.includes('enterprise')) {
-    name = name.replace('enterprise-', '');
-  }
-  if (name?.includes('sources')) {
-    name = name.replace('sources-', '');
-  }
-  return name;
-};
-
 const isConfigurableConnector = (name: string) => {
   let isConfigurable = false;
 
@@ -59,9 +49,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const {t} = useTranslation();
 
   const isComponentConfigured =
-    connectors[formatName(itemName)] &&
-    isConfigurableConnector(itemName) &&
-    Object.keys(connectors[formatName(itemName)]).length > 0;
+    connectors[itemName] && isConfigurableConnector(itemName) && Object.keys(connectors[itemName]).length > 0;
 
   //status
   const needsConfig =

@@ -36,10 +36,10 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            "@com_github_airyhq_airy_dev//backend:base_test",
-            "@com_github_airyhq_airy_dev//lib/java/test",
-            "@com_github_airyhq_airy_dev//lib/java/kafka/test:kafka-test",
-            "@com_github_airyhq_airy_dev//lib/java/spring/test:spring-test",
+            "//backend:base_test",
+            "//lib/java/test",
+            "//lib/java/kafka/test:kafka-test",
+            "//lib/java/spring/test:spring-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

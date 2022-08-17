@@ -6,10 +6,13 @@ import {ReactComponent as FacebookAvatar} from 'assets/images/icons/facebookMess
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airyLogo.svg';
 import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagramLogoFilled.svg';
 import {ReactComponent as TwilioAvatar} from 'assets/images/icons/twilioLogo.svg';
-import {ReactComponent as ViberAvatar} from 'assets/images/icons/viberLogoFilled.svg';
+import {ReactComponent as ViberAvatar} from 'assets/images/icons/viber.svg';
 import {ReactComponent as ZendeskAvatar} from 'assets/images/icons/zendeskLogo.svg';
 import {ReactComponent as DialogflowAvatar} from 'assets/images/icons/dialogflowLogo.svg';
 import {ReactComponent as SalesforceAvatar} from 'assets/images/icons/salesforceLogo.svg';
+import {ReactComponent as CongnigyAvatar} from 'assets/images/icons/congnigyLogo.svg';
+import {ReactComponent as RasaAvatar} from 'assets/images/icons/rasaLogo.svg';
+import {ReactComponent as AmeliaAvatar} from 'assets/images/icons/ameliaLogo.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -61,6 +64,12 @@ export const getChannelAvatar = (source: string) => {
     case Source.salesforce:
     case 'Salesforce':
       return <SalesforceAvatar />;
+    case 'Congnigy':
+      return <CongnigyAvatar />;
+    case 'Rasa':
+      return <RasaAvatar />;
+    case 'Amelia':
+      return <AmeliaAvatar />;
     default:
       return <AiryAvatar />;
   }

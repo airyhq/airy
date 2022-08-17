@@ -10,6 +10,12 @@ export enum Source {
   zendesk = 'zendesk',
   dialogflow = 'dialogflow',
   salesforce = 'salesforce',
+  congnigy = 'congnigy',
+  rasa = 'rasa',
+  webhooks = 'webhooks',
+  amelia = 'amelia',
+  frontendinbox = 'frontendinbox',
+  mobile = 'mobile',
 }
 
 export const prettifySource = (source: string) =>
@@ -34,5 +40,6 @@ export const getSourceForComponent = (item: string) => {
   if (componentName === 'chatplugin') componentName = 'chatPlugin';
   if (componentName === 'whatsappbusinesscloud') componentName = 'twilioWhatsApp';
   if (componentName === 'salesforcecontactsingestion') componentName = 'salesforce';
+
   return Source[componentName];
 };

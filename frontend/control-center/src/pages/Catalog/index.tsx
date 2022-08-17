@@ -4,7 +4,7 @@ import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listComponents} from '../../actions/catalog';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
-import {ComponentInfo, getSourceForComponent} from 'model';
+import {ComponentInfo} from 'model';
 import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
 
@@ -44,7 +44,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.catalogListContainer}>
         {orderedCatalogList &&
           orderedCatalogList.map((infoItem: ComponentInfo) => {
-            if (infoItem?.name && !infoItem.name.includes('viber') && getSourceForComponent(infoItem.name)) {
+            if (infoItem?.name && infoItem?.displayName) {
               return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
             }
           })}

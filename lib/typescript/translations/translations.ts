@@ -379,6 +379,27 @@ const resources = {
       connectWhatsappNumber: 'Connect Whatsapp Number',
       updateWhatsappNumber: 'Update Whatsapp Number',
 
+      //Congnigy
+      congnigyDescription: 'A low-code UI for conversational AI.',
+
+      //Rasa
+      rasaDescription: 'Open source conversational AI.',
+
+      //webhooks
+      webhooksDescription: 'Get notified when events happen.',
+
+      //amelia
+      ameliaDescription: 'An intelligent cognitive conversational chatbot.',
+
+      //mobile
+      mobileDescription: 'An Airy mobile app for your Inbox.',
+
+      //viber
+      viberDescription: 'The messaging app connecting over a billion people worldwide.',
+
+      //Inbox
+      frontendinboxDescription: 'An Inbox to view and organize all your conversations.',
+
       //Connectors
       connectors: 'Connectors',
       noResults: 'Result not found.',
@@ -395,6 +416,7 @@ const resources = {
       price: 'Price',
       Free: 'Free',
       Paid: 'Paid',
+      ['REQUEST ACCESS']: 'REQUEST ACCESS',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -757,6 +779,27 @@ const resources = {
       securityToken: 'Sicherheitstoken',
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
+      //Congnigy
+      congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+
+      //Rasa
+      rasaDescription: 'Open-Source-Gesprächs-KI.',
+
+      //webhooks
+      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+
+      //amelia
+      ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
+
+      //mobile
+      mobileDescription: 'Eine mobile Airy-App für Ihren Posteingang.',
+
+      //viber
+      viberDescription: 'Die Messaging-App, die über eine Milliarde Menschen weltweit verbindet.',
+
+      //Inbox
+      frontendinboxDescription: 'Ein Inbox zum Anzeigen und Organisieren aller Ihrer Konversationen.',
+
       //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
       facebookConfiguration: 'Die Facebook-Quelle erfordert die folgende Konfiguration:',
@@ -830,6 +873,7 @@ const resources = {
       price: 'Preis',
       Free: 'Kostenlos',
       Paid: 'Kostenpflichtig',
+      ['REQUEST ACCESS']: 'ANFRAGE ZUGANG',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1241,6 +1285,27 @@ const resources = {
       connectWhatsappNumber: 'Connecter le numéro Whatsapp',
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
+      //Congnigy
+      congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
+
+      //Rasa
+      rasaDescription: 'IA conversationnelle open source.',
+
+      //webhooks
+      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+
+      //amelia
+      ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
+
+      //mobile
+      mobileDescription: 'Une application mobile Airy pour votre boîte de réception.',
+
+      //viber
+      viberDescription: "L'application de messagerie connectant plus d'un milliard de personnes dans le monde.",
+
+      //Inbox
+      frontendinboxDescription: 'Une boîte de réception pour afficher et organiser toutes vos conversations.',
+
       //Connectors
       connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
@@ -1257,6 +1322,7 @@ const resources = {
       price: 'Prix',
       Free: 'Gratuit',
       Paid: 'Payant',
+      ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1672,6 +1738,27 @@ const resources = {
       connectWhatsappNumber: 'Conectar el número de Whatsapp',
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
+      //Congnigy
+      congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+
+      //Rasa
+      rasaDescription: 'IA conversacional Open Source.',
+
+      //webhooks
+      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+
+      //amelia
+      ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',
+
+      //mobile
+      mobileDescription: 'Una aplicación móvil Airy para su bandeja de entrada.',
+
+      //viber
+      viberDescription: 'La aplicación de mensajería que conecta a más de mil millones de personas en todo el mundo.',
+
+      //Inbox
+      frontendinboxDescription: 'Una bandeja de entrada para ver y organizar todas tus conversaciones.',
+
       //Connectors
       connectors: 'Conectores',
       noResults: 'Resultado no encontrado.',
@@ -1688,6 +1775,7 @@ const resources = {
       price: 'Precio',
       Free: 'Gratis',
       Paid: 'Premium',
+      ['REQUEST ACCESS']: 'SOLICITAR ACCESO',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

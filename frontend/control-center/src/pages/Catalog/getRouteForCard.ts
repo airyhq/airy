@@ -26,6 +26,13 @@ import {
   CATALOG_DIALOGFLOW_ROUTE,
   CATALOG_ZENDESK_ROUTE,
   CATALOG_SALESFORCE_ROUTE,
+  CATALOG_CONGNIFY_ROUTE,
+  CATALOG_AMELIA_ROUTE,
+  CATALOG_FRONTEND_INBOX_ROUTE,
+  CATALOG_RASA_ROUTE,
+  CATALOG_WEBHOOKS_ROUTE,
+  CATALOG_MOBILE_ROUTE,
+  CATALOG_VIBER_ROUTE,
 } from '../../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
@@ -100,5 +107,19 @@ export const getCatalogProductRouteForComponent = (displayName: string) => {
       return CATALOG_SALESFORCE_ROUTE;
     case 'Zendesk':
       return CATALOG_ZENDESK_ROUTE;
+    case 'Congnigy':
+      return CATALOG_CONGNIFY_ROUTE;
+    case 'Amelia':
+      return CATALOG_AMELIA_ROUTE;
+    case 'Inbox':
+      return CATALOG_FRONTEND_INBOX_ROUTE;
+    case 'Rasa':
+      return CATALOG_RASA_ROUTE;
+    case 'Mobile':
+      return CATALOG_MOBILE_ROUTE;
+    case 'Webhooks':
+      return CATALOG_WEBHOOKS_ROUTE;
+    case 'Viber':
+      return CATALOG_VIBER_ROUTE;
   }
 };

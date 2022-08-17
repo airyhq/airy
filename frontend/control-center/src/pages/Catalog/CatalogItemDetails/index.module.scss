@@ -88,14 +88,19 @@
 .logoIcon {
   width: 120px;
   height: 125px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
 }
 
 .installButton {
   width: 100%;
   height: 50px;
-  margin-top: 10px;
+  margin-top: 15px;
   @include font-base;
 }
 

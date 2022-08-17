@@ -6,9 +6,9 @@
   background: var(--color-background-white);
   color: var(--color-text-contrast);
   display: block;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   width: 100%;
-  min-height: calc(100vh - 170px);
 }
 
 .headlineRow {
@@ -94,6 +94,15 @@
 .channelRow {
   display: flex;
   flex-direction: row;
+}
+
+.columnTitle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 24px;
 }
 
 .connectedHint {

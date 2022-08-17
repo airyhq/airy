@@ -22,7 +22,9 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const catalogPageTitle = t('Catalog');
 
   useEffect(() => {
-    listComponents();
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
     setPageTitle(catalogPageTitle);
   }, []);
 

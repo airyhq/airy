@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
@@ -76,12 +76,20 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
+  const [isEnabling, setIsEnabling] = useState(false);
+  const [isDisabling, setIsDisabling] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
   const [backTitle, setBackTitle] = useState('Connectors');
   const [backRoute, setBackRoute] = useState('');
+  const pageContentRef = useRef(null);
+  const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
   const {t} = useTranslation();
   const isInstalled = true;
+
+  useLayoutEffect(() => {
+    setOffset(pageContentRef?.current?.offsetTop);
+  }, []);
 
   useEffect(() => {
     if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
@@ -119,7 +127,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     if (config && connectorInfo) {
       setIsEnabled(config?.components[connectorInfo?.configKey]?.enabled);
     }
-  }, [config, connectorInfo]);
+  }, [config, connectorInfo, components]);
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
@@ -248,14 +256,14 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       return <TwilioWhatsappConnect />;
     }
 
-    return <ConnectedChannelsList />;
+    return <ConnectedChannelsList offset={offset} />;
   };
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
+    isEnabled ? setIsDisabling(true) : setIsEnabling(true);
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
       .then(() => {
-        setIsEnabled(!isEnabled);
         setNotification({
           show: true,
           successful: true,
@@ -268,32 +276,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           successful: false,
           text: isEnabled ? t('failedDisabled') : t('failedEnabled'),
         });
+      })
+      .finally(() => {
+        isEnabled ? setIsDisabling(false) : setIsEnabling(false);
       });
   };
 
   const closeConfigurationModal = () => {
     setConfigurationModal(false);
-    if (!isEnabled) {
-      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]})
-        .then(() => {
-          setIsEnabled(true);
-          setNotification({
-            show: true,
-            successful: true,
-            text: t('successfullyEnabled'),
-          });
-        })
-        .catch(() => {
-          setNotification({
-            show: true,
-            successful: false,
-            text: t('failedEnabled'),
-          });
-        });
-    }
   };
 
-  const openModal = () => {
+  const openConfigurationModal = () => {
     setConfigurationModal(true);
   };
 
@@ -346,10 +339,17 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                     <Button
                       styleVariant="small"
                       type="button"
-                      onClick={openModal}
+                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
+                      disabled={isEnabling || isDisabling}
                       style={{padding: '20px 40px', marginTop: '-12px'}}
                     >
-                      {isEnabled ? t('disableComponent') : t('Enable')}
+                      {isEnabling
+                        ? t('enablingComponent')
+                        : isDisabling
+                        ? t('disablingComponent')
+                        : isEnabled
+                        ? t('disableComponent')
+                        : t('enableComponent')}
                     </Button>
                   )}
                 </div>
@@ -370,13 +370,14 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             <div className={styles.line} />
           </div>
         )}
-        <div className={connector !== Source.chatPlugin ? styles.pageContentContainer : ''}>
+        <div ref={pageContentRef} className={connector !== Source.chatPlugin ? styles.pageContentContainer : ''}>
           <PageContent />
         </div>
       </div>
 
       {notification?.show && (
         <NotificationComponent
+          type="sticky"
           show={notification.show}
           successful={notification.successful}
           text={notification.text}
@@ -390,7 +391,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={
-            isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
+            isEnabled
+              ? t('disableComponent') + ' ' + connectorInfo?.title
+              : connectorInfo?.title + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
           headerClassName={styles.headerModal}

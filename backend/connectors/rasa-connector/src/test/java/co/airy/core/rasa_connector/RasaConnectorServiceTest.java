@@ -3,7 +3,6 @@ package co.airy.core.rasa_connector;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.rasa_connector.models.MessageSend;
-import co.airy.core.rasa_connector.models.MessageSendResponse;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,8 +24,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import static co.airy.test.Timing.retryOnException;
@@ -35,7 +31,6 @@ import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
@@ -75,20 +70,17 @@ public class RasaConnectorServiceTest {
     @Test
     public void callsRasaClientSendWhenMessageIsValid() throws Exception {
         //given
-        sendMessage("Hello from Airy");
+        String textMessage = "Hello from Airy";
+        sendMessage(textMessage);
         //when
-        List<MessageSendResponse> msgRespList = Arrays.asList(MessageSendResponse.builder().recipient_id("1").text("Hello there from Rasa").build());
-        doReturn(msgRespList).when(rasaClient).sendMessage(Mockito.any(MessageSend.class));
-        // then
         ArgumentCaptor<MessageSend> msgArgumentCaptor = ArgumentCaptor.forClass(MessageSend.class);
-
-
+        //then
         retryOnException(() -> {
             verify(rasaClient).sendMessage(msgArgumentCaptor.capture());
             //then
             //grab the argument sent through rasaClient and check it is correct
             MessageSend sentMessage = msgArgumentCaptor.getValue();
-            assertThat(sentMessage.getMessage(), equalTo("Hello from Airy"));
+            assertThat(sentMessage.getMessage(), equalTo(textMessage));
         }, "message was not created");
     }
 

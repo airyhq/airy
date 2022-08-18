@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MessageSendResponse {
-    private String recipient_id;
+    private String recipientId;
     private String text;
     private String image;
 }

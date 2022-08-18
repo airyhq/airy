@@ -29,27 +29,26 @@ public class RasaConnectorService {
     }
 
     @Async("threadPoolTaskExecutor")
-    public void send(Message message) {
+    public void send(Message userMessage) {
         try {
-            List<MessageSendResponse> messageResp = this.rasaClient.sendMessage(MessageSend.builder()
-                    .message(getTextFromContent(message.getContent()))
-                    .sender(message.getId())
+            List<MessageSendResponse> rasaResponseList = this.rasaClient.sendMessage(MessageSend.builder()
+                    .message(getTextFromContent(userMessage.getContent()))
+                    .sender(userMessage.getId())
                     .build());
             // Unpack multiple response(s)
-            for (MessageSendResponse reply: messageResp) {
+            for (MessageSendResponse rasaResponse: rasaResponseList) {
                 try {
-                    messageHandler.writeReplyToKafka(message, reply);
+                    messageHandler.writeReplyToKafka(userMessage, rasaResponse);
                 }
                 catch (Exception e){
-                    log.error(String.format("could not handle response for non-text data type for message id %s %s", reply.toString(), e.toString()));
+                    log.error(String.format("could not handle response for data type for message id %s %s. Please inspect the", rasaResponse.toString(), e.toString()));
                 }
             }
         }
         catch (Exception e){
-            log.error(String.format("could not call the Rasa webhook for message id %s %s", message.getId(), e.toString()));
+            log.error(String.format("could not call the Rasa webhook for message id %s %s", userMessage.getId(), e.toString()));
         }
     }
-    // Add API token later
     private String getTextFromContent(String content) {
         String text = "";
 

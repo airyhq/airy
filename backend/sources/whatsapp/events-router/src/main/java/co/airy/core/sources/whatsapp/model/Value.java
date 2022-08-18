@@ -17,8 +17,7 @@ public class Value {
     private List<Contact> contacts;
     private List<JsonNode> messages;
 
-    // TODO
-    // private JsonNode statuses;
+    private JsonNode statuses;
 
     @Data
     @NoArgsConstructor

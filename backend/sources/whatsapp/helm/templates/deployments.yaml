@@ -96,14 +96,6 @@ spec:
         envFrom:
           - configMapRef:
               name: kafka-config
-        env:
-        - name: WHATSAPP_APP_ID
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Values.name }}"
-              key: appId
-        - name: SERVICE_NAME
-          value: whatsapp-events-router
         livenessProbe:
           tcpSocket:
             port: 6000

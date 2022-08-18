@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ConnectChannelRequestPayload {
     @NotNull
-    private String phoneNumber;
+    private String phoneNumberId;
     @NotNull
     private String userToken;
     @NotNull

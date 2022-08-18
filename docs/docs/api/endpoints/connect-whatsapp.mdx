@@ -4,7 +4,7 @@ Connects a Whatsapp cloud phone number to Airy.
 POST /channels.whatsapp.connect
 ```
 
-- `phone_number` the whatsapp phone number connected to your business account
+- `phone_number_id` the whatsapp phone number connected to your business account
 - `user_token` your user access token
 - `name` is the custom name for the connected page
 - `image_url` is a custom image url for displaying this channel on the UI
@@ -13,7 +13,7 @@ POST /channels.whatsapp.connect
 
 ```json5
 {
-  "phone_number": "1234567",
+  "phone_number_id": "1234567",
   "user_token": "user access token",
   "name": "Customer support hotline",
   "image_url": "https://example.org/custom-image.jpg" // optional

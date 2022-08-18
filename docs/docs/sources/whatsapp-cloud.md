@@ -53,7 +53,7 @@ At the end of which you should have the following:
 
 1. A meta developer account and a business account
 2. A meta app with Whatsapp connected as a product
-3. A Whatsapp test phone number
+3. A Whatsapp test phone number id
 
 After you also complete step 2 you have now verified that you can send messages from that test phone number to.
 
@@ -100,7 +100,13 @@ Note down the `webhook_secret` and use it when registering your webhook.
 
 ## Step 4: Connect the webhook
 
-TBD
+In order to be able to receive messages from Whatsapp your Airy instance needs to be accessible from the internet.
+Go to the Whatsapp product section of your Meta app and click on the "Configuration" section.
+Here you need to set the URL to `https://<your-airy-address>/whatsapp` and the secret to the value you noted down earlier.
+When clicking "Verify and Save" the connection will be tested so that you can be sure that everything is working.
+
+Next select the fields that you want to subscribe to.
+You need to select at least `messages` and a version of `14.0` or higher.
 
 ## Step 5: Connect a phone number to Airy
 

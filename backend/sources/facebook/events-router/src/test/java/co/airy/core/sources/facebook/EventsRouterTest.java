@@ -89,7 +89,7 @@ class EventsRouterTest {
 
     // This tests simulates multiple users sending messages via multiple facebook pages
     // It ensures that we create the correct number of conversations and messages
-    //@Test
+    @Test
     void joinsAndCountsMessagesCorrectly() throws Exception {
         Random rand = new Random();
         List<String> pageIds = Arrays.asList("p1", "p2", "p3", "p4", "p5");

@@ -2,28 +2,24 @@ package co.airy.core.sources.whatsapp;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.whatsapp.dto.Event;
+import co.airy.core.sources.whatsapp.model.WebhookEntry.Change;
 import co.airy.core.sources.whatsapp.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceWhatsappEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.MetadataRepository;
-import co.airy.model.metadata.Subject;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -35,8 +31,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -60,6 +54,10 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
 
     private static final String appId = "sources.whatsapp.EventsRouter";
 
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+
+
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -67,7 +65,7 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .groupBy((k, v) -> v.getSourceChannelId())
                 .reduce((aggValue, newValue) -> newValue)
-                .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
+                .filter((sourceChannelId, channel) -> "whatsapp".equals(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         builder.<String, String>stream(new SourceWhatsappEvents().name())
@@ -87,18 +85,16 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
                     return webhookEvent.getEntries()
                             .stream()
                             .flatMap(entry -> {
-                                List<JsonNode> messagingList = entry.getMessaging() != null ? entry.getMessaging() : entry.getStandby();
+                                final List<Change> changes = entry.getChanges();
 
-                                if (messagingList == null) {
+                                if (changes == null) {
                                     return Stream.empty();
                                 }
 
-                                return messagingList.stream().map(messaging -> {
+                                return changes.stream().map(change -> {
                                     try {
-                                        return KeyValue.pair(entry.getId(),
-                                                Event.builder()
-                                                        .sourceConversationId(messageMapper.getSourceConversationId(messaging))
-                                                        .payload(messaging.toString()).build()
+                                        final String sourceChannelId = change.getValue().getMetadata().getPhoneNumberId();
+                                        return KeyValue.pair(sourceChannelId, Event.builder().payload(change).build()
                                         );
                                     } catch (Exception e) {
                                         log.warn("Skipping whatsapp error for record " + entry, e);
@@ -110,29 +106,27 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
                             .collect(toList());
                 })
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
-                .foreach((whatsappPageId, event) -> {
+                .flatMap((sourceChannelId, event) -> {
                     try {
-                        final List<ProducerRecord<String, SpecificRecordBase>> records = messageMapper.getRecords(event, this::getMessageId);
-                        for (ProducerRecord<String, SpecificRecordBase> record : records) {
-                            kafkaProducer.send(record).get();
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        log.error("Unable to send records. Terminating thread. " + e);
-                        throw new RuntimeException(e);
-                    } catch (Exception e) {
+                        return messageMapper.getRecords(event);
+                    }  catch (Exception e) {
                         log.warn("skip whatsapp record for error: " + event.toString(), e);
+                        return List.of();
                     }
+                })
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
                 });
 
+
         streams.start(builder.build(), appId);
-    }
-
-    public Optional<String> getMessageId(String whatsappMessageId) {
-        final ReadOnlyKeyValueStore<String, Metadata> store = streams.acquireLocalStore(metadataStore);
-
-        return Optional.ofNullable(store.get(whatsappMessageId))
-                .map(MetadataRepository::getSubject)
-                .map(Subject::getIdentifier);
     }
 
     @Override
@@ -152,7 +146,6 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
         if (streams == null || !streams.state().isRunningOrRebalancing()) {
             return Health.down().build();
         }
-        streams.acquireLocalStore(metadataStore);
         return Health.up().build();
     }
 

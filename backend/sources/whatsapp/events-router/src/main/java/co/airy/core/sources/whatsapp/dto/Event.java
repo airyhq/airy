@@ -1,8 +1,7 @@
 package co.airy.core.sources.whatsapp.dto;
 
 import co.airy.avro.communication.Channel;
-import co.airy.uuid.UUIDv5;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import co.airy.core.sources.whatsapp.model.WebhookEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Event implements Serializable {
-    private String sourceConversationId;
-    private String payload;
+    private WebhookEntry.Change payload;
     private Channel channel;
-
-    @JsonIgnore
-    public String getConversationId() {
-        return UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
-    }
 }

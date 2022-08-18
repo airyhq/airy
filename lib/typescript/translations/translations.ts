@@ -343,6 +343,7 @@ const resources = {
       googleKey: 'A Google Partner Key',
       googleConfigurationText2: `Check Airy's Documentation`,
       googleConfigurationText3: 'for more information.',
+      newGoogleConnection: 'You are about to connect a new channel',
 
       //Instagram
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
@@ -409,6 +410,8 @@ const resources = {
       noConnectorsFoundMore: 'and explore more.',
       installed: 'Installed',
       notInstalled: 'Not Installed',
+      updateSuccessful: 'Successfully updated',
+      updateFailed: 'Update failed',
 
       //Catalog
       categories: 'Categories',
@@ -821,6 +824,7 @@ const resources = {
       googleKey: 'Ein Google-Partner-Schlüssel',
       googleConfigurationText2: 'Prüfen Sie die Dokumentation von Airy',
       googleConfigurationText3: 'für weitere Informationen.',
+      newGoogleConnection: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
       //Instagram
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
@@ -866,6 +870,8 @@ const resources = {
       noConnectorsFoundMore: 'und erkunden Sie mehr.',
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
+      updateSuccessful: 'Erfolgreich aktualisiert',
+      updateFailed: 'Aktualisierung fehlgeschlagen',
 
       //Catalog
       categories: 'Kategorien',
@@ -1250,6 +1256,7 @@ const resources = {
       googleKey: 'Une clé de compte de service Google',
       googleConfigurationText2: `Vérifiez la documentation d'Airy`,
       googleConfigurationText3: `pour plus d'informations.`,
+      newGoogleConnection: 'Vous êtes sur le point de connecter un nouveau canal',
 
       //Instagram
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
@@ -1315,6 +1322,8 @@ const resources = {
       noConnectorsFoundMore: 'et explorer davantage.',
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
+      updateSuccessful: 'Mise à jour réussie',
+      updateFailed: 'La mise à jour a échoué',
 
       //Catalog
       categories: 'Catégories',
@@ -1702,6 +1711,7 @@ const resources = {
       googleKey: 'Una clave de socio de Google',
       googleConfigurationText2: `Compruebe la documentación de Airy`,
       googleConfigurationText3: 'para más información.',
+      newGoogleConnection: 'Estás a punto de conectar un nuevo canal',
 
       //Instagram
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
@@ -1768,6 +1778,8 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
+      updateSuccessful: 'Actualizado con éxito',
+      updateFailed: 'Actualización fallida',
 
       //Catalog
       categories: 'Categorías',

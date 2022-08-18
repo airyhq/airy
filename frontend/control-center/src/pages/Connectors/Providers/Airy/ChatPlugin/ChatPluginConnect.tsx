@@ -8,8 +8,8 @@ import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 import {cyChannelCreatedChatPluginCloseButton} from 'handles';
 
-import {Button, LinkButton, SettingsModal} from 'components';
-import {Channel, Source} from 'model';
+import {Button, LinkButton, NotificationComponent, SettingsModal} from 'components';
+import {Channel, NotificationModel, Source} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 
@@ -51,6 +51,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const [currentPage, setCurrentPage] = useState(channelId !== 'new' ? Pages.customization : Pages.createUpdate);
   const [showCreatedModal, setShowCreatedModal] = useState(false);
   const [currentChannelId, setCurrentChannelId] = useState('');
+  const [notification, setNotification] = useState<NotificationModel>(null);
   const displayName = currentChannel?.metadata?.name || '';
   const imageUrl = currentChannel?.metadata?.imageUrl || '';
   const navigate = useNavigate();
@@ -109,7 +110,14 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
           return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
         }
         if (channelId?.length > 0) {
-          return <CreateUpdateSection channel={currentChannel} displayName={displayName} imageUrl={imageUrl} />;
+          return (
+            <CreateUpdateSection
+              channel={currentChannel}
+              displayName={displayName}
+              imageUrl={imageUrl}
+              setNotification={setNotification}
+            />
+          );
         }
         return <OverviewSection />;
       case Pages.customization:
@@ -164,7 +172,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
+      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span
@@ -216,6 +224,14 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
             {t('customize')}
           </Button>
         </SettingsModal>
+      )}
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          setShowFalse={setNotification}
+        />
       )}
     </div>
   );

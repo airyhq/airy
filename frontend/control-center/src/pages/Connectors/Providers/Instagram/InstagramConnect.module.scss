@@ -6,7 +6,7 @@
   display: block;
   border-radius: 10px;
   width: 100%;
-  min-height: calc(100vh - 170px);
+  height: 100%;
 }
 
 .headline {
@@ -40,10 +40,9 @@
   flex-direction: column;
   margin-bottom: 32px;
   width: 474px;
-  margin-top: 16px;
 
   label {
-    margin-top: 24px;
+    height: 82px;
   }
 
   input {

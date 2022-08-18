@@ -7,13 +7,13 @@
   display: block;
   border-radius: 10px;
   width: 100%;
-  height: calc(100vh - 88px);
-  overflow-y: scroll;
+  height: 100%;
 }
 
 .container {
   display: flex;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .headlineContainer {
@@ -166,7 +166,7 @@
 }
 
 .line {
-  width: 100%;
+  width: 200%;
   height: 1px;
   background: rgb(202, 213, 219);
   display: flex;

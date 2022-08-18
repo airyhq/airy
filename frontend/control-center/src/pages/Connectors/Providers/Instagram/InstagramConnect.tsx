@@ -1,17 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-
 import {connectInstagramChannel} from '../../../../actions';
-
-import {Button, Input} from 'components';
+import {Button, Input, NotificationComponent} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
-
 import styles from './InstagramConnect.module.scss';
-
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
-import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import {NotificationModel} from 'model';
 
 const mapDispatchToProps = {
   connectInstagramChannel,
@@ -23,7 +18,6 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectInstagramChannel} = props;
   const {t} = useTranslation();
   const channel = useCurrentChannel();
-  const navigate = useNavigate();
   const [id, setId] = useState(channel?.metadata?.pageId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
@@ -31,11 +25,16 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
+  const [notification, setNotification] = useState<NotificationModel>(null);
 
   const buttonStatus = () => {
-    return !(id.length > 5 && token != '');
+    return (
+      !(id.length > 5 && token != '') ||
+      (channel?.sourceChannelId === id &&
+        channel?.metadata?.pageToken === token &&
+        channel?.metadata?.name === name &&
+        channel?.metadata?.imageUrl === image)
+    );
   };
 
   useEffect(() => {
@@ -61,10 +60,12 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectInstagramChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTED_ROUTE + '/instagram', {replace: true});
+        setNotification({show: true, text: t('updateSuccessful'), successful: true});
       })
-      .catch(() => {
+      .catch((error: Error) => {
+        setNotification({show: true, text: t('updateFailed'), successful: false});
         setErrorMessage(t('errorMessage'));
+        console.error(error);
       });
   };
 
@@ -129,6 +130,14 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
       <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
         {buttonTitle}
       </Button>
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          setShowFalse={setNotification}
+        />
+      )}
     </div>
   );
 };

@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin-right: 16px;
   label {
     white-space: nowrap;
     margin-right: 30px;
@@ -32,7 +31,6 @@
 
 .borderLine {
   height: 1px;
-  width: 80%;
   background-color: var(--color-light-gray);
   margin: 18px 0;
 }

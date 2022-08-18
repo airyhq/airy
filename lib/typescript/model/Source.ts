@@ -14,7 +14,6 @@ export enum Source {
   rasa = 'rasa',
   webhooks = 'webhooks',
   amelia = 'amelia',
-  frontendinbox = 'frontendinbox',
   mobile = 'mobile',
 <<<<<<< HEAD
   whatsapp = 'whatsapp',

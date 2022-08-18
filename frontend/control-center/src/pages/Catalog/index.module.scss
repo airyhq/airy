@@ -3,7 +3,6 @@
 
 .catalogWrapper {
   background: var(--color-background-white);
-  color: var(--color-text-contrast);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   padding: 32px;
@@ -14,40 +13,54 @@
   width: 100%;
 }
 
-.catalogHeadline {
-  @include font-xl;
-  font-weight: 900;
-  letter-spacing: 0;
+.catalogListContainer {
   display: flex;
-  justify-content: space-between;
-  color: var(--color-text-contrast);
-  margin-bottom: 36px;
+  flex-wrap: wrap;
 }
 
 .catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
+  margin-bottom: 15px;
+  color: var(--color-text-contrast);
 }
 
-.listWrapper {
+.notificationAnimation {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  margin-left: -120px;
+  height: 40px;
+  width: 240px;
+  z-index: 9999;
+  border-radius: 10px;
 }
 
-.connectorContainer {
-  width: 100%;
-  border-top: 1px solid var(--color-light-gray);
-  padding-top: 14px;
+.notificationText {
+  @include font-base;
+  color: white;
+}
 
-  h2 {
-    @include font-l;
-    font-weight: 700;
-    margin-bottom: 14px;
+@keyframes translateYIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(16px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
   }
 }
 
-.connectorList {
-  display: flex;
-  flex-wrap: wrap;
+.translateYAnimIn {
+  animation: translateYIn 4s ease-in-out;
 }

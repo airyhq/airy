@@ -18,6 +18,7 @@ go_library(
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],
     deps = [
+        "//infrastructure/controller/pkg/cache",
         "//lib/go/config",
         "//lib/go/k8s",
         "//lib/go/payloads",

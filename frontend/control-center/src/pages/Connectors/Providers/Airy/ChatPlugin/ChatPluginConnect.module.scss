@@ -7,9 +7,7 @@
   display: block;
   border-radius: 10px;
   width: 100%;
-  margin: 162px 1.5em 0 191px;
   height: calc(100vh - 88px);
-  overflow-y: scroll;
 }
 
 .container {
@@ -174,4 +172,35 @@
   position: relative;
   top: -3px;
   left: 0px;
+}
+
+.enableModalContainerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background-white);
+}
+
+.enableModalContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.headerModal {
+  @include font-l;
+  font-weight: 800;
+  width: 240px;
+  margin-bottom: 14px;
+}
+
+.modalButton {
+  width: 200px;
+  border-radius: 10px;
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
 }

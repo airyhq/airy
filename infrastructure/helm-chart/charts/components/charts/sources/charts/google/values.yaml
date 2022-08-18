@@ -1,9 +1,0 @@
-component: sources-google
-mandatory: false
-enabled: true
-connector:
-  image: sources/google-connector
-  resources: {}
-eventsRouter:
-  image: sources/google-events-router
-  resources: {}

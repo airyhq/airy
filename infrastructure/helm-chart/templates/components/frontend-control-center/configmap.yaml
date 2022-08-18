@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.components.frontend.control_center.name }}"
+  labels:
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.components.frontend.control_center.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.frontend.control_center.name }}"
+  annotations:
+    core.airy.co/enabled: "{{ .Values.components.frontend.control_center.enabled }}"

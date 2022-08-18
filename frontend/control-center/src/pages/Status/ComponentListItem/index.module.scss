@@ -122,8 +122,6 @@
 }
 
 .enableModalContainerWrapper {
-  width: 50%;
-  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -151,4 +149,8 @@
 .enableModalContainer p {
   @include font-l;
   margin-bottom: 30px;
+}
+
+.runningHealthy {
+  fill: var(--color-soft-green);
 }

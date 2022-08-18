@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {Button, Input} from 'components';
+import {Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
-import {cyChannelsZendeskAddButton} from 'handles';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
 type ConnectNewDialogflowProps = {
   createNewConnection: (domain: string, token: string, username: string) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['zendesk-connector']);
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -20,10 +20,17 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const {t} = useTranslation();
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
     createNewConnection(domain, token, username);
-    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
@@ -31,6 +38,10 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
       componentName="enterprise-zendesk-connector"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
+      disabled={!domain || !username || !token}
+      isConfigured={isConfigured}
+      updateConfig={updateConfig}
     >
       <div className={styles.formRow}>
         <Input
@@ -78,16 +89,6 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled}: ConnectNewDi
           fontClass="font-base"
         />
       </div>
-      <Button
-        styleVariant="small"
-        type="button"
-        disabled={!domain || !username || !token}
-        style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
-        dataCy={cyChannelsZendeskAddButton}
-      >
-        {isEnabled ? t('Update') : t('configure')}
-      </Button>
     </ConnectNewForm>
   );
 };

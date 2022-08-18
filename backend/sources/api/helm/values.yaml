@@ -1,0 +1,9 @@
+name: integration-source-api
+mandatory: false
+enabled: false
+image: sources/api
+resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

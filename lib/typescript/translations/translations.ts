@@ -140,10 +140,14 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Disable',
+      disablingComponent: 'Disabling...',
+      disabledComponent: 'Disabled',
       disableComponentText: 'Are you sure you want to disable this component?',
-      Enabled: 'Enabled',
-      Enable: 'Enable',
-      NotConfigured: 'Not Configured',
+      enableComponent: 'Enable',
+      enabledComponent: 'Enabled',
+      enablingComponent: 'Enabling...',
+      enable: 'Enable',
+      notConfigured: 'Not Configured',
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
       restart: 'Restart',
       restartComponentUpdate: 'We will restart the component to apply your update.',
@@ -152,20 +156,21 @@ const resources = {
       toConfigure: 'To configure',
       configure: 'Apply Configuration',
       chatpluginTitle: 'Chat Plugin',
-      chatpluginDescription: 'Best of class browser messenger',
+      chatpluginDescription: 'Best of class browser messenger.',
       facebookTitle: 'Facebook Messenger',
-      facebookDescription: 'Connect multiple Facebook pages',
+      facebookDescription: 'Connect multiple Facebook pages.',
       googleTitle: 'Google Business Messages',
-      googleDescription: 'Be there when people search',
+      googleDescription: 'Be there when people search.',
       instagramTitle: 'Instagram',
-      instagramDescription: 'Connect multiple Instagram pages',
+      instagramDescription: 'Connect multiple Instagram pages.',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Deliver SMS with ease',
+      twiliosmsDescription: 'Deliver SMS with ease.',
       twilioWhatsappTitle: 'WhatsApp',
-      twilioWhatsappDescription: 'World #1 chat app',
+      twilioWhatsappDescription: 'World #1 chat app.',
       channel: 'channel',
       channels: 'channels',
       channelsCapital: 'Channels',
+      addChannel: 'Add Channel',
       disconnectChannel: 'Disconnect Channel',
       confirmDisconnectChannelTitle: 'Confirm Channel Disconnection',
       confirmDisconnectChannelText:
@@ -201,6 +206,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
+      successfullyCreatedChannel: 'Channel has been successfully created',
       addCodeTagHead: 'Add this code inside the tag ',
       copyCode: 'Copy code',
       headerTextColor: 'Header Text Color',
@@ -239,10 +245,19 @@ const resources = {
       update: 'Update',
       create: 'Create',
       customize: 'Customize',
+      successfullyEnabled: 'Successfully enabled',
+      successfullyDisabled: 'Successfully disabled',
+      failedEnabled: 'Failed to enable',
+      failedDisabled: 'Failed to disable',
       install: 'Install',
+      installing: 'Installing...',
       uninstall: 'Uninstall',
+      uninstalling: 'Uninstalling...',
       uninstalled: 'uninstalled',
-
+      successfullyInstalled: 'Successfully installed',
+      successfullyUninstalled: 'Successfully uninstalled',
+      failedInstall: 'Failed to install',
+      failedUninstall: 'Failed to uninstall',
       addAName: 'Add a name',
       settings: 'Settings',
       installCustomize: 'Install & Customize',
@@ -287,6 +302,12 @@ const resources = {
       amountSuggestions: 'amount for suggestions',
       amountReplies: 'amount for replies',
       to: 'to',
+      processorWaitingTime: 'Processor waiting time',
+      processorCheckPeriod: 'Processor check period',
+      waitingDefault: 'Default value: 5000',
+      checkDefault: 'Default value: 2500',
+      defaultLanguage: 'Default language',
+      defaultLanguageTooltip: 'Default value: en',
 
       //Salesforce
       salesforceDescription:
@@ -358,6 +379,27 @@ const resources = {
       connectWhatsappNumber: 'Connect Whatsapp Number',
       updateWhatsappNumber: 'Update Whatsapp Number',
 
+      //Congnigy
+      congnigyDescription: 'A low-code UI for conversational AI.',
+
+      //Rasa
+      rasaDescription: 'Open source conversational AI.',
+
+      //webhooks
+      webhooksDescription: 'Get notified when events happen.',
+
+      //amelia
+      ameliaDescription: 'An intelligent cognitive conversational chatbot.',
+
+      //mobile
+      mobileDescription: 'An Airy mobile app for your Inbox.',
+
+      //viber
+      viberDescription: 'The messaging app connecting over a billion people worldwide.',
+
+      //Inbox
+      frontendinboxDescription: 'An Inbox to view and organize all your conversations.',
+
       //Connectors
       connectors: 'Connectors',
       noResults: 'Result not found.',
@@ -367,6 +409,16 @@ const resources = {
       noConnectorsFoundMore: 'and explore more.',
       installed: 'Installed',
       notInstalled: 'Not Installed',
+
+      noChannelsConnected: 'This connector does not have any connected channels yet.',
+
+      //Catalog
+      categories: 'Categories',
+      availableFor: 'Available for',
+      price: 'Price',
+      Free: 'Free',
+      Paid: 'Paid',
+      ['REQUEST ACCESS']: 'REQUEST ACCESS',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -547,8 +599,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Deaktivieren',
+      disablingComponent: 'Deaktivieren...',
+      disabledComponent: 'Deaktiviert',
       disableComponentText: 'Bist du sicher, dass du diese Komponente deaktivieren willst?',
-      Enabled: 'Aktiviert',
+      enableComponent: 'Aktivieren',
+      enabledComponent: 'Aktiviert',
+      enablingComponent: 'Aktivieren...',
       Enable: 'Aktivieren',
       NotConfigured: 'Nicht konfiguriert',
       uninstallComponentText: 'Bist du sicher, dass du diese Komponente deinstallieren willst?',
@@ -557,7 +613,7 @@ const resources = {
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
 
       //Channels
-      toConfigure: 'konfigurieren',
+      toConfigure: 'Konfigurieren',
       configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
@@ -568,11 +624,12 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Mehrere Instagram-Seiten verbinden',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'SMS-Versand mit Leichtigkeit',
+      twiliosmsDescription: 'SMS-Versand mit Leichtigkeit',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Weltweite Chat-App Nr. 1',
       channel: 'Kanal',
       channels: 'Kanäle',
+      addChannel: 'Kanal hinzufügen',
       channelsCapital: 'Kanäle',
       disconnectChannel: 'Kanal entfernen',
       confirmDisconnectChannelTitle: 'Bestätigung der Kanaltrennung',
@@ -608,6 +665,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
+      successfullyCreatedChannel: 'Der Kanal wurde erfolgreich erstellt',
       addCodeTagHead: 'Fügen Sie diesen Code innerhalb des Tags ein ',
       copyCode: 'Code kopieren',
       headerTextColor: 'Textfarbe der Kopfzeile',
@@ -646,8 +704,18 @@ const resources = {
       update: 'Aktualisieren',
       create: 'Erstellen',
       customize: 'Anpassen',
+      successfullyEnabled: 'Erfolgreich aktiviert',
+      successfullyDisabled: 'Erfolgreich deaktiviert',
+      failedEnabled: 'Aktivierung fehlgeschlagen',
+      failedDisabled: 'Deaktivierung fehlgeschlagen',
       install: 'Installieren',
+      installing: 'Installierend...',
+      successfullyInstalled: 'Erfolgreich installiert',
+      successfullyUninstalled: 'Erfolgreich deinstalliert',
+      failedInstall: 'Installation ist fehlgeschlagen',
+      failedUninstall: 'Deinstallation fehlgeschlagen',
       uninstall: 'Deinstallieren',
+      uninstalling: 'Deinstalliert...',
       uninstalled: 'deinstalliert',
       addAName: 'Namen hinzufügen',
       settings: 'Einstellungen',
@@ -693,10 +761,16 @@ const resources = {
       fromCloudConsole: 'gegeben von der Cloud Console',
       amountSuggestions: 'Anzahl der Vorschläge',
       amountReplies: 'Anzahl der Antworten',
+      processorWaitingTime: 'Prozessor Wartezeit',
+      processorCheckPeriod: 'Prozessorprüfungszeitraum',
+      waitingDefault: 'Standardwert: 5000',
+      checkDefault: 'Standardwert: 2500',
+      defaultLanguage: 'Standardsprache',
+      defaultLanguageTooltip: 'Standardwert: en',
 
       //Salesforce
       salesforceDescription:
-        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen jeder Größe.',
+        'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen.',
       salesforceOrgUrl: 'Organisations-URL',
       yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
       salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
@@ -706,6 +780,27 @@ const resources = {
       yourSalesforcePassword: 'Ihr Salesforce-Passwort',
       securityToken: 'Sicherheitstoken',
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+
+      //Congnigy
+      congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+
+      //Rasa
+      rasaDescription: 'Open-Source-Gesprächs-KI.',
+
+      //webhooks
+      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+
+      //amelia
+      ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
+
+      //mobile
+      mobileDescription: 'Eine mobile Airy-App für Ihren Posteingang.',
+
+      //viber
+      viberDescription: 'Die Messaging-App, die über eine Milliarde Menschen weltweit verbindet.',
+
+      //Inbox
+      frontendinboxDescription: 'Ein Inbox zum Anzeigen und Organisieren aller Ihrer Konversationen.',
 
       //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
@@ -773,6 +868,16 @@ const resources = {
       noConnectorsFoundMore: 'und erkunden Sie mehr.',
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
+
+      noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
+
+      //Catalog
+      categories: 'Kategorien',
+      availableFor: 'Verfügbar für',
+      price: 'Preis',
+      Free: 'Kostenlos',
+      Paid: 'Kostenpflichtig',
+      ['REQUEST ACCESS']: 'ANFRAGE ZUGANG',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -945,8 +1050,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Désactiver',
+      disablingComponent: 'Désactiver...',
+      disabledComponent: 'Désactivé',
       disableComponentText: 'Tu es sûre de vouloir désactiver ce composant ?',
-      Enabled: 'Activé',
+      enableComponent: 'Activer',
+      enabledComponent: 'Activé',
+      enablingComponent: 'Activation...',
       Enable: 'Activer',
       NotConfigured: 'Non configuré',
       uninstallComponentText: 'Tu es sûre de vouloir désinstaller ce composant ?',
@@ -966,11 +1075,12 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Connecter plusieurs pages Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envoyez des SMS en toute simplicité',
+      twiliosmsDescription: 'Envoyez des SMS en toute simplicité',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Première application de chat au monde',
       channel: 'canal',
       channels: 'canaux',
+      addChannel: 'Ajouter un canal',
       channelsCapital: 'Canaux',
       disconnectChannel: 'Déconnecter du canal',
       confirmDisconnectChannelTitle: 'Confirmer la déconnexion du canal',
@@ -1006,6 +1116,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
+      successfullyCreatedChannel: 'Le canal a été créé avec succès',
       addCodeTagHead: `Ajoutez ce code à l'intérieur de la balise `,
       copyCode: 'Copier le code',
       headerTextColor: `Couleur du texte de l'en-tête`,
@@ -1044,8 +1155,18 @@ const resources = {
       update: 'Mise à jour',
       create: 'Créer',
       customize: 'Personnaliser',
+      successfullyEnabled: 'Activé avec succès',
+      successfullyDisabled: 'Désactivé avec succès',
+      failedEnabled: `Échec de l'activation`,
+      failedDisabled: 'Échec de la désactivation',
       install: 'Installer',
+      installing: 'Installation...',
+      successfullyInstalled: 'Installation réussie',
+      successfullyUninstalled: 'Successfully uninstalled',
+      failedInstall: `L'installation a échoué`,
+      failedUninstall: 'Échec de la désinstallation',
       uninstall: 'Désinstaller',
+      uninstalling: 'Désinstallation...',
       uninstalled: 'désinstallé',
       addAName: 'Ajouter un nom',
       settings: 'Paramètres',
@@ -1076,6 +1197,12 @@ const resources = {
       amountSuggestions: 'niveau pour les suggestions',
       amountReplies: 'niveau pour les réponses',
       to: 'à',
+      processorWaitingTime: 'Délai du processeur',
+      processorCheckPeriod: 'Délai de vérification du processeur',
+      waitingDefault: 'valeur par défaut: 5000',
+      checkDefault: 'valeur par défaut: 2500',
+      defaultLanguage: 'Langue utilisée',
+      defaultLanguageTooltip: 'valeur par défaut: en',
 
       //Salesforce
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
@@ -1162,6 +1289,27 @@ const resources = {
       connectWhatsappNumber: 'Connecter le numéro Whatsapp',
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
+      //Congnigy
+      congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
+
+      //Rasa
+      rasaDescription: 'IA conversationnelle open source.',
+
+      //webhooks
+      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+
+      //amelia
+      ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
+
+      //mobile
+      mobileDescription: 'Une application mobile Airy pour votre boîte de réception.',
+
+      //viber
+      viberDescription: "L'application de messagerie connectant plus d'un milliard de personnes dans le monde.",
+
+      //Inbox
+      frontendinboxDescription: 'Une boîte de réception pour afficher et organiser toutes vos conversations.',
+
       //Connectors
       connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
@@ -1171,6 +1319,16 @@ const resources = {
       noConnectorsFoundMore: 'et explorer davantage.',
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
+
+      noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
+
+      //Catalog
+      categories: 'Catégories',
+      availableFor: 'Disponible pour',
+      price: 'Prix',
+      Free: 'Gratuit',
+      Paid: 'Payant',
+      ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1347,8 +1505,12 @@ const resources = {
 
       //Control-Center
       disableComponent: 'Desactivar',
+      disablingComponent: 'Desactivar...',
+      disabledComponent: 'Discapacitados',
       disableComponentText: '¿Estás seguro de que quieres desactivar este componente?',
-      Enabled: 'Activado',
+      enableComponent: 'Activar',
+      enabledComponent: 'Activado',
+      enablingComponent: 'Activar...',
       Enable: 'Activar',
       NotConfigured: 'No configurado',
       uninstallComponentText: '¿Estás seguro de que quieres desinstalar este componente?',
@@ -1368,11 +1530,12 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Conectar varias páginas de Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envío de SMS con facilidad',
+      twiliosmsDescription: 'Envío de SMS con facilidad',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'La aplicación de mensajería número 1 del mundo',
       channel: 'canal',
       channels: 'canales',
+      addChannel: 'Añadir canal',
       channelsCapital: 'Canales',
       disconnectChannel: 'Desconectar el canal',
       confirmDisconnectChannelTitle: 'Confirmar la desconexión del canal',
@@ -1408,6 +1571,7 @@ const resources = {
 
       //Customize Chatplugin
       chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
+      successfullyCreatedChannel: 'El canal ha sido creado con éxito',
       addCodeTagHead: 'Añade este código dentro de la etiqueta ',
       copyCode: 'Copiar código',
       headerTextColor: 'Color del texto de la cabecera',
@@ -1446,8 +1610,18 @@ const resources = {
       update: 'Actualización',
       create: 'Crear',
       customize: 'Personalizar',
+      successfullyEnabled: 'Activado con éxito',
+      successfullyDisabled: 'Desactivado con éxito',
+      failedEnabled: 'Fallo en la activación',
+      failedDisabled: 'Fallo en la desactivación',
       install: 'Instalar',
+      installing: 'Instalando...',
+      successfullyInstalled: 'Instalado con éxito',
+      successfullyUninstalled: 'Desinstalado con éxito',
+      failedInstall: 'Fallo en la instalación',
+      failedUninstall: 'Fallo en la desinstalación',
       uninstall: 'Desinstalar',
+      uninstalling: 'Desinstalando...',
       uninstalled: 'desinstalado',
       addAName: 'Añadir un nombre',
       settings: 'Ajustes',
@@ -1494,6 +1668,12 @@ const resources = {
       fromCloudConsole: 'dado por la Cloud Console',
       amountSuggestions: 'nivel para sugerencias',
       amountReplies: 'nivel para respuestas',
+      processorWaitingTime: 'Tiempo de espera del procesador',
+      processorCheckPeriod: 'Período de verificación del procesador',
+      waitingDefault: 'valor por defecto: 5000',
+      checkDefault: 'valor por defecto: 2500',
+      defaultLanguage: 'Idioma por defecto',
+      defaultLanguageTooltip: 'valor por defecto: en',
 
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
@@ -1564,6 +1744,27 @@ const resources = {
       connectWhatsappNumber: 'Conectar el número de Whatsapp',
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
+      //Congnigy
+      congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+
+      //Rasa
+      rasaDescription: 'IA conversacional Open Source.',
+
+      //webhooks
+      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+
+      //amelia
+      ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',
+
+      //mobile
+      mobileDescription: 'Una aplicación móvil Airy para su bandeja de entrada.',
+
+      //viber
+      viberDescription: 'La aplicación de mensajería que conecta a más de mil millones de personas en todo el mundo.',
+
+      //Inbox
+      frontendinboxDescription: 'Una bandeja de entrada para ver y organizar todas tus conversaciones.',
+
       //Connectors
       connectors: 'Conectores',
       noResults: 'Resultado no encontrado.',
@@ -1573,6 +1774,16 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
+
+      noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
+
+      //Catalog
+      categories: 'Categorías',
+      availableFor: 'Disponible para',
+      price: 'Precio',
+      Free: 'Gratis',
+      Paid: 'Premium',
+      ['REQUEST ACCESS']: 'SOLICITAR ACCESO',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

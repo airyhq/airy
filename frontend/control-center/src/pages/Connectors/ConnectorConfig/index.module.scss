@@ -5,16 +5,38 @@
   background: var(--color-background-white);
   color: var(--color-text-contrast);
   display: block;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   width: 100%;
-  margin: 18.5% 1.5em 0 191px;
-  height: calc(100vh - 88px);
+  margin: 248px 16px 0 191px;
   overflow-y: scroll;
 }
 
 .container {
   display: flex;
   width: 100%;
+}
+
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    @include font-base;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a {
+    @include font-base;
+    text-decoration: none;
+  }
+
+  button {
+    background: transparent;
+    color: var(--color-airy-blue);
+  }
 }
 
 .linkButtonContainer {
@@ -37,9 +59,8 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  padding-left: 10px;
-  margin: 108px 1.5em 0 191px;
-  width: 85%;
+  padding: 88px 16px 0 201px;
+  width: 100%;
   h1 {
     @include font-xl;
     font-weight: bold;
@@ -69,7 +90,6 @@
 
 .componentTitle {
   display: flex;
-  width: min-content;
   align-items: center;
 }
 
@@ -78,16 +98,13 @@
 }
 
 .connectorIcon {
+  display: flex;
   width: 75px;
   margin-right: 15px;
 
   svg {
     fill: var(--color-text-contrast);
   }
-}
-
-.connectorIconOffsetTop {
-  margin-top: 12px;
 }
 
 .textInfo {
@@ -114,28 +131,6 @@
 
 .titleIconDetails {
   display: flex;
-}
-
-.backButtonContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-
-  div {
-    @include font-base;
-    font-weight: 400;
-    text-decoration: none;
-  }
-
-  a {
-    @include font-base;
-    text-decoration: none;
-  }
-
-  button {
-    background: transparent;
-    color: var(--color-airy-blue);
-  }
 }
 
 .infoBox {
@@ -165,7 +160,7 @@
 }
 
 .backIcon {
-  width: 24px;
+  width: 20px;
   background: transparent;
   path {
     fill: var(--color-text-gray);
@@ -179,7 +174,6 @@
 
 .headlineText {
   color: var(--color-text-contrast);
-  flex-grow: 1;
   margin-right: 8px;
 }
 
@@ -277,17 +271,17 @@
 }
 
 .pageContentContainer {
-  padding-top: 28px;
-  padding-left: 32px;
+  padding: 32px;
 }
 
 .enableModalContainerWrapper {
-  width: 50%;
-  height: 70%;
+  height: 400px;
+  width: 550px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
 }
 
 .enableModalContainer {
@@ -308,8 +302,15 @@
 .enableModalContainer button {
   margin-top: 14px;
   padding: 0 60px;
+  border-radius: 10px;
 }
 
 .headerModal {
   @include font-xl;
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
 }

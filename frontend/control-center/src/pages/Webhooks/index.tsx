@@ -1,7 +1,8 @@
+import React, {useEffect, useState} from 'react';
+import {NotificationComponent} from 'components';
 import {SettingsModal} from 'components/alerts/SettingsModal';
 import {Button} from 'components/cta/Button';
 import {Webhook} from 'model/Webhook';
-import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {listWebhooks, subscribeWebhook, updateWebhook} from '../../actions/webhook';
@@ -11,6 +12,7 @@ import {EmptyState} from './EmptyState';
 import styles from './index.module.scss';
 import SubscriptionModal from './SubscriptionModal';
 import WebhooksListItem from './WebhooksListItem';
+import {NotificationModel} from 'model';
 
 type WebhooksProps = {} & ConnectedProps<typeof connector>;
 
@@ -31,9 +33,7 @@ const Webhooks = (props: WebhooksProps) => {
   const [newWebhook, setNewWebhook] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOccurred, setErrorOccurred] = useState(false);
-  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-  const [notificationText, setNotificationText] = useState('');
-  const [notifcationColor, setNotifcationColor] = useState('');
+  const [notification, setNotification] = useState<NotificationModel>(null);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -46,9 +46,8 @@ const Webhooks = (props: WebhooksProps) => {
 
   const handleNotification = (show: boolean, error: boolean) => {
     error
-      ? (setNotificationText(t('errorOccurred')), setNotifcationColor('#d51548'))
-      : (setNotificationText(t('successfullySubscribed')), setNotifcationColor('#0da36b'));
-    setShowSuccessNotification(show);
+      ? setNotification({show: show, successful: false, text: t('errorOccurred')})
+      : setNotification({show: show, successful: true, text: t('successfullySubscribed')});
   };
 
   const upsertWebhook = (
@@ -96,29 +95,6 @@ const Webhooks = (props: WebhooksProps) => {
     );
   };
 
-  const SuccessfulSubscribed = () => {
-    return (
-      <div
-        className={showSuccessNotification && styles.translateYAnimIn}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          left: '50%',
-          marginLeft: '-120px',
-          height: '40px',
-          width: '240px',
-          zIndex: 9999,
-          background: notifcationColor,
-          borderRadius: '10px',
-        }}
-      >
-        <span className={styles.successfullySubscribed}>{notificationText}</span>
-      </div>
-    );
-  };
-
   const handleNewWebhook = (openModal: boolean) => {
     setNewWebhook(openModal);
   };
@@ -140,7 +116,14 @@ const Webhooks = (props: WebhooksProps) => {
         <EmptyState setNewWebhook={handleNewWebhook} />
       ) : (
         <>
-          {showSuccessNotification && <SuccessfulSubscribed />}
+          {notification?.show && (
+            <NotificationComponent
+              show={notification.show}
+              successful={notification.successful}
+              text={notification.text}
+              setShowFalse={setNotification}
+            />
+          )}
           <div className={styles.webhooksWrapper}>
             <div className={styles.webhooksHeadline}>
               <div className={styles.headlineContainer}>

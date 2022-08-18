@@ -51,9 +51,11 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          {channel.connected && <CheckMarkFilledIcon height={20} width={20} />}
-          <div className={styles.channelName}>{channel.metadata?.name}</div>
-          {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+          <div className={styles.checkmarkNameContainer}>
+            {channel.connected && <CheckMarkFilledIcon className={styles.checkmarkIcon} height={20} width={20} />}
+            <div className={styles.channelName}>{channel.metadata?.name}</div>
+            {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+          </div>
           <div className={styles.listButtons}>
             <Button
               styleVariant="link"
@@ -81,11 +83,13 @@ const ChannelListItem = (props: ChannelListItemProps) => {
 
       {deletePopupVisible && (
         <SettingsModal
-          style={{maxWidth: '420px'}}
           title={t('confirmDisconnectChannelTitle')}
           close={togglePopupVisibility}
+          wrapperClassName={styles.deleteModalContainer}
+          containerClassName={styles.deleteModalContent}
+          headerClassName={styles.deleteModalHeader}
         >
-          <div className={styles.disconnectModal}>
+          <div>
             <p>{t('confirmDisconnectChannelText')}</p>
             <p>
               {t('confirmDisconnectChannelProblem')}
@@ -96,7 +100,12 @@ const ChannelListItem = (props: ChannelListItemProps) => {
               <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
                 {t('cancel')}
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={disconnectChannel}>
+              <Button
+                styleVariant="warning"
+                type="submit"
+                onClick={disconnectChannel}
+                className={styles.disconnectButton}
+              >
                 {t('disconnectChannel')}
               </Button>
             </div>

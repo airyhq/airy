@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-viber-connector
+  labels:
+    app: sources-viber-connector
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.name }}"
+spec:
+  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  selector:
+    matchLabels:
+      app: sources-viber-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-viber-connector
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.connector.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: security
+            - configMapRef:
+                name: kafka-config
+            - configMapRef:
+                name: core-config
+          env:
+            - name: authToken
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.name }}"
+                  key: authToken
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Health-Check
+                  value: health-check
+            initialDelaySeconds: 120
+          resources:
+{{ toYaml .Values.connector.resources | indent 12 }}
+      initContainers:
+        - name: wait
+          image: "{{ .Values.global.busyboxImage }}"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh" ]
+          envFrom:
+            - configMapRef:
+                name: kafka-config
+          volumeMounts:
+            - name: provisioning-scripts
+              mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

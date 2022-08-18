@@ -51,16 +51,10 @@ const WebhooksListItem = (props: WebhooksListItemProps) => {
           () => {
             setSubscribed(WebhooksStatus.subscribed);
             props.setShowNotification(true);
-            setTimeout(() => {
-              props.setShowNotification(false);
-            }, 4000);
           },
           (error: Error) => {
             console.error(error);
             props.setShowNotification(true, true);
-            setTimeout(() => {
-              props.setShowNotification(false);
-            }, 4000);
           }
         );
   };

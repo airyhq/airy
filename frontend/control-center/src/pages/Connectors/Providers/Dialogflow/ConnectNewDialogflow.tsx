@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {Button, Input} from 'components';
+import {Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
-import {cyChannelsDialogflowAddButton} from 'handles';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 
@@ -12,12 +11,16 @@ type ConnectNewDialogflowProps = {
     projectId: string,
     appCredentials: string,
     suggestionConfidenceLevel: string,
-    replyConfidenceLevel: string
+    replyConfidenceLevel: string,
+    processorWaitingTime: string,
+    processorCheckPeriod: string,
+    defaultLanguage: string
   ) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNewDialogflowProps) => {
+export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['dialogflow-connector']);
   const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
   const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -26,13 +29,35 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [processorWaitingTime, setProcessorWaitingTime] = useState(
+    componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000'
+  );
+  const [processorCheckPeriod, setProcessorCheckPeriod] = useState(
+    componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500'
+  );
+  const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
 
   const {t} = useTranslation();
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createNewConnection(projectID, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel);
-    if (isEnabled) setIsUpdateModalVisible(true);
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
+    createNewConnection(
+      projectID,
+      appCredentials,
+      suggestionConfidenceLevel,
+      replyConfidenceLevel,
+      processorWaitingTime,
+      processorCheckPeriod,
+      defaultLanguage
+    );
   };
 
   return (
@@ -40,6 +65,18 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
       componentName="enterprise-dialogflow-connector"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
+      disabled={
+        !projectID ||
+        !appCredentials ||
+        !suggestionConfidenceLevel ||
+        !replyConfidenceLevel ||
+        !processorWaitingTime ||
+        !processorCheckPeriod ||
+        !defaultLanguage
+      }
+      isConfigured={isConfigured}
+      updateConfig={updateConfig}
     >
       <div className={styles.formRow}>
         <Input
@@ -108,16 +145,51 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled}: ConnectNe
           fontClass="font-base"
         />
       </div>
-      <Button
-        styleVariant="small"
-        type="button"
-        disabled={!projectID || !appCredentials || !suggestionConfidenceLevel || !replyConfidenceLevel}
-        style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
-        dataCy={cyChannelsDialogflowAddButton}
-      >
-        {isEnabled ? t('Update') : t('configure')}
-      </Button>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="ProcessorWaitingTime"
+          value={processorWaitingTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorWaitingTime(e.target.value)}
+          label={t('processorWaitingTime')}
+          placeholder={t('processorWaitingTime')}
+          showLabelIcon
+          tooltipText={t('waitingDefault')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="number"
+          name="processorCheckPeriod"
+          value={processorCheckPeriod}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorCheckPeriod(e.target.value)}
+          label={t('processorCheckPeriod')}
+          placeholder={t('processorCheckPeriod')}
+          showLabelIcon
+          tooltipText={t('checkDefault')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          name="DefaultLanguage"
+          value={defaultLanguage}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
+          label={t('defaultLanguage')}
+          placeholder={t('defaultLanguage')}
+          showLabelIcon
+          tooltipText={t('defaultLanguageTooltip')}
+          required
+          height={32}
+          fontClass="font-base"
+        />
+      </div>
     </ConnectNewForm>
   );
 };

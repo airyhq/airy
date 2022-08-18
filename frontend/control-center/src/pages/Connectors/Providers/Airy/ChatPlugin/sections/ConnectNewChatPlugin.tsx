@@ -11,7 +11,8 @@ interface ConnectNewChatPluginProps {
   createNewConnection: (displayName: string, imageUrl?: string) => void;
 }
 
-export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPluginProps) => {
+export const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
+  const {createNewConnection} = props;
   const [displayName, setDisplayName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const {t} = useTranslation();

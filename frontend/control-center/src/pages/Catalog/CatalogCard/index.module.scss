@@ -1,0 +1,141 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
+
+.catalogCard {
+  width: 340px;
+  height: 248px;
+  margin-bottom: 28px;
+  margin-right: 36px;
+  padding: 0px 12px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background-blue);
+  border-radius: 10px;
+  border: 1px solid var(--color-dark-elements-gray);
+  outline: 2px solid transparent;
+  @include font-s;
+  transition: all 0.1s;
+
+  &:hover {
+    outline: 2px solid var(--color-airy-blue);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+}
+
+.cardLogoTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  height: 50%;
+  border-bottom: 1px solid var(--color-light-gray);
+  margin-top: 15px;
+
+  .componentLogo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    button {
+      margin-top: 14px;
+    }
+
+    svg {
+      height: 55px;
+      max-width: 85px;
+      fill: var(--color-text-contrast);
+    }
+  }
+}
+
+.componentInfo {
+  margin-left: 10px;
+  h1 {
+    @include font-s-bold;
+    color: var(--color-text-contrast);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  p {
+    @include font-s;
+    margin: 10px 0 0 0;
+    color: var(--color-text-gray);
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.descriptionInfo {
+  height: 50%;
+  margin-top: 10px;
+
+  p {
+    width: 98%;
+    color: var(--color-text-contrast);
+  }
+
+  button {
+    border: 1px solid var(--color-airy-blue);
+    @include font-xs;
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-airy-blue);
+    padding: 5px;
+    margin-right: 5px;
+    margin-top: 8px;
+  }
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  color: var(--color-airy-blue);
+  @include font-s;
+  margin-top: 16px;
+  svg {
+    fill: var(--color-airy-blue);
+    width: 14px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.bolded {
+  font-weight: 800;
+}
+
+.checkmarkIcon {
+  width: 15%;
+  margin-bottom: 30px;
+  fill: var(--color-soft-green);
+}
+
+.enableModalContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.headerModal {
+  @include font-xl;
+}

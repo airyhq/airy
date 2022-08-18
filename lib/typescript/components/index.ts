@@ -5,3 +5,4 @@ export * from './inputs';
 export * from './loaders';
 export * from './message';
 export * from './tooltip';
+export * from './wrapper/ContentWrapper';

@@ -22,7 +22,7 @@ export const Pagination = (props: PaginationType) => {
 
   useEffect(() => {
     currentPage * pageCount + pageCount > totalCount ? setEndReached(true) : setEndReached(false);
-    pageCount < pageSize && !onSearch && setDisplayedItems([1, pageSize]);
+    pageCount < pageSize && !onSearch && setDisplayedItems([1, pageCount]);
   }, [currentPage, pageCount, onSearch]);
 
   const onNext = () => {

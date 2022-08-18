@@ -92,6 +92,30 @@ airy create [workspace directory] [flags]
 
 ***
 
+## Login
+
+Authenticates your workspace with Airy core and stores the credentials.
+
+```
+airy login [flags]
+```
+
+#### Options
+
+```
+  -h, --help   help for login
+```
+
+#### Options inherited from parent commands
+
+```
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
+```
+
+
+***
+
 ## Status
 
 Reports the status of an Airy Core instance

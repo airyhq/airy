@@ -310,6 +310,13 @@ def go_repositories():
         sum = "h1:e+C0SB5R1pu//O4MQ3f9cFuPGoOVeF2fE4Og9otCc70=",
         version = "v1.0.0",
     )
+    go_repository(
+        name = "com_github_bgentry_go_netrc",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/bgentry/go-netrc",
+        sum = "h1:xDfNPAt8lFiC1UJrqV3uuy861HCTo708pDMbjHHdCas=",
+        version = "v0.0.0-20140422174119-9fd32a8b3d3d",
+    )
 
     go_repository(
         name = "com_github_buger_jsonparser",
@@ -397,6 +404,13 @@ def go_repositories():
         importpath = "github.com/chai2010/gettext-go",
         sum = "h1:7aWHqerlJ41y6FOsEUvknqgXnGmJyJSbjhAWq5pO4F8=",
         version = "v0.0.0-20160711120539-c6fed771bfd5",
+    )
+    go_repository(
+        name = "com_github_cheggaaa_pb",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/cheggaaa/pb",
+        sum = "h1:wIkZHkNfC7R6GI5w7l/PdAdzXzlrbcI3p8OAlnkTsnc=",
+        version = "v1.0.27",
     )
 
     go_repository(
@@ -703,18 +717,11 @@ def go_repositories():
         version = "v1.1.1",
     )
     go_repository(
-        name = "com_github_daviddengcn_go_colortext",
+        name = "com_github_elazarl_goproxy",
         build_file_proto_mode = "disable_global",
-        importpath = "github.com/daviddengcn/go-colortext",
-        sum = "h1:uVsMphB1eRx7xB1njzL3fuMdWRN8HtVzoUOItHMwv5c=",
-        version = "v0.0.0-20160507010035-511bcaf42ccd",
-    )
-    go_repository(
-        name = "com_github_denisenkom_go_mssqldb",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/denisenkom/go-mssqldb",
-        sum = "h1:RSohk2RsiZqLZ0zCjtfn3S4Gp4exhpBWHyQ7D0yGjAk=",
-        version = "v0.9.0",
+        importpath = "github.com/elazarl/goproxy",
+        sum = "h1:yUdfgN0XgIJw7foRItutHYUIhlcKzcSf5vDpdhQAKTc=",
+        version = "v0.0.0-20180725130230-947c36da3153",
     )
 
     go_repository(
@@ -818,13 +825,6 @@ def go_repositories():
         version = "v1.0.0",
     )
 
-    go_repository(
-        name = "com_github_elazarl_goproxy",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/elazarl/goproxy",
-        sum = "h1:yUdfgN0XgIJw7foRItutHYUIhlcKzcSf5vDpdhQAKTc=",
-        version = "v0.0.0-20180725130230-947c36da3153",
-    )
     go_repository(
         name = "com_github_emicklei_go_restful",
         build_file_proto_mode = "disable_global",
@@ -1296,8 +1296,8 @@ def go_repositories():
         name = "com_github_googleapis_enterprise_certificate_proxy",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/googleapis/enterprise-certificate-proxy",
-        sum = "h1:7MYGT2XEMam7Mtzv1yDUYXANedWvwk3HKkR3MyGowy8=",
-        version = "v0.0.0-20220520183353-fd19c99a87aa",
+        sum = "h1:zO8WHNx/MYiAKJ3d5spxZXZE6KHmIQGQcAzwUzV7qQw=",
+        version = "v0.1.0",
     )
 
     go_repository(
@@ -1426,6 +1426,14 @@ def go_repositories():
         version = "v0.5.2",
     )
     go_repository(
+        name = "com_github_hashicorp_go_getter",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/hashicorp/go-getter",
+        sum = "h1:7jX7xcB+uVCliddZgeKyNxv0xoT7qL5KDtH7rU4IqIk=",
+        version = "v1.6.2",
+    )
+
+    go_repository(
         name = "com_github_hashicorp_go_hclog",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/hashicorp/go-hclog",
@@ -1489,6 +1497,20 @@ def go_repositories():
         importpath = "github.com/hashicorp/go-uuid",
         sum = "h1:fv1ep09latC32wFoVwnqcnKJGnMSdBanPczbHAYm1BE=",
         version = "v1.0.1",
+    )
+    go_repository(
+        name = "com_github_hashicorp_go_safetemp",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/hashicorp/go-safetemp",
+        sum = "h1:2HR189eFNrjHQyENnQMMpCiBAsRxzbTMIgBhEyExpmo=",
+        version = "v1.0.0",
+    )
+    go_repository(
+        name = "com_github_hashicorp_go_version",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/hashicorp/go-version",
+        sum = "h1:bPIoEKD27tNdebFGGxxYwcL4nepeY4j1QP23PFRGzg0=",
+        version = "v1.1.0",
     )
 
     go_repository(
@@ -1700,10 +1722,9 @@ def go_repositories():
         name = "com_github_kortschak_utter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/kortschak/utter",
-        sum = "h1:AJVccwLrdrikvkH0aI5JKlzZIORLpfMeGBQ5tHfIXis=",
-        version = "v1.0.1",
+        sum = "h1:MiK62aErc3gIiVEtyzKfeOHgW7atJb5g/KNX5m3c2nQ=",
+        version = "v1.11.2",
     )
-
     go_repository(
         name = "com_github_kr_fs",
         build_file_proto_mode = "disable_global",
@@ -2664,6 +2685,13 @@ def go_repositories():
         sum = "h1:p4VB7kIXpOQvVn1ZaTIVp+3vuYAXFe3OJEvjbUYJLaA=",
         version = "v0.0.0-20210104183010-2eb08e3e575f",
     )
+    go_repository(
+        name = "com_github_ulikunitz_xz",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/ulikunitz/xz",
+        sum = "h1:ERv8V6GKqVi23rgu5cj9pVfVzJbOqAY2Ntl88O6c2nQ=",
+        version = "v0.5.8",
+    )
 
     go_repository(
         name = "com_github_xeipuuv_gojsonpointer",
@@ -2831,6 +2859,13 @@ def go_repositories():
         importpath = "gopkg.in/check.v1",
         sum = "h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=",
         version = "v1.0.0-20201130134442-10cb98267c6c",
+    )
+    go_repository(
+        name = "in_gopkg_cheggaaa_pb_v1",
+        build_file_proto_mode = "disable_global",
+        importpath = "gopkg.in/cheggaaa/pb.v1",
+        sum = "h1:kJdccidYzt3CaHD1crCFTS1hxyhSi059NhOFUf03YFo=",
+        version = "v1.0.27",
     )
 
     go_repository(
@@ -3341,8 +3376,8 @@ def go_repositories():
         name = "org_golang_google_api",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/api",
-        sum = "h1:NMB9J4cCxs9xEm+1Z9QiO3eFvn7EnQj3Eo3hN6ugVlg=",
-        version = "v0.84.0",
+        sum = "h1:ZAnyOHQFIuWso1BodVfSaRyffD74T9ERGFa3k1fNk/U=",
+        version = "v0.86.0",
     )
 
     go_repository(

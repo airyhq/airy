@@ -55,10 +55,7 @@ public class Application {
                 "    AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +
                 "    AUTH_JAAS=${AUTH_JAAS:-}\n" +
                 "\n" +
-                "    echo \"Creating Kafka topics\"\n" +
-                "\n" +
-                "    if [ -n \"${AIRY_CORE_NAMESPACE}\" ]\n" +
-                "    then\n" +
+                "    if [ -n \"${AIRY_CORE_NAMESPACE}\" ]; then\n" +
                 "      AIRY_CORE_NAMESPACE=\"${AIRY_CORE_NAMESPACE}.\"\n" +
                 "      echo \"Using ${AIRY_CORE_NAMESPACE} to namespace topics\"\n" +
                 "    fi\n" +

@@ -26,3 +26,36 @@ tools:
     enabled: true
 serviceAccount: airy-admin
 limitRange: false
+components:
+  api:
+    admin:
+      name: api-admin
+      image: api/admin
+      mandatory: true
+      enabled: true
+      resources: {}
+    communication:
+      name: api-communication
+      mandatory: true
+      enabled: true
+      image: api/communication
+      resources: {}
+    websocket:
+      name: api-websocket
+      mandatory: true
+      enabled: true
+      image: api/websocket
+      resources: {}
+  frontend:
+    control_center:
+      name: frontend-control-center
+      mandatory: true
+      enabled: true
+      image: frontend/control-center
+      resources: {}
+    inbox:
+      name: frontend-inbox
+      mandatory: true
+      enabled: true
+      image: frontend/inbox
+      resources: {}

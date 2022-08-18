@@ -14,8 +14,7 @@ export default function connectorsReducer(state = defaultState, action: Action):
     case getType(actions.getComponentsAction):
       return {
         ...state,
-        ...action.payload.components.sources,
-        ...action.payload.components.enterprise,
+        ...action.payload.components,
       };
     case getType(actions.updateConnectorConfigurationAction): {
       let name = action.payload.components[0].name;

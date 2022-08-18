@@ -45,6 +45,19 @@
   padding: 4px 16px;
 }
 
+.greenButton {
+  @extend .extraSmallButton;
+  background-color: var(--color-soft-green);
+
+  &:hover {
+    background-color: var(--color-green-pressed);
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+  }
+}
+
 .smallButton {
   @extend .button;
   @include font-base;

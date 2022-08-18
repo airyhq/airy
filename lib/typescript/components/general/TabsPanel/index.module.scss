@@ -1,0 +1,67 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.tabsPanelWrapper {
+  background: var(--color-background-white);
+  color: var(--color-text-contrast);
+  display: block;
+  border-radius: 10px;
+  width: 100%;
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
+}
+
+.tabsPanelContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  span {
+    @include font-base;
+  }
+}
+
+.tabsPanelItems {
+  display: flex;
+}
+
+.activeTabItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 42px;
+  width: 150px;
+  color: var(--color-airy-blue);
+  border-bottom: 5px solid var(--color-airy-blue);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.inactiveTabItem {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 700;
+  background: transparent;
+  height: 32px;
+  width: 150px;
+  border-bottom: 5px solid transparent;
+  color: var(--color-text-gray);
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: rgb(202, 213, 219);
+  display: flex;
+  position: relative;
+  top: -3px;
+  left: 0px;
+}

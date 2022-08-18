@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
-import {Button, Input} from 'components';
+import {Input} from 'components';
 import {ConnectNewForm} from '../../ConnectNewForm';
-import {cyChannelsSalesforceAddButton} from 'handles';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
 type ConnectNewSalesforceProps = {
   createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
   isEnabled: boolean;
+  isConfigured: boolean;
 };
 
-export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNewSalesforceProps) => {
+export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigured}: ConnectNewSalesforceProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector['salesforce-contacts-ingestion']);
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -22,10 +22,17 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
   const {t} = useTranslation();
   const isUrlValid = url && (url.startsWith('https') || url.startsWith('http'));
 
-  const submitConfigData = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isEnabled) {
+      setIsUpdateModalVisible(true);
+    } else {
+      enableSubmitConfigData();
+    }
+  };
+
+  const enableSubmitConfigData = () => {
     createNewConnection(url, username, password, securityToken);
-    if (isEnabled) setIsUpdateModalVisible(true);
   };
 
   return (
@@ -33,6 +40,10 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
       componentName="enterprise-salesforce-contacts-ingestion"
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
+      enableSubmitConfigData={enableSubmitConfigData}
+      disabled={!isUrlValid || !username || !password || !securityToken}
+      isConfigured={isConfigured}
+      updateConfig={updateConfig}
     >
       <div className={styles.formRow}>
         <Input
@@ -95,16 +106,6 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled}: ConnectNe
           fontClass="font-base"
         />
       </div>
-      <Button
-        styleVariant="small"
-        type="button"
-        disabled={!isUrlValid || !username || !password || !securityToken}
-        style={{padding: '20px 60px'}}
-        onClick={e => submitConfigData(e)}
-        dataCy={cyChannelsSalesforceAddButton}
-      >
-        {isEnabled ? t('Update') : t('configure')}
-      </Button>
     </ConnectNewForm>
   );
 };

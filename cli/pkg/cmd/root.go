@@ -4,6 +4,7 @@ import (
 	"cli/pkg/cmd/api"
 	"cli/pkg/cmd/config"
 	"cli/pkg/cmd/create"
+	"cli/pkg/cmd/login"
 	"cli/pkg/cmd/status"
 	"cli/pkg/cmd/ui"
 	"cli/pkg/cmd/upgrade"
@@ -121,6 +122,7 @@ func init() {
 
 	RootCmd.PersistentFlags().StringVar(&cliConfigDir, "workspace", "", "workspace directory of an Airy core instance (default is the cwd)")
 	RootCmd.AddCommand(api.APICmd)
+	RootCmd.AddCommand(login.LoginCmd)
 	RootCmd.AddCommand(config.ConfigCmd)
 	RootCmd.AddCommand(status.StatusCmd)
 	RootCmd.AddCommand(ui.UICmd)

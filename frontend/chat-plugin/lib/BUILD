@@ -43,6 +43,8 @@ web_library(
         "react-dom": "react-dom",
         "camelcase-keys": "camelcase-keys",
         "emoji-mart": "emoji-mart",
+        "@emoji-mart/data": "@emoji-mart/data",
+        "@emoji-mart/react": "@emoji-mart/react",
     },
     output = {
         "library": "@airyhq/chat-plugin",

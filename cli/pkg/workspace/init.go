@@ -4,6 +4,7 @@ import (
 	"cli/pkg/workspace/template"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -63,8 +64,17 @@ func Create(path string, data template.Variables) (ConfigDir, error) {
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
-
 	// Init viper config
 	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
 	return ConfigDir{Path: path}, err
+}
+
+func CheckBinaries(binaryList []string) error {
+	for _, binary := range binaryList {
+		_, err := exec.LookPath(binary)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -17,9 +17,6 @@ import {
   cyChannelsTwilioSmsAddButton,
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsInstagramAddButton,
-  cyChannelsDialogflowAddButton,
-  cyChannelsZendeskAddButton,
-  cyChannelsSalesforceAddButton,
 } from 'handles';
 import {
   CONNECTORS_CONNECTED_ROUTE,
@@ -46,7 +43,7 @@ export type SourceInfo = {
   componentName: string;
   repository: string;
   itemInfoString: string;
-  dataCyAddChannelButton: string;
+  dataCyAddChannelButton?: string;
   docs: string;
 };
 
@@ -66,7 +63,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.chatPlugin,
       channel: true,
       title: 'Airy Live Chat',
-      description: <DescriptionComponent description="facebookDescription" />,
+      description: <DescriptionComponent description="chatpluginDescription" />,
       image: <AiryAvatarIcon />,
       newChannelRoute: CONNECTORS_CHAT_PLUGIN_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/chatplugin',
@@ -96,7 +93,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.twilioSMS,
       channel: true,
       title: 'SMS',
-      description: <DescriptionComponent description="twilioSmsDescription" />,
+      description: <DescriptionComponent description="twiliosmsDescription" />,
       image: <SMSAvatarIcon />,
       newChannelRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',
@@ -161,11 +158,10 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_DIALOGFLOW_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/dialogflow',
       configKey: 'enterprise-dialogflow-connector',
-      componentName: 'dialogflow-connector',
+      componentName: 'enterprise-dialogflow-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsDialogflowAddButton,
-      docs: 'https://dialogflow.cloud.google.com/cx/projects',
+      docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
     },
     {
       type: Source.zendesk,
@@ -176,11 +172,10 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_ZENDESK_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/zendesk',
       configKey: 'enterprise-zendesk-connector',
-      componentName: 'zendesk-connector',
+      componentName: 'enterprise-zendesk-connector',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsZendeskAddButton,
-      docs: 'https://airy.co/docs/enterprise/apps/dialogflow/deployment',
+      docs: 'https://airy.co/docs/enterprise/apps/zendesk/installation',
     },
     {
       type: Source.salesforce,
@@ -191,10 +186,9 @@ export const getSourcesInfo = (): SourceInfo[] => {
       newChannelRoute: CONNECTORS_SALESFORCE_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/salesforce',
       configKey: 'enterprise-salesforce-contacts-ingestion',
-      componentName: 'salesforce-contacts-ingestion',
+      componentName: 'enterprise-salesforce-contacts-ingestion',
       repository: 'airy-enterprise',
       itemInfoString: 'connectors',
-      dataCyAddChannelButton: cyChannelsSalesforceAddButton,
       docs: 'https://airy.co/docs/enterprise/apps/salesforce-contacts-ingestion/deployment',
     },
   ];

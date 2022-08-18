@@ -1,5 +1,0 @@
-component: api-websocket
-mandatory: false
-enabled: true
-image: api/websocket
-resources: {}

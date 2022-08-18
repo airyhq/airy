@@ -1,0 +1,13 @@
+name: sources-whatsapp
+mandatory: false
+enabled: true
+connector:
+  image: sources/whatsapp-connector
+  resources: {}
+eventsRouter:
+  image: sources/whatsapp-events-router
+  resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

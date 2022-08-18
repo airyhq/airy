@@ -16,17 +16,13 @@ provider "kubernetes" {
   config_path = data.terraform_remote_state.kubernetes.outputs.kubeconfig_path
 }
 
-module "my_airy_core" {
+module "airy_core" {
   source         = "github.com/airyhq/airy.git/infrastructure/terraform/modules/core"
-  values_yaml    = data.template_file.airy_yaml.rendered
+  values_yaml    = file("${var.airy_workspace}/airy.yaml")
   resources_yaml = file("${path.module}/files/defaultResourceLimits.yaml")
 }
 
-data "template_file" "airy_yaml" {
-  template = file("${var.airy_workspace}/airy.yaml")
-
-  vars = {
-    host        = var.host
-    hosted_zone = var.hosted_zone
-  }
+resource "local_file" "cli_yaml" {
+  filename = "${var.airy_workspace}/cli.yaml"
+  content  = "apihost: http://${module.airy_core.loadbalancer}\n"
 }

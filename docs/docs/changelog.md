@@ -3,11 +3,87 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.48.0
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#3591](https://github.com/airyhq/airy/issues/3591)] Enhancement enable/disable [[#3601](https://github.com/airyhq/airy/pull/3601)]
+- [[#3589](https://github.com/airyhq/airy/issues/3589)] Retrieve installed components from cm [[#3592](https://github.com/airyhq/airy/pull/3592)]
+- [[#3208](https://github.com/airyhq/airy/issues/3208)] Package core components [[#3570](https://github.com/airyhq/airy/pull/3570)]
+- [[#3489](https://github.com/airyhq/airy/issues/3489)] Component card details on catalog [[#3569](https://github.com/airyhq/airy/pull/3569)]
+- [[#3476](https://github.com/airyhq/airy/issues/3476)] Update cypress tests baseurl [[#3509](https://github.com/airyhq/airy/pull/3509)]
+- [[#3402](https://github.com/airyhq/airy/issues/3402)] Adjust catalog view to remove install and uninstalled title [[#3557](https://github.com/airyhq/airy/pull/3557)]
+- [[#3356](https://github.com/airyhq/airy/issues/3356)] Create and destroy Minikube with Bazel [[#3363](https://github.com/airyhq/airy/pull/3363)]
+- [[#3533](https://github.com/airyhq/airy/issues/3533)] Connect whatsapp channels [[#3537](https://github.com/airyhq/airy/pull/3537)]
+- [[#3397](https://github.com/airyhq/airy/issues/3397)] Airy CLI Installation with Terraform [[#3404](https://github.com/airyhq/airy/pull/3404)]
+- [[#2755](https://github.com/airyhq/airy/issues/2755)] Add an "airy login" command to the CLI [[#3531](https://github.com/airyhq/airy/pull/3531)]
+- [[#3353](https://github.com/airyhq/airy/issues/3353)] components.list endpoint version 2 [[#3482](https://github.com/airyhq/airy/pull/3482)]
+- [[#3329](https://github.com/airyhq/airy/issues/3329)] New design channel connectors [[#3502](https://github.com/airyhq/airy/pull/3502)]
+- [[#3096](https://github.com/airyhq/airy/issues/3096)] Use jaas for creating topics [[#3455](https://github.com/airyhq/airy/pull/3455)]
+
+#### 🐛 Bug Fixes
+
+- [[#3600](https://github.com/airyhq/airy/issues/3600)] Display all components in catalog [[#3602](https://github.com/airyhq/airy/pull/3602)]
+- [[#3529](https://github.com/airyhq/airy/issues/3529)] Align title fontsize customize and install
+- [[#3571](https://github.com/airyhq/airy/issues/3571)] Update dialogflow configuration form [[#3576](https://github.com/airyhq/airy/pull/3576)]
+- [[#3563](https://github.com/airyhq/airy/issues/3563)] Update components.get handling [[#3564](https://github.com/airyhq/airy/pull/3564)]
+- [[#3608](https://github.com/airyhq/airy/issues/3608)] Fix chatplugin preview url [[#3612](https://github.com/airyhq/airy/pull/3612)]
+- [[#3605](https://github.com/airyhq/airy/issues/3605)] Fix connectors connected channels [[#3610](https://github.com/airyhq/airy/pull/3610)]
+- [[#3600](https://github.com/airyhq/airy/issues/3600)] Display all components in catalog [[#3602](https://github.com/airyhq/airy/pull/3602)]
+- [[#3591](https://github.com/airyhq/airy/issues/3591)] Enhancement enable/disable [[#3601](https://github.com/airyhq/airy/pull/3601)]
+- [[#3603](https://github.com/airyhq/airy/issues/3603)] Fix integration-source-api helm code [[#3604](https://github.com/airyhq/airy/pull/3604)]
+- [[#3589](https://github.com/airyhq/airy/issues/3589)] Retrieve installed components from cm [[#3592](https://github.com/airyhq/airy/pull/3592)]
+- [[#3529](https://github.com/airyhq/airy/issues/3529)] Align title fontsize customize and install [[#3590](https://github.com/airyhq/airy/pull/3590)]
+- [[#3571](https://github.com/airyhq/airy/issues/3571)] Update dialogflow configuration form [[#3576](https://github.com/airyhq/airy/pull/3576)]
+- [[#3508](https://github.com/airyhq/airy/issues/3508)] Fix empty state connectors [[#3588](https://github.com/airyhq/airy/pull/3588)]
+- [[#3572](https://github.com/airyhq/airy/issues/3572)] Use only Kafka when provisioning topics
+- [[#3504](https://github.com/airyhq/airy/issues/3504)] Set minimum Kafka replicas to 1 [[#3506](https://github.com/airyhq/airy/pull/3506)]
+- [[#3511](https://github.com/airyhq/airy/issues/3511)] Update helm repo before install or upgrade [[#3512](https://github.com/airyhq/airy/pull/3512)]
+- [[#3530](https://github.com/airyhq/airy/issues/3530)] Airy controller component name mapping [[#3562](https://github.com/airyhq/airy/pull/3562)]
+- [[#3540](https://github.com/airyhq/airy/issues/3540)] Simplify the spanish flag to reduce bundle size [[#3559](https://github.com/airyhq/airy/pull/3559)]
+- [[#3541](https://github.com/airyhq/airy/issues/3541)] Rename module for airy-core [[#3547](https://github.com/airyhq/airy/pull/3547)]
+- [[#3465](https://github.com/airyhq/airy/issues/3465)] Status view enable button error when component is not configured [[#3481](https://github.com/airyhq/airy/pull/3481)]
+
+#### 📚 Documentation
+
+- [[#3539](https://github.com/airyhq/airy/issues/3539)] Documentation update for minikube installation [[#3566](https://github.com/airyhq/airy/pull/3566)]
+- [[#3373](https://github.com/airyhq/airy/issues/3373)] Document how we work with rules_go, gazelle, and update-deps [[#3521](https://github.com/airyhq/airy/pull/3521)]
+- [[#3558](https://github.com/airyhq/airy/issues/3558)] Docs for Contributing and Defining Components  [[#3574](https://github.com/airyhq/airy/pull/3574)]
+
+#### 🧰 Maintenance
+
+- Bump @reduxjs/toolkit from 1.8.3 to 1.8.4 [[#3593](https://github.com/airyhq/airy/pull/3593)]
+- Bump @emoji-mart/data from 1.0.3 to 1.0.5 [[#3594](https://github.com/airyhq/airy/pull/3594)]
+- Bump @testing-library/dom from 8.16.1 to 8.17.1 [[#3595](https://github.com/airyhq/airy/pull/3595)]
+- Bump @types/jest from 28.1.6 to 28.1.7 [[#3598](https://github.com/airyhq/airy/pull/3598)]
+- Bump react-i18next from 11.18.3 to 11.18.4 [[#3596](https://github.com/airyhq/airy/pull/3596)]
+- Bump @types/node from 18.7.3 to 18.7.4 [[#3597](https://github.com/airyhq/airy/pull/3597)]
+- Bump webpack-dev-server from 4.9.3 to 4.10.0 [[#3585](https://github.com/airyhq/airy/pull/3585)]
+- Bump ts-jest from 28.0.7 to 28.0.8 [[#3583](https://github.com/airyhq/airy/pull/3583)]
+- Bump preact from 10.10.1 to 10.10.2 [[#3584](https://github.com/airyhq/airy/pull/3584)]
+- Bump sass from 1.54.3 to 1.54.4 [[#3586](https://github.com/airyhq/airy/pull/3586)]
+- Bump emoji-mart from 5.2.0 to 5.2.1 [[#3587](https://github.com/airyhq/airy/pull/3587)]
+- Bump @emoji-mart/react from 1.0.0 to 1.0.1 [[#3578](https://github.com/airyhq/airy/pull/3578)]
+- Bump terser-webpack-plugin from 5.3.3 to 5.3.4 [[#3579](https://github.com/airyhq/airy/pull/3579)]
+- Bump @types/node from 18.6.4 to 18.7.3 [[#3581](https://github.com/airyhq/airy/pull/3581)]
+- Bump i18next from 21.8.16 to 21.9.0 [[#3580](https://github.com/airyhq/airy/pull/3580)]
+- Bump @testing-library/user-event from 14.4.2 to 14.4.3 [[#3582](https://github.com/airyhq/airy/pull/3582)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.48.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.48.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.48.0/windows/amd64/airy.exe)
+
 ## 0.47.4
 
 #### Hotfix
 
-* [[#3575](https://github.com/airyhq/airy/issues/3575)] Fix Kafka topics provisioning
+- [[#3575](https://github.com/airyhq/airy/issues/3575)] Fix Kafka topics provisioning
 
 #### Airy CLI
 
@@ -21,7 +97,7 @@ You can download the Airy CLI for your operating system from the following links
 
 #### Hotfix
 
-* [[#3572](https://github.com/airyhq/airy/issues/3572)] Fix Kafka topics provisioning
+* [[[#3572](https://github.com/airyhq/airy/issues/3572)](https://github.com/airyhq/airy/issues/3572)] Fix Kafka topics provisioning
 
 #### Airy CLI
 
@@ -1224,54 +1300,3 @@ You can download the Airy CLI for your operating system from the following links
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.28.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.28.0/windows/amd64/airy.exe)
 
-## Hotfix 0.27.1
-
-[[#2219](https://github.com/airyhq/airy/issues/2219)] fixed inbox ui overflow bug [[#2220](https://github.com/airyhq/airy/pull/2220)]
-## 0.27.0
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#2148](https://github.com/airyhq/airy/issues/2148)] Enable users to connect via instagram [[#2169](https://github.com/airyhq/airy/pull/2169)]
-- [[#2140](https://github.com/airyhq/airy/issues/2140)] Call to /webhooks.subscribe fails when the component is not enabled or crashing [[#2198](https://github.com/airyhq/airy/pull/2198)]
-- [[#2117](https://github.com/airyhq/airy/issues/2117)] Ingest and render Google Business Messages requests for live agents [[#2199](https://github.com/airyhq/airy/pull/2199)]
-- [[#2168](https://github.com/airyhq/airy/issues/2168)] Support Twilio media url messages [[#2191](https://github.com/airyhq/airy/pull/2191)]
-
-#### 🐛 Bug Fixes
-
-- [[#2215](https://github.com/airyhq/airy/issues/2215)] Fix instagram mapper [[#2216](https://github.com/airyhq/airy/pull/2216)]
-- [[#2115](https://github.com/airyhq/airy/issues/2115)] Conversation Status Changes occasionally not reflected in Inbox UI [[#2129](https://github.com/airyhq/airy/pull/2129)]
-- [[#2002](https://github.com/airyhq/airy/issues/2002)] Fix chatplugin code generator [[#2196](https://github.com/airyhq/airy/pull/2196)]
-- [[#2192](https://github.com/airyhq/airy/issues/2192)] Hotfix: Inbox message list crash [[#2194](https://github.com/airyhq/airy/pull/2194)]
-
-#### 📚 Documentation
-
-- [[#2186](https://github.com/airyhq/airy/issues/2186)] Small docs fixes [[#2214](https://github.com/airyhq/airy/pull/2214)]
-
-#### 🧰 Maintenance
-
-- Bump css-loader from 6.1.0 to 6.2.0 [[#2212](https://github.com/airyhq/airy/pull/2212)]
-- Bump style-loader from 3.1.0 to 3.2.1 [[#2209](https://github.com/airyhq/airy/pull/2209)]
-- Bump @types/react from 17.0.14 to 17.0.15 [[#2211](https://github.com/airyhq/airy/pull/2211)]
-- Bump @babel/core from 7.14.6 to 7.14.8 [[#2206](https://github.com/airyhq/airy/pull/2206)]
-- Bump regenerator-runtime from 0.13.7 to 0.13.9 [[#2207](https://github.com/airyhq/airy/pull/2207)]
-- Bump sass from 1.35.2 to 1.36.0 [[#2208](https://github.com/airyhq/airy/pull/2208)]
-- Bump @types/node from 16.3.3 to 16.4.3 [[#2200](https://github.com/airyhq/airy/pull/2200)]
-- Bump webpack from 5.45.1 to 5.46.0 [[#2201](https://github.com/airyhq/airy/pull/2201)]
-- Bump @typescript-eslint/parser from 4.28.3 to 4.28.4 [[#2202](https://github.com/airyhq/airy/pull/2202)]
-- Bump @babel/preset-env from 7.14.7 to 7.14.8 [[#2205](https://github.com/airyhq/airy/pull/2205)]
-- Bump @typescript-eslint/eslint-plugin from 4.28.3 to 4.28.4 [[#2203](https://github.com/airyhq/airy/pull/2203)]
-- Bump webpack from 5.40.0 to 5.45.1 [[#2177](https://github.com/airyhq/airy/pull/2177)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.27.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.27.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.27.0/windows/amd64/airy.exe)
-
-## Hotfix 0.26.3
-
-[[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]

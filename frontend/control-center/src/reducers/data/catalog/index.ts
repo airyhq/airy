@@ -1,10 +1,11 @@
+import {ComponentInfo} from 'model';
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/catalog';
 
 type Action = ActionType<typeof actions>;
 
 export interface CatalogConfig {
-  [key: string]: {repository: string; installed: boolean};
+  [key: string]: ComponentInfo;
 }
 
 const defaultState = {};

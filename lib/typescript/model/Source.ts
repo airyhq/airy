@@ -10,6 +10,12 @@ export enum Source {
   zendesk = 'zendesk',
   dialogflow = 'dialogflow',
   salesforce = 'salesforce',
+  congnigy = 'congnigy',
+  rasa = 'rasa',
+  webhooks = 'webhooks',
+  amelia = 'amelia',
+  frontendinbox = 'frontendinbox',
+  mobile = 'mobile',
 }
 
 export const prettifySource = (source: string) =>
@@ -19,10 +25,21 @@ export const prettifySource = (source: string) =>
     .join(' ');
 
 export const getSourceForComponent = (item: string) => {
-  const itemArr = item
+  let formattedItem;
+
+  if (item.includes('airy-core') || item.includes('airy-enterprise')) {
+    formattedItem = item.split('/')[1];
+  } else {
+    formattedItem = item;
+  }
+
+  const itemArr = formattedItem
     .split('-')
     .filter(element => element !== 'enterprise' && element !== 'sources' && element !== 'connector');
   let componentName = itemArr.join(' ').replace(/ /g, '');
   if (componentName === 'chatplugin') componentName = 'chatPlugin';
+  if (componentName === 'whatsappbusinesscloud') componentName = 'twilioWhatsApp';
+  if (componentName === 'salesforcecontactsingestion') componentName = 'salesforce';
+
   return Source[componentName];
 };

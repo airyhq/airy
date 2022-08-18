@@ -3,21 +3,15 @@ import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listChannels} from '../../../actions/channel';
 import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
-
 import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
-
-import {Channel, Source} from 'model';
-
-import {SearchField, LinkButton} from 'components';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
+import {Channel, ScreenDimensions, Source} from 'model';
+import {SearchField} from 'components';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
-
 import styles from './index.module.scss';
 import {
-  cyChannelsFormBackButton,
   cyConnectorsAddNewButton,
   cyChannelsChatPluginList,
   cyChannelsFacebookList,
@@ -33,9 +27,7 @@ import {
   CONNECTORS_TWILIO_WHATSAPP_ROUTE,
   CONNECTORS_GOOGLE_ROUTE,
   CONNECTORS_INSTAGRAM_ROUTE,
-  CONNECTORS_ROUTE,
 } from '../../../routes/routes';
-import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
@@ -47,8 +39,12 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
-  const {listChannels} = props;
+type ConnectedChannelsListProps = {
+  offset?: number;
+} & ConnectedProps<typeof connector>;
+
+const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
+  const {listChannels, offset} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -56,31 +52,41 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
-  const listPageSize = 8;
-  const connectorsRoute = location.pathname.includes('connectors');
+  const screenDimensions: ScreenDimensions = {height: screen.height, width: screen.width};
+  const ITEM_LINE_HEIGHT = 64;
+  const MARGIN_TOP = 128;
+  const PADDING_BOTTOM = 32;
+  const PAGINATION_HEIGHT = 54;
+  const ADDITIONAL_SPACE = 60;
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const pageSize = filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length;
+  const areConnectedChannels = channels.length > 0 && filteredChannels.length > 0;
+
   const [currentPage, setCurrentPage] = useState(1);
 
+  const listPageSize = Math.floor(
+    (screenDimensions.height - offset - MARGIN_TOP - PAGINATION_HEIGHT - PADDING_BOTTOM - ADDITIONAL_SPACE) /
+      ITEM_LINE_HEIGHT
+  );
+
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+    const firstPageIndex = (currentPage - 1) * listPageSize;
+    const lastPageIndex = firstPageIndex + listPageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, pageSize, channels.length]);
+  }, [currentPage, listPageSize, channels.length, filteredChannels.length]);
 
   useEffect(() => {
-    listChannels();
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
@@ -91,43 +97,31 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
     let ROUTE;
     switch (source) {
       case Source.facebook:
-        setName(t('facebookTitle'));
-        setDescription(t('facebookDescription'));
         ROUTE = CONNECTORS_FACEBOOK_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
-        setName(t('googleTitle'));
-        setDescription(t('googleDescription'));
         ROUTE = CONNECTORS_GOOGLE_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
-        setName(t('twilioSmsTitle'));
-        setDescription(t('twilioSmsDescription'));
         ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
-        setName(t('twilioWhatsappTitle'));
-        setDescription(t('twilioWhatsappDescription'));
         ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
-        setName(t('chatpluginTitle'));
-        setDescription(t('chatpluginDescription'));
         ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
-        setName(t('instagramTitle'));
-        setDescription(t('instagramDescription'));
         ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
         setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsInstagramList);
@@ -142,21 +136,6 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(CONNECTORS_ROUTE)} type="button">
-        <div className={styles.linkButtonContainer}>
-          <ArrowLeftIcon className={styles.backIcon} />
-          {connectorsRoute ? t('Connectors') : ''}
-        </div>
-      </LinkButton>
-      <div className={styles.headlineRow}>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-          <div style={{height: '64px', width: '64px'}}>{getChannelAvatar(source)}</div>
-          <div style={{display: 'flex', flexDirection: 'column', marginLeft: '16px'}}>
-            <h1 className={styles.headline}>{name}</h1>
-            <h2 className={styles.description}>{description}</h2>
-          </div>
-        </div>
-      </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
         <div className={styles.searchFieldButtons}>
           <div className={styles.searchField}>
@@ -191,20 +170,11 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
           </button>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'space-between',
-          fontWeight: '700',
-          fontSize: '16px',
-          marginBottom: '24px',
-        }}
-      >
-        <span>{t('name')}</span>
+      <div className={styles.columnTitle}>
+        <span>{areConnectedChannels ? t('name') : ''}</span>
         <span>{t('manage')}</span>
       </div>
-      <div className={styles.channelsList} data-cy={dataCyChannelList}>
+      <div data-cy={dataCyChannelList}>
         {filteredChannels.length > 0 ? (
           sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
             channel.metadata.name.toLowerCase()
@@ -213,21 +183,28 @@ const ConnectedChannelsList = (props: ConnectedProps<typeof connector>) => {
               <ChannelsListItem channel={channel} />
             </div>
           ))
-        ) : (
+        ) : channels.length > 0 ? (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
             <p>{t('noResultsTerm')}</p>
           </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
+          </div>
         )}
       </div>
-      <Pagination
-        totalCount={filteredChannels.length}
-        pageSize={listPageSize}
-        pageCount={filteredChannels.length >= pageSize ? pageSize : filteredChannels.length}
-        currentPage={currentPage}
-        onPageChange={page => setCurrentPage(page)}
-        onSearch={searchText !== ''}
-      />
+
+      {areConnectedChannels && (
+        <Pagination
+          totalCount={filteredChannels.length}
+          pageSize={listPageSize}
+          pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
+          currentPage={currentPage}
+          onPageChange={page => setCurrentPage(page)}
+          onSearch={searchText !== ''}
+        />
+      )}
     </div>
   );
 };

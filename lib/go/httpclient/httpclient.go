@@ -15,9 +15,10 @@ type Client struct {
 	c       *http.Client
 }
 
-func NewClient(baseURL string) *Client {
+func NewClient(baseURL string, authToken string) *Client {
 	return &Client{
 		BaseURL: baseURL,
+		Token:   authToken,
 		c: &http.Client{
 			Timeout: time.Minute,
 		},

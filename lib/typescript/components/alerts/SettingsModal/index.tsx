@@ -10,13 +10,26 @@ type SettingsModalProps = {
   children: any;
   wrapperClassName?: string;
   containerClassName?: string;
-  Icon?: React.ElementType | null;
+  Icon?: React.ReactElement | null;
   headerClassName?: string;
   style?: CSSProperties;
+  styleHeader?: CSSProperties;
+  dataCyCloseButton?: string;
 };
 
 export const SettingsModal = (props: SettingsModalProps) => {
-  const {close, title, children, headerClassName, wrapperClassName, style, containerClassName, Icon} = props;
+  const {
+    close,
+    title,
+    children,
+    headerClassName,
+    wrapperClassName,
+    style,
+    styleHeader,
+    containerClassName,
+    Icon,
+    dataCyCloseButton,
+  } = props;
   return (
     <Modal
       className={`${styles.content} ${wrapperClassName}`}
@@ -26,10 +39,17 @@ export const SettingsModal = (props: SettingsModalProps) => {
       isOpen={true}
       shouldCloseOnOverlayClick={true}
       onRequestClose={close}
+      style={style}
     >
       <div className={containerClassName}>
-        {Icon ? <Icon className={styles.icon} /> : ''}
-        <ModalHeader title={title ?? ''} close={close} style={style} headerClassName={headerClassName} />
+        {Icon ? Icon : ''}
+        <ModalHeader
+          title={title ?? ''}
+          close={close}
+          style={styleHeader}
+          headerClassName={headerClassName}
+          dataCyCloseButton={dataCyCloseButton}
+        />
         {children}
       </div>
     </Modal>

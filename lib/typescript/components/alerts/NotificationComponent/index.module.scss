@@ -1,0 +1,93 @@
+@import 'assets/scss/fonts.scss';
+
+.notificationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  height: 40px;
+  min-width: 240px;
+  z-index: 9999;
+  border-radius: 10px;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.notificationText {
+  @include font-base;
+  color: white;
+}
+
+.stickyCloseButton {
+  position: absolute;
+  right: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@keyframes translateYFade {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+@keyframes translateYSticky {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes translateYStickyClose {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+.translateYAnimFade {
+  animation-name: translateYFade;
+  animation-timing-function: ease-in-out;
+}
+
+.translateYAnimSticky {
+  animation-name: translateYSticky;
+  animation-timing-function: ease-in-out;
+}
+
+.translateYAnimStickyClose {
+  animation-name: translateYStickyClose;
+  animation-timing-function: ease-in-out;
+}

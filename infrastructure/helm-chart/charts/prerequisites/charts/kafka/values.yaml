@@ -1,1 +1,5 @@
 enabled: true
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

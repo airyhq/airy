@@ -32,16 +32,16 @@ export const listComponents = () => (dispatch: Dispatch<any>) => {
 
 export const installComponent =
   (installComponentRequestPayload: InstallUninstallComponentRequestPayload) => (dispatch: Dispatch<any>) => {
-    dispatch(installComponentAction(installComponentRequestPayload));
     return HttpClientInstance.installComponent(installComponentRequestPayload).then(() => {
+      dispatch(installComponentAction(installComponentRequestPayload));
       return Promise.resolve(true);
     });
   };
 
 export const uninstallComponent =
   (uninstallComponentRequestPayload: InstallUninstallComponentRequestPayload) => (dispatch: Dispatch<any>) => {
-    dispatch(uninstallComponentAction(uninstallComponentRequestPayload));
     return HttpClientInstance.uninstallComponent(uninstallComponentRequestPayload).then(() => {
+      dispatch(uninstallComponentAction(uninstallComponentRequestPayload));
       return Promise.resolve(true);
     });
   };

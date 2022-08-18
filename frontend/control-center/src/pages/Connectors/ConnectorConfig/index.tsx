@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
+import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
-import {Button, SettingsModal} from 'components';
+import {Button, NotificationComponent, SettingsModal} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
 import {
@@ -14,7 +14,7 @@ import {
   getConnectorsConfiguration,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
-import {Source} from 'model';
+import {NotificationModel, Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
@@ -23,6 +23,15 @@ import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
+import ConnectedChannelsList from '../ConnectedChannelsList';
+import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
+import InstagramConnect from '../Providers/Instagram/InstagramConnect';
+import GoogleConnect from '../Providers/Google/GoogleConnect';
+import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
+import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
+import {getComponentStatus} from '../../../services/getComponentStatus';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -41,42 +50,98 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
+  components: state.data.config.components,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConnectorConfigProps = {
-  connector: Source;
+  connector?: Source;
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {connector, enableDisableComponent, updateConnectorConfiguration, getConnectorsConfiguration, config} = props;
+  const {
+    connector,
+    components,
+    enableDisableComponent,
+    updateConnectorConfiguration,
+    getConnectorsConfiguration,
+    config,
+  } = props;
 
-  const {channelId} = useParams();
+  const {channelId, source} = useParams();
+  const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
+  const [isEnabling, setIsEnabling] = useState(false);
+  const [isDisabling, setIsDisabling] = useState(false);
+  const [isConfigured, setIsConfigured] = useState(false);
+  const [lineTitle, setLineTitle] = useState('');
+  const [backTitle, setBackTitle] = useState('Connectors');
+  const [backRoute, setBackRoute] = useState('');
+  const pageContentRef = useRef(null);
+  const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
   const {t} = useTranslation();
+  const isInstalled = true;
+
+  useLayoutEffect(() => {
+    setOffset(pageContentRef?.current?.offsetTop);
+  }, []);
+
+  useEffect(() => {
+    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
+      if (
+        Object.entries(connectorConfiguration[connectorInfo.componentName]) &&
+        Object.entries(connectorConfiguration[connectorInfo.componentName]).length > 0
+      ) {
+        setIsConfigured(true);
+      }
+    }
+  }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
     getConnectorsConfiguration();
+    (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
-    setConnectorInfo({...connectorSourceInfo[0]});
-  }, []);
+
+    channelId === 'new'
+      ? connector === Source.chatPlugin
+        ? setLineTitle(t('Create'))
+        : setLineTitle(t('addChannel'))
+      : setLineTitle(t('Configuration'));
+
+    source
+      ? (setConnectorInfo(sourceInfoArr.filter(item => item.type === source)[0]), setLineTitle(t('channelsCapital')))
+      : setConnectorInfo(connectorSourceInfo[0]);
+
+    channelId
+      ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfo[0].type}`), setBackTitle(t('back')))
+      : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
+  }, [source]);
 
   useEffect(() => {
     if (config && connectorInfo) {
       setIsEnabled(config?.components[connectorInfo?.configKey]?.enabled);
     }
-  }, [config, connectorInfo]);
+  }, [config, connectorInfo, components]);
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
 
     if (connector === Source.dialogflow) {
-      const [projectId, appCredentials, suggestionConfidenceLevel, replyConfidenceLevel] = args;
+      const [
+        projectId,
+        appCredentials,
+        suggestionConfidenceLevel,
+        replyConfidenceLevel,
+        processorWaitingTime,
+        processorCheckPeriod,
+        defaultLanguage,
+      ] = args;
 
       payload = {
         components: [
@@ -84,10 +149,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             name: connectorInfo && connectorInfo?.configKey,
             enabled: true,
             data: {
-              project_id: projectId,
-              dialogflow_credentials: appCredentials,
-              suggestion_confidence_level: suggestionConfidenceLevel,
-              reply_confidence_level: replyConfidenceLevel,
+              projectId: projectId,
+              dialogflowCredentials: appCredentials,
+              suggestionConfidenceLevel: suggestionConfidenceLevel,
+              replyConfidenceLevel: replyConfidenceLevel,
+              connectorStoreMessagesProcessorMaxWaitMillis: processorWaitingTime,
+              connectorStoreMessagesProcessorCheckPeriodMillis: processorCheckPeriod,
+              connectorDefaultLanguage: defaultLanguage,
             },
           },
         ],
@@ -140,33 +208,85 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const PageContent = () => {
     if (connector === Source.dialogflow) {
-      return <ConnectNewDialogflow createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewDialogflow
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.zendesk) {
-      return <ConnectNewZendesk createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewZendesk
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
 
     if (connector === Source.salesforce) {
-      return <ConnectNewSalesforce createNewConnection={createNewConnection} isEnabled={isEnabled} />;
+      return (
+        <ConnectNewSalesforce
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+        />
+      );
     }
+
+    if (connector === Source.chatPlugin) {
+      return <ChatPluginConnect />;
+    }
+    if (connector === Source.facebook) {
+      return <FacebookConnect />;
+    }
+    if (connector === Source.instagram) {
+      return <InstagramConnect />;
+    }
+    if (connector === Source.google) {
+      return <GoogleConnect />;
+    }
+    if (connector === Source.twilioSMS) {
+      return <TwilioSmsConnect />;
+    }
+    if (connector === Source.twilioWhatsApp) {
+      return <TwilioWhatsappConnect />;
+    }
+
+    return <ConnectedChannelsList offset={offset} />;
   };
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
-    setIsEnabled(!isEnabled);
-    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]});
+    isEnabled ? setIsDisabling(true) : setIsEnabling(true);
+    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
+      .then(() => {
+        setNotification({
+          show: true,
+          successful: true,
+          text: isEnabled ? t('successfullyDisabled') : t('successfullyEnabled'),
+        });
+      })
+      .catch(() => {
+        setNotification({
+          show: true,
+          successful: false,
+          text: isEnabled ? t('failedDisabled') : t('failedEnabled'),
+        });
+      })
+      .finally(() => {
+        isEnabled ? setIsDisabling(false) : setIsEnabling(false);
+      });
   };
 
   const closeConfigurationModal = () => {
     setConfigurationModal(false);
-    if (!isEnabled) {
-      enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: true}]});
-      setIsEnabled(true);
-    }
   };
 
-  const openModal = () => {
+  const openConfigurationModal = () => {
     setConfigurationModal(true);
   };
 
@@ -174,11 +294,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     <div className={styles.container}>
       <section className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <Link to="/connectors">
+          <Link to={backRoute}>
             <LinkButton type="button">
               <div className={styles.linkButtonContainer}>
                 <ArrowLeftIcon className={styles.backIcon} />
-                {t('Connectors')}
+                {backTitle}
               </div>
             </LinkButton>
           </Link>
@@ -199,7 +319,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
                   <ConfigStatusButton
-                    enabled={isEnabled ? 'Enabled' : !isEnabled ? 'Disabled' : 'Not Configured'}
+                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
                 </div>
@@ -214,14 +334,24 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       text={t('infoButtonText')}
                     />
                   </div>
-                  <Button
-                    styleVariant="small"
-                    type="button"
-                    onClick={openModal}
-                    style={{padding: '20px 40px', marginTop: '-12px'}}
-                  >
-                    {isEnabled ? t('disableComponent') : t('Enable')}
-                  </Button>
+
+                  {isConfigured && (
+                    <Button
+                      styleVariant="small"
+                      type="button"
+                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
+                      disabled={isEnabling || isDisabling}
+                      style={{padding: '20px 40px', marginTop: '-12px'}}
+                    >
+                      {isEnabling
+                        ? t('enablingComponent')
+                        : isDisabling
+                        ? t('disablingComponent')
+                        : isEnabled
+                        ? t('disableComponent')
+                        : t('enableComponent')}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -230,26 +360,40 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       </section>
 
       <div className={styles.wrapper}>
-        <div className={styles.channelsLineContainer}>
-          <div className={styles.channelsLineItems}>
-            <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
-              {channelId === 'new' ? t('Enable') : t('Configuration')}
-            </span>
+        {connector !== Source.chatPlugin && (
+          <div className={styles.channelsLineContainer}>
+            <div className={styles.channelsLineItems}>
+              <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
+                {lineTitle}
+              </span>
+            </div>
+            <div className={styles.line} />
           </div>
-          <div className={styles.line} />
-        </div>
-        <div className={styles.pageContentContainer}>
+        )}
+        <div ref={pageContentRef} className={connector !== Source.chatPlugin ? styles.pageContentContainer : ''}>
           <PageContent />
         </div>
       </div>
 
+      {notification?.show && (
+        <NotificationComponent
+          type="sticky"
+          show={notification.show}
+          successful={notification.successful}
+          text={notification.text}
+          setShowFalse={setNotification}
+        />
+      )}
+
       {configurationModal && (
         <SettingsModal
-          Icon={!isEnabled ? (CheckmarkIcon as React.ElementType) : null}
+          Icon={!isEnabled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
           wrapperClassName={styles.enableModalContainerWrapper}
           containerClassName={styles.enableModalContainer}
           title={
-            isEnabled ? t('disableComponent') + ' ' + connectorInfo?.title : connectorInfo?.title + ' ' + t('enabled')
+            isEnabled
+              ? t('disableComponent') + ' ' + connectorInfo?.title
+              : connectorInfo?.title + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
           headerClassName={styles.headerModal}

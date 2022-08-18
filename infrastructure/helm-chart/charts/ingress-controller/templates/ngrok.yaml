@@ -16,6 +16,13 @@ spec:
                 name: sources-facebook-connector
                 port:
                   number: 80
+          - path: /whatsapp
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-whatsapp-connector
+                port:
+                  number: 80
           - path: /google
             pathType: Prefix
             backend:

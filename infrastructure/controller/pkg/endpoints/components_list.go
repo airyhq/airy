@@ -2,42 +2,34 @@ package endpoints
 
 import (
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
-	helmCli "github.com/mittwald/go-helm-client"
+	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
+	"github.com/airyhq/airy/lib/go/k8s"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/helm/cmd/helm/search"
 	"k8s.io/klog"
 )
 
 type ComponentsList struct {
-	Cli       helmCli.Client
-	ClientSet *kubernetes.Clientset
-	Namespace string
-	Index     *search.Index
-}
-
-//NOTE: We don't know yet how or where some properties like AvailableFor/Categories/Price
-//      are going to get stores, so for now they are defined but not used
-
-type componentsDetails struct {
-	Name         string `json:"-"`
-	Description  string `json:"description"`
-	Installed    bool   `json:"installed"`
-	AvailableFor string `json:"availableFor"`
-	Categories   string `json:"categories"`
-	Price        string `json:"price"`
+	ClientSet      *kubernetes.Clientset
+	Namespace      string
+	Index          *search.Index
+	DeployedCharts *cache.DeployedCharts
 }
 
 func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	deployedCharts, err := s.getDeployedCharts()
+	deployedCharts, err := k8s.GetInstalledComponents(r.Context(), s.Namespace, s.ClientSet)
+
+	components, err := getComponentsDetailsFromCloud()
 	if err != nil {
 		klog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	components := make(map[string]*componentsDetails)
 	seen := make(map[string]struct{})
 	for _, chart := range s.Index.All() {
 		if _, ok := seen[chart.Name]; ok {
@@ -45,12 +37,10 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		seen[chart.Name] = struct{}{}
 
-		c := &componentsDetails{
-			Name:      chart.Name,
-			Installed: deployedCharts[chart.Chart.Name],
+		if components[chart.Name] == nil {
+			components[chart.Name] = make(map[string]interface{})
 		}
-
-		components[chart.Name] = c
+		components[chart.Name]["installed"] = deployedCharts[chart.Chart.Name]
 	}
 
 	blob, err := json.Marshal(map[string]interface{}{"components": components})
@@ -64,16 +54,53 @@ func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(blob)
 }
 
-func (s *ComponentsList) getDeployedCharts() (map[string]bool, error) {
-	deployedReleases, err := s.Cli.ListDeployedReleases()
+type componentsData struct {
+	Count        int                 `json:"Count"`
+	Items        []map[string]string `json:"Items"`
+	ScannedCount int                 `json:"ScannedCount"`
+}
+
+func getComponentsDetailsFromCloud() (map[string]map[string]interface{}, error) {
+	//NOTE: This is a temporary solution before doing the refactoring
+	resp, err := http.Get("https://93l1ztafga.execute-api.us-east-1.amazonaws.com")
 	if err != nil {
 		return nil, err
 	}
 
-	deployedCharts := make(map[string]bool, len(deployedReleases))
-	for _, r := range deployedReleases {
-		deployedCharts[r.Name] = true
+	blob, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s", blob)
 	}
 
-	return deployedCharts, nil
+	var data componentsData
+	err = json.Unmarshal(blob, &data)
+	if err != nil {
+		return nil, err
+	}
+
+	componentsDetails := make(map[string]map[string]interface{})
+	for _, item := range data.Items {
+		name, ok := item["name"]
+		if !ok || name == "" {
+			continue
+		}
+
+		c := make(map[string]interface{})
+		for k, v := range item {
+			//NOTE: For now we are assuming that all the values are strings
+			if v != "" {
+				c[k] = v
+			}
+		}
+
+		c["installed"] = false
+		componentsDetails[name] = c
+	}
+
+	return componentsDetails, nil
 }

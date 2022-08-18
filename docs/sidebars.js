@@ -9,6 +9,7 @@ module.exports = {
             'getting-started/installation/introduction',
             'getting-started/installation/minikube',
             'getting-started/installation/aws',
+            'getting-started/installation/terraform',
             'getting-started/installation/helm',
             'getting-started/installation/configuration',
             'getting-started/installation/security',
@@ -37,6 +38,7 @@ module.exports = {
           ],
         },
         'sources/facebook',
+        'sources/whatsapp-cloud',
         'sources/instagram',
         'sources/google',
         'sources/whatsapp-twilio',
@@ -113,7 +115,8 @@ module.exports = {
     },
     {
       '📚 Guides': [
-        'guides/contributing',
+        'guides/contributing-to-airy',
+        'guides/contributing-components',
         'guides/analytics-demo',
         'guides/monitoring',
         'guides/backup',

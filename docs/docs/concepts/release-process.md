@@ -47,14 +47,14 @@ You can check out existing releases on
 
 ## Hotfix release
 
-In case we need to hotfix a release, we follow a different process. 
+In case we need to hotfix a release, we follow a different process.
 At the moment, the process is completely manual and goes as follows:
 
 - Create a new branch from `main` called `hotfix/description-of-the-fix`
 - Test the hotfix
 - Write a custom release draft
 - Update the changelog (using `./scripts/changelog_md.sh`)
-- Update `VERSION` file 
+- Update `VERSION` file
 - Merge to `main` _and_ `develop` (keep the VERSION file in `develop` at `*-alpha`)
 - Publish the draft
 - Announce the hotfix

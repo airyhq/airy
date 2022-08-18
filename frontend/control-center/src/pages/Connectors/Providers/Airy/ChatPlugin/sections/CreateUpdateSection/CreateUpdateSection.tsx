@@ -1,14 +1,11 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Button, Input} from 'components';
 import styles from './CreateUpdateSection.module.scss';
 import {cyChannelsChatPluginFormNameInput} from 'handles';
 import {useTranslation} from 'react-i18next';
 import {updateChannel} from '../../../../../../../actions/channel';
 import {connect, ConnectedProps} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
-import {Channel} from 'model';
-
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../../../routes/routes';
+import {Channel, NotificationModel} from 'model';
 
 const mapDispatchToProps = {
   updateChannel,
@@ -20,21 +17,26 @@ type InstallUpdateSectionProps = {
   channel: Channel;
   displayName: string;
   imageUrl: string;
+  setNotification: Dispatch<SetStateAction<NotificationModel>>;
 } & ConnectedProps<typeof connector>;
 
 const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
-  const {channel, displayName, imageUrl} = props;
+  const {channel, displayName, imageUrl, setNotification} = props;
   const [submit, setSubmit] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
   const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);
   const {t} = useTranslation();
-  const navigate = useNavigate();
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
-    props.updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl}).then(() => {
-      navigate(CONNECTED_ROUTE + '/chatplugin', {replace: true});
-    });
+    props
+      .updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl})
+      .then(() => {
+        setNotification({show: true, text: t('updateSuccessful'), successful: true});
+      })
+      .catch((error: Error) => {
+        setNotification({show: true, text: t('updateFailed'), successful: false});
+        console.error(error);
+      });
   };
 
   return (

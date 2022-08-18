@@ -181,11 +181,20 @@
   }
 }
 
-.noSearchMatch {
+.noMatch {
   @include font-m;
   font-weight: bold;
   color: var(--color-text-contrast);
   margin-bottom: 4px;
+}
+
+.noSearchMatch {
+  @extend .noMatch;
+}
+
+.noChannelsConnected {
+  @extend .noMatch;
+  text-align: center;
 }
 
 .closeIcon {

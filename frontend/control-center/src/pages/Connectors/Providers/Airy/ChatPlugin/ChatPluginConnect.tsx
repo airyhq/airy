@@ -164,7 +164,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '60%'} : {width: '100%'}}>
+      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span

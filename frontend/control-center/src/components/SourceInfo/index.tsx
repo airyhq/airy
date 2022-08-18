@@ -93,7 +93,7 @@ export const getSourcesInfo = (): SourceInfo[] => {
       type: Source.twilioSMS,
       channel: true,
       title: 'SMS',
-      description: <DescriptionComponent description="twilioSmsDescription" />,
+      description: <DescriptionComponent description="twiliosmsDescription" />,
       image: <SMSAvatarIcon />,
       newChannelRoute: CONNECTORS_TWILIO_SMS_ROUTE + '/new',
       channelsListRoute: CONNECTORS_CONNECTED_ROUTE + '/twilio.sms/#',

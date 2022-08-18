@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
-import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
@@ -71,7 +70,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
-  const [connectorInfo, setConnectorInfo] = useState<SourceInfo | null>(null);
+  const [connectorInfo, setConnectorInfo] = useState<any>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);

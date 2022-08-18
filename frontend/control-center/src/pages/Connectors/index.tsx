@@ -54,7 +54,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     getConnectorsConfiguration();
     if (emptyCatalogList) {
-      listComponents();
+      listComponents().catch((error: Error) => {
+        console.error(error);
+      });
     } else {
       const listArr = [];
       catalogListArr.map(component => {
@@ -75,7 +77,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     if (channels.length === 0) {
-      listChannels();
+      listChannels().catch((error: Error) => {
+        console.error(error);
+      });
     }
     setPageTitle(pageTitle);
   }, [channels.length]);

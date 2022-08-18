@@ -73,13 +73,11 @@ public class RasaConnectorServiceTest {
         String textMessage = "Hello from Airy";
         sendMessage(textMessage);
         //when
-        ArgumentCaptor<MessageSend> msgArgumentCaptor = ArgumentCaptor.forClass(MessageSend.class);
+        ArgumentCaptor<MessageSend> messageSendArgumentCaptor = ArgumentCaptor.forClass(MessageSend.class);
         //then
         retryOnException(() -> {
-            verify(rasaClient).sendMessage(msgArgumentCaptor.capture());
-            //then
-            //grab the argument sent through rasaClient and check it is correct
-            MessageSend sentMessage = msgArgumentCaptor.getValue();
+            verify(rasaClient).sendMessage(messageSendArgumentCaptor.capture());
+            MessageSend sentMessage = messageSendArgumentCaptor.getValue();
             assertThat(sentMessage.getMessage(), equalTo(textMessage));
         }, "message was not created");
     }

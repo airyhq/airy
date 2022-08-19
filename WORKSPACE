@@ -8,11 +8,16 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Airy Bazel tools
 
-git_repository(
+#git_repository(
+#    name = "com_github_airyhq_bazel_tools",
+#    commit = "6ea38fe01069589ad57e66ae43c6d320fd18e3e5",
+#    remote = "https://github.com/airyhq/bazel-tools.git",
+#    shallow_since = "1660208058 +0200",
+#)
+
+local_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "6ea38fe01069589ad57e66ae43c6d320fd18e3e5",
-    remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1660208058 +0200",
+    path = "../bazel-tools",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")

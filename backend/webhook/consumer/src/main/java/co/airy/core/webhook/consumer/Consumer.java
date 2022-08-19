@@ -6,7 +6,7 @@ import com.dinstone.beanstalkc.Job;
 import com.dinstone.beanstalkc.JobConsumer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ public class Consumer implements DisposableBean {
     private static final Logger log = AiryLoggerFactory.getLogger(Consumer.class);
 
     private final ObjectMapper objectMapper = new ObjectMapper()
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     private final JobConsumer consumer;

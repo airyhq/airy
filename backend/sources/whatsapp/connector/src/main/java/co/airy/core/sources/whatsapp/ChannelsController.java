@@ -38,7 +38,7 @@ public class ChannelsController {
     @PostMapping("/channels.whatsapp.connect")
     ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload payload) {
         final String token = payload.getUserToken();
-        final String phoneNumber = payload.getPhoneNumber();
+        final String phoneNumber = payload.getPhoneNumberId();
 
         final String channelId = UUIDv5.fromNamespaceAndName("whatsapp", phoneNumber).toString();
 

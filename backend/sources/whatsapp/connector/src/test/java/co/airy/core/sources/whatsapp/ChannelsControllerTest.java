@@ -98,7 +98,7 @@ class ChannelsControllerTest {
         final String channelName = "My customer support phone number";
 
         final ConnectChannelRequestPayload connectPayload = ConnectChannelRequestPayload.builder()
-                .phoneNumber(phoneNumber)
+                .phoneNumberId(phoneNumber)
                 .name(channelName)
                 .userToken("user token")
                 .build();

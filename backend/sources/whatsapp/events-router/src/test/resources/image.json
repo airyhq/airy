@@ -1,0 +1,41 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "103717885778113",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15550798077",
+              "phone_number_id": "103874789095437"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Ada Lovelace"
+                },
+                "wa_id": "49157123456"
+              }
+            ],
+            "messages": [
+              {
+                "from": "49157123456",
+                "id": "wamid.HBgNNDkxNTc4NjA4MTQ0MhUCABIYFDNBRkM3QjY0OTMyM0JCNkU2MzIyAA==",
+                "timestamp": "1660826619",
+                "type": "image",
+                "image": {
+                  "mime_type": "image/jpeg",
+                  "sha256": "b18othldU8OlRIUQZrb1vriXMXiJ0oOH+tN0RPYPcC0=",
+                  "id": "646429513571185"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}

@@ -12,8 +12,9 @@ import {
   getNewChannelRouteForComponent,
   getCatalogProductRouteForComponent,
 } from '../../../services/getRouteForCard';
-import styles from './index.module.scss';
 import {StateModel} from '../../../reducers';
+import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
+import styles from './index.module.scss';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -30,14 +31,6 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export const availabilityFormatted = (availability: string) => availability.split(',');
-
-export const DescriptionComponent = (props: {description: string}) => {
-  const {description} = props;
-  const {t} = useTranslation();
-  return <>{t(description)}</>;
-};
-
-export const getDescriptionSourceName = (source: Source) => source.replace('.', '');
 
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
@@ -132,9 +125,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         <div className={styles.descriptionInfo}>
           {componentInfo.name && (
             <p>
-              <DescriptionComponent
-                description={getDescriptionSourceName(componentInfo.source) + 'Description'}
-              />
+              <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
             </p>
           )}
 

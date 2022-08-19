@@ -21,7 +21,11 @@ export const ChannelCard = (props: ChannelCardProps) => {
   console.log('componentInfo', componentInfo);
 
   return (
-    <Link to={CONNECTORS_CONNECTED_ROUTE + '/' + componentInfo.source} className={styles.container} data-cy={componentInfo.dataCyAddChannelButton}>
+    <Link
+      to={CONNECTORS_CONNECTED_ROUTE + '/' + componentInfo.source}
+      className={styles.container}
+      data-cy={componentInfo.dataCyAddChannelButton}
+    >
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}

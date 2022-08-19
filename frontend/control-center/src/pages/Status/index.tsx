@@ -56,7 +56,7 @@ const Status = (props: ConnectedProps<typeof connector>) => {
 
   const formatToComponentName = (name: string) => {
     let formattedName;
-    if(name.includes('enterprise')){
+    if (name.includes('enterprise')) {
       formattedName = 'airy-enterprise/' + name;
     } else {
       formattedName = 'airy-core/' + name;
@@ -80,20 +80,21 @@ const Status = (props: ConnectedProps<typeof connector>) => {
         </button>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(catalogList).length > 0 && components.map((component, index) => {
+        {Object.entries(catalogList).length > 0 &&
+          components.map((component, index) => {
             const formattedName = formatToComponentName(component[0]);
             const catalogItem = catalogList[formattedName];
-          return (
-            <ComponentListItem
-              key={index}
-              healthy={component[1].healthy}
-              enabled={component[1].enabled}
-              services={component[1].services}
-              componentName={component[0]}
-              source={catalogItem?.source}
-            />
-          );
-        })}
+            return (
+              <ComponentListItem
+                key={index}
+                healthy={component[1].healthy}
+                enabled={component[1].enabled}
+                services={component[1].services}
+                componentName={component[0]}
+                source={catalogItem?.source}
+              />
+            );
+          })}
       </div>
     </section>
   );

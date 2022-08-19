@@ -25,13 +25,14 @@ import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import styles from './index.module.scss';
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import {getComponentStatus} from '../../../services/getComponentStatus';
+import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -109,6 +110,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
+
     getConnectorsConfiguration().catch((error: Error) => {
       console.error(error);
     });
@@ -124,36 +126,36 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     
     getConnectorsConfiguration();
 
-    if(Object.entries(catalog).length > 0){
+    if (Object.entries(catalog).length > 0) {
       (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
       console.log('connector', connector);
       const connectorSourceInfo = Object.entries(catalog).filter(item => {
         console.log('item', item);
         console.log('item[1]', item[1]);
-        return item[1].source === source
+        return item[1].source === source;
       });
       console.log('connectorSourceInfo', connectorSourceInfo);
       console.log('connectorSourceInfo[0]', connectorSourceInfo[0]);
       const arr = connectorSourceInfo[0];
       //console.log('connectorSourceInfo[1]', connectorSourceInfo[0][0][1]);
       const connectorSourceInfoFormatted = {name: arr[0], ...arr[1]};
-  
+
       channelId === 'new'
         ? connector === Source.chatPlugin
           ? setLineTitle(t('Create'))
           : setLineTitle(t('addChannel'))
         : setLineTitle(t('Configuration'));
-  
-        //fix this
+
+      //fix this
       source
         ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
         : setConnectorInfo(connectorSourceInfoFormatted);
-  
+
       // channelId
       //   ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfoFormatted.source}`), setBackTitle(t('back')))
       //   : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
     }
-  }, [source,  Object.entries(catalog).length > 0]);
+  }, [source, Object.entries(catalog).length > 0]);
 
   useEffect(() => {
     if (config && connectorInfo) {
@@ -330,7 +332,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     <div className={styles.container}>
       <section className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <Link to={backRoute}>
+          <Link to={CONNECTORS_ROUTE}>
             <LinkButton type="button">
               <div className={styles.linkButtonContainer}>
                 <ArrowLeftIcon className={styles.backIcon} />
@@ -346,16 +348,41 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div
                 className={`${styles.connectorIcon} ${
                   connectorInfo && connectorInfo?.title !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}>
-                {connectorInfo && connectorInfo?.image}
+                }`}
+              >
+                {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
               </div>
               <div className={styles.textContainer}>
+
                 <div className={styles.componentTitleTextInfoContainer}>
                   <div className={styles.componentTitle}>
                     <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
                     <ConfigStatusButton
                       componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
-                      customStyle={styles.configStatusButton}
+                      customStyle={styles.configStatusButton} />
+
+                <div className={styles.componentTitle}>
+                  <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
+                  <ConfigStatusButton
+                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                    customStyle={styles.configStatusButton}
+                  />
+                </div>
+
+                <div className={styles.textInfo}>
+                  <div className={styles.descriptionDocs}>
+                    {connectorInfo && (
+                      <p>
+                        <DescriptionComponent
+                          description={getDescriptionSourceName(connectorInfo.source) + 'Description'}
+                        />
+                      </p>
+                    )}
+                    <InfoButton
+                      borderOff={true}
+                      color="blue"
+                      link={connectorInfo && connectorInfo?.docs}
+                      text={t('infoButtonText')}
                     />
                   </div>
 
@@ -377,7 +404,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                       type="button"
                       onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
                       disabled={isEnabling || isDisabling}
-                      style={{padding: '20px 40px', marginTop: '-12px'}}>
+                      style={{padding: '20px 40px', marginTop: '-12px'}}
+                    >
                       {isEnabling
                         ? t('enablingComponent')
                         : isDisabling
@@ -387,7 +415,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                         : t('enableComponent')}
                     </Button>
                   )}
->>>>>>> c9e0d065 (connectorconfig fix wip)
                 </div>
 
                 {isConfigured && (
@@ -445,7 +472,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               : connectorInfo?.title + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

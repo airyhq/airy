@@ -5,7 +5,6 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {getSourcesInfo} from '../../../components/SourceInfo';
 import {ConfigServices, Source} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
@@ -28,18 +27,9 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const isConfigurableConnector = (name: string) => {
-  let isConfigurable = false;
-
-  getSourcesInfo().forEach(elem => {
-    if (elem.configKey === name) isConfigurable = true;
-  });
-
-  return isConfigurable;
-};
-
 const ItemInfo = (props: ComponentInfoProps) => {
   const {source, healthy, itemName, isComponent, isExpanded, enabled, setIsPopUpOpen, enableDisableComponent} = props;
+  const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [channelSource] = useState(source);
   const [componentName] = useState(itemName);
@@ -47,19 +37,29 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
+  console.log('source', source);
+
+  const isConfigurableConnector = () => {
+    let isConfigurable = false;
+
+    Object.entries(catalogList).forEach(elem => {
+      if (elem[1] && elem[1].source && elem[1].source === source) isConfigurable = true;
+    });
+
+    return isConfigurable;
+  };
 
   const isComponentConfigured =
-    connectors[itemName] && isConfigurableConnector(itemName) && Object.keys(connectors[itemName]).length > 0;
-
-  console.log('source', source);
-  console.log('channelSource', channelSource);
+    connectors[itemName] && isConfigurableConnector() && Object.keys(connectors[itemName]).length > 0;
 
   //status
   const needsConfig =
+    connector &&
+    connectors[itemName] &&
     isComponent &&
     enabled &&
     healthy &&
-    isConfigurableConnector(itemName) &&
+    isConfigurableConnector() &&
     !isComponentConfigured &&
     itemName !== ConfigServices.sourcesChatPlugin;
   const isRunning = healthy && enabled;

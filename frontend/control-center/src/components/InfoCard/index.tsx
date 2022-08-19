@@ -8,9 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
 import {ComponentStatus} from '../../pages/Connectors';
-import {
-  getNewChannelRouteForComponent,
-} from '../../services/getRouteForCard';
+import {getNewChannelRouteForComponent} from '../../services/getRouteForCard';
 import {getChannelAvatar} from '../../components/ChannelAvatar';
 import styles from './index.module.scss';
 
@@ -44,7 +42,9 @@ const InfoCard = (props: InfoCardProps) => {
   const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
 
   useEffect(() => {
-    const title = isInstalled ? t('uninstall') + ' ' + componentInfo.displayName : componentInfo.displayName + ' ' + t('installed');
+    const title = isInstalled
+      ? t('uninstall') + ' ' + componentInfo.displayName
+      : componentInfo.displayName + ' ' + t('installed');
     setModalTitle(title);
   }, [isInstalled]);
 

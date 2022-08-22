@@ -30,10 +30,9 @@ const Sidebar = (props: SideBarProps) => {
   };
 
   const webhooksEnabled =
-    (props.components[ConfigServices.integrationWebhook]?.enabled &&
-      props.catalog[`airy-core/${ConfigServices.integrationWebhook}`]?.installed === true) ||
-    false;
-  const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled || false;
+    props.components[ConfigServices.integrationWebhook]?.enabled ||
+    props.catalog[`airy-core/${ConfigServices.integrationWebhook}`]?.installed === true;
+  const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled;
   const showLine = inboxEnabled || webhooksEnabled;
 
   return (

@@ -15,7 +15,7 @@ import {
   listComponents,
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
-import {NotificationModel, Source} from 'model';
+import {NotificationModel, Source, ComponentInfo} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
@@ -30,7 +30,7 @@ import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import {getComponentStatus} from '../../../services/getComponentStatus';
+import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import styles from './index.module.scss';
 
@@ -76,12 +76,16 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
-  const [connectorInfo, setConnectorInfo] = useState<any>(null);
+  const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(
+    components[connectorInfo && removePrefix(connectorInfo?.name)]?.enabled === true
+  );
+  const [isEnabling, setIsEnabling] = useState(false);
+  const [isDisabling, setIsDisabling] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [backTitle, setBackTitle] = useState('Connectors');
   const [lineTitle, setLineTitle] = useState('');
@@ -91,16 +95,18 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
   const isInstalled = true;
 
+  const configKey = connectorInfo && removePrefix(connectorInfo?.name);
+
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
     listComponents();
   }, []);
 
   useEffect(() => {
-    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.componentName]) {
+    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.name]) {
       if (
-        Object.entries(connectorConfiguration[connectorInfo.componentName]) &&
-        Object.entries(connectorConfiguration[connectorInfo.componentName]).length > 0
+        Object.entries(connectorConfiguration[connectorInfo.name]) &&
+        Object.entries(connectorConfiguration[connectorInfo.name]).length > 0
       ) {
         setIsConfigured(true);
       }
@@ -157,7 +163,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useEffect(() => {
     if (config && connectorInfo) {
-      setIsEnabled(config?.components[connectorInfo?.configKey]?.enabled);
+      setIsEnabled(config?.components[configKey]?.enabled);
     }
   }, [config, connectorInfo, components]);
 
@@ -178,7 +184,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo?.configKey,
+            name: connectorInfo && connectorInfo.name,
             enabled: true,
             data: {
               projectId: projectId,
@@ -200,7 +206,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo?.configKey,
+            name: connectorInfo && connectorInfo.name,
             enabled: true,
             data: {
               domain: domain,
@@ -218,7 +224,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo?.configKey,
+            name: connectorInfo && connectorInfo.name,
             enabled: true,
             data: {
               url: url,
@@ -297,6 +303,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
+
     setIsPending(true);
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
       .then(() => {
@@ -345,7 +352,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
             <div className={styles.textIconContainer}>
               <div
                 className={`${styles.connectorIcon} ${
-                  connectorInfo && connectorInfo?.title !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
+                  connectorInfo && connectorInfo?.displayName !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
                 }`}
               >
                 {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
@@ -466,8 +473,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           containerClassName={styles.enableModalContainer}
           title={
             isEnabled
-              ? t('disableComponent') + ' ' + connectorInfo?.title
-              : connectorInfo?.title + ' ' + t('enabledComponent')
+              ? t('disableComponent') + ' ' + connectorInfo?.displayName
+              : connectorInfo?.displayName + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
           headerClassName={styles.headerModal}

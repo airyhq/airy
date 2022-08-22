@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, NotificationModel, Source} from 'model';
+import {ComponentInfo, NotificationModel} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {installComponent} from '../../../actions/catalog';

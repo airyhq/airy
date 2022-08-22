@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 import {Link, useParams} from 'react-router-dom';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
@@ -16,16 +17,14 @@ import {
 import {LinkButton, InfoButton} from 'components';
 import {NotificationModel, Source} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
-import {useTranslation} from 'react-i18next';
 import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
 import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
 import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
-import styles from './index.module.scss';
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_CONNECTED_ROUTE, CONNECTORS_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
@@ -33,6 +32,7 @@ import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import {getComponentStatus} from '../../../services/getComponentStatus';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
+import styles from './index.module.scss';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -83,15 +83,12 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
-  const [lineTitle, setLineTitle] = useState('');
   const [backTitle, setBackTitle] = useState('Connectors');
-  const [backRoute, setBackRoute] = useState('');
+  const [lineTitle, setLineTitle] = useState('');
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
   const {t} = useTranslation();
   const isInstalled = true;
-
-  console.log('Object.entries(catalog)', Object.entries(catalog));
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -128,17 +125,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
     if (Object.entries(catalog).length > 0) {
       (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
-      console.log('connector', connector);
+
       const connectorSourceInfo = Object.entries(catalog).filter(item => {
-        console.log('item', item);
-        console.log('item[1]', item[1]);
         return item[1].source === source;
       });
-      console.log('connectorSourceInfo', connectorSourceInfo);
-      console.log('connectorSourceInfo[0]', connectorSourceInfo[0]);
-      const arr = connectorSourceInfo[0];
-      //console.log('connectorSourceInfo[1]', connectorSourceInfo[0][0][1]);
-      const connectorSourceInfoFormatted = {name: arr[0], ...arr[1]};
+
+      const connectorSourceInfoArr = connectorSourceInfo[0];
+      const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
 
       channelId === 'new'
         ? connector === Source.chatPlugin
@@ -146,14 +139,14 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           : setLineTitle(t('addChannel'))
         : setLineTitle(t('Configuration'));
 
-      //fix this
       source
         ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
         : setConnectorInfo(connectorSourceInfoFormatted);
 
-      // channelId
-      //   ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfoFormatted.source}`), setBackTitle(t('back')))
-      //   : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
+      channelId
+        ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfoFormatted.source}`),
+          setBackTitle(t('back')))
+        : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
     }
   }, [source, Object.entries(catalog).length > 0]);
 

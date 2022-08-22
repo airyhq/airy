@@ -6,8 +6,7 @@ import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 import {ChannelCard} from '../Connectors/ChannelCard';
 import {EmptyStateInbox} from './EmptyStateInbox';
-import {Source} from 'model';
-import {Channel} from 'model/Channel';
+import {Channel, Source} from 'model';
 import {formatComponentNameToConfigKey} from '../../services';
 import styles from './index.module.scss';
 
@@ -33,22 +32,19 @@ const Inbox = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     if (Object.entries(catalogList).length > 0) {
+      const list = [];
       catalogListArr.map(component => {
         if (component[1]?.displayName) {
-          console.log('component', component);
-          console.log('component[1].displayName', component[1].displayName);
           const configKey = formatComponentNameToConfigKey(component[1].displayName);
-          setInboxList(prevState => [
-            ...prevState,
-            {
-              name: component[1].name,
-              displayName: component[1].displayName,
-              configKey: configKey,
-              source: component[1].source,
-            },
-          ]);
+          list.push({
+            name: component[1].name,
+            displayName: component[1].displayName,
+            configKey: configKey,
+            source: component[1].source,
+          });
         }
       });
+      setInboxList(list);
     }
   }, [catalogList]);
 
@@ -76,16 +72,15 @@ const Inbox = (props: ConnectedProps<typeof connector>) => {
           <EmptyStateInbox />
         ) : (
           <div className={styles.channelsLine}>
-            <div style={{display: 'flex', flexDirection: 'column', marginBottom: '36px'}}>
-              <span style={{marginBottom: '16px', marginTop: '16px', marginLeft: '36px'}}>Channels</span>
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <div style={{width: '150px', height: '4px', background: '#1578D4'}}></div>
-                <div style={{width: '100%', height: '1px', background: '#CAD5DB'}}></div>
+            <div className={styles.channelsLineWrapper}>
+              <h1 className={styles.channelsTitle}>Channels</h1>
+              <div className={styles.lineContainer}>
+                <div className={styles.lineBlue}></div>
+                <div className={styles.lineGrey}></div>
               </div>
             </div>
             <div className={styles.channelsContainer}>
               {inboxList.map((item: {name: string; displayName: string; configKey: string; source: Source}) => {
-                console.log('item', item);
                 if (channelsBySource(item.source).length > 0) {
                   return <ChannelCard componentInfo={item} key={item.displayName} />;
                 }

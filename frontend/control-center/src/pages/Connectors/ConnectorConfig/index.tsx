@@ -76,7 +76,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
+
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
+  const configKey = connectorInfo && removePrefix(connectorInfo?.name);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -94,8 +96,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
   const {t} = useTranslation();
   const isInstalled = true;
-
-  const configKey = connectorInfo && removePrefix(connectorInfo?.name);
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -306,6 +306,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
     setIsPending(true);
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
+
       .then(() => {
         setNotification({
           show: true,

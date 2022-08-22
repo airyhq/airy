@@ -1,5 +1,5 @@
 component: rasa-connector
 mandatory: false
 enabled: false
-image: airy-core/rasa-connector
+image: connectors/rasa-connector
 resources: {}

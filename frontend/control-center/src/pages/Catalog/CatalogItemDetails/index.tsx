@@ -35,6 +35,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
+  console.log('componentInfo', componentInfo);
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
@@ -93,9 +94,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.heading}>
         <h1>{componentInfo?.displayName}</h1>
         <p>
-          <DescriptionComponent
-            description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
-          />
+          <DescriptionComponent description={`${getDescriptionSourceName(componentInfo.source)}Description`} />
         </p>
       </section>
     );

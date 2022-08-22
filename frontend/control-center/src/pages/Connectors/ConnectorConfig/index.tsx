@@ -74,7 +74,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     config,
   } = props;
 
-  const {channelId, source} = useParams();
+  console.log('connector', connector);
+
+  const param = useParams();
+  console.log('param', param);
+  const {channelId, source} = param;
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<any>(null);
   const [currentPage] = useState(Pages.createUpdate);
@@ -85,6 +89,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [isConfigured, setIsConfigured] = useState(false);
   const [backTitle, setBackTitle] = useState('Connectors');
   const [lineTitle, setLineTitle] = useState('');
+  const [backRoute, setBackRoute] = useState('');
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
   const {t} = useTranslation();
@@ -124,10 +129,14 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     getConnectorsConfiguration();
 
     if (Object.entries(catalog).length > 0) {
-      (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
+      (connector === Source.chatPlugin || source === Source.chatPlugin) && setIsConfigured(true);
 
       const connectorSourceInfo = Object.entries(catalog).filter(item => {
-        return item[1].source === source;
+        if (connector) {
+          return item[1].source === connector;
+        } else if (source) {
+          return item[1].source === source;
+        }
       });
 
       const connectorSourceInfoArr = connectorSourceInfo[0];
@@ -325,7 +334,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     <div className={styles.container}>
       <section className={styles.headlineContainer}>
         <div className={styles.backButtonContainer}>
-          <Link to={CONNECTORS_ROUTE}>
+          <Link to={backRoute}>
             <LinkButton type="button">
               <div className={styles.linkButtonContainer}>
                 <ArrowLeftIcon className={styles.backIcon} />

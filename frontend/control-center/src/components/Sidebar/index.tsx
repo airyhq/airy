@@ -19,6 +19,7 @@ type SideBarProps = {} & ConnectedProps<typeof connector>;
 const mapStateToProps = (state: StateModel) => ({
   version: state.data.config.clusterVersion,
   components: state.data.config.components,
+  catalog: state.data.catalog,
 });
 
 const connector = connect(mapStateToProps);
@@ -28,7 +29,10 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
-  const webhooksEnabled = props.components[ConfigServices.integrationWebhook]?.enabled || false;
+  const webhooksEnabled =
+    (props.components[ConfigServices.integrationWebhook]?.enabled &&
+      props.catalog[`airy-core/${ConfigServices.integrationWebhook}`]?.installed === true) ||
+    false;
   const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled || false;
   const showLine = inboxEnabled || webhooksEnabled;
 

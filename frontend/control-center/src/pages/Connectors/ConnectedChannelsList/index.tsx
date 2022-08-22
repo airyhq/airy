@@ -57,6 +57,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const screenDimensions: ScreenDimensions = {height: screen.height, width: screen.width};
   const ITEM_LINE_HEIGHT = 64;
   const MARGIN_TOP = 128;
@@ -64,13 +65,15 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const PAGINATION_HEIGHT = 54;
   const ADDITIONAL_SPACE = 60;
 
+  useEffect(() => {
+    console.log('path', path);
+  }, [path]);
+
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const areConnectedChannels = channels.length > 0 && filteredChannels.length > 0;
-
-  const [currentPage, setCurrentPage] = useState(1);
 
   const listPageSize = Math.floor(
     (screenDimensions.height - offset - MARGIN_TOP - PAGINATION_HEIGHT - PADDING_BOTTOM - ADDITIONAL_SPACE) /

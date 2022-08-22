@@ -33,6 +33,7 @@ import {
   CATALOG_WEBHOOKS_ROUTE,
   CATALOG_MOBILE_ROUTE,
   CATALOG_VIBER_ROUTE,
+  WEBHOOKS_ROUTE,
 } from '../routes/routes';
 
 export const getConnectedRouteForComponent = (displayName: string) => {
@@ -57,6 +58,8 @@ export const getConnectedRouteForComponent = (displayName: string) => {
       return CONNECTORS_SALESFORCE_ROUTE + '/new';
     case 'Zendesk':
       return CONNECTORS_ZENDESK_ROUTE + '/new';
+    case 'Webhooks':
+      return WEBHOOKS_ROUTE;
   }
 };
 
@@ -82,6 +85,8 @@ export const getNewChannelRouteForComponent = (displayName: string) => {
       return CONNECTORS_SALESFORCE_ROUTE + '/new';
     case 'Zendesk':
       return CONNECTORS_ZENDESK_ROUTE + '/new';
+    case 'Webhooks':
+      return WEBHOOKS_ROUTE;
   }
 };
 

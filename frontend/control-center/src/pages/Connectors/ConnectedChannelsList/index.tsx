@@ -65,10 +65,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const PAGINATION_HEIGHT = 54;
   const ADDITIONAL_SPACE = 60;
 
-  useEffect(() => {
-    console.log('path', path);
-  }, [path]);
-
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );

@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {CONNECTORS_ROUTE} from '../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {Button, SettingsModal} from 'components';
-import {installComponent, uninstallComponent} from '../../actions/catalog';
+import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {ConfigStatusButton} from '../../pages/Connectors/ConfigStatusButton';
-import {ComponentStatus} from '../../pages/Connectors';
-import {getNewChannelRouteForComponent} from '../../services/getRouteForCard';
-import {getChannelAvatar} from '../../components/ChannelAvatar';
+import {ConfigStatusButton} from '../ConfigStatusButton';
+import {ComponentStatus} from '..';
+import {getNewChannelRouteForComponent} from '../../../services/getRouteForCard';
+import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {ConnectorCardComponentInfo} from '../index';
 import styles from './index.module.scss';
 
 export enum InfoCardStyle {
@@ -18,7 +19,7 @@ export enum InfoCardStyle {
 }
 
 type InfoCardProps = {
-  componentInfo: any;
+  componentInfo: ConnectorCardComponentInfo;
   addChannelAction: () => void;
   installed: boolean;
   componentStatus?: ComponentStatus;

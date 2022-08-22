@@ -37,7 +37,6 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
   const {t} = useTranslation();
-  console.log('source', source);
 
   const isConfigurableConnector = () => {
     let isConfigurable = false;

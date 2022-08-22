@@ -164,7 +164,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Connect multiple Instagram pages.',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Deliver SMS with ease.',
+      twiliosmsDescription: 'Deliver SMS with ease.',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'World #1 chat app.',
       channel: 'channel',
@@ -383,6 +383,9 @@ const resources = {
       twilioConfigurationText9: 'for more details.',
       connectWhatsappNumber: 'Connect Whatsapp Number',
       updateWhatsappNumber: 'Update Whatsapp Number',
+
+      //WhatsApp Business Cloud
+      whatsappBusinessCloudDescription: 'World #1 chat app.',
 
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
@@ -629,7 +632,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Mehrere Instagram-Seiten verbinden',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'SMS-Versand mit Leichtigkeit',
+      twiliosmsDescription: 'SMS-Versand mit Leichtigkeit',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Weltweite Chat-App Nr. 1',
       channel: 'Kanal',
@@ -789,6 +792,9 @@ const resources = {
       yourSalesforcePassword: 'Ihr Salesforce-Passwort',
       securityToken: 'Sicherheitstoken',
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+
+      //WhatsApp Business Cloud
+      whatsappBusinessCloudDescription: 'Weltweite Chat-App Nr. 1',
 
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
@@ -1085,7 +1091,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Connecter plusieurs pages Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envoyez des SMS en toute simplicité',
+      twiliosmsDescription: 'Envoyez des SMS en toute simplicité',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'Première application de chat au monde',
       channel: 'canal',
@@ -1303,6 +1309,9 @@ const resources = {
       twilioConfigurationText9: `pour plus d'informations.`,
       connectWhatsappNumber: 'Connecter le numéro Whatsapp',
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
+
+      //WhatsApp Business Cloud
+      whatsappBusinessCloudDescription: 'Première application de chat au monde',
 
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
@@ -1545,7 +1554,7 @@ const resources = {
       instagramTitle: 'Instagram',
       instagramDescription: 'Conectar varias páginas de Instagram',
       twilioSmsTitle: 'SMS',
-      twilioSmsDescription: 'Envío de SMS con facilidad',
+      twiliosmsDescription: 'Envío de SMS con facilidad',
       twilioWhatsappTitle: 'WhatsApp',
       twilioWhatsappDescription: 'La aplicación de mensajería número 1 del mundo',
       channel: 'canal',
@@ -1763,6 +1772,9 @@ const resources = {
       twilioConfigurationText9: 'para más información.',
       connectWhatsappNumber: 'Conectar el número de Whatsapp',
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
+
+      //WhatsApp Business Cloud
+      whatsappBusinessCloudDescription: 'La aplicación de mensajería número 1 del mundo',
 
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',

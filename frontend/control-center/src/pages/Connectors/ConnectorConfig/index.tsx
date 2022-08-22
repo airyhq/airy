@@ -74,11 +74,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     config,
   } = props;
 
-  console.log('connector', connector);
-
-  const param = useParams();
-  console.log('param', param);
-  const {channelId, source} = param;
+  const {channelId, source} = useParams();
   const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<any>(null);
   const [currentPage] = useState(Pages.createUpdate);

@@ -35,7 +35,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
-  console.log('componentInfo', componentInfo);
+
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);

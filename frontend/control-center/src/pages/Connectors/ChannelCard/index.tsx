@@ -6,10 +6,11 @@ import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.s
 import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import {ConfigStatusButton} from '../ConfigStatusButton';
-import {ComponentStatus} from '..';
+import {ComponentStatus, ConnectorCardComponentInfo} from '..';
+import {cyAddChannelButton} from 'handles';
 
 type ChannelCardProps = {
-  componentInfo: any;
+  componentInfo: ConnectorCardComponentInfo;
   channelsToShow?: number;
   componentStatus?: ComponentStatus;
 };
@@ -18,13 +19,11 @@ export const ChannelCard = (props: ChannelCardProps) => {
   const {componentInfo, channelsToShow, componentStatus} = props;
   const {t} = useTranslation();
 
-  console.log('componentInfo', componentInfo);
-
   return (
     <Link
       to={CONNECTORS_CONNECTED_ROUTE + '/' + componentInfo.source}
       className={styles.container}
-      data-cy={componentInfo.dataCyAddChannelButton}
+      data-cy={cyAddChannelButton}
     >
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>

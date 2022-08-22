@@ -58,7 +58,6 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
 
           <Route path={`${CONNECTORS_ROUTE}/*`} element={<ConnectorsOutlet />}>
-            {/* <Route path={`:source/:channelId`} element={<ConnectorConfig />} /> */}
             <Route path={`facebook/:channelId`} element={<ConnectorFacebook />} />
             <Route path={`chatplugin/:channelId`} element={<ConnectorChatplugin />} />
             <Route path={`connected/:source`} element={<ConnectorConfig />} />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {allChannels, useCurrentChannel} from '../../../../../selectors/channels';
@@ -19,13 +19,7 @@ const TwilioWhatsappConnect = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const channel = useCurrentChannel();
   const {channelId} = useParams();
-  const [buttonTitle, setButtonTitle] = useState(t('connectWhatsappNumber') || '');
-
-  useEffect(() => {
-    if (channel) {
-      setButtonTitle(t('updateWhatsappNumber'));
-    }
-  }, []);
+  const buttonTitle = channel ? t('update') : t('connect') || '';
 
   useEffect(() => {
     if (channelId !== 'new') {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {StateModel} from '../../../../../reducers';
@@ -19,14 +19,7 @@ const TwilioSmsConnect = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const {channelId} = useParams();
   const channel = useCurrentChannel();
-
-  const [buttonTitle, setButtonTitle] = useState(t('connectSmsNumber') || '');
-
-  useEffect(() => {
-    if (channel) {
-      setButtonTitle(t('updateSmsNumber'));
-    }
-  }, []);
+  const buttonTitle = channel ? t('update') : t('connect') || '';
 
   useEffect(() => {
     if (channelId !== 'new' && channelId?.length) {

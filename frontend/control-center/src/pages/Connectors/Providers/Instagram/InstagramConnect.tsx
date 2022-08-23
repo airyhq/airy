@@ -1,17 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-
 import {connectInstagramChannel} from '../../../../actions';
-
-import {Button, Input} from 'components';
+import {Input, NotificationComponent, SmartButton} from 'components';
 import {ConnectChannelInstagramRequestPayload} from 'httpclient/src';
-
 import styles from './InstagramConnect.module.scss';
-
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
-import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import {NotificationModel} from 'model';
 
 const mapDispatchToProps = {
   connectInstagramChannel,
@@ -23,26 +18,36 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectInstagramChannel} = props;
   const {t} = useTranslation();
   const channel = useCurrentChannel();
-  const navigate = useNavigate();
   const [id, setId] = useState(channel?.metadata?.pageId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [accountId, setAccountId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
+  const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [errorMessage, setErrorMessage] = useState('');
-
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
+  const [notification, setNotification] = useState<NotificationModel>(null);
+  const [newButtonTitle, setNewButtonTitle] = useState('');
+  const [isPending, setIsPending] = useState(false);
 
   const buttonStatus = () => {
-    return !(id.length > 5 && token != '');
+    return (
+      !(id.length > 5 && token != '') ||
+      (channel?.sourceChannelId === id &&
+        channel?.metadata?.pageToken === token &&
+        channel?.metadata?.name === name &&
+        channel?.metadata?.imageUrl === image) ||
+      image === ''
+    );
   };
 
   useEffect(() => {
-    if (channel) {
-      setButtonTitle(t('updatePage'));
+    if (channel?.sourceChannelId !== id && !!channel) {
+      setNotification({show: true, text: t('newChannelInfo'), info: true});
+      setNewButtonTitle(t('connectPage'));
+    } else {
+      setNewButtonTitle(buttonTitle);
     }
-  }, []);
+  }, [id]);
 
   const connectNewChannel = () => {
     const connectPayload: ConnectChannelInstagramRequestPayload = {
@@ -59,12 +64,16 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
         }),
     };
 
+    setIsPending(true);
+
     connectInstagramChannel(connectPayload)
-      .then(() => {
-        navigate(CONNECTED_ROUTE + '/instagram', {replace: true});
-      })
-      .catch(() => {
+      .catch((error: Error) => {
+        setNotification({show: true, text: t('updateFailed'), successful: false});
         setErrorMessage(t('errorMessage'));
+        console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -126,9 +135,25 @@ const InstagramConnect = (props: ConnectedProps<typeof connector>) => {
           fontClass="font-base"
         />
       </div>
-      <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
-        {buttonTitle}
-      </Button>
+      <SmartButton
+        title={newButtonTitle !== '' ? newButtonTitle : buttonTitle}
+        height={40}
+        width={160}
+        pending={isPending}
+        className={styles.connectButton}
+        styleVariant="normal"
+        disabled={buttonStatus() || isPending}
+        onClick={() => connectNewChannel()}
+      />
+      {notification?.show && (
+        <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          setShowFalse={setNotification}
+        />
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {ComponentInfo, getSourceForComponent, NotificationModel} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {Button, NotificationComponent, SettingsModal} from 'components';
+import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
@@ -47,7 +47,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isInstalling, setIsInstalling] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const installButtonCard = useRef(null);
   const componentCard = useRef(null);
@@ -58,7 +58,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
 
   const openInstallModal = () => {
-    setIsInstalling(true);
+    setIsPending(true);
     installComponent({name: componentInfo.name})
       .then(() => {
         setNotification({show: true, successful: true, text: t('successfullyInstalled')});
@@ -68,7 +68,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         setNotification({show: true, successful: false, text: t('failedInstall')});
       })
       .finally(() => {
-        setIsInstalling(false);
+        setIsPending(false);
       });
   };
 
@@ -100,15 +100,18 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
 
     return (
-      <Button
+      <SmartButton
+        height={24}
+        width={80}
+        className={styles.smartButton}
         styleVariant="green"
         type="submit"
+        title={t('install').toUpperCase()}
         onClick={openInstallModal}
-        disabled={isInstalling}
+        pending={isPending}
+        disabled={isPending}
         buttonRef={installButtonCard}
-      >
-        {isInstalling ? t('installing').toUpperCase() : t('install').toUpperCase()}
-      </Button>
+      />
     );
   };
 

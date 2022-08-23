@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import {getSourcesInfo, SourceInfo} from '../../../components/SourceInfo';
-import {Button, NotificationComponent, SettingsModal} from 'components';
+import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
 import {
@@ -76,8 +76,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo?.componentName]?.enabled);
-  const [isEnabling, setIsEnabling] = useState(false);
-  const [isDisabling, setIsDisabling] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
   const [backTitle, setBackTitle] = useState('Connectors');
@@ -103,7 +102,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
-    getConnectorsConfiguration();
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
     (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
     const sourceInfoArr = getSourcesInfo();
     const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
@@ -199,11 +200,15 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
     }
 
-    updateConnectorConfiguration(payload).then(() => {
-      if (!isEnabled) {
-        setConfigurationModal(true);
-      }
-    });
+    updateConnectorConfiguration(payload)
+      .then(() => {
+        if (!isEnabled) {
+          setConfigurationModal(true);
+        }
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
   };
 
   const PageContent = () => {
@@ -261,7 +266,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
-    isEnabled ? setIsDisabling(true) : setIsEnabling(true);
+    setIsPending(true);
     enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
       .then(() => {
         setNotification({
@@ -278,7 +283,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
         });
       })
       .finally(() => {
-        isEnabled ? setIsDisabling(false) : setIsEnabling(false);
+        setIsPending(false);
       });
   };
 
@@ -314,45 +319,41 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               >
                 {connectorInfo && connectorInfo?.image}
               </div>
-
               <div className={styles.textContainer}>
-                <div className={styles.componentTitle}>
-                  <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
-                  <ConfigStatusButton
-                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
-                    customStyle={styles.configStatusButton}
-                  />
-                </div>
-
-                <div className={styles.textInfo}>
-                  <div className={styles.descriptionDocs}>
-                    {connectorInfo && <p>{connectorInfo?.description}</p>}
-                    <InfoButton
-                      borderOff={true}
-                      color="blue"
-                      link={connectorInfo && connectorInfo?.docs}
-                      text={t('infoButtonText')}
+                <div className={styles.componentTitleTextInfoContainer}>
+                  <div className={styles.componentTitle}>
+                    <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
+                    <ConfigStatusButton
+                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                      customStyle={styles.configStatusButton}
                     />
                   </div>
 
-                  {isConfigured && (
-                    <Button
-                      styleVariant="small"
-                      type="button"
-                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
-                      disabled={isEnabling || isDisabling}
-                      style={{padding: '20px 40px', marginTop: '-12px'}}
-                    >
-                      {isEnabling
-                        ? t('enablingComponent')
-                        : isDisabling
-                        ? t('disablingComponent')
-                        : isEnabled
-                        ? t('disableComponent')
-                        : t('enableComponent')}
-                    </Button>
-                  )}
+                  <div className={styles.textInfo}>
+                    <div className={styles.descriptionDocs}>
+                      {connectorInfo && <p>{connectorInfo?.description}</p>}
+                      <InfoButton
+                        borderOff={true}
+                        color="blue"
+                        link={connectorInfo && connectorInfo?.docs}
+                        text={t('infoButtonText')}
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {isConfigured && (
+                  <SmartButton
+                    title={isEnabled ? t('disableComponent') : t('enableComponent')}
+                    height={40}
+                    width={132}
+                    pending={isPending}
+                    onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
+                    styleVariant="small"
+                    type="button"
+                    disabled={isPending}
+                  />
+                )}
               </div>
             </div>
           </div>

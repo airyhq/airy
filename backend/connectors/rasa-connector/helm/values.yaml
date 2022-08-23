@@ -2,4 +2,6 @@ component: rasa-connector
 mandatory: false
 enabled: false
 image: connectors/rasa-connector
+global:
+  containerRegistry: ghcr.io/airyhq
 resources: {}

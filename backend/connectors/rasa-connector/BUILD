@@ -17,9 +17,6 @@ app_deps = [
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/core:spring-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "//lib/java/spring/async:spring-async",
-    "//backend/model/metadata",
-    "@maven//:commons_codec_commons_codec",
 ]
 
 springboot(

@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: "ghcr.io/airyhq/{{ .Values.image }}:release"
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version }}"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

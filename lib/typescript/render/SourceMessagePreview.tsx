@@ -20,7 +20,14 @@ interface FormattedMessageProps {
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
-    return <>{message.content.message?.text || message.content.text || message?.content?.Body}</>;
+    let text =
+      message?.content?.text?.body || message.content.message?.text || message.content.text || message?.content?.Body;
+
+    if (typeof text !== 'string') {
+      text = JSON.stringify(text, null, 2);
+    }
+
+    return <>{text}</>;
   }
   return <div />;
 };

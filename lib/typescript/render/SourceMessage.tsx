@@ -25,7 +25,10 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
   unknownSource() {
     let message;
     if (this.props.message.content.text) {
-      message = this.props.message.content.text;
+      message = this.props.message.content.text?.body ?? this.props.message.content.text;
+      if (typeof message !== 'string') {
+        message = JSON.stringify(message, null, 2);
+      }
     } else {
       message = JSON.stringify(this.props.message.content, null, 2);
     }

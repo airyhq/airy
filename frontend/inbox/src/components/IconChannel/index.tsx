@@ -72,6 +72,11 @@ const SOURCE_INFO = {
     icon: () => <ViberIcon />,
     avatar: () => <ViberIcon />,
   },
+  whatsapp: {
+    text: 'WhatsApp',
+    icon: () => <WhatsappIcon />,
+    avatar: () => <WhatsappAvatar />,
+  },
   unknown: {
     text: 'Unknown Source',
     icon: () => <BubbleIcon />,

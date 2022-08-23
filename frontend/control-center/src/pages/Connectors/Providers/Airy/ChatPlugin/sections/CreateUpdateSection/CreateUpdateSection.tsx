@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Button, Input} from 'components';
+import {Input, SmartButton} from 'components';
 import styles from './CreateUpdateSection.module.scss';
 import {cyChannelsChatPluginFormNameInput} from 'handles';
 import {useTranslation} from 'react-i18next';
@@ -25,9 +25,11 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const [submit, setSubmit] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
   const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);
+  const [isPending, setIsPending] = useState(false);
   const {t} = useTranslation();
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
+    setIsPending(true);
     props
       .updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl})
       .then(() => {
@@ -36,6 +38,9 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
       .catch((error: Error) => {
         setNotification({show: true, text: t('updateFailed'), successful: false});
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(true);
       });
   };
 
@@ -81,15 +86,16 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
               fontClass="font-base"
             />
           </div>
-          <Button
+          <SmartButton
+            title={t('update')}
+            height={40}
+            width={160}
             onClick={() => setSubmit(true)}
-            disabled={newDisplayName === '' || newDisplayName === displayName}
+            pending={isPending}
             type="submit"
             styleVariant="small"
-            style={{width: '176px', height: '40px', marginTop: '16px'}}
-          >
-            {t('update')}
-          </Button>
+            disabled={newDisplayName === '' || newDisplayName === displayName || isPending}
+          />
         </form>
       </div>
     </div>

@@ -23,7 +23,9 @@ const connector = connect(null, mapDispatchToProps);
 
 const App = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
-    props.getClientConfig();
+    props.getClientConfig().catch((error: Error) => {
+      console.error(error);
+    });
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
     }

@@ -194,14 +194,13 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </div>
         )}
       </div>
-
       {areConnectedChannels && (
         <Pagination
           totalCount={filteredChannels.length}
           pageSize={listPageSize}
           pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
           currentPage={currentPage}
-          onPageChange={page => setCurrentPage(page)}
+          onPageChange={setCurrentPage}
           onSearch={searchText !== ''}
         />
       )}

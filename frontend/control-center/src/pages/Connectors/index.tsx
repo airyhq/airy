@@ -45,7 +45,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     setSourcesInfo(getSourcesInfo());
-    getConnectorsConfiguration();
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
     if (Object.entries(catalogList).length === 0)
       listComponents().catch((error: Error) => {
         console.error(error);
@@ -58,7 +60,9 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     if (channels.length === 0) {
-      listChannels();
+      listChannels().catch((error: Error) => {
+        console.error(error);
+      });
     }
     setPageTitle(pageTitle);
   }, [channels.length]);

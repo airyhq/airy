@@ -41,7 +41,10 @@ const Webhooks = (props: WebhooksProps) => {
   }, []);
 
   useEffect(() => {
-    webhooks.length === 0 && listWebhooks();
+    webhooks.length === 0 &&
+      listWebhooks().catch((error: Error) => {
+        console.error(error);
+      });
   }, [webhooks]);
 
   const handleNotification = (show: boolean, error: boolean) => {

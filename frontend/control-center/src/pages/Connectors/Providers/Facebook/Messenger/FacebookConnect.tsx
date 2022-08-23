@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {connectFacebookChannel} from '../../../../../actions/channel';
-import {Button, Input, NotificationComponent} from 'components';
+import {Input, NotificationComponent, SmartButton} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
 import styles from './FacebookConnect.module.scss';
 import {useCurrentChannel} from '../../../../../selectors/channels';
 import {NotificationModel} from 'model';
+import {useNavigate} from 'react-router-dom';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
   connectFacebookChannel,
@@ -17,14 +19,26 @@ const connector = connect(null, mapDispatchToProps);
 const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectFacebookChannel} = props;
   const channel = useCurrentChannel();
+  const navigate = useNavigate();
   const {t} = useTranslation();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
+  const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
+  const [newButtonTitle, setNewButtonTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    if (channel?.sourceChannelId !== id && !!channel) {
+      setNotification({show: true, text: t('newChannelInfo'), info: true});
+      setNewButtonTitle(t('connect'));
+    } else {
+      setNewButtonTitle(buttonTitle);
+    }
+  }, [id]);
 
   const buttonStatus = () => {
     return (
@@ -32,15 +46,10 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
       (channel?.sourceChannelId === id &&
         channel?.metadata?.pageToken === token &&
         channel?.metadata?.name === name &&
-        channel?.metadata?.imageUrl === image)
+        channel?.metadata?.imageUrl === image) ||
+      image === ''
     );
   };
-
-  useEffect(() => {
-    if (channel) {
-      setButtonTitle(t('updatePage'));
-    }
-  }, []);
 
   const connectNewChannel = () => {
     const connectPayload: ConnectChannelFacebookRequestPayload = {
@@ -56,14 +65,19 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
         }),
     };
 
+    setIsPending(true);
+
     connectFacebookChannel(connectPayload)
       .then(() => {
-        setNotification({show: true, text: t('updateSuccessful'), successful: true});
+        navigate(CONNECTORS_CONNECTED_ROUTE + '/facebook', {replace: true});
       })
       .catch((error: Error) => {
         setNotification({show: true, text: t('updateFailed'), successful: false});
         setErrorMessage(t('errorMessage'));
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -114,11 +128,20 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
           fontClass="font-base"
         />
       </div>
-      <Button styleVariant="normal" disabled={buttonStatus()} onClick={connectNewChannel}>
-        {buttonTitle}
-      </Button>
+      <SmartButton
+        title={newButtonTitle !== '' ? newButtonTitle : buttonTitle}
+        height={40}
+        width={160}
+        pending={isPending}
+        className={styles.connectButton}
+        type="submit"
+        styleVariant="normal"
+        disabled={buttonStatus() || isPending}
+        onClick={() => connectNewChannel()}
+      />
       {notification?.show && (
         <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
           successful={notification.successful}

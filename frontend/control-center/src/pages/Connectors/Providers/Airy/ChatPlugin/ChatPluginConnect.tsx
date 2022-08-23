@@ -69,12 +69,17 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       .then((id: string) => {
         setCurrentChannelId(id);
         setShowCreatedModal(true);
+      })
+      .catch((error: Error) => {
+        console.error(error);
       });
   };
 
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm(t('deleteChannel'))) {
-      props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
+      props.disconnectChannel({source: 'chatplugin', channelId: channel.id}).catch((error: Error) => {
+        console.error(error);
+      });
     }
   };
 

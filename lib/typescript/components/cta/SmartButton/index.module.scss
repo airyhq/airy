@@ -1,0 +1,156 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.button {
+  @include font-m;
+  font-weight: 700;
+  line-height: 16px;
+  font-size: 20px;
+  height: 40px;
+  background-color: var(--color-airy-blue);
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: var(--color-airy-blue-hover);
+  }
+
+  &:active {
+    background: var(--color-airy-blue-pressed);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-text-gray) !important;
+    background-color: var(--color-disabled-gray) !important;
+    border: none;
+  }
+}
+
+.extraSmallButton {
+  @extend .button;
+  @include font-base;
+  height: 24px;
+  width: min-content;
+  font-weight: 400;
+  line-height: 16px;
+  font-size: 13px;
+  padding: 4px 16px;
+}
+
+.greenButton {
+  @extend .extraSmallButton;
+  background-color: var(--color-soft-green);
+
+  &:hover {
+    background-color: var(--color-green-pressed);
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+  }
+}
+
+.smallButton {
+  @extend .button;
+  @include font-base;
+  font-weight: 400;
+  line-height: 24px;
+  font-size: 16px;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+.outlineButton {
+  @extend .button;
+  @include font-base;
+  font-weight: 400;
+  line-height: 16px;
+  font-size: 13px;
+  height: 24px;
+  width: min-content;
+  padding: 0 8px 0 8px;
+  background-color: var(--color-background-white);
+  color: var(--color-airy-blue);
+  border: 1px solid var(--color-airy-blue);
+
+  &:hover {
+    background-color: var(--color-airy-blue-hover);
+    color: var(--color-background-white);
+  }
+
+  &:active {
+    background: var(--color-airy-blue-pressed);
+  }
+}
+
+.outlineButtonBig {
+  @extend .outlineButton;
+  @include font-base;
+  height: 32px;
+  padding: 3px 16px;
+}
+
+.linkButton {
+  @include font-base;
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  text-decoration: underline;
+  color: var(--color-airy-blue);
+  background-color: var(--color-background-white);
+  cursor: pointer;
+  float: right;
+  padding: 1.35em 0.25em;
+  font-size: 1em;
+  line-height: 1.2rem;
+  margin-left: 1em;
+  border-radius: 4px;
+  margin-right: 1em;
+  &:hover {
+    color: var(--color-airy-blue-hover);
+  }
+  &:active {
+    color: var(--color-airy-blue-pressed);
+  }
+}
+
+.textButton {
+  @extend .linkButton;
+  text-decoration: none;
+}
+
+.warningButton {
+  @extend .smallButton;
+  background-color: var(--color-red-alert);
+  color: var(--color-background-red);
+
+  &:hover {
+    background-color: var(--color-red-alert);
+  }
+}
+
+@keyframes spinAnimationRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(7200deg);
+  }
+}
+
+.spinAnimation {
+  display: flex;
+  align-items: center;
+  svg {
+    animation: spinAnimationRefresh 40s linear;
+  }
+}

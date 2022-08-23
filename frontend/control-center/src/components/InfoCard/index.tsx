@@ -56,7 +56,9 @@ const InfoCard = (props: InfoCardProps) => {
   };
 
   const confirmUninstall = () => {
-    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`});
+    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`}).catch((error: Error) => {
+      console.error(error);
+    });
 
     setIsModalVisible(false);
     toggleInstallation();

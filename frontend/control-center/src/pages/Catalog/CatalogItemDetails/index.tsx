@@ -3,7 +3,7 @@ import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
-import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent} from 'components';
+import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
 import {CATALOG_ROUTE} from '../../../routes/routes';
@@ -37,8 +37,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
-  const [isInstalling, setIsInstalling] = useState(false);
-  const [isUninstalling, setIsUninstalling] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
 
   const {t} = useTranslation();
@@ -50,7 +49,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   const openModalInstall = () => {
     if (!isInstalled) {
-      setIsInstalling(true);
+      setIsPending(true);
       installComponent({name: componentInfo.name})
         .then(() => {
           setModal({type: ModalType.install, title: installText});
@@ -61,7 +60,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           setNotification({show: true, successful: false, text: t('failedInstall')});
         })
         .finally(() => {
-          setIsInstalling(false);
+          setIsPending(false);
         });
     } else {
       setModal({type: ModalType.uninstall, title: uninstallText});
@@ -74,7 +73,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   };
 
   const confirmUninstall = () => {
-    setIsUninstalling(true);
+    setIsPending(true);
     setIsModalVisible(false);
     uninstallComponent({name: `${componentInfo.name}`})
       .then(() => {
@@ -84,7 +83,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
         setNotification({show: true, successful: false, text: t('failedUninstall')});
       })
       .finally(() => {
-        setIsUninstalling(false);
+        setIsPending(false);
       });
   };
 
@@ -124,20 +123,15 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
-          <Button
+          <SmartButton
+            title={isInstalled ? t('uninstall') : t('install')}
+            height={50}
+            width={180}
             onClick={openModalInstall}
-            className={styles.installButton}
-            disabled={isInstalling || isUninstalling}
+            pending={isPending}
             styleVariant={isInstalled ? 'warning' : 'green'}
-          >
-            {isInstalling
-              ? t('installing')
-              : isUninstalling
-              ? t('uninstalling')
-              : !isInstalled
-              ? t('install')
-              : t('uninstall')}
-          </Button>
+            className={styles.installButton}
+          />
         </section>
 
         <section className={styles.details}>

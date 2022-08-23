@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {TopBar, Sidebar} from './components';
+import TopBar from './components/TopBar';
+import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';

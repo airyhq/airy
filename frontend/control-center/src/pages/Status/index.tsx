@@ -19,35 +19,44 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   const {getClientConfig, getConnectorsConfiguration} = props;
   const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
   const [spinAnim, setSpinAnim] = useState(true);
+  const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
   const {t} = useTranslation();
 
   useEffect(() => {
     setPageTitle('Status');
-    getClientConfig().catch((error: Error) => {
-      console.error(error);
-    });
+    getClientConfig()
+      .then(() => {
+        setLastRefresh(new Date().toLocaleString());
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
     getConnectorsConfiguration().catch((error: Error) => {
       console.error(error);
     });
   }, []);
 
-  setInterval(() => {
-    props.getClientConfig().catch((error: Error) => {
-      console.error(error);
-    });
-    setSpinAnim(!spinAnim);
-  }, 300000);
-
   const handleRefresh = () => {
-    props.getClientConfig().catch((error: Error) => {
-      console.error(error);
-    });
+    props
+      .getClientConfig()
+      .then(() => {
+        setLastRefresh(new Date().toLocaleString());
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
     setSpinAnim(!spinAnim);
   };
 
   return (
     <section className={styles.statusWrapper}>
-      <h1>{t('status')}</h1>
+      <div className={styles.statusLastRefreshContainer}>
+        <h1>{t('status')}</h1>
+        <span>
+          Last Refresh: <br />
+          {lastRefresh}
+        </span>
+      </div>
       <div className={styles.listHeader}>
         <h2>{t('componentName')}</h2>
         <h2>{t('healthStatus')}</h2>

@@ -49,8 +49,6 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
   render() {
     const provider = renderProviders[this.props.source];
 
-    console.log('provider', provider);
-
     if (provider === undefined || this.props.source === undefined) {
       return this.unknownSource();
     }

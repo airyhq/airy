@@ -29,9 +29,7 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
-  const webhooksEnabled =
-    props.components[ConfigServices.integrationWebhook]?.enabled ||
-    props.catalog[`airy-core/${ConfigServices.integrationWebhook}`]?.installed === true;
+  const webhooksEnabled = props.catalog[`airy-core/${ConfigServices.integrationWebhook}`]?.installed;
   const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled;
   const showLine = inboxEnabled || webhooksEnabled;
 

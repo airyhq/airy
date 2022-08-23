@@ -69,14 +69,16 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                 navigate(`/${path}/${channel.source}/${channel.id}`, {
                   state: {channel: channel},
                 })
-              }>
+              }
+            >
               <PencilIcon height={16} width={16} />
             </Button>
             <Button
               style={{marginLeft: '16px', padding: '0px'}}
               styleVariant="link"
               type="button"
-              onClick={togglePopupVisibility}>
+              onClick={togglePopupVisibility}
+            >
               <DisconnectIcon height={18} width={18} />
             </Button>
           </div>
@@ -89,7 +91,8 @@ const ChannelListItem = (props: ChannelListItemProps) => {
           close={togglePopupVisibility}
           wrapperClassName={styles.deleteModalContainer}
           containerClassName={styles.deleteModalContent}
-          headerClassName={styles.deleteModalHeader}>
+          headerClassName={styles.deleteModalHeader}
+        >
           <div>
             <p>{t('confirmDisconnectChannelText')}</p>
             <p>
@@ -105,7 +108,8 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                 styleVariant="warning"
                 type="submit"
                 onClick={disconnectChannel}
-                className={styles.disconnectButton}>
+                className={styles.disconnectButton}
+              >
                 {t('disconnectChannel')}
               </Button>
             </div>

@@ -1335,7 +1335,7 @@ const resources = {
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
       updateSuccessful: 'Mise à jour réussie',
-      updateFailed: 'La mise à jour a échoué',
+      updateFailed: 'Mise à jour échouée',
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
 
       //Catalog

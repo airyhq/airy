@@ -385,7 +385,7 @@ const resources = {
       updateWhatsappNumber: 'Update Whatsapp Number',
 
       //WhatsApp Business Cloud
-      whatsappBusinessCloudDescription: 'World #1 chat app.',
+      whatsappDescription: 'World #1 chat app.',
 
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
@@ -794,7 +794,7 @@ const resources = {
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
       //WhatsApp Business Cloud
-      whatsappBusinessCloudDescription: 'Weltweite Chat-App Nr. 1',
+      whatsappDescription: 'Weltweite Chat-App Nr. 1',
 
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
@@ -1311,7 +1311,7 @@ const resources = {
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
       //WhatsApp Business Cloud
-      whatsappBusinessCloudDescription: 'Première application de chat au monde',
+      whatsappDescription: 'Première application de chat au monde',
 
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
@@ -1774,7 +1774,7 @@ const resources = {
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
       //WhatsApp Business Cloud
-      whatsappBusinessCloudDescription: 'La aplicación de mensajería número 1 del mundo',
+      whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
 
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',

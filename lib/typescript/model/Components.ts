@@ -19,3 +19,9 @@ export interface ComponentInfo {
   docs: string;
   source: Source;
 }
+
+export enum ComponentRepository {
+  'airyCore' = 'airy-core',
+  'airyEnterprise' = 'airy-enterprise',
+  'airyCloud' = 'airy-cloud',
+}

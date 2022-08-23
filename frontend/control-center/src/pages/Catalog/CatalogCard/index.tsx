@@ -111,7 +111,6 @@ const CatalogCard = (props: CatalogCardProps) => {
         pending={isPending}
         disabled={isPending}
         buttonRef={installButtonCard}
-        // style={{minWidth: '80px', height: '24px'}}
       />
     );
   };

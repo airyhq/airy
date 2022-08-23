@@ -15,6 +15,9 @@ The Control Center serves as the technical dashboard of your Airy Core app.
 
 It provides both a graphical overview and a way to manage your app's [components](/getting-started/components), [connectors](connectors), and [webhooks](/api/webhook). Its [catalog](catalog) enables you to choose and configure additional [connectors](connectors).
 
+To run the Control Center UI locally, you can start its development server with the command:<br/>
+`./scripts/web-dev.sh //frontend/control-center:bundle_server`
+
 <ButtonBoxList>
     <ButtonBox
         icon={<ComponentsSVG />}

@@ -17,14 +17,9 @@ import {
 
 import {HttpClientInstance} from '../../httpClient';
 
-const SET_CURRENT_CONNECTORS = '@@channel/SET_CONNECTORS';
 const ADD_CONNECTORS = '@@channel/ADD_CONNECTORS';
 const SET_CHANNEL = '@@channel/SET_CHANNEL';
 const DELETE_CHANNEL = '@@channel/DELETE_CHANNEL';
-
-export const setCurrentChannelsAction = createAction(SET_CURRENT_CONNECTORS, (channels: Channel[]) => channels)<
-  Channel[]
->();
 
 export const addChannelsAction = createAction(ADD_CONNECTORS, (channels: Channel[]) => channels)<Channel[]>();
 export const setChannelAction = createAction(SET_CHANNEL, (channel: Channel) => channel)<Channel>();
@@ -32,7 +27,7 @@ export const deleteChannelAction = createAction(DELETE_CHANNEL, (channelId: stri
 
 export const listChannels = () => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.listChannels().then((response: Channel[]) => {
-    dispatch(setCurrentChannelsAction(response));
+    dispatch(addChannelsAction(response));
     return Promise.resolve(response);
   });
 

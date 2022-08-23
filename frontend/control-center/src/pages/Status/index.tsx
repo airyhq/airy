@@ -23,17 +23,25 @@ const Status = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     setPageTitle('Status');
-    getClientConfig();
-    getConnectorsConfiguration();
+    getClientConfig().catch((error: Error) => {
+      console.error(error);
+    });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   setInterval(() => {
-    props.getClientConfig();
+    props.getClientConfig().catch((error: Error) => {
+      console.error(error);
+    });
     setSpinAnim(!spinAnim);
   }, 300000);
 
   const handleRefresh = () => {
-    props.getClientConfig();
+    props.getClientConfig().catch((error: Error) => {
+      console.error(error);
+    });
     setSpinAnim(!spinAnim);
   };
 

@@ -38,10 +38,14 @@ const ChannelListItem = (props: ChannelListItemProps) => {
   };
 
   const disconnectChannel = () => {
-    props.disconnectChannel({
-      source: channel.source,
-      channelId: channel.id,
-    });
+    props
+      .disconnectChannel({
+        source: channel.source,
+        channelId: channel.id,
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
     togglePopupVisibility();
   };
 

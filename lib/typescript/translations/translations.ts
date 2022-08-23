@@ -203,6 +203,10 @@ const resources = {
       imageUrl: 'Image URL',
       imageUrlPlaceholder: '(optionally) add an image url',
       imageUrlHint: 'max. 1024x1024 pixel PNG',
+      connect: 'Connect',
+      connecting: 'Connecting...',
+      updating: 'Updating...',
+      newChannelInfo: 'You are about to connect a new channel',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
@@ -447,7 +451,6 @@ const resources = {
       subscribeCapital: 'Subscribe',
       updateCapital: 'Update',
       subscribing: 'Subscribing...',
-      updating: 'Updating...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALL EVENTS',
       subscribe: 'Subscribe',
@@ -663,6 +666,10 @@ const resources = {
       imageUrl: 'Bild URL',
       imageUrlPlaceholder: '(optional) eine Bildurl hinzufügen',
       imageUrlHint: 'max. 1024x1024 Pixel PNG',
+      connect: 'Verbinden',
+      connecting: 'Verbinden...',
+      updating: 'Aktualisieren...',
+      newChannelInfo: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
@@ -907,7 +914,6 @@ const resources = {
       subscribeCapital: 'Abonnieren',
       updateCapital: 'Aktualisieren',
       subscribing: 'Abonnieren...',
-      updating: 'Aktualisieren...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALLE EVENTS',
       subscribe: 'Abonnieren',
@@ -1115,6 +1121,10 @@ const resources = {
       imageUrl: `URL d'une image`,
       imageUrlPlaceholder: `(facultatif) ajouter l'URL d'une image`,
       imageUrlHint: 'max. 1024x1024 pixels PNG',
+      connect: 'Connexion',
+      connecting: 'Connexion...',
+      updating: 'Mise à jour...',
+      newChannelInfo: 'Vous êtes sur le point de connecter un nouveau canal',
 
       //Customize Chatplugin
       chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
@@ -1359,7 +1369,6 @@ const resources = {
       subscribeCapital: 'Inscription au webhook',
       updateCapital: 'Mise à jour',
       subscribing: 'Inscription en cours...',
-      updating: 'Mise à jour...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TOUS LES ÉVÉNEMENTS',
       subscribe: 'Inscrire',
@@ -1571,6 +1580,10 @@ const resources = {
       imageUrl: 'URL de la imagen',
       imageUrlPlaceholder: '(opcionalmente) añadir una url de imagen',
       imageUrlHint: 'PNG de 1024x1024 píxeles como máximo',
+      connect: 'Conectar',
+      connecting: 'Conectando...',
+      updating: 'Actualizar...',
+      newChannelInfo: 'Está a punto de conectar un nuevo canal',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
@@ -1815,7 +1828,6 @@ const resources = {
       subscribeCapital: 'Suscribirse',
       updateCapital: 'Actualización',
       subscribing: 'Suscribirse...',
-      updating: 'Actualizar...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TODOS LOS EVENTOS',
       subscribe: 'Suscripción',

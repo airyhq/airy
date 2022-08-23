@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
+
 import {connectGoogleChannel} from '../../../../actions';
-import {Button, Input, NotificationComponent} from 'components';
+
+import {Input, NotificationComponent, SmartButton} from 'components';
 import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
+
 import styles from './GoogleConnect.module.scss';
+
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
+import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {Channel, NotificationModel} from 'model';
+import {NotificationModel} from 'model';
 
 const mapDispatchToProps = {
   connectGoogleChannel,
@@ -17,39 +23,47 @@ const connector = connect(null, mapDispatchToProps);
 const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const {connectGoogleChannel} = props;
   const channel = useCurrentChannel();
+  const navigate = useNavigate();
   const {t} = useTranslation();
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [newChannelId, setNewChannelId] = useState('');
-  const [buttonTitle, setButtonTitle] = useState((channel || newChannelId ? t('updatePage') : t('connectPage')) || '');
+  const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [errorMessage, setErrorMessage] = useState('');
-  const [infoMessage, setInfoMessage] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isPending, setIsPending] = useState(false);
+  const [newButtonTitle, setNewButtonTitle] = useState('');
+
+  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const buttonStatus = () => {
     return (
       !(id.length > 5 && name.length > 0) ||
-      (name === channel?.metadata?.name &&
-        (image === channel?.metadata?.imageUrl || image === '') &&
-        id === channel?.sourceChannelId)
+      (channel?.sourceChannelId === id &&
+        channel?.metadata?.name === name &&
+        (channel?.metadata?.imageUrl === image || image === ''))
     );
   };
 
   useEffect(() => {
+    if (channel?.sourceChannelId !== id && !!channel) {
+      setNotification({show: true, text: t('newChannelInfo'), info: true});
+      setNewButtonTitle(t('connectPage'));
+    } else {
+      setNewButtonTitle(buttonTitle);
+    }
+  }, [id]);
+
+  useEffect(() => {
     if (channel) {
-      setButtonTitle(t('updatePage'));
+      setNewButtonTitle(t('updatePage'));
     }
-    if (id !== channel?.sourceChannelId && id !== '' && channel) {
-      setInfoMessage(true);
-      setNotification({show: true, text: t('newGoogleConnection')});
-      setButtonTitle(t('connectPage'));
-    }
-  }, [channel, id]);
+  }, [channel]);
 
   const connectNewChannel = () => {
+    setIsPending(true);
     const connectPayload: ConnectChannelGoogleRequestPayload = {
-      gmbId: id || newChannelId,
+      gmbId: id,
       name: name,
       ...(image &&
         image !== '' && {
@@ -58,15 +72,16 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
     };
 
     connectGoogleChannel(connectPayload)
-      .then((channel: Channel) => {
-        setNewChannelId(channel.id);
-        setNotification({show: true, text: channel ? t('updateSuccessful') : t('createSuccessful'), successful: true});
-        setButtonTitle(t('updatePage'));
+      .then(() => {
+        navigate(CONNECTED_ROUTE + '/google', {replace: true});
       })
       .catch((error: Error) => {
-        setNotification({show: true, text: channel ? t('updateFailed') : t('createFailed'), successful: false});
+        setNotification({show: true, text: t('updateFailed'), successful: false});
         setErrorMessage(t('errorMessage'));
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -106,17 +121,24 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
           fontClass="font-base"
         />
       </div>
-      <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
-        {buttonTitle}
-      </Button>
+      <SmartButton
+        title={newButtonTitle !== '' ? newButtonTitle : buttonTitle}
+        height={40}
+        width={160}
+        pending={isPending}
+        className={styles.connectButton}
+        type="submit"
+        styleVariant="normal"
+        disabled={buttonStatus() || isPending}
+        onClick={() => connectNewChannel()}
+      />
       {notification?.show && (
         <NotificationComponent
-          type={infoMessage ? 'sticky' : 'fade'}
+          type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
-          successful={notification.successful}
           setShowFalse={setNotification}
-          info={infoMessage ? true : false}
+          info={notification.info}
         />
       )}
     </div>

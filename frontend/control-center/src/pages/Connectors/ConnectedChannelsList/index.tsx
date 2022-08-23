@@ -193,7 +193,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         pageSize={listPageSize}
         pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
         currentPage={currentPage}
-        onPageChange={page => setCurrentPage(page)}
+        onPageChange={setCurrentPage}
         onSearch={searchText !== ''}
       />
     </div>

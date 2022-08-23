@@ -24,6 +24,18 @@
   margin-bottom: 14px;
 }
 
+.statusLastRefreshContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 16px;
+
+  span {
+    @include font-base;
+    color: var(--color-text-contrast);
+  }
+}
+
 .listHeader {
   display: flex;
   flex-direction: row;

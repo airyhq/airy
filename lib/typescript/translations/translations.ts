@@ -416,7 +416,6 @@ const resources = {
       notInstalled: 'Not Installed',
       updateSuccessful: 'Successfully updated',
       updateFailed: 'Update failed',
-
       noChannelsConnected: 'This connector does not have any connected channels yet.',
 
       //Catalog
@@ -881,7 +880,6 @@ const resources = {
       notInstalled: 'Nicht Installiert',
       updateSuccessful: 'Erfolgreich aktualisiert',
       updateFailed: 'Aktualisierung fehlgeschlagen',
-
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
 
       //Catalog
@@ -1338,7 +1336,6 @@ const resources = {
       notInstalled: 'Non installé(s)',
       updateSuccessful: 'Mise à jour réussie',
       updateFailed: 'La mise à jour a échoué',
-
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
 
       //Catalog
@@ -1799,7 +1796,6 @@ const resources = {
       notInstalled: 'No Instalado(s)',
       updateSuccessful: 'Actualizado con éxito',
       updateFailed: 'Actualización fallida',
-
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
 
       //Catalog

@@ -73,7 +73,7 @@ const SOURCE_INFO = {
     avatar: () => <ViberIcon />,
   },
   whatsapp: {
-    text: 'WhatsApp number',
+    text: 'WhatsApp',
     icon: () => <WhatsappIcon />,
     avatar: () => <WhatsappAvatar />,
   },

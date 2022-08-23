@@ -10,17 +10,12 @@ type SourceMessageState = {
 
 export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessageState> {
   constructor(props: RenderPropsUnion) {
-    console.log('props', props);
     super(props);
     this.state = {hasError: false};
   }
 
   static getDerivedStateFromError() {
     return {hasError: true};
-  }
-
-  componentDidMount() {
-    console.log('this.props', this.props);
   }
 
   componentDidCatch(error, errorInfo) {
@@ -31,7 +26,6 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
     let message;
     if (this.props.message.content.text) {
       message = this.props.message.content.text?.body ?? this.props.message.content.text;
-
       if (typeof message !== 'string') {
         message = JSON.stringify(message, null, 2);
       }

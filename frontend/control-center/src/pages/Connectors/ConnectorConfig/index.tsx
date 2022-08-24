@@ -93,7 +93,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {t} = useTranslation();
   const isInstalled = true;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
     listComponents();
   }, []);
@@ -441,3 +441,4 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 };
 
 export default connector(ConnectorConfig);
+

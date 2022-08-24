@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listChannels} from '../../../actions/channel';
-import {useNavigate, useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
@@ -30,6 +30,7 @@ import {
 } from '../../../routes/routes';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
+import {ConnectNewChatPlugin} from '../Providers/Airy/ChatPlugin/sections/ConnectNewChatPlugin';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
 
@@ -64,6 +65,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const PADDING_BOTTOM = 32;
   const PAGINATION_HEIGHT = 54;
   const ADDITIONAL_SPACE = 60;
+  const [connectNew, setConnectNew] = useState(false);
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -134,76 +136,81 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
-        <div className={styles.searchFieldButtons}>
-          <div className={styles.searchField}>
-            <div className={animationAction ? styles.animateIn : styles.animateOut}>
-              {showingSearchField && (
-                <SearchField
-                  placeholder={t('search')}
-                  value={searchText}
-                  setValue={(value: string) => setSearchText(value)}
-                  autoFocus={true}
-                  style={{height: '32px', borderRadius: '32px'}}
-                  resetClicked={() => setSearchText('')}
-                />
-              )}
+    <>
+      {!connectNew && (
+        <div className={styles.wrapper}>
+          <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
+            <div className={styles.searchFieldButtons}>
+              <div className={styles.searchField}>
+                <div className={animationAction ? styles.animateIn : styles.animateOut}>
+                  {showingSearchField && (
+                    <SearchField
+                      placeholder={t('search')}
+                      value={searchText}
+                      setValue={(value: string) => setSearchText(value)}
+                      autoFocus={true}
+                      style={{height: '32px', borderRadius: '32px'}}
+                      resetClicked={() => setSearchText('')}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className={styles.buttons}>
+              <button onClick={showSearchFieldToggle}>
+                {showingSearchField ? (
+                  <CloseIcon className={styles.closeIcon} />
+                ) : (
+                  <SearchIcon className={styles.searchIcon} />
+                )}
+              </button>
+              <button
+                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+                data-cy={cyConnectorsAddNewButton}
+                onClick={() => setConnectNew(true)}>
+                <PlusIcon className={styles.plusIcon} />
+              </button>
             </div>
           </div>
-        </div>
-        <div className={styles.buttons}>
-          <button onClick={showSearchFieldToggle}>
-            {showingSearchField ? (
-              <CloseIcon className={styles.closeIcon} />
+          <div className={styles.columnTitle}>
+            <span>{areConnectedChannels ? t('name') : ''}</span>
+            <span>{t('manage')}</span>
+          </div>
+          <div data-cy={dataCyChannelList}>
+            {filteredChannels.length > 0 ? (
+              sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
+                channel.metadata.name.toLowerCase()
+              ).map((channel: Channel) => (
+                <div key={channel.id} className={styles.connectedChannel}>
+                  <ChannelsListItem channel={channel} />
+                </div>
+              ))
+            ) : channels.length > 0 ? (
+              <div className={styles.emptyState}>
+                <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+                <p>{t('noResultsTerm')}</p>
+              </div>
             ) : (
-              <SearchIcon className={styles.searchIcon} />
+              <div className={styles.emptyState}>
+                <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
+              </div>
             )}
-          </button>
-          <button
-            style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-            onClick={() => navigate(path)}
-            data-cy={cyConnectorsAddNewButton}
-          >
-            <PlusIcon className={styles.plusIcon} />
-          </button>
+          </div>
+          {areConnectedChannels && (
+            <Pagination
+              totalCount={filteredChannels.length}
+              pageSize={listPageSize}
+              pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              onSearch={searchText !== ''}
+            />
+          )}
         </div>
-      </div>
-      <div className={styles.columnTitle}>
-        <span>{areConnectedChannels ? t('name') : ''}</span>
-        <span>{t('manage')}</span>
-      </div>
-      <div data-cy={dataCyChannelList}>
-        {filteredChannels.length > 0 ? (
-          sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
-            channel.metadata.name.toLowerCase()
-          ).map((channel: Channel) => (
-            <div key={channel.id} className={styles.connectedChannel}>
-              <ChannelsListItem channel={channel} />
-            </div>
-          ))
-        ) : channels.length > 0 ? (
-          <div className={styles.emptyState}>
-            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
-            <p>{t('noResultsTerm')}</p>
-          </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
-          </div>
-        )}
-      </div>
-      {areConnectedChannels && (
-        <Pagination
-          totalCount={filteredChannels.length}
-          pageSize={listPageSize}
-          pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          onSearch={searchText !== ''}
-        />
       )}
-    </div>
+
+      {connectNew && <ConnectNewChatPlugin />}
+    </>
   );
 };
 

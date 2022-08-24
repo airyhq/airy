@@ -223,8 +223,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
 
     if (connector === Source.rasa) {
-      console.log('INSIDE');
-
       const [webhookUrl, apiHost, token] = args;
 
       payload = {
@@ -254,8 +252,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const PageContent = () => {
-    console.log(connector);
-
     if (connector === Source.dialogflow) {
       return (
         <ConnectNewDialogflow

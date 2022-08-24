@@ -15,9 +15,9 @@ type RasaConnectProps = {
 
 export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: RasaConnectProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.rasaConnector]);
-  const [webhookUrl, setWebhookUrl] = useState(componentInfo?.url || '');
-  const [apiHost, setApiHost] = useState(componentInfo?.username || '');
-  const [token, setToken] = useState(componentInfo?.password || '');
+  const [webhookUrl, setWebhookUrl] = useState(componentInfo?.webhookUrl || '');
+  const [apiHost, setApiHost] = useState(componentInfo?.apiHost || '');
+  const [token, setToken] = useState(componentInfo?.token || '');
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const {t} = useTranslation();
   const isUrlValid = webhookUrl && (webhookUrl.startsWith('https') || webhookUrl.startsWith('http'));
@@ -52,9 +52,9 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
           value={webhookUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWebhookUrl(e.target.value)}
           label="Rasa Webhook"
-          placeholder={t('yourSalesforceOrgUrl')}
+          placeholder={t('rasaWebhookPlaceholder')}
           showLabelIcon
-          tooltipText={t('salesforceOrgUrlExample')}
+          tooltipText={t('rasaWebhookTooltip')}
           required
           height={32}
           fontClass="font-base"
@@ -68,9 +68,9 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
           value={apiHost}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setApiHost(e.target.value)}
           label="Api Host"
-          placeholder={t('yourSalesforceUsername')}
+          placeholder={t('rasaApihostPlaceholder')}
           showLabelIcon
-          tooltipText={t('yourSalesforceUsername')}
+          tooltipText={t('rasaApihostTooltip')}
           required
           height={32}
           fontClass="font-base"
@@ -83,9 +83,9 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
           value={token}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setToken(e.target.value)}
           label="Token"
-          placeholder={t('yourSalesforcePassword')}
+          placeholder={t('rasaTokenPlaceholder')}
           showLabelIcon
-          tooltipText={t('yourSalesforcePassword')}
+          tooltipText={t('rasaTokenTooltip')}
           required
           height={32}
           fontClass="font-base"

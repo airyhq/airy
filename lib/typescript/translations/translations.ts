@@ -421,6 +421,14 @@ const resources = {
       updateFailed: 'Update failed',
       noChannelsConnected: 'This connector does not have any connected channels yet.',
 
+      //Rasa
+      rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
+      rasaWebhookTooltip: 'Example: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Your Rasa Api Host',
+      rasaApihostTooltip: 'Your Rasa Api Host',
+      rasaTokenPlaceholder: 'Your Rasa Token',
+      rasaTokenTooltip: 'Your Rasa Token',
+
       //Catalog
       categories: 'Categories',
       availableFor: 'Available for',
@@ -888,6 +896,14 @@ const resources = {
       updateFailed: 'Aktualisierung fehlgeschlagen',
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
 
+      //Rasa
+      rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
+      rasaWebhookTooltip: 'Beispiel: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Ihr Rasa Api Host',
+      rasaApihostTooltip: 'Ihr Rasa Api-Host',
+      rasaTokenPlaceholder: 'Ihr Rasa Token',
+      rasaTokenTooltip: 'Ihr Rasa-Token',
+
       //Catalog
       categories: 'Kategorien',
       availableFor: 'Verfügbar für',
@@ -1346,6 +1362,14 @@ const resources = {
       updateSuccessful: 'Mise à jour réussie',
       updateFailed: 'Mise à jour échouée',
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
+
+      //Rasa
+      rasaWebhookPlaceholder: 'Votre Url rasa Webhook',
+      rasaWebhookTooltip: 'Exemple : http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Votre hôte Rasa Api',
+      rasaApihostTooltip: 'Votre hôte Rasa Api',
+      rasaTokenPlaceholder: 'Votre jeton Rasa',
+      rasaTokenTooltip: 'Votre jeton Rasa',
 
       //Catalog
       categories: 'Catégories',
@@ -1809,6 +1833,14 @@ const resources = {
       updateSuccessful: 'Actualizado con éxito',
       updateFailed: 'Actualización fallida',
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
+
+      //Rasa
+      rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
+      rasaWebhookTooltip: 'Ejemplo: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Su anfitrión Rasa Api',
+      rasaApihostTooltip: 'Su anfitrión Rasa Api',
+      rasaTokenPlaceholder: 'Su ficha Rasa',
+      rasaTokenTooltip: 'Su ficha Rasa',
 
       //Catalog
       categories: 'Categorías',

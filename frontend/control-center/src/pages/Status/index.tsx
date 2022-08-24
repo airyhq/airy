@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
-import {getClientConfig, getConnectorsConfiguration} from '../../actions';
+import {getClientConfig, getConnectorsConfiguration, listComponents} from '../../actions';
 import {StateModel} from '../../reducers';
 import {ComponentListItem} from './ComponentListItem';
-import {listComponents} from '../../actions/catalog';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
-import styles from './index.module.scss';
 import {setPageTitle} from '../../services/pageTitle';
 import {useTranslation} from 'react-i18next';
+import {ComponentRepository} from 'model';
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -26,18 +26,17 @@ const Status = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     setPageTitle('Status');
-<<<<<<< HEAD
+
     getClientConfig().catch((error: Error) => {
       console.error(error);
     });
     getConnectorsConfiguration().catch((error: Error) => {
       console.error(error);
     });
-=======
-    listComponents();
-    getClientConfig();
-    getConnectorsConfiguration();
->>>>>>> 73d32939 (wip)
+
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   setInterval(() => {
@@ -57,9 +56,9 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   const formatToComponentName = (name: string) => {
     let formattedName;
     if (name.includes('enterprise')) {
-      formattedName = 'airy-enterprise/' + name;
+      formattedName = `${ComponentRepository.airyEnterprise}/${name}`;
     } else {
-      formattedName = 'airy-core/' + name;
+      formattedName = `${ComponentRepository.airyCore}/${name}`;
     }
 
     return formattedName;

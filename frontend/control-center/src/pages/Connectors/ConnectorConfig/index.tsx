@@ -82,12 +82,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && configKey]?.enabled);
   const [isPending, setIsPending] = useState(false);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(
-    components[connectorInfo && removePrefix(connectorInfo?.name)]?.enabled === true
-  );
-  const [isEnabling, setIsEnabling] = useState(false);
-  const [isDisabling, setIsDisabling] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [backTitle, setBackTitle] = useState('Connectors');
   const [lineTitle, setLineTitle] = useState('');
@@ -114,21 +110,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, [connectorInfo, connectorConfiguration]);
 
   useEffect(() => {
-
     getConnectorsConfiguration().catch((error: Error) => {
       console.error(error);
     });
-    (source === Source.chatPlugin || connector === Source.chatPlugin) && setIsConfigured(true);
-    const sourceInfoArr = getSourcesInfo();
-    const connectorSourceInfo = sourceInfoArr.filter(item => item.type === connector);
-
-    channelId === 'new'
-      ? connector === Source.chatPlugin
-        ? setLineTitle(t('Create'))
-        : setLineTitle(t('addChannel'))
-      : setLineTitle(t('Configuration'));
-    
-    getConnectorsConfiguration();
 
     if (Object.entries(catalog).length > 0) {
       (connector === Source.chatPlugin || source === Source.chatPlugin) && setIsConfigured(true);
@@ -303,10 +287,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
-
     setIsPending(true);
-    enableDisableComponent({components: [{name: connectorInfo && connectorInfo?.configKey, enabled: !isEnabled}]})
-
+    enableDisableComponent({components: [{name: configKey, enabled: !isEnabled}]})
       .then(() => {
         setNotification({
           show: true,
@@ -358,15 +340,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               >
                 {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
               </div>
+
               <div className={styles.textContainer}>
-
-                <div className={styles.componentTitleTextInfoContainer}>
-                  <div className={styles.componentTitle}>
-                    <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.title}</h1>
-                    <ConfigStatusButton
-                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
-                      customStyle={styles.configStatusButton} />
-
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
                   <ConfigStatusButton
@@ -392,49 +367,19 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
                     />
                   </div>
 
-                  <div className={styles.textInfo}>
-                    <div className={styles.descriptionDocs}>
-                      {connectorInfo && <p>{connectorInfo?.description}</p>}
-                      <InfoButton
-                        borderOff={true}
-                        color="blue"
-                        link={connectorInfo && connectorInfo?.docs}
-                        text={t('infoButtonText')}
-                      />
-                    </div>
-                  </div>
-
                   {isConfigured && (
-                    <Button
+                    <SmartButton
+                      title={isEnabled ? t('disableComponent') : t('enableComponent')}
+                      height={40}
+                      width={132}
+                      pending={isPending}
+                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
                       styleVariant="small"
                       type="button"
-                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
-                      disabled={isEnabling || isDisabling}
-                      style={{padding: '20px 40px', marginTop: '-12px'}}
-                    >
-                      {isEnabling
-                        ? t('enablingComponent')
-                        : isDisabling
-                        ? t('disablingComponent')
-                        : isEnabled
-                        ? t('disableComponent')
-                        : t('enableComponent')}
-                    </Button>
+                      disabled={isPending}
+                    />
                   )}
                 </div>
-
-                {isConfigured && (
-                  <SmartButton
-                    title={isEnabled ? t('disableComponent') : t('enableComponent')}
-                    height={40}
-                    width={132}
-                    pending={isPending}
-                    onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
-                    styleVariant="small"
-                    type="button"
-                    disabled={isPending}
-                  />
-                )}
               </div>
             </div>
           </div>

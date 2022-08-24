@@ -60,13 +60,9 @@ const InfoCard = (props: InfoCardProps) => {
   };
 
   const confirmUninstall = () => {
-<<<<<<< HEAD
-    uninstallComponent({name: `${sourceInfo.repository}/${sourceInfo.componentName}`}).catch((error: Error) => {
+    uninstallComponent({name: componentInfo.name}).catch((error: Error) => {
       console.error(error);
     });
-=======
-    uninstallComponent({name: componentInfo.name});
->>>>>>> 638ddfad (clean-up wip)
 
     setIsModalVisible(false);
     toggleInstallation();

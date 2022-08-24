@@ -5,12 +5,10 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.core.sources.facebook.Connector;
-import co.airy.core.sources.facebook.Stores;
-import co.airy.core.sources.facebook.api.Api;
-import co.airy.core.sources.facebook.api.ApiException;
-import co.airy.core.sources.facebook.api.model.SendMessagePayload;
-import co.airy.core.sources.facebook.api.model.SendMessageResponse;
+import co.airy.core.sources.whatsapp.api.Api;
+import co.airy.core.sources.whatsapp.api.ApiException;
+import co.airy.core.sources.whatsapp.api.model.SendMessageResponse;
+import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -65,7 +63,7 @@ class SendMessageTest {
     @Autowired
     @InjectMocks
     private Connector connector;
-Í
+
     @Autowired
     private Stores stores;
 
@@ -104,18 +102,21 @@ class SendMessageTest {
         final String token = "token";
         final String text = "Hello World";
         final String errorMessage = "message delivery failed";
+        final String whatsappMessageId = "whatsapp message id";
 
-        ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
+        ArgumentCaptor<SendMessageRequest> payloadCaptor = ArgumentCaptor.forClass(SendMessageRequest.class);
         ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
-        when(api.sendMessage(tokenCaptor.capture(), payloadCaptor.capture()))
-                .thenReturn(new SendMessageResponse("recipient id", "message id"))
+        when(api.sendMessage(payloadCaptor.capture()))
+                .thenReturn(SendMessageResponse.builder()
+                        .messages(List.of(new SendMessageResponse.Message(whatsappMessageId)))
+                        .build())
                 .thenThrow(new ApiException(errorMessage));
 
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setToken(token)
                         .setSourceChannelId("ps-id")
-                        .setSource("facebook")
+                        .setSource("whatsapp")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()
@@ -123,7 +124,7 @@ class SendMessageTest {
                 new ProducerRecord<>(applicationCommunicationMessages.name(), "other-message-id",
                         Message.newBuilder()
                                 .setId("other-message-id")
-                                .setSource("facebook")
+                                .setSource("whatsapp")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
                                 .setDeliveryState(DeliveryState.DELIVERED)
@@ -137,20 +138,20 @@ class SendMessageTest {
         TimeUnit.SECONDS.sleep(5);
 
         final ObjectMapper objectMapper = new ObjectMapper();
-        final JsonNode messagePayload = objectMapper.readTree("{\"text\":\"Hello Facebook\"}");
+        final JsonNode messagePayload = objectMapper.readTree("{\"text\":\"Hello Whatsapp\"}");
 
         kafkaTestHelper.produceRecords(List.of(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
-                Message.newBuilder()
-                        .setId(messageId)
-                        .setSentAt(Instant.now().toEpochMilli())
-                        .setSenderId("user-id")
-                        .setDeliveryState(DeliveryState.PENDING)
-                        .setConversationId(conversationId)
-                        .setChannelId(channelId)
-                        .setSource("facebook")
-                        .setContent(objectMapper.writeValueAsString(messagePayload))
-                        .setIsFromContact(false)
-                        .build()),
+                        Message.newBuilder()
+                                .setId(messageId)
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId("user-id")
+                                .setDeliveryState(DeliveryState.PENDING)
+                                .setConversationId(conversationId)
+                                .setChannelId(channelId)
+                                .setSource("whatsapp")
+                                .setContent(objectMapper.writeValueAsString(messagePayload))
+                                .setIsFromContact(false)
+                                .build()),
                 // This message should fail
                 new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                         Message.newBuilder()
@@ -160,26 +161,30 @@ class SendMessageTest {
                                 .setDeliveryState(DeliveryState.PENDING)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
-                                .setSource("facebook")
+                                .setSource("whatsapp")
                                 .setContent(objectMapper.writeValueAsString(messagePayload))
                                 .setIsFromContact(false)
                                 .build())
         ));
 
-        retryOnException(() -> {
-            final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
-            assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
-            assertThat(sendMessagePayload.getMessage(), equalTo(messagePayload));
 
-            assertThat(tokenCaptor.getValue(), equalTo(token));
-        }, "Facebook API was not called");
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(3, applicationCommunicationMetadata.name());
-
-        assertThat(metadataList.size(), equalTo(3));
+        assertThat(metadataList.size(), equalTo(2));
         assertThat(metadataList.stream().anyMatch((metadata) ->
                 metadata.getKey().equals(MetadataKeys.MessageKeys.ERROR)
                         && metadata.getValue().equals(errorMessage)
                         && getSubject(metadata).getIdentifier().equals(failingMessageId)), equalTo(true));
+
+        final List<Message> messageList = kafkaTestHelper.consumeValues(5, applicationCommunicationMessages.name());
+
+        // 1 message for the conversation
+        // 2 messages pending
+        // 1 delivered, 1 failed
+        assertThat(messageList.size(), equalTo(5));
+        assertThat(messageList.stream().anyMatch((message) -> message.getDeliveryState().equals(DeliveryState.DELIVERED)
+                && message.getId().equals(messageId)), equalTo(true));
+        assertThat(messageList.stream().anyMatch((message) -> message.getDeliveryState().equals(DeliveryState.FAILED)
+                && message.getId().equals(failingMessageId)), equalTo(true));
     }
 }

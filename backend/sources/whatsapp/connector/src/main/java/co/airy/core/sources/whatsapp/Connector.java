@@ -6,7 +6,6 @@ import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.whatsapp.api.Api;
 import co.airy.core.sources.whatsapp.api.ApiException;
 import co.airy.core.sources.whatsapp.api.model.SendMessageResponse;
-import co.airy.core.sources.whatsapp.dto.Conversation;
 import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
@@ -43,7 +42,6 @@ public class Connector {
 
     public List<KeyValue<String, SpecificRecordBase>> sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
-        final Conversation conversation = sendMessageRequest.getConversation();
 
         if (isMessageStale(message)) {
             updateDeliveryState(message, DeliveryState.FAILED);
@@ -73,6 +71,7 @@ public class Connector {
                 results.add(KeyValue.pair(getId(errorPayload).toString(), errorPayload));
             }
             updateDeliveryState(message, DeliveryState.FAILED);
+            results.add(KeyValue.pair(message.getId(), message));
             return results;
         } catch (Exception e) {
             log.error(String.format("Failed to send a \n SendMessageRequest: %s", sendMessageRequest), e);

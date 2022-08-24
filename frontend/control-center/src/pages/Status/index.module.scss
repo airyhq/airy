@@ -31,7 +31,7 @@
   margin-right: 16px;
 
   span {
-    @include font-base;
+    @include font-s;
     color: var(--color-text-contrast);
   }
 }

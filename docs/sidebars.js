@@ -95,6 +95,9 @@ module.exports = {
             'ui/control-center/webhooks',
           ],
         },
+        {
+          Testing: ['ui/testing/integration-testing'],
+        },
       ],
     },
     {

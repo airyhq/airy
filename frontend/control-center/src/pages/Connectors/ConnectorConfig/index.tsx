@@ -361,7 +361,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div
                 className={`${styles.connectorIcon} ${
                   connectorInfo && connectorInfo?.displayName !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}>
+                }`}
+              >
                 {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
               </div>
 
@@ -447,7 +448,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               : connectorInfo?.displayName + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}>
+          headerClassName={styles.headerModal}
+        >
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

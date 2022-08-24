@@ -9,7 +9,24 @@
   width: 29rem;
 }
 
+.columnContainer {
+  display: flex;
+}
+
+.firstColumnForm {
+  display: flex;
+  flex-direction: column;
+  margin-right: 24px;
+}
+
+.secondColumnForm {
+  display: flex;
+  flex-direction: column;
+}
+
 .formRow {
+  width: 464px;
+  height: 80px;
   margin-bottom: 16px;
 
   label {

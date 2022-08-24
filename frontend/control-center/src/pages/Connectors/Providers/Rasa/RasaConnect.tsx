@@ -41,7 +41,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!isUrlValid || !apiHost || !token}
+      disabled={!isUrlValid}
       isConfigured={isConfigured}
       updateConfig={updateConfig}
     >
@@ -71,7 +71,6 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
           placeholder={t('rasaApihostPlaceholder')}
           showLabelIcon
           tooltipText={t('rasaApihostTooltip')}
-          required
           height={32}
           fontClass="font-base"
         />
@@ -86,7 +85,6 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
           placeholder={t('rasaTokenPlaceholder')}
           showLabelIcon
           tooltipText={t('rasaTokenTooltip')}
-          required
           height={32}
           fontClass="font-base"
         />

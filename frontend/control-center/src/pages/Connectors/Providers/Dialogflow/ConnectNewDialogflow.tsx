@@ -79,117 +79,123 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       isConfigured={isConfigured}
       updateConfig={updateConfig}
     >
-      <div className={styles.formRow}>
-        <Input
-          type="text"
-          name="projectID"
-          value={projectID}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProjectID(e.target.value)}
-          label={t('projectID')}
-          placeholder={t('AddProjectId')}
-          showLabelIcon
-          tooltipText={t('fromCloudConsole')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
+      <div className={styles.columnContainer}>
+        <div className={styles.firstColumnForm}>
+          <div className={styles.formRow}>
+            <Input
+              type="text"
+              name="projectID"
+              value={projectID}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProjectID(e.target.value)}
+              label={t('projectID')}
+              placeholder={t('AddProjectId')}
+              showLabelIcon
+              tooltipText={t('fromCloudConsole')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
 
-      <div className={styles.formRow}>
-        <Input
-          type="text"
-          name="GoogleApplicationCredentials"
-          value={appCredentials}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAppCredentials(e.target.value)}
-          label={t('GoogleApplicationCredentials')}
-          placeholder={t('AddGoogleApplicationCredentials')}
-          showLabelIcon
-          tooltipText={t('fromCloudConsole')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-      <div className={styles.formRow}>
-        <Input
-          type="number"
-          step={0.01}
-          min={0.1}
-          max={0.9}
-          name="SuggestionConfidenceLevel"
-          value={suggestionConfidenceLevel}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSuggestionConfidenceLevel(e.target.value)}
-          label={t('SuggestionConfidenceLevel')}
-          placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
-          showLabelIcon
-          tooltipText={t('amountSuggestions')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-      <div className={styles.formRow}>
-        <Input
-          type="number"
-          step={0.01}
-          min={0.1}
-          max={0.9}
-          name="ReplyConfidenceLevel"
-          value={replyConfidenceLevel}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReplyConfidenceLevel(e.target.value)}
-          label={t('ReplyConfidenceLevel')}
-          placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
-          showLabelIcon
-          tooltipText={t('amountReplies')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-      <div className={styles.formRow}>
-        <Input
-          type="number"
-          name="ProcessorWaitingTime"
-          value={processorWaitingTime}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorWaitingTime(e.target.value)}
-          label={t('processorWaitingTime')}
-          placeholder={t('processorWaitingTime')}
-          showLabelIcon
-          tooltipText={t('waitingDefault')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-      <div className={styles.formRow}>
-        <Input
-          type="number"
-          name="processorCheckPeriod"
-          value={processorCheckPeriod}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorCheckPeriod(e.target.value)}
-          label={t('processorCheckPeriod')}
-          placeholder={t('processorCheckPeriod')}
-          showLabelIcon
-          tooltipText={t('checkDefault')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-      <div className={styles.formRow}>
-        <Input
-          type="text"
-          name="DefaultLanguage"
-          value={defaultLanguage}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
-          label={t('defaultLanguage')}
-          placeholder={t('defaultLanguage')}
-          showLabelIcon
-          tooltipText={t('defaultLanguageTooltip')}
-          required
-          height={32}
-          fontClass="font-base"
-        />
+          <div className={styles.formRow}>
+            <Input
+              type="text"
+              name="GoogleApplicationCredentials"
+              value={appCredentials}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAppCredentials(e.target.value)}
+              label={t('GoogleApplicationCredentials')}
+              placeholder={t('AddGoogleApplicationCredentials')}
+              showLabelIcon
+              tooltipText={t('fromCloudConsole')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formRow}>
+            <Input
+              type="number"
+              step={0.01}
+              min={0.1}
+              max={0.9}
+              name="SuggestionConfidenceLevel"
+              value={suggestionConfidenceLevel}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSuggestionConfidenceLevel(e.target.value)}
+              label={t('SuggestionConfidenceLevel')}
+              placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
+              showLabelIcon
+              tooltipText={t('amountSuggestions')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formRow}>
+            <Input
+              type="number"
+              step={0.01}
+              min={0.1}
+              max={0.9}
+              name="ReplyConfidenceLevel"
+              value={replyConfidenceLevel}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReplyConfidenceLevel(e.target.value)}
+              label={t('ReplyConfidenceLevel')}
+              placeholder={'0.1' + ' ' + t('to') + ' ' + '0.9'}
+              showLabelIcon
+              tooltipText={t('amountReplies')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+        </div>
+        <div className={styles.secondColumnForm}>
+          <div className={styles.formRow}>
+            <Input
+              type="number"
+              name="ProcessorWaitingTime"
+              value={processorWaitingTime}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorWaitingTime(e.target.value)}
+              label={t('processorWaitingTime')}
+              placeholder={t('processorWaitingTime')}
+              showLabelIcon
+              tooltipText={t('waitingDefault')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formRow}>
+            <Input
+              type="number"
+              name="processorCheckPeriod"
+              value={processorCheckPeriod}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProcessorCheckPeriod(e.target.value)}
+              label={t('processorCheckPeriod')}
+              placeholder={t('processorCheckPeriod')}
+              showLabelIcon
+              tooltipText={t('checkDefault')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formRow}>
+            <Input
+              type="text"
+              name="DefaultLanguage"
+              value={defaultLanguage}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDefaultLanguage(e.target.value)}
+              label={t('defaultLanguage')}
+              placeholder={t('defaultLanguage')}
+              showLabelIcon
+              tooltipText={t('defaultLanguageTooltip')}
+              required
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+        </div>
       </div>
     </ConfigureConnector>
   );

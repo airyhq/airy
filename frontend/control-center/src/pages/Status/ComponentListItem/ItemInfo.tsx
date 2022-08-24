@@ -60,7 +60,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
     healthy &&
     isConfigurableConnector() &&
     !isComponentConfigured &&
-    itemName !== ConfigServices.sourcesChatPlugin;
+    itemName !== ComponentName.sourcesChatPlugin;
   const isRunning = healthy && enabled;
   const isNotHealthy = !healthy && enabled;
   const isDisabled = !enabled;
@@ -92,8 +92,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 <div
                   className={`${styles.arrowDownIcon} ${
                     isExpanded ? styles.arrowDownIconOpen : styles.arrowDownIconClose
-                  }`}
-                >
+                  }`}>
                   <ArrowRight width={8} />
                 </div>
                 <div className={styles.icons}>{getChannelAvatar(channelSource)}</div>
@@ -157,15 +156,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
           close={() => {
             setEnablePopupVisible(false);
             setIsPopUpOpen(false);
-          }}
-        >
+          }}>
           <p className={styles.popUpSubtitle}>{t('disableComponentText')}</p>
           <Button
             styleVariant="normal"
             style={{padding: '0 60Px'}}
             type="submit"
-            onClick={() => triggerEnableDisableAction(false)}
-          >
+            onClick={() => triggerEnableDisableAction(false)}>
             {t('disableComponent')}
           </Button>
         </SettingsModal>

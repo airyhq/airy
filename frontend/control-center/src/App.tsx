@@ -32,6 +32,7 @@ import ConnectorFacebook from './pages/Connectors/Providers/Facebook/Messenger/C
 import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/ConnectorTwilioSms';
 import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
 import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle';
+import ConnectorRasa from './pages/Connectors/Providers/Rasa/ConnectorRasa';
 import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 
@@ -68,6 +69,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`dialogflow/new`} element={<DialogflowConnect />} />
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
             <Route path={`salesforce/new`} element={<SalesforceConnect />} />
+            <Route path={`rasa/new`} element={<ConnectorRasa />} />
 
             <Route index element={<Connectors />} />
           </Route>

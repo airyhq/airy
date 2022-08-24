@@ -1,28 +1,5 @@
 import {User} from './User';
 
-export enum ConfigServices {
-  apiAdmin = 'api-admin',
-  apiCommunication = 'api-communication',
-  apiContacts = 'api-contacts',
-  apiWebsocket = 'api-websocket',
-  cloudConnector = 'cloud-connector',
-  enterpriseDialogflowConnector = 'enterprise-dialog-connector',
-  enterpriseMobileAuth = 'enterprise-mobile-auth',
-  enterpriseSalesforceContactsIngestion = 'enterprise-salesforce-contacts-ingestion',
-  enterprisePushNotification = 'enterprise-push-notifiction',
-  enterpriseZendenkConnector = 'enterprise-zendesk-connector',
-  frontendControlCenter = 'frontend-control-center',
-  frontendInbox = 'frontend-inbox',
-  integrationSourceApi = 'integration-source-api',
-  integrationWebhook = 'integration-webhook',
-  mediaResolver = 'media-resolver',
-  sourcesChatPlugin = 'sources-chatplugin',
-  sourcesFacebook = 'sources-facebook',
-  sourcesGoogle = 'sources-google',
-  sourcesTwilio = 'sources-twilio',
-  sourcesViber = 'sources-viber',
-}
-
 export interface Config {
   services: {[key: string]: {enabled: boolean; healthy: boolean; component: string}};
   tagConfig?: {

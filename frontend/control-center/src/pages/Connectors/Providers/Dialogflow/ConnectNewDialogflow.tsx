@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Input} from 'components';
-import {ConnectNewForm} from '../../ConnectNewForm';
+import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
+import {ComponentName, ConnectorName} from 'model';
 
 type ConnectNewDialogflowProps = {
   createNewConnection: (
@@ -21,7 +22,7 @@ type ConnectNewDialogflowProps = {
 };
 
 export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector['dialogflow-connector']);
+  const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.dialogflowConnector]);
   const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
   const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
   const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(
@@ -61,8 +62,8 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
   };
 
   return (
-    <ConnectNewForm
-      componentName="enterprise-dialogflow-connector"
+    <ConfigureConnector
+      componentName={ComponentName.enterpriseDialogflowConnector}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
@@ -190,6 +191,6 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
           fontClass="font-base"
         />
       </div>
-    </ConnectNewForm>
+    </ConfigureConnector>
   );
 };

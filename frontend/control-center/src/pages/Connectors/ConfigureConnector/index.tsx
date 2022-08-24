@@ -5,7 +5,7 @@ import {cyConnectorAddButton} from 'handles';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
-interface ConnectNewFormProps {
+interface ConfigureConnectorProps {
   children: JSX.Element[];
   componentName: string;
   isUpdateModalVisible: boolean;
@@ -16,7 +16,7 @@ interface ConnectNewFormProps {
   updateConfig: (e: React.FormEvent) => void;
 }
 
-export const ConnectNewForm = ({
+export const ConfigureConnector = ({
   children,
   componentName,
   isUpdateModalVisible,
@@ -25,7 +25,7 @@ export const ConnectNewForm = ({
   disabled,
   isConfigured,
   updateConfig,
-}: ConnectNewFormProps) => {
+}: ConfigureConnectorProps) => {
   const {t} = useTranslation();
 
   return (

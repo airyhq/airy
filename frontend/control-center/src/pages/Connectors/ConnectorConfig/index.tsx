@@ -33,6 +33,7 @@ import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappCo
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import styles from './index.module.scss';
+import {RasaConnect} from '../Providers/Rasa/RasaConnect';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -221,6 +222,26 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
     }
 
+    if (connector === Source.rasa) {
+      console.log('INSIDE');
+
+      const [webhookUrl, apiHost, token] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && connectorInfo?.configKey,
+            enabled: true,
+            data: {
+              webhookUrl: webhookUrl,
+              apiHost: apiHost,
+              token: token,
+            },
+          },
+        ],
+      };
+    }
+
     updateConnectorConfiguration(payload)
       .then(() => {
         if (!isEnabled) {
@@ -233,6 +254,8 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const PageContent = () => {
+    console.log(connector);
+
     if (connector === Source.dialogflow) {
       return (
         <ConnectNewDialogflow
@@ -260,6 +283,12 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           isEnabled={isEnabled}
           isConfigured={isConfigured}
         />
+      );
+    }
+
+    if (connector === Source.rasa) {
+      return (
+        <RasaConnect createNewConnection={createNewConnection} isEnabled={isEnabled} isConfigured={isConfigured} />
       );
     }
 
@@ -336,8 +365,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               <div
                 className={`${styles.connectorIcon} ${
                   connectorInfo && connectorInfo?.displayName !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}
-              >
+                }`}>
                 {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
               </div>
 
@@ -423,8 +451,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
               : connectorInfo?.displayName + ' ' + t('enabledComponent')
           }
           close={closeConfigurationModal}
-          headerClassName={styles.headerModal}
-        >
+          headerClassName={styles.headerModal}>
           {isEnabled && (
             <>
               <p> {t('disableComponentText')} </p>

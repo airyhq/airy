@@ -21,8 +21,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
 
-  console.log('CATALOGLIST: ', catalogList);
-
   useEffect(() => {
     listComponents().catch((error: Error) => {
       console.error(error);

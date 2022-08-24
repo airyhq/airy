@@ -1364,12 +1364,12 @@ const resources = {
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
 
       //Rasa
-      rasaWebhookPlaceholder: 'Votre Url rasa Webhook',
+      rasaWebhookPlaceholder: 'URL Webhook de Rasa',
       rasaWebhookTooltip: 'Exemple : http://webhooks.rasa',
-      rasaApihostPlaceholder: 'Votre hôte Rasa Api',
-      rasaApihostTooltip: 'Votre hôte Rasa Api',
-      rasaTokenPlaceholder: 'Votre jeton Rasa',
-      rasaTokenTooltip: 'Votre jeton Rasa',
+      rasaApihostPlaceholder: `Hôte de l'API Rasa`,
+      rasaApihostTooltip: `Hôte de l'API Rasa`,
+      rasaTokenPlaceholder: 'Token Rasa',
+      rasaTokenTooltip: 'Token Rasa',
 
       //Catalog
       categories: 'Catégories',

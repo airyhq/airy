@@ -8,7 +8,7 @@ import styles from './RasaConnect.module.scss';
 import {ComponentName, ConnectorName} from 'model';
 
 type RasaConnectProps = {
-  createNewConnection: (url: string, username: string, password: string) => void;
+  createNewConnection: (webhookUrl: string, apiHost: string, token: string) => void;
   isEnabled: boolean;
   isConfigured: boolean;
 };

@@ -45,6 +45,7 @@ export const getChannelAvatar = (source: string) => {
     case 'Twilio SMS':
       return <SmsAvatar />;
     case Source.twilioWhatsApp:
+    case Source.whatsapp:
     case 'WhatsApp Business Cloud':
       return <WhatsappAvatar />;
     case Source.twilio:

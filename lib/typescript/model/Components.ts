@@ -1,3 +1,5 @@
+import {Source} from './Source';
+
 export interface Components {
   components: {
     [key: string]: {
@@ -15,4 +17,11 @@ export interface ComponentInfo {
   category: string;
   price: string;
   docs: string;
+  source: Source;
+}
+
+export enum ComponentRepository {
+  'airyCore' = 'airy-core',
+  'airyEnterprise' = 'airy-enterprise',
+  'airyCloud' = 'airy-cloud',
 }

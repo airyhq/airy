@@ -41,8 +41,35 @@
 
 .channelsLine {
   width: 100%;
-  span {
-    @include font-base;
-    color: var(--color-airy-blue);
-  }
+}
+
+.channelsLineWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 36px;
+}
+
+.channelsTitle {
+  margin-bottom: 16px;
+  margin-top: 16px;
+  margin-left: 36px;
+  @include font-base;
+  color: var(--color-airy-blue);
+}
+
+.lineContainer {
+  display: flex;
+  align-items: center;
+}
+
+.lineBlue {
+  width: 150px;
+  height: 4px;
+  background: var(--color-airy-blue);
+}
+
+.lineGrey {
+  width: 100%;
+  height: 1px;
+  background: var(--color-light-gray);
 }

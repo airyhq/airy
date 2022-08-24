@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, getSourceForComponent, NotificationModel} from 'model';
+import {ComponentInfo, NotificationModel} from 'model';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {installComponent} from '../../../actions/catalog';
@@ -11,9 +11,10 @@ import {
   getConnectedRouteForComponent,
   getNewChannelRouteForComponent,
   getCatalogProductRouteForComponent,
-} from '../getRouteForCard';
-import styles from './index.module.scss';
+} from '../../../services/getRouteForCard';
 import {StateModel} from '../../../reducers';
+import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
+import styles from './index.module.scss';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -30,18 +31,6 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export const availabilityFormatted = (availability: string) => availability.split(',');
-
-export const DescriptionComponent = (props: {description: string}) => {
-  const {description} = props;
-  const {t} = useTranslation();
-  return <>{t(description)}</>;
-};
-
-export const getDescriptionSourceName = (name: string, displayName: string) => {
-  if (displayName.includes('SMS')) return 'twiliosms';
-  if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
-  return getSourceForComponent(name)?.replace('.', '');
-};
 
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
@@ -136,9 +125,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         <div className={styles.descriptionInfo}>
           {componentInfo.name && (
             <p>
-              <DescriptionComponent
-                description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
-              />
+              <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
             </p>
           )}
 

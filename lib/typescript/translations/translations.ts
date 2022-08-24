@@ -384,6 +384,9 @@ const resources = {
       connectWhatsappNumber: 'Connect Whatsapp Number',
       updateWhatsappNumber: 'Update Whatsapp Number',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'World #1 chat app.',
+
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
 
@@ -789,6 +792,9 @@ const resources = {
       yourSalesforcePassword: 'Ihr Salesforce-Passwort',
       securityToken: 'Sicherheitstoken',
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+
+      //WhatsApp Business Cloud
+      whatsappDescription: 'Weltweite Chat-App Nr. 1',
 
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
@@ -1304,6 +1310,9 @@ const resources = {
       connectWhatsappNumber: 'Connecter le numéro Whatsapp',
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'Première application de chat au monde',
+
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
 
@@ -1763,6 +1772,9 @@ const resources = {
       twilioConfigurationText9: 'para más información.',
       connectWhatsappNumber: 'Conectar el número de Whatsapp',
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
+
+      //WhatsApp Business Cloud
+      whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
 
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',

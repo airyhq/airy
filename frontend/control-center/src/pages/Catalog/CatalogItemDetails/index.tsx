@@ -5,11 +5,12 @@ import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
+import {availabilityFormatted} from '../CatalogCard';
+import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {CATALOG_ROUTE} from '../../../routes/routes';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {getNewChannelRouteForComponent} from '../getRouteForCard';
+import {getNewChannelRouteForComponent} from '../../../services/getRouteForCard';
 import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import styles from './index.module.scss';
 import {StateModel} from '../../../reducers';
@@ -34,6 +35,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
+
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
@@ -92,9 +94,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.heading}>
         <h1>{componentInfo?.displayName}</h1>
         <p>
-          <DescriptionComponent
-            description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
-          />
+          <DescriptionComponent description={`${getDescriptionSourceName(componentInfo.source)}Description`} />
         </p>
       </section>
     );

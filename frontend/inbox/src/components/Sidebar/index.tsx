@@ -10,7 +10,7 @@ import {CONTACTS_ROUTE, INBOX_ROUTE, TAGS_ROUTE} from '../../routes/routes';
 import styles from './index.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
-import {ConfigServices} from 'model';
+import {ComponentName} from 'model';
 
 type SideBarProps = {} & ConnectedProps<typeof connector>;
 
@@ -28,12 +28,10 @@ const Sidebar = (props: SideBarProps) => {
 
   useEffect(() => {
     Object.entries(props.components).length > 0 &&
-      setContactsEnabled(props.components[ConfigServices.apiContacts]?.enabled || false);
+      setContactsEnabled(props.components[ComponentName.apiContacts]?.enabled || false);
   }, [props.components]);
 
-  const [contactsEnabled, setContactsEnabled] = useState(
-    props.components[ConfigServices.apiContacts]?.enabled || false
-  );
+  const [contactsEnabled, setContactsEnabled] = useState(props.components[ComponentName.apiContacts]?.enabled || false);
 
   return (
     <nav className={styles.wrapper}>

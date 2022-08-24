@@ -5,7 +5,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {ConfigServices, Source} from 'model';
+import {ComponentName, Source} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -60,7 +60,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
     healthy &&
     isConfigurableConnector() &&
     !isComponentConfigured &&
-    itemName !== ConfigServices.sourcesChatPlugin;
+    itemName !== ComponentName.sourcesChatPlugin;
   const isRunning = healthy && enabled;
   const isNotHealthy = !healthy && enabled;
   const isDisabled = !enabled;

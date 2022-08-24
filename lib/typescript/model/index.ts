@@ -2,6 +2,7 @@ export * from './Channel';
 export * from './ChatpluginConfig';
 export * from './Config';
 export * from './Components';
+export * from './Connectors';
 export * from './Contact';
 export * from './Content';
 export * from './Conversation';

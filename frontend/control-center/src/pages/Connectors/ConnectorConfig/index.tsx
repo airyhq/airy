@@ -24,7 +24,7 @@ import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
@@ -33,6 +33,7 @@ import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappCo
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import styles from './index.module.scss';
+import {RasaConnect} from '../Providers/Rasa/RasaConnect';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -221,6 +222,24 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
     }
 
+    if (connector === Source.rasa) {
+      const [webhookUrl, apiHost, token] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && connectorInfo?.name,
+            enabled: true,
+            data: {
+              webhookUrl: webhookUrl,
+              apiHost: apiHost,
+              token: token,
+            },
+          },
+        ],
+      };
+    }
+
     updateConnectorConfiguration(payload)
       .then(() => {
         if (!isEnabled) {
@@ -260,6 +279,12 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           isEnabled={isEnabled}
           isConfigured={isConfigured}
         />
+      );
+    }
+
+    if (connector === Source.rasa) {
+      return (
+        <RasaConnect createNewConnection={createNewConnection} isEnabled={isEnabled} isConfigured={isConfigured} />
       );
     }
 

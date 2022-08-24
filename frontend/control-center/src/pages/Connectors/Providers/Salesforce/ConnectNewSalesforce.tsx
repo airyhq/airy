@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Input} from 'components';
-import {ConnectNewForm} from '../../ConnectNewForm';
+import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
+import {ComponentName, ConnectorName} from 'model';
 
 type ConnectNewSalesforceProps = {
   createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
@@ -13,7 +14,9 @@ type ConnectNewSalesforceProps = {
 };
 
 export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigured}: ConnectNewSalesforceProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector['salesforce-contacts-ingestion']);
+  const componentInfo = useSelector(
+    (state: StateModel) => state.data.connector[ConnectorName.salesforceContactsIngestion]
+  );
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [password, setPassword] = useState(componentInfo?.password || '');
@@ -36,8 +39,8 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
   };
 
   return (
-    <ConnectNewForm
-      componentName="enterprise-salesforce-contacts-ingestion"
+    <ConfigureConnector
+      componentName={ComponentName.enterpriseSalesforceContactsIngestion}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
@@ -106,6 +109,6 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
           fontClass="font-base"
         />
       </div>
-    </ConnectNewForm>
+    </ConfigureConnector>
   );
 };

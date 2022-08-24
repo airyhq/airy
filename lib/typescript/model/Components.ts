@@ -25,3 +25,27 @@ export enum ComponentRepository {
   'airyEnterprise' = 'airy-enterprise',
   'airyCloud' = 'airy-cloud',
 }
+
+export enum ComponentName {
+  apiAdmin = 'api-admin',
+  apiCommunication = 'api-communication',
+  apiContacts = 'api-contacts',
+  apiWebsocket = 'api-websocket',
+  cloudConnector = 'cloud-connector',
+  enterpriseDialogflowConnector = 'enterprise-dialog-connector',
+  enterpriseMobileAuth = 'enterprise-mobile-auth',
+  enterpriseSalesforceContactsIngestion = 'enterprise-salesforce-contacts-ingestion',
+  enterprisePushNotification = 'enterprise-push-notifiction',
+  enterpriseZendenkConnector = 'enterprise-zendesk-connector',
+  frontendControlCenter = 'frontend-control-center',
+  frontendInbox = 'frontend-inbox',
+  integrationSourceApi = 'integration-source-api',
+  integrationWebhook = 'integration-webhook',
+  mediaResolver = 'media-resolver',
+  sourcesChatPlugin = 'sources-chatplugin',
+  sourcesFacebook = 'sources-facebook',
+  sourcesGoogle = 'sources-google',
+  sourcesTwilio = 'sources-twilio',
+  sourcesViber = 'sources-viber',
+  rasaConnector = 'rasa-connector',
+}

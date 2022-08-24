@@ -12,7 +12,7 @@ import {ReactComponent as InboxIcon} from 'assets/images/icons/inboxIcon.svg';
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
-import {ConfigServices, ComponentRepository} from 'model';
+import {ComponentName, ComponentRepository} from 'model';
 
 type SideBarProps = {} & ConnectedProps<typeof connector>;
 
@@ -30,8 +30,8 @@ const Sidebar = (props: SideBarProps) => {
   };
 
   const webhooksEnabled =
-    props.catalog[`${ComponentRepository.airyCore}/${ConfigServices.integrationWebhook}`]?.installed;
-  const inboxEnabled = props.components[ConfigServices.frontendInbox]?.enabled;
+    props.catalog[`${ComponentRepository.airyCore}/${ComponentName.integrationWebhook}`]?.installed;
+  const inboxEnabled = props.components[ComponentName.frontendInbox]?.enabled || false;
   const showLine = inboxEnabled || webhooksEnabled;
 
   return (

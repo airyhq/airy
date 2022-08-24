@@ -24,7 +24,7 @@ import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
@@ -228,7 +228,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo?.configKey,
+            name: connectorInfo && connectorInfo?.name,
             enabled: true,
             data: {
               webhookUrl: webhookUrl,

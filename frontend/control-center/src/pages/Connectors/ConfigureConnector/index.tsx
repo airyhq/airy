@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 
 interface ConfigureConnectorProps {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
   componentName: string;
   isUpdateModalVisible: boolean;
   setIsUpdateModalVisible: React.Dispatch<SetStateAction<boolean>>;

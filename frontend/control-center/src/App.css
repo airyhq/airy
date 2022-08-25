@@ -1,0 +1,9 @@
+.xyz-enter {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.xyz-enter-active {
+  opacity: 1;
+  z-index: 20000;
+}

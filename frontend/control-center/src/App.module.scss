@@ -10,6 +10,7 @@
   min-height: 100vh;
   justify-content: center;
   flex-direction: column;
+  background: yellow;
 }
 
 .wrapper {
@@ -19,4 +20,5 @@
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-blue-white);
+  background: red;
 }

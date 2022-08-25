@@ -266,7 +266,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
 
     if (pageConnector === Source.chatPlugin) {
-      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />
+      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }
     if (pageConnector === Source.facebook) {
       return <FacebookConnect />;
@@ -284,7 +284,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       return <TwilioWhatsappConnect />;
     }
 
-    return <ConnectedChannelsList offset={offset} setPageConnector={setPageConnector}/>;
+    return <ConnectedChannelsList offset={offset} setPageConnector={setPageConnector} />;
   };
 
   const enableDisableComponentToggle = () => {
@@ -443,4 +443,3 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 };
 
 export default connector(ConnectorConfig);
-

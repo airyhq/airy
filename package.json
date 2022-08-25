@@ -32,6 +32,7 @@
     "react-redux": "8.0.2",
     "react-refresh": "^0.14.0",
     "react-router-dom": "6.3.0",
+    "react-transition-group": "^4.4.5",
     "redux": "^4.2.0",
     "regenerator-runtime": "^0.13.9",
     "reselect": "4.1.6",

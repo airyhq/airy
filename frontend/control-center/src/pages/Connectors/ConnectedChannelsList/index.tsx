@@ -42,7 +42,7 @@ const connector = connect(null, mapDispatchToProps);
 
 type ConnectedChannelsListProps = {
   offset?: number;
-  setPageConnector:any;
+  setPageConnector?: any;
 } & ConnectedProps<typeof connector>;
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
@@ -137,75 +137,76 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   };
 
   return (
-        <div className={styles.wrapper}>
-          <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
-            <div className={styles.searchFieldButtons}>
-              <div className={styles.searchField}>
-                <div className={animationAction ? styles.animateIn : styles.animateOut}>
-                  {showingSearchField && (
-                    <SearchField
-                      placeholder={t('search')}
-                      value={searchText}
-                      setValue={(value: string) => setSearchText(value)}
-                      autoFocus={true}
-                      style={{height: '32px', borderRadius: '32px'}}
-                      resetClicked={() => setSearchText('')}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className={styles.buttons}>
-              <button onClick={showSearchFieldToggle}>
-                {showingSearchField ? (
-                  <CloseIcon className={styles.closeIcon} />
-                ) : (
-                  <SearchIcon className={styles.searchIcon} />
-                )}
-              </button>
-              <button
-                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-                data-cy={cyConnectorsAddNewButton}
-                onClick={() => setPageConnector(source)}>
-                <PlusIcon className={styles.plusIcon} />
-              </button>
+    <div className={styles.wrapper}>
+      <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
+        <div className={styles.searchFieldButtons}>
+          <div className={styles.searchField}>
+            <div className={animationAction ? styles.animateIn : styles.animateOut}>
+              {showingSearchField && (
+                <SearchField
+                  placeholder={t('search')}
+                  value={searchText}
+                  setValue={(value: string) => setSearchText(value)}
+                  autoFocus={true}
+                  style={{height: '32px', borderRadius: '32px'}}
+                  resetClicked={() => setSearchText('')}
+                />
+              )}
             </div>
           </div>
-          <div className={styles.columnTitle}>
-            <span>{areConnectedChannels ? t('name') : ''}</span>
-            <span>{t('manage')}</span>
-          </div>
-          <div data-cy={dataCyChannelList}>
-            {filteredChannels.length > 0 ? (
-              sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
-                channel.metadata.name.toLowerCase()
-              ).map((channel: Channel) => (
-                <div key={channel.id} className={styles.connectedChannel}>
-                  <ChannelsListItem channel={channel} />
-                </div>
-              ))
-            ) : channels.length > 0 ? (
-              <div className={styles.emptyState}>
-                <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
-                <p>{t('noResultsTerm')}</p>
-              </div>
-            ) : (
-              <div className={styles.emptyState}>
-                <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
-              </div>
-            )}
-          </div>
-          {areConnectedChannels && (
-            <Pagination
-              totalCount={filteredChannels.length}
-              pageSize={listPageSize}
-              pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
-              currentPage={currentPage}
-              onPageChange={setCurrentPage}
-              onSearch={searchText !== ''}
-            />
-          )}
         </div>
+        <div className={styles.buttons}>
+          <button onClick={showSearchFieldToggle}>
+            {showingSearchField ? (
+              <CloseIcon className={styles.closeIcon} />
+            ) : (
+              <SearchIcon className={styles.searchIcon} />
+            )}
+          </button>
+          <button
+            style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+            data-cy={cyConnectorsAddNewButton}
+            onClick={() => navigate(path)}
+          >
+            <PlusIcon className={styles.plusIcon} />
+          </button>
+        </div>
+      </div>
+      <div className={styles.columnTitle}>
+        <span>{areConnectedChannels ? t('name') : ''}</span>
+        <span>{t('manage')}</span>
+      </div>
+      <div data-cy={dataCyChannelList}>
+        {filteredChannels.length > 0 ? (
+          sortBy(searchText === '' ? currentTableData : filteredChannels, (channel: Channel) =>
+            channel.metadata.name.toLowerCase()
+          ).map((channel: Channel) => (
+            <div key={channel.id} className={styles.connectedChannel}>
+              <ChannelsListItem channel={channel} />
+            </div>
+          ))
+        ) : channels.length > 0 ? (
+          <div className={styles.emptyState}>
+            <h1 className={styles.noSearchMatch}>{t('noResults')}</h1>
+            <p>{t('noResultsTerm')}</p>
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <h1 className={styles.noChannelsConnected}>{t('noChannelsConnected')}</h1>
+          </div>
+        )}
+      </div>
+      {areConnectedChannels && (
+        <Pagination
+          totalCount={filteredChannels.length}
+          pageSize={listPageSize}
+          pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          onSearch={searchText !== ''}
+        />
+      )}
+    </div>
   );
 };
 

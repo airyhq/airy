@@ -17,6 +17,7 @@ export enum ConnectorName {
   sourcesFacebook = 'sources-facebook',
   sourcesGoogle = 'sources-google',
   sourcesTwilio = 'sources-twilio',
+  sourcesWhatsappBusinessCloud = 'sources-whatsapp-business-cloud',
   sourcesViber = 'sources-viber',
   rasaConnector = 'rasa-connector',
   zendenkConnector = 'zendesk-connector',

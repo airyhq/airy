@@ -47,5 +47,6 @@ export enum ComponentName {
   sourcesGoogle = 'sources-google',
   sourcesTwilio = 'sources-twilio',
   sourcesViber = 'sources-viber',
+  sourcesWhatsappBusinessCloud = 'sources-whatsapp-business-cloud',
   rasaConnector = 'rasa-connector',
 }

@@ -35,6 +35,7 @@ import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle
 import ConnectorRasa from './pages/Connectors/Providers/Rasa/ConnectorRasa';
 import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
+import ConnectorWhatsappBusinessCloud from './pages/Connectors/Providers/WhatsappBusinessCloud/ConnectorWhatsappBusinessCloud';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -70,6 +71,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
             <Route path={`salesforce/new`} element={<SalesforceConnect />} />
             <Route path={`rasa/new`} element={<ConnectorRasa />} />
+            <Route path={`whatsapp/new`} element={<ConnectorWhatsappBusinessCloud />} />
 
             <Route index element={<Connectors />} />
           </Route>

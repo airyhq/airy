@@ -11,9 +11,15 @@ type ConnectNewSalesforceProps = {
   createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigured}: ConnectNewSalesforceProps) => {
+export const ConnectNewSalesforce = ({
+  createNewConnection,
+  isEnabled,
+  isConfigured,
+  isPending,
+}: ConnectNewSalesforceProps) => {
   const componentInfo = useSelector(
     (state: StateModel) => state.data.connector[ConnectorName.salesforceContactsIngestion]
   );
@@ -47,6 +53,7 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
       disabled={!isUrlValid || !username || !password || !securityToken}
       isConfigured={isConfigured}
       updateConfig={updateConfig}
+      isPending={isPending}
     >
       <div className={styles.formRow}>
         <Input

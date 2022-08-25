@@ -11,9 +11,15 @@ type ConnectNewDialogflowProps = {
   createNewConnection: (domain: string, token: string, username: string) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
+export const ConnectNewZendesk = ({
+  createNewConnection,
+  isEnabled,
+  isConfigured,
+  isPending,
+}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.zendenkConnector]);
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -43,6 +49,7 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}
       disabled={!domain || !username || !token}
       isConfigured={isConfigured}
       updateConfig={updateConfig}
+      isPending={isPending}
     >
       <div className={styles.formRow}>
         <Input

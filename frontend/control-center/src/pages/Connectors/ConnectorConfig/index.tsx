@@ -34,6 +34,7 @@ import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import styles from './index.module.scss';
 import {RasaConnect} from '../Providers/Rasa/RasaConnect';
+import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/WhatsappBusinessCloudConnect';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -96,7 +97,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
-    listComponents();
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
@@ -131,9 +134,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
       channelId === 'new'
         ? connector === Source.chatPlugin
-          ? setLineTitle(t('Create'))
+          ? setLineTitle(t('create'))
           : setLineTitle(t('addChannel'))
-        : setLineTitle(t('Configuration'));
+        : setLineTitle(t('configuration'));
 
       source
         ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
@@ -154,6 +157,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
+    setIsPending(true);
 
     if (connector === Source.dialogflow) {
       const [
@@ -240,6 +244,26 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       };
     }
 
+    if (connector === Source.whatsapp) {
+      const [appId, appSecret, phoneNumber, name, avatarUrl] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && connectorInfo?.name,
+            enabled: true,
+            data: {
+              appId: appId,
+              appSecret: appSecret,
+              phoneNumber: phoneNumber,
+              name: name,
+              avatarUrl: avatarUrl,
+            },
+          },
+        ],
+      };
+    }
+
     updateConnectorConfiguration(payload)
       .then(() => {
         if (!isEnabled) {
@@ -248,6 +272,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       })
       .catch((error: Error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -258,6 +285,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
@@ -268,6 +296,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
@@ -278,13 +307,30 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
 
     if (connector === Source.rasa) {
       return (
-        <RasaConnect createNewConnection={createNewConnection} isEnabled={isEnabled} isConfigured={isConfigured} />
+        <RasaConnect
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+          isPending={isPending}
+        />
+      );
+    }
+
+    if (connector === Source.whatsapp) {
+      return (
+        <WhatsappBusinessCloudConnect
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+          isPending={isPending}
+        />
       );
     }
 

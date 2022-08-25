@@ -87,6 +87,12 @@ const TwilioConnect = (props: TwilioConnectProps) => {
           });
         })
         .catch((error: Error) => {
+          setNotification({
+            show: true,
+            text: buttonText === 'connect' ? t('connectFailed') : t('updateFailed'),
+            successful: false,
+            info: false,
+          });
           console.error(error);
         })
         .finally(() => {
@@ -99,6 +105,12 @@ const TwilioConnect = (props: TwilioConnectProps) => {
           navigate(CONNECTED_ROUTE + `/twilio.sms/#`, {replace: true, state: {source: 'twilio.sms'}});
         })
         .catch((error: Error) => {
+          setNotification({
+            show: true,
+            text: buttonText === 'connect' ? t('connectFailed') : t('updateFailed'),
+            successful: false,
+            info: false,
+          });
           console.error(error);
         })
         .finally(() => {
@@ -159,7 +171,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
         </div>
         {notification?.show && (
           <NotificationComponent
-            type="sticky"
+            type={notification.info ? 'sticky' : 'fade'}
             show={notification.show}
             text={notification.text}
             setShowFalse={setNotification}

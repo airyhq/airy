@@ -19,9 +19,15 @@ type ConnectNewDialogflowProps = {
   ) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
+export const ConnectNewDialogflow = ({
+  createNewConnection,
+  isEnabled,
+  isConfigured,
+  isPending,
+}: ConnectNewDialogflowProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.dialogflowConnector]);
   const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
   const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -67,6 +73,7 @@ export const ConnectNewDialogflow = ({createNewConnection, isEnabled, isConfigur
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
+      isPending={isPending}
       disabled={
         !projectID ||
         !appCredentials ||

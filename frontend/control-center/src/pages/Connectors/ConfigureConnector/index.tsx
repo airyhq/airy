@@ -1,6 +1,6 @@
 import React, {SetStateAction} from 'react';
 import RestartPopUp from '../RestartPopUp';
-import {Button} from 'components';
+import {SmartButton} from 'components';
 import {cyConnectorAddButton} from 'handles';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
@@ -14,6 +14,7 @@ interface ConfigureConnectorProps {
   disabled: boolean;
   isConfigured: boolean;
   updateConfig: (e: React.FormEvent) => void;
+  isPending: boolean;
 }
 
 export const ConfigureConnector = ({
@@ -25,6 +26,7 @@ export const ConfigureConnector = ({
   disabled,
   isConfigured,
   updateConfig,
+  isPending,
 }: ConfigureConnectorProps) => {
   const {t} = useTranslation();
 
@@ -33,16 +35,17 @@ export const ConfigureConnector = ({
       <div className={styles.settings}>
         <form>
           {children}
-          <Button
+          <SmartButton
+            height={40}
+            width={260}
+            title={isConfigured ? t('Update') : t('configure')}
+            pending={isPending}
             styleVariant="small"
             type="button"
             disabled={disabled}
-            style={{padding: '20px 60px'}}
             onClick={(e: React.FormEvent) => updateConfig(e)}
             dataCy={cyConnectorAddButton}
-          >
-            {isConfigured ? t('Update') : t('configure')}
-          </Button>
+          />
         </form>
       </div>
       {isUpdateModalVisible && (

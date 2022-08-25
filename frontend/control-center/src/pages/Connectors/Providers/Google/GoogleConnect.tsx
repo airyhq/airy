@@ -76,7 +76,12 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
         navigate(CONNECTED_ROUTE + '/google', {replace: true});
       })
       .catch((error: Error) => {
-        setNotification({show: true, text: t('updateFailed'), successful: false});
+        setNotification({
+          show: true,
+          text: buttonTitle === t('connectPage') ? t('createFailed') : 'updateFailed',
+          successful: false,
+          info: false,
+        });
         setErrorMessage(t('errorMessage'));
         console.error(error);
       })

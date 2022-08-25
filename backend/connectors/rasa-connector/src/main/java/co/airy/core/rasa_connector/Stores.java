@@ -30,13 +30,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
-        //Called after the instructor
         final StreamsBuilder builder = new StreamsBuilder();
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
         ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
-                .peek((messageId, message) -> rasaConnectorService.send(message));
+               .peek((messageId, message) -> rasaConnectorService.send(message));
 
         streams.start(builder.build(), appId);
     }

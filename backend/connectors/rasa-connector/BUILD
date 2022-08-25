@@ -12,11 +12,13 @@ app_deps = [
     "//:jackson",
     "//:lombok",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//:feign",
     "//lib/java/log",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/core:spring-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/async:spring-async",
 ]
 
 springboot(

@@ -12,6 +12,7 @@ export interface ComponentInfo {
   displayName: string;
   name: string;
   installed: boolean;
+  isChannel: string;
   availableFor: string;
   description: string;
   category: string;
@@ -21,9 +22,9 @@ export interface ComponentInfo {
 }
 
 export enum ComponentRepository {
-  'airyCore' = 'airy-core',
-  'airyEnterprise' = 'airy-enterprise',
-  'airyCloud' = 'airy-cloud',
+  airyCore = 'airy-core',
+  airyEnterprise = 'airy-enterprise',
+  airyCloud = 'airy-cloud',
 }
 
 export enum ComponentName {

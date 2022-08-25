@@ -13,7 +13,7 @@ import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsC
 import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
 import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
-import DialogflowConnect from './pages/Connectors/Providers/Dialogflow/DialogflowConnect';
+import ConnectorDialogflow from './pages/Connectors/Providers/Dialogflow/ConnectorDialogflow';
 import ZendeskConnect from './pages/Connectors/Providers/Zendesk/ZendeskConnect';
 import SalesforceConnect from './pages/Connectors/Providers/Salesforce/SalesforceConnect';
 import NotFound from './pages/NotFound';
@@ -67,7 +67,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`twilio.whatsapp/:channelId`} element={<ConnectorTwilioWhatsapp />} />
             <Route path={`google/:channelId`} element={<ConnectorGoogle />} />
             <Route path={`instagram/:channelId`} element={<ConnectorInstagram />} />
-            <Route path={`dialogflow/new`} element={<DialogflowConnect />} />
+            <Route path={`dialogflow/new`} element={<ConnectorDialogflow />} />
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
             <Route path={`salesforce/new`} element={<SalesforceConnect />} />
             <Route path={`rasa/new`} element={<ConnectorRasa />} />

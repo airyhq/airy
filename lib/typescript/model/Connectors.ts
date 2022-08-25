@@ -4,7 +4,7 @@ export enum ConnectorName {
   apiContacts = 'api-contacts',
   apiWebsocket = 'api-websocket',
   cloudConnector = 'cloud-connector',
-  dialogflowConnector = 'dialog-connector',
+  enterpriseDialogflowConnector = 'enterprise-dialogflow-connector',
   enterpriseMobileAuth = 'enterprise-mobile-auth',
   salesforceContactsIngestion = 'salesforce-contacts-ingestion',
   enterprisePushNotification = 'enterprise-push-notifiction',

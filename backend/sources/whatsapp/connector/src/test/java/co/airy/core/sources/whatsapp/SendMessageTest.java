@@ -105,7 +105,6 @@ class SendMessageTest {
         final String whatsappMessageId = "whatsapp message id";
 
         ArgumentCaptor<SendMessageRequest> payloadCaptor = ArgumentCaptor.forClass(SendMessageRequest.class);
-        ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
         when(api.sendMessage(payloadCaptor.capture()))
                 .thenReturn(SendMessageResponse.builder()
                         .messages(List.of(new SendMessageResponse.Message(whatsappMessageId)))

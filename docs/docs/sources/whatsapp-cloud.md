@@ -129,6 +129,41 @@ import ConnectWhatsapp from '../api/endpoints/connect-whatsapp.mdx'
 
 You can get a user token associated to your app using the [Facebook graph explorer](https://developers.facebook.com/tools/explorer).
 
+To confirm that this is working you can write a message to this phone number.
+The conversation should appear in your inbox.
+
 ## Step 6: Send and receive messages with the Inbox UI
 
-TBD
+Now let's confirm that we can write messages to our Whatsapp contacts you can select the conversation we created in the previous step in the inbox and write a message.
+
+You can also use the [Messages API endpoint](/api/endpoints/messages#send).
+
+<ButtonBox
+icon={() => <BoltSVG />}
+title="Messages endpoint"
+description="Send messages from your Airy Core instance to different sources through the Messages endpoint"
+link="api/endpoints/messages#send"
+/>
+
+<br />
+
+**Sending a text message**
+
+```json5
+{
+  "conversation_id": "<the conversation id>",
+  "message": {
+    "type": "text",
+    "text": {
+      "preview_url": false,
+      "body": "Welcome to our business"
+    }
+  }
+}
+```
+
+<br />
+
+import InboxMessages from './inbox-messages.mdx'
+
+<InboxMessages />

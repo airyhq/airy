@@ -32,6 +32,7 @@ import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
+import {ConnectNewChatPlugin} from '../Providers/Airy/ChatPlugin/sections/ConnectNewChatPlugin';
 import styles from './index.module.scss';
 
 export enum Pages {
@@ -90,6 +91,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [backRoute, setBackRoute] = useState('');
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
+  const [pageConnector, setPageConnector] = useState(connector);
   const {t} = useTranslation();
   const isInstalled = true;
 
@@ -233,7 +235,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const PageContent = () => {
-    if (connector === Source.dialogflow) {
+    if (pageConnector === Source.dialogflow) {
       return (
         <ConnectNewDialogflow
           createNewConnection={createNewConnection}
@@ -243,7 +245,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       );
     }
 
-    if (connector === Source.zendesk) {
+    if (pageConnector === Source.zendesk) {
       return (
         <ConnectNewZendesk
           createNewConnection={createNewConnection}
@@ -253,7 +255,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       );
     }
 
-    if (connector === Source.salesforce) {
+    if (pageConnector === Source.salesforce) {
       return (
         <ConnectNewSalesforce
           createNewConnection={createNewConnection}
@@ -263,26 +265,26 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       );
     }
 
-    if (connector === Source.chatPlugin) {
-      return <ChatPluginConnect />;
+    if (pageConnector === Source.chatPlugin) {
+      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />
     }
-    if (connector === Source.facebook) {
+    if (pageConnector === Source.facebook) {
       return <FacebookConnect />;
     }
-    if (connector === Source.instagram) {
+    if (pageConnector === Source.instagram) {
       return <InstagramConnect />;
     }
-    if (connector === Source.google) {
+    if (pageConnector === Source.google) {
       return <GoogleConnect />;
     }
-    if (connector === Source.twilioSMS) {
+    if (pageConnector === Source.twilioSMS) {
       return <TwilioSmsConnect />;
     }
-    if (connector === Source.twilioWhatsApp) {
+    if (pageConnector === Source.twilioWhatsApp) {
       return <TwilioWhatsappConnect />;
     }
 
-    return <ConnectedChannelsList offset={offset} />;
+    return <ConnectedChannelsList offset={offset} setPageConnector={setPageConnector}/>;
   };
 
   const enableDisableComponentToggle = () => {

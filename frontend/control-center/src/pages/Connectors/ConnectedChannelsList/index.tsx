@@ -42,10 +42,11 @@ const connector = connect(null, mapDispatchToProps);
 
 type ConnectedChannelsListProps = {
   offset?: number;
+  setPageConnector:any;
 } & ConnectedProps<typeof connector>;
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
-  const {listChannels, offset} = props;
+  const {listChannels, offset, setPageConnector} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -136,8 +137,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   };
 
   return (
-    <>
-      {!connectNew && (
         <div className={styles.wrapper}>
           <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
             <div className={styles.searchFieldButtons}>
@@ -167,7 +166,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
               <button
                 style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
                 data-cy={cyConnectorsAddNewButton}
-                onClick={() => setConnectNew(true)}>
+                onClick={() => setPageConnector(source)}>
                 <PlusIcon className={styles.plusIcon} />
               </button>
             </div>
@@ -207,10 +206,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
             />
           )}
         </div>
-      )}
-
-      {connectNew && <ConnectNewChatPlugin />}
-    </>
   );
 };
 

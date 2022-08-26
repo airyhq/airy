@@ -30,11 +30,11 @@ const InfoCard = (props: InfoCardProps) => {
   };
 
   return (
-    <div className={styles.container}>
-      <div onClick={handleCardClick} className={styles.infoCard}>
+    <div onClick={handleCardClick} className={styles.container}>
+      <div className={styles.infoCard}>
         <div className={styles.channelLogoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}
-          <h1>{componentInfo.displayName}</h1>
+          {componentInfo.displayName}
         </div>
         {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
       </div>

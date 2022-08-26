@@ -12,7 +12,7 @@ gcloud  container components  list
 
 gcloud init
 
-
+Enable access to API ... for the  Google project for airy-core from GCP console
 
 
 get  credentials gcloud

@@ -22,7 +22,7 @@ export interface ConnectorCardComponentInfo {
   name: string;
   displayName: string;
   configKey: string;
-  isChannel: string;
+  isChannel?: string;
   source: Source;
 }
 

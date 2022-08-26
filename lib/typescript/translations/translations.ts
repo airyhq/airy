@@ -419,7 +419,10 @@ const resources = {
       notInstalled: 'Not Installed',
       updateSuccessful: 'Successfully updated',
       updateFailed: 'Update failed',
+      connectFailed: 'Connect failed',
       noChannelsConnected: 'This connector does not have any connected channels yet.',
+      optional: 'Optional',
+      configuration: 'Configuration',
 
       //Rasa
       rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
@@ -428,6 +431,14 @@ const resources = {
       rasaApihostTooltip: 'Your Rasa Api Host',
       rasaTokenPlaceholder: 'Your Rasa Token',
       rasaTokenTooltip: 'Your Rasa Token',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Your App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Example: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Your App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Example: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Your Phone Number',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Example: +13385281291',
 
       //Catalog
       categories: 'Categories',
@@ -894,7 +905,10 @@ const resources = {
       notInstalled: 'Nicht Installiert',
       updateSuccessful: 'Erfolgreich aktualisiert',
       updateFailed: 'Aktualisierung fehlgeschlagen',
+      connectFailed: 'Verbinden fehlgeschlagen',
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
+      optional: 'Optional',
+      configuration: 'Konfiguration',
 
       //Rasa
       rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
@@ -903,6 +917,14 @@ const resources = {
       rasaApihostTooltip: 'Ihr Rasa Api-Host',
       rasaTokenPlaceholder: 'Ihr Rasa Token',
       rasaTokenTooltip: 'Ihr Rasa-Token',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Ihre App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Beispiel: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Ihr App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Beispiel: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Ihre Handynummer',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Beispiel: +49152475381291',
 
       //Catalog
       categories: 'Kategorien',
@@ -1361,7 +1383,10 @@ const resources = {
       notInstalled: 'Non installé(s)',
       updateSuccessful: 'Mise à jour réussie',
       updateFailed: 'Mise à jour échouée',
+      connectFailed: 'La connexion a échoué',
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
+      optional: 'Optionnel',
+      configuration: 'Configuration',
 
       //Rasa
       rasaWebhookPlaceholder: 'URL Webhook de Rasa',
@@ -1370,6 +1395,14 @@ const resources = {
       rasaApihostTooltip: `Hôte de l'API Rasa`,
       rasaTokenPlaceholder: 'Token Rasa',
       rasaTokenTooltip: 'Token Rasa',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Votre App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Exemple: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Votre App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Exemple: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Votre numéro de téléphone',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Exemple: +33152475381291',
 
       //Catalog
       categories: 'Catégories',
@@ -1832,7 +1865,10 @@ const resources = {
       notInstalled: 'No Instalado(s)',
       updateSuccessful: 'Actualizado con éxito',
       updateFailed: 'Actualización fallida',
+      connectFailed: 'Conexión fallida',
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
+      optional: 'Opcional',
+      configuration: 'Configuración',
 
       //Rasa
       rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
@@ -1841,6 +1877,14 @@ const resources = {
       rasaApihostTooltip: 'Su anfitrión Rasa Api',
       rasaTokenPlaceholder: 'Su ficha Rasa',
       rasaTokenTooltip: 'Su ficha Rasa',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Su App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Ejemplo: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Su App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Ejemplo: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Su número de teléfono',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Ejemplo: +34152475381291',
 
       //Catalog
       categories: 'Categorías',

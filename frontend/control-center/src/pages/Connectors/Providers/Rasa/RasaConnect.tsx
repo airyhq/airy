@@ -11,9 +11,10 @@ type RasaConnectProps = {
   createNewConnection: (webhookUrl: string, apiHost: string, token: string) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: RasaConnectProps) => {
+export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPending}: RasaConnectProps) => {
   const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.rasaConnector]);
   const [webhookUrl, setWebhookUrl] = useState(componentInfo?.webhookUrl || '');
   const [apiHost, setApiHost] = useState(componentInfo?.apiHost || '');
@@ -44,6 +45,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured}: Rasa
       disabled={!isUrlValid}
       isConfigured={isConfigured}
       updateConfig={updateConfig}
+      isPending={isPending}
     >
       <div className={styles.formRow}>
         <Input

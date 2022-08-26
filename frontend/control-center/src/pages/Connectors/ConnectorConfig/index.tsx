@@ -17,7 +17,7 @@ import {
 import {LinkButton, InfoButton} from 'components';
 import {NotificationModel, Source, ComponentInfo} from 'model';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
-import {ConnectNewDialogflow} from '../Providers/Dialogflow/ConnectNewDialogflow';
+import {DialogflowConnect} from '../Providers/Dialogflow/DialogflowConnect';
 import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
 import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {ConfigStatusButton} from '../ConfigStatusButton';
@@ -34,6 +34,7 @@ import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import styles from './index.module.scss';
 import {RasaConnect} from '../Providers/Rasa/RasaConnect';
+import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/WhatsappBusinessCloudConnect';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -76,14 +77,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   } = props;
 
   const {channelId, source} = useParams();
-  const connectorConfiguration = useSelector((state: StateModel) => state.data.connector);
-
+  const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
-  const configKey = connectorInfo && removePrefix(connectorInfo?.name);
+  const componentName = connectorInfo && removePrefix(connectorInfo?.name);
   const [currentPage] = useState(Pages.createUpdate);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && configKey]?.enabled);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [backTitle, setBackTitle] = useState('Connectors');
@@ -96,19 +96,18 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
-    listComponents();
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
-    if (connectorInfo && connectorConfiguration && connectorConfiguration[connectorInfo.name]) {
-      if (
-        Object.entries(connectorConfiguration[connectorInfo.name]) &&
-        Object.entries(connectorConfiguration[connectorInfo.name]).length > 0
-      ) {
+    if (connectorInfo && connectors && connectors[componentName]) {
+      if (Object.keys(connectors[componentName]).length > 0) {
         setIsConfigured(true);
       }
     }
-  }, [connectorInfo, connectorConfiguration]);
+  }, [connectorInfo, connectors]);
 
   useEffect(() => {
     getConnectorsConfiguration().catch((error: Error) => {
@@ -131,9 +130,9 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
       channelId === 'new'
         ? connector === Source.chatPlugin
-          ? setLineTitle(t('Create'))
+          ? setLineTitle(t('create'))
           : setLineTitle(t('addChannel'))
-        : setLineTitle(t('Configuration'));
+        : setLineTitle(t('configuration'));
 
       source
         ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
@@ -148,12 +147,13 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   useEffect(() => {
     if (config && connectorInfo) {
-      setIsEnabled(config?.components[configKey]?.enabled);
+      setIsEnabled(config?.components[componentName]?.enabled);
     }
   }, [config, connectorInfo, components]);
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
+    setIsPending(true);
 
     if (connector === Source.dialogflow) {
       const [
@@ -169,7 +169,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo.name,
+            name: connectorInfo && removePrefix(connectorInfo.name),
             enabled: true,
             data: {
               projectId: projectId,
@@ -191,7 +191,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo.name,
+            name: connectorInfo && removePrefix(connectorInfo.name),
             enabled: true,
             data: {
               domain: domain,
@@ -209,7 +209,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo.name,
+            name: connectorInfo && removePrefix(connectorInfo.name),
             enabled: true,
             data: {
               url: url,
@@ -228,12 +228,32 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       payload = {
         components: [
           {
-            name: connectorInfo && connectorInfo?.name,
+            name: connectorInfo && removePrefix(connectorInfo.name),
             enabled: true,
             data: {
               webhookUrl: webhookUrl,
               apiHost: apiHost,
               token: token,
+            },
+          },
+        ],
+      };
+    }
+
+    if (connector === Source.whatsapp) {
+      const [appId, appSecret, phoneNumber, name, avatarUrl] = args;
+
+      payload = {
+        components: [
+          {
+            name: connectorInfo && removePrefix(connectorInfo.name),
+            enabled: true,
+            data: {
+              appId: appId,
+              appSecret: appSecret,
+              phoneNumber: phoneNumber,
+              name: name,
+              avatarUrl: avatarUrl,
             },
           },
         ],
@@ -248,16 +268,20 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       })
       .catch((error: Error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
   const PageContent = () => {
     if (connector === Source.dialogflow) {
       return (
-        <ConnectNewDialogflow
+        <DialogflowConnect
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
@@ -268,6 +292,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
@@ -278,13 +303,30 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           createNewConnection={createNewConnection}
           isEnabled={isEnabled}
           isConfigured={isConfigured}
+          isPending={isPending}
         />
       );
     }
 
     if (connector === Source.rasa) {
       return (
-        <RasaConnect createNewConnection={createNewConnection} isEnabled={isEnabled} isConfigured={isConfigured} />
+        <RasaConnect
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+          isPending={isPending}
+        />
+      );
+    }
+
+    if (connector === Source.whatsapp) {
+      return (
+        <WhatsappBusinessCloudConnect
+          createNewConnection={createNewConnection}
+          isEnabled={isEnabled}
+          isConfigured={isConfigured}
+          isPending={isPending}
+        />
       );
     }
 
@@ -313,7 +355,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
     setIsPending(true);
-    enableDisableComponent({components: [{name: configKey, enabled: !isEnabled}]})
+    enableDisableComponent({components: [{name: componentName, enabled: !isEnabled}]})
       .then(() => {
         setNotification({
           show: true,

@@ -1,6 +1,5 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../ConfigStatusButton';
@@ -25,37 +24,16 @@ const connector = connect(null, mapDispatchToProps);
 const InfoCard = (props: InfoCardProps) => {
   const {componentInfo, componentStatus} = props;
   const navigate = useNavigate();
-  const CONNECTORS_PAGE = window.location.pathname.includes(CONNECTORS_ROUTE);
 
   const handleCardClick = () => {
     navigate(getNewChannelRouteForComponent(componentInfo.displayName));
   };
 
   return (
-    <div
-      onClick={CONNECTORS_PAGE ? handleCardClick : null}
-      className={`
-        ${styles.infoCard} 
-        ${CONNECTORS_PAGE ? styles.cardConnectors : ''}
-      `}
-    >
-      <div
-        className={`
-          ${styles.channelLogoTitleContainer} 
-        `}
-      >
-        <div
-          className={`
-          ${styles.channelLogo}
-        `}
-        >
-          {getChannelAvatar(componentInfo.source)}
-        </div>
-        <div
-          className={`
-          ${styles.textDetails}
-        `}
-        >
+    <div onClick={handleCardClick} className={styles.infoCard}>
+      <div className={styles.channelLogoTitleContainer}>
+        <div className={styles.channelLogo}>{getChannelAvatar(componentInfo.source)}</div>
+        <div className={styles.textDetails}>
           <h1>{componentInfo.displayName}</h1>
         </div>
       </div>

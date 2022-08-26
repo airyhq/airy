@@ -1,9 +1,26 @@
-.xyz-enter {
-  opacity: 0;
-  transition: opacity 250ms ease;
-}
+/* .my-node-enter {
+    opacity: 0;
+  }
+  .my-node-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+  }
+  .my-node-exit {
+    opacity: 1;
+  }
+  .my-node-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+  } */
 
-.xyz-enter-active {
-  opacity: 1;
-  z-index: 20000;
-}
+
+  .my-node-enter {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .my-node-enter.my-node-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+  }
+  

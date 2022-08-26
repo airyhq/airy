@@ -44,7 +44,6 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const App = (props: ConnectedProps<typeof connector>) => {
-  const location = useLocation();
 
   useEffect(() => {
     props.getClientConfig();
@@ -59,9 +58,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
         <TopBar isAdmin={true} />
         <Sidebar />
 
-        <TransitionGroup component={null}>
-          <CSSTransition key={location.key} classNames="xyz" timeout={300}>
-            <Routes location={location}>
+            <Routes>
               <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
 
               <Route path={`${CONNECTORS_ROUTE}/*`} element={<ConnectorsOutlet />}>
@@ -107,8 +104,6 @@ const App = (props: ConnectedProps<typeof connector>) => {
               <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
               <Route path={`${STATUS_ROUTE}`} element={<Status />} />
             </Routes>
-          </CSSTransition>
-        </TransitionGroup>
       </div>
     </div>
   );

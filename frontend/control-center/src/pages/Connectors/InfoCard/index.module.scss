@@ -2,78 +2,46 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/z-index.scss';
 
-.infoCard {
+.container {
   width: 260px;
+  height: 100px;
   margin-bottom: 28px;
   margin-right: 36px;
-  padding: 12px 0 12px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: flex-start;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 10px;
   background-color: var(--color-background-blue);
-  p {
-    @include font-xs;
-    margin: 10px 0 0 0;
-    color: var(--color-text-gray);
-    max-width: 95%;
-  }
-
-  button {
-    margin-top: 14px;
-  }
-
+  text-decoration: none;
   &:hover {
     border: 2px solid var(--color-airy-blue);
-    cursor: pointer;
     margin-left: -1px;
+    margin-top: -1px;
     width: 261px;
+    height: 101px;
+    cursor: pointer;
   }
 }
 
-.channelLogoInstagram {
-  margin-right: 10px;
-  height: 40px;
-  width: 40px;
-  svg {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-.textDetails {
-  margin-left: 10px;
-  h1 {
-    @include font-s;
-    color: var(--color-text-contrast);
-    font-weight: 600;
-    letter-spacing: 0;
-  }
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 14px 0 14px 16px;
 }
 
 .channelLogoTitleContainer {
+  @include font-base;
+  font-weight: 600;
+  margin-bottom: 13px;
+  color: var(--color-text-contrast);
   display: flex;
   align-items: center;
-  border-radius: 10px;
 
-  .channelLogo {
-    display: flex;
-    align-items: center;
-    svg {
-      width: 34px;
-      max-height: 30px;
-      fill: var(--color-text-contrast);
-    }
-  }
-}
-
-.isExpandedCard {
-  height: 100px;
-  width: 260px;
-  &:hover {
-    border: 2px solid var(--color-airy-blue);
-    margin-left: -1px;
-    width: 261px;
+  svg {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
   }
 }

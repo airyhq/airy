@@ -13,6 +13,7 @@ export const CONNECTORS_INSTAGRAM_ROUTE = '/connectors/instagram';
 export const CONNECTORS_DIALOGFLOW_ROUTE = '/connectors/dialogflow';
 export const CONNECTORS_ZENDESK_ROUTE = '/connectors/zendesk';
 export const CONNECTORS_SALESFORCE_ROUTE = '/connectors/salesforce';
+export const CONNECTORS_VIBER_ROUTE = '/connectors/viber';
 
 export const CONNECTORS_CONNECTED_ROUTE = '/connectors/connected';
 export const CONNECTORS_FACEBOOK_CONNECTED_ROUTE = '/connectors/connected/facebook';

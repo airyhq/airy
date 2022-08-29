@@ -19,7 +19,6 @@ import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
@@ -63,22 +62,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     connector,
     components,
     catalog,
-    enableDisableComponent,
     updateConnectorConfiguration,
     getConnectorsConfiguration,
     listComponents,
     config,
   } = props;
-
-  const params = useParams();
-  const channelId = params.channelId;
-  const source = params.source;
-  const newChannel = params['*'] === 'new';
-  console.log('CONNECTORCONFIG params', params);
-  console.log('CONNECTORCONFIG channelId', channelId);
-  console.log('CONNECTORCONFIG source', source);
-  console.log('CONNECTORCONFIG newChannel', newChannel);
-  console.log('CONNECTORCONFIG connector', connector);
 
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
@@ -87,10 +75,16 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
-
   const [lineTitle, setLineTitle] = useState('');
+
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
+
+  const params = useParams();
+  const channelId = params.channelId;
+  const source = params.source;
+  const newChannel = params['*'] === 'new';
+  const connectedParams = params['*'] === 'connected';
   const {t} = useTranslation();
 
   useLayoutEffect(() => {
@@ -127,17 +121,21 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       const connectorSourceInfoArr = connectorSourceInfo[0];
       const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
 
-      channelId === 'new'
-        ? connector === Source.chatPlugin
-          ? setLineTitle(t('create'))
-          : setLineTitle(t('addChannel'))
-        : setLineTitle(t('configuration'));
+      const connectorHasChannels = connectorSourceInfoFormatted?.isChannel;
 
-      source
-        ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
-        : setConnectorInfo(connectorSourceInfoFormatted);
+      if (newChannel && connector === Source.chatPlugin) {
+        setLineTitle(t('create'));
+      } else if (newChannel && connectorHasChannels) {
+        setLineTitle(t('addChannel'));
+      } else if (connectedParams) {
+        setLineTitle(t('channelsCapital'));
+      } else {
+        setLineTitle(t('configuration'));
+      }
+
+      setConnectorInfo(connectorSourceInfoFormatted);
     }
-  }, [source, Object.entries(catalog).length > 0]);
+  }, [source, Object.entries(catalog).length > 0, params]);
 
   useEffect(() => {
     if (config && connectorInfo) {
@@ -338,6 +336,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       if (source === Source.twilioWhatsApp) {
         return <TwilioWhatsappConnect />;
       }
+
+      if (source === Source.viber) {
+        return <div></div>;
+      }
     }
 
     return <ConnectedChannelsList offset={offset} />;
@@ -345,7 +347,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   return (
     <>
-      {connector !== Source.chatPlugin && (!channelId && !newChannel) && (
+      {connector !== Source.chatPlugin && !(source === Source.chatPlugin && (newChannel || channelId)) && (
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
@@ -355,7 +357,10 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           <div className={styles.line} />
         </div>
       )}
-      <div ref={pageContentRef} className={!(source ==Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}>
+      <div
+        ref={pageContentRef}
+        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}
+      >
         <PageContent />
       </div>
     </>

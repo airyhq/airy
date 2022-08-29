@@ -187,70 +187,69 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <>
-
-    <div className={styles.container}>
-      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
-        <div className={styles.channelsLineContainer}>
-          <div className={styles.channelsLineItems}>
-            <span
-              onClick={showCreateUpdate}
-              className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
-            >
-              {newChannel ? t('create') : t('update')}
-            </span>
-            {!newChannel && (
+      <div className={styles.container}>
+        <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
+          <div className={styles.channelsLineContainer}>
+            <div className={styles.channelsLineItems}>
               <span
-                onClick={showCustomization}
-                className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+                onClick={showCreateUpdate}
+                className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
               >
-                {t('customize')}
+                {newChannel ? t('create') : t('update')}
               </span>
-            )}
-            {!newChannel && (
-              <span
-                onClick={showInstall}
-                className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
-              >
-                {t('install')}
-              </span>
-            )}
+              {!newChannel && (
+                <span
+                  onClick={showCustomization}
+                  className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('customize')}
+                </span>
+              )}
+              {!newChannel && (
+                <span
+                  onClick={showInstall}
+                  className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('install')}
+                </span>
+              )}
+            </div>
+            <div className={styles.line} />
           </div>
-          <div className={styles.line} />
+          <div
+            style={
+              currentPage === Pages.customization
+                ? {paddingTop: '0px', paddingLeft: '32px'}
+                : {paddingTop: '36px', paddingLeft: '32px'}
+            }
+          >
+            <PageContent />
+          </div>
         </div>
-        <div
-          style={
-            currentPage === Pages.customization
-              ? {paddingTop: '0px', paddingLeft: '32px'}
-              : {paddingTop: '36px', paddingLeft: '32px'}
-          }
-        >
-          <PageContent />
-        </div>
+        {showCreatedModal && (
+          <SettingsModal
+            Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
+            wrapperClassName={styles.enableModalContainerWrapper}
+            containerClassName={styles.enableModalContainer}
+            title={t('successfullyCreatedChannel')}
+            close={handleClose}
+            headerClassName={styles.headerModal}
+            dataCyCloseButton={cyChannelCreatedChatPluginCloseButton}
+          >
+            <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
+              {t('customize')}
+            </Button>
+          </SettingsModal>
+        )}
+        {notification?.show && (
+          <NotificationComponent
+            show={notification.show}
+            text={notification.text}
+            successful={notification.successful}
+            setShowFalse={setNotification}
+          />
+        )}
       </div>
-      {showCreatedModal && (
-        <SettingsModal
-          Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
-          wrapperClassName={styles.enableModalContainerWrapper}
-          containerClassName={styles.enableModalContainer}
-          title={t('successfullyCreatedChannel')}
-          close={handleClose}
-          headerClassName={styles.headerModal}
-          dataCyCloseButton={cyChannelCreatedChatPluginCloseButton}
-        >
-          <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
-            {t('customize')}
-          </Button>
-        </SettingsModal>
-      )}
-      {notification?.show && (
-        <NotificationComponent
-          show={notification.show}
-          text={notification.text}
-          successful={notification.successful}
-          setShowFalse={setNotification}
-        />
-      )}
-    </div>
     </>
   );
 };

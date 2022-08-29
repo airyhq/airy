@@ -13,9 +13,6 @@ import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsC
 import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
 import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
-import ConnectorDialogflow from './pages/Connectors/Providers/Dialogflow/ConnectorDialogflow';
-import ZendeskConnect from './pages/Connectors/Providers/Zendesk/ZendeskConnect';
-import SalesforceConnect from './pages/Connectors/Providers/Salesforce/SalesforceConnect';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
 import Catalog from './pages/Catalog';
@@ -26,17 +23,8 @@ import Status from './pages/Status';
 import Inbox from './pages/Inbox';
 import ChannelsList from './pages/Inbox/ChannelsList';
 import InboxOutlet from './pages/Inbox/InboxOutlet';
-import ConnectorChatplugin from './pages/Connectors/Providers/Airy/ChatPlugin/ConnectorChatplugin';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
-import ConnectorConfigWrapper from './pages/Connectors/ConnectorConfigWrapper';
-import ConnectorFacebook from './pages/Connectors/Providers/Facebook/Messenger/ConnectorFacebook';
-import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/ConnectorTwilioSms';
-import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
-import ConnectorGoogle from './pages/Connectors/Providers/Google/ConnectorGoogle';
-import ConnectorRasa from './pages/Connectors/Providers/Rasa/ConnectorRasa';
-import ConnectorInstagram from './pages/Connectors/Providers/Instagram/ConnectorInstagram';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
-import ConnectorWhatsappBusinessCloud from './pages/Connectors/Providers/WhatsappBusinessCloud/ConnectorWhatsappBusinessCloud';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -66,19 +54,6 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`connected`} element={<ConnectorConfig />} />
             <Route path={`new`} element={<ConnectorConfig />} />
             <Route path={`:channelId`} element={<ConnectorConfig />} />
-            {/* <Route path={`facebook/:channelId`} element={<ConnectorFacebook />} />
-            <Route path={`chatplugin/:channelId`} element={<ConnectorChatplugin />} />
-            <Route path={`twilio.sms/:channelId`} element={<ConnectorTwilioSms />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<ConnectorTwilioWhatsapp />} />
-            <Route path={`google/:channelId`} element={<ConnectorGoogle />} />
-            <Route path={`instagram/:channelId`} element={<ConnectorInstagram />} />
-            <Route path={`dialogflow/new`} element={<ConnectorDialogflow />} />
-            <Route path={`zendesk/new`} element={<ZendeskConnect />} />
-            <Route path={`salesforce/new`} element={<SalesforceConnect />} />
-            <Route path={`rasa/new`} element={<ConnectorRasa />} />
-            <Route path={`whatsapp/new`} element={<ConnectorWhatsappBusinessCloud />} /> */}
-
-            {/* <Route index element={<Connectors />} /> */}
           </Route>
 
           <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>

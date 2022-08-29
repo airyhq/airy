@@ -15,6 +15,7 @@ import {
   CONNECTORS_DIALOGFLOW_ROUTE,
   CONNECTORS_ZENDESK_ROUTE,
   CONNECTORS_SALESFORCE_ROUTE,
+  CONNECTORS_VIBER_ROUTE,
   CONNECTORS_WHATSAPP_BUSINESS_CLOUD_ROUTE,
   CATALOG_FACEBOOK_ROUTE,
   CATALOG_CHAT_PLUGIN_ROUTE,
@@ -85,6 +86,8 @@ export const getNewChannelRouteForComponent = (displayName: string) => {
       return CONNECTORS_SALESFORCE_ROUTE + '/new';
     case 'Zendesk':
       return CONNECTORS_ZENDESK_ROUTE + '/new';
+    case 'Viber':
+      return CONNECTORS_VIBER_ROUTE + '/new';
     case 'Webhooks':
       return WEBHOOKS_ROUTE;
   }

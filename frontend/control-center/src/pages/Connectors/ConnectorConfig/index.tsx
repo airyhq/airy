@@ -73,7 +73,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const params = useParams();
   const channelId = params.channelId;
   const source = params.source;
-  const newChannel = params['*'];
+  const newChannel = params['*'] === 'new';
   console.log('CONNECTORCONFIG params', params);
   console.log('CONNECTORCONFIG channelId', channelId);
   console.log('CONNECTORCONFIG source', source);
@@ -264,7 +264,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const PageContent = () => {
-    if (newChannel === 'new' || channelId) {
+    if (newChannel || channelId) {
       if (source === Source.dialogflow) {
         return (
           <DialogflowConnect
@@ -345,7 +345,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   return (
     <>
-      {connector !== Source.chatPlugin && (
+      {connector !== Source.chatPlugin && (!channelId && !newChannel) && (
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
@@ -355,7 +355,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
           <div className={styles.line} />
         </div>
       )}
-      <div ref={pageContentRef} className={!(source ==Source.chatPlugin && (newChannel === 'new' || channelId)) ? styles.pageContentContainer : ''}>
+      <div ref={pageContentRef} className={!(source ==Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}>
         <PageContent />
       </div>
     </>

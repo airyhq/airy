@@ -88,6 +88,7 @@ public class Connector {
                 results.add(KeyValue.pair(getId(errorPayload).toString(), errorPayload));
             }
             updateDeliveryState(message, DeliveryState.FAILED);
+            results.add(KeyValue.pair(message.getId(), message));
             return results;
         } catch (Exception e) {
             log.error(String.format("Failed to send a \n SendMessageRequest: %s", sendMessageRequest), e);

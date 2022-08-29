@@ -10,7 +10,7 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -215,7 +215,7 @@ public class ChatControllerTest {
         final WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
 
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         messageConverter.setObjectMapper(objectMapper);
         stompClient.setMessageConverter(messageConverter);
 

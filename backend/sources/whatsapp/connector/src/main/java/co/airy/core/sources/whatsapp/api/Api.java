@@ -1,16 +1,19 @@
 package co.airy.core.sources.whatsapp.api;
 
 import co.airy.core.sources.whatsapp.api.model.LongLivingUserAccessToken;
+import co.airy.core.sources.whatsapp.api.model.SendMessageResponse;
+import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationListener;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -33,29 +36,29 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Api.class);
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper objectMapper;
+    private final Mapper mapper;
     private RestTemplate restTemplate;
 
-    private static final String subscribedFields = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels,message_reactions";
-    private static final String baseUrl = "https://graph.facebook.com/v11.0";
-    private static final String requestTemplate = baseUrl + "/me/messages?access_token=%s";
-    private final String pageFields = "fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed";
+    private static final String baseUrl = "https://graph.facebook.com/v14.0";
+    private static final String requestTemplate = baseUrl + "/%s/messages?access_token=%s";
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final String appId;
     private final String appSecret;
 
     public Api(RestTemplateBuilder restTemplateBuilder,
+               Mapper mapper,
                @Value("${appId}") String appId,
-               @Value("${appSecret}") String appSecret) {
+               @Value("${appSecret}") String appSecret,
+               @Qualifier("metaObjectMapper") ObjectMapper objectMapper) {
+        this.mapper = mapper;
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        this.objectMapper = new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
-                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         this.restTemplateBuilder = restTemplateBuilder;
         this.appId = appId;
         this.appSecret = appSecret;
+        this.objectMapper = objectMapper;
     }
+
     private <T> T apiResponse(String url, HttpMethod method, Class<T> clazz) throws Exception {
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, method, null, String.class);
         return objectMapper.readValue(responseEntity.getBody(), clazz);
@@ -66,6 +69,15 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         return apiResponse(apiUrl, HttpMethod.GET, LongLivingUserAccessToken.class).getAccessToken();
     }
 
+    public SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest) throws JsonProcessingException {
+        final String token = sendMessageRequest.getConversation().getChannel().getToken();
+        final String phoneNumberId = sendMessageRequest.getConversation().getChannel().getSourceChannelId();
+        final JsonNode payload = mapper.fromSendMessageRequest(sendMessageRequest);
+        String reqUrl = String.format(requestTemplate, phoneNumberId, token);
+
+        final ResponseEntity<SendMessageResponse> responseEntity = restTemplate.postForEntity(reqUrl, new HttpEntity<>(payload, httpHeaders), SendMessageResponse.class);
+        return responseEntity.getBody();
+    }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {

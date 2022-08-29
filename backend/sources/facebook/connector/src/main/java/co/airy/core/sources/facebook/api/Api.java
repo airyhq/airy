@@ -12,7 +12,7 @@ import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -65,7 +65,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         this.objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
-                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         this.restTemplateBuilder = restTemplateBuilder;
         this.appId = appId;
         this.apiSecret = apiSecret;

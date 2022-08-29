@@ -1,21 +1,19 @@
-package co.airy.spring.core.mappers;
-
+package co.airy.core.sources.whatsapp.api;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class AiryObjectMapperConfig {
+public class MetaConfig {
     @Bean
-    @Primary
-    public static ObjectMapper airyObjectMapper() {
+    @Qualifier("metaObjectMapper")
+    public ObjectMapper metaObjectMapper() {
         return new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }
 }

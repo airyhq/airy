@@ -6,7 +6,7 @@ import com.dinstone.beanstalkc.JobProducer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class BeanstalkPublisher {
     private static final Logger log = AiryLoggerFactory.getLogger(BeanstalkPublisher.class);
 
     private final ObjectMapper objectMapper = new ObjectMapper()
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     private final JobProducer beanstalkdJobProducer;

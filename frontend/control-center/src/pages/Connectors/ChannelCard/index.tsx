@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {Link} from 'react-router-dom';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {ComponentStatus, ConnectorCardComponentInfo} from '..';
@@ -21,7 +21,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
 
   return (
     <Link
-      to={CONNECTORS_CONNECTED_ROUTE + '/' + componentInfo.source}
+      to={CONNECTORS_ROUTE + '/' + componentInfo.source + '/connected'}
       className={styles.container}
       data-cy={cyAddChannelButton}
     >

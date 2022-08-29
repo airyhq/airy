@@ -28,6 +28,7 @@ import ChannelsList from './pages/Inbox/ChannelsList';
 import InboxOutlet from './pages/Inbox/InboxOutlet';
 import ConnectorChatplugin from './pages/Connectors/Providers/Airy/ChatPlugin/ConnectorChatplugin';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
+import ConnectorConfigWrapper from './pages/Connectors/ConnectorConfigWrapper';
 import ConnectorFacebook from './pages/Connectors/Providers/Facebook/Messenger/ConnectorFacebook';
 import ConnectorTwilioSms from './pages/Connectors/Providers/Twilio/SMS/ConnectorTwilioSms';
 import ConnectorTwilioWhatsapp from './pages/Connectors/Providers/Twilio/WhatsApp/ConnectorTwilioWhatsapp';
@@ -59,10 +60,14 @@ const App = (props: ConnectedProps<typeof connector>) => {
         <Routes>
           <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
 
-          <Route path={`${CONNECTORS_ROUTE}/*`} element={<ConnectorsOutlet />}>
-            <Route path={`facebook/:channelId`} element={<ConnectorFacebook />} />
+          <Route path={CONNECTORS_ROUTE} element={<Connectors />} />
+
+          <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
+            <Route path={`connected`} element={<ConnectorConfig />} />
+            <Route path={`new`} element={<ConnectorConfig />} />
+            <Route path={`:channelId`} element={<ConnectorConfig />} />
+            {/* <Route path={`facebook/:channelId`} element={<ConnectorFacebook />} />
             <Route path={`chatplugin/:channelId`} element={<ConnectorChatplugin />} />
-            <Route path={`connected/:source`} element={<ConnectorConfig />} />
             <Route path={`twilio.sms/:channelId`} element={<ConnectorTwilioSms />} />
             <Route path={`twilio.whatsapp/:channelId`} element={<ConnectorTwilioWhatsapp />} />
             <Route path={`google/:channelId`} element={<ConnectorGoogle />} />
@@ -71,9 +76,9 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={`zendesk/new`} element={<ZendeskConnect />} />
             <Route path={`salesforce/new`} element={<SalesforceConnect />} />
             <Route path={`rasa/new`} element={<ConnectorRasa />} />
-            <Route path={`whatsapp/new`} element={<ConnectorWhatsappBusinessCloud />} />
+            <Route path={`whatsapp/new`} element={<ConnectorWhatsappBusinessCloud />} /> */}
 
-            <Route index element={<Connectors />} />
+            {/* <Route index element={<Connectors />} /> */}
           </Route>
 
           <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>

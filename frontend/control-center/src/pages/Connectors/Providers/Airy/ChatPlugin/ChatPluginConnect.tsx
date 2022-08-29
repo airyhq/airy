@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
@@ -45,10 +45,15 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
+  const params = useParams();
+  console.log('CHATPLUGIN CONNECT params', params);
   const {channelId} = useParams();
+  const newChannel = params['*'] === 'new';
+  console.log('newChannel', newChannel);
+
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
-  const [currentPage, setCurrentPage] = useState(channelId !== 'new' ? Pages.customization : Pages.createUpdate);
+  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
   const [showCreatedModal, setShowCreatedModal] = useState(false);
   const [currentChannelId, setCurrentChannelId] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -57,6 +62,10 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const CHAT_PLUGIN_ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
+
+  useEffect(() => {
+    console.log('currentPage', currentPage);
+  }, [currentPage]);
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -109,9 +118,10 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   };
 
   const PageContent = () => {
+    console.log('PAGECONTENT currentPage', currentPage);
     switch (currentPage) {
       case Pages.createUpdate:
-        if (channelId === 'new') {
+        if (newChannel) {
           return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
         }
         if (channelId?.length > 0) {
@@ -176,6 +186,8 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   );
 
   return (
+    <>
+
     <div className={styles.container}>
       <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
         <div className={styles.channelsLineContainer}>
@@ -184,9 +196,9 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
               onClick={showCreateUpdate}
               className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
             >
-              {channelId === 'new' ? t('create') : t('update')}
+              {newChannel ? t('create') : t('update')}
             </span>
-            {channelId !== 'new' && (
+            {!newChannel && (
               <span
                 onClick={showCustomization}
                 className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
@@ -194,7 +206,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
                 {t('customize')}
               </span>
             )}
-            {channelId !== 'new' && (
+            {!newChannel && (
               <span
                 onClick={showInstall}
                 className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
@@ -239,6 +251,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         />
       )}
     </div>
+    </>
   );
 };
 

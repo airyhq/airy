@@ -22,6 +22,7 @@ type InstallUpdateSectionProps = {
 
 const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const {channel, displayName, imageUrl, setNotification} = props;
+  console.log('CreateUpdateSection', props);
   const [submit, setSubmit] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
   const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);

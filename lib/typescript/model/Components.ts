@@ -12,7 +12,7 @@ export interface ComponentInfo {
   displayName: string;
   name: string;
   installed: boolean;
-  isChannel: string;
+  isChannel?: string;
   availableFor: string;
   description: string;
   category: string;

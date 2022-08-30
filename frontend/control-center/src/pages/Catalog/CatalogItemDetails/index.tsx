@@ -3,17 +3,17 @@ import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
+import {StateModel} from '../../../reducers';
+import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted} from '../CatalogCard';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {CATALOG_ROUTE} from '../../../routes/routes';
+import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {getNewChannelRouteForComponent} from '../../../services/getRouteForCard';
-import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import styles from './index.module.scss';
-import {StateModel} from '../../../reducers';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -44,7 +44,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
+  const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');

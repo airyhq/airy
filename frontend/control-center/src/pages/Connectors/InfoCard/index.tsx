@@ -4,9 +4,9 @@ import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {ComponentStatus} from '..';
-import {getNewChannelRouteForComponent} from '../../../services/getRouteForCard';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {ConnectorCardComponentInfo} from '../index';
+import {getNewChannelRouteForComponent} from '../../../services';
 import styles from './index.module.scss';
 
 type InfoCardProps = {
@@ -24,9 +24,10 @@ const connector = connect(null, mapDispatchToProps);
 const InfoCard = (props: InfoCardProps) => {
   const {componentInfo, componentStatus} = props;
   const navigate = useNavigate();
+  const CONFIGURATION_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const handleCardClick = () => {
-    navigate(getNewChannelRouteForComponent(componentInfo.displayName));
+    navigate(CONFIGURATION_ROUTE);
   };
 
   return (

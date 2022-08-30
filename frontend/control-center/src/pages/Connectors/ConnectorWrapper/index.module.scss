@@ -1,0 +1,184 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  background: var(--color-background-white);
+  color: var(--color-text-contrast);
+  display: block;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  margin: 248px 16px 0 191px;
+  overflow-y: scroll;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.headlineContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 88px 16px 0 201px;
+  width: 100%;
+  h1 {
+    @include font-xl;
+    font-weight: bold;
+  }
+  p button {
+    height: 20px;
+    background: transparent;
+  }
+
+  button {
+    @include font-base;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.backButtonContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    @include font-base;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a {
+    @include font-base;
+    text-decoration: none;
+  }
+
+  button {
+    background: transparent;
+    color: var(--color-airy-blue);
+  }
+}
+
+.linkButtonContainer {
+  @include font-base;
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+  color: var(--color-text-contrast);
+  font-weight: bold;
+
+  &:hover,
+  &:active,
+  &:visited {
+    text-decoration: underline;
+    color: var(--color-text-contrast);
+  }
+}
+
+.backIcon {
+  width: 20px;
+  background: transparent;
+  path {
+    fill: var(--color-text-gray);
+  }
+  margin-right: 8px;
+}
+
+.connectorDetails {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+
+  p {
+    display: flex;
+    color: var(--color-text-gray);
+  }
+}
+
+.titleIconDetails {
+  display: flex;
+}
+
+.textIconContainer {
+  display: flex;
+  width: 100%;
+}
+
+.textIconContainer {
+  display: flex;
+  width: 100%;
+}
+
+.connectorIcon {
+  display: flex;
+  width: 75px;
+  margin-right: 15px;
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.componentTitleTextInfoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.componentTitle {
+  display: flex;
+  align-items: center;
+}
+
+.headlineText {
+  color: var(--color-text-contrast);
+  margin-right: 8px;
+}
+
+.configStatusButton {
+  cursor: auto;
+}
+
+.textInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.descriptionDocs {
+  display: flex;
+  align-items: center;
+}
+
+.enableModalContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.headerModal {
+  @include font-xl;
+}

@@ -1,9 +1,7 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Link, useParams} from 'react-router-dom';
-import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
-import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
+import {useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
 import {
   connectChatPlugin,
@@ -14,27 +12,24 @@ import {
   getConnectorsConfiguration,
   listComponents,
 } from '../../../actions';
-import {LinkButton, InfoButton} from 'components';
-import {NotificationModel, Source, ComponentInfo} from 'model';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
-import {DialogflowConnect} from '../Providers/Dialogflow/DialogflowConnect';
-import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
-import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
-import {ConfigStatusButton} from '../ConfigStatusButton';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
-import ConnectedChannelsList from '../ConnectedChannelsList';
+import {Source, ComponentInfo} from 'model';
+
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../routes/routes';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import {getComponentStatus, removePrefix} from '../../../services';
-import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
-import styles from './index.module.scss';
+import {DialogflowConnect} from '../Providers/Dialogflow/DialogflowConnect';
+import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
+import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {RasaConnect} from '../Providers/Rasa/RasaConnect';
 import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/WhatsappBusinessCloudConnect';
+
+import ConnectedChannelsList from '../ConnectedChannelsList';
+import {removePrefix} from '../../../services';
+import styles from './index.module.scss';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -69,30 +64,33 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     connector,
     components,
     catalog,
-    enableDisableComponent,
     updateConnectorConfiguration,
     getConnectorsConfiguration,
     listComponents,
     config,
   } = props;
 
-  const {channelId, source} = useParams();
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
   const componentName = connectorInfo && removePrefix(connectorInfo?.name);
   const [currentPage] = useState(Pages.createUpdate);
-  const [configurationModal, setConfigurationModal] = useState(false);
-  const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
-  const [backTitle, setBackTitle] = useState('Connectors');
   const [lineTitle, setLineTitle] = useState('');
-  const [backRoute, setBackRoute] = useState('');
+
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
+
   const {t} = useTranslation();
-  const isInstalled = true;
+
+  const params = useParams();
+  const {channelId, source} = params;
+  const newChannel = params['*'] === 'new';
+  const connectedParams = params['*'] === 'connected';
+
+  const isAiryInternalConnector = source === Source.chatPlugin;
+  const isCatalogList = Object.entries(catalog).length > 0;
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -114,42 +112,46 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       console.error(error);
     });
 
-    if (Object.entries(catalog).length > 0) {
-      (connector === Source.chatPlugin || source === Source.chatPlugin) && setIsConfigured(true);
+    if (isCatalogList) {
+      isAiryInternalConnector && setIsConfigured(true);
 
-      const connectorSourceInfo = Object.entries(catalog).filter(item => {
-        if (connector) {
-          return item[1].source === connector;
-        } else if (source) {
-          return item[1].source === source;
-        }
-      });
+      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === (connector || source));
 
-      const connectorSourceInfoArr = connectorSourceInfo[0];
+      const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
       const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
 
-      channelId === 'new'
-        ? connector === Source.chatPlugin
-          ? setLineTitle(t('create'))
-          : setLineTitle(t('addChannel'))
-        : setLineTitle(t('configuration'));
+      const connectorHasChannels: undefined | string = connectorSourceInfoFormatted?.isChannel;
 
-      source
-        ? (setConnectorInfo(connectorSourceInfoFormatted), setLineTitle(t('channelsCapital')))
-        : setConnectorInfo(connectorSourceInfoFormatted);
-
-      channelId
-        ? (setBackRoute(`${CONNECTORS_CONNECTED_ROUTE}/${connectorSourceInfoFormatted.source}`),
-          setBackTitle(t('back')))
-        : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
+      determineLineTitle(connectorHasChannels);
+      setConnectorInfo(connectorSourceInfoFormatted);
     }
-  }, [source, Object.entries(catalog).length > 0]);
+  }, [source, isCatalogList, params]);
 
   useEffect(() => {
-    if (config && connectorInfo) {
-      setIsEnabled(config?.components[componentName]?.enabled);
-    }
+    if (config && connectorInfo) setIsEnabled(config?.components[componentName]?.enabled);
   }, [config, connectorInfo, components]);
+
+  const determineLineTitle = (connectorHasChannels: undefined | string) => {
+    const newAiryChatPluginPage = newChannel && connector === Source.chatPlugin;
+    const newChannelPage = newChannel && connectorHasChannels;
+
+    if (newAiryChatPluginPage) {
+      setLineTitle(t('create'));
+      return;
+    }
+
+    if (newChannelPage) {
+      setLineTitle(t('addChannel'));
+      return;
+    }
+
+    if (connectedParams) {
+      setLineTitle(t('channelsCapital'));
+      return;
+    }
+
+    setLineTitle(t('configuration'));
+  };
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
@@ -261,11 +263,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     }
 
     updateConnectorConfiguration(payload)
-      .then(() => {
-        if (!isEnabled) {
-          setConfigurationModal(true);
-        }
-      })
       .catch((error: Error) => {
         console.error(error);
       })
@@ -275,235 +272,108 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   };
 
   const PageContent = () => {
-    if (connector === Source.dialogflow) {
-      return (
-        <DialogflowConnect
-          createNewConnection={createNewConnection}
-          isEnabled={isEnabled}
-          isConfigured={isConfigured}
-          isPending={isPending}
-        />
-      );
-    }
+    if (newChannel || channelId) {
+      if (source === Source.dialogflow) {
+        return (
+          <DialogflowConnect
+            createNewConnection={createNewConnection}
+            isEnabled={isEnabled}
+            isConfigured={isConfigured}
+            isPending={isPending}
+          />
+        );
+      }
 
-    if (connector === Source.zendesk) {
-      return (
-        <ConnectNewZendesk
-          createNewConnection={createNewConnection}
-          isEnabled={isEnabled}
-          isConfigured={isConfigured}
-          isPending={isPending}
-        />
-      );
-    }
+      if (source === Source.zendesk) {
+        return (
+          <ConnectNewZendesk
+            createNewConnection={createNewConnection}
+            isEnabled={isEnabled}
+            isConfigured={isConfigured}
+            isPending={isPending}
+          />
+        );
+      }
 
-    if (connector === Source.salesforce) {
-      return (
-        <ConnectNewSalesforce
-          createNewConnection={createNewConnection}
-          isEnabled={isEnabled}
-          isConfigured={isConfigured}
-          isPending={isPending}
-        />
-      );
-    }
+      if (source === Source.salesforce) {
+        return (
+          <ConnectNewSalesforce
+            createNewConnection={createNewConnection}
+            isEnabled={isEnabled}
+            isConfigured={isConfigured}
+            isPending={isPending}
+          />
+        );
+      }
 
-    if (connector === Source.rasa) {
-      return (
-        <RasaConnect
-          createNewConnection={createNewConnection}
-          isEnabled={isEnabled}
-          isConfigured={isConfigured}
-          isPending={isPending}
-        />
-      );
-    }
+      if (source === Source.rasa) {
+        return (
+          <RasaConnect
+            createNewConnection={createNewConnection}
+            isEnabled={isEnabled}
+            isConfigured={isConfigured}
+            isPending={isPending}
+          />
+        );
+      }
 
-    if (connector === Source.whatsapp) {
-      return (
-        <WhatsappBusinessCloudConnect
-          createNewConnection={createNewConnection}
-          isEnabled={isEnabled}
-          isConfigured={isConfigured}
-          isPending={isPending}
-        />
-      );
-    }
+      if (source === Source.whatsapp) {
+        return (
+          <WhatsappBusinessCloudConnect
+            createNewConnection={createNewConnection}
+            isEnabled={isEnabled}
+            isConfigured={isConfigured}
+            isPending={isPending}
+          />
+        );
+      }
 
-    if (connector === Source.chatPlugin) {
-      return <ChatPluginConnect />;
-    }
-    if (connector === Source.facebook) {
-      return <FacebookConnect />;
-    }
-    if (connector === Source.instagram) {
-      return <InstagramConnect />;
-    }
-    if (connector === Source.google) {
-      return <GoogleConnect />;
-    }
-    if (connector === Source.twilioSMS) {
-      return <TwilioSmsConnect />;
-    }
-    if (connector === Source.twilioWhatsApp) {
-      return <TwilioWhatsappConnect />;
+      if (source === Source.chatPlugin) {
+        return <ChatPluginConnect />;
+      }
+      if (source === Source.facebook) {
+        return <FacebookConnect />;
+      }
+      if (source === Source.instagram) {
+        return <InstagramConnect />;
+      }
+      if (source === Source.google) {
+        return <GoogleConnect />;
+      }
+      if (source === Source.twilioSMS) {
+        return <TwilioSmsConnect />;
+      }
+      if (source === Source.twilioWhatsApp) {
+        return <TwilioWhatsappConnect />;
+      }
+
+      if (source === Source.viber) {
+        return <p>configuration page under construction - coming soon!</p>;
+      }
     }
 
     return <ConnectedChannelsList offset={offset} />;
   };
 
-  const enableDisableComponentToggle = () => {
-    setConfigurationModal(false);
-    setIsPending(true);
-    enableDisableComponent({components: [{name: componentName, enabled: !isEnabled}]})
-      .then(() => {
-        setNotification({
-          show: true,
-          successful: true,
-          text: isEnabled ? t('successfullyDisabled') : t('successfullyEnabled'),
-        });
-      })
-      .catch(() => {
-        setNotification({
-          show: true,
-          successful: false,
-          text: isEnabled ? t('failedDisabled') : t('failedEnabled'),
-        });
-      })
-      .finally(() => {
-        setIsPending(false);
-      });
-  };
-
-  const closeConfigurationModal = () => {
-    setConfigurationModal(false);
-  };
-
-  const openConfigurationModal = () => {
-    setConfigurationModal(true);
-  };
-
   return (
-    <div className={styles.container}>
-      <section className={styles.headlineContainer}>
-        <div className={styles.backButtonContainer}>
-          <Link to={backRoute}>
-            <LinkButton type="button">
-              <div className={styles.linkButtonContainer}>
-                <ArrowLeftIcon className={styles.backIcon} />
-                {backTitle}
-              </div>
-            </LinkButton>
-          </Link>
-        </div>
-
-        <section className={styles.connectorDetails}>
-          <div className={styles.titleIconDetails}>
-            <div className={styles.textIconContainer}>
-              <div
-                className={`${styles.connectorIcon} ${
-                  connectorInfo && connectorInfo?.displayName !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}
-              >
-                {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
-              </div>
-
-              <div className={styles.textContainer}>
-                <div className={styles.componentTitle}>
-                  <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
-                  <ConfigStatusButton
-                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
-                    customStyle={styles.configStatusButton}
-                  />
-                </div>
-
-                <div className={styles.textInfo}>
-                  <div className={styles.descriptionDocs}>
-                    {connectorInfo && (
-                      <p>
-                        <DescriptionComponent
-                          description={getDescriptionSourceName(connectorInfo.source) + 'Description'}
-                        />
-                      </p>
-                    )}
-                    <InfoButton
-                      borderOff={true}
-                      color="blue"
-                      link={connectorInfo && connectorInfo?.docs}
-                      text={t('infoButtonText')}
-                    />
-                  </div>
-
-                  {isConfigured && (
-                    <SmartButton
-                      title={isEnabled ? t('disableComponent') : t('enableComponent')}
-                      height={40}
-                      width={132}
-                      pending={isPending}
-                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
-                      styleVariant="small"
-                      type="button"
-                      disabled={isPending}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+    <>
+      {connector !== Source.chatPlugin && !(source === Source.chatPlugin && (newChannel || channelId)) && (
+        <div className={styles.channelsLineContainer}>
+          <div className={styles.channelsLineItems}>
+            <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
+              {lineTitle}
+            </span>
           </div>
-        </section>
-      </section>
-
-      <div className={styles.wrapper}>
-        {connector !== Source.chatPlugin && (
-          <div className={styles.channelsLineContainer}>
-            <div className={styles.channelsLineItems}>
-              <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>
-                {lineTitle}
-              </span>
-            </div>
-            <div className={styles.line} />
-          </div>
-        )}
-        <div ref={pageContentRef} className={connector !== Source.chatPlugin ? styles.pageContentContainer : ''}>
-          <PageContent />
+          <div className={styles.line} />
         </div>
+      )}
+      <div
+        ref={pageContentRef}
+        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}
+      >
+        <PageContent />
       </div>
-
-      {notification?.show && (
-        <NotificationComponent
-          type="sticky"
-          show={notification.show}
-          successful={notification.successful}
-          text={notification.text}
-          setShowFalse={setNotification}
-        />
-      )}
-
-      {configurationModal && (
-        <SettingsModal
-          Icon={!isEnabled ? <CheckmarkIcon className={styles.checkmarkIcon} /> : null}
-          wrapperClassName={styles.enableModalContainerWrapper}
-          containerClassName={styles.enableModalContainer}
-          title={
-            isEnabled
-              ? t('disableComponent') + ' ' + connectorInfo?.displayName
-              : connectorInfo?.displayName + ' ' + t('enabledComponent')
-          }
-          close={closeConfigurationModal}
-          headerClassName={styles.headerModal}
-        >
-          {isEnabled && (
-            <>
-              <p> {t('disableComponentText')} </p>
-
-              <Button styleVariant="normal" type="submit" onClick={enableDisableComponentToggle}>
-                {t('disableComponent')}
-              </Button>
-            </>
-          )}
-        </SettingsModal>
-      )}
-    </div>
+    </>
   );
 };
 

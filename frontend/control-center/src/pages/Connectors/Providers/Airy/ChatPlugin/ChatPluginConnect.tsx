@@ -50,7 +50,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
-  const [currentPage, setCurrentPage] = useState(Pages.createUpdate);
+  const [currentPage, setCurrentPage] = useState(channelId ? Pages.customization : Pages.createUpdate);
   const [showCreatedModal, setShowCreatedModal] = useState(false);
   const [currentChannelId, setCurrentChannelId] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -210,10 +210,8 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.line} />
           </div>
           <div
-            style={
-              currentPage === Pages.customization
-                ? {paddingTop: '0px', paddingLeft: '32px'}
-                : {paddingTop: '36px', paddingLeft: '32px'}
+            className={
+              currentPage === Pages.customization ? styles.customizationPageLeftOffset : styles.defaultTopLeftOffset
             }
           >
             <PageContent />

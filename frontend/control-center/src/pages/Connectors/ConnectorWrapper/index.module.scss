@@ -156,3 +156,29 @@
   display: flex;
   align-items: center;
 }
+
+.enableModalContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.headerModal {
+  @include font-xl;
+}

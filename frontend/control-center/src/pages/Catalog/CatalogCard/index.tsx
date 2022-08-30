@@ -1,19 +1,19 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, NotificationModel} from 'model';
-import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
-import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
+import {StateModel} from '../../../reducers';
+import {installComponent} from '../../../actions/catalog';
+import {ComponentInfo, NotificationModel} from 'model';
+import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {
   getConnectedRouteForComponent,
   getNewChannelRouteForComponent,
   getCatalogProductRouteForComponent,
-} from '../../../services/getRouteForCard';
-import {StateModel} from '../../../reducers';
+} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 
 type CatalogCardProps = {
@@ -44,7 +44,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   const navigate = useNavigate();
 
   const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.displayName);
-  const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
+  const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const openInstallModal = () => {
     setIsPending(true);

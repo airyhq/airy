@@ -2,8 +2,12 @@ package co.airy.core.rasa_connector;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.core.rasa_connector.models.AiryAttachment;
+import co.airy.core.rasa_connector.models.AiryPayload;
+import co.airy.core.rasa_connector.models.AiryResponse;
 import co.airy.core.rasa_connector.models.MessageSendResponse;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -35,7 +39,7 @@ public class MessageHandler {
                 //TODO: handle correctly the content for all sources
                 //      https://github.com/airyhq/cloud/issues/294
                 // Write image URL instead of render it
-                .setContent(mapper.writeValueAsString(Map.of("text", (response.getText() != null) ? response.getText() : response.getImage())))
+                .setContent(mapper.writeValueAsString(generateAiryResponse(response)))
                 .setConversationId(message.getConversationId())
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
@@ -47,5 +51,16 @@ public class MessageHandler {
 
         storeMessage(reply);
     }
-
+    public Object generateAiryResponse(MessageSendResponse response) throws JsonProcessingException {
+        if (response.getText() != null) {
+            return Map.of("text",  response.getText());
+        }
+        if (response.getImage() != null) {
+            AiryPayload payload = new AiryPayload(response.getImage());
+            AiryAttachment attachment = new AiryAttachment("image", payload);
+            AiryResponse airyResponse = new AiryResponse(attachment);
+            return airyResponse;
+        }
+        return null;
+    }
 }

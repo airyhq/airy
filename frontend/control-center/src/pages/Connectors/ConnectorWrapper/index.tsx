@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Link, useParams} from 'react-router-dom';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
-import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {StateModel} from '../../../reducers';
 import {
   connectChatPlugin,
@@ -15,11 +14,12 @@ import {
 } from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
 import {NotificationModel, Source, ComponentInfo} from 'model';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
+import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -39,22 +39,13 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConnectorConfigProps = {
-  connector?: Source;
-  Outlet?: any;
+type ConnectorWrapperProps = {
+  Outlet: React.ReactElement | null;
 } & ConnectedProps<typeof connector>;
 
-const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
-  const {
-    connector,
-    components,
-    catalog,
-    enableDisableComponent,
-    getConnectorsConfiguration,
-    listComponents,
-    config,
-    Outlet,
-  } = props;
+const ConnectorWrapper = (props: ConnectorWrapperProps) => {
+  const {components, catalog, enableDisableComponent, getConnectorsConfiguration, listComponents, config, Outlet} =
+    props;
 
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
@@ -67,15 +58,18 @@ const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
   const [backTitle, setBackTitle] = useState('Connectors');
   const [backRoute, setBackRoute] = useState('');
 
+  const {t} = useTranslation();
+
   const params = useParams();
-  const channelId = params.channelId;
-  const source = params.source;
+  const {channelId, source} = params;
   const newChannel = params['*'] === 'new';
 
-  const {t} = useTranslation();
   const isInstalled = true;
+  const isAiryInternalConnector = source === Source.chatPlugin;
+  const isCatalogList = Object.entries(catalog).length > 0;
+  const CONNECTOR_CONNECTED_ROUTE = `${CONNECTORS_ROUTE}/${source}/connected`;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     listComponents().catch((error: Error) => {
       console.error(error);
     });
@@ -94,34 +88,41 @@ const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
       console.error(error);
     });
 
-    if (Object.entries(catalog).length > 0) {
-      (connector === Source.chatPlugin || source === Source.chatPlugin) && setIsConfigured(true);
+    if (isCatalogList) {
+      isAiryInternalConnector && setIsConfigured(true);
 
-      const connectorSourceInfo = Object.entries(catalog).filter(item => {
-        if (connector) {
-          return item[1].source === connector;
-        } else if (source) {
-          return item[1].source === source;
-        }
-      });
+      const connectorSourceInfo: [string, ComponentInfo][] = Object.entries(catalog).filter(
+        item => item[1].source === source
+      );
 
-      const connectorSourceInfoArr = connectorSourceInfo[0];
+      const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
       const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
 
-      setConnectorInfo(connectorSourceInfoFormatted);
+      const connectorHasChannels = connectorSourceInfoFormatted?.isChannel;
 
-      (channelId || newChannel) && connectorSourceInfoFormatted?.isChannel
-        ? (setBackRoute(`${CONNECTORS_ROUTE}/${connectorSourceInfoFormatted.source}/connected`),
-          setBackTitle(t('back')))
-        : (setBackRoute('/connectors'), setBackTitle(t('Connectors')));
+      determineBackRoute(channelId, newChannel, connectorHasChannels);
+
+      setConnectorInfo(connectorSourceInfoFormatted);
     }
-  }, [params, source, channelId, Object.entries(catalog).length > 0]);
+  }, [params, source, channelId, isCatalogList]);
 
   useEffect(() => {
     if (config && connectorInfo) {
       setIsEnabled(config?.components[componentName]?.enabled);
     }
   }, [config, connectorInfo, components]);
+
+  const determineBackRoute = (channelId: string, newChannel: boolean, connectorHasChannels: string | undefined) => {
+    const channelRoute = (channelId || newChannel) && connectorHasChannels;
+
+    if (channelRoute) {
+      setBackRoute(CONNECTOR_CONNECTED_ROUTE);
+      setBackTitle(t('back'));
+    } else {
+      setBackRoute(CONNECTORS_ROUTE);
+      setBackTitle(t('Connectors'));
+    }
+  };
 
   const enableDisableComponentToggle = () => {
     setConfigurationModal(false);
@@ -146,13 +147,9 @@ const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
       });
   };
 
-  const closeConfigurationModal = () => {
-    setConfigurationModal(false);
-  };
+  const closeConfigurationModal = () => setConfigurationModal(false);
 
-  const openConfigurationModal = () => {
-    setConfigurationModal(true);
-  };
+  const openConfigurationModal = () => setConfigurationModal(true);
 
   return (
     <div className={styles.container}>
@@ -171,11 +168,7 @@ const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
         <section className={styles.connectorDetails}>
           <div className={styles.titleIconDetails}>
             <div className={styles.textIconContainer}>
-              <div
-                className={`${styles.connectorIcon} ${
-                  connectorInfo && connectorInfo?.displayName !== 'Dialogflow' ? styles.connectorIconOffsetTop : ''
-                }`}
-              >
+              <div className={styles.connectorIcon}>
                 {connectorInfo && getChannelAvatar(connectorInfo?.displayName)}
               </div>
 
@@ -264,4 +257,4 @@ const ConnectorConfigWrapper = (props: ConnectorConfigProps) => {
   );
 };
 
-export default connector(ConnectorConfigWrapper);
+export default connector(ConnectorWrapper);

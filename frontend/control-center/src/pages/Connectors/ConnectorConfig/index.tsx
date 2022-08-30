@@ -12,21 +12,23 @@ import {
   getConnectorsConfiguration,
   listComponents,
 } from '../../../actions';
-import {Source, ComponentInfo} from 'model';
-import {DialogflowConnect} from '../Providers/Dialogflow/DialogflowConnect';
-import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
-import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
-import ConnectedChannelsList from '../ConnectedChannelsList';
+import {Source, ComponentInfo} from 'model';
+
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import {removePrefix} from '../../../services';
+import {DialogflowConnect} from '../Providers/Dialogflow/DialogflowConnect';
+import {ConnectNewZendesk} from '../Providers/Zendesk/ConnectNewZendesk';
+import {ConnectNewSalesforce} from '../Providers/Salesforce/ConnectNewSalesforce';
 import {RasaConnect} from '../Providers/Rasa/RasaConnect';
 import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/WhatsappBusinessCloudConnect';
+
+import ConnectedChannelsList from '../ConnectedChannelsList';
+import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
 
 export enum Pages {
@@ -80,12 +82,15 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
 
+  const {t} = useTranslation();
+
   const params = useParams();
-  const channelId = params.channelId;
-  const source = params.source;
+  const {channelId, source} = params;
   const newChannel = params['*'] === 'new';
   const connectedParams = params['*'] === 'connected';
-  const {t} = useTranslation();
+
+  const isAiryInternalConnector = source === Source.chatPlugin;
+  const isCatalogList = Object.entries(catalog).length > 0;
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -107,41 +112,46 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       console.error(error);
     });
 
-    if (Object.entries(catalog).length > 0) {
-      (connector === Source.chatPlugin || source === Source.chatPlugin) && setIsConfigured(true);
+    if (isCatalogList) {
+      isAiryInternalConnector && setIsConfigured(true);
 
-      const connectorSourceInfo = Object.entries(catalog).filter(item => {
-        if (connector) {
-          return item[1].source === connector;
-        } else if (source) {
-          return item[1].source === source;
-        }
-      });
+      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === (connector || source));
 
-      const connectorSourceInfoArr = connectorSourceInfo[0];
+      const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
       const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
 
-      const connectorHasChannels = connectorSourceInfoFormatted?.isChannel;
+      const connectorHasChannels: undefined | string = connectorSourceInfoFormatted?.isChannel;
 
-      if (newChannel && connector === Source.chatPlugin) {
-        setLineTitle(t('create'));
-      } else if (newChannel && connectorHasChannels) {
-        setLineTitle(t('addChannel'));
-      } else if (connectedParams) {
-        setLineTitle(t('channelsCapital'));
-      } else {
-        setLineTitle(t('configuration'));
-      }
-
+      determineLineTitle(connectorHasChannels);
       setConnectorInfo(connectorSourceInfoFormatted);
     }
-  }, [source, Object.entries(catalog).length > 0, params]);
+  }, [source, isCatalogList, params]);
 
   useEffect(() => {
-    if (config && connectorInfo) {
-      setIsEnabled(config?.components[componentName]?.enabled);
-    }
+    if (config && connectorInfo) setIsEnabled(config?.components[componentName]?.enabled);
   }, [config, connectorInfo, components]);
+
+  const determineLineTitle = (connectorHasChannels: undefined | string) => {
+    const newAiryChatPluginPage = newChannel && connector === Source.chatPlugin;
+    const newChannelPage = newChannel && connectorHasChannels;
+
+    if (newAiryChatPluginPage) {
+      setLineTitle(t('create'));
+      return;
+    }
+
+    if (newChannelPage) {
+      setLineTitle(t('addChannel'));
+      return;
+    }
+
+    if (connectedParams) {
+      setLineTitle(t('channelsCapital'));
+      return;
+    }
+
+    setLineTitle(t('configuration'));
+  };
 
   const createNewConnection = (...args: string[]) => {
     let payload: UpdateComponentConfigurationRequestPayload;
@@ -338,7 +348,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
       }
 
       if (source === Source.viber) {
-        return <div></div>;
+        return <p>configuration page under construction - coming soon!</p>;
       }
     }
 

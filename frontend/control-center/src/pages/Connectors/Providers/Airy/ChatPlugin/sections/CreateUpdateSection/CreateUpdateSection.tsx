@@ -1,10 +1,10 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Input, SmartButton} from 'components';
-import styles from './CreateUpdateSection.module.scss';
-import {cyChannelsChatPluginFormNameInput} from 'handles';
-import {useTranslation} from 'react-i18next';
-import {updateChannel} from '../../../../../../../actions/channel';
 import {connect, ConnectedProps} from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {Input, SmartButton} from 'components';
+import {cyChannelsChatPluginFormNameInput} from 'handles';
+import {updateChannel} from '../../../../../../../actions/channel';
+import styles from './CreateUpdateSection.module.scss';
 import {Channel, NotificationModel} from 'model';
 
 const mapDispatchToProps = {
@@ -22,7 +22,7 @@ type InstallUpdateSectionProps = {
 
 const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const {channel, displayName, imageUrl, setNotification} = props;
-  console.log('CreateUpdateSection', props);
+
   const [submit, setSubmit] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
   const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);

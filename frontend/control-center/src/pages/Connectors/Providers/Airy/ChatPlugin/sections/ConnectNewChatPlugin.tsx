@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
-
-import {Button, Input} from 'components';
-
-import styles from './ConnectNewChatPlugin.module.scss';
-
-import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
 import {useTranslation} from 'react-i18next';
+import {Button, Input} from 'components';
+import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
+import styles from './ConnectNewChatPlugin.module.scss';
 
 interface ConnectNewChatPluginProps {
   createNewConnection: (displayName: string, imageUrl?: string) => void;

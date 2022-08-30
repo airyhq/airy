@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
@@ -9,21 +10,19 @@ import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../.
 import {cyChannelCreatedChatPluginCloseButton} from 'handles';
 
 import {Button, LinkButton, NotificationComponent, SettingsModal} from 'components';
-import {Channel, NotificationModel, Source} from 'model';
+import {Channel, NotificationModel, Source, ChatpluginConfig, DefaultConfig} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 
-import styles from './ChatPluginConnect.module.scss';
-
 import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
-import {useTranslation} from 'react-i18next';
+
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from './sections/InstallSection/InstallSection';
-import {ChatpluginConfig, DefaultConfig} from 'model';
+import styles from './ChatPluginConnect.module.scss';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -46,10 +45,8 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const params = useParams();
-  console.log('CHATPLUGIN CONNECT params', params);
   const {channelId} = useParams();
   const newChannel = params['*'] === 'new';
-  console.log('newChannel', newChannel);
 
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
@@ -59,13 +56,10 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const [notification, setNotification] = useState<NotificationModel>(null);
   const displayName = currentChannel?.metadata?.name || '';
   const imageUrl = currentChannel?.metadata?.imageUrl || '';
+
   const navigate = useNavigate();
   const {t} = useTranslation();
   const CHAT_PLUGIN_ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
-
-  useEffect(() => {
-    console.log('currentPage', currentPage);
-  }, [currentPage]);
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -118,7 +112,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   };
 
   const PageContent = () => {
-    console.log('PAGECONTENT currentPage', currentPage);
     switch (currentPage) {
       case Pages.createUpdate:
         if (newChannel) {

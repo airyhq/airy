@@ -1,13 +1,7 @@
 import React from 'react';
-import ConnectorConfigWrapper from './ConnectorConfigWrapper';
+import ConnectorWrapper from './ConnectorWrapper';
 import {Outlet} from 'react-router-dom';
 
-const ConnectorsOutlet = () => {
-  return (
-    <>
-      <ConnectorConfigWrapper Outlet={<Outlet />} />
-    </>
-  );
-};
+const ConnectorsOutlet = () => <ConnectorWrapper Outlet={<Outlet />} />;
 
 export default ConnectorsOutlet;

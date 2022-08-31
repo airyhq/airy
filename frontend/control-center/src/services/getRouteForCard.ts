@@ -1,15 +1,5 @@
 import {
   CONNECTORS_ROUTE,
-  CONNECTORS_CHAT_PLUGIN_CONNECTED_ROUTE,
-  CONNECTORS_FACEBOOK_CONNECTED_ROUTE,
-  CONNECTORS_TWILIO_SMS_CONNECTED_ROUTE,
-  CONNECTORS_TWILIO_WHATSAPP_CONNECTED_ROUTE,
-  CONNECTORS_WHATSAPP_BUSINESS_CLOUD_CONNECTED_ROUTE,
-  CONNECTORS_GOOGLE_CONNECTED_ROUTE,
-  CONNECTORS_INSTAGRAM_CONNECTED_ROUTE,
-  CONNECTORS_DIALOGFLOW_ROUTE,
-  CONNECTORS_ZENDESK_ROUTE,
-  CONNECTORS_SALESFORCE_ROUTE,
   CATALOG_FACEBOOK_ROUTE,
   CATALOG_CHAT_PLUGIN_ROUTE,
   CATALOG_TWILIO_SMS_ROUTE,
@@ -31,31 +21,12 @@ import {
 } from '../routes/routes';
 import {Source} from 'model';
 
-export const getConnectedRouteForComponent = (displayName: string) => {
-  switch (displayName) {
-    case 'Airy Chat Plugin':
-      return CONNECTORS_CHAT_PLUGIN_CONNECTED_ROUTE;
-    case 'Facebook Messenger':
-      return CONNECTORS_FACEBOOK_CONNECTED_ROUTE;
-    case 'Twilio SMS':
-      return CONNECTORS_TWILIO_SMS_CONNECTED_ROUTE;
-    case 'Twilio WhatsApp':
-      return CONNECTORS_TWILIO_WHATSAPP_CONNECTED_ROUTE;
-    case 'WhatsApp Business Cloud':
-      return CONNECTORS_WHATSAPP_BUSINESS_CLOUD_CONNECTED_ROUTE;
-    case 'Google Business Messages':
-      return CONNECTORS_GOOGLE_CONNECTED_ROUTE;
-    case 'Instagram':
-      return CONNECTORS_INSTAGRAM_CONNECTED_ROUTE;
-    case 'Dialogflow':
-      return CONNECTORS_DIALOGFLOW_ROUTE + '/new';
-    case 'Salesforce':
-      return CONNECTORS_SALESFORCE_ROUTE + '/new';
-    case 'Zendesk':
-      return CONNECTORS_ZENDESK_ROUTE + '/new';
-    case 'Webhooks':
-      return WEBHOOKS_ROUTE;
-  }
+export const getConnectedRouteForComponent = (source: Source, isChannel: string) => {
+  if (source === Source.webhooks) return WEBHOOKS_ROUTE;
+
+  if (isChannel) return `${CONNECTORS_ROUTE}/${source}/connected`;
+
+  return `${CONNECTORS_ROUTE}/${source}/new`;
 };
 
 export const getNewChannelRouteForComponent = (source: Source) => {

@@ -7,8 +7,12 @@ import {useTranslation} from 'react-i18next';
 import styles from './WhatsappBusinessCloudConnect.module.scss';
 import {ComponentName, ConnectorName} from 'model';
 
+interface ConnectParams {
+  [key: string]: string;
+}
+
 type WhatsappBusinessCloudConnectProps = {
-  createNewConnection: (appId: string, appSecret: string, phoneNumber: string, name: string, avatarUrl: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
@@ -41,7 +45,7 @@ export const WhatsappBusinessCloudConnect = ({
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(appId, appSecret, phoneNumber, name, avatarUrl);
+    createNewConnection({appId, appSecret, phoneNumber, name, avatarUrl});
   };
 
   return (

@@ -17,7 +17,7 @@ import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../../routes/routes';
 
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
@@ -59,7 +59,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   const navigate = useNavigate();
   const {t} = useTranslation();
-  const CHAT_PLUGIN_ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
+  const CHAT_PLUGIN_ROUTE = `${CONNECTORS_ROUTE}/chatplugin`;
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -108,7 +108,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   const handleClose = () => {
     setShowCreatedModal(false);
-    navigate(`${CONNECTORS_CONNECTED_ROUTE}/${Source.chatPlugin}`);
+    navigate(`${CONNECTORS_ROUTE}/${Source.chatPlugin}/connected`);
   };
 
   const PageContent = () => {
@@ -160,7 +160,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.listChannelName}>{channel.metadata?.name}</div>
             <div className={styles.listButtons}>
-              <Link className={styles.listButtonEdit} to={`${CONNECTORS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
+              <Link className={styles.listButtonEdit} to={`${CONNECTORS_ROUTE}/chatplugin/${channel.id}`}>
                 {t('edit')}
               </Link>
               <LinkButton

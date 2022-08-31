@@ -8,7 +8,7 @@ import styles from './FacebookConnect.module.scss';
 import {useCurrentChannel} from '../../../../../selectors/channels';
 import {NotificationModel} from 'model';
 import {useNavigate} from 'react-router-dom';
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
   connectFacebookChannel,
@@ -69,7 +69,7 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectFacebookChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTORS_CONNECTED_ROUTE + '/facebook', {replace: true});
+        navigate(CONNECTORS_ROUTE + '/facebook/connected', {replace: true});
       })
       .catch((error: Error) => {
         setNotification({show: true, text: t('updateFailed'), successful: false});

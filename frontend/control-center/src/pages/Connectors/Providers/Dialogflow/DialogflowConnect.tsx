@@ -7,19 +7,16 @@ import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 import {ComponentName} from 'model';
 
+interface ConnectParams {
+  [key: string]: string;
+}
+
 type DialogflowConnectProps = {
-  createNewConnection: (
-    projectId: string,
-    appCredentials: string,
-    suggestionConfidenceLevel: string,
-    replyConfidenceLevel: string,
-    processorWaitingTime: string,
-    processorCheckPeriod: string,
-    defaultLanguage: string
-  ) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
+  componentName?: string;
 };
 
 export const DialogflowConnect = ({
@@ -31,8 +28,10 @@ export const DialogflowConnect = ({
   const componentInfo = useSelector(
     (state: StateModel) => state.data.connector[ComponentName.enterpriseDialogflowConnector]
   );
-  const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
-  const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
+  const componentCatalogInfo = useSelector((state: StateModel) => state.data.catalog[componentInfo.name]);
+
+  const [projectId, setProjectID] = useState(componentInfo?.projectId || '');
+  const [dialogflowCredentials, setDialogflowCredentials] = useState(componentInfo?.dialogflowCredentials || '');
   const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(
     componentInfo?.suggestionConfidenceLevel || ''
   );
@@ -46,6 +45,9 @@ export const DialogflowConnect = ({
   );
   const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
 
+  const ConfigurationValues =
+    componentCatalogInfo?.configurationValues && JSON.parse(componentCatalogInfo.configurationValues);
+
   const {t} = useTranslation();
 
   const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,15 +60,17 @@ export const DialogflowConnect = ({
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(
-      projectID,
-      appCredentials,
+    const payload = {
+      projectId,
+      dialogflowCredentials,
       suggestionConfidenceLevel,
       replyConfidenceLevel,
       processorWaitingTime,
       processorCheckPeriod,
-      defaultLanguage
-    );
+      defaultLanguage,
+    } as typeof ConfigurationValues;
+
+    createNewConnection(payload);
   };
 
   return (
@@ -77,8 +81,8 @@ export const DialogflowConnect = ({
       enableSubmitConfigData={enableSubmitConfigData}
       isPending={isPending}
       disabled={
-        !projectID ||
-        !appCredentials ||
+        !projectId ||
+        !dialogflowCredentials ||
         !suggestionConfidenceLevel ||
         !replyConfidenceLevel ||
         !processorWaitingTime ||
@@ -101,7 +105,7 @@ export const DialogflowConnect = ({
             <Input
               type="text"
               name="projectID"
-              value={projectID}
+              value={projectId}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProjectID(e.target.value)}
               label={t('projectID')}
               placeholder={t('AddProjectId')}
@@ -117,8 +121,8 @@ export const DialogflowConnect = ({
             <Input
               type="text"
               name="GoogleApplicationCredentials"
-              value={appCredentials}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAppCredentials(e.target.value)}
+              value={dialogflowCredentials}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDialogflowCredentials(e.target.value)}
               label={t('GoogleApplicationCredentials')}
               placeholder={t('AddGoogleApplicationCredentials')}
               showLabelIcon

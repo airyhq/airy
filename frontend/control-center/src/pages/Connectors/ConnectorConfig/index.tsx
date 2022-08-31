@@ -57,11 +57,13 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConnectorConfigProps = {
   connector?: Source;
+  componentName?: string;
 } & ConnectedProps<typeof connector>;
 
 const ConnectorConfig = (props: ConnectorConfigProps) => {
   const {
     connector,
+    componentName,
     components,
     catalog,
     updateConnectorConfiguration,
@@ -72,7 +74,6 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
-  const componentName = connectorInfo && removePrefix(connectorInfo?.name);
   const [currentPage] = useState(Pages.createUpdate);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
   const [isPending, setIsPending] = useState(false);
@@ -153,114 +154,18 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     setLineTitle(t('configuration'));
   };
 
-  const createNewConnection = (...args: string[]) => {
-    let payload: UpdateComponentConfigurationRequestPayload;
+  const createNewConnection = (configurationValues: {[key: string]: string}) => {
     setIsPending(true);
 
-    if (connector === Source.dialogflow) {
-      const [
-        projectId,
-        appCredentials,
-        suggestionConfidenceLevel,
-        replyConfidenceLevel,
-        processorWaitingTime,
-        processorCheckPeriod,
-        defaultLanguage,
-      ] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              projectId: projectId,
-              dialogflowCredentials: appCredentials,
-              suggestionConfidenceLevel: suggestionConfidenceLevel,
-              replyConfidenceLevel: replyConfidenceLevel,
-              connectorStoreMessagesProcessorMaxWaitMillis: processorWaitingTime,
-              connectorStoreMessagesProcessorCheckPeriodMillis: processorCheckPeriod,
-              connectorDefaultLanguage: defaultLanguage,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.zendesk) {
-      const [domain, token, username] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              domain: domain,
-              token: token,
-              username: username,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.salesforce) {
-      const [url, username, password, securityToken] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              url: url,
-              username: username,
-              password: password,
-              securityToken: securityToken,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.rasa) {
-      const [webhookUrl, apiHost, token] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              webhookUrl: webhookUrl,
-              apiHost: apiHost,
-              token: token,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.whatsapp) {
-      const [appId, appSecret, phoneNumber, name, avatarUrl] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              appId: appId,
-              appSecret: appSecret,
-              phoneNumber: phoneNumber,
-              name: name,
-              avatarUrl: avatarUrl,
-            },
-          },
-        ],
-      };
-    }
+    const payload: UpdateComponentConfigurationRequestPayload = {
+      components: [
+        {
+          name: connectorInfo && removePrefix(connectorInfo.name),
+          enabled: true,
+          data: configurationValues,
+        },
+      ],
+    };
 
     updateConnectorConfiguration(payload)
       .catch((error: Error) => {

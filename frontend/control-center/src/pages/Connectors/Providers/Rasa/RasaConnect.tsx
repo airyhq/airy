@@ -7,8 +7,12 @@ import {useTranslation} from 'react-i18next';
 import styles from './RasaConnect.module.scss';
 import {ComponentName, ConnectorName} from 'model';
 
+interface ConnectParams {
+  [key: string]: string;
+}
+
 type RasaConnectProps = {
-  createNewConnection: (webhookUrl: string, apiHost: string, token: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
@@ -33,7 +37,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPen
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(webhookUrl, apiHost, token);
+    createNewConnection({webhookUrl, apiHost, token});
   };
 
   return (

@@ -8,7 +8,7 @@ import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
 
 import styles from './GoogleConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -33,8 +33,6 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isPending, setIsPending] = useState(false);
   const [newButtonTitle, setNewButtonTitle] = useState('');
-
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
 
   const buttonStatus = () => {
     return (
@@ -73,7 +71,7 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectGoogleChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTED_ROUTE + '/google', {replace: true});
+        navigate(CONNECTORS_ROUTE + '/google/connected', {replace: true});
       })
       .catch((error: Error) => {
         setNotification({

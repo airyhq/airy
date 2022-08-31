@@ -174,8 +174,8 @@ const TwilioConnect = (props: TwilioConnectProps) => {
             type={notification.info ? 'sticky' : 'fade'}
             show={notification.show}
             text={notification.text}
-            setShowFalse={setNotification}
             info={notification.info}
+            setShowFalse={setNotification}
           />
         )}
       </form>

@@ -142,8 +142,8 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
-          setShowFalse={setNotification}
           info={notification.info}
+          setShowFalse={setNotification}
         />
       )}
     </div>

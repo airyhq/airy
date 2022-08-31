@@ -28,7 +28,6 @@ export const DialogflowConnect = ({
   const componentInfo = useSelector(
     (state: StateModel) => state.data.connector[ComponentName.enterpriseDialogflowConnector]
   );
-  const componentCatalogInfo = useSelector((state: StateModel) => state.data.catalog[componentInfo.name]);
 
   const [projectId, setProjectID] = useState(componentInfo?.projectId || '');
   const [dialogflowCredentials, setDialogflowCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -44,9 +43,6 @@ export const DialogflowConnect = ({
     componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500'
   );
   const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
-
-  const ConfigurationValues =
-    componentCatalogInfo?.configurationValues && JSON.parse(componentCatalogInfo.configurationValues);
 
   const {t} = useTranslation();
 
@@ -68,7 +64,7 @@ export const DialogflowConnect = ({
       processorWaitingTime,
       processorCheckPeriod,
       defaultLanguage,
-    } as typeof ConfigurationValues;
+    };
 
     createNewConnection(payload);
   };

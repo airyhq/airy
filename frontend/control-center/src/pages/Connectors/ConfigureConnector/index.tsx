@@ -30,8 +30,6 @@ export const ConfigureConnector = ({
 }: ConfigureConnectorProps) => {
   const {t} = useTranslation();
 
-  console.log('sdis; ', disabled);
-
   return (
     <section className={styles.formWrapper}>
       <div className={styles.settings}>

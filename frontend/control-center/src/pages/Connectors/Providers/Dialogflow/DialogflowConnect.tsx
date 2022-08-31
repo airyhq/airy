@@ -5,7 +5,7 @@ import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
-import {ComponentName, ConnectorName} from 'model';
+import {ComponentName} from 'model';
 
 type DialogflowConnectProps = {
   createNewConnection: (
@@ -29,7 +29,7 @@ export const DialogflowConnect = ({
   isPending,
 }: DialogflowConnectProps) => {
   const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ConnectorName.enterpriseDialogflowConnector]
+    (state: StateModel) => state.data.connector[ComponentName.enterpriseDialogflowConnector]
   );
   const [projectID, setProjectID] = useState(componentInfo?.projectId || '');
   const [appCredentials, setAppCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -83,7 +83,14 @@ export const DialogflowConnect = ({
         !replyConfidenceLevel ||
         !processorWaitingTime ||
         !processorCheckPeriod ||
-        !defaultLanguage
+        !defaultLanguage ||
+        (componentInfo?.projectId === projectID &&
+          componentInfo?.dialogflowCredentials === appCredentials &&
+          componentInfo?.suggestionConfidenceLevel === suggestionConfidenceLevel &&
+          componentInfo?.replyConfidenceLevel === replyConfidenceLevel &&
+          (componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000') === processorWaitingTime &&
+          (componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500') === processorCheckPeriod &&
+          (componentInfo?.connectorDefaultLanguage || 'en') === defaultLanguage)
       }
       isConfigured={isConfigured}
       updateConfig={updateConfig}

@@ -3,6 +3,7 @@ import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
+import {useCurrentComponentForSource} from '../../../selectors';
 import {
   connectChatPlugin,
   updateChannel,
@@ -30,6 +31,7 @@ import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/W
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
+import { isNull } from 'lodash-es';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -50,75 +52,84 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => ({
   components: state.data.config.components,
   catalog: state.data.catalog,
+  connectors: state.data.connector,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
-  const {components, catalog, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} = props;
-
-  const connectors = useSelector((state: StateModel) => state.data.connector);
-  const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
-  const [currentPage] = useState(Pages.createUpdate);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isConfigured, setIsConfigured] = useState(false);
-  const [lineTitle, setLineTitle] = useState('');
-
-  const pageContentRef = useRef(null);
-  const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
-
-  const {t} = useTranslation();
+  const {components, catalog, connectors, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} =
+    props;
 
   const params = useParams();
   const {channelId, source} = params;
   const newChannel = params['*'] === 'new';
   const connectedParams = params['*'] === 'connected';
 
+  //const connectorInfo: ComponentInfo = 
+
+  const [currentPage] = useState(Pages.createUpdate);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
+  const [isPending, setIsPending] = useState(false);
+  const [isConfigured, setIsConfigured] = useState(false);
+  const [lineTitle, setLineTitle] = useState('');
+  const [connectorInfo] = useState<ComponentInfo | null>(useCurrentComponentForSource(source as Source));
+
+  const pageContentRef = useRef(null);
+  const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
+
+  const {t} = useTranslation();
+
   const isAiryInternalConnector = source === Source.chatPlugin;
   const isCatalogList = Object.entries(catalog).length > 0;
+
+  useEffect(() => {
+    console.log('connectorInfo', connectorInfo);
+  }, [connectorInfo]);
+
+  useEffect(() => {
+    console.log('isEnabled', isEnabled);
+  }, [isEnabled])
+
+  useEffect(() => {
+    console.log('isPending', isPending);
+  }, [isPending])
+
+  useEffect(() => {
+    console.log('isConfigured', isConfigured);
+  }, [isConfigured])
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
     listComponents().catch((error: Error) => {
       console.error(error);
     });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
-    if (connectorInfo && connectors) {
-      if (
-        connectors[removePrefix(connectorInfo.name)] &&
-        Object.keys(connectors[removePrefix(connectorInfo.name)]).length > 0
-      ) {
-        setIsConfigured(true);
-      }
+    if (connectorInfo) determineLineTitle(connectorInfo.isChannel);
+  }, [connectorInfo]);
+
+  useEffect(() => {
+    if (connectorInfo && connectorInfo.name && connectors) {
+      const connectorName = removePrefix(connectorInfo.name);
+
+      if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) setIsConfigured(true);
     }
   }, [connectorInfo, connectors]);
 
   useEffect(() => {
-    getConnectorsConfiguration().catch((error: Error) => {
-      console.error(error);
-    });
-
     if (isCatalogList) {
       isAiryInternalConnector && setIsConfigured(true);
-
-      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === source);
-
-      const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
-      const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
-
-      const connectorHasChannels: undefined | string = connectorSourceInfoFormatted?.isChannel;
-
-      determineLineTitle(connectorHasChannels);
-      setConnectorInfo(connectorSourceInfoFormatted);
     }
-  }, [source, isCatalogList, params]);
+  }, [catalog]);
 
   useEffect(() => {
     if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
-  }, [connectorInfo, components]);
+  }, [components, connectorInfo]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
     const newAiryChatPluginPage = newChannel && source === Source.chatPlugin;
@@ -262,8 +273,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       )}
       <div
         ref={pageContentRef}
-        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}
-      >
+        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}>
         <PageContent />
       </div>
     </>

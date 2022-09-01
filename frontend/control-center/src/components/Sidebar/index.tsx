@@ -1,38 +1,39 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
-
+import {connect, ConnectedProps} from 'react-redux';
+import {StateModel} from '../../reducers';
+import {useCurrentComponentForSource} from '../../selectors';
+import {Source} from 'model';
 import {CATALOG_ROUTE, CONNECTORS_ROUTE, INBOX_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
+
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
 import {ReactComponent as StatusIcon} from 'assets/images/icons/statusIcon.svg';
 import {ReactComponent as InboxIcon} from 'assets/images/icons/inboxIcon.svg';
-
 import styles from './index.module.scss';
-import {StateModel} from '../../reducers';
-import {connect, ConnectedProps} from 'react-redux';
-import {ComponentName, ComponentRepository} from 'model';
 
 type SideBarProps = {} & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
   version: state.data.config.clusterVersion,
   components: state.data.config.components,
-  catalog: state.data.catalog,
 });
 
 const connector = connect(mapStateToProps);
 
 const Sidebar = (props: SideBarProps) => {
+  const {version, components} = props;
+  const componentInfo = useCurrentComponentForSource(Source.webhooks);
+
+  const webhooksEnabled = componentInfo.installed;
+  const inboxEnabled = components[Source.frontendInbox]?.enabled || false;
+  const showLine = inboxEnabled || webhooksEnabled;
+
   const isActive = (route: string) => {
     return useMatch(`${route}/*`);
   };
-
-  const webhooksEnabled =
-    props.catalog[`${ComponentRepository.airyCore}/${ComponentName.integrationWebhook}`]?.installed;
-  const inboxEnabled = props.components[ComponentName.frontendInbox]?.enabled || false;
-  const showLine = inboxEnabled || webhooksEnabled;
 
   return (
     <nav className={styles.wrapper}>
@@ -81,7 +82,7 @@ const Sidebar = (props: SideBarProps) => {
           </div>
         </>
       </div>
-      <span className={styles.version}>Version {props.version}</span>
+      <span className={styles.version}>Version {version}</span>
     </nav>
   );
 };

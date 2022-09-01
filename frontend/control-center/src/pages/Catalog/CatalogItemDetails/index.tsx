@@ -36,7 +36,6 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
 
-  const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [isPending, setIsPending] = useState(false);
@@ -45,6 +44,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
+  const isInstalled = component[componentInfo?.name]?.installed;
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');

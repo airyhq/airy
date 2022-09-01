@@ -76,11 +76,11 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, listPageSize, channels.length, filteredChannels.length]);
 
-  useEffect(() => {
-    listChannels().catch((error: Error) => {
-      console.error(error);
-    });
-  }, []);
+  // useEffect(() => {
+  //   listChannels().catch((error: Error) => {
+  //     console.error(error);
+  //   });
+  // }, []);
 
   useEffect(() => {
     getInfo();

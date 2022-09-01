@@ -31,7 +31,6 @@ import {WhatsappBusinessCloudConnect} from '../Providers/WhatsappBusinessCloud/W
 import ConnectedChannelsList from '../ConnectedChannelsList';
 import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
-import { isNull } from 'lodash-es';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -114,7 +113,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   }, [connectorInfo]);
 
   useEffect(() => {
-    if (connectorInfo && connectorInfo.name && connectors) {
+    if (connectorInfo && connectorInfo?.name && connectors) {
       const connectorName = removePrefix(connectorInfo.name);
 
       if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) setIsConfigured(true);
@@ -128,7 +127,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   }, [catalog]);
 
   useEffect(() => {
-    if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
+    if (components && connectorInfo && connectorInfo?.name) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
   }, [components, connectorInfo]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
@@ -155,6 +154,10 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   const createNewConnection = (configurationValues: {[key: string]: string}) => {
     setIsPending(true);
+
+    if(!connectorInfo?.name){
+      console.log('CREATE NEW CONNECTION RETURN');
+    }
 
     const payload: UpdateComponentConfigurationRequestPayload = {
       components: [

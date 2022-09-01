@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -61,6 +61,18 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const CHAT_PLUGIN_ROUTE = `${CONNECTORS_ROUTE}/chatplugin`;
 
+  useEffect(() => {
+    console.log('currentChannelId',currentChannelId);
+  }, [currentChannelId]);
+
+  useEffect(() => {
+    console.log('channelId', channelId);
+  }, [channelId]);
+
+  useEffect(() => {
+    console.log('newChannel', newChannel);
+  }, [newChannel]);
+
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
       .connectChatPlugin({
@@ -70,6 +82,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
         }),
       })
       .then((id: string) => {
+        console.log('ID', id);
         setCurrentChannelId(id);
         setShowCreatedModal(true);
       })

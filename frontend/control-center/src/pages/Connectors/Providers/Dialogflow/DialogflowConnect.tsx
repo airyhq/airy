@@ -84,8 +84,8 @@ export const DialogflowConnect = ({
         !processorWaitingTime ||
         !processorCheckPeriod ||
         !defaultLanguage ||
-        (componentInfo?.projectId === projectID &&
-          componentInfo?.dialogflowCredentials === appCredentials &&
+        (componentInfo?.projectId === projectId &&
+          componentInfo?.dialogflowCredentials === dialogflowCredentials &&
           componentInfo?.suggestionConfidenceLevel === suggestionConfidenceLevel &&
           componentInfo?.replyConfidenceLevel === replyConfidenceLevel &&
           (componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000') === processorWaitingTime &&

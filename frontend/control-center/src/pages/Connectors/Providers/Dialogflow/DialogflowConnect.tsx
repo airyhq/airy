@@ -29,7 +29,7 @@ export const DialogflowConnect = ({
     (state: StateModel) => state.data.connector[ComponentName.enterpriseDialogflowConnector]
   );
 
-  const [projectId, setProjectID] = useState(componentInfo?.projectId || '');
+  const [projectId, setProjectID] = useState(componentInfo?.projectId);
   const [dialogflowCredentials, setDialogflowCredentials] = useState(componentInfo?.dialogflowCredentials || '');
   const [suggestionConfidenceLevel, setSuggestionConfidenceLevel] = useState(
     componentInfo?.suggestionConfidenceLevel || ''

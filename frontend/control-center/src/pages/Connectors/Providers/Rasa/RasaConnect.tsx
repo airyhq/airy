@@ -5,7 +5,7 @@ import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './RasaConnect.module.scss';
-import {ComponentName, ConnectorName} from 'model';
+import {ComponentName} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -19,7 +19,7 @@ type RasaConnectProps = {
 };
 
 export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPending}: RasaConnectProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.rasaConnector]);
+  const componentInfo = useSelector((state: StateModel) => state.data.connector[ComponentName.rasaConnector]);
   const [webhookUrl, setWebhookUrl] = useState(componentInfo?.webhookUrl || '');
   const [apiHost, setApiHost] = useState(componentInfo?.apiHost || '');
   const [token, setToken] = useState(componentInfo?.token || '');

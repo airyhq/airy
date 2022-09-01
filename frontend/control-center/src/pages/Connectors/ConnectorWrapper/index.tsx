@@ -53,6 +53,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
+  const [isHealthy, setIsHealthy] = useState<boolean | null>(components[connectorInfo && componentName]?.healthy);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [backTitle, setBackTitle] = useState('Connectors');
@@ -109,6 +110,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
   useEffect(() => {
     if (config && connectorInfo) {
       setIsEnabled(config?.components[componentName]?.enabled);
+      setIsHealthy(config?.components[componentName]?.healthy);
     }
   }, [config, connectorInfo, components]);
 
@@ -176,7 +178,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
                   <ConfigStatusButton
-                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                    componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
                 </div>

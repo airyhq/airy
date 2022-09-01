@@ -16,6 +16,7 @@ export enum ComponentStatus {
   enabled = 'Enabled',
   notConfigured = 'Not Configured',
   disabled = 'Disabled',
+  notHealthy = 'Not Healthy',
 }
 
 export interface ConnectorCardComponentInfo {
@@ -100,6 +101,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                 const isConfigured =
                   Object.keys(connectors[item.configKey]).length > 0 || item.source === Source.chatPlugin;
                 const isEnabled = components[item.configKey]?.enabled;
+                const isHealthy = components[item.configKey]?.healthy;
                 const isInstalled = catalogList[item.name].installed;
 
                 if (item.isChannel === 'true') {
@@ -107,7 +109,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <ChannelCard
                       key={item.displayName}
                       componentInfo={item}
-                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                       channelsToShow={channelsBySource(item.source).length}
                     />
                   );
@@ -117,7 +119,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <InfoCard
                       key={item.displayName}
                       componentInfo={item}
-                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                     />
                   );
                 }

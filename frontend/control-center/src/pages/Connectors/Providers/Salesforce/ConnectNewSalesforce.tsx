@@ -5,7 +5,7 @@ import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {ComponentName, ConnectorName} from 'model';
+import {ComponentName} from 'model';
 
 type ConnectNewSalesforceProps = {
   createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
@@ -21,7 +21,7 @@ export const ConnectNewSalesforce = ({
   isPending,
 }: ConnectNewSalesforceProps) => {
   const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ConnectorName.salesforceContactsIngestion]
+    (state: StateModel) => state.data.connector[ComponentName.enterpriseSalesforceContactsIngestion]
   );
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
@@ -50,7 +50,16 @@ export const ConnectNewSalesforce = ({
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!isUrlValid || !username || !password || !securityToken}
+      disabled={
+        !isUrlValid ||
+        !username ||
+        !password ||
+        !securityToken ||
+        (componentInfo?.url === url &&
+          componentInfo?.username === username &&
+          componentInfo?.password === password &&
+          componentInfo?.securityToken === securityToken)
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
       isPending={isPending}

@@ -33,7 +33,7 @@ export enum ComponentName {
   apiContacts = 'api-contacts',
   apiWebsocket = 'api-websocket',
   cloudConnector = 'cloud-connector',
-  enterpriseDialogflowConnector = 'enterprise-dialog-connector',
+  enterpriseDialogflowConnector = 'enterprise-dialogflow-connector',
   enterpriseMobileAuth = 'enterprise-mobile-auth',
   enterpriseSalesforceContactsIngestion = 'enterprise-salesforce-contacts-ingestion',
   enterprisePushNotification = 'enterprise-push-notifiction',

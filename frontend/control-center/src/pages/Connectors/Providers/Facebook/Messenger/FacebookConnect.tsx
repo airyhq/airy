@@ -47,7 +47,7 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
         channel?.metadata?.pageToken === token &&
         channel?.metadata?.name === name &&
         channel?.metadata?.imageUrl === image) ||
-      image === ''
+      (!!channel?.metadata?.imageUrl && image === '')
     );
   };
 
@@ -145,6 +145,7 @@ const FacebookConnect = (props: ConnectedProps<typeof connector>) => {
           show={notification.show}
           text={notification.text}
           successful={notification.successful}
+          info={notification.info}
           setShowFalse={setNotification}
         />
       )}

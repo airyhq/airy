@@ -5,7 +5,7 @@ import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
-import {ComponentName, ConnectorName} from 'model';
+import {ComponentName} from 'model';
 
 type ConnectNewDialogflowProps = {
   createNewConnection: (domain: string, token: string, username: string) => void;
@@ -20,7 +20,9 @@ export const ConnectNewZendesk = ({
   isConfigured,
   isPending,
 }: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.zendenkConnector]);
+  const componentInfo = useSelector(
+    (state: StateModel) => state.data.connector[ComponentName.enterpriseZendenkConnector]
+  );
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [token, setToken] = useState(componentInfo?.token || '');
@@ -46,7 +48,12 @@ export const ConnectNewZendesk = ({
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!domain || !username || !token}
+      disabled={
+        !domain ||
+        !username ||
+        !token ||
+        (componentInfo?.domain === domain && componentInfo?.username === username && componentInfo?.token === token)
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
       isPending={isPending}

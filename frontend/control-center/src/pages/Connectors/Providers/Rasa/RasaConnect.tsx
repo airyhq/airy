@@ -42,7 +42,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPen
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!isUrlValid}
+      disabled={!isUrlValid || componentInfo?.webhookUrl === webhookUrl}
       isConfigured={isConfigured}
       updateConfig={updateConfig}
       isPending={isPending}

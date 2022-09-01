@@ -52,8 +52,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
     listChannels().catch((error: Error) => {
       console.error(error);
     });
-  setPageTitle(pageTitle);
-}, []);
+    setPageTitle(pageTitle);
+  }, []);
 
   useEffect(() => {
     getConnectorsConfiguration();

@@ -51,28 +51,27 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => ({
   components: state.data.config.components,
   catalog: state.data.catalog,
-  connectors: state.data.connector,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
-  const {components, catalog, connectors, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} =
-    props;
+  const {components, catalog, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} = props;
 
   const params = useParams();
   const {channelId, source} = params;
   const newChannel = params['*'] === 'new';
   const connectedParams = params['*'] === 'connected';
 
-  //const connectorInfo: ComponentInfo = 
+  const connectors = useSelector((state: StateModel) => state.data.connector);
+  const connectorInfo = useCurrentComponentForSource(source as Source);
+  console.log('connectorInfo', connectorInfo);
 
   const [currentPage] = useState(Pages.createUpdate);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
-  const [connectorInfo] = useState<ComponentInfo | null>(useCurrentComponentForSource(source as Source));
 
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
@@ -81,22 +80,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   const isAiryInternalConnector = source === Source.chatPlugin;
   const isCatalogList = Object.entries(catalog).length > 0;
-
-  useEffect(() => {
-    console.log('connectorInfo', connectorInfo);
-  }, [connectorInfo]);
-
-  useEffect(() => {
-    console.log('isEnabled', isEnabled);
-  }, [isEnabled])
-
-  useEffect(() => {
-    console.log('isPending', isPending);
-  }, [isPending])
-
-  useEffect(() => {
-    console.log('isConfigured', isConfigured);
-  }, [isConfigured])
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -113,22 +96,21 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   }, [connectorInfo]);
 
   useEffect(() => {
-    if (connectorInfo && connectorInfo?.name && connectors) {
+    if (connectorInfo && connectors) {
       const connectorName = removePrefix(connectorInfo.name);
-
-      if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) setIsConfigured(true);
+      if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) {
+        setIsConfigured(true);
+      }
     }
   }, [connectorInfo, connectors]);
 
   useEffect(() => {
-    if (isCatalogList) {
-      isAiryInternalConnector && setIsConfigured(true);
-    }
-  }, [catalog]);
+    if (isCatalogList) isAiryInternalConnector && setIsConfigured(true);
+  }, [isCatalogList]);
 
   useEffect(() => {
-    if (components && connectorInfo && connectorInfo?.name) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
-  }, [components, connectorInfo]);
+    if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
+  }, [connectorInfo, components]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
     const newAiryChatPluginPage = newChannel && source === Source.chatPlugin;
@@ -154,10 +136,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   const createNewConnection = (configurationValues: {[key: string]: string}) => {
     setIsPending(true);
-
-    if(!connectorInfo?.name){
-      console.log('CREATE NEW CONNECTION RETURN');
-    }
 
     const payload: UpdateComponentConfigurationRequestPayload = {
       components: [
@@ -276,7 +254,8 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       )}
       <div
         ref={pageContentRef}
-        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}>
+        className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}
+      >
         <PageContent />
       </div>
     </>

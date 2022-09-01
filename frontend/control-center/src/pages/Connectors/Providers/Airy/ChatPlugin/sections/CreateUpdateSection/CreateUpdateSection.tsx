@@ -21,7 +21,6 @@ type InstallUpdateSectionProps = {
 } & ConnectedProps<typeof connector>;
 
 const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
-  console.log('CreateUpdateSection props', props);
   const {channel, displayName, imageUrl, setNotification} = props;
 
   const [submit, setSubmit] = useState(false);

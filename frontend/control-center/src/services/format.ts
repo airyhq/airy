@@ -8,5 +8,4 @@ const capitalize = (str: string) => {
 
 export const removePrefix = (name: string) => name.split('/').pop();
 
-
 export const formatComponentNameToConfigKey = (componentName: string) => componentName.split('/')[1];

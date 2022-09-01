@@ -14,8 +14,6 @@ export const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
   const [imageUrl, setImageUrl] = useState('');
   const {t} = useTranslation();
 
-  console.log('createNewConnection', createNewConnection);
-
   return (
     <div>
       <div className={styles.formWrapper}>
@@ -62,7 +60,6 @@ export const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
               dataCy={cyChannelsChatPluginFormSubmitButton}
               onClick={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
-                console.log('REQUEST', displayName, imageUrl)
                 createNewConnection(displayName, imageUrl);
               }}
             >

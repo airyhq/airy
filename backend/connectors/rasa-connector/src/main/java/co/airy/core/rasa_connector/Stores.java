@@ -2,7 +2,9 @@
 package co.airy.core.rasa_connector;
 
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -31,11 +33,25 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
         final StreamsBuilder builder = new StreamsBuilder();
+
+        final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+        final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
         ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
-                .peek((messageId, message) -> rasaConnectorService.send(message));
+                .flatMap((messageId, message) -> rasaConnectorService.send(message))
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
 
         streams.start(builder.build(), appId);
     }

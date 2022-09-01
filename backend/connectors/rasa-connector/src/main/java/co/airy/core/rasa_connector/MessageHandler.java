@@ -2,65 +2,88 @@ package co.airy.core.rasa_connector;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.core.rasa_connector.models.AiryAttachment;
-import co.airy.core.rasa_connector.models.AiryPayload;
-import co.airy.core.rasa_connector.models.AiryResponse;
 import co.airy.core.rasa_connector.models.MessageSendResponse;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class MessageHandler {
-    private final KafkaProducer<String, SpecificRecordBase> producer;
-    private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    MessageHandler(KafkaProducer<String, SpecificRecordBase> producer) {
-        this.producer = producer;
-    }
-    public void storeMessage(Message message) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationMessages, message.getId(), message)).get();
+    MessageHandler() {
     }
 
-    public void writeReplyToKafka(Message message, MessageSendResponse response) throws Exception {
-        final Message reply = Message.newBuilder()
+    public Message getMessage(Message contactMessage, MessageSendResponse response) throws Exception {
+        String content = getContent(contactMessage.getSource(), response);
+        if (content == null) {
+            throw new Exception("Unable to map rasa reply to source response.");
+        }
+
+        return Message.newBuilder()
                 .setId(UUID.randomUUID().toString())
-                .setChannelId(message.getChannelId())
-                //TODO: handle correctly the content for all sources
-                //      https://github.com/airyhq/cloud/issues/294
-                // Write image URL instead of render it
-                .setContent(mapper.writeValueAsString(generateAiryResponse(response)))
-                .setConversationId(message.getConversationId())
+                .setChannelId(contactMessage.getChannelId())
+                .setContent(content)
+                .setConversationId(contactMessage.getConversationId())
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
-                .setSource(message.getSource())
-                .setSenderId("rasa")
+                .setSource(contactMessage.getSource())
+                .setSenderId("rasa-bot")
                 .setSentAt(Instant.now().toEpochMilli())
                 .setIsFromContact(false)
                 .build();
-
-        storeMessage(reply);
     }
-    public Object generateAiryResponse(MessageSendResponse response) throws JsonProcessingException {
-        if (response.getText() != null) {
-            return Map.of("text",  response.getText());
+
+    public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
+        final String text = response.getText();
+        if (text == null) {
+            return null;
         }
-        if (response.getImage() != null) {
-            AiryPayload payload = new AiryPayload(response.getImage());
-            AiryAttachment attachment = new AiryAttachment("image", payload);
-            AiryResponse airyResponse = new AiryResponse(attachment);
-            return airyResponse;
+
+        final ObjectNode node = getNode();
+        switch (source) {
+            case "google": {
+                final ObjectNode representative = getNode();
+                representative.put("representativeType", "BOT");
+                node.set("representative", representative);
+                node.put("text", text);
+                return mapper.writeValueAsString(node);
+            }
+            case "viber": {
+                node.put("text", text);
+                node.put("type", text);
+                return mapper.writeValueAsString(node);
+            }
+            case "chatplugin":
+            case "instagram":
+            case "facebook": {
+                node.put("text", text);
+                return mapper.writeValueAsString(node);
+            }
+            case "twilio.sms":
+            case "twilio.whatsapp": {
+                node.put("Body", text);
+                return mapper.writeValueAsString(node);
+            }
+            case "whatsapp": {
+                node.put("Body", text);
+                return mapper.writeValueAsString(node);
+            }
+
+            default: {
+                return null;
+            }
         }
-        return null;
+    }
+
+    private ObjectNode getNode() {
+        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
+        return jsonNodeFactory.objectNode();
     }
 }

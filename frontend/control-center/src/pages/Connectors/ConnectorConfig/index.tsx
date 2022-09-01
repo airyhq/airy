@@ -250,7 +250,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <>
-      {source !== Source.chatPlugin && !(source === Source.chatPlugin && (newChannel || channelId)) && (
+      {!(source === Source.chatPlugin && (newChannel || channelId)) && (
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>

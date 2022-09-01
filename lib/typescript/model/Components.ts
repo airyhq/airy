@@ -12,13 +12,14 @@ export interface ComponentInfo {
   displayName: string;
   name: string;
   installed: boolean;
-  isChannel?: string;
   availableFor: string;
   description: string;
   category: string;
   price: string;
   docs: string;
   source: Source;
+  isChannel?: string;
+  configurationValues?: string;
 }
 
 export enum ComponentRepository {

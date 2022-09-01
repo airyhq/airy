@@ -7,8 +7,12 @@ import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 import {ComponentName} from 'model';
 
+interface ConnectParams {
+  [key: string]: string;
+}
+
 type ConnectNewSalesforceProps = {
-  createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
@@ -41,7 +45,7 @@ export const ConnectNewSalesforce = ({
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(url, username, password, securityToken);
+    createNewConnection({url, username, password, securityToken});
   };
 
   return (

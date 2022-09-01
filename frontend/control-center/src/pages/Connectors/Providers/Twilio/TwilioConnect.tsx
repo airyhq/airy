@@ -8,7 +8,7 @@ import {Channel, NotificationModel, Source} from 'model';
 
 import styles from './TwilioConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../routes/routes';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 
@@ -45,8 +45,6 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     }
   }, [numberInput]);
 
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
-
   const buttonStatus = () => {
     return (
       numberInput.trim().length === 0 ||
@@ -81,7 +79,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     if (source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload)
         .then(() => {
-          navigate(CONNECTED_ROUTE + `/twilio.whatsapp/#`, {
+          navigate(CONNECTORS_ROUTE + `/twilio.whatsapp/connected`, {
             replace: true,
             state: {source: 'twilio.whatsapp'},
           });
@@ -102,7 +100,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
     if (source === Source.twilioSMS) {
       connectTwilioSms(connectPayload)
         .then(() => {
-          navigate(CONNECTED_ROUTE + `/twilio.sms/#`, {replace: true, state: {source: 'twilio.sms'}});
+          navigate(CONNECTORS_ROUTE + `/twilio.sms/connected`, {replace: true, state: {source: 'twilio.sms'}});
         })
         .catch((error: Error) => {
           setNotification({

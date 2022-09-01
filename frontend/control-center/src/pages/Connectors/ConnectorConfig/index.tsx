@@ -48,33 +48,19 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  config: state.data.config,
   components: state.data.config.components,
   catalog: state.data.catalog,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConnectorConfigProps = {
-  connector?: Source;
-} & ConnectedProps<typeof connector>;
-
-const ConnectorConfig = (props: ConnectorConfigProps) => {
-  const {
-    connector,
-    components,
-    catalog,
-    updateConnectorConfiguration,
-    getConnectorsConfiguration,
-    listComponents,
-    config,
-  } = props;
+const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
+  const {components, catalog, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} = props;
 
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
-  const componentName = connectorInfo && removePrefix(connectorInfo?.name);
   const [currentPage] = useState(Pages.createUpdate);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
+  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
@@ -100,8 +86,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, []);
 
   useEffect(() => {
-    if (connectorInfo && connectors && connectors[componentName]) {
-      if (Object.keys(connectors[componentName]).length > 0) {
+    if (connectorInfo && connectors) {
+      if (
+        connectors[removePrefix(connectorInfo.name)] &&
+        Object.keys(connectors[removePrefix(connectorInfo.name)]).length > 0
+      ) {
         setIsConfigured(true);
       }
     }
@@ -115,7 +104,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     if (isCatalogList) {
       isAiryInternalConnector && setIsConfigured(true);
 
-      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === (connector || source));
+      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === source);
 
       const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
       const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
@@ -128,11 +117,11 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
   }, [source, isCatalogList, params]);
 
   useEffect(() => {
-    if (config && connectorInfo) setIsEnabled(config?.components[componentName]?.enabled);
-  }, [config, connectorInfo, components]);
+    if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
+  }, [connectorInfo, components]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
-    const newAiryChatPluginPage = newChannel && connector === Source.chatPlugin;
+    const newAiryChatPluginPage = newChannel && source === Source.chatPlugin;
     const newChannelPage = newChannel && connectorHasChannels;
 
     if (newAiryChatPluginPage) {
@@ -153,114 +142,18 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
     setLineTitle(t('configuration'));
   };
 
-  const createNewConnection = (...args: string[]) => {
-    let payload: UpdateComponentConfigurationRequestPayload;
+  const createNewConnection = (configurationValues: {[key: string]: string}) => {
     setIsPending(true);
 
-    if (connector === Source.dialogflow) {
-      const [
-        projectId,
-        appCredentials,
-        suggestionConfidenceLevel,
-        replyConfidenceLevel,
-        processorWaitingTime,
-        processorCheckPeriod,
-        defaultLanguage,
-      ] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              projectId: projectId,
-              dialogflowCredentials: appCredentials,
-              suggestionConfidenceLevel: suggestionConfidenceLevel,
-              replyConfidenceLevel: replyConfidenceLevel,
-              connectorStoreMessagesProcessorMaxWaitMillis: processorWaitingTime,
-              connectorStoreMessagesProcessorCheckPeriodMillis: processorCheckPeriod,
-              connectorDefaultLanguage: defaultLanguage,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.zendesk) {
-      const [domain, token, username] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              domain: domain,
-              token: token,
-              username: username,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.salesforce) {
-      const [url, username, password, securityToken] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              url: url,
-              username: username,
-              password: password,
-              securityToken: securityToken,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.rasa) {
-      const [webhookUrl, apiHost, token] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              webhookUrl: webhookUrl,
-              apiHost: apiHost,
-              token: token,
-            },
-          },
-        ],
-      };
-    }
-
-    if (connector === Source.whatsapp) {
-      const [appId, appSecret, phoneNumber, name, avatarUrl] = args;
-
-      payload = {
-        components: [
-          {
-            name: connectorInfo && removePrefix(connectorInfo.name),
-            enabled: true,
-            data: {
-              appId: appId,
-              appSecret: appSecret,
-              phoneNumber: phoneNumber,
-              name: name,
-              avatarUrl: avatarUrl,
-            },
-          },
-        ],
-      };
-    }
+    const payload: UpdateComponentConfigurationRequestPayload = {
+      components: [
+        {
+          name: connectorInfo && removePrefix(connectorInfo.name),
+          enabled: true,
+          data: configurationValues,
+        },
+      ],
+    };
 
     updateConnectorConfiguration(payload)
       .catch((error: Error) => {
@@ -357,7 +250,7 @@ const ConnectorConfig = (props: ConnectorConfigProps) => {
 
   return (
     <>
-      {connector !== Source.chatPlugin && !(source === Source.chatPlugin && (newChannel || channelId)) && (
+      {!(source === Source.chatPlugin && (newChannel || channelId)) && (
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
             <span className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}>

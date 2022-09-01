@@ -16,14 +16,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
 import {cyChannelsFormBackButton} from 'handles';
-import {
-  CONNECTORS_FACEBOOK_ROUTE,
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_TWILIO_SMS_ROUTE,
-  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
-  CONNECTORS_GOOGLE_ROUTE,
-  CONNECTORS_INSTAGRAM_ROUTE,
-} from '../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {useTranslation} from 'react-i18next';
 
@@ -37,7 +30,7 @@ const ChannelsList = () => {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [path, setPath] = useState('');
+
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const connectorsRoute = location.pathname.includes('connectors');
@@ -46,48 +39,37 @@ const ChannelsList = () => {
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const path = `${CONNECTORS_ROUTE}/source/new`;
+
   useLayoutEffect(() => {
     getInfo();
   }, [source, channels]);
 
   const getInfo = () => {
-    let ROUTE;
     switch (source) {
       case Source.facebook:
         setName(t('facebookTitle'));
         setDescription(t('facebookDescription'));
-        ROUTE = CONNECTORS_FACEBOOK_ROUTE;
-        setPath(ROUTE + '/new');
         break;
       case Source.google:
         setName(t('googleTitle'));
         setDescription(t('googleDescription'));
-        ROUTE = CONNECTORS_GOOGLE_ROUTE;
-        setPath(ROUTE + '/new');
         break;
       case Source.twilioSMS:
         setName(t('twilioSmsTitle'));
         setDescription(t('twilioSmsDescription'));
-        ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
-        setPath(ROUTE + '/new');
         break;
       case Source.twilioWhatsApp:
         setName(t('twilioWhatsappTitle'));
         setDescription(t('twilioWhatsappDescription'));
-        ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
-        setPath(ROUTE + '/new');
         break;
       case Source.chatPlugin:
         setName(t('chatpluginTitle'));
         setDescription(t('chatpluginDescription'));
-        ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
-        setPath(ROUTE + '/new');
         break;
       case Source.instagram:
         setName(t('instagramTitle'));
         setDescription(t('instagramDescription'));
-        ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
-        setPath(ROUTE + '/new');
         break;
     }
   };

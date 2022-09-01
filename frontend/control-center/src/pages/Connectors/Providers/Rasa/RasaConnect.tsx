@@ -5,17 +5,21 @@ import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './RasaConnect.module.scss';
-import {ComponentName, ConnectorName} from 'model';
+import {ComponentName} from 'model';
+
+interface ConnectParams {
+  [key: string]: string;
+}
 
 type RasaConnectProps = {
-  createNewConnection: (webhookUrl: string, apiHost: string, token: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
 };
 
 export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPending}: RasaConnectProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector[ConnectorName.rasaConnector]);
+  const componentInfo = useSelector((state: StateModel) => state.data.connector[ComponentName.rasaConnector]);
   const [webhookUrl, setWebhookUrl] = useState(componentInfo?.webhookUrl || '');
   const [apiHost, setApiHost] = useState(componentInfo?.apiHost || '');
   const [token, setToken] = useState(componentInfo?.token || '');
@@ -33,7 +37,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPen
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(webhookUrl, apiHost, token);
+    createNewConnection({webhookUrl, apiHost, token});
   };
 
   return (

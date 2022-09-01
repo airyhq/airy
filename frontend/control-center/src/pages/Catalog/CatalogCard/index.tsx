@@ -43,7 +43,9 @@ const CatalogCard = (props: CatalogCardProps) => {
   const {t} = useTranslation();
   const navigate = useNavigate();
 
-  const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.displayName);
+  const isChannel = componentInfo?.isChannel;
+
+  const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.source, isChannel);
   const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const openInstallModal = () => {

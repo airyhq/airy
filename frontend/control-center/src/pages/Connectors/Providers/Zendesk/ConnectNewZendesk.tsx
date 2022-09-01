@@ -7,8 +7,12 @@ import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
 import {ComponentName} from 'model';
 
+interface ConnectParams {
+  [key: string]: string;
+}
+
 type ConnectNewDialogflowProps = {
-  createNewConnection: (domain: string, token: string, username: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
@@ -39,7 +43,7 @@ export const ConnectNewZendesk = ({
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(domain, token, username);
+    createNewConnection({domain, token, username});
   };
 
   return (

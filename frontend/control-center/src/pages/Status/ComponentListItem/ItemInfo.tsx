@@ -120,7 +120,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 hoverElement={<CheckmarkIcon className={`${styles.icons} ${styles.runningHealthy}`} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
-                tooltipContent={t('healthy')}
+                tooltipContent={t('enabled')}
               />
             ) : isNotHealthy ? (
               <Tooltip

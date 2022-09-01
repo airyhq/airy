@@ -20,6 +20,10 @@
 .buttonNotConfigured:active,
 .buttonNotConfigured:visited {
   background: var(--color-not-configured-orange);
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }
 
 .buttonDisabled,
@@ -27,4 +31,15 @@
 .buttonDisabled:active,
 .buttonDisabled:visited {
   background: var(--color-disable-status-config);
+}
+
+.buttonNotHealthy,
+.buttonNotHealthy:hover,
+.buttonNotHealthy:active,
+.buttonNotHealthy:visited {
+  background: var(--color-red-alert);
+  &:hover {
+    cursor: pointer;
+    background: var(--color-red-alert-pressed);
+  }
 }

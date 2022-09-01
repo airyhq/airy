@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {useTranslation} from 'react-i18next';
@@ -18,10 +18,13 @@ type ChannelCardProps = {
 export const ChannelCard = (props: ChannelCardProps) => {
   const {componentInfo, channelsToShow, componentStatus} = props;
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   return (
-    <Link
-      to={CONNECTORS_ROUTE + '/' + componentInfo.source + '/connected'}
+    <div
+      onClick={event => {
+        event.stopPropagation(), navigate(CONNECTORS_ROUTE + '/' + componentInfo.source + '/connected');
+      }}
       className={styles.container}
       data-cy={cyAddChannelButton}
     >
@@ -38,6 +41,6 @@ export const ChannelCard = (props: ChannelCardProps) => {
           <ArrowRightIcon className={styles.arrowIcon} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 };

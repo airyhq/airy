@@ -3,6 +3,8 @@ import {Button} from 'components';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
 import {ComponentStatus} from '..';
+import {useNavigate} from 'react-router-dom';
+import {STATUS_ROUTE} from '../../../routes/routes';
 
 interface ConfigStatusButtonProps {
   componentStatus: ComponentStatus;
@@ -12,12 +14,33 @@ interface ConfigStatusButtonProps {
 export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
   const {componentStatus, customStyle} = props;
   const {t} = useTranslation();
+  const navigate = useNavigate();
+
+  const handleNavigation = (componentStatus: ComponentStatus, event: Event) => {
+    switch (componentStatus) {
+      case ComponentStatus.notHealthy:
+        event.stopPropagation();
+        navigate(STATUS_ROUTE);
+        break;
+      case ComponentStatus.notConfigured:
+        event.stopPropagation();
+        console.log('navigate to configurationComponent');
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <Button
+      onClick={event => {
+        handleNavigation(componentStatus, event);
+      }}
       styleVariant="extra-small"
       className={`${styles.installationButton} ${customStyle ?? ''} ${
-        componentStatus === ComponentStatus.notConfigured
+        componentStatus === ComponentStatus.notHealthy
+          ? styles.buttonNotHealthy
+          : componentStatus === ComponentStatus.notConfigured
           ? styles.buttonNotConfigured
           : componentStatus === ComponentStatus.enabled
           ? styles.buttonEnabled

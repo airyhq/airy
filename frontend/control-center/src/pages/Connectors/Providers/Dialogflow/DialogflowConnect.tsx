@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {StateModel} from '../../../../reducers';
+import {useCurrentConnectorForSource, useCurrentComponentForSource} from '../../../../selectors';
 import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
-import {ComponentName} from 'model';
+import {Source} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -16,7 +15,6 @@ type DialogflowConnectProps = {
   isEnabled: boolean;
   isConfigured: boolean;
   isPending: boolean;
-  componentName?: string;
 };
 
 export const DialogflowConnect = ({
@@ -25,9 +23,12 @@ export const DialogflowConnect = ({
   isConfigured,
   isPending,
 }: DialogflowConnectProps) => {
-  const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ComponentName.enterpriseDialogflowConnector]
-  );
+  
+  const componentInfo = useCurrentConnectorForSource(Source.dialogflow);
+  const componentName = useCurrentComponentForSource(Source.dialogflow)?.name
+
+  console.log('connectorInfo', componentInfo);
+  console.log('componentName', componentName);
 
   const [projectId, setProjectID] = useState(componentInfo?.projectId);
   const [dialogflowCredentials, setDialogflowCredentials] = useState(componentInfo?.dialogflowCredentials || '');
@@ -71,7 +72,7 @@ export const DialogflowConnect = ({
 
   return (
     <ConfigureConnector
-      componentName={ComponentName.enterpriseDialogflowConnector}
+      componentName={componentName}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}

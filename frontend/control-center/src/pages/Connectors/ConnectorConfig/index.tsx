@@ -14,7 +14,7 @@ import {
   listComponents,
 } from '../../../actions';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
-import {Source, ComponentInfo} from 'model';
+import {Source} from 'model';
 
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';

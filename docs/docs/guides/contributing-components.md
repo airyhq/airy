@@ -3,11 +3,6 @@ title: Contributing Components
 sidebar_label: Contributing Components
 ---
 
-:::warning
-
-This functionality does not yet exist and is under development. With these docs, we aim to elicit feedback from our community (you!) and focus our development efforts. Currently, we do not offer support for 3rd party components, but we are working toward supporting this.
-
-:::
 
 ## Components
 
@@ -24,11 +19,13 @@ With every [installation of Airy](../getting-started/installation/introduction.m
 5. frontend-inbox
 6. frontend-control-center
 
-Airy also provides a marketplace of _plug and play_ components that extend the functionality of your Airy instance. You can install them through the catalog page in the Control Center UI of your Airy Instance.
+Airy also provides a marketplace of _plug and play_ components that extend the functionality of your Airy instance. 
+You can install them through the catalog page in the Control Center UI of your Airy Instance or by using the [install endpoint](../api/endpoints/components.md#install).
 
 In the following, we will explain how to create, update and store components.
 
-The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [catalog](https://github.com/airyhq/airy-/catalog). This repository is made up of directories where each directory contains a component's Helm package its description.
+The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [catalog](https://github.com/airyhq/catalog). 
+This repository is made up of directories where each directory contains a component's metadata.
 
 ## The Component File Structure
 
@@ -37,18 +34,18 @@ Below is a model of the file structure of a single component inside the [`catalo
 ```
 catalog/
 └── [COMPONENT_NAME]/
-    ├── description.yaml
-    └── helm/
-        └── [HELM CHART]
+    └── description.yaml
 ```
 
-The `helm` directory contains all the files that make up the Helm package.
+The `description.yaml` completely defines a component so that it can be installed and displayed in the UI catalog.
 
-The `description.yaml` is the source-of-truth for every component. It includes a description of its functionality, pricing, availability, and version. This file is written by the component maintainer and rendered into the UI of the Control Center.
+It contains a description of its functionality, availability, version, and importantly the url of the helm chart used for installation. 
+This file is written by the component maintainer and rendered into the UI of the Control Center.
 
 :::note
 
-Since all components are maintained by Airy, the versioning of every component is tied to the version of Airy. However, once we support 3rd party components, we will revisit our versioning system.
+Since all components are maintained by Airy, the versioning of every component is tied to the version of Airy. 
+However, once we support 3rd party components, we will revisit our versioning system.
 
 ::::
 

@@ -65,7 +65,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   const connectors = useSelector((state: StateModel) => state.data.connector);
   const connectorInfo = useCurrentComponentForSource(source as Source);
-  console.log('connectorInfo', connectorInfo);
 
   const [currentPage] = useState(Pages.createUpdate);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);

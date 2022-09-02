@@ -23,12 +23,8 @@ export const DialogflowConnect = ({
   isConfigured,
   isPending,
 }: DialogflowConnectProps) => {
-  
   const componentInfo = useCurrentConnectorForSource(Source.dialogflow);
-  const componentName = useCurrentComponentForSource(Source.dialogflow)?.name
-
-  console.log('connectorInfo', componentInfo);
-  console.log('componentName', componentName);
+  const componentName = useCurrentComponentForSource(Source.dialogflow)?.name;
 
   const [projectId, setProjectID] = useState(componentInfo?.projectId);
   const [dialogflowCredentials, setDialogflowCredentials] = useState(componentInfo?.dialogflowCredentials || '');

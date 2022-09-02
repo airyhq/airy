@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {StateModel} from '../../../../reducers';
+import {useCurrentConnectorForSource, useCurrentComponentForSource} from '../../../../selectors';
 import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {ComponentName} from 'model';
+import {Source} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -24,9 +23,9 @@ export const ConnectNewSalesforce = ({
   isConfigured,
   isPending,
 }: ConnectNewSalesforceProps) => {
-  const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ComponentName.enterpriseSalesforceContactsIngestion]
-  );
+  const componentInfo = useCurrentConnectorForSource(Source.salesforce);
+  const componentName = useCurrentComponentForSource(Source.salesforce)?.name;
+
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [password, setPassword] = useState(componentInfo?.password || '');
@@ -50,7 +49,7 @@ export const ConnectNewSalesforce = ({
 
   return (
     <ConfigureConnector
-      componentName={ComponentName.enterpriseSalesforceContactsIngestion}
+      componentName={componentName}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}

@@ -23,9 +23,8 @@ export const ConnectNewZendesk = ({
   isConfigured,
   isPending,
 }: ConnectNewDialogflowProps) => {
-
   const componentInfo = useCurrentConnectorForSource(Source.zendesk);
-  const componentName = useCurrentComponentForSource(Source.zendesk)?.name
+  const componentName = useCurrentComponentForSource(Source.zendesk)?.name;
 
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');

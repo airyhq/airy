@@ -7,7 +7,6 @@ export const useCurrentConnectorForSource = (source: Source) => {
   const connectorInfoArr = Object.entries(connectors).filter(item => item[0].includes(source));
 
   const connectorInfoArrFlat = connectorInfoArr.flat() as [string, {[key: string]: string}];
-    
-    
+
   return {...connectorInfoArrFlat[1]};
 };

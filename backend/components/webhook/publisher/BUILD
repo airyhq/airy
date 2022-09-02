@@ -5,7 +5,7 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/webhook/lib",
+    "//backend/components/webhook/lib",
     "//backend/model/message",
     "//backend/model/metadata",
     "//backend/model/channel",

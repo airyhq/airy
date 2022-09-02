@@ -68,6 +68,9 @@ airy_jvm_deps = [
     "org.rocksdb:rocksdbjni:5.18.3",
     "com.segment.analytics.java:analytics-core:3.1.3",
     "com.segment.analytics.java:analytics:3.1.3",
+    "io.github.openfeign:feign-core:11.8",
+    "io.github.openfeign:feign-jackson:11.8",
+    "io.github.openfeign:feign-okhttp:11.8",
 ]
 
 excluded_artifacts = [

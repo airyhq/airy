@@ -3,6 +3,12 @@ title: Contributing Components
 sidebar_label: Contributing Components
 ---
 
+:::warning
+
+While you can already contribute components exposing them to users via the catalog is still under development.
+
+:::
+
 ## Components
 
 import ComponentDefinition from '../getting-started/componentDefinition.mdx'

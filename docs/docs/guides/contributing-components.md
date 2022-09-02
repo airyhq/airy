@@ -28,14 +28,14 @@ Airy also provides a marketplace of _plug and play_ components that extend the f
 
 In the following, we will explain how to create, update and store components.
 
-The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [airy-components](https://github.com/airyhq/airy-/airy-components). This repository is made up of directories where each directory contains a component's Helm package its description.
+The Helm package and information on each component (except core components) are stored in an external repository managed by Airy called [catalog](https://github.com/airyhq/airy-/catalog). This repository is made up of directories where each directory contains a component's Helm package its description.
 
 ## The Component File Structure
 
-Below is a model of the file structure of a single component inside the [`airy-components`](https://github.com/airyhq/airy-components) repository.
+Below is a model of the file structure of a single component inside the [`catalog`](https://github.com/airyhq/catalog) repository.
 
 ```
-airy-components/
+catalog/
 └── [COMPONENT_NAME]/
     ├── description.yaml
     └── helm/

@@ -2,18 +2,31 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Input} from 'components';
-import {ConnectNewForm} from '../../ConnectNewForm';
+import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
+import {ComponentName} from 'model';
+
+interface ConnectParams {
+  [key: string]: string;
+}
 
 type ConnectNewDialogflowProps = {
-  createNewConnection: (domain: string, token: string, username: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector['zendesk-connector']);
+export const ConnectNewZendesk = ({
+  createNewConnection,
+  isEnabled,
+  isConfigured,
+  isPending,
+}: ConnectNewDialogflowProps) => {
+  const componentInfo = useSelector(
+    (state: StateModel) => state.data.connector[ComponentName.enterpriseZendenkConnector]
+  );
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [token, setToken] = useState(componentInfo?.token || '');
@@ -30,18 +43,24 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(domain, token, username);
+    createNewConnection({domain, token, username});
   };
 
   return (
-    <ConnectNewForm
-      componentName="enterprise-zendesk-connector"
+    <ConfigureConnector
+      componentName={ComponentName.enterpriseZendenkConnector}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!domain || !username || !token}
+      disabled={
+        !domain ||
+        !username ||
+        !token ||
+        (componentInfo?.domain === domain && componentInfo?.username === username && componentInfo?.token === token)
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
+      isPending={isPending}
     >
       <div className={styles.formRow}>
         <Input
@@ -89,6 +108,6 @@ export const ConnectNewZendesk = ({createNewConnection, isEnabled, isConfigured}
           fontClass="font-base"
         />
       </div>
-    </ConnectNewForm>
+    </ConfigureConnector>
   );
 };

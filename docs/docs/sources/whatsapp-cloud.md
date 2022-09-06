@@ -53,7 +53,7 @@ At the end of which you should have the following:
 
 1. A meta developer account and a business account
 2. A meta app with Whatsapp connected as a product
-3. A Whatsapp test phone number
+3. A Whatsapp test phone number id
 
 After you also complete step 2 you have now verified that you can send messages from that test phone number to.
 
@@ -100,7 +100,13 @@ Note down the `webhook_secret` and use it when registering your webhook.
 
 ## Step 4: Connect the webhook
 
-TBD
+In order to be able to receive messages from Whatsapp your Airy instance needs to be accessible from the internet.
+Go to the Whatsapp product section of your Meta app and click on the "Configuration" section.
+Here you need to set the URL to `https://<your-airy-address>/whatsapp` and the secret to the value you noted down earlier.
+When clicking "Verify and Save" the connection will be tested so that you can be sure that everything is working.
+
+Next select the fields that you want to subscribe to.
+You need to select at least `messages` and a version of `14.0` or higher.
 
 ## Step 5: Connect a phone number to Airy
 
@@ -123,6 +129,41 @@ import ConnectWhatsapp from '../api/endpoints/connect-whatsapp.mdx'
 
 You can get a user token associated to your app using the [Facebook graph explorer](https://developers.facebook.com/tools/explorer).
 
+To confirm that this is working you can write a message to this phone number.
+The conversation should appear in your inbox.
+
 ## Step 6: Send and receive messages with the Inbox UI
 
-TBD
+Now let's confirm that we can write messages to our Whatsapp contacts you can select the conversation we created in the previous step in the inbox and write a message.
+
+You can also use the [Messages API endpoint](/api/endpoints/messages#send).
+
+<ButtonBox
+icon={() => <BoltSVG />}
+title="Messages endpoint"
+description="Send messages from your Airy Core instance to different sources through the Messages endpoint"
+link="api/endpoints/messages#send"
+/>
+
+<br />
+
+**Sending a text message**
+
+```json5
+{
+  "conversation_id": "<the conversation id>",
+  "message": {
+    "type": "text",
+    "text": {
+      "preview_url": false,
+      "body": "Welcome to our business"
+    }
+  }
+}
+```
+
+<br />
+
+import InboxMessages from './inbox-messages.mdx'
+
+<InboxMessages />

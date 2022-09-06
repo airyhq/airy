@@ -4,7 +4,9 @@ import java.util.Map;
 
 public abstract class AbstractTopic implements Topic {
     @Override
-    public String name() { return namespace() + String.format("%s.%s.%s", kind(), domain(), dataset()); }
+    public String name() {
+        return namespace() + String.format("%s.%s.%s", kind(), domain(), dataset());
+    }
 
     @Override
     public Map<String, String> config() {

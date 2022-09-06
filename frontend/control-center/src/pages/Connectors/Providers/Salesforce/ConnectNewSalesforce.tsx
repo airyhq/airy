@@ -2,18 +2,31 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import {Input} from 'components';
-import {ConnectNewForm} from '../../ConnectNewForm';
+import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
+import {ComponentName} from 'model';
+
+interface ConnectParams {
+  [key: string]: string;
+}
 
 type ConnectNewSalesforceProps = {
-  createNewConnection: (url: string, username: string, password: string, securityToken: string) => void;
+  createNewConnection: (configValues: ConnectParams) => void;
   isEnabled: boolean;
   isConfigured: boolean;
+  isPending: boolean;
 };
 
-export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigured}: ConnectNewSalesforceProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector['salesforce-contacts-ingestion']);
+export const ConnectNewSalesforce = ({
+  createNewConnection,
+  isEnabled,
+  isConfigured,
+  isPending,
+}: ConnectNewSalesforceProps) => {
+  const componentInfo = useSelector(
+    (state: StateModel) => state.data.connector[ComponentName.enterpriseSalesforceContactsIngestion]
+  );
   const [url, setUrl] = useState(componentInfo?.url || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [password, setPassword] = useState(componentInfo?.password || '');
@@ -32,18 +45,28 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
   };
 
   const enableSubmitConfigData = () => {
-    createNewConnection(url, username, password, securityToken);
+    createNewConnection({url, username, password, securityToken});
   };
 
   return (
-    <ConnectNewForm
-      componentName="enterprise-salesforce-contacts-ingestion"
+    <ConfigureConnector
+      componentName={ComponentName.enterpriseSalesforceContactsIngestion}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}
-      disabled={!isUrlValid || !username || !password || !securityToken}
+      disabled={
+        !isUrlValid ||
+        !username ||
+        !password ||
+        !securityToken ||
+        (componentInfo?.url === url &&
+          componentInfo?.username === username &&
+          componentInfo?.password === password &&
+          componentInfo?.securityToken === securityToken)
+      }
       isConfigured={isConfigured}
       updateConfig={updateConfig}
+      isPending={isPending}
     >
       <div className={styles.formRow}>
         <Input
@@ -106,6 +129,6 @@ export const ConnectNewSalesforce = ({createNewConnection, isEnabled, isConfigur
           fontClass="font-base"
         />
       </div>
-    </ConnectNewForm>
+    </ConfigureConnector>
   );
 };

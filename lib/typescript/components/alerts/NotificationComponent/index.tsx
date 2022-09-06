@@ -66,7 +66,7 @@ export const NotificationComponent = (props: NotificationProps) => {
         show && animType === NotificationType.fade ? styles.translateYAnimFade : styles.translateYAnimSticky
       } ${close && styles.translateYAnimStickyClose}`}
       style={{
-        background: successful === undefined || info ? colorAiryBlue : successful ? colorSoftGreen : colorRedAlert,
+        background: info ? colorAiryBlue : successful ? colorSoftGreen : colorRedAlert,
         animationDuration: `${usedDuration}ms`,
         marginLeft: -(notificationContainerWidth / 2),
       }}

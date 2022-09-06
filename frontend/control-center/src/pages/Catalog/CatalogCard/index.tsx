@@ -1,19 +1,20 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ComponentInfo, getSourceForComponent, NotificationModel} from 'model';
-import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {Button, NotificationComponent, SettingsModal} from 'components';
-import {installComponent} from '../../../actions/catalog';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
+import {StateModel} from '../../../reducers';
+import {installComponent} from '../../../actions/catalog';
+import {ComponentInfo, NotificationModel} from 'model';
+import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {
   getConnectedRouteForComponent,
   getNewChannelRouteForComponent,
   getCatalogProductRouteForComponent,
-} from '../getRouteForCard';
+} from '../../../services';
+import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
-import {StateModel} from '../../../reducers';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -31,34 +32,24 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export const availabilityFormatted = (availability: string) => availability.split(',');
 
-export const DescriptionComponent = (props: {description: string}) => {
-  const {description} = props;
-  const {t} = useTranslation();
-  return <>{t(description)}</>;
-};
-
-export const getDescriptionSourceName = (name: string, displayName: string) => {
-  if (displayName.includes('SMS')) return 'twiliosms';
-  if (displayName.includes('WhatsApp')) return 'twilioWhatsapp';
-  return getSourceForComponent(name)?.replace('.', '');
-};
-
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isInstalling, setIsInstalling] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const installButtonCard = useRef(null);
   const componentCard = useRef(null);
   const {t} = useTranslation();
   const navigate = useNavigate();
 
-  const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.displayName);
-  const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
+  const isChannel = componentInfo?.isChannel;
+
+  const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.source, isChannel);
+  const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const openInstallModal = () => {
-    setIsInstalling(true);
+    setIsPending(true);
     installComponent({name: componentInfo.name})
       .then(() => {
         setNotification({show: true, successful: true, text: t('successfullyInstalled')});
@@ -68,7 +59,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         setNotification({show: true, successful: false, text: t('failedInstall')});
       })
       .finally(() => {
-        setIsInstalling(false);
+        setIsPending(false);
       });
   };
 
@@ -100,15 +91,18 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
 
     return (
-      <Button
+      <SmartButton
+        height={24}
+        width={80}
+        className={styles.smartButton}
         styleVariant="green"
         type="submit"
+        title={t('install').toUpperCase()}
         onClick={openInstallModal}
-        disabled={isInstalling}
+        pending={isPending}
+        disabled={isPending}
         buttonRef={installButtonCard}
-      >
-        {isInstalling ? t('installing').toUpperCase() : t('install').toUpperCase()}
-      </Button>
+      />
     );
   };
 
@@ -133,9 +127,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         <div className={styles.descriptionInfo}>
           {componentInfo.name && (
             <p>
-              <DescriptionComponent
-                description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
-              />
+              <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
             </p>
           )}
 

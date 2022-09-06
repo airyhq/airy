@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import styles from './index.module.scss';
 
 import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevronLeft.svg';
@@ -10,7 +10,7 @@ type PaginationType = {
   pageCount: number;
   pageSize: number;
   currentPage?: number;
-  onPageChange: (page: number) => void;
+  onPageChange: Dispatch<SetStateAction<number>>;
   onSearch?: boolean;
 };
 
@@ -19,6 +19,10 @@ export const Pagination = (props: PaginationType) => {
   const [displayedItems, setDisplayedItems] = useState([1, pageCount]);
   const [endReached, setEndReached] = useState(false);
   const {t} = useTranslation();
+
+  useEffect(() => {
+    displayedItems[0] > totalCount && onPageChange(currentPage - 1);
+  }, [totalCount]);
 
   useEffect(() => {
     currentPage * pageCount + pageCount > totalCount ? setEndReached(true) : setEndReached(false);

@@ -7,12 +7,13 @@
   display: block;
   border-radius: 10px;
   width: 100%;
-  height: calc(100vh - 88px);
+  height: 100%;
 }
 
 .container {
   display: flex;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .headlineContainer {
@@ -165,13 +166,23 @@
 }
 
 .line {
-  width: 100%;
+  width: 200%;
   height: 1px;
   background: rgb(202, 213, 219);
   display: flex;
   position: relative;
   top: -3px;
   left: 0px;
+}
+
+.customizationPageLeftOffset {
+  padding-top: 0;
+  padding-left: 32px;
+}
+
+.defaultTopLeftOffset {
+  padding-top: 36px;
+  padding-left: 32px;
 }
 
 .enableModalContainerWrapper {

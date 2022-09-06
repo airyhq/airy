@@ -3,16 +3,17 @@ import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
-import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent} from 'components';
+import {StateModel} from '../../../reducers';
+import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
+import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {availabilityFormatted, DescriptionComponent, getDescriptionSourceName} from '../CatalogCard';
+import {availabilityFormatted} from '../CatalogCard';
+import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {CATALOG_ROUTE} from '../../../routes/routes';
+import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
-import {getNewChannelRouteForComponent} from '../getRouteForCard';
-import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
 import styles from './index.module.scss';
-import {StateModel} from '../../../reducers';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -34,23 +35,23 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
+
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
-  const [isInstalling, setIsInstalling] = useState(false);
-  const [isUninstalling, setIsUninstalling] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
 
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.displayName);
+  const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');
 
   const openModalInstall = () => {
     if (!isInstalled) {
-      setIsInstalling(true);
+      setIsPending(true);
       installComponent({name: componentInfo.name})
         .then(() => {
           setModal({type: ModalType.install, title: installText});
@@ -61,7 +62,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           setNotification({show: true, successful: false, text: t('failedInstall')});
         })
         .finally(() => {
-          setIsInstalling(false);
+          setIsPending(false);
         });
     } else {
       setModal({type: ModalType.uninstall, title: uninstallText});
@@ -74,7 +75,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   };
 
   const confirmUninstall = () => {
-    setIsUninstalling(true);
+    setIsPending(true);
     setIsModalVisible(false);
     uninstallComponent({name: `${componentInfo.name}`})
       .then(() => {
@@ -84,7 +85,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
         setNotification({show: true, successful: false, text: t('failedUninstall')});
       })
       .finally(() => {
-        setIsUninstalling(false);
+        setIsPending(false);
       });
   };
 
@@ -93,9 +94,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.heading}>
         <h1>{componentInfo?.displayName}</h1>
         <p>
-          <DescriptionComponent
-            description={getDescriptionSourceName(componentInfo.name, componentInfo.displayName) + 'Description'}
-          />
+          <DescriptionComponent description={`${getDescriptionSourceName(componentInfo.source)}Description`} />
         </p>
       </section>
     );
@@ -124,20 +123,15 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
-          <Button
+          <SmartButton
+            title={isInstalled ? t('uninstall') : t('install')}
+            height={50}
+            width={180}
             onClick={openModalInstall}
-            className={styles.installButton}
-            disabled={isInstalling || isUninstalling}
+            pending={isPending}
             styleVariant={isInstalled ? 'warning' : 'green'}
-          >
-            {isInstalling
-              ? t('installing')
-              : isUninstalling
-              ? t('uninstalling')
-              : !isInstalled
-              ? t('install')
-              : t('uninstall')}
-          </Button>
+            className={styles.installButton}
+          />
         </section>
 
         <section className={styles.details}>

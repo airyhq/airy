@@ -3,15 +3,16 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectGoogleChannel} from '../../../../actions';
 
-import {Button, Input} from 'components';
+import {Input, NotificationComponent, SmartButton} from 'components';
 import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
 
 import styles from './GoogleConnect.module.scss';
 
-import {CONNECTORS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../routes/routes';
 import {useCurrentChannel} from '../../../../selectors/channels';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import {NotificationModel} from 'model';
 
 const mapDispatchToProps = {
   connectGoogleChannel,
@@ -27,22 +28,38 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
-  const [buttonTitle, setButtonTitle] = useState(t('connectPage') || '');
+  const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [errorMessage, setErrorMessage] = useState('');
-
-  const CONNECTED_ROUTE = CONNECTORS_CONNECTED_ROUTE;
+  const [notification, setNotification] = useState<NotificationModel>(null);
+  const [isPending, setIsPending] = useState(false);
+  const [newButtonTitle, setNewButtonTitle] = useState('');
 
   const buttonStatus = () => {
-    return !(id.length > 5 && name.length > 0);
+    return (
+      !(id.length > 5 && name.length > 0) ||
+      (channel?.sourceChannelId === id &&
+        channel?.metadata?.name === name &&
+        (channel?.metadata?.imageUrl === image || image === ''))
+    );
   };
 
   useEffect(() => {
+    if (channel?.sourceChannelId !== id && !!channel) {
+      setNotification({show: true, text: t('newChannelInfo'), info: true});
+      setNewButtonTitle(t('connectPage'));
+    } else {
+      setNewButtonTitle(buttonTitle);
+    }
+  }, [id]);
+
+  useEffect(() => {
     if (channel) {
-      setButtonTitle(t('updatePage'));
+      setNewButtonTitle(t('updatePage'));
     }
   }, [channel]);
 
   const connectNewChannel = () => {
+    setIsPending(true);
     const connectPayload: ConnectChannelGoogleRequestPayload = {
       gmbId: id,
       name: name,
@@ -54,10 +71,20 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
 
     connectGoogleChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTED_ROUTE + '/google', {replace: true});
+        navigate(CONNECTORS_ROUTE + '/google/connected', {replace: true});
       })
-      .catch(() => {
+      .catch((error: Error) => {
+        setNotification({
+          show: true,
+          text: buttonTitle === t('connectPage') ? t('createFailed') : 'updateFailed',
+          successful: false,
+          info: false,
+        });
         setErrorMessage(t('errorMessage'));
+        console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -97,9 +124,26 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
           fontClass="font-base"
         />
       </div>
-      <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
-        {buttonTitle}
-      </Button>
+      <SmartButton
+        title={newButtonTitle !== '' ? newButtonTitle : buttonTitle}
+        height={40}
+        width={160}
+        pending={isPending}
+        className={styles.connectButton}
+        type="submit"
+        styleVariant="normal"
+        disabled={buttonStatus() || isPending}
+        onClick={() => connectNewChannel()}
+      />
+      {notification?.show && (
+        <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
+          show={notification.show}
+          text={notification.text}
+          info={notification.info}
+          setShowFalse={setNotification}
+        />
+      )}
     </div>
   );
 };

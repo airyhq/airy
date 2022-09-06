@@ -20,18 +20,11 @@ import {
   cyChannelsTwilioWhatsappList,
   cyChannelsInstagramList,
 } from 'handles';
-import {
-  CONNECTORS_FACEBOOK_ROUTE,
-  CONNECTORS_CHAT_PLUGIN_ROUTE,
-  CONNECTORS_TWILIO_SMS_ROUTE,
-  CONNECTORS_TWILIO_WHATSAPP_ROUTE,
-  CONNECTORS_GOOGLE_ROUTE,
-  CONNECTORS_INSTAGRAM_ROUTE,
-} from '../../../routes/routes';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,
@@ -52,11 +45,11 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
 
-  const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const screenDimensions: ScreenDimensions = {height: screen.height, width: screen.width};
   const ITEM_LINE_HEIGHT = 64;
   const MARGIN_TOP = 128;
@@ -64,13 +57,13 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const PAGINATION_HEIGHT = 54;
   const ADDITIONAL_SPACE = 60;
 
+  const path = `${CONNECTORS_ROUTE}/${source}/new`;
+
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const areConnectedChannels = channels.length > 0 && filteredChannels.length > 0;
-
-  const [currentPage, setCurrentPage] = useState(1);
 
   const listPageSize = Math.floor(
     (screenDimensions.height - offset - MARGIN_TOP - PAGINATION_HEIGHT - PADDING_BOTTOM - ADDITIONAL_SPACE) /
@@ -94,36 +87,23 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   }, [source]);
 
   const getInfo = () => {
-    let ROUTE;
     switch (source) {
       case Source.facebook:
-        ROUTE = CONNECTORS_FACEBOOK_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsFacebookList);
         break;
       case Source.google:
-        ROUTE = CONNECTORS_GOOGLE_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsGoogleList);
         break;
       case Source.twilioSMS:
-        ROUTE = CONNECTORS_TWILIO_SMS_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioSmsList);
         break;
       case Source.twilioWhatsApp:
-        ROUTE = CONNECTORS_TWILIO_WHATSAPP_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsTwilioWhatsappList);
         break;
       case Source.chatPlugin:
-        ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsChatPluginList);
         break;
       case Source.instagram:
-        ROUTE = CONNECTORS_INSTAGRAM_ROUTE;
-        setPath(ROUTE + '/new');
         setDataCyChannelList(cyChannelsInstagramList);
         break;
     }
@@ -194,14 +174,13 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </div>
         )}
       </div>
-
       {areConnectedChannels && (
         <Pagination
           totalCount={filteredChannels.length}
           pageSize={listPageSize}
           pageCount={filteredChannels.length >= listPageSize ? listPageSize : filteredChannels.length}
           currentPage={currentPage}
-          onPageChange={page => setCurrentPage(page)}
+          onPageChange={setCurrentPage}
           onSearch={searchText !== ''}
         />
       )}

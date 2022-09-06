@@ -20,6 +20,7 @@ export const cyTagsTableRowDisplayDeleteModalInput = 'tagsTableRowDisplayDeleteM
 export const cyTagsTableRowDisplayDeleteModalButton = 'tagsTableRowDisplayDeleteModalButton';
 
 export const cyConnectorAddButton = 'connectorAddButton';
+export const cyAddChannelButton = 'addChannelButton';
 
 export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
 export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';

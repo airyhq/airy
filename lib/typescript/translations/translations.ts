@@ -203,6 +203,10 @@ const resources = {
       imageUrl: 'Image URL',
       imageUrlPlaceholder: '(optionally) add an image url',
       imageUrlHint: 'max. 1024x1024 pixel PNG',
+      connect: 'Connect',
+      connecting: 'Connecting...',
+      updating: 'Updating...',
+      newChannelInfo: 'You are about to connect a new channel',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Customise your Airy chat plugin and see the preview.',
@@ -343,6 +347,7 @@ const resources = {
       googleKey: 'A Google Partner Key',
       googleConfigurationText2: `Check Airy's Documentation`,
       googleConfigurationText3: 'for more information.',
+      newGoogleConnection: 'You are about to connect a new channel',
 
       //Instagram
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
@@ -379,6 +384,9 @@ const resources = {
       connectWhatsappNumber: 'Connect Whatsapp Number',
       updateWhatsappNumber: 'Update Whatsapp Number',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'World #1 chat app.',
+
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
 
@@ -409,8 +417,28 @@ const resources = {
       noConnectorsFoundMore: 'and explore more.',
       installed: 'Installed',
       notInstalled: 'Not Installed',
-
+      updateSuccessful: 'Successfully updated',
+      updateFailed: 'Update failed',
+      connectFailed: 'Connect failed',
       noChannelsConnected: 'This connector does not have any connected channels yet.',
+      optional: 'Optional',
+      configuration: 'Configuration',
+
+      //Rasa
+      rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
+      rasaWebhookTooltip: 'Example: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Your Rasa Api Host',
+      rasaApihostTooltip: 'Your Rasa Api Host',
+      rasaTokenPlaceholder: 'Your Rasa Token',
+      rasaTokenTooltip: 'Your Rasa Token',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Your App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Example: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Your App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Example: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Your Phone Number',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Example: +13385281291',
 
       //Catalog
       categories: 'Categories',
@@ -446,7 +474,6 @@ const resources = {
       subscribeCapital: 'Subscribe',
       updateCapital: 'Update',
       subscribing: 'Subscribing...',
-      updating: 'Updating...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALL EVENTS',
       subscribe: 'Subscribe',
@@ -662,6 +689,10 @@ const resources = {
       imageUrl: 'Bild URL',
       imageUrlPlaceholder: '(optional) eine Bildurl hinzufügen',
       imageUrlHint: 'max. 1024x1024 Pixel PNG',
+      connect: 'Verbinden',
+      connecting: 'Verbinden...',
+      updating: 'Aktualisieren...',
+      newChannelInfo: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Passen Sie Ihr Airy-Chat-Plugin an und sehen Sie sich die Vorschau an.',
@@ -781,6 +812,9 @@ const resources = {
       securityToken: 'Sicherheitstoken',
       yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'Weltweite Chat-App Nr. 1',
+
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
 
@@ -823,6 +857,7 @@ const resources = {
       googleKey: 'Ein Google-Partner-Schlüssel',
       googleConfigurationText2: 'Prüfen Sie die Dokumentation von Airy',
       googleConfigurationText3: 'für weitere Informationen.',
+      newGoogleConnection: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
       //Instagram
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
@@ -868,8 +903,28 @@ const resources = {
       noConnectorsFoundMore: 'und erkunden Sie mehr.',
       installed: 'Installiert',
       notInstalled: 'Nicht Installiert',
-
+      updateSuccessful: 'Erfolgreich aktualisiert',
+      updateFailed: 'Aktualisierung fehlgeschlagen',
+      connectFailed: 'Verbinden fehlgeschlagen',
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
+      optional: 'Optional',
+      configuration: 'Konfiguration',
+
+      //Rasa
+      rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
+      rasaWebhookTooltip: 'Beispiel: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Ihr Rasa Api Host',
+      rasaApihostTooltip: 'Ihr Rasa Api-Host',
+      rasaTokenPlaceholder: 'Ihr Rasa Token',
+      rasaTokenTooltip: 'Ihr Rasa-Token',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Ihre App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Beispiel: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Ihr App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Beispiel: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Ihre Handynummer',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Beispiel: +49152475381291',
 
       //Catalog
       categories: 'Kategorien',
@@ -905,7 +960,6 @@ const resources = {
       subscribeCapital: 'Abonnieren',
       updateCapital: 'Aktualisieren',
       subscribing: 'Abonnieren...',
-      updating: 'Aktualisieren...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'ALLE EVENTS',
       subscribe: 'Abonnieren',
@@ -1113,6 +1167,10 @@ const resources = {
       imageUrl: `URL d'une image`,
       imageUrlPlaceholder: `(facultatif) ajouter l'URL d'une image`,
       imageUrlHint: 'max. 1024x1024 pixels PNG',
+      connect: 'Connexion',
+      connecting: 'Connexion...',
+      updating: 'Mise à jour...',
+      newChannelInfo: 'Vous êtes sur le point de connecter un nouveau canal',
 
       //Customize Chatplugin
       chatpluginCustomize: `Personnalisez votre plugin de chat Airy et voyez l'aperçu.`,
@@ -1254,6 +1312,7 @@ const resources = {
       googleKey: 'Une clé de compte de service Google',
       googleConfigurationText2: `Vérifiez la documentation d'Airy`,
       googleConfigurationText3: `pour plus d'informations.`,
+      newGoogleConnection: 'Vous êtes sur le point de connecter un nouveau canal',
 
       //Instagram
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
@@ -1289,6 +1348,9 @@ const resources = {
       connectWhatsappNumber: 'Connecter le numéro Whatsapp',
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'Première application de chat au monde',
+
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
 
@@ -1319,8 +1381,28 @@ const resources = {
       noConnectorsFoundMore: 'et explorer davantage.',
       installed: 'Installé(s)',
       notInstalled: 'Non installé(s)',
-
+      updateSuccessful: 'Mise à jour réussie',
+      updateFailed: 'Mise à jour échouée',
+      connectFailed: 'La connexion a échoué',
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
+      optional: 'Optionnel',
+      configuration: 'Configuration',
+
+      //Rasa
+      rasaWebhookPlaceholder: 'URL Webhook de Rasa',
+      rasaWebhookTooltip: 'Exemple : http://webhooks.rasa',
+      rasaApihostPlaceholder: `Hôte de l'API Rasa`,
+      rasaApihostTooltip: `Hôte de l'API Rasa`,
+      rasaTokenPlaceholder: 'Token Rasa',
+      rasaTokenTooltip: 'Token Rasa',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Votre App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Exemple: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Votre App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Exemple: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Votre numéro de téléphone',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Exemple: +33152475381291',
 
       //Catalog
       categories: 'Catégories',
@@ -1356,7 +1438,6 @@ const resources = {
       subscribeCapital: 'Inscription au webhook',
       updateCapital: 'Mise à jour',
       subscribing: 'Inscription en cours...',
-      updating: 'Mise à jour...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TOUS LES ÉVÉNEMENTS',
       subscribe: 'Inscrire',
@@ -1568,6 +1649,10 @@ const resources = {
       imageUrl: 'URL de la imagen',
       imageUrlPlaceholder: '(opcionalmente) añadir una url de imagen',
       imageUrlHint: 'PNG de 1024x1024 píxeles como máximo',
+      connect: 'Conectar',
+      connecting: 'Conectando...',
+      updating: 'Actualizar...',
+      newChannelInfo: 'Está a punto de conectar un nuevo canal',
 
       //Customize Chatplugin
       chatpluginCustomize: 'Personalice su plugin de chat Airy y vea la vista previa.',
@@ -1708,6 +1793,7 @@ const resources = {
       googleKey: 'Una clave de socio de Google',
       googleConfigurationText2: `Compruebe la documentación de Airy`,
       googleConfigurationText3: 'para más información.',
+      newGoogleConnection: 'Estás a punto de conectar un nuevo canal',
 
       //Instagram
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
@@ -1744,6 +1830,9 @@ const resources = {
       connectWhatsappNumber: 'Conectar el número de Whatsapp',
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
+      //WhatsApp Business Cloud
+      whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
+
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
 
@@ -1774,8 +1863,28 @@ const resources = {
       noConnectorsFoundMore: 'y explorar más.',
       installed: 'Instalado(s)',
       notInstalled: 'No Instalado(s)',
-
+      updateSuccessful: 'Actualizado con éxito',
+      updateFailed: 'Actualización fallida',
+      connectFailed: 'Conexión fallida',
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
+      optional: 'Opcional',
+      configuration: 'Configuración',
+
+      //Rasa
+      rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
+      rasaWebhookTooltip: 'Ejemplo: http://webhooks.rasa',
+      rasaApihostPlaceholder: 'Su anfitrión Rasa Api',
+      rasaApihostTooltip: 'Su anfitrión Rasa Api',
+      rasaTokenPlaceholder: 'Su ficha Rasa',
+      rasaTokenTooltip: 'Su ficha Rasa',
+
+      //Whatsapp Business Cloud
+      whatsappBusinessCloudAppIdPlaceholder: 'Su App ID',
+      whatsappBusinessCloudAppIdTooltip: 'Ejemplo: 1116544774977108',
+      whatsappBusinessCloudAppSecretPlaceholder: 'Su App Secret',
+      whatsappBusinessCloudAppSecretToolTip: 'Ejemplo: myAppSecret',
+      whatsappBusinessCloudPhoneNumberPlaceholder: 'Su número de teléfono',
+      whatsappBusinessCloudPhoneNumberTooltip: 'Ejemplo: +34152475381291',
 
       //Catalog
       categories: 'Categorías',
@@ -1811,7 +1920,6 @@ const resources = {
       subscribeCapital: 'Suscribirse',
       updateCapital: 'Actualización',
       subscribing: 'Suscribirse...',
-      updating: 'Actualizar...',
       webhookCapslock: 'WEBHOOK',
       allEvents: 'TODOS LOS EVENTOS',
       subscribe: 'Suscripción',

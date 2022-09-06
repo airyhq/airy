@@ -49,8 +49,6 @@ const channelsReducer = (state = {}, action: Action): ChannelsState => {
           metadata: merge({}, state[action.payload.identifier]?.metadata, action.payload.metadata),
         },
       };
-    case getType(actions.setCurrentChannelsAction):
-      return action.payload.reduce(setChannel, {});
     case getType(actions.addChannelsAction):
       return action.payload.reduce(setChannel, state);
     case getType(actions.setChannelAction):

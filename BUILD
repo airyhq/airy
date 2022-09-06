@@ -67,6 +67,15 @@ java_library(
     ],
 )
 
+java_library(
+    name = "feign",
+    exports = [
+        "@maven//:io_github_openfeign_feign_core",
+        "@maven//:io_github_openfeign_feign_jackson",
+        "@maven//:io_github_openfeign_feign_okhttp",
+    ],
+)
+
 java_plugin(
     name = "lombok_plugin",
     generates_api = True,

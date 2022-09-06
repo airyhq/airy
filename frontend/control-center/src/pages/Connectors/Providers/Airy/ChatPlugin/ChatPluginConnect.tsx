@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 import {apiHostUrl} from '../../../../../httpClient';
 import {StateModel} from '../../../../../reducers';
@@ -8,22 +9,20 @@ import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions';
 import {cyChannelCreatedChatPluginCloseButton} from 'handles';
 
-import {Button, LinkButton, SettingsModal} from 'components';
-import {Channel, Source} from 'model';
+import {Button, LinkButton, NotificationComponent, SettingsModal} from 'components';
+import {Channel, NotificationModel, Source, ChatpluginConfig, DefaultConfig} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 
-import styles from './ChatPluginConnect.module.scss';
+import {CONNECTORS_ROUTE} from '../../../../../routes/routes';
 
-import {CONNECTORS_CHAT_PLUGIN_ROUTE, CONNECTORS_CONNECTED_ROUTE} from '../../../../../routes/routes';
-import {useTranslation} from 'react-i18next';
 import CreateUpdateSection from './sections/CreateUpdateSection/CreateUpdateSection';
 import {CustomiseSection} from './sections/CustomiseSection/CustomiseSection';
 import {InstallSection} from './sections/InstallSection/InstallSection';
-import {ChatpluginConfig, DefaultConfig} from 'model';
+import styles from './ChatPluginConnect.module.scss';
 
 export enum Pages {
   createUpdate = 'create-update',
@@ -45,17 +44,22 @@ const mapStateToProps = (state: StateModel) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
+  const params = useParams();
   const {channelId} = useParams();
+  const newChannel = params['*'] === 'new';
+
   const currentChannel = props.channels.find((channel: Channel) => channel.id === channelId);
   const [chatpluginConfig, setChatpluginConfig] = useState<ChatpluginConfig>(DefaultConfig);
-  const [currentPage, setCurrentPage] = useState(channelId !== 'new' ? Pages.customization : Pages.createUpdate);
+  const [currentPage, setCurrentPage] = useState(channelId ? Pages.customization : Pages.createUpdate);
   const [showCreatedModal, setShowCreatedModal] = useState(false);
   const [currentChannelId, setCurrentChannelId] = useState('');
+  const [notification, setNotification] = useState<NotificationModel>(null);
   const displayName = currentChannel?.metadata?.name || '';
   const imageUrl = currentChannel?.metadata?.imageUrl || '';
+
   const navigate = useNavigate();
   const {t} = useTranslation();
-  const CHAT_PLUGIN_ROUTE = CONNECTORS_CHAT_PLUGIN_ROUTE;
+  const CHAT_PLUGIN_ROUTE = `${CONNECTORS_ROUTE}/chatplugin`;
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
@@ -68,12 +72,17 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
       .then((id: string) => {
         setCurrentChannelId(id);
         setShowCreatedModal(true);
+      })
+      .catch((error: Error) => {
+        console.error(error);
       });
   };
 
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm(t('deleteChannel'))) {
-      props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
+      props.disconnectChannel({source: 'chatplugin', channelId: channel.id}).catch((error: Error) => {
+        console.error(error);
+      });
     }
   };
 
@@ -99,17 +108,24 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
   const handleClose = () => {
     setShowCreatedModal(false);
-    navigate(`${CONNECTORS_CONNECTED_ROUTE}/${Source.chatPlugin}`);
+    navigate(`${CONNECTORS_ROUTE}/${Source.chatPlugin}/connected`);
   };
 
   const PageContent = () => {
     switch (currentPage) {
       case Pages.createUpdate:
-        if (channelId === 'new') {
+        if (newChannel) {
           return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
         }
         if (channelId?.length > 0) {
-          return <CreateUpdateSection channel={currentChannel} displayName={displayName} imageUrl={imageUrl} />;
+          return (
+            <CreateUpdateSection
+              channel={currentChannel}
+              displayName={displayName}
+              imageUrl={imageUrl}
+              setNotification={setNotification}
+            />
+          );
         }
         return <OverviewSection />;
       case Pages.customization:
@@ -144,7 +160,7 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.listChannelName}>{channel.metadata?.name}</div>
             <div className={styles.listButtons}>
-              <Link className={styles.listButtonEdit} to={`${CONNECTORS_CHAT_PLUGIN_ROUTE}/${channel.id}`}>
+              <Link className={styles.listButtonEdit} to={`${CONNECTORS_ROUTE}/chatplugin/${channel.id}`}>
                 {t('edit')}
               </Link>
               <LinkButton
@@ -163,61 +179,69 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
-        <div className={styles.channelsLineContainer}>
-          <div className={styles.channelsLineItems}>
-            <span
-              onClick={showCreateUpdate}
-              className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
-            >
-              {channelId === 'new' ? t('create') : t('update')}
-            </span>
-            {channelId !== 'new' && (
+    <>
+      <div className={styles.container}>
+        <div className={styles.wrapper} style={currentPage === Pages.customization ? {width: '70%'} : {width: '100%'}}>
+          <div className={styles.channelsLineContainer}>
+            <div className={styles.channelsLineItems}>
               <span
-                onClick={showCustomization}
-                className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+                onClick={showCreateUpdate}
+                className={currentPage === Pages.createUpdate ? styles.activeItem : styles.inactiveItem}
               >
-                {t('customize')}
+                {newChannel ? t('create') : t('update')}
               </span>
-            )}
-            {channelId !== 'new' && (
-              <span
-                onClick={showInstall}
-                className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
-              >
-                {t('install')}
-              </span>
-            )}
+              {!newChannel && (
+                <span
+                  onClick={showCustomization}
+                  className={currentPage === Pages.customization ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('customize')}
+                </span>
+              )}
+              {!newChannel && (
+                <span
+                  onClick={showInstall}
+                  className={currentPage === Pages.install ? styles.activeItem : styles.inactiveItem}
+                >
+                  {t('install')}
+                </span>
+              )}
+            </div>
+            <div className={styles.line} />
           </div>
-          <div className={styles.line} />
+          <div
+            className={
+              currentPage === Pages.customization ? styles.customizationPageLeftOffset : styles.defaultTopLeftOffset
+            }
+          >
+            <PageContent />
+          </div>
         </div>
-        <div
-          style={
-            currentPage === Pages.customization
-              ? {paddingTop: '0px', paddingLeft: '32px'}
-              : {paddingTop: '36px', paddingLeft: '32px'}
-          }
-        >
-          <PageContent />
-        </div>
+        {showCreatedModal && (
+          <SettingsModal
+            Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
+            wrapperClassName={styles.enableModalContainerWrapper}
+            containerClassName={styles.enableModalContainer}
+            title={t('successfullyCreatedChannel')}
+            close={handleClose}
+            headerClassName={styles.headerModal}
+            dataCyCloseButton={cyChannelCreatedChatPluginCloseButton}
+          >
+            <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
+              {t('customize')}
+            </Button>
+          </SettingsModal>
+        )}
+        {notification?.show && (
+          <NotificationComponent
+            show={notification.show}
+            text={notification.text}
+            successful={notification.successful}
+            setShowFalse={setNotification}
+          />
+        )}
       </div>
-      {showCreatedModal && (
-        <SettingsModal
-          Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
-          wrapperClassName={styles.enableModalContainerWrapper}
-          containerClassName={styles.enableModalContainer}
-          title={t('successfullyCreatedChannel')}
-          close={handleClose}
-          headerClassName={styles.headerModal}
-          dataCyCloseButton={cyChannelCreatedChatPluginCloseButton}
-        >
-          <Button styleVariant="normal" type="submit" onClick={handleCustomize} className={styles.modalButton}>
-            {t('customize')}
-          </Button>
-        </SettingsModal>
-      )}
-    </div>
+    </>
   );
 };
 

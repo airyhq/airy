@@ -1,28 +1,37 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {SourceInfo} from '../../../components/SourceInfo';
-import {Link} from 'react-router-dom';
+import {getChannelAvatar} from '../../../components/ChannelAvatar';
+import {useNavigate} from 'react-router-dom';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {useTranslation} from 'react-i18next';
 import {ConfigStatusButton} from '../ConfigStatusButton';
-import {ComponentStatus} from '..';
+import {ComponentStatus, ConnectorCardComponentInfo} from '..';
+import {cyAddChannelButton} from 'handles';
 
 type ChannelCardProps = {
-  sourceInfo: SourceInfo;
+  componentInfo: ConnectorCardComponentInfo;
   channelsToShow?: number;
   componentStatus?: ComponentStatus;
 };
 
 export const ChannelCard = (props: ChannelCardProps) => {
-  const {sourceInfo, channelsToShow, componentStatus} = props;
+  const {componentInfo, channelsToShow, componentStatus} = props;
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   return (
-    <Link to={sourceInfo.channelsListRoute} className={styles.container} data-cy={sourceInfo.dataCyAddChannelButton}>
+    <div
+      onClick={event => {
+        event.stopPropagation(), navigate(CONNECTORS_ROUTE + '/' + componentInfo.source + '/connected');
+      }}
+      className={styles.container}
+      data-cy={cyAddChannelButton}
+    >
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>
-          {sourceInfo.image}
-          {sourceInfo.title}
+          {getChannelAvatar(componentInfo.source)}
+          {componentInfo.displayName}
         </div>
         <div className={styles.linkContainer}>
           {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
@@ -32,6 +41,6 @@ export const ChannelCard = (props: ChannelCardProps) => {
           <ArrowRightIcon className={styles.arrowIcon} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 };

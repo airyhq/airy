@@ -21,8 +21,6 @@ import Connectors from './pages/Connectors';
 import Webhooks from './pages/Webhooks';
 import Status from './pages/Status';
 import Inbox from './pages/Inbox';
-import ChannelsList from './pages/Inbox/ChannelsList';
-import InboxOutlet from './pages/Inbox/InboxOutlet';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 
@@ -69,16 +67,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route index element={<Catalog />} />
           </Route>
 
-          <Route path={`${INBOX_ROUTE}/*`} element={<InboxOutlet />}>
-            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
-            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ChannelsList />} />
-            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
-            <Route path={`google/:channelId`} element={<GoogleConnect />} />
-            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-            <Route index element={<Inbox />} />
-          </Route>
+          <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />
 
           <Route element={<NotFound />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />

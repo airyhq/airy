@@ -151,6 +151,7 @@ const resources = {
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
       restart: 'Restart',
       restartComponentUpdate: 'We will restart the component to apply your update.',
+      pageUnderConstruction: 'page under construction - coming soon!',
 
       //Channels
       toConfigure: 'To configure',
@@ -638,6 +639,7 @@ const resources = {
       Update: 'Aktualisieren',
       restart: 'Neu starten',
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
+      pageUnderConstruction: 'Seite im Aufbau - kommt bald!',
 
       //Channels
       toConfigure: 'Konfigurieren',
@@ -1116,6 +1118,7 @@ const resources = {
       Update: 'Mettre à jour',
       restart: 'Redémarrer',
       restartComponentUpdate: 'Nous allons redémarrer le composant pour appliquer votre mise à jour.',
+      pageUnderConstruction: 'page en construction - bientôt disponible !',
 
       //Channels
       toConfigure: 'configuration',
@@ -1598,6 +1601,7 @@ const resources = {
       Update: 'Actualizar',
       restart: 'Reiniciar',
       restartComponentUpdate: 'Reiniciaremos el componente para aplicar su actualización.',
+      pageUnderConstruction: 'página en construcción - próximamente!',
 
       //Channels
       toConfigure: 'configurar',

@@ -95,7 +95,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   }, [connectorInfo]);
 
   useEffect(() => {
-    if (connectorInfo && connectors) {
+    if (connectors && connectorInfo && connectorInfo?.name) {
       const connectorName = removePrefix(connectorInfo.name);
       if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) {
         setIsConfigured(true);
@@ -108,7 +108,8 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   }, [isCatalogList]);
 
   useEffect(() => {
-    if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
+    if (components && connectorInfo && connectorInfo?.name)
+      setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
   }, [connectorInfo, components]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
@@ -212,28 +213,19 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
         );
       }
 
-      if (source === Source.chatPlugin) {
-        return <ChatPluginConnect />;
-      }
-      if (source === Source.facebook) {
-        return <FacebookConnect />;
-      }
-      if (source === Source.instagram) {
-        return <InstagramConnect />;
-      }
-      if (source === Source.google) {
-        return <GoogleConnect />;
-      }
-      if (source === Source.twilioSMS) {
-        return <TwilioSmsConnect />;
-      }
-      if (source === Source.twilioWhatsApp) {
-        return <TwilioWhatsappConnect />;
-      }
+      if (source === Source.chatPlugin) return <ChatPluginConnect />;
 
-      if (source === Source.viber) {
-        return <p>configuration page under construction - coming soon!</p>;
-      }
+      if (source === Source.facebook) return <FacebookConnect />;
+
+      if (source === Source.instagram) return <InstagramConnect />;
+
+      if (source === Source.google) return <GoogleConnect />;
+
+      if (source === Source.twilioSMS) return <TwilioSmsConnect />;
+
+      if (source === Source.twilioWhatsApp) return <TwilioWhatsappConnect />;
+
+      if (source === Source.viber) return <p>{t('pageUnderConstruction')}</p>;
     }
 
     return <ConnectedChannelsList offset={offset} />;

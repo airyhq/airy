@@ -32,7 +32,6 @@ export const DialogflowConnect = ({
     componentInfo?.suggestionConfidenceLevel || ''
   );
   const [replyConfidenceLevel, setReplyConfidenceLevel] = useState(componentInfo?.replyConfidenceLevel || '');
-  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [processorWaitingTime, setProcessorWaitingTime] = useState(
     componentInfo?.connectorStoreMessagesProcessorMaxWaitMillis || '5000'
   );
@@ -40,6 +39,7 @@ export const DialogflowConnect = ({
     componentInfo?.connectorStoreMessagesProcessorCheckPeriodMillis || '2500'
   );
   const [defaultLanguage, setDefaultLanguage] = useState(componentInfo?.connectorDefaultLanguage || 'en');
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
 
   const {t} = useTranslation();
 

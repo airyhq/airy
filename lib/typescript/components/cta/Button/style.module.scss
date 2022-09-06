@@ -58,6 +58,23 @@
   }
 }
 
+.greenOutlineButton {
+  @extend .extraSmallButton;
+  background-color: transparent;
+  border: 1px solid var(--color-soft-green);
+  color: var(--color-soft-green);
+
+  &:hover {
+    background-color: rgba($color: #0da36b, $alpha: 0.2);
+    border: 1px solid #0da36b;
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+    color: var(--color-background-white);
+  }
+}
+
 .smallButton {
   @extend .button;
   @include font-base;

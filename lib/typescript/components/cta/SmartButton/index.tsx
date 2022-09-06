@@ -12,7 +12,8 @@ type styleVariantType =
   | 'warning'
   | 'link'
   | 'text'
-  | 'green';
+  | 'green'
+  | 'greenOutline';
 
 type ButtonProps = {
   title: string;
@@ -58,6 +59,8 @@ export const SmartButton = ({
         return styles.extraSmallButton;
       case 'green':
         return styles.greenButton;
+      case 'greenOutline':
+        return styles.greenOutlineButton;
       case 'small':
         return styles.smallButton;
       case 'outline':

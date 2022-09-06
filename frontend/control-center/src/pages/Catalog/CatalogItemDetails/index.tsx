@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {StateModel} from '../../../reducers';
-import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted} from '../CatalogCard';
@@ -14,6 +14,7 @@ import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
+import {RequestAccessModal} from '../RequestAccessModal';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -38,9 +39,11 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isRequestAccessModalVisible, setIsRequestAccessModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [requestAccessNotification, setRequestAccessNotification] = useState<NotificationModel>(null);
 
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -124,12 +127,24 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
         <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
           <SmartButton
-            title={isInstalled ? t('uninstall') : t('install')}
+            title={
+              componentInfo?.price === ConnectorPrice.requestAccess
+                ? t('requestAccess')
+                : isInstalled
+                ? t('uninstall')
+                : t('install')
+            }
             height={50}
             width={180}
-            onClick={openModalInstall}
+            onClick={
+              componentInfo?.price === ConnectorPrice.requestAccess
+                ? () => setIsRequestAccessModalVisible(true)
+                : openModalInstall
+            }
             pending={isPending}
-            styleVariant={isInstalled ? 'warning' : 'green'}
+            styleVariant={
+              componentInfo?.price === ConnectorPrice.requestAccess ? 'greenOutline' : isInstalled ? 'warning' : 'green'
+            }
             className={styles.installButton}
           />
         </section>
@@ -154,7 +169,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           <section className={styles.detailInfo}>
             <p className={styles.bolded}>{t('price')}:</p>
             <button key={componentInfo?.price}>
-              {componentInfo?.price === 'REQUEST ACCESS' ? (
+              {componentInfo?.price === ConnectorPrice.requestAccess ? (
                 <a href="mailto:componentsaccess@airy.co" target="_blank" rel="noreferrer">
                   {t(componentInfo?.price)}
                 </a>
@@ -195,6 +210,12 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
             )}
           </SettingsModal>
         )}
+        {isRequestAccessModalVisible && (
+          <RequestAccessModal
+            setIsModalVisible={setIsRequestAccessModalVisible}
+            setNotification={setRequestAccessNotification}
+          />
+        )}
       </>
     );
   };
@@ -215,6 +236,15 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           text={notification.text}
           successful={notification.successful}
           setShowFalse={setNotification}
+        />
+      )}
+      {requestAccessNotification?.show && (
+        <NotificationComponent
+          type="sticky"
+          show={requestAccessNotification.show}
+          text={requestAccessNotification.text}
+          successful={requestAccessNotification.successful}
+          setShowFalse={setRequestAccessNotification}
         />
       )}
     </>

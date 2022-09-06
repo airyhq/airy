@@ -222,6 +222,7 @@
 
 .infoCircleText {
   @include font-s-bold;
+  line-height: 14px;
   display: none;
   background: var(--color-tooltip-gray);
   border-radius: 4px;

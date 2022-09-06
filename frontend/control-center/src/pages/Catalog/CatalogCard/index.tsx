@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
-import {ComponentInfo, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {
@@ -15,6 +15,7 @@ import {
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
+import {RequestAccessModal} from '../RequestAccessModal';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -36,8 +37,10 @@ const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isRequestModalVisible, setIsRequestModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [requestAccessNotification, setRequestAccessNotification] = useState<NotificationModel>(null);
   const installButtonCard = useRef(null);
   const componentCard = useRef(null);
   const {t} = useTranslation();
@@ -77,6 +80,20 @@ const CatalogCard = (props: CatalogCardProps) => {
   };
 
   const CatalogCardButton = () => {
+    if (componentInfo?.price === ConnectorPrice.requestAccess) {
+      return (
+        <Button
+          styleVariant="greenOutline"
+          type="submit"
+          onClick={() => setIsRequestModalVisible(true)}
+          buttonRef={installButtonCard}
+          className={styles.requestAccessButton}
+        >
+          {t('requestAccess').toUpperCase()}
+        </Button>
+      );
+    }
+
     if (isInstalled) {
       return (
         <Button
@@ -155,6 +172,13 @@ const CatalogCard = (props: CatalogCardProps) => {
             </Button>
           </SettingsModal>
         )}
+
+        {isRequestModalVisible && (
+          <RequestAccessModal
+            setIsModalVisible={setIsRequestModalVisible}
+            setNotification={setRequestAccessNotification}
+          />
+        )}
       </article>
       {notification?.show && (
         <NotificationComponent
@@ -162,6 +186,15 @@ const CatalogCard = (props: CatalogCardProps) => {
           text={notification.text}
           successful={notification.successful}
           setShowFalse={setNotification}
+        />
+      )}
+      {requestAccessNotification?.show && (
+        <NotificationComponent
+          type="sticky"
+          show={requestAccessNotification.show}
+          text={requestAccessNotification.text}
+          successful={requestAccessNotification.successful}
+          setShowFalse={setRequestAccessNotification}
         />
       )}
     </>

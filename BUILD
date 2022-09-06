@@ -175,6 +175,14 @@ java_library(
     ],
 )
 
+java_library(
+    name = "k8s_client",
+    exports = [
+        "@maven//:io_kubernetes_client_java",
+        "@maven//:io_kubernetes_client_java_api",
+    ],
+)
+
 exports_files(
     [
         "package.json",

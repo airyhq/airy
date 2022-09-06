@@ -7,7 +7,7 @@ app_deps = [
     "//backend:base_app",
     "//lib/java/spring/web:spring-web",
     "//:springboot_actuator",
-    "@maven//:io_kubernetes_client_java",
+    "//:k8s_client",
 ]
 
 springboot(

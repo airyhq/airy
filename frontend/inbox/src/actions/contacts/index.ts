@@ -28,7 +28,7 @@ export const listContactsAction = createAction(CONTACT_LIST, (contacts: Contact[
 
 export const deleteContactAction = createAction(CONTACT_DELETE, (id: string) => id)<string>();
 
-export const listContacts = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
+export const listContacts = () => async (dispatch: Dispatch<any>, state: () => StateModel) => {
   const pageSize = 54;
   const cursor = state().data.contacts.all.paginationData.nextCursor;
   HttpClientInstance.listContacts({page_size: pageSize, cursor: cursor}).then(
@@ -40,7 +40,7 @@ export const listContacts = () => (dispatch: Dispatch<any>, state: () => StateMo
 };
 
 //deleteContact is disabled in the Contacts page (temporarily)
-export const deleteContact = (id: string) => (dispatch: Dispatch<any>) => {
+export const deleteContact = (id: string) => async (dispatch: Dispatch<any>) => {
   HttpClientInstance.deleteContact(id).then(() => {
     dispatch(deleteContactAction(id));
     return Promise.resolve(true);
@@ -49,7 +49,7 @@ export const deleteContact = (id: string) => (dispatch: Dispatch<any>) => {
 
 export const getContactDetails =
   ({id, conversationId}: GetContactDetailsRequestPayload) =>
-  (dispatch: Dispatch<any>) => {
+  async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.getContactDetails({id, conversationId}).then((response: Contact) => {
       dispatch(getContactDetailsAction(response.id, response));
       return Promise.resolve(response.id);
@@ -57,7 +57,7 @@ export const getContactDetails =
   };
 
 export const updateContactDetails =
-  (updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) => (dispatch: Dispatch<any>) => {
+  (updateContactDetailsRequestPayload: UpdateContactDetailsRequestPayload) => async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.updateContactDetails(updateContactDetailsRequestPayload).then(() => {
       dispatch(updateContactDetailsAction(updateContactDetailsRequestPayload));
       return Promise.resolve(true);

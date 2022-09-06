@@ -83,7 +83,9 @@ const ContactInformation = (props: ContactInformationProps) => {
   }, [editModeOn, isContactDetailsExpanded, cancelEdit]);
 
   const saveEditDisplayName = () => {
-    updateContactDetails({id: contact.id, displayName: displayName});
+    updateContactDetails({id: contact.id, displayName: displayName}).catch((error: Error) => {
+      console.error(error);
+    });
 
     if (contact?.conversations) {
       Object.keys(contact.conversations).forEach(conversationId => {

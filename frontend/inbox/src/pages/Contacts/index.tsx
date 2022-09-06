@@ -38,7 +38,9 @@ const Contacts = (props: ContactsProps) => {
 
   useEffect(() => {
     setPageTitle('Contacts');
-    listContacts();
+    listContacts().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   const pageSize = contacts.length >= listPageSize ? listPageSize : contacts.length;
@@ -61,7 +63,10 @@ const Contacts = (props: ContactsProps) => {
   }, [currentTableData]);
 
   useEffect(() => {
-    lastPage % fetchNextPage == 0 && listContacts();
+    lastPage % fetchNextPage == 0 &&
+      listContacts().catch((error: Error) => {
+        console.error(error);
+      });
   }, [currentPage]);
 
   const handleConversationId = (conversationId: string) => setConversationId(conversationId);

@@ -8,7 +8,6 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
 import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';

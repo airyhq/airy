@@ -14,7 +14,7 @@ import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
-import {RequestAccessModal} from '../RequestAccessModal';
+import RequestAccessModal from '../RequestAccessModal';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,

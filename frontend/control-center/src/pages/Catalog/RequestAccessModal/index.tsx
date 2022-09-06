@@ -4,16 +4,25 @@ import {Button, Input, SettingsModal} from 'components';
 import styles from './index.module.scss';
 import {ReactComponent as InfoCircle} from 'assets/images/icons/infoCircle.svg';
 import {NotificationModel} from 'model';
+import {StateModel} from '../../../reducers';
+import {connect, ConnectedProps} from 'react-redux';
+
+const mapStateToProps = (state: StateModel) => ({
+  user: state.data.user,
+});
+
+const connector = connect(mapStateToProps, null);
 
 type RequestAccessModalProps = {
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
   setNotification: Dispatch<SetStateAction<NotificationModel>>;
-};
+} & ConnectedProps<typeof connector>;
 
-export const RequestAccessModal = (props: RequestAccessModalProps) => {
-  const {setIsModalVisible, setNotification} = props;
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+const RequestAccessModal = (props: RequestAccessModalProps) => {
+  const {user, setIsModalVisible, setNotification} = props;
+  const validEmail = user?.id?.slice(6).includes('@');
+  const [email, setEmail] = useState(validEmail ? user?.id?.slice(6) : '');
+  const [name, setName] = useState(user?.name || '');
   const [message, setMessage] = useState('');
 
   const closeModal = () => {
@@ -84,3 +93,5 @@ export const RequestAccessModal = (props: RequestAccessModalProps) => {
     </SettingsModal>
   );
 };
+
+export default connector(RequestAccessModal);

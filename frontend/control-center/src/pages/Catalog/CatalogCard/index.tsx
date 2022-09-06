@@ -15,7 +15,7 @@ import {
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
-import {RequestAccessModal} from '../RequestAccessModal';
+import RequestAccessModal from '../RequestAccessModal';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;

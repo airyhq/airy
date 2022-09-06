@@ -64,7 +64,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
     } else {
       const listArr = [];
       catalogListArr.map(component => {
-        if (component[1].installed === true && component[1].source !== 'webhooks') {
+        if (component[1]?.name && component[1].installed === true && component[1].source !== 'webhooks') {
           setHasInstalledComponents(true);
           listArr.push({
             name: component[1].name,

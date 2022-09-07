@@ -22,8 +22,7 @@ import {CommandUnion, SourceMessage} from 'render';
 import {MessageWrapper} from 'components';
 import {Source} from 'model';
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+import camelcaseKeys from 'camelcase-keys';
 import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import NewConversation from '../../components/newConversation';

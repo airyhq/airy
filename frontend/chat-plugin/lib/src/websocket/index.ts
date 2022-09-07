@@ -9,9 +9,7 @@ import {
 } from 'render/providers/chatplugin/chatPluginModel';
 import {Message} from 'model';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
-
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+import camelcaseKeys from 'camelcase-keys';
 
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');

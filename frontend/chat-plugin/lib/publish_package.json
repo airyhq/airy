@@ -23,7 +23,7 @@
     "linkify-react": "^3.0.1",
     "react":  "18.1.0",
     "react-dom": "18.1.0",
-    "camelcase-keys": "7.0.0",
+    "camelcase-keys": "^8.0.2",
     "emoji-mart": "5.2.0",
     "@emoji-mart/data": "^1.0.3",
     "@emoji-mart/react": "^1.0.0"

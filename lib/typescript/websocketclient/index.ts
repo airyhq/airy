@@ -1,8 +1,7 @@
 import {StompWrapper} from './stompWrapper';
 import {Message, Channel, MetadataEvent, Tag} from 'model';
 import {EventPayload} from './payload';
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+import camelcaseKeys from 'camelcase-keys';
 
 type CallbackMap = {
   onMessage?: (conversationId: string, channelId: string, message: Message) => void;

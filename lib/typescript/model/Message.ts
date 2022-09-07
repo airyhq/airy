@@ -42,7 +42,6 @@ export interface MessageSender {
 }
 
 export const mapMessage = (payload): Message => {
-  console.log('camelcasekeys', {...camelcaseKeys(payload, {deep: true, stopPaths: ['content', 'metadata']})});
   return {
     ...camelcaseKeys(payload, {deep: true, stopPaths: ['content', 'metadata']}),
     sentAt: new Date(payload.sent_at),

@@ -50,7 +50,7 @@
   align-items: center;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 14px;
+  margin-right: 44px;
 
   span {
     color: var(--color-airy-blue);
@@ -62,5 +62,25 @@
     width: 8px;
     padding-top: 3px;
     color: var(--color-airy-blue);
+  }
+}
+
+.tagLinkIconContainer {
+  margin-bottom: 14px;
+}
+
+.tagIconContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.unhealthyIcon {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-red-alert);
+  &:hover {
+    cursor: pointer;
+    fill: var(--color-red-alert-pressed);
   }
 }

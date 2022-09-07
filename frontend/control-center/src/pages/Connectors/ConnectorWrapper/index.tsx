@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Link, useParams} from 'react-router-dom';
-import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Button, NotificationComponent, SettingsModal, SmartButton, Tooltip} from 'components';
 import {StateModel} from '../../../reducers';
 import {
   connectChatPlugin,
@@ -17,9 +17,10 @@ import {NotificationModel, Source, ComponentInfo} from 'model';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
-import {CONNECTORS_ROUTE} from '../../../routes/routes';
+import {CONNECTORS_ROUTE, STATUS_ROUTE} from '../../../routes/routes';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
+import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -60,6 +61,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
   const [backRoute, setBackRoute] = useState('');
 
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   const params = useParams();
   const {channelId, source} = params;
@@ -178,9 +180,20 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
                   <ConfigStatusButton
-                    componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
+                    componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
+                  {!isHealthy && (
+                    <Tooltip
+                      hoverElement={
+                        <UncheckedIcon className={styles.unhealthyIcon} onClick={() => navigate(STATUS_ROUTE)} />
+                      }
+                      hoverElementHeight={20}
+                      hoverElementWidth={20}
+                      tooltipContent={t('notHealthy')}
+                      direction="right"
+                    />
+                  )}
                 </div>
 
                 <div className={styles.textInfo}>

@@ -182,3 +182,14 @@
 .headerModal {
   @include font-xl;
 }
+
+.unhealthyIcon {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-red-alert);
+  margin-left: 12px;
+  &:hover {
+    cursor: pointer;
+    fill: var(--color-red-alert-pressed);
+  }
+}

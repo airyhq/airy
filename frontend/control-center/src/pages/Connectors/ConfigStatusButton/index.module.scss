@@ -32,14 +32,3 @@
 .buttonDisabled:visited {
   background: var(--color-disable-status-config);
 }
-
-.buttonNotHealthy,
-.buttonNotHealthy:hover,
-.buttonNotHealthy:active,
-.buttonNotHealthy:visited {
-  background: var(--color-red-alert);
-  &:hover {
-    cursor: pointer;
-    background: var(--color-red-alert-pressed);
-  }
-}

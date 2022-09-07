@@ -1,11 +1,32 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.tooltipContainer {
+.tooltipContainer.top {
   display: flex;
+  flex-direction: column-reverse;
   align-items: center;
   width: 100%;
-  //   margin-left: 50%;
+}
+
+.tooltipContainer.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContainer.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContainer.left {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 100%;
 }
 
 .tooltipContent {
@@ -13,23 +34,52 @@
   display: none;
   background: var(--color-tooltip-gray);
   border-radius: 4px;
-  margin-left: 4px;
   padding: 4px 6px;
   color: var(--color-text-contrast);
   max-width: 180px;
   position: relative;
-  margin-left: 16px;
 }
 
-.tooltip {
-  margin-left: 32px;
-}
-
-.hoverElement:hover ~ .tooltipContent {
+.hoverElement:hover ~ .tooltipContent.top {
   display: flex;
+  flex-direction: column;
+  line-height: 14px;
+  white-space: nowrap;
+  margin-bottom: 12px;
 }
 
-.hoverElement ~ .tooltipContent::after {
+.hoverElement:hover ~ .tooltipContent.right {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.hoverElement:hover ~ .tooltipContent.bottom {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  margin-top: 12px;
+}
+
+.hoverElement:hover ~ .tooltipContent.left {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  margin-right: 12px;
+}
+
+.hoverElement ~ .tooltipContent.top::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: calc(50% - 5px);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-tooltip-gray) transparent transparent transparent;
+}
+
+.hoverElement ~ .tooltipContent.right::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -38,4 +88,25 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent var(--color-tooltip-gray) transparent transparent;
+}
+
+.hoverElement ~ .tooltipContent.bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: calc(50% - 5px);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-tooltip-gray) transparent;
+}
+
+.hoverElement ~ .tooltipContent.left::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--color-tooltip-gray);
 }

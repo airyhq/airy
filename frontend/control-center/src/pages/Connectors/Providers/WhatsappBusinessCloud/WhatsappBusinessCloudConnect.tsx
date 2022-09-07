@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {StateModel} from '../../../../reducers';
+import {useCurrentConnectorForSource, useCurrentComponentForSource} from '../../../../selectors';
 import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
 import styles from './WhatsappBusinessCloudConnect.module.scss';
-import {ComponentName, ConnectorName} from 'model';
+import {Source} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -24,9 +23,9 @@ export const WhatsappBusinessCloudConnect = ({
   isConfigured,
   isPending,
 }: WhatsappBusinessCloudConnectProps) => {
-  const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ConnectorName.sourcesWhatsappBusinessCloud]
-  );
+  const componentInfo = useCurrentConnectorForSource(Source.whatsapp);
+  const componentName = useCurrentComponentForSource(Source.whatsapp)?.name;
+
   const [appId, setAppId] = useState(componentInfo?.appId || '');
   const [appSecret, setAppSecret] = useState(componentInfo?.appSecret || '');
   const [phoneNumber, setPhoneNumber] = useState(componentInfo?.phoneNumber || '');
@@ -50,7 +49,7 @@ export const WhatsappBusinessCloudConnect = ({
 
   return (
     <ConfigureConnector
-      componentName={ComponentName.sourcesWhatsappBusinessCloud}
+      componentName={componentName}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}

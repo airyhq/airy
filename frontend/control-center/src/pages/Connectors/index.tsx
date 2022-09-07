@@ -50,6 +50,13 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const emptyCatalogList = catalogListArr.length === 0;
 
   useEffect(() => {
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
+    setPageTitle(pageTitle);
+  }, []);
+
+  useEffect(() => {
     getConnectorsConfiguration();
     if (emptyCatalogList) {
       listComponents().catch((error: Error) => {
@@ -58,7 +65,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
     } else {
       const listArr = [];
       catalogListArr.map(component => {
-        if (component[1].installed === true && component[1].source !== 'webhooks') {
+        if (component[1]?.name && component[1].installed === true && component[1].source !== 'webhooks') {
           setHasInstalledComponents(true);
           listArr.push({
             name: component[1].name,
@@ -73,15 +80,6 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
       setConnectorsPageList(listArr);
     }
   }, [catalogList]);
-
-  useEffect(() => {
-    if (channels.length === 0) {
-      listChannels().catch((error: Error) => {
-        console.error(error);
-      });
-    }
-    setPageTitle(pageTitle);
-  }, [channels.length]);
 
   return (
     <div className={styles.channelsWrapper}>

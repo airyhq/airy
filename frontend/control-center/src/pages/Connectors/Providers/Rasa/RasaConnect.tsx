@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {StateModel} from '../../../../reducers';
+import {useCurrentConnectorForSource, useCurrentComponentForSource} from '../../../../selectors';
 import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import {useTranslation} from 'react-i18next';
+import {Source} from 'model';
 import styles from './RasaConnect.module.scss';
-import {ComponentName} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -19,7 +18,9 @@ type RasaConnectProps = {
 };
 
 export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPending}: RasaConnectProps) => {
-  const componentInfo = useSelector((state: StateModel) => state.data.connector[ComponentName.rasaConnector]);
+  const componentInfo = useCurrentConnectorForSource(Source.rasa);
+  const componentName = useCurrentComponentForSource(Source.rasa)?.name;
+
   const [webhookUrl, setWebhookUrl] = useState(componentInfo?.webhookUrl || '');
   const [apiHost, setApiHost] = useState(componentInfo?.apiHost || '');
   const [token, setToken] = useState(componentInfo?.token || '');
@@ -42,7 +43,7 @@ export const RasaConnect = ({createNewConnection, isEnabled, isConfigured, isPen
 
   return (
     <ConfigureConnector
-      componentName={ComponentName.rasaConnector}
+      componentName={componentName}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}

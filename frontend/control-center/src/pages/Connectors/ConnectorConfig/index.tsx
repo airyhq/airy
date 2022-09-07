@@ -3,6 +3,7 @@ import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
+import {useCurrentComponentForSource} from '../../../selectors';
 import {
   connectChatPlugin,
   updateChannel,
@@ -13,7 +14,7 @@ import {
   listComponents,
 } from '../../../actions';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
-import {Source, ComponentInfo} from 'model';
+import {Source} from 'model';
 
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
@@ -57,8 +58,14 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const {components, catalog, updateConnectorConfiguration, getConnectorsConfiguration, listComponents} = props;
 
+  const params = useParams();
+  const {channelId, source} = params;
+  const newChannel = params['*'] === 'new';
+  const connectedParams = params['*'] === 'connected';
+
   const connectors = useSelector((state: StateModel) => state.data.connector);
-  const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
+  const connectorInfo = useCurrentComponentForSource(source as Source);
+
   const [currentPage] = useState(Pages.createUpdate);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -70,11 +77,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   const {t} = useTranslation();
 
-  const params = useParams();
-  const {channelId, source} = params;
-  const newChannel = params['*'] === 'new';
-  const connectedParams = params['*'] === 'connected';
-
   const isAiryInternalConnector = source === Source.chatPlugin;
   const isCatalogList = Object.entries(catalog).length > 0;
 
@@ -83,41 +85,31 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
     listComponents().catch((error: Error) => {
       console.error(error);
     });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   useEffect(() => {
-    if (connectorInfo && connectors) {
-      if (
-        connectors[removePrefix(connectorInfo.name)] &&
-        Object.keys(connectors[removePrefix(connectorInfo.name)]).length > 0
-      ) {
+    if (connectorInfo) determineLineTitle(connectorInfo.isChannel);
+  }, [connectorInfo]);
+
+  useEffect(() => {
+    if (connectors && connectorInfo && connectorInfo?.name) {
+      const connectorName = removePrefix(connectorInfo.name);
+      if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) {
         setIsConfigured(true);
       }
     }
   }, [connectorInfo, connectors]);
 
   useEffect(() => {
-    getConnectorsConfiguration().catch((error: Error) => {
-      console.error(error);
-    });
-
-    if (isCatalogList) {
-      isAiryInternalConnector && setIsConfigured(true);
-
-      const connectorSourceInfo = Object.entries(catalog).filter(item => item[1].source === source);
-
-      const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
-      const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
-
-      const connectorHasChannels: undefined | string = connectorSourceInfoFormatted?.isChannel;
-
-      determineLineTitle(connectorHasChannels);
-      setConnectorInfo(connectorSourceInfoFormatted);
-    }
-  }, [source, isCatalogList, params]);
+    if (isCatalogList) isAiryInternalConnector && setIsConfigured(true);
+  }, [isCatalogList]);
 
   useEffect(() => {
-    if (components && connectorInfo) setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
+    if (components && connectorInfo && connectorInfo?.name)
+      setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
   }, [connectorInfo, components]);
 
   const determineLineTitle = (connectorHasChannels: undefined | string) => {
@@ -221,28 +213,19 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
         );
       }
 
-      if (source === Source.chatPlugin) {
-        return <ChatPluginConnect />;
-      }
-      if (source === Source.facebook) {
-        return <FacebookConnect />;
-      }
-      if (source === Source.instagram) {
-        return <InstagramConnect />;
-      }
-      if (source === Source.google) {
-        return <GoogleConnect />;
-      }
-      if (source === Source.twilioSMS) {
-        return <TwilioSmsConnect />;
-      }
-      if (source === Source.twilioWhatsApp) {
-        return <TwilioWhatsappConnect />;
-      }
+      if (source === Source.chatPlugin) return <ChatPluginConnect />;
 
-      if (source === Source.viber) {
-        return <p>configuration page under construction - coming soon!</p>;
-      }
+      if (source === Source.facebook) return <FacebookConnect />;
+
+      if (source === Source.instagram) return <InstagramConnect />;
+
+      if (source === Source.google) return <GoogleConnect />;
+
+      if (source === Source.twilioSMS) return <TwilioSmsConnect />;
+
+      if (source === Source.twilioWhatsApp) return <TwilioWhatsappConnect />;
+
+      if (source === Source.viber) return <p>{t('pageUnderConstruction')}</p>;
     }
 
     return <ConnectedChannelsList offset={offset} />;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import camelcaseKeys from 'camelcase-keys';
 
 export const getConfigDef = {

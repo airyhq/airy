@@ -1,6 +1,6 @@
 import {PaginatedPayload, ListConversationsRequestPayload} from '../payload';
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+
+import camelcaseKeys from 'camelcase-keys';
 import {mapMessage} from 'model';
 
 export const listConversationsDef = {

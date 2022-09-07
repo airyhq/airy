@@ -26,6 +26,17 @@
   }
 }
 
+.buttonNotHealthy,
+.buttonNotHealthy:hover,
+.buttonNotHealthy:active,
+.buttonNotHealthy:visited {
+  background: var(--color-red-alert);
+  &:hover {
+    cursor: pointer;
+    background: var(--color-red-alert-pressed);
+  }
+}
+
 .buttonDisabled,
 .buttonDisabled:hover,
 .buttonDisabled:active,

@@ -107,9 +107,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <ChannelCard
                       key={item.displayName}
                       componentInfo={item}
-                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
+                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                       channelsToShow={channelsBySource(item.source).length}
-                      isHealthy={isHealthy}
                     />
                   );
                 }
@@ -118,8 +117,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     <InfoCard
                       key={item.displayName}
                       componentInfo={item}
-                      componentStatus={getComponentStatus(isInstalled, isConfigured, isEnabled)}
-                      isHealthy={isHealthy}
+                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                     />
                   );
                 }

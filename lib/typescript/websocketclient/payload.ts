@@ -15,6 +15,12 @@ export interface MessageCreatedPayload extends Event {
       delivery_state: DeliveryState;
       from_contact: boolean;
       sent_at: Date;
+      source: Source;
+      sender: {
+        id: string;
+        name?: string;
+        avatar_url?: string;
+      };
     };
   };
 }
@@ -42,7 +48,7 @@ export interface ChannelUpdatedPayload extends Event {
   type: 'channel.updated';
   payload: {
     id: string;
-    metadata?: Metadata & {
+    metadata: Metadata & {
       name: string;
       image_url?: string;
     };

@@ -72,7 +72,7 @@ const CatalogCard = (props: CatalogCardProps) => {
     const isClickOnCard = componentCard?.current.contains(e.target);
 
     if (!isClickOnInstallButton && isClickOnCard) {
-      navigate(getCatalogProductRouteForComponent(componentInfo.displayName), {state: {componentInfo}});
+      navigate(getCatalogProductRouteForComponent(componentInfo.source), {state: {componentInfo}});
     }
   };
 

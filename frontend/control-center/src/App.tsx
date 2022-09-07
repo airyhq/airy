@@ -8,7 +8,6 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
 import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
@@ -55,14 +54,6 @@ const App = (props: ConnectedProps<typeof connector>) => {
           </Route>
 
           <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>
-            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
-            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
-            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
-            <Route path={`google/:channelId`} element={<GoogleConnect />} />
-            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-
             <Route path={`:componentName`} element={<CatalogProductPage />} />
             <Route index element={<Catalog />} />
           </Route>

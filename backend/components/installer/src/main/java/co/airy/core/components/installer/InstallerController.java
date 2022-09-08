@@ -21,17 +21,21 @@ public class InstallerController {
     }
 
     @PostMapping("/components.install")
-    public ResponseEntity<?> installComponents(@RequestBody @Valid InstallPayload payload) {
+    public ResponseEntity<?> installComponent(@RequestBody @Valid InstallPayload payload) {
+        try {
+            handler.installComponent(payload.getName());
+        } catch(Exception e) {}
+
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 
     @PostMapping("/components.uninstall")
-    public ResponseEntity<?> installComponents(@RequestBody @Valid UninstallPayload payload) {
+    public ResponseEntity<?> uninstallComponent(@RequestBody @Valid UninstallPayload payload) {
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 
     @PostMapping("/components.list")
-    public ResponseEntity<?> installComponents() {
+    public ResponseEntity<?> listComponents() {
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 }

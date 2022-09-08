@@ -4,6 +4,7 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.models.V1ConfigMap;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1ObjectMeta;
@@ -16,8 +17,8 @@ import io.kubernetes.client.util.Yaml;
 import java.util.Map;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import co.airy.log.AiryLoggerFactory;
@@ -42,7 +43,7 @@ public class InstallerHandler {
        final String globals = coreConfig.get("global.yaml");
        final String version = coreConfig.get("APP_IMAGE_TAG");
 
-       launchHelmJob(api);
+       launchHelmJob();
 
        //TODO: handle error properly
     }
@@ -51,7 +52,7 @@ public class InstallerHandler {
         final ApiResponse<V1ConfigMap> response = api.readNamespacedConfigMapWithHttpInfo(
                 "core-config",
                 namespace,
-                "false");
+                null);
 
         //TODO: handle http error
         final V1ConfigMap config = response.getData();
@@ -65,8 +66,8 @@ public class InstallerHandler {
         return data;
     }
 
-    private void launchHelmJob(CoreV1Api api) throws Exception {
-        V1Job job = new V1Job()
+    private void launchHelmJob() throws Exception {
+        final V1Job job = new V1Job()
             .metadata(new V1ObjectMeta().name("helm-test"))
             .spec(new V1JobSpec()
                     .template(new V1PodTemplateSpec()
@@ -78,8 +79,19 @@ public class InstallerHandler {
                             .restartPolicy("Never")))
                     .backoffLimit(4));
 
+
+
         //FIXME: remove log
         log.info(Yaml.dump(job));
+
+        final BatchV1Api api = new BatchV1Api(apiClient);
+        final ApiResponse<V1Job> response = api.createNamespacedJobWithHttpInfo(
+                namespace,
+                job,
+                null,
+                null,
+                null,
+                null);
     }
 
 }

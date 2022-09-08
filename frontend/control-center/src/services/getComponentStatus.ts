@@ -7,7 +7,7 @@ export const getComponentStatus = (
   isEnabled: boolean
 ) => {
   if (isInstalled && !isEnabled) return ComponentStatus.disabled;
-  if (!isHealthy) return ComponentStatus.notHealthy;
   if (isInstalled && !isConfigured) return ComponentStatus.notConfigured;
+  if (!isHealthy) return ComponentStatus.notHealthy;
   if (isInstalled && isConfigured && isEnabled) return ComponentStatus.enabled;
 };

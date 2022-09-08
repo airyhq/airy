@@ -9,10 +9,11 @@ import {STATUS_ROUTE} from '../../../routes/routes';
 interface ConfigStatusButtonProps {
   componentStatus: ComponentStatus;
   customStyle?: string;
+  configurationRoute?: string;
 }
 
 export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
-  const {componentStatus, customStyle} = props;
+  const {componentStatus, customStyle, configurationRoute} = props;
   const {t} = useTranslation();
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
         break;
       case ComponentStatus.notConfigured:
         event.stopPropagation();
-        console.log('navigate to configurationComponent');
+        navigate(configurationRoute);
         break;
       default:
         break;
@@ -38,10 +39,10 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
       }}
       styleVariant="extra-small"
       className={`${styles.installationButton} ${customStyle ?? ''} ${
-        componentStatus === ComponentStatus.notHealthy
-          ? styles.buttonNotHealthy
-          : componentStatus === ComponentStatus.notConfigured
+        componentStatus === ComponentStatus.notConfigured
           ? styles.buttonNotConfigured
+          : componentStatus === ComponentStatus.notHealthy
+          ? styles.buttonNotHealthy
           : componentStatus === ComponentStatus.enabled
           ? styles.buttonEnabled
           : styles.buttonDisabled

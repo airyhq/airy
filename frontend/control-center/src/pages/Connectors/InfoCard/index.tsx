@@ -37,7 +37,9 @@ const InfoCard = (props: InfoCardProps) => {
           {getChannelAvatar(componentInfo.source)}
           {componentInfo.displayName}
         </div>
-        {componentStatus && <ConfigStatusButton componentStatus={componentStatus} />}
+        {componentStatus && (
+          <ConfigStatusButton componentStatus={componentStatus} configurationRoute={CONFIGURATION_ROUTE} />
+        )}
       </div>
     </div>
   );

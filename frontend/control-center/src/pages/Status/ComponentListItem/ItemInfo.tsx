@@ -114,6 +114,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('needsConfiguration')}
+                direction="right"
               />
             ) : isRunning ? (
               <Tooltip
@@ -121,6 +122,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('enabled')}
+                direction="right"
               />
             ) : isNotHealthy ? (
               <Tooltip
@@ -128,6 +130,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 hoverElementHeight={20}
                 hoverElementWidth={20}
                 tooltipContent={t('notHealthy')}
+                direction="right"
               />
             ) : (
               isDisabled && (
@@ -136,6 +139,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
                   hoverElementHeight={20}
                   hoverElementWidth={20}
                   tooltipContent={t('disabled')}
+                  direction="right"
                 />
               )
             )}

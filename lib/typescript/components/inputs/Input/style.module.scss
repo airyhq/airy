@@ -229,6 +229,7 @@
   margin-left: 4px;
   padding: 4px 6px;
   color: var(--color-text-contrast);
+  border-color: transparent var(--color-tooltip-gray) transparent transparent;
 }
 
 .infoCircle:hover ~ .infoCircleText {
@@ -243,7 +244,8 @@
   top: 50%;
   right: 100%;
   margin-top: -5px;
+  margin-right: inherit;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent var(--color-tooltip-gray) transparent transparent;
+  border-color: inherit;
 }

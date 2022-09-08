@@ -12,7 +12,9 @@ type styleVariantType =
   | 'link'
   | 'text'
   | 'green'
-  | 'greenOutline';
+  | 'greenOutline'
+  | 'purple'
+  | 'purpleOutline';
 
 type ButtonProps = {
   children: ReactNode;
@@ -47,6 +49,10 @@ export const Button = ({
         return styles.greenButton;
       case 'greenOutline':
         return styles.greenOutlineButton;
+      case 'purple':
+        return styles.purpleButton;
+      case 'purpleOutline':
+        return styles.purpleOutlineButton;
       case 'small':
         return styles.smallButton;
       case 'outline':

@@ -263,6 +263,7 @@ class InputComponent extends Component<InputProps, IState> {
       label,
       showLabelIcon,
       tooltipText,
+      tooltipStyle,
       hideLabel,
       name,
       value,
@@ -314,7 +315,7 @@ class InputComponent extends Component<InputProps, IState> {
               {showLabelIcon && (
                 <>
                   <InfoCircle width={20} className={styles.infoCircle} />
-                  {tooltipText && <span className={styles.infoCircleText}>{tooltipText}</span>}
+                  {tooltipText && <span className={`${styles.infoCircleText} ${tooltipStyle}`}>{tooltipText}</span>}
                 </>
               )}
             </div>
@@ -423,6 +424,7 @@ export interface InputProps {
   label?: string;
   showLabelIcon?: boolean;
   tooltipText?: string;
+  tooltipStyle?: string;
   minWidth?: number;
   width?: number;
 

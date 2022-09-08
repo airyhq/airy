@@ -15,7 +15,7 @@ import {
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
-import RequestAccessModal from '../RequestAccessModal';
+import NotifyMeModal from '../NotifyMeModal';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -37,14 +37,17 @@ const CatalogCard = (props: CatalogCardProps) => {
   const {component, componentInfo, installComponent} = props;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isRequestModalVisible, setIsRequestModalVisible] = useState(false);
+  const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
-  const [requestAccessNotification, setRequestAccessNotification] = useState<NotificationModel>(null);
+  const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
+  const [forceClose, setForceClose] = useState(false);
+  const notified = localStorage.getItem(`notified.${componentInfo.source}`);
   const installButtonCard = useRef(null);
   const componentCard = useRef(null);
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
 
   const isChannel = componentInfo?.isChannel;
 
@@ -79,17 +82,22 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
   };
 
+  const handleNotifyMeClick = () => {
+    setIsNotifyMeModalVisible(true);
+    notified && setNotification({show: true, text: notifiedEmail, info: true});
+  };
+
   const CatalogCardButton = () => {
     if (componentInfo?.price === ConnectorPrice.requestAccess) {
       return (
         <Button
-          styleVariant="greenOutline"
+          styleVariant={notified ? 'purpleOutline' : 'purple'}
           type="submit"
-          onClick={() => setIsRequestModalVisible(true)}
+          onClick={handleNotifyMeClick}
           buttonRef={installButtonCard}
-          className={styles.requestAccessButton}
+          className={styles.notifyMeButton}
         >
-          {t('requestAccess').toUpperCase()}
+          {notified ? t('notifyMeRequestSent').toUpperCase() : t('notifyMe').toUpperCase()}
         </Button>
       );
     }
@@ -173,28 +181,34 @@ const CatalogCard = (props: CatalogCardProps) => {
           </SettingsModal>
         )}
 
-        {isRequestModalVisible && (
-          <RequestAccessModal
-            setIsModalVisible={setIsRequestModalVisible}
-            setNotification={setRequestAccessNotification}
+        {isNotifyMeModalVisible && (
+          <NotifyMeModal
+            source={componentInfo.source}
+            setIsModalVisible={setIsNotifyMeModalVisible}
+            setNotification={setNotifyMeNotification}
+            setForceClose={setForceClose}
           />
         )}
       </article>
       {notification?.show && (
         <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
           successful={notification.successful}
           setShowFalse={setNotification}
+          forceClose={forceClose}
+          setForceClose={setForceClose}
+          info={notification.info}
         />
       )}
-      {requestAccessNotification?.show && (
+      {notifyMeNotification?.show && (
         <NotificationComponent
           type="sticky"
-          show={requestAccessNotification.show}
-          text={requestAccessNotification.text}
-          successful={requestAccessNotification.successful}
-          setShowFalse={setRequestAccessNotification}
+          show={notifyMeNotification.show}
+          text={notifyMeNotification.text}
+          successful={notifyMeNotification.successful}
+          setShowFalse={setNotifyMeNotification}
         />
       )}
     </>

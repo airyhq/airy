@@ -31,6 +31,7 @@
 
 .headerModal {
   @include font-xl;
+  margin: 54px 0 35px 0;
 }
 
 .messageTextArea {
@@ -55,7 +56,8 @@
 .sendButton {
   height: 40px;
   width: 176px;
-  margin-bottom: 8px;
+  margin-bottom: 42px;
+  margin-top: 54px;
 }
 
 .messageContainer {
@@ -72,35 +74,14 @@
   }
 }
 
-.infoCircle {
-  color: var(--color-text-contrast);
-  margin-left: 6px;
-}
-
-.infoCircleText {
-  @include font-s-bold;
-  line-height: 14px;
-  display: none;
-  background: var(--color-tooltip-gray);
-  border-radius: 4px;
-  margin-left: 4px;
-  padding: 4px 6px;
-  color: var(--color-text-contrast);
-}
-
-.infoCircle:hover ~ .infoCircleText {
-  display: flex;
-  position: relative;
-  left: 8px;
-}
-
-.infoCircle ~ .infoCircleText::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent var(--color-tooltip-gray) transparent transparent;
+.toolTip {
+  @include font-xs;
+  background: var(--color-text-gray);
+  color: var(--color-background-white);
+  border-radius: 20px;
+  height: 20px;
+  margin-right: -2px;
+  line-height: 12px;
+  padding: 4px 12px;
+  border-color: transparent var(--color-text-gray) transparent transparent;
 }

@@ -14,7 +14,7 @@ import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
-import RequestAccessModal from '../RequestAccessModal';
+import NotifyMeModal from '../NotifyMeModal';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -39,13 +39,15 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isRequestAccessModalVisible, setIsRequestAccessModalVisible] = useState(false);
+  const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
-  const [requestAccessNotification, setRequestAccessNotification] = useState<NotificationModel>(null);
-
+  const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
+  const [forceClose, setForceClose] = useState(false);
+  const notified = localStorage.getItem(`notified.${componentInfo.source}`);
   const {t} = useTranslation();
+  const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
   const navigate = useNavigate();
   const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
@@ -92,6 +94,11 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       });
   };
 
+  const handleNotifyMeClick = () => {
+    setIsNotifyMeModalVisible(true);
+    notified && setNotification({show: true, text: notifiedEmail, info: true});
+  };
+
   const HeaderContent = () => {
     return (
       <section className={styles.heading}>
@@ -129,21 +136,25 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           <SmartButton
             title={
               componentInfo?.price === ConnectorPrice.requestAccess
-                ? t('requestAccess')
+                ? notified
+                  ? t('notifyMeRequestSent').toUpperCase()
+                  : t('notifyMe').toUpperCase()
                 : isInstalled
                 ? t('uninstall')
                 : t('install')
             }
             height={50}
             width={180}
-            onClick={
-              componentInfo?.price === ConnectorPrice.requestAccess
-                ? () => setIsRequestAccessModalVisible(true)
-                : openModalInstall
-            }
+            onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
             pending={isPending}
             styleVariant={
-              componentInfo?.price === ConnectorPrice.requestAccess ? 'greenOutline' : isInstalled ? 'warning' : 'green'
+              componentInfo?.price === ConnectorPrice.requestAccess
+                ? notified
+                  ? 'purpleOutline'
+                  : 'purple'
+                : isInstalled
+                ? 'warning'
+                : 'green'
             }
             className={styles.installButton}
           />
@@ -210,10 +221,12 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
             )}
           </SettingsModal>
         )}
-        {isRequestAccessModalVisible && (
-          <RequestAccessModal
-            setIsModalVisible={setIsRequestAccessModalVisible}
-            setNotification={setRequestAccessNotification}
+        {isNotifyMeModalVisible && (
+          <NotifyMeModal
+            setIsModalVisible={setIsNotifyMeModalVisible}
+            setNotification={setNotifyMeNotification}
+            setForceClose={setForceClose}
+            source={componentInfo.source}
           />
         )}
       </>
@@ -232,19 +245,23 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       />
       {notification?.show && (
         <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
           successful={notification.successful}
           setShowFalse={setNotification}
+          forceClose={forceClose}
+          setForceClose={setForceClose}
+          info={notification.info}
         />
       )}
-      {requestAccessNotification?.show && (
+      {notifyMeNotification?.show && (
         <NotificationComponent
           type="sticky"
-          show={requestAccessNotification.show}
-          text={requestAccessNotification.text}
-          successful={requestAccessNotification.successful}
-          setShowFalse={setRequestAccessNotification}
+          show={notifyMeNotification.show}
+          text={notifyMeNotification.text}
+          successful={notifyMeNotification.successful}
+          setShowFalse={setNotifyMeNotification}
         />
       )}
     </>

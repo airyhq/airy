@@ -425,14 +425,16 @@ const resources = {
       configuration: 'Configuration',
 
       //Request Access
-      requestAccess: 'Request Access',
-      requestAccessTitle: 'To get back to you',
-      requestAccessSuccessful: 'We got your request. We will get back to you as soon as we process your request',
+      notifyMe: 'Notify Me',
+      notifyMeRequestSent: 'Requested',
+      infoNotifyMe: 'We will already send a notification to',
+      notifyMeTitle: 'To get back to you',
+      notifyMeSuccessful: 'We got your request. We will get back to you as soon as we process your request',
       emailCapital: 'Email',
       addEmail: 'Add email',
-      requestAccessEmailTooltip: 'The email will be used as the request email',
+      notifyMeEmailTooltip: 'The email will be used as the request email',
       addName: 'Add name',
-      requestAccessNameTooltip: 'The name will be used as the request name',
+      notifyMeNameTooltip: 'The name will be used as the request name',
       addMessage: 'Add message',
       message: 'Message',
       send: 'Send',
@@ -924,13 +926,17 @@ const resources = {
       configuration: 'Konfiguration',
 
       //Request Access
-      requestAccessTitle: 'Um auf Sie zurück zu kommen',
-      requestAccessSuccessful:
+
+      notifyMe: 'Informier mich',
+      notifyMeRequestSent: 'Angefordert',
+      infoNotifyMe: 'Wir senden bereits eine Benachrichtigung an',
+      notifyMeTitle: 'Um auf Sie zurück zu kommen',
+      notifyMeSuccessful:
         'Wir haben Ihre Anfrage erhalten. Wir werden uns mit Ihnen in Verbindung setzen, sobald wir Ihre Anfrage bearbeitet haben',
       addEmail: 'E-Mail hinzufügen',
-      requestAccessEmailTooltip: 'Die E-Mail wird als Anfrage-E-Mail verwendet.',
+      notifyMeEmailTooltip: 'Die E-Mail wird als Anfrage-E-Mail verwendet.',
       addName: 'Name hinzufügen',
-      requestAccessNameTooltip: 'Der Name wird als Name der Anfrage verwendet.',
+      notifyMeNameTooltip: 'Der Name wird als Name der Anfrage verwendet.',
       addMessage: 'Nachricht hinzufügen',
       message: 'Nachricht',
       send: 'Senden',
@@ -1414,13 +1420,16 @@ const resources = {
       configuration: 'Configuration',
 
       //Request Access
-      requestAccessTitle: 'Pour vous recontacter',
-      requestAccessSuccessful:
+      notifyMe: 'Notifiez-moi',
+      notifyMeRequestSent: 'Demandé',
+      infoNotifyMe: 'Nous allons déjà envoyer une notification à',
+      notifyMeTitle: 'Pour vous recontacter',
+      notifyMeSuccessful:
         'Nous avons reçu votre demande. Nous vous contacterons dès que nous aurons traité votre demande',
       addEmail: 'Ajouter un e-mail',
-      requestAccessEmailTooltip: `L'email sera utilisé comme email de demande`,
+      notifyMeEmailTooltip: `L'email sera utilisé comme email de demande`,
       addName: 'Ajouter un nom',
-      requestAccessNameTooltip: 'Le nom sera utilisé comme nom de la demande',
+      notifyMeNameTooltip: 'Le nom sera utilisé comme nom de la demande',
       addMessage: 'Ajouter un message',
       message: 'Message',
       send: 'Envoyer',
@@ -1908,13 +1917,16 @@ const resources = {
       configuration: 'Configuración',
 
       //Request Access
-      requestAccessTitle: 'Para volver a llamarte',
-      requestAccessSuccessful:
+      notifyMe: 'Notificarme',
+      notifyMeRequestSent: 'Solicitado',
+      infoNotifyMe: 'Ya enviaremos una notificación a',
+      notifyMeTitle: 'Para volver a llamarte',
+      notifyMeSuccessful:
         'Hemos recibido su solicitud. Nos pondremos en contacto con usted en cuanto procesemos su solicitud',
       addEmail: 'Añadir correo electrónico',
-      requestAccessEmailTooltip: 'El correo electrónico se utilizará como correo electrónico de la solicitud',
+      notifyMeEmailTooltip: 'En este correo electrónico se notificará su solicitud',
       addName: 'Añadir nombre',
-      requestAccessNameTooltip: 'El nombre se utilizará como nombre de la solicitud',
+      notifyMeNameTooltip: 'El nombre se utilizará como nombre de la solicitud',
       addMessage: 'Añadir mensaje',
       message: 'Mensaje',
       send: 'Enviar',

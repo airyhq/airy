@@ -75,6 +75,40 @@
   }
 }
 
+.purpleButton {
+  @extend .extraSmallButton;
+  background-color: rgba($color: #a30d8b, $alpha: 0.2);
+  border: 1px solid var(--color-notify-me);
+  color: var(--color-notify-me);
+
+  &:hover {
+    background: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+
+  &:active {
+    background-color: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+}
+
+.purpleOutlineButton {
+  @extend .extraSmallButton;
+  background-color: transparent;
+  border: 1px solid var(--color-notify-me);
+  color: var(--color-notify-me);
+
+  &:hover {
+    background: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+
+  &:active {
+    background-color: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+}
+
 .smallButton {
   @extend .button;
   @include font-base;

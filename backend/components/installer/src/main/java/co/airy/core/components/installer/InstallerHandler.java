@@ -5,8 +5,16 @@ import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1ConfigMap;
+import io.kubernetes.client.openapi.models.V1Job;
+import io.kubernetes.client.openapi.models.V1ObjectMeta;
+import io.kubernetes.client.openapi.models.V1JobSpec;
+import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
+import io.kubernetes.client.openapi.models.V1PodSpec;
+import io.kubernetes.client.openapi.models.V1Container;
+import io.kubernetes.client.util.Yaml;
 
 import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
@@ -34,6 +42,8 @@ public class InstallerHandler {
        final String globals = coreConfig.get("global.yaml");
        final String version = coreConfig.get("APP_IMAGE_TAG");
 
+       launchHelmJob(api);
+
        //TODO: handle error properly
     }
 
@@ -55,5 +65,21 @@ public class InstallerHandler {
         return data;
     }
 
+    private void launchHelmJob(CoreV1Api api) throws Exception {
+        V1Job job = new V1Job()
+            .metadata(new V1ObjectMeta().name("helm-test"))
+            .spec(new V1JobSpec()
+                    .template(new V1PodTemplateSpec()
+                        .spec(new V1PodSpec()
+                            .addContainersItem(new V1Container()
+                                .name("helm-test")
+                                .image("alpine/helm:latest")
+                                .command(List.of("helm", "-n", "staging", "list")))
+                            .restartPolicy("Never")))
+                    .backoffLimit(4));
+
+        //FIXME: remove log
+        log.info(Yaml.dump(job));
+    }
 
 }

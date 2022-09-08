@@ -1,0 +1,87 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.enableModalContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-l;
+
+  label {
+    width: 100%;
+    min-width: 393px;
+    height: 80px;
+  }
+
+  p {
+    max-width: 70%;
+    text-align: center;
+    margin: 4px 0 20px 0;
+    color: var(--color-text-contrast);
+  }
+}
+
+.headerModal {
+  @include font-xl;
+  margin: 54px 0 35px 0;
+}
+
+.messageTextArea {
+  display: flex;
+  width: 100%;
+  background: transparent;
+  position: relative;
+  flex-grow: 1;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  color: var(--color-text-contrast);
+  padding: 8px;
+  line-height: 24px;
+  max-height: 100px;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 4px;
+  @include font-base;
+  margin-bottom: 40px;
+}
+
+.sendButton {
+  height: 40px;
+  width: 176px;
+  margin-bottom: 42px;
+  margin-top: 54px;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 393px;
+  height: 20px;
+  margin-bottom: 5px;
+  span {
+    @include font-s-bold;
+  }
+}
+
+.toolTip {
+  @include font-xs;
+  background: var(--color-text-gray);
+  color: var(--color-background-white);
+  border-radius: 20px;
+  height: 20px;
+  margin-right: -2px;
+  line-height: 12px;
+  padding: 4px 12px;
+  border-color: transparent var(--color-text-gray) transparent transparent;
+}

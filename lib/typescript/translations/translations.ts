@@ -425,6 +425,21 @@ const resources = {
       optional: 'Optional',
       configuration: 'Configuration',
 
+      //Request Access
+      notifyMe: 'Notify Me',
+      notifyMeRequestSent: 'Requested',
+      infoNotifyMe: 'We will already send a notification to',
+      notifyMeTitle: 'To get back to you',
+      notifyMeSuccessful: 'We got your request. We will get back to you as soon as we process your request',
+      emailCapital: 'Email',
+      addEmail: 'Add email',
+      notifyMeEmailTooltip: 'The email will be used as the request email',
+      addName: 'Add name',
+      notifyMeNameTooltip: 'The name will be used as the request name',
+      addMessage: 'Add message',
+      message: 'Message',
+      send: 'Send',
+
       //Rasa
       rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
       rasaWebhookTooltip: 'Example: http://webhooks.rasa',
@@ -912,6 +927,22 @@ const resources = {
       optional: 'Optional',
       configuration: 'Konfiguration',
 
+      //Request Access
+
+      notifyMe: 'Informier mich',
+      notifyMeRequestSent: 'Angefordert',
+      infoNotifyMe: 'Wir senden bereits eine Benachrichtigung an',
+      notifyMeTitle: 'Um auf Sie zurück zu kommen',
+      notifyMeSuccessful:
+        'Wir haben Ihre Anfrage erhalten. Wir werden uns mit Ihnen in Verbindung setzen, sobald wir Ihre Anfrage bearbeitet haben',
+      addEmail: 'E-Mail hinzufügen',
+      notifyMeEmailTooltip: 'Die E-Mail wird als Anfrage-E-Mail verwendet.',
+      addName: 'Name hinzufügen',
+      notifyMeNameTooltip: 'Der Name wird als Name der Anfrage verwendet.',
+      addMessage: 'Nachricht hinzufügen',
+      message: 'Nachricht',
+      send: 'Senden',
+
       //Rasa
       rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
       rasaWebhookTooltip: 'Beispiel: http://webhooks.rasa',
@@ -1390,6 +1421,21 @@ const resources = {
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
       optional: 'Optionnel',
       configuration: 'Configuration',
+
+      //Request Access
+      notifyMe: 'Notifiez-moi',
+      notifyMeRequestSent: 'Demandé',
+      infoNotifyMe: 'Nous allons déjà envoyer une notification à',
+      notifyMeTitle: 'Pour vous recontacter',
+      notifyMeSuccessful:
+        'Nous avons reçu votre demande. Nous vous contacterons dès que nous aurons traité votre demande',
+      addEmail: 'Ajouter un e-mail',
+      notifyMeEmailTooltip: `L'email sera utilisé comme email de demande`,
+      addName: 'Ajouter un nom',
+      notifyMeNameTooltip: 'Le nom sera utilisé comme nom de la demande',
+      addMessage: 'Ajouter un message',
+      message: 'Message',
+      send: 'Envoyer',
 
       //Rasa
       rasaWebhookPlaceholder: 'URL Webhook de Rasa',
@@ -1873,6 +1919,21 @@ const resources = {
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
       optional: 'Opcional',
       configuration: 'Configuración',
+
+      //Request Access
+      notifyMe: 'Notificarme',
+      notifyMeRequestSent: 'Solicitado',
+      infoNotifyMe: 'Ya enviaremos una notificación a',
+      notifyMeTitle: 'Para volver a llamarte',
+      notifyMeSuccessful:
+        'Hemos recibido su solicitud. Nos pondremos en contacto con usted en cuanto procesemos su solicitud',
+      addEmail: 'Añadir correo electrónico',
+      notifyMeEmailTooltip: 'En este correo electrónico se notificará su solicitud',
+      addName: 'Añadir nombre',
+      notifyMeNameTooltip: 'El nombre se utilizará como nombre de la solicitud',
+      addMessage: 'Añadir mensaje',
+      message: 'Mensaje',
+      send: 'Enviar',
 
       //Rasa
       rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',

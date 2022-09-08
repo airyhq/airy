@@ -14,6 +14,12 @@ import javax.validation.Valid;
 @RestController
 public class InstallerController {
 
+    private final InstallerHandler handler;
+
+    InstallerController(InstallerHandler handler) {
+        this.handler = handler;
+    }
+
     @PostMapping("/components.install")
     public ResponseEntity<?> installComponents(@RequestBody @Valid InstallPayload payload) {
         return ResponseEntity.status(HttpStatus.CREATED).body("");

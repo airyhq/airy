@@ -15,6 +15,8 @@ import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.util.Yaml;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -42,10 +44,14 @@ public class InstallerHandler {
        final Map<String, String> coreConfig = getCoreConfig(api);
        final String globals = coreConfig.get("global.yaml");
        final String version = coreConfig.get("APP_IMAGE_TAG");
+       final List<String> cmd = getInstallCommand(componentName, globals, version);
 
-       launchHelmJob();
+
+       launchHelmJob(componentName, cmd);
 
        //TODO: handle error properly
+       log.info(globals);
+       log.info(version);
     }
 
     private Map<String, String> getCoreConfig(CoreV1Api api) throws ApiException {
@@ -66,7 +72,7 @@ public class InstallerHandler {
         return data;
     }
 
-    private void launchHelmJob() throws Exception {
+    private void launchHelmJob(String componentName, List<String> cmd) throws Exception {
         final V1Job job = new V1Job()
             .metadata(new V1ObjectMeta().name("helm-test"))
             .spec(new V1JobSpec()
@@ -75,9 +81,11 @@ public class InstallerHandler {
                             .addContainersItem(new V1Container()
                                 .name("helm-test")
                                 .image("alpine/helm:latest")
-                                .command(List.of("helm", "-n", "staging", "list")))
-                            .restartPolicy("Never")))
-                    .backoffLimit(4));
+                                .command(cmd))
+                            .restartPolicy("Never")
+                            .serviceAccountName("airy-controller")))
+                    .backoffLimit(4)
+                    .ttlSecondsAfterFinished(30));
 
 
 
@@ -92,6 +100,26 @@ public class InstallerHandler {
                 null,
                 null,
                 null);
+        final V1Job responseJob = response.getData();
+    }
+
+    private List<String> getInstallCommand(String componentName, String globals, String version) {
+       //FIXME: to be removed when we remove the notion of repos
+       String[] names = componentName.split("/");
+
+        ArrayList<String> cmd = new ArrayList<>();
+        cmd.add("sh");
+        cmd.add("-c");
+        cmd.add(String.format(
+                    "helm -n %s install %s %s --values <(echo %s | base64 -d) --version %s %s",
+                    namespace,
+                    names[0],
+                    componentName,
+                    Base64.getEncoder().encodeToString(globals.getBytes()),
+                    version,
+                    "--devel"));
+
+        return cmd;
     }
 
 }

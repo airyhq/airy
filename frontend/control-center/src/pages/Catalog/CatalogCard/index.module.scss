@@ -152,7 +152,7 @@
 }
 
 .soonTag {
-  @include font-xs-bold;
+  @include font-xs;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,4 +162,21 @@
   border-radius: 5px;
   background: var(--color-notify-me);
   color: var(--color-background-white);
+}
+
+.comingSoonTag {
+  @include font-xs;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  height: 24px;
+  width: 104px;
+  color: white;
+  background: var(--color-notify-me);
+  margin-top: 14px;
+  white-space: nowrap;
+  &:hover {
+    background: var(--color-notify-me);
+  }
 }

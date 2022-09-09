@@ -13,6 +13,8 @@ import {ReactComponent as SalesforceAvatar} from 'assets/images/icons/salesforce
 import {ReactComponent as CongnigyAvatar} from 'assets/images/icons/congnigyLogo.svg';
 import {ReactComponent as RasaAvatar} from 'assets/images/icons/rasaLogo.svg';
 import {ReactComponent as AmeliaAvatar} from 'assets/images/icons/ameliaLogo.svg';
+import {ReactComponent as AmazonS3Avatar} from 'assets/images/icons/amazons3Logo.svg';
+import {ReactComponent as IbmWatsonAssistantAvatar} from 'assets/images/icons/ibmWatsonAssistantLogo.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -65,12 +67,21 @@ export const getChannelAvatar = (source: string) => {
     case Source.salesforce:
     case 'Salesforce':
       return <SalesforceAvatar />;
+    case Source.congnigy:
     case 'Congnigy':
       return <CongnigyAvatar />;
+    case Source.rasa:
     case 'Rasa':
       return <RasaAvatar />;
+    case Source.amelia:
     case 'Amelia':
       return <AmeliaAvatar />;
+    case Source.amazons3:
+    case 'Amazon S3':
+      return <AmazonS3Avatar />;
+    case Source.ibm:
+    case 'IBM Watson Assistant':
+      return <IbmWatsonAssistantAvatar />;
     default:
       return <AiryAvatar />;
   }

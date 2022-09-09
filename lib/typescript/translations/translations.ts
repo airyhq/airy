@@ -350,6 +350,12 @@ const resources = {
       googleConfigurationText3: 'for more information.',
       newGoogleConnection: 'You are about to connect a new channel',
 
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
+
       //Instagram
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
       instagramAccountPlaceholder: 'Add the Facebook Page ID',
@@ -426,6 +432,7 @@ const resources = {
       configuration: 'Configuration',
 
       //Request Access
+      comingSoon: 'Coming Soon',
       notifyMe: 'Notify Me',
       notifyMeRequestSent: 'Requested',
       infoNotifyMe: 'We will already send a notification to',
@@ -876,6 +883,12 @@ const resources = {
       googleConfigurationText3: 'für weitere Informationen.',
       newGoogleConnection: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
+
       //Instagram
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
       instagramAccountPlaceholder: 'Hinzufügen der Facebook-Seiten-ID',
@@ -929,6 +942,7 @@ const resources = {
 
       //Request Access
 
+      comingSoon: 'Bald verfügbar',
       notifyMe: 'Informier mich',
       notifyMeRequestSent: 'Angefordert',
       infoNotifyMe: 'Wir senden bereits eine Benachrichtigung an',
@@ -1348,6 +1362,12 @@ const resources = {
       googleConfigurationText3: `pour plus d'informations.`,
       newGoogleConnection: 'Vous êtes sur le point de connecter un nouveau canal',
 
+      //IBM Watson Assistant
+      ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
+
+      //Amazon S3
+      amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
+
       //Instagram
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
       instagramAccountPlaceholder: `Ajoutez l'ID de la page Facebook`,
@@ -1423,6 +1443,7 @@ const resources = {
       configuration: 'Configuration',
 
       //Request Access
+      comingSoon: 'Prochainement',
       notifyMe: 'Notifiez-moi',
       notifyMeRequestSent: 'Demandé',
       infoNotifyMe: 'Nous allons déjà envoyer une notification à',
@@ -1845,6 +1866,12 @@ const resources = {
       googleConfigurationText3: 'para más información.',
       newGoogleConnection: 'Estás a punto de conectar un nuevo canal',
 
+      //IBM Watson Assistant
+      ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
+
       //Instagram
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
       instagramAccountPlaceholder: 'Añade el ID de la página de Facebook',
@@ -1921,6 +1948,7 @@ const resources = {
       configuration: 'Configuración',
 
       //Request Access
+      comingSoon: 'Próximamente',
       notifyMe: 'Notificarme',
       notifyMeRequestSent: 'Solicitado',
       infoNotifyMe: 'Ya enviaremos una notificación a',

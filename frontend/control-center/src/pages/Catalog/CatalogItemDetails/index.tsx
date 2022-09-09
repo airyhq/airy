@@ -133,40 +133,47 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
-          <SmartButton
-            title={
-              componentInfo?.price === ConnectorPrice.requestAccess
-                ? notified
-                  ? t('notifyMeRequestSent').toUpperCase()
-                  : t('notifyMe').toUpperCase()
-                : isInstalled
-                ? t('uninstall')
-                : t('install')
-            }
-            height={50}
-            width={180}
-            onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
-            pending={isPending}
-            styleVariant={
-              componentInfo?.price === ConnectorPrice.requestAccess
-                ? notified
-                  ? 'purpleOutline'
-                  : 'purple'
-                : isInstalled
-                ? 'warning'
-                : 'green'
-            }
-            className={styles.installButton}
-          />
+          {componentInfo?.price === ConnectorPrice.requestAccess ? (
+            <div className={styles.comingSoonTag}>{t('comingSoon').toUpperCase()}</div>
+          ) : (
+            <SmartButton
+              title={
+                componentInfo?.price === ConnectorPrice.requestAccess
+                  ? notified
+                    ? t('notifyMeRequestSent').toUpperCase()
+                    : t('notifyMe').toUpperCase()
+                  : isInstalled
+                  ? t('uninstall')
+                  : t('install')
+              }
+              height={50}
+              width={180}
+              onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
+              pending={isPending}
+              styleVariant={
+                componentInfo?.price === ConnectorPrice.requestAccess
+                  ? notified
+                    ? 'purpleOutline'
+                    : 'purple'
+                  : isInstalled
+                  ? 'warning'
+                  : 'green'
+              }
+              className={styles.installButton}
+            />
+          )}
         </section>
 
         <section className={styles.details}>
           <section className={styles.detailInfo}>
             <div className={styles.availabilitySoonContainer}>
               <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+              {/* 
+              Commented until backend is ready!!!
+
               {componentInfo?.price === ConnectorPrice.requestAccess && (
                 <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
-              )}
+              )} */}
             </div>
             {componentInfo?.availableFor &&
               availabilityFormatted(componentInfo.availableFor).map((service: string) => (

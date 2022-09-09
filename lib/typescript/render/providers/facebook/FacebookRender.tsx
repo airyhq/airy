@@ -22,6 +22,7 @@ import {DeletedMessage} from './components/DeletedMessage';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
+  console.log('message', message);
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };

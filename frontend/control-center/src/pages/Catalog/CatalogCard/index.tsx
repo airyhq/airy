@@ -42,12 +42,15 @@ const CatalogCard = (props: CatalogCardProps) => {
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
   const [forceClose, setForceClose] = useState(false);
-  const notified = localStorage.getItem(`notified.${componentInfo.source}`);
+  //Commented until backend is ready for this!!!
+  // const notified = localStorage.getItem(`notified.${componentInfo.source}`);
   const installButtonCard = useRef(null);
   const componentCard = useRef(null);
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
+
+  //Commented until backend is ready for this!!!
+  // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
 
   const isChannel = componentInfo?.isChannel;
 
@@ -82,22 +85,36 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
   };
 
-  const handleNotifyMeClick = () => {
-    setIsNotifyMeModalVisible(true);
-    notified && setNotification({show: true, text: notifiedEmail, info: true});
-  };
+  //Commented until backend is ready for this!!!
+  // const handleNotifyMeClick = () => {
+  //   setIsNotifyMeModalVisible(true);
+  //   notified && setNotification({show: true, text: notifiedEmail, info: true});
+  // };
 
   const CatalogCardButton = () => {
+    //Commented until backend is ready for this!!!
+
+    // if (componentInfo?.price === ConnectorPrice.requestAccess) {
+    //   return (
+    //     <Button
+    //       styleVariant={notified ? 'purpleOutline' : 'purple'}
+    //       type="submit"
+    //       onClick={handleNotifyMeClick}
+    //       buttonRef={installButtonCard}
+    //       className={styles.notifyMeButton}>
+    //       {notified ? t('notifyMeRequestSent').toUpperCase() : t('notifyMe').toUpperCase()}
+    //     </Button>
+    //   );
+    // }
+
     if (componentInfo?.price === ConnectorPrice.requestAccess) {
       return (
         <Button
-          styleVariant={notified ? 'purpleOutline' : 'purple'}
-          type="submit"
-          onClick={handleNotifyMeClick}
+          className={styles.comingSoonTag}
+          onClick={() => navigate(getCatalogProductRouteForComponent(componentInfo.source), {state: {componentInfo}})}
           buttonRef={installButtonCard}
-          className={styles.notifyMeButton}
         >
-          {notified ? t('notifyMeRequestSent').toUpperCase() : t('notifyMe').toUpperCase()}
+          {t('comingSoon').toUpperCase()}
         </Button>
       );
     }
@@ -166,9 +183,11 @@ const CatalogCard = (props: CatalogCardProps) => {
                   <button key={service}>{service}</button>
                 ))}
             </div>
-            {componentInfo?.price === ConnectorPrice.requestAccess && (
+            {/* Commented until backend is ready for this!!!
+
+             {componentInfo?.price === ConnectorPrice.requestAccess && (
               <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
-            )}
+            )} */}
           </div>
         </div>
 

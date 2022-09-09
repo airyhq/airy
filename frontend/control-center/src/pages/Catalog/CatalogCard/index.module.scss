@@ -144,3 +144,22 @@
   display: flex;
   white-space: nowrap;
 }
+
+.availableForSoonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.soonTag {
+  @include font-xs-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  height: 22px;
+  width: 50px;
+  border-radius: 5px;
+  background: var(--color-notify-me);
+  color: var(--color-background-white);
+}

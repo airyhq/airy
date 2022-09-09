@@ -141,7 +141,6 @@ const CatalogCard = (props: CatalogCardProps) => {
           </div>
           <div className={styles.componentInfo}>
             <h1>{componentInfo.displayName}</h1>
-
             <p>
               {' '}
               <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
@@ -160,10 +159,17 @@ const CatalogCard = (props: CatalogCardProps) => {
             <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
             {t('availableFor')}:
           </p>
-          {componentInfo?.availableFor &&
-            availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-              <button key={service}>{service}</button>
-            ))}
+          <div className={styles.availableForSoonContainer}>
+            <div>
+              {componentInfo?.availableFor &&
+                availabilityFormatted(componentInfo.availableFor).map((service: string) => (
+                  <button key={service}>{service}</button>
+                ))}
+            </div>
+            {componentInfo?.price === ConnectorPrice.requestAccess && (
+              <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
+            )}
+          </div>
         </div>
 
         {isModalVisible && (

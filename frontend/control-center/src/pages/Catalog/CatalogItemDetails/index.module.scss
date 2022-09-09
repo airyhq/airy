@@ -187,3 +187,22 @@
 .headerModal {
   @include font-xl;
 }
+
+.availabilitySoonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.soonTag {
+  @include font-xs-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 4px;
+  height: 22px;
+  width: 50px;
+  border-radius: 5px;
+  background: var(--color-notify-me);
+  color: var(--color-background-white);
+}

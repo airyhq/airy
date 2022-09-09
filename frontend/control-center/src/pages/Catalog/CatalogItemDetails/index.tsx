@@ -162,7 +162,12 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         <section className={styles.details}>
           <section className={styles.detailInfo}>
-            <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+            <div className={styles.availabilitySoonContainer}>
+              <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+              {componentInfo?.price === ConnectorPrice.requestAccess && (
+                <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
+              )}
+            </div>
             {componentInfo?.availableFor &&
               availabilityFormatted(componentInfo.availableFor).map((service: string) => (
                 <button key={service}>{service}</button>

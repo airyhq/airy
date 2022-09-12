@@ -1,28 +1,33 @@
 package co.airy.core.api.components.installer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.ApiResponse;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1ConfigMap;
-import io.kubernetes.client.openapi.models.V1Job;
-import io.kubernetes.client.openapi.models.V1ObjectMeta;
-import io.kubernetes.client.openapi.models.V1JobSpec;
-import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
-import io.kubernetes.client.openapi.models.V1PodSpec;
 import io.kubernetes.client.openapi.models.V1Container;
+import io.kubernetes.client.openapi.models.V1Job;
+import io.kubernetes.client.openapi.models.V1JobSpec;
+import io.kubernetes.client.openapi.models.V1ObjectMeta;
+import io.kubernetes.client.openapi.models.V1PodSpec;
+import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
 import io.kubernetes.client.util.Yaml;
+
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
+import co.airy.core.api.components.installer.model.Repository;
 import co.airy.log.AiryLoggerFactory;
 
 @Service
@@ -32,6 +37,7 @@ public class InstallerHandler {
 
     private final ApiClient apiClient;
     private final String namespace;
+    private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     InstallerHandler(ApiClient apiClient, @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
@@ -41,9 +47,10 @@ public class InstallerHandler {
     //TODO: Add return value and correct exception handleling
     public void installComponent(String componentName) throws Exception {
        final CoreV1Api api = new CoreV1Api(apiClient);
-       final Map<String, String> coreConfig = getCoreConfig(api);
+       final Map<String, String> coreConfig = getConfigMap(api, "core-config");
        final String globals = coreConfig.get("global.yaml");
        final String version = coreConfig.get("APP_IMAGE_TAG");
+       final List<Repository> repositories = getRepositories(api);
        final List<String> cmd = getInstallCommand(componentName, globals, version);
 
 
@@ -54,9 +61,20 @@ public class InstallerHandler {
        log.info(version);
     }
 
-    private Map<String, String> getCoreConfig(CoreV1Api api) throws ApiException {
+    private List<Repository> getRepositories(CoreV1Api api) throws ApiException, JsonProcessingException {
+        final String repositoriesBlob = getConfigMap(api, "repositories").get("repositories.json");
+        if (repositoriesBlob == null || repositoriesBlob.isEmpty()) {
+            log.error("repositories json configuration not found");
+            //TODO: do better error handleling
+            throw new ApiException();
+        }
+
+        return mapper.readValue(repositoriesBlob, new TypeReference<Map<String, List<Repository>>>(){}).get("repositories");
+    }
+
+    private Map<String, String> getConfigMap(CoreV1Api api, String configName) throws ApiException {
         final ApiResponse<V1ConfigMap> response = api.readNamespacedConfigMapWithHttpInfo(
-                "core-config",
+                configName,
                 namespace,
                 null);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {URLButton, PostbackButton, CallButton, LoginButton, LogoutButton, GamePlayButton} from '../../facebookModel';
+import {URLButton, PostbackButton, CallButton, LoginButton, LogoutButton, GamePlayButton} from '../../MetaModel';
 import styles from './index.module.scss';
 
 type ButtonsProps = {

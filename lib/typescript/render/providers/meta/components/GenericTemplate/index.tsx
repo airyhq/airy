@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Carousel} from 'components';
-import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
+import {GenericTemplate as GenericTemplateModel} from '../../MetaModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';
 import {Buttons} from '../Buttons';
 

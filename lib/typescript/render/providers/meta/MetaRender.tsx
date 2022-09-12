@@ -10,7 +10,7 @@ import {
   ButtonAttachment,
   GenericAttachment,
   MediaAttachment,
-} from './facebookModel';
+} from './MetaModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
@@ -20,10 +20,10 @@ import {StoryReplies} from './components/InstagramStoryReplies';
 import {Share} from './components/InstagramShare';
 import {DeletedMessage} from './components/DeletedMessage';
 
-export const FacebookRender = (props: RenderPropsUnion) => {
+export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;
   console.log('message', message);
-  const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
+  const content = message.fromContact ? metaInbound(message) : metaOutbound(message);
   return render(content, props);
 };
 
@@ -179,8 +179,15 @@ const parseAttachment = (
   };
 };
 
-function facebookInbound(message): ContentUnion {
+function metaInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
+
+  //whatsApp Business Cloud specific 
+  if(messageJson.type === 'template'){
+    return {
+      whatsAppTemplate: messageJson?.template?.components,
+    }
+  }
 
   if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
     return {
@@ -237,7 +244,7 @@ function facebookInbound(message): ContentUnion {
   if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.text,
+      text: messageJson?.text?.body ?? messageJson.text,
     };
   }
 
@@ -247,7 +254,7 @@ function facebookInbound(message): ContentUnion {
   };
 }
 
-function facebookOutbound(message): ContentUnion {
+function metaOutbound(message): ContentUnion {
   const messageJson = message?.content?.message || message?.content || message;
 
   if (messageJson.quick_replies) {
@@ -323,7 +330,7 @@ function facebookOutbound(message): ContentUnion {
   if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.text,
+      text: messageJson?.text?.body ?? messageJson.text,
     };
   }
 

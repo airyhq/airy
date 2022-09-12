@@ -1,7 +1,7 @@
 import React from 'react';
 import {Buttons} from '../Buttons';
 
-import {ButtonTemplate as ButtonTemplateModel} from '../../facebookModel';
+import {ButtonTemplate as ButtonTemplateModel} from '../../MetaModel';
 
 import styles from './index.module.scss';
 

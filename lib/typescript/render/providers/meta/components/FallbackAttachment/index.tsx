@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text} from '../../../../components/Text';
-import {Fallback} from '../../facebookModel';
+import {Fallback} from '../../MetaModel';
 import styles from './index.module.scss';
 
 interface FallbackProps {

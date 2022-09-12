@@ -1,5 +1,5 @@
 import React from 'react';
-import {MediaTemplate as MediaTemplateModel} from '../../facebookModel';
+import {MediaTemplate as MediaTemplateModel} from '../../MetaModel';
 import {Buttons} from '../Buttons';
 import styles from './index.module.scss';
 
@@ -13,11 +13,11 @@ export const MediaTemplate = ({template: {media_type, url, attachment_id, button
       <div className={`${styles.media} ${buttons ? styles.mediaBorder : ''}`}>
         {url && (
           <a href={url} target="_blank" rel="noopener noreferrer">
-            see the {media_type} on Facebook
+            see the {media_type} on Meta
           </a>
         )}
 
-        {attachment_id && <span className={styles.mediaInfo}> {media_type} posted on Facebook</span>}
+        {attachment_id && <span className={styles.mediaInfo}> {media_type} posted on Meta</span>}
       </div>
       {buttons && <Buttons buttons={buttons} mediaTemplate={true} />}
     </div>

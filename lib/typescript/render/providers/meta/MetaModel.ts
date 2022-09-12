@@ -339,19 +339,15 @@ export interface WhatsAppComponents {
 
 //WA template object
 export interface WhatsAppLanguageObject {
-  name: string;
-  language: {
     code: string;
-  }
 }
 
 //WA template object
 //! WhatsAppTemplate or WhatsAppTemplateObject?
 export interface WhatsAppTemplateObject extends Content {
   type: "template";
-  template: WhatsAppLanguageObject;
+  template: { name: string; language: WhatsAppLanguageObject;}
   components?: WhatsAppComponents[];
-  namespace?: string;
 }
 
 //WA Message object 

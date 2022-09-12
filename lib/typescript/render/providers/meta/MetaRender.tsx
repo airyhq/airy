@@ -19,10 +19,11 @@ import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
 import {Share} from './components/InstagramShare';
 import {DeletedMessage} from './components/DeletedMessage';
+import {WhatsAppTemplate} from './components/whatsApp/WhatsAppTemplate';
+import {Source} from 'model';
 
 export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;
-  console.log('message', message);
   const content = message.fromContact ? metaInbound(message) : metaOutbound(message);
   return render(content, props);
 };
@@ -93,6 +94,10 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     case 'deletedMessage':
       return <DeletedMessage fromContact={props.message.fromContact || false} />;
+
+    //Whatsapp-specific
+    case 'template':
+      return <WhatsAppTemplate components={content?.components} template={content.template} fromContact={props.message.fromContact || false}  />
 
     default:
       return null;
@@ -182,10 +187,16 @@ const parseAttachment = (
 function metaInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
+  console.log('messageJson Inbound', messageJson);
+
   //whatsApp Business Cloud specific 
-  if(messageJson.type === 'template'){
+  //WhatsAppTemplateObject
+  //change type to "whatsAppTemplate"?
+  if(messageJson.type === 'template' && message.source === Source.whatsapp){
     return {
-      whatsAppTemplate: messageJson?.template?.components,
+      type: "template",
+      template: messageJson.template,
+      components: messageJson?.components ?? null,
     }
   }
 
@@ -256,6 +267,8 @@ function metaInbound(message): ContentUnion {
 
 function metaOutbound(message): ContentUnion {
   const messageJson = message?.content?.message || message?.content || message;
+
+  console.log('messageJson Outbound', messageJson);
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
@@ -332,6 +345,15 @@ function metaOutbound(message): ContentUnion {
       type: 'text',
       text: messageJson?.text?.body ?? messageJson.text,
     };
+  }
+
+  //whatsapp-specfic 
+  if(messageJson.type === 'template' && message.source === Source.whatsapp){
+    return {
+      type: "template",
+      template: messageJson.template,
+      components: messageJson?.components ?? null,
+    }
   }
 
   return {

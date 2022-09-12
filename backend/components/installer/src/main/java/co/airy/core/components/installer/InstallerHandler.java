@@ -22,12 +22,17 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import co.airy.core.api.components.installer.model.Repository;
+import co.airy.core.api.components.installer.model.Component;
 import co.airy.log.AiryLoggerFactory;
 
 @Service
@@ -50,8 +55,9 @@ public class InstallerHandler {
        final Map<String, String> coreConfig = getConfigMap(api, "core-config");
        final String globals = coreConfig.get("global.yaml");
        final String version = coreConfig.get("APP_IMAGE_TAG");
-       final List<Repository> repositories = getRepositories(api);
-       final List<String> cmd = getInstallCommand(componentName, globals, version);
+       final Map<String, Repository> repositories = getRepositories(api);
+       final Component component = getComponentFromName(repositories, componentName, version);
+       final List<String> cmd = getInstallCommand(component, globals);
 
 
        launchHelmJob(componentName, cmd);
@@ -61,7 +67,29 @@ public class InstallerHandler {
        log.info(version);
     }
 
-    private List<Repository> getRepositories(CoreV1Api api) throws ApiException, JsonProcessingException {
+    private Component getComponentFromName(
+            Map<String, Repository> repositories,
+            String componentName,
+            String version) throws NoSuchElementException {
+       //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
+       String[] names = componentName.split("/");
+
+       final Repository repo = repositories.get(names[0]);
+       if (repo == null) {
+            log.error("repository %s not found", names[0]);
+            //TODO: do better error handleling
+            throw new NoSuchElementException();
+       }
+
+       return Component.builder()
+           .name(names[1])
+           .url(String.format("%s/charts/%s-%s.tgz", repo.getUrl(), names[1], version))
+           .username(repo.getUsername())
+           .password(repo.getPassword())
+           .build();
+    }
+
+    private Map<String, Repository> getRepositories(CoreV1Api api) throws ApiException, JsonProcessingException {
         final String repositoriesBlob = getConfigMap(api, "repositories").get("repositories.json");
         if (repositoriesBlob == null || repositoriesBlob.isEmpty()) {
             log.error("repositories json configuration not found");
@@ -69,7 +97,10 @@ public class InstallerHandler {
             throw new ApiException();
         }
 
-        return mapper.readValue(repositoriesBlob, new TypeReference<Map<String, List<Repository>>>(){}).get("repositories");
+        final List<Repository> repos = mapper.readValue(
+                repositoriesBlob,
+                new TypeReference<Map<String, List<Repository>>>(){}).get("repositories");
+        return repos.stream().collect(Collectors.toMap(Repository::getName, Function.identity()));
     }
 
     private Map<String, String> getConfigMap(CoreV1Api api, String configName) throws ApiException {
@@ -103,6 +134,7 @@ public class InstallerHandler {
                             .restartPolicy("Never")
                             .serviceAccountName("airy-controller")))
                     .backoffLimit(4)
+                    //FIXME: To change to 0
                     .ttlSecondsAfterFinished(30));
 
 
@@ -121,23 +153,22 @@ public class InstallerHandler {
         final V1Job responseJob = response.getData();
     }
 
-    private List<String> getInstallCommand(String componentName, String globals, String version) {
-       //FIXME: to be removed when we remove the notion of repos
-       String[] names = componentName.split("/");
+    private List<String> getInstallCommand(Component component, String globals) {
 
         ArrayList<String> cmd = new ArrayList<>();
         cmd.add("sh");
         cmd.add("-c");
         cmd.add(String.format(
-                    "helm -n %s install %s %s --values <(echo %s | base64 -d) --version %s %s",
+                    "helm -n %s install %s %s %s %s --values <(echo %s | base64 -d)",
                     namespace,
-                    names[0],
-                    componentName,
-                    Base64.getEncoder().encodeToString(globals.getBytes()),
-                    version,
-                    "--devel"));
+                    component.getName(),
+                    component.getUrl(),
+                    Optional.ofNullable(component.getUsername()).map(u -> String.format("--username %s", u)).orElse(""),
+                    Optional.ofNullable(component.getPassword()).map(p -> String.format("--password %s", p)).orElse(""),
+                    Base64.getEncoder().encodeToString(globals.getBytes())));
 
         return cmd;
     }
+
 
 }

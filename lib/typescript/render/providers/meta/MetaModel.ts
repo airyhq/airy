@@ -192,13 +192,13 @@ export interface WhatsAppTextContent extends Content {
 }
 
 //WA Media object
-export interface WhatsAppMediaObject {
-  id?: string;
-  link?: string;
-  caption?: string;
-  filename?: string;
-  provider?: string;
-}
+// export interface WhatsAppMediaObject {
+//   id?: string;
+//   link?: string;
+//   caption?: string;
+//   filename?: string;
+//   provider?: string;
+// }
 
 export interface WhatsAppImageMedia extends Content {
   type: 'image';
@@ -371,6 +371,21 @@ export interface WhatsAppMessageObject {
   type?: string;
 }
 
+export enum WhatsAppMediaType {
+  video = 'video',
+  image = 'image',
+  document = 'document',
+  audio = 'audio',
+  sticker = 'sticker',
+}
+
+export interface WhatsAppMediaObject extends Content {
+  type: "whatsAppMedia";
+  mediaType: WhatsAppMediaType;
+  link: string;
+  caption?: string;
+}
+
 
 // Add a new facebook content model here:
 export type ContentUnion =
@@ -390,7 +405,8 @@ export type ContentUnion =
   | ShareContent
   | Fallback
   | DeletedMessageContent
-  | WhatsAppTemplateObject;
+  | WhatsAppTemplateObject
+  | WhatsAppMediaObject;
 
 export type AttachmentUnion =
   | TextContent

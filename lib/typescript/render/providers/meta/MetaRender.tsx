@@ -10,6 +10,7 @@ import {
   ButtonAttachment,
   GenericAttachment,
   MediaAttachment,
+  WhatsAppMediaType
 } from './MetaModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
@@ -19,7 +20,7 @@ import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
 import {Share} from './components/InstagramShare';
 import {DeletedMessage} from './components/DeletedMessage';
-import {WhatsAppTemplate} from './components/whatsApp/WhatsAppTemplate';
+import {WhatsAppTemplate , WhatsAppMedia} from './components/whatsApp';
 import {Source} from 'model';
 
 export const MetaRender = (props: RenderPropsUnion) => {
@@ -96,8 +97,12 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <DeletedMessage fromContact={props.message.fromContact || false} />;
 
     //Whatsapp-specific
+    ////---> rename whatsAppTemplate?
     case 'template':
       return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false}  />
+    case  "whatsAppMedia": 
+        return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />
+
 
     default:
       return null;
@@ -189,17 +194,6 @@ function metaInbound(message): ContentUnion {
 
   console.log('messageJson Inbound', messageJson);
 
-  //whatsApp Business Cloud specific 
-  //WhatsAppTemplateObject
-  //change type to "whatsAppTemplate"?
-  if(messageJson.type === 'template' && message.source === Source.whatsapp){
-    return {
-      type: "template",
-      template: messageJson.template,
-      components: messageJson?.components ?? null,
-    }
-  }
-
   if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
     return {
       text: messageJson.text ?? null,
@@ -258,6 +252,29 @@ function metaInbound(message): ContentUnion {
       text: messageJson?.text?.body ?? messageJson.text,
     };
   }
+
+  //WhatsApp Business Cloud specific 
+  if(message.source === Source.whatsapp){
+
+    if(messageJson.type === 'template'){
+      return {
+        type: "template",
+        template: messageJson.template,
+        components: messageJson?.components ?? null,
+      }
+    }
+  
+    if(messageJson.type in WhatsAppMediaType){
+      const media = messageJson.type;
+      return {
+        type: "whatsAppMedia",
+        mediaType: media,
+        link: messageJson.type[media]?.link,
+        caption: messageJson.type[media]?.caption ?? null,
+      }
+    }
+  }
+
 
   return {
     type: 'text',
@@ -347,13 +364,30 @@ function metaOutbound(message): ContentUnion {
     };
   }
 
-  //whatsapp-specfic 
-  if(messageJson.type === 'template' && message.source === Source.whatsapp){
-    return {
-      type: "template",
-      template: messageJson.template,
+    //WhatsApp Business Cloud specific 
+    if(message.source === Source.whatsapp){
+
+      if(messageJson.type === 'template'){
+        return {
+          type: "template",
+          template: messageJson.template,
+          components: messageJson?.components ?? null,
+        }
+      }
+    
+      if(messageJson.type in WhatsAppMediaType){
+        const media = messageJson.type;
+        console.log('media', media)
+        console.log('messageJson.type[media]', messageJson.type[media]);
+
+        return {
+          type: "whatsAppMedia",
+          mediaType: media,
+          link: messageJson[media]?.link,
+          caption: messageJson[media]?.caption ?? null,
+        }
+      }
     }
-  }
 
   return {
     type: 'text',

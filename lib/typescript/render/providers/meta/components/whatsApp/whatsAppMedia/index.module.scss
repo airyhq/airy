@@ -1,0 +1,34 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.mediaWrapper {
+    background-color: white;
+    max-width: 500px;
+    /* height: 200px; */
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    padding: 10px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction:column;
+}
+
+.mediaWrapper :first-child {
+    margin-top:0;
+}
+
+.mediaWrapper a {
+    max-height:250px;
+}
+
+.mediaWrapper img, 
+.mediaWrapper video{
+    max-width: 250px;
+    border-radius: 12px;
+}
+
+.caption {
+    @include font-xs;
+    margin-top:5px;
+}

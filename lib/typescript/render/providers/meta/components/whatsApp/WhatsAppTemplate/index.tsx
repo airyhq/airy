@@ -1,7 +1,7 @@
 import React from 'react';
-//import {MediaTemplate as MediaTemplateModel} from '../../../MetaModel';
+import { WhatsAppMediaType } from '../../../MetaModel';
 import styles from './index.module.scss';
-import {ImageWithFallback, Video, File} from '../../../../../components';
+import { WhatsAppMediaContent } from '../whatsAppMedia';
 
 type WhatsAppTemplateProps = {
   template: any;
@@ -27,11 +27,13 @@ export const WhatsAppTemplate = ({template, fromContact}: WhatsAppTemplateProps)
 
                     console.log('parameter', parameter);
 
-                    {parameter.type === 'image' && parameter?.image?.link && (content = <><ImageWithFallback src={parameter.image.link} /> {parameter?.image?.caption ? <p className={styles.caption}>{parameter.image.caption}</p> : null} </>)};
+                    {parameter.type in WhatsAppMediaType && (content = <WhatsAppMediaContent mediaType={parameter.type} link={parameter[parameter.type].link} caption={parameter[parameter.type]?.caption} />)}
 
-                    {parameter.type === 'video' && parameter?.video?.link && (content = <><Video videoUrl={parameter.video.link} /> {parameter?.video?.caption ? <p className={styles.caption}>{parameter.video.caption}</p> : null} </>)};
+                    // {parameter.type === 'image' && parameter?.image?.link && (content = <><ImageWithFallback src={parameter.image.link} /> {parameter?.image?.caption ? <p className={styles.caption}>{parameter.image.caption}</p> : null} </>)};
 
-                    {parameter.type === 'document' && parameter?.document?.link && (content = <><File fileUrl={parameter.document.link} /> {parameter?.document?.caption ? <p className={styles.caption}>{parameter.document.caption}</p> : null} </>)};
+                    // {parameter.type === 'video' && parameter?.video?.link && (content = <><Video videoUrl={parameter.video.link} /> {parameter?.video?.caption ? <p className={styles.caption}>{parameter.video.caption}</p> : null} </>)};
+
+                    // {parameter.type === 'document' && parameter?.document?.link && (content = <><File fileUrl={parameter.document.link} /> {parameter?.document?.caption ? <p className={styles.caption}>{parameter.document.caption}</p> : null} </>)};
 
                     {
                       parameter.type === 'text' && (content = <p>{parameter.text}</p>);

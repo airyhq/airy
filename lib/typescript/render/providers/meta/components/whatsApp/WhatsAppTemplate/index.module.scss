@@ -1,7 +1,91 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
 .wrapper {
-    border-radius: 12px;
     background-color: white;
-    color:black;
     max-width: 500px;
-    height: 200px;
+    /* height: 200px; */
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    @include font-base;
 }
+
+//components object type 
+//make a common class applicable to all with repeated styles
+.header {
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #cccccc45;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    border-top: none;
+    flex-direction: column;
+}
+
+
+.body {
+    width:100%;
+   padding: 0 10px;
+    border-bottom: 1px solid #CCC;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+}
+
+.button {
+width:100%;
+padding:10px;
+border-bottom: 1px solid #CCC;
+display:flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+//content template 
+.contentTemplate {
+    border-bottom: 1px solid #CCC;
+    width:100%;
+    max-width:400px;
+    padding: 5px 0px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.caption {
+    @include font-xs;
+    margin-top:5px;
+}
+
+.contentTemplate a{
+    max-height: 100px;
+}
+
+.contentTemplate img{
+    max-width:150px;
+    height: 100px;
+}
+
+.contentTemplate video {
+    max-width:150px;
+}
+
+.contentTemplate p {
+    text-align:center;
+}
+
+.wrapper :last-child {
+    border-bottom:none;
+}
+
+.body :last-child {
+    border-bottom:none;
+}
+

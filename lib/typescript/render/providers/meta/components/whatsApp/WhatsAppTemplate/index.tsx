@@ -1,39 +1,64 @@
 import React from 'react';
 //import {MediaTemplate as MediaTemplateModel} from '../../../MetaModel';
 import styles from './index.module.scss';
-import {ImageWithFallback} from '../../../../../components';
+import {ImageWithFallback, Video, File} from '../../../../../components';
 
 type WhatsAppTemplateProps = {
   template: any;
-  components:any;
-  fromContact:any;
+  fromContact: any;
 };
 
-export const WhatsAppTemplate = ({template, components, fromContact}: WhatsAppTemplateProps) => {
+export const WhatsAppTemplate = ({template, fromContact}: WhatsAppTemplateProps) => {
+  console.log('compo template', template);
+  console.log('compo components', template?.components);
+  console.log('fromContact', fromContact);
+
   return (
     <section className={styles.wrapper}>
-      {components && components.map(item => {
-        {item.type === 'header' && (
+      {template?.components &&
+        template?.components.map(item => {
+          console.log('item', item);
 
-          <div>
-            <>
-          {item.parameters.map(parameter => {
-            {parameter.type ==='image' && (
-              <ImageWithFallback src={parameter.image.link}/>
-            )}
-            {parameter.type ==='text' && (
-              <h1>{parameter.text}</h1>
-            )}
+          return (
+            <div className={styles[item.type]}>
+              <>
+                {item.parameters.map(parameter => {
+                  let content = <div></div>;
 
-            {parameter.type ==='button' && (
-              <h1>{parameter.text}</h1>
-            )}
-          })}
-          </>
-          </div>
-        )}
-      })}
-     
+                    console.log('parameter', parameter);
+
+                    {parameter.type === 'image' && parameter?.image?.link && (content = <><ImageWithFallback src={parameter.image.link} /> {parameter?.image?.caption ? <p className={styles.caption}>{parameter.image.caption}</p> : null} </>)};
+
+                    {parameter.type === 'video' && parameter?.video?.link && (content = <><Video videoUrl={parameter.video.link} /> {parameter?.video?.caption ? <p className={styles.caption}>{parameter.video.caption}</p> : null} </>)};
+
+                    {parameter.type === 'document' && parameter?.document?.link && (content = <><File fileUrl={parameter.document.link} /> {parameter?.document?.caption ? <p className={styles.caption}>{parameter.document.caption}</p> : null} </>)};
+
+                    {
+                      parameter.type === 'text' && (content = <p>{parameter.text}</p>);
+                    }
+  
+                    {
+                      item.type === 'button' && (content = <p>{parameter?.text ?? parameter?.payload?.text ?? parameter?.payload}</p>);
+                    }
+
+                    {
+                      parameter.type === 'currency' && (content = <p>{parameter.currency?.amount_1000 && parameter.currency?.code ? `${parameter.currency.amount_1000 / 1000} ${parameter.currency?.code}` : `${parameter?.currency?.fallback_value}`}</p>);
+                    }
+
+                    {
+                      parameter.type === 'date_time' && (content = <p>{parameter.date_time.fallback_value}</p>);
+                    }
+
+
+
+                    return(<div className={styles.contentTemplate}>{content}</div>)
+                  
+
+                })}
+              </>
+            </div>
+          );
+        })}
     </section>
   );
 };

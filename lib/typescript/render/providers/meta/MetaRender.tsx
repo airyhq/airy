@@ -97,7 +97,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     //Whatsapp-specific
     case 'template':
-      return <WhatsAppTemplate components={content?.components} template={content.template} fromContact={props.message.fromContact || false}  />
+      return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false}  />
 
     default:
       return null;
@@ -352,7 +352,6 @@ function metaOutbound(message): ContentUnion {
     return {
       type: "template",
       template: messageJson.template,
-      components: messageJson?.components ?? null,
     }
   }
 

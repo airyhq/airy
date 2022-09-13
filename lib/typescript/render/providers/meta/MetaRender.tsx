@@ -10,7 +10,7 @@ import {
   ButtonAttachment,
   GenericAttachment,
   MediaAttachment,
-  WhatsAppMediaType
+  WhatsAppMediaType,
 } from './MetaModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
@@ -20,8 +20,9 @@ import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
 import {Share} from './components/InstagramShare';
 import {DeletedMessage} from './components/DeletedMessage';
-import {WhatsAppTemplate , WhatsAppMedia} from './components/whatsApp';
+import {WhatsAppTemplate, WhatsAppMedia} from './components/whatsApp';
 import {Source} from 'model';
+import { WhatsAppInteractive } from './components/whatsApp/whatsAppInteractive';
 
 export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -99,10 +100,10 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     //Whatsapp-specific
     ////---> rename whatsAppTemplate?
     case 'template':
-      return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false}  />
-    case  "whatsAppMedia": 
-        return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />
-    case "location":
+      return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false} />;
+    case 'whatsAppMedia':
+      return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />;
+    case 'location':
       return (
         <CurrentLocation
           latitude={content.latitude}
@@ -112,7 +113,10 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           fromContact={props.message.fromContact || false}
         />
       );
-
+    case 'whatsAppInteractive':
+      return(
+        <WhatsAppInteractive interactiveType={content.interactiveType} header={content.header} body={content.body} footer={content.footer} />
+      );
 
     default:
       return null;
@@ -263,28 +267,40 @@ function metaInbound(message): ContentUnion {
     };
   }
 
-  //WhatsApp Business Cloud specific 
-  if(message.source === Source.whatsapp){
+  //WhatsApp Business Cloud specific
+  if (message.source === Source.whatsapp) {
 
-    if(messageJson.type === 'template'){
+    //template
+    if (messageJson.type === 'template') {
       return {
-        type: "template",
+        type: 'template',
         template: messageJson.template,
         components: messageJson?.components ?? null,
-      }
+      };
     }
-  
-    if(messageJson.type in WhatsAppMediaType){
+
+    //media
+    if (messageJson.type in WhatsAppMediaType) {
       const media = messageJson.type;
       return {
-        type: "whatsAppMedia",
+        type: 'whatsAppMedia',
         mediaType: media,
         link: messageJson.type[media]?.link,
         caption: messageJson.type[media]?.caption ?? null,
-      }
+      };
+    }
+
+    //location
+    if (messageJson.type === 'location') {
+      return {
+        type: 'location',
+        longitude: messageJson.location?.longitude,
+        latitude: messageJson.location?.latitude,
+        name: messageJson.location?.name,
+        address: messageJson.location?.address,
+      };
     }
   }
-
 
   return {
     type: 'text',
@@ -374,46 +390,53 @@ function metaOutbound(message): ContentUnion {
     };
   }
 
-    //WhatsApp Business Cloud specific 
-    if(message.source === Source.whatsapp){
-
-      //template
-      if(messageJson.type === 'template'){
-        return {
-          type: "template",
-          template: messageJson.template,
-          components: messageJson?.components ?? null,
-        }
-      }
-    
-      //media
-      if(messageJson.type in WhatsAppMediaType){
-        const media = messageJson.type;
-        console.log('media', media)
-        console.log('messageJson.type[media]', messageJson.type[media]);
-
-        return {
-          type: "whatsAppMedia",
-          mediaType: media,
-          link: messageJson[media]?.link,
-          caption: messageJson[media]?.caption ?? null,
-        }
-      }
-
-      //location 
-      if(messageJson.type === 'location'){
-        return {
-          type: 'location',
-          longitude: messageJson.location.longitude,
-          latitude: messageJson.location.latitude,
-          name: messageJson.location?.name,
-          address: messageJson.location?.address,
-        }
-         
-      }
-
-
+  //WhatsApp Business Cloud specific
+  if (message.source === Source.whatsapp) {
+    //template
+    if (messageJson.type === 'template') {
+      return {
+        type: 'template',
+        template: messageJson.template,
+        components: messageJson?.components ?? null,
+      };
     }
+
+    //media
+    if (messageJson.type in WhatsAppMediaType) {
+      const media = messageJson.type;
+      console.log('media', media);
+      console.log('messageJson.type[media]', messageJson.type[media]);
+
+      return {
+        type: 'whatsAppMedia',
+        mediaType: media,
+        link: messageJson[media]?.link,
+        caption: messageJson[media]?.caption ?? null,
+      };
+    }
+
+    //location
+    if (messageJson.type === 'location') {
+      return {
+        type: 'location',
+        longitude: messageJson.location.longitude,
+        latitude: messageJson.location.latitude,
+        name: messageJson.location?.name,
+        address: messageJson.location?.address,
+      };
+    }
+
+    //interactive
+    if(messageJson.type === 'interactive'){
+      return{
+        type: 'whatsAppInteractive',
+        interactiveType: messageJson.interactive.type,
+        header: messageJson.interactive.header,
+        body: messageJson.interactive.body,
+        footer: messageJson.interactive.footer,
+      }
+    }
+  }
 
   return {
     type: 'text',

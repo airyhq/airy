@@ -11,6 +11,10 @@ interface CurrentLocationProps {
 }
 
 export const CurrentLocation = ({longitude, latitude, name, address, fromContact}: CurrentLocationProps) => {
+
+  if(!longitude)longitude = 'N/A';
+  if(!latitude)latitude = 'N/A';
+
   return (
     <div className={`${fromContact ? styles.contactContent : styles.memberContent}`}>
       <p className={styles.text}>

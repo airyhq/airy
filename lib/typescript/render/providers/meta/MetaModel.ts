@@ -379,6 +379,9 @@ export enum WhatsAppMediaType {
   sticker = 'sticker',
 }
 
+//create Media object with {link: string, caption?: string;} and 
+//extend WhatsAppMediaObject or add it to WhatsAppMediaObject?
+
 export interface WhatsAppMediaObject extends Content {
   type: "whatsAppMedia";
   mediaType: WhatsAppMediaType;
@@ -392,6 +395,33 @@ export interface WhatsAppLocation extends Content {
   latitude: string;
   name?: string;
   address?: string;
+}
+
+//create Media object with {link: string, caption?: string;} and 
+//extend WhatsAppMediaObject or add it to WhatsAppMediaObject?
+
+export interface WhatsAppInteractiveHeader {
+  type: 'text' | 'video' | 'image' | 'document';
+  text?: string;
+  video?: {link: string; caption?: string;};
+  image?:  {link: string; caption?: string;};
+  document?:  {link: string; caption?: string};
+}
+
+export enum WhatsAppInteractiveType {
+  "button" = "button",
+  "list" = "list",
+  "product" = "product",
+  "product_list" = "product_list"
+}
+
+//interactive 
+export interface WhatsAppInteractive extends Content {
+  type: 'whatsAppInteractive';
+  interactiveType: WhatsAppInteractiveType;
+  header: WhatsAppInteractiveHeader;
+  body?: {text: string};
+  footer?: {text: string};
 }
 
 
@@ -415,7 +445,8 @@ export type ContentUnion =
   | DeletedMessageContent
   | WhatsAppTemplateObject
   | WhatsAppMediaObject
-  | WhatsAppLocation;
+  | WhatsAppLocation
+  | WhatsAppInteractive;
 
 export type AttachmentUnion =
   | TextContent

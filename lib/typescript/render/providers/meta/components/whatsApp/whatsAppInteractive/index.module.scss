@@ -1,0 +1,32 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+
+.interactiveWrapper {
+    background-color: white;
+    max-width: 500px;
+    /* height: 200px; */
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    @include font-base;
+    padding: 10px;
+}
+
+.header {
+    color:black;
+    font-weight:bold;
+    background: #ccc;
+    padding-bottom: 10px;
+}
+
+.body {
+    color:black;
+}
+
+.footer {
+    color: grey;
+}
+
+.action {
+    border-top:#ccc;
+}

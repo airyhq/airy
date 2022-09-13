@@ -1,6 +1,6 @@
 import React from 'react';
 import {RenderPropsUnion} from '../../props';
-import {Text, Image, Video, File} from '../../components';
+import {Text, Image, Video, File, CurrentLocation} from '../../components';
 import {AudioClip} from 'components';
 import {QuickReplies} from './components/QuickReplies';
 import {
@@ -102,6 +102,16 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false}  />
     case  "whatsAppMedia": 
         return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />
+    case "location":
+      return (
+        <CurrentLocation
+          latitude={content.latitude}
+          longitude={content.longitude}
+          name={content?.name}
+          address={content?.address}
+          fromContact={props.message.fromContact || false}
+        />
+      );
 
 
     default:
@@ -367,6 +377,7 @@ function metaOutbound(message): ContentUnion {
     //WhatsApp Business Cloud specific 
     if(message.source === Source.whatsapp){
 
+      //template
       if(messageJson.type === 'template'){
         return {
           type: "template",
@@ -375,6 +386,7 @@ function metaOutbound(message): ContentUnion {
         }
       }
     
+      //media
       if(messageJson.type in WhatsAppMediaType){
         const media = messageJson.type;
         console.log('media', media)
@@ -387,6 +399,20 @@ function metaOutbound(message): ContentUnion {
           caption: messageJson[media]?.caption ?? null,
         }
       }
+
+      //location 
+      if(messageJson.type === 'location'){
+        return {
+          type: 'location',
+          longitude: messageJson.location.longitude,
+          latitude: messageJson.location.latitude,
+          name: messageJson.location?.name,
+          address: messageJson.location?.address,
+        }
+         
+      }
+
+
     }
 
   return {

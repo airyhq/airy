@@ -386,6 +386,14 @@ export interface WhatsAppMediaObject extends Content {
   caption?: string;
 }
 
+export interface WhatsAppLocation extends Content {
+  type: 'location';
+  longitude: string;
+  latitude: string;
+  name?: string;
+  address?: string;
+}
+
 
 // Add a new facebook content model here:
 export type ContentUnion =
@@ -406,7 +414,8 @@ export type ContentUnion =
   | Fallback
   | DeletedMessageContent
   | WhatsAppTemplateObject
-  | WhatsAppMediaObject;
+  | WhatsAppMediaObject
+  | WhatsAppLocation;
 
 export type AttachmentUnion =
   | TextContent

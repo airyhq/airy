@@ -20,6 +20,7 @@ variable "gke_num_nodes" {
   default     = 2
   description = "number of gke nodes"
 }
+<<<<<<< HEAD
 
 variable "zone" {
   default     = "us-central1-a"
@@ -62,3 +63,5 @@ variable "ip_range_services_name" {
   description = "The secondary ip range to use for services"
   default     = "ip-range-services"
 }
+=======
+>>>>>>> origin/infrastructure/2556-google-cloud-platform-terraform-module

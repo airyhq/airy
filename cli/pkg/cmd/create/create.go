@@ -2,18 +2,14 @@ package create
 
 import (
 	"cli/pkg/console"
-	"cli/pkg/helm"
 	"cli/pkg/providers"
 	"cli/pkg/workspace"
 	"fmt"
 	"os"
 	"runtime"
 
-	"github.com/airyhq/airy/lib/go/k8s"
-
 	"github.com/TwinProduction/go-color"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"gopkg.in/segmentio/analytics-go.v3"
 )
 
@@ -88,69 +84,9 @@ func create(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, providerName, "provider output:")
 	fmt.Fprintln(w)
-	context, err := provider.Provision(providerConfig, workspace.ConfigDir{Path: installDir})
+	err = provider.Provision(providerConfig, workspace.ConfigDir{Path: installDir})
 	fmt.Fprintln(w)
 	if err != nil {
 		console.Exit("could not install Airy: ", err)
-	}
-	if providerName == "minikube" { // TEMP fix to keep minikube working
-		clientset, err := context.GetClientSet()
-		if err != nil {
-			console.Exit("could not get clientset: ", err)
-		}
-
-		if err = context.Store(); err != nil {
-			console.Exit("could not store the kube context: ", err)
-		}
-
-		helm := helm.New(clientset, version, namespace, dir.GetAiryYaml())
-		if err := helm.Setup(); err != nil {
-			console.Exit("setting up Helm failed with err: ", err)
-		}
-
-		fmt.Println("🚀 Starting core with default components")
-
-		if err := helm.InstallCharts(); err != nil {
-			console.Exit("installing Helm charts failed with err: ", err)
-		}
-
-		if err = provider.PostInstallation(providerConfig, namespace, dir); err != nil {
-			console.Exit("failed to run post installation hook: ", err)
-		}
-
-		fmt.Println("🎉 Your Airy Core is ready")
-
-		coreConfig, err := k8s.GetCmData("core-config", namespace, clientset)
-		if err != nil {
-			console.Exit("failed to get hosts from installation")
-		}
-
-		fmt.Println("\t 👩‍🍳 Available hosts:")
-		for hostName, host := range coreConfig {
-			switch hostName {
-			case "HOST":
-				fmt.Printf("\t\t %s:\t %s", "Host", host)
-				fmt.Println()
-			case "API_HOST":
-				fmt.Printf("\t\t %s:\t %s", "API", host)
-				fmt.Println()
-			case "NGROK":
-				fmt.Printf("\t\t %s:\t %s", "NGROK", host)
-				fmt.Println()
-			}
-		}
-
-		fmt.Println("✅ Airy Installed")
-		fmt.Println()
-
-		viper.Set("provider", provider)
-		viper.Set("namespace", namespace)
-		viper.WriteConfig()
-
-		airyAnalytics.Track(analytics.Track{
-			UserId: coreConfig["CORE_ID"],
-			Event:  "installation_succesful"})
-		fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
-		fmt.Println()
 	}
 }

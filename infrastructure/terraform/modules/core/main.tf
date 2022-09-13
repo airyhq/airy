@@ -1,9 +1,3 @@
-resource "kubernetes_namespace" "core" {
-  metadata {
-    name = var.core_id
-  }
-}
-
 data "http" "core_version" {
   url = "https://raw.githubusercontent.com/airyhq/airy/main/VERSION"
 }
@@ -16,14 +10,16 @@ resource "helm_release" "airy_core" {
   name  = "airy-release"
   chart = "https://helm.airy.co/charts/airy-${local.core_version}.tgz"
 
-  timeout = "600"
+  timeout = var.timeout
   values = [
     var.values_yaml,
     var.resources_yaml,
     var.prerequisite_properties_yaml
   ]
 
-  namespace = var.namespace
+  namespace        = var.namespace
+  create_namespace = true
+  wait            = false
 
   set {
     name  = "global.appImageTag"
@@ -34,17 +30,22 @@ resource "helm_release" "airy_core" {
     name  = "ingress-controller.enabled"
     value = var.ingress_controller_enabled
   }
-
-  depends_on = [
-    kubernetes_namespace.core
-  ]
-
 }
 
 data "kubernetes_service" "ingress" {
   metadata {
     name      = "ingress-nginx-controller"
     namespace = "kube-system"
+  }
+  depends_on = [
+    helm_release.airy_core
+  ]
+}
+
+data "kubernetes_config_map" "core_config" {
+  metadata {
+    name      = "core-config"
+    namespace = var.namespace
   }
   depends_on = [
     helm_release.airy_core

@@ -5,17 +5,15 @@ import (
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"cli/pkg/workspace/template"
-	"context"
-	"fmt"
 	"io"
+	"os"
 	"os/exec"
-	"path/filepath"
-	"runtime"
 	"strings"
 
+	"github.com/airyhq/airy/lib/go/tools"
+
+	"github.com/hashicorp/go-getter"
 	"gopkg.in/segmentio/analytics-go.v3"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/util/homedir"
 )
 
 const (
@@ -45,114 +43,49 @@ func (p *provider) GetOverrides() template.Variables {
 }
 
 func (p *provider) CheckEnvironment() error {
-	return workspace.CheckBinaries([]string{"minikube"})
+	return workspace.CheckBinaries([]string{"minikube", "terraform"})
 }
-func (p *provider) PreInstallation(workspace string) (string, error) {
-	return workspace, nil
-}
+func (p *provider) PreInstallation(workspacePath string) (string, error) {
+	remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
+	installDir := workspacePath + "/terraform"
+	installFlags := strings.Join([]string{"PROVIDER=minikube", "WORKSPACE=" + workspacePath}, "\n")
 
-func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
-	if err := p.startCluster(providerConfig); err != nil {
-		return kube.KubeCtx{}, err
+	var gitGetter = &getter.Client{
+		Src: remoteUrl,
+		Dst: installDir,
+		Dir: true,
 	}
-
-	homeDir := homedir.HomeDir()
-	if homeDir == "" {
-		return kube.KubeCtx{}, fmt.Errorf("could not find the kubeconfig")
+	if err := gitGetter.Get(); err != nil {
+		return "", err
 	}
-
-	ctx := kube.New(filepath.Join(homeDir, ".kube", "config"), profile)
-	p.context = ctx
-	return ctx, nil
-}
-
-func (p *provider) startCluster(providerConfig map[string]string) error {
-	minikubeDriver := getArg(providerConfig, "driver", "docker")
-	minikubeCpus := getArg(providerConfig, "cpus", "4")
-	minikubeMemory := getArg(providerConfig, "memory", "7168")
-	driverArg := "--driver=" + minikubeDriver
-	runtimeArg := ""
-	if minikubeDriver == "docker" {
-		runtimeArg = dockerRuntime
-	}
-	cpusArg := "--cpus=" + minikubeCpus
-	memoryArg := "--memory=" + minikubeMemory
-	args := []string{"start", "--extra-config=apiserver.service-node-port-range=1-65535", "--ports=80:80", driverArg, runtimeArg, cpusArg, memoryArg}
-	// Prevent minikube download progress bar from polluting the output by downloading silently first
-	_, err := runGetOutput(append(args, "--download-only")...)
+	err := os.WriteFile(installDir+"/install.flags", []byte(installFlags), 0666)
 	if err != nil {
-		return fmt.Errorf("downloading minikube files err: %v", err)
+		return "", err
 	}
-	return p.runPrintOutput(args...)
+	return installDir, nil
 }
 
-func (p *provider) runPrintOutput(args ...string) error {
-	cmd := getCmd(args...)
-	fmt.Fprintf(p.w, "$ %s %s", cmd.Path, strings.Join(cmd.Args, " "))
-	fmt.Fprintln(p.w)
-	fmt.Fprintln(p.w)
-	cmd.Stdout = p.w
-	cmd.Stderr = p.w
-	return cmd.Run()
-}
-
-func runGetOutput(args ...string) (string, error) {
-	cmd := getCmd(args...)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return string(out), fmt.Errorf("running minikube failed with err: %v\n%v", err, string(out))
-	}
-	return string(out), nil
-}
-
-func getCmd(args ...string) *exec.Cmd {
-	defaultArgs := []string{"--profile=" + profile}
-	return exec.Command(minikube, append(defaultArgs, args...)...)
-}
-
-func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
-	clientset, err := p.context.GetClientSet()
-	if err != nil {
-		return err
-	}
-
-	configMaps := clientset.CoreV1().ConfigMaps(namespace)
-	configMap, err := configMaps.Get(context.TODO(), "core-config", metav1.GetOptions{})
-	if err != nil {
-		return err
-	}
-
-	// Ensure that kubectl is downloaded so that the progressbar does not pollute the output
-	runGetOutput("kubectl", "version")
-
-	coreId, err := runGetOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
-	if err != nil {
-		return err
-	}
-	coreId = strings.Trim(coreId, "'")
-
+func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) error {
+	installPath := dir.GetPath(".")
+	id := tools.RandString(8)
 	p.analytics.Track(analytics.Identify{
-		UserId: coreId,
+		AnonymousId: id,
 		Traits: analytics.NewTraits().
-			Set("provider", "minikube").
-			Set("numCpu", runtime.NumCPU()),
-	},
-	)
+			Set("provider", "Minikube"),
+	})
+	cmd := exec.Command("/bin/bash", "install.sh")
+	cmd.Dir = installPath
+	cmd.Stdin = os.Stdin
+	cmd.Stderr = p.w
+	cmd.Stdout = p.w
+	err := cmd.Run()
 
-	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", coreId)
-
-	configMap.Data["NGROK"] = ngrokEndpoint
-	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {
-		return err
+	if err != nil {
+		console.Exit("Error with Terraform installation", err)
 	}
-
 	return nil
 }
 
-func getArg(providerConfig map[string]string, key string, fallback string) string {
-	value := providerConfig[key]
-	if value == "" {
-		return fallback
-	}
-	return value
+func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
+	return nil
 }

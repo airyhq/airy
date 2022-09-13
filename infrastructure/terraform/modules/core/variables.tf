@@ -15,10 +15,12 @@ variable "namespace" {
 
 variable "values_yaml" {
   description = "The helm values overrides"
+  type        = string
 }
 
 variable "resources_yaml" {
   description = "Resource requests and limits for the components"
+  default     = ""
 }
 
 variable "prerequisite_properties_yaml" {
@@ -28,12 +30,15 @@ variable "prerequisite_properties_yaml" {
 
 variable "core_version" {
   description = "Version of the Airy Core instance"
-  type        = string
   default     = ""
 }
 
 variable "ingress_controller_enabled" {
   description = "Whether to create the NGinx ingress controller"
-  type        = string
   default     = "true"
+}
+
+variable "timeout" {
+  description = "Timeout for the Helm installation"
+  default     = 600
 }

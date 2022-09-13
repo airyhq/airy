@@ -5,7 +5,10 @@
 The current referenced project link is ; 
 
 
-https://github.com/hashicorp/learn-terraform-provision-gke-cluster
+- [Terraform GKE Registry](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster)
+- [Based Github Project](https://github.com/hashicorp/learn-terraform-provision-gke-cluster)
+
+
 
 
 gcloud  container components  list 

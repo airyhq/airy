@@ -20,7 +20,6 @@ variable "gke_num_nodes" {
   default     = 2
   description = "number of gke nodes"
 }
-<<<<<<< HEAD
 
 variable "zone" {
   default     = "us-central1-a"
@@ -38,12 +37,12 @@ variable "vpc_name" {
 }
 
 variable "private_subnets" {
-  description = "Subnet ids for the EKS cluster to be created in"
   type        = list(string)
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "public_subnets" {
+  type        = list(string)
   default = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 }
 
@@ -63,5 +62,3 @@ variable "ip_range_services_name" {
   description = "The secondary ip range to use for services"
   default     = "ip-range-services"
 }
-=======
->>>>>>> origin/infrastructure/2556-google-cloud-platform-terraform-module

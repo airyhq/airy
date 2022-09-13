@@ -10,5 +10,5 @@ output "NGROK" {
 
 output "Info" {
   description = "More information"
-  value       = "For more information about the AWS provider visit https://airy.co/docs/core/getting-started/installation/aws"
+  value       = "For more information visit https://airy.co/docs/core/getting-started/installation/introduction"
 }

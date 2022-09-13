@@ -96,7 +96,6 @@ resource "local_file" "kubeconfig" {
 }
 
 locals {
-  env              = "prod"
   project          = var.project_id
   region           = var.region
   vpc_name         = var.vpc_name

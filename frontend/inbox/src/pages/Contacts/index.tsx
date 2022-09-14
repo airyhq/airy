@@ -49,8 +49,9 @@ const Contacts = (props: ContactsProps) => {
   const contactSorter = (a: Contact, b: Contact) => a.displayName?.localeCompare?.(b.displayName);
 
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+    const firstPageIndex = (currentPage - 1) * pageSize || 1;
+    const lastPageIndex = firstPageIndex + pageSize || listPageSize;
+
     return contacts.sort(contactSorter).slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, contacts.length]);
 
@@ -62,7 +63,7 @@ const Contacts = (props: ContactsProps) => {
   }, [currentTableData]);
 
   useEffect(() => {
-    lastPage % fetchNextPage == 0 &&
+    lastPage % fetchNextPage === 0 &&
       listContacts().catch((error: Error) => {
         console.error(error);
       });
@@ -89,7 +90,7 @@ const Contacts = (props: ContactsProps) => {
 
   return (
     <>
-      {contacts.length === 0 ? (
+      {currentTableData.length === 0 ? (
         <EmptyState />
       ) : (
         <>

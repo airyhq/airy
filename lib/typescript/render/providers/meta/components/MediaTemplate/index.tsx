@@ -13,11 +13,11 @@ export const MediaTemplate = ({template: {media_type, url, attachment_id, button
       <div className={`${styles.media} ${buttons ? styles.mediaBorder : ''}`}>
         {url && (
           <a href={url} target="_blank" rel="noopener noreferrer">
-            see the {media_type} on Meta
+            see the {media_type} on Facebook
           </a>
         )}
 
-        {attachment_id && <span className={styles.mediaInfo}> {media_type} posted on Meta</span>}
+        {attachment_id && <span className={styles.mediaInfo}> {media_type} posted on Facebook</span>}
       </div>
       {buttons && <Buttons buttons={buttons} mediaTemplate={true} />}
     </div>

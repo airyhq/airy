@@ -21,14 +21,15 @@ export const CurrentLocation = ({longitude, latitude, name, address, fromContact
       </p>
       <br />
       <p className={styles.geolocation}>
-        Latitude: {latitude}, Longitude: {longitude}
+        <a target="_blank" rel="noopener noreferrer" href={`http://maps.google.com/?q=${latitude},${longitude}`}>
+          Latitude: {latitude}, Longitude: {longitude}
+        </a>
       </p>
       {name && (
         <p className={styles.geolocation}>
-          {' '}
           {name}{' '}
           {address && (
-            <a target="_blank" rel="noopener noreferrer" href={`http://maps.google.com/?q='${address}`}>
+            <a target="_blank" rel="noopener noreferrer" href={`http://maps.google.com/?q=${address}`}>
               {address}
             </a>
           )}

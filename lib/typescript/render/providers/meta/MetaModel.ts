@@ -184,7 +184,7 @@ export interface DeletedMessageContent extends Content {
 
 //WA template
 export interface WhatsAppTemplate extends Content {
-  type: 'whatsApptemplate';
+  type: 'whatsAppTemplate';
   components?: WhatsAppComponents[];
 }
 

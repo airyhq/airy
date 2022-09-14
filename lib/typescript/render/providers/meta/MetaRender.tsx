@@ -99,7 +99,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <DeletedMessage fromContact={props.message.fromContact || false} />;
 
     //Whatsapp Business Cloud
-    case 'whatsApptemplate':
+    case 'whatsAppTemplate':
       return <WhatsAppTemplate components={content.components} />;
 
     case 'whatsAppMedia':
@@ -281,7 +281,7 @@ function metaInbound(message): ContentUnion {
     //Template
     if (messageJson.type === 'template' && messageJson.template?.components) {
       return {
-        type: 'whatsApptemplate',
+        type: 'whatsAppTemplate',
         components: messageJson.template.components,
       };
     }
@@ -421,7 +421,7 @@ function metaOutbound(message): ContentUnion {
     //Template
     if (messageJson.type === 'template' && messageJson.template?.components) {
       return {
-        type: 'whatsApptemplate',
+        type: 'whatsAppTemplate',
         components: messageJson.template.components,
       };
     }

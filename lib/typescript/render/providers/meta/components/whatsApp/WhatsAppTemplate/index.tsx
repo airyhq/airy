@@ -1,29 +1,26 @@
 import React from 'react';
 import { WhatsAppMediaType } from '../../../MetaModel';
+import { WhatsAppMediaContent } from '../WhatsAppMedia';
 import styles from './index.module.scss';
-import { WhatsAppMediaContent } from '../whatsAppMedia';
 
 type WhatsAppTemplateProps = {
   template: any;
-  fromContact: any;
 };
 
-export const WhatsAppTemplate = ({template, fromContact}: WhatsAppTemplateProps) => {
+export const WhatsAppTemplate = ({template}: WhatsAppTemplateProps) => {
   console.log('compo template', template);
   console.log('compo components', template?.components);
-  console.log('fromContact', fromContact);
 
   return (
     <section className={styles.wrapper}>
       {template?.components &&
         template?.components.map(item => {
           console.log('item', item);
-
           return (
             <div className={styles[item.type]}>
               <>
                 {item.parameters.map(parameter => {
-                  let content = <div></div>;
+                  let content;
 
                     console.log('parameter', parameter);
 

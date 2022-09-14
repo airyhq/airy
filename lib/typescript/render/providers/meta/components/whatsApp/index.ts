@@ -1,2 +1,2 @@
-export * from './whatsAppMedia';
-export * from './whatsAppTemplate';
+export * from './WhatsAppMedia';
+export * from './WhatsAppTemplate';

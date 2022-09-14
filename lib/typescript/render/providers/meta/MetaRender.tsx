@@ -22,7 +22,8 @@ import {Share} from './components/InstagramShare';
 import {DeletedMessage} from './components/DeletedMessage';
 import {WhatsAppTemplate, WhatsAppMedia} from './components/whatsApp';
 import {Source} from 'model';
-import { WhatsAppInteractive } from './components/whatsApp/whatsAppInteractive';
+import {WhatsAppInteractive} from './components/whatsApp/WhatsAppInteractive';
+import {WhatsAppContacts} from './components/whatsApp/WhatsAppContacts';
 
 export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -100,7 +101,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     //Whatsapp-specific
     ////---> rename whatsAppTemplate?
     case 'template':
-      return <WhatsAppTemplate template={content.template} fromContact={props.message.fromContact || false} />;
+      return <WhatsAppTemplate template={content.template} />;
     case 'whatsAppMedia':
       return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />;
     case 'location':
@@ -114,9 +115,18 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
     case 'whatsAppInteractive':
-      return(
-        <WhatsAppInteractive interactiveType={content.interactiveType}  action={content.action} header={content.header} body={content.body} footer={content.footer} />
+      return (
+        <WhatsAppInteractive
+          interactiveType={content.interactiveType}
+          action={content.action}
+          header={content.header}
+          body={content.body}
+          footer={content.footer}
+        />
       );
+
+    case 'whatsAppContact':
+      return <WhatsAppContacts formattedName={content.formattedName} />;
 
     default:
       return null;
@@ -199,7 +209,7 @@ const parseAttachment = (
 
   return {
     type: 'text',
-    text: 'Unsupported message type',
+    text: JSON.stringify(attachment),
   };
 };
 
@@ -269,11 +279,10 @@ function metaInbound(message): ContentUnion {
 
   //WhatsApp Business Cloud specific
   if (message.source === Source.whatsapp) {
-
     //template
     if (messageJson.type === 'template') {
       return {
-        type: 'template',
+        type: "whatsApptemplate",
         template: messageJson.template,
         components: messageJson?.components ?? null,
       };
@@ -300,11 +309,33 @@ function metaInbound(message): ContentUnion {
         address: messageJson.location?.address,
       };
     }
+
+    //interactive
+    if (messageJson.type === 'interactive') {
+      const isActionRenderable = messageJson?.interactive?.action?.button || messageJson?.interactive?.action?.buttons;
+      const actionToBeRendered = isActionRenderable ? {...messageJson?.interactive?.action} : null;
+      return {
+        type: 'whatsAppInteractive',
+        interactiveType: messageJson?.interactive?.type,
+        action: actionToBeRendered,
+        header: messageJson.interactive?.header ?? null,
+        body: messageJson.interactive?.body ?? null,
+        footer: messageJson.interactive?.footer ?? null,
+      };
+    }
+
+    //contact
+    if (messageJson.type === 'contacts') {
+      return {
+        type: 'whatsAppContact',
+        formattedName: messageJson?.contacts[0]?.name?.formatted_name,
+      };
+    }
   }
 
   return {
     type: 'text',
-    text: 'Unsupported message type',
+    text: JSON.stringify( messageJson),
   };
 }
 
@@ -390,18 +421,18 @@ function metaOutbound(message): ContentUnion {
     };
   }
 
-  //WhatsApp Business Cloud specific
+  //WhatsApp Business Cloud-specific
   if (message.source === Source.whatsapp) {
-    //template
-    if (messageJson.type === 'template') {
+
+    //Template
+    if (messageJson.type === 'template' && messageJson?.components) {
       return {
-        type: 'template',
-        template: messageJson.template,
-        components: messageJson?.components ?? null,
+        type: 'whatsApptemplate',
+        components: messageJson.components,
       };
     }
 
-    //media
+    //Media
     if (messageJson.type in WhatsAppMediaType) {
       const media = messageJson.type;
       console.log('media', media);
@@ -415,7 +446,7 @@ function metaOutbound(message): ContentUnion {
       };
     }
 
-    //location
+    //Location
     if (messageJson.type === 'location') {
       return {
         type: 'location',
@@ -426,23 +457,31 @@ function metaOutbound(message): ContentUnion {
       };
     }
 
-    //interactive
-    if(messageJson.type === 'interactive'){
+    //Interactive
+    if (messageJson.type === 'interactive') {
       const isActionRenderable = messageJson?.interactive?.action?.button || messageJson?.interactive?.action?.buttons;
       const actionToBeRendered = isActionRenderable ? {...messageJson?.interactive?.action} : null;
-      return{
+      return {
         type: 'whatsAppInteractive',
         interactiveType: messageJson?.interactive?.type,
         action: actionToBeRendered,
         header: messageJson.interactive?.header ?? null,
         body: messageJson.interactive?.body ?? null,
         footer: messageJson.interactive?.footer ?? null,
-      }
+      };
+    }
+
+    //Contacts
+    if (messageJson.type === 'contacts') {
+      return {
+        type: 'whatsAppContacts',
+        formattedName: messageJson?.contacts[0]?.name?.formatted_name,
+      };
     }
   }
 
   return {
     type: 'text',
-    text: 'Unsupported message type',
+    text: JSON.stringify(messageJson),
   };
 }

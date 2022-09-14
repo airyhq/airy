@@ -5,16 +5,15 @@ import {
   WhatsAppMediaType,
   WhatsAppInteractiveAction,
 } from '../../../MetaModel';
-import {WhatsAppMediaContent} from '../';
+import {WhatsAppMediaContent} from '..';
 import {ReactComponent as ProductListIcon} from 'assets/images/icons/productList.svg';
 import styles from './index.module.scss';
 
+//interactiveType
 // button: Use it for Reply Buttons.
 // list: Use it for List Messages.
 // product: Use for Single Product Messages.
 // product_list: Use for Multi-Product Messages.
-
-//OR: is interactiveType needed for styling?
 
 type WhatsAppInteractiveTypeProps = {
   interactiveType: WhatsAppInteractiveType;

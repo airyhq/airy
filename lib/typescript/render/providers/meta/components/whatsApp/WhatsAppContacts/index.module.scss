@@ -1,0 +1,22 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.contactsWrapper {
+    background-color: white;
+    max-width: 300px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    display: flex;
+    align-items: center;
+}
+
+.contactsWrapper img {
+    width: 50px;
+}
+
+.contactsWrapper h1 {
+    margin-left:10px;
+    @include font-s-bold;
+    word-break: break-word;
+}

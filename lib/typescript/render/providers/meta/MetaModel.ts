@@ -180,156 +180,14 @@ export interface DeletedMessageContent extends Content {
   type: 'deletedMessage';
 }
 
-///////////////// WhatsApp BusinessCloud 
-//can you split the model in different files?
+//WhatsApp Business Cloud
 
-//WA Text object 
-export interface WhatsAppTextContent extends Content {
-  type: string;
-  text: string;
-  preview_url: boolean;
-  body: string;
+//WA template 
+export interface WhatsAppTemplate extends Content {
+  type: "whatsApptemplate";
+  components?: WhatsAppComponents[];
 }
 
-//WA Media object
-// export interface WhatsAppMediaObject {
-//   id?: string;
-//   link?: string;
-//   caption?: string;
-//   filename?: string;
-//   provider?: string;
-// }
-
-export interface WhatsAppImageMedia extends Content {
-  type: 'image';
-  image: WhatsAppMediaObject;
-}
-
-export interface WhatsAppVideoMedia extends Content {
-  type: 'video';
-  video: WhatsAppMediaObject;
-}
-
-export interface WhatsAppStickerMedia extends Content {
-  type: 'sticker';
-  sticker: WhatsAppMediaObject;
-}
-
-export interface WhatsAppAudioMedia extends Content {
-  type: 'audio';
-  audio: WhatsAppMediaObject;
-}
-
-export interface WhatsAppDocumentMedia extends Content {
-  type: 'document';
-  document: WhatsAppMediaObject;
-}
-//end of WA Media object
-
-//WA Location object (same as Twilio WA?)
-export interface WhatsAppLocationObject {
-  longitude: string;
-  latitude: string;
-  name: string;
-  address: string;
-}
-
-export interface WhatsAppHeaderObject extends Content{
-  type:   "text" | "video" | "image" | "document";
-  document?: WhatsAppMediaObject;
-  image?: WhatsAppMediaObject;
-  video?: WhatsAppMediaObject;
-  text?: string;
-}
-
-//WA Interactive object
-export interface WhatsAppInteractiveObject extends Content {
-  type: 'button' | 'list' | 'product' | 'product_list';
-  action: {[key: string]: string};
-  body?: {text: string};
-  footer?: {text: string};
-  header?: WhatsAppHeaderObject;
-}
-
-//WA Adresses object for WA Contacts Object
-export interface WhatsAppAddressesObject {
-  street?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  country_code?:string;
-  type?: string;
-}
-
-//WhatsAppNameObject for WA Contacts Object
-interface WhatsAppNameObject {
-  formatted_name: string;
-  first_name?: string;
-  last_name?: string;
-  middle_name?: string;
-  suffix?:string;
-  prefix?:string;
-}
-
-
-//WA Contacts object 
-//make enum 'HOME' | 'WORK'
-export interface WhatsAppContactsObject extends Content {
-  name: WhatsAppNameObject;
-  addresses?: WhatsAppAddressesObject;
-  birthday?: string;
-  emails?: {type?: 'HOME' | 'WORK'; email?: string};
-  org?: {company?: string; department?: string; title?: string};
-  phones?: {phone?: string; type?: 'CELL' | 'MAIN' | 'IPHONE' | 'HOME' | 'WORK'; wa_id?: string};
-  urls?: {url?: string; type?: 'HOME' | 'WORK'};
-}
-
-//beginning of WA Template object
-
-//abstract those objects with one interface that you extend 
-//with common property: fallback_value?
-export interface WhatsAppCurrencyObject {
-  fallback_value: string;
-  code: string;
-  amount_1000: string;
-}
-
-export interface WhatsAppDateTimeObject {
-  fallback_value: string;
-}
-
-export interface WhatsAppDocumentObject extends WhatsAppMediaObject {}
-
-//create image & video objects that extends from  WhatsAppMediaObject
-
-export interface WhatsAppParameterObject extends Content {
-  type: "currency" | "date_time" | "document" | "image" | "text" | "video";
-  text?: string;
-  currency?: WhatsAppCurrencyObject;
-  date_time?: WhatsAppDateTimeObject;
-  document?: WhatsAppDocumentObject;
-  //create image & video objects that extends from  WhatsAppMediaObject?
-  image?: WhatsAppMediaObject;
-  video?: WhatsAppMediaObject;
-}
-
-
-//--> is this similar to FB's Quick Reply?
-export interface WhatsAppButtonObject extends Content {
-  type: "button";
-  sub_type: "quick_reply";
-  index: string;
-  parameters: [
-    {
-      type: string;
-      payload: any;
-      text?: string;
-    }
-  ]
-}
-
-//WA Component object
 export interface WhatsAppComponents {
   type: 'body' | 'header' | 'button';
   parameters: (WhatsAppParameterObject | WhatsAppButtonObject)[];
@@ -337,39 +195,51 @@ export interface WhatsAppComponents {
   index?: number;
 }
 
-//WA template object
-export interface WhatsAppLanguageObject {
-    code: string;
+export interface WhatsAppParameterObject extends Content {
+  type: "currency" | "date_time" | "document" | "image" | "text" | "video";
+  text?: string;
+  currency?: WhatsAppCurrency;
+  date_time?: WhatsAppDateTime;
+  document?: WhatsAppMedia;
+  image?: WhatsAppMedia;
+  video?: WhatsAppMedia;
 }
 
-//WA template object
-//! WhatsAppTemplate or WhatsAppTemplateObject?
-export interface WhatsAppTemplateObject extends Content {
-  type: "template";
-  template: { name: string; language: WhatsAppLanguageObject;}
-  components?: WhatsAppComponents[];
+export interface WhatsAppCurrency {
+  fallback_value: string;
+  code: string;
+  amount_1000: string;
 }
 
-//WA Message object 
-// ---> message object with the content you want to send
-export interface WhatsAppMessageObject {
-  audio?: WhatsAppMediaObject;
-  contacts?: WhatsAppContactsObject;
-  context?: {message_id: string};
-  document?: WhatsAppMediaObject;
-  image?: WhatsAppMediaObject;
-  interactive?: WhatsAppInteractiveObject;
-  location?: WhatsAppLocationObject;
-  messaging_product: "whatsapp";
-  preview_url?: boolean;
-  recipient_type?: string;
-  status: string;
-  sticker?: WhatsAppMediaObject;
-  template?: WhatsAppTemplateObject;
-  text?: WhatsAppTextContent;
-  to: string;
-  type?: string;
+export interface WhatsAppDateTime {
+  fallback_value: string;
 }
+
+export interface WhatsAppButtonObject extends Content {
+  type: "button";
+  sub_type: "quick_reply";
+  index: string;
+  parameters: [
+    {
+      type: string;
+      payload: string;
+      text?: string;
+    }
+  ]
+}
+
+//WA Media
+type WhatsAppMediaContent = {
+  link: string;
+  caption?: string;
+}
+
+export interface WhatsAppMediaInfo extends Content {
+  type: "whatsAppMedia";
+  mediaType: WhatsAppMediaType;
+} 
+
+type WhatsAppMedia = WhatsAppMediaInfo & WhatsAppMediaContent;
 
 export enum WhatsAppMediaType {
   video = 'video',
@@ -379,16 +249,7 @@ export enum WhatsAppMediaType {
   sticker = 'sticker',
 }
 
-//create Media object with {link: string, caption?: string;} and 
-//extend WhatsAppMediaObject or add it to WhatsAppMediaObject?
-
-export interface WhatsAppMediaObject extends Content {
-  type: "whatsAppMedia";
-  mediaType: WhatsAppMediaType;
-  link: string;
-  caption?: string;
-}
-
+//WA Location
 export interface WhatsAppLocation extends Content {
   type: 'location';
   longitude: string;
@@ -397,41 +258,7 @@ export interface WhatsAppLocation extends Content {
   address?: string;
 }
 
-//create Media object with {link: string, caption?: string;} and 
-//extend WhatsAppMediaObject or add it to WhatsAppMediaObject?
-
-export interface WhatsAppInteractiveHeader {
-  type: 'text' | 'video' | 'image' | 'document';
-  text?: string;
-  video?: {link: string; caption?: string;};
-  image?:  {link: string; caption?: string;};
-  document?:  {link: string; caption?: string};
-}
-
-export enum WhatsAppInteractiveType {
-  "button" = "button",
-  "list" = "list",
-  "product" = "product",
-  "product_list" = "product_list"
-}
-
-//we do not display the sections >> they are displayed on WA on click
-//max 10 rows for interactive section
-// export interface WhatsAppInteractiveSection {
-//   title?: string;
-//   rows?: {id: string; title: string; description?: string;}
-// }
-
-export interface WhatsAppInteractiveButton {
-  type: 'reply';
-  reply: {title: string;}
-}
-export interface WhatsAppInteractiveAction {
-  button: string;
-  buttons: WhatsAppInteractiveButton[];
-}
-
-//interactive 
+//WA Interactive
 export interface WhatsAppInteractive extends Content {
   type: 'whatsAppInteractive';
   interactiveType: WhatsAppInteractiveType;
@@ -441,8 +268,38 @@ export interface WhatsAppInteractive extends Content {
   footer?: {text: string};
 }
 
+export enum WhatsAppInteractiveType {
+  "button" = "button",
+  "list" = "list",
+  "product" = "product",
+  "product_list" = "product_list"
+}
 
-// Add a new facebook content model here:
+export interface WhatsAppInteractiveAction {
+  button: string;
+  buttons: WhatsAppInteractiveButton[];
+}
+
+export interface WhatsAppInteractiveButton {
+  type: 'reply';
+  reply: {title: string;}
+}
+
+export interface WhatsAppInteractiveHeader {
+  type: 'text' | 'video' | 'image' | 'document';
+  text?: string;
+  video?: {link: string; caption?: string;};
+  image?:  {link: string; caption?: string;};
+  document?:  {link: string; caption?: string};
+}
+
+//WA Contacts 
+export interface WhatsAppContacts extends Content {
+  type: 'whatsAppContacts';
+  formattedName: string;
+}
+
+// Add a new Meta content model here:
 export type ContentUnion =
   | TextContent
   | PostbackButton
@@ -460,10 +317,11 @@ export type ContentUnion =
   | ShareContent
   | Fallback
   | DeletedMessageContent
-  | WhatsAppTemplateObject
-  | WhatsAppMediaObject
+  | WhatsAppTemplate
+  | WhatsAppMedia
   | WhatsAppLocation
-  | WhatsAppInteractive;
+  | WhatsAppInteractive 
+  | WhatsAppContacts;
 
 export type AttachmentUnion =
   | TextContent

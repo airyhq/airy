@@ -4,8 +4,6 @@ module "gcp-gke" {
 
 
   project_id                 = var.project_id
-  region                     = var.region           
-
-
-  #kubeconfig_output_path = "../kube.conf"
+  region                     = var.region
+  zone                       = var.zone
 }

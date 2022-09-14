@@ -74,7 +74,7 @@ export const WhatsAppInteractive = ({action, header, body, footer}: WhatsAppInte
         action?.buttons &&
         action.buttons.map(replyButton => {
           return (
-            <section className={styles.actionReplyButton}>
+            <section className={styles.actionReplyButton} key={replyButton.reply.title}>
               <h2>{replyButton.reply.title}</h2>
             </section>
           );

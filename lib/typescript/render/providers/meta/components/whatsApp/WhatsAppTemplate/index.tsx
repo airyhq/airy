@@ -26,12 +26,13 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
                           mediaType={parameter.type as WhatsAppMediaType}
                           link={parameter[parameter.type].link}
                           caption={parameter[parameter.type]?.caption}
+                          key={parameter[parameter.type].link}
                         />
                       ));
                   }
 
                   {
-                    parameter.type === 'text' && (content = <p>{parameter.text}</p>);
+                    parameter.type === 'text' && (content = <p key={parameter.text}>{parameter.text}</p>);
                   }
 
                   {
@@ -39,6 +40,7 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
                       'text' in parameter &&
                       (content = (
                         <Linkify
+                          key={parameter.text}
                           tagName="p"
                           options={{
                             defaultProtocol: 'https',
@@ -52,13 +54,15 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
                   }
 
                   {
-                    item.type === 'button' && 'payload' in parameter && (content = <p>{parameter['payload']}</p>);
+                    item.type === 'button' &&
+                      'payload' in parameter &&
+                      (content = <p key={parameter['payload']}>{parameter['payload']}</p>);
                   }
 
                   {
                     parameter.type === 'currency' &&
                       (content = (
-                        <p>
+                        <p key={parameter?.currency?.fallback_value}>
                           {parameter.currency?.amount_1000 && parameter.currency?.code
                             ? `${parseInt(parameter.currency.amount_1000) / 1000} ${parameter.currency?.code}`
                             : `${parameter?.currency?.fallback_value}`}
@@ -67,7 +71,8 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
                   }
 
                   {
-                    parameter.type === 'date_time' && (content = <p> {parameter.date_time.fallback_value}</p>);
+                    parameter.type === 'date_time' &&
+                      (content = <p key={parameter.date_time.fallback_value}> {parameter.date_time.fallback_value}</p>);
                   }
 
                   return <div className={styles.contentTemplate}>{content}</div>;

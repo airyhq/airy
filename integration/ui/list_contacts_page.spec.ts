@@ -1,4 +1,4 @@
-import {cyContactItem, cyContactEmail, cyContactsCollapseIcon} from 'handles';
+import {cyContactItem, cyContactEmail} from 'handles';
 
 describe('Contacts page lists contacts and allow to edit contacts details and display name', () => {
   beforeEach(() => {

@@ -37,6 +37,11 @@ public class InstallerController {
 
     @PostMapping("/components.uninstall")
     public ResponseEntity<?> uninstallComponent(@RequestBody @Valid UninstallPayload payload) {
+        try {
+            handler.uninstallComponent(payload.getName());
+        } catch(Exception e) {
+            log.error(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 

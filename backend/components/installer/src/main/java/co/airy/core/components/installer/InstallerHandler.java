@@ -71,7 +71,7 @@ public class InstallerHandler {
     public void uninstallComponent(String componentName) throws Exception {
        //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
        String[] names = componentName.split("/");
-       final List<String> cmd = getUninstallCommand(name[1]);
+       final List<String> cmd = getUninstallCommand(names[1]);
 
 
        launchHelmJob(componentName, cmd);

@@ -186,7 +186,9 @@ const ContactDetails = (props: ContactDetailsProps) => {
       organization
     );
 
-    updateContactDetails({...infoDetailsPayload});
+    updateContactDetails({...infoDetailsPayload}).catch((error: Error) => {
+      console.error(error);
+    });
     updateContactType(infoDetailsPayload);
     getUpdatedInfo();
     fillContactInfo({...infoDetailsPayload}, setEmail, setPhone, setTitle, setAddress, setCity, setOrganization);

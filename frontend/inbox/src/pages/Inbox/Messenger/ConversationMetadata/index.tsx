@@ -150,7 +150,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         updateConversationContactInfo(conversationId, displayName);
       });
     }
-    updateContactDetails({id: contactIdConvMetadata, displayName: displayName});
+    updateContactDetails({id: contactIdConvMetadata, displayName: displayName}).catch((error: Error) => {
+      console.error(error);
+    });
 
     setShowEditDisplayName(!saveEditDisplayName);
   };

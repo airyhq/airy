@@ -31,25 +31,28 @@ const Contacts = (props: ContactsProps) => {
   const [currentContact, setCurrentContact] = useState<Contact>();
   const [editModeOn, setEditModeOn] = useState(false);
   const [cancelEdit, setCancelEdit] = useState(false);
-  const [contactInformationVisible, setContactInformationVisible] = useState(false);
   const [currentVisibleContactId, setCurrentVisibleContactId] = useState('');
   const listPageSize = 9;
   const fetchNextPage = 5;
 
   useEffect(() => {
     setPageTitle('Contacts');
-    listContacts();
+    listContacts().catch((error: Error) => {
+      console.error(error);
+    });
   }, []);
 
   const pageSize = contacts.length >= listPageSize ? listPageSize : contacts.length;
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const isFetchNext = lastPage % fetchNextPage === 0;
 
   const contactSorter = (a: Contact, b: Contact) => a.displayName?.localeCompare?.(b.displayName);
 
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+    const firstPageIndex = (currentPage - 1) * pageSize || 1;
+    const lastPageIndex = firstPageIndex + pageSize || listPageSize;
+
     return contacts.sort(contactSorter).slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, contacts.length]);
 
@@ -61,13 +64,15 @@ const Contacts = (props: ContactsProps) => {
   }, [currentTableData]);
 
   useEffect(() => {
-    lastPage % fetchNextPage == 0 && listContacts();
+    isFetchNext &&
+      listContacts().catch((error: Error) => {
+        console.error(error);
+      });
   }, [currentPage]);
 
   const handleConversationId = (conversationId: string) => setConversationId(conversationId);
 
   const handleContact = (contact: Contact) => {
-    setContactInformationVisible(true);
     setCurrentContact(contact);
   };
 
@@ -86,7 +91,7 @@ const Contacts = (props: ContactsProps) => {
 
   return (
     <>
-      {contacts.length === 0 ? (
+      {currentTableData.length === 0 ? (
         <EmptyState />
       ) : (
         <>
@@ -129,15 +134,13 @@ const Contacts = (props: ContactsProps) => {
               </div>
             </div>
           </div>
-          <div className={contactInformationVisible ? styles.contactColumnAnimateIn : styles.contactColumnAnimateOut}>
+          <div>
             <ContactInformation
               conversationId={conversationId}
               contact={currentContact}
               editModeOn={editModeOn}
               setEditModeOn={handleEditMode}
               cancelEdit={cancelEdit}
-              setContactInformationVisible={setContactInformationVisible}
-              contactInformationVisible={contactInformationVisible}
             />
           </div>
         </>

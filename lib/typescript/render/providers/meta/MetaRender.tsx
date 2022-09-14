@@ -115,7 +115,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       );
     case 'whatsAppInteractive':
       return(
-        <WhatsAppInteractive interactiveType={content.interactiveType} header={content.header} body={content.body} footer={content.footer} />
+        <WhatsAppInteractive interactiveType={content.interactiveType}  action={content.action} header={content.header} body={content.body} footer={content.footer} />
       );
 
     default:
@@ -428,12 +428,15 @@ function metaOutbound(message): ContentUnion {
 
     //interactive
     if(messageJson.type === 'interactive'){
+      const isActionRenderable = messageJson?.interactive?.action?.button || messageJson?.interactive?.action?.buttons;
+      const actionToBeRendered = isActionRenderable ? {...messageJson?.interactive?.action} : null;
       return{
         type: 'whatsAppInteractive',
-        interactiveType: messageJson.interactive.type,
-        header: messageJson.interactive.header,
-        body: messageJson.interactive.body,
-        footer: messageJson.interactive.footer,
+        interactiveType: messageJson?.interactive?.type,
+        action: actionToBeRendered,
+        header: messageJson.interactive?.header ?? null,
+        body: messageJson.interactive?.body ?? null,
+        footer: messageJson.interactive?.footer ?? null,
       }
     }
   }

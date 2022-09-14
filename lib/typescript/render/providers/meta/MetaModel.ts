@@ -415,11 +415,28 @@ export enum WhatsAppInteractiveType {
   "product_list" = "product_list"
 }
 
+//we do not display the sections >> they are displayed on WA on click
+//max 10 rows for interactive section
+// export interface WhatsAppInteractiveSection {
+//   title?: string;
+//   rows?: {id: string; title: string; description?: string;}
+// }
+
+export interface WhatsAppInteractiveButton {
+  type: 'reply';
+  reply: {title: string;}
+}
+export interface WhatsAppInteractiveAction {
+  button: string;
+  buttons: WhatsAppInteractiveButton[];
+}
+
 //interactive 
 export interface WhatsAppInteractive extends Content {
   type: 'whatsAppInteractive';
   interactiveType: WhatsAppInteractiveType;
-  header: WhatsAppInteractiveHeader;
+  action: WhatsAppInteractiveAction;
+  header?: WhatsAppInteractiveHeader;
   body?: {text: string};
   footer?: {text: string};
 }

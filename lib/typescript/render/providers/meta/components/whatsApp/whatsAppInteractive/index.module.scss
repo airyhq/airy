@@ -4,29 +4,68 @@
 
 .interactiveWrapper {
     background-color: white;
+    min-width:300px;
     max-width: 500px;
     /* height: 200px; */
     border-radius: 12px;
     border: 1px solid #CCC;
     @include font-base;
-    padding: 10px;
 }
 
 .header {
     color:black;
+    width:100%;
+    padding: 10px 50px 10px 10px;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+}
+
+.header img, 
+.header video 
+{
+    max-width:150px;
+    border-radius: 12px;
+}
+
+.header h1 {
     font-weight:bold;
-    background: #ccc;
-    padding-bottom: 10px;
 }
 
 .body {
     color:black;
+    padding: 5px 50px 5px 10px;
 }
 
 .footer {
     color: grey;
+    padding: 5px 0px 5px 10px;
 }
 
-.action {
-    border-top:#ccc;
+.actionButton {
+    width:100%;
+    padding: 10px;
+    border-top: 1px solid #CCC;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+.actionButton svg {
+    fill: blue;
+    margin-right:4px;
+}
+
+.actionButton h2, 
+.actionReplyButton h2 {
+    color: blue;
+}
+
+.actionReplyButton {
+    background-color: white;
+    padding: 5px;
+    text-align:center;
+    max-width: 500px;
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    @include font-base;
+    margin-top:5px;
 }

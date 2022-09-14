@@ -45,6 +45,7 @@ const Contacts = (props: ContactsProps) => {
   const pageSize = contacts.length >= listPageSize ? listPageSize : contacts.length;
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const isFetchNext = lastPage % fetchNextPage === 0;
 
   const contactSorter = (a: Contact, b: Contact) => a.displayName?.localeCompare?.(b.displayName);
 
@@ -63,7 +64,7 @@ const Contacts = (props: ContactsProps) => {
   }, [currentTableData]);
 
   useEffect(() => {
-    lastPage % fetchNextPage === 0 &&
+    isFetchNext &&
       listContacts().catch((error: Error) => {
         console.error(error);
       });

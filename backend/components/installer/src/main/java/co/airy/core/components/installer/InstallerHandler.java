@@ -67,6 +67,16 @@ public class InstallerHandler {
        log.info(version);
     }
 
+    //TODO: Add return value and correct exception handleling
+    public void uninstallComponent(String componentName) throws Exception {
+       //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
+       String[] names = componentName.split("/");
+       final List<String> cmd = getUninstallCommand(name[1]);
+
+
+       launchHelmJob(componentName, cmd);
+    }
+
     private Component getComponentFromName(
             Map<String, Repository> repositories,
             String componentName,
@@ -166,6 +176,18 @@ public class InstallerHandler {
                     Optional.ofNullable(component.getUsername()).map(u -> String.format("--username %s", u)).orElse(""),
                     Optional.ofNullable(component.getPassword()).map(p -> String.format("--password %s", p)).orElse(""),
                     Base64.getEncoder().encodeToString(globals.getBytes())));
+
+        return cmd;
+    }
+
+    private List<String> getUninstallCommand(String componentName) {
+        ArrayList<String> cmd = new ArrayList<>();
+        cmd.add("sh");
+        cmd.add("-c");
+        cmd.add(String.format(
+                    "helm -n %s uninstall %s",
+                    namespace,
+                    componentName));
 
         return cmd;
     }

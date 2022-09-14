@@ -1,7 +1,5 @@
 import {mapMessage} from 'model';
-
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+import camelcaseKeys from 'camelcase-keys';
 
 export const listMessagesDef = {
   endpoint: 'messages.list',

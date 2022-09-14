@@ -22,3 +22,9 @@ export enum ConnectorName {
   rasaConnector = 'rasa-connector',
   zendenkConnector = 'zendesk-connector',
 }
+
+export enum ConnectorPrice {
+  free = 'Free',
+  paid = 'Paid',
+  requestAccess = 'REQUEST ACCESS',
+}

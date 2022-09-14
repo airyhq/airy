@@ -6,10 +6,7 @@ metadata:
 data:
   repositories.json: |
     {
-      "repositories": [
-        {
-          "name": "airy-core",
-          "url": "https://helm.airy.co"
-        }
-      ]
+      "repositories":
+      {{ toPrettyJson .Values.repositories | indent 6 }}
     }
+    

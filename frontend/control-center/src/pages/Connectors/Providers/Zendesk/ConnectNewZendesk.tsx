@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {StateModel} from '../../../../reducers';
+import {useCurrentConnectorForSource, useCurrentComponentForSource} from '../../../../selectors';
 import {Input} from 'components';
 import {ConfigureConnector} from '../../ConfigureConnector';
 import styles from './index.module.scss';
 import {useTranslation} from 'react-i18next';
-import {ComponentName} from 'model';
+import {Source} from 'model';
 
 interface ConnectParams {
   [key: string]: string;
@@ -24,9 +23,9 @@ export const ConnectNewZendesk = ({
   isConfigured,
   isPending,
 }: ConnectNewDialogflowProps) => {
-  const componentInfo = useSelector(
-    (state: StateModel) => state.data.connector[ComponentName.enterpriseZendenkConnector]
-  );
+  const componentInfo = useCurrentConnectorForSource(Source.zendesk);
+  const componentName = useCurrentComponentForSource(Source.zendesk)?.name;
+
   const [domain, setDomain] = useState(componentInfo?.domain || '');
   const [username, setUsername] = useState(componentInfo?.username || '');
   const [token, setToken] = useState(componentInfo?.token || '');
@@ -48,7 +47,7 @@ export const ConnectNewZendesk = ({
 
   return (
     <ConfigureConnector
-      componentName={ComponentName.enterpriseZendenkConnector}
+      componentName={componentName}
       isUpdateModalVisible={isUpdateModalVisible}
       setIsUpdateModalVisible={setIsUpdateModalVisible}
       enableSubmitConfigData={enableSubmitConfigData}

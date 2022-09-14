@@ -26,6 +26,11 @@ tools:
     enabled: true
 serviceAccount: airy-admin
 limitRange: false
+repositories:
+  - name: airy-core
+    url: "https://helm.airy.co"
+    username:
+    password:
 components:
   api:
     admin:

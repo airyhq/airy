@@ -1,4 +1,4 @@
-import {cyContactItem, cyContactEmail, cyContactsCollapseIcon} from 'handles';
+import {cyContactItem, cyContactEmail} from 'handles';
 
 describe('Contacts page lists contacts and allow to edit contacts details and display name', () => {
   beforeEach(() => {
@@ -25,9 +25,6 @@ describe('Contacts page lists contacts and allow to edit contacts details and di
     cy.wait(500);
 
     cy.get(`[data-cy=${cyContactEmail}]`).should('be.visible');
-
-    cy.get(`[data-cy=${cyContactsCollapseIcon}]`).click();
-    cy.wait(500);
 
     cy.get(`[data-cy=${cyContactEmail}]`).should('not.exist');
   });

@@ -16,6 +16,9 @@ export enum Source {
   amelia = 'amelia',
   mobile = 'mobile',
   whatsapp = 'whatsapp',
+  frontendInbox = 'frontend-inbox',
+  ibm = 'ibm',
+  amazons3 = 'amazons3',
 }
 
 export const prettifySource = (source: string) =>

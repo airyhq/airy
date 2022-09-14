@@ -15,11 +15,13 @@ type NotificationProps = {
   info?: boolean;
   text: string;
   setShowFalse: Dispatch<SetStateAction<NotificationModel>>;
+  forceClose?: boolean;
+  setForceClose?: Dispatch<SetStateAction<boolean>>;
   duration?: number; //in ms
 };
 
 export const NotificationComponent = (props: NotificationProps) => {
-  const {type, show, successful, info, text, setShowFalse, duration} = props;
+  const {type, show, successful, info, text, setShowFalse, forceClose, setForceClose, duration} = props;
   const defaultDuration = 5000;
   const [close, setClose] = useState(false);
   const [usedDuration, setUsedDuration] = useState(duration || defaultDuration);
@@ -52,19 +54,20 @@ export const NotificationComponent = (props: NotificationProps) => {
   }, []);
 
   useEffect(() => {
-    close &&
+    (close || forceClose) &&
       setTimeout(() => {
         setShowFalse({show: false});
         setClose(false);
+        forceClose && setForceClose(false);
       }, duration / 2 || defaultDuration / 2);
-  }, [close]);
+  }, [close, forceClose]);
 
   return (
     <div
       ref={notificationRef}
       className={`${styles.notificationContainer} ${
         show && animType === NotificationType.fade ? styles.translateYAnimFade : styles.translateYAnimSticky
-      } ${close && styles.translateYAnimStickyClose}`}
+      } ${(close || forceClose) && styles.translateYAnimStickyClose}`}
       style={{
         background: info ? colorAiryBlue : successful ? colorSoftGreen : colorRedAlert,
         animationDuration: `${usedDuration}ms`,
@@ -72,7 +75,7 @@ export const NotificationComponent = (props: NotificationProps) => {
       }}
     >
       <div className={styles.contentContainer}>
-        <span className={styles.notificationText} style={type === NotificationType.sticky ? {marginRight: '16px'} : {}}>
+        <span className={styles.notificationText} style={type === NotificationType.sticky ? {marginRight: '24px'} : {}}>
           {text}
         </span>
         {type === NotificationType.sticky && (

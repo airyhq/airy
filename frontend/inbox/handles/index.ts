@@ -72,4 +72,3 @@ export const cyChannelsInstagramList = 'cyChannelsInstagramList';
 export const cyConversationsListForContact = 'conversationsListForContact';
 export const cyConversationForContactButton = 'conversationForContactButton';
 export const cyContactItem = 'contactItem';
-export const cyContactsCollapseIcon = 'contactsCollapseIcon';

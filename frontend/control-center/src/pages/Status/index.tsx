@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {getClientConfig, getConnectorsConfiguration, listComponents} from '../../actions';
 import {StateModel} from '../../reducers';
 import {ComponentListItem} from './ComponentListItem';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import {setPageTitle} from '../../services/pageTitle';
 import {useTranslation} from 'react-i18next';
-import {ComponentRepository} from 'model';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
@@ -15,12 +14,17 @@ const mapDispatchToProps = {
   listComponents,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => {
+  return {
+    components: Object.entries(state.data.config.components),
+    catalog: state.data.catalog,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Status = (props: ConnectedProps<typeof connector>) => {
-  const {getClientConfig, getConnectorsConfiguration, listComponents} = props;
-  const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
-  const catalogList = useSelector((state: StateModel) => state.data.catalog);
+  const {components, catalog, getClientConfig, getConnectorsConfiguration, listComponents} = props;
   const [spinAnim, setSpinAnim] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
   const {t} = useTranslation();
@@ -57,9 +61,9 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   const formatToComponentName = (name: string) => {
     let formattedName;
     if (name.includes('enterprise')) {
-      formattedName = `${ComponentRepository.airyEnterprise}/${name}`;
+      formattedName = `airy-enterprise/${name}`;
     } else {
-      formattedName = `${ComponentRepository.airyCore}/${name}`;
+      formattedName = `airy-core/${name}`;
     }
 
     return formattedName;
@@ -86,10 +90,10 @@ const Status = (props: ConnectedProps<typeof connector>) => {
         </button>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(catalogList).length > 0 &&
+        {Object.entries(catalog).length > 0 &&
           components.map((component, index) => {
             const formattedName = formatToComponentName(component[0]);
-            const catalogItem = catalogList[formattedName];
+            const catalogItem = catalog[formattedName];
             return (
               <ComponentListItem
                 key={index}

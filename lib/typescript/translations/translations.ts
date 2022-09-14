@@ -151,6 +151,7 @@ const resources = {
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
       restart: 'Restart',
       restartComponentUpdate: 'We will restart the component to apply your update.',
+      pageUnderConstruction: 'page under construction - coming soon!',
 
       //Channels
       toConfigure: 'To configure',
@@ -349,6 +350,12 @@ const resources = {
       googleConfigurationText3: 'for more information.',
       newGoogleConnection: 'You are about to connect a new channel',
 
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
+
       //Instagram
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
       instagramAccountPlaceholder: 'Add the Facebook Page ID',
@@ -423,6 +430,22 @@ const resources = {
       noChannelsConnected: 'This connector does not have any connected channels yet.',
       optional: 'Optional',
       configuration: 'Configuration',
+
+      //Request Access
+      comingSoon: 'Coming Soon',
+      notifyMe: 'Notify Me',
+      notifyMeRequestSent: 'Requested',
+      infoNotifyMe: 'We will already send a notification to',
+      notifyMeTitle: 'To get back to you',
+      notifyMeSuccessful: 'We got your request. We will get back to you as soon as we process your request',
+      emailCapital: 'Email',
+      addEmail: 'Add email',
+      notifyMeEmailTooltip: 'The email will be used as the request email',
+      addName: 'Add name',
+      notifyMeNameTooltip: 'The name will be used as the request name',
+      addMessage: 'Add message',
+      message: 'Message',
+      send: 'Send',
 
       //Rasa
       rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
@@ -638,6 +661,7 @@ const resources = {
       Update: 'Aktualisieren',
       restart: 'Neu starten',
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
+      pageUnderConstruction: 'Seite im Aufbau - kommt bald!',
 
       //Channels
       toConfigure: 'Konfigurieren',
@@ -859,6 +883,12 @@ const resources = {
       googleConfigurationText3: 'für weitere Informationen.',
       newGoogleConnection: 'Sie sind dabei, einen neuen Kanal zu verbinden',
 
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
+
       //Instagram
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
       instagramAccountPlaceholder: 'Hinzufügen der Facebook-Seiten-ID',
@@ -909,6 +939,23 @@ const resources = {
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
       optional: 'Optional',
       configuration: 'Konfiguration',
+
+      //Request Access
+
+      comingSoon: 'Bald verfügbar',
+      notifyMe: 'Informier mich',
+      notifyMeRequestSent: 'Angefordert',
+      infoNotifyMe: 'Wir senden bereits eine Benachrichtigung an',
+      notifyMeTitle: 'Um auf Sie zurück zu kommen',
+      notifyMeSuccessful:
+        'Wir haben Ihre Anfrage erhalten. Wir werden uns mit Ihnen in Verbindung setzen, sobald wir Ihre Anfrage bearbeitet haben',
+      addEmail: 'E-Mail hinzufügen',
+      notifyMeEmailTooltip: 'Die E-Mail wird als Anfrage-E-Mail verwendet.',
+      addName: 'Name hinzufügen',
+      notifyMeNameTooltip: 'Der Name wird als Name der Anfrage verwendet.',
+      addMessage: 'Nachricht hinzufügen',
+      message: 'Nachricht',
+      send: 'Senden',
 
       //Rasa
       rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
@@ -1116,6 +1163,7 @@ const resources = {
       Update: 'Mettre à jour',
       restart: 'Redémarrer',
       restartComponentUpdate: 'Nous allons redémarrer le composant pour appliquer votre mise à jour.',
+      pageUnderConstruction: 'page en construction - bientôt disponible !',
 
       //Channels
       toConfigure: 'configuration',
@@ -1314,6 +1362,12 @@ const resources = {
       googleConfigurationText3: `pour plus d'informations.`,
       newGoogleConnection: 'Vous êtes sur le point de connecter un nouveau canal',
 
+      //IBM Watson Assistant
+      ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
+
+      //Amazon S3
+      amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
+
       //Instagram
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
       instagramAccountPlaceholder: `Ajoutez l'ID de la page Facebook`,
@@ -1387,6 +1441,22 @@ const resources = {
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
       optional: 'Optionnel',
       configuration: 'Configuration',
+
+      //Request Access
+      comingSoon: 'Prochainement',
+      notifyMe: 'Notifiez-moi',
+      notifyMeRequestSent: 'Demandé',
+      infoNotifyMe: 'Nous allons déjà envoyer une notification à',
+      notifyMeTitle: 'Pour vous recontacter',
+      notifyMeSuccessful:
+        'Nous avons reçu votre demande. Nous vous contacterons dès que nous aurons traité votre demande',
+      addEmail: 'Ajouter un e-mail',
+      notifyMeEmailTooltip: `L'email sera utilisé comme email de demande`,
+      addName: 'Ajouter un nom',
+      notifyMeNameTooltip: 'Le nom sera utilisé comme nom de la demande',
+      addMessage: 'Ajouter un message',
+      message: 'Message',
+      send: 'Envoyer',
 
       //Rasa
       rasaWebhookPlaceholder: 'URL Webhook de Rasa',
@@ -1598,6 +1668,7 @@ const resources = {
       Update: 'Actualizar',
       restart: 'Reiniciar',
       restartComponentUpdate: 'Reiniciaremos el componente para aplicar su actualización.',
+      pageUnderConstruction: 'página en construcción - próximamente!',
 
       //Channels
       toConfigure: 'configurar',
@@ -1795,6 +1866,12 @@ const resources = {
       googleConfigurationText3: 'para más información.',
       newGoogleConnection: 'Estás a punto de conectar un nuevo canal',
 
+      //IBM Watson Assistant
+      ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
+
       //Instagram
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
       instagramAccountPlaceholder: 'Añade el ID de la página de Facebook',
@@ -1869,6 +1946,22 @@ const resources = {
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
       optional: 'Opcional',
       configuration: 'Configuración',
+
+      //Request Access
+      comingSoon: 'Próximamente',
+      notifyMe: 'Notificarme',
+      notifyMeRequestSent: 'Solicitado',
+      infoNotifyMe: 'Ya enviaremos una notificación a',
+      notifyMeTitle: 'Para volver a llamarte',
+      notifyMeSuccessful:
+        'Hemos recibido su solicitud. Nos pondremos en contacto con usted en cuanto procesemos su solicitud',
+      addEmail: 'Añadir correo electrónico',
+      notifyMeEmailTooltip: 'En este correo electrónico se notificará su solicitud',
+      addName: 'Añadir nombre',
+      notifyMeNameTooltip: 'El nombre se utilizará como nombre de la solicitud',
+      addMessage: 'Añadir mensaje',
+      message: 'Mensaje',
+      send: 'Enviar',
 
       //Rasa
       rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',

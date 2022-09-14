@@ -42,6 +42,9 @@
     height: 27px;
     width: 27px;
     margin-right: 2px;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+
     &:hover {
       opacity: 0.3;
     }

@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {StateModel} from '../../../reducers';
-import {ComponentInfo, Modal, ModalType, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted} from '../CatalogCard';
@@ -14,6 +14,7 @@ import {getNewChannelRouteForComponent} from '../../../services';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
+import NotifyMeModal from '../NotifyMeModal';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -36,15 +37,19 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
 
-  const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
-
+  const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
+  const [forceClose, setForceClose] = useState(false);
+  const notified = localStorage.getItem(`notified.${componentInfo.source}`);
   const {t} = useTranslation();
+  const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
   const navigate = useNavigate();
   const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
+  const isInstalled = component[componentInfo?.name]?.installed;
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');
@@ -89,6 +94,11 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       });
   };
 
+  const handleNotifyMeClick = () => {
+    setIsNotifyMeModalVisible(true);
+    notified && setNotification({show: true, text: notifiedEmail, info: true});
+  };
+
   const HeaderContent = () => {
     return (
       <section className={styles.heading}>
@@ -123,20 +133,48 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
         <section className={styles.detailsComponentLogo}>
           <div className={styles.logoIcon}>{getChannelAvatar(componentInfo?.displayName)}</div>
-          <SmartButton
-            title={isInstalled ? t('uninstall') : t('install')}
-            height={50}
-            width={180}
-            onClick={openModalInstall}
-            pending={isPending}
-            styleVariant={isInstalled ? 'warning' : 'green'}
-            className={styles.installButton}
-          />
+          {componentInfo?.price === ConnectorPrice.requestAccess ? (
+            <div className={styles.comingSoonTag}>{t('comingSoon').toUpperCase()}</div>
+          ) : (
+            <SmartButton
+              title={
+                componentInfo?.price === ConnectorPrice.requestAccess
+                  ? notified
+                    ? t('notifyMeRequestSent').toUpperCase()
+                    : t('notifyMe').toUpperCase()
+                  : isInstalled
+                  ? t('uninstall')
+                  : t('install')
+              }
+              height={50}
+              width={180}
+              onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
+              pending={isPending}
+              styleVariant={
+                componentInfo?.price === ConnectorPrice.requestAccess
+                  ? notified
+                    ? 'purpleOutline'
+                    : 'purple'
+                  : isInstalled
+                  ? 'warning'
+                  : 'green'
+              }
+              className={styles.installButton}
+            />
+          )}
         </section>
 
         <section className={styles.details}>
           <section className={styles.detailInfo}>
-            <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+            <div className={styles.availabilitySoonContainer}>
+              <p className={`${styles.availability} ${styles.bolded}`}>{t('availableFor')}:</p>
+              {/* 
+              Commented until backend is ready!!!
+
+              {componentInfo?.price === ConnectorPrice.requestAccess && (
+                <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
+              )} */}
+            </div>
             {componentInfo?.availableFor &&
               availabilityFormatted(componentInfo.availableFor).map((service: string) => (
                 <button key={service}>{service}</button>
@@ -154,7 +192,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           <section className={styles.detailInfo}>
             <p className={styles.bolded}>{t('price')}:</p>
             <button key={componentInfo?.price}>
-              {componentInfo?.price === 'REQUEST ACCESS' ? (
+              {componentInfo?.price === ConnectorPrice.requestAccess ? (
                 <a href="mailto:componentsaccess@airy.co" target="_blank" rel="noreferrer">
                   {t(componentInfo?.price)}
                 </a>
@@ -195,6 +233,14 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
             )}
           </SettingsModal>
         )}
+        {isNotifyMeModalVisible && (
+          <NotifyMeModal
+            setIsModalVisible={setIsNotifyMeModalVisible}
+            setNotification={setNotifyMeNotification}
+            setForceClose={setForceClose}
+            source={componentInfo.source}
+          />
+        )}
       </>
     );
   };
@@ -211,10 +257,23 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       />
       {notification?.show && (
         <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}
           text={notification.text}
           successful={notification.successful}
           setShowFalse={setNotification}
+          forceClose={forceClose}
+          setForceClose={setForceClose}
+          info={notification.info}
+        />
+      )}
+      {notifyMeNotification?.show && (
+        <NotificationComponent
+          type="sticky"
+          show={notifyMeNotification.show}
+          text={notifyMeNotification.text}
+          successful={notifyMeNotification.successful}
+          setShowFalse={setNotifyMeNotification}
         />
       )}
     </>

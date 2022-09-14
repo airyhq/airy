@@ -2,87 +2,79 @@
 @import 'assets/scss/colors.scss';
 
 .wrapper {
-    background-color: white;
-    max-width: 500px;
-    /* height: 200px; */
-    border-radius: 12px;
-    border: 1px solid #CCC;
-    @include font-base;
+  width: 250px;
+  max-width: 250px;
+  border-radius: 12px;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-template-border-gray);
+  @include font-base;
+  color: var(--color-text-contrast);
 }
 
-//components object type 
-//make a common class applicable to all with repeated styles
 .header {
-    width: 100%;
-    padding: 10px;
-    border-bottom: 1px solid #CCC;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
-    border-top: none;
-    flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top: none;
+  border-bottom: 1px solid var(--color-template-border-gray);
 }
 
+.body,
+.button,
+.contentTemplate {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 1px solid var(--color-template-border-gray);
+}
 
 .body {
-    width:100%;
-   padding: 0 10px;
-    border-bottom: 1px solid #CCC;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction:column;
+  padding: 0 10px;
 }
 
 .button {
-width:100%;
-padding:10px;
-border-bottom: 1px solid #CCC;
-display:flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
+  padding: 10px;
 }
 
-//content template 
 .contentTemplate {
-    border-bottom: 1px solid #CCC;
-    width:100%;
-    max-width:400px;
-    padding: 10px 0px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  max-width: 400px;
+  padding: 10px 0px;
+}
+
+.buttonURL,
+.buttonURL:active,
+.buttonURL:visited,
+.buttonURL:hover {
+  color: var(--color-text-contrast);
+  text-decoration: none;
 }
 
 .caption {
-    @include font-xs;
-    margin-top:5px;
+  @include font-xs;
+  margin-top: 5px;
 }
 
-.contentTemplate a{
-    max-height: 100px;
-}
-
-.contentTemplate img, 
-.contentTemplate video 
-{
-    max-width:150px;
-    border-radius: 12px;
+.contentTemplate img,
+.contentTemplate video {
+  max-width: 200px;
+  border-radius: 12px;
 }
 
 .contentTemplate p {
-    text-align:center;
+  text-align: center;
 }
 
 .wrapper :last-child {
-    border-bottom:none;
+  border-bottom: none;
 }
 
 .body :last-child {
-    border-bottom:none;
+  border-bottom: none;
 }
-

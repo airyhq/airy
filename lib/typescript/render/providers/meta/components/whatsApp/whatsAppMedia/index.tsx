@@ -10,17 +10,12 @@ interface WhatsAppMediaProps {
   caption?: string;
 }
 
-//translate this
-const defaultText = 'Media is not available';
+const defaultText = 'N/A';
 
 export const WhatsAppMedia = ({mediaType, link, caption}: WhatsAppMediaProps) => {
-    console.log('WA media - mediaType', mediaType);
-    console.log('WA media - link', link);
-    console.log('WA media - caption', caption);
-
   return (
     <div className={styles.mediaWrapper}>
-        <WhatsAppMediaContent mediaType={mediaType} link={link} caption={caption} />
+      <WhatsAppMediaContent mediaType={mediaType} link={link} caption={caption} />
     </div>
   );
 };
@@ -28,14 +23,11 @@ export const WhatsAppMedia = ({mediaType, link, caption}: WhatsAppMediaProps) =>
 export const WhatsAppMediaContent = ({mediaType, link, caption}: WhatsAppMediaProps) => {
   let mediaContent = <p>{defaultText}</p>;
 
-  console.log('mediaType', mediaType);
-  console.log('link', link);
-  console.log('caption', caption);
-
   if (mediaType === 'image' || mediaType === 'sticker') {
     mediaContent = (
       <>
-        <ImageWithFallback src={link} /> {caption ? <p className={styles.caption}>{caption}</p> : null}{' '}
+        <ImageWithFallback src={link} />{' '}
+        {caption && mediaType === 'image' ? <p className={styles.caption}>{caption}</p> : null}
       </>
     );
   }

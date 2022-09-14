@@ -98,13 +98,14 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'deletedMessage':
       return <DeletedMessage fromContact={props.message.fromContact || false} />;
 
-    //Whatsapp-specific
-    ////---> rename whatsAppTemplate?
-    case 'template':
-      return <WhatsAppTemplate template={content.template} />;
+    //Whatsapp Business Cloud
+    case 'whatsApptemplate':
+      return <WhatsAppTemplate components={content.components} />;
+
     case 'whatsAppMedia':
       return <WhatsAppMedia mediaType={content.mediaType} link={content?.link} caption={content?.caption} />;
-    case 'location':
+
+    case 'whatsAppLocation':
       return (
         <CurrentLocation
           latitude={content.latitude}
@@ -114,10 +115,10 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           fromContact={props.message.fromContact || false}
         />
       );
+
     case 'whatsAppInteractive':
       return (
         <WhatsAppInteractive
-          interactiveType={content.interactiveType}
           action={content.action}
           header={content.header}
           body={content.body}
@@ -125,7 +126,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
 
-    case 'whatsAppContact':
+    case 'whatsAppContacts':
       return <WhatsAppContacts formattedName={content.formattedName} />;
 
     default:
@@ -216,8 +217,6 @@ const parseAttachment = (
 function metaInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
-  console.log('messageJson Inbound', messageJson);
-
   if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
     return {
       text: messageJson.text ?? null,
@@ -277,46 +276,44 @@ function metaInbound(message): ContentUnion {
     };
   }
 
-  //WhatsApp Business Cloud specific
+  //WhatsApp Business Cloud
   if (message.source === Source.whatsapp) {
-    //template
-    if (messageJson.type === 'template') {
+    //Template
+    if (messageJson.type === 'template' && messageJson.template?.components) {
       return {
-        type: "whatsApptemplate",
-        template: messageJson.template,
-        components: messageJson?.components ?? null,
+        type: 'whatsApptemplate',
+        components: messageJson.template.components,
       };
     }
 
-    //media
+    //Media
     if (messageJson.type in WhatsAppMediaType) {
       const media = messageJson.type;
       return {
         type: 'whatsAppMedia',
         mediaType: media,
-        link: messageJson.type[media]?.link,
-        caption: messageJson.type[media]?.caption ?? null,
+        link: messageJson[media]?.link,
+        caption: messageJson[media]?.caption ?? null,
       };
     }
 
-    //location
+    //Location
     if (messageJson.type === 'location') {
       return {
-        type: 'location',
-        longitude: messageJson.location?.longitude,
-        latitude: messageJson.location?.latitude,
+        type: 'whatsAppLocation',
+        longitude: messageJson.location.longitude,
+        latitude: messageJson.location.latitude,
         name: messageJson.location?.name,
         address: messageJson.location?.address,
       };
     }
 
-    //interactive
+    //Interactive
     if (messageJson.type === 'interactive') {
       const isActionRenderable = messageJson?.interactive?.action?.button || messageJson?.interactive?.action?.buttons;
       const actionToBeRendered = isActionRenderable ? {...messageJson?.interactive?.action} : null;
       return {
         type: 'whatsAppInteractive',
-        interactiveType: messageJson?.interactive?.type,
         action: actionToBeRendered,
         header: messageJson.interactive?.header ?? null,
         body: messageJson.interactive?.body ?? null,
@@ -324,10 +321,10 @@ function metaInbound(message): ContentUnion {
       };
     }
 
-    //contact
+    //Contacts
     if (messageJson.type === 'contacts') {
       return {
-        type: 'whatsAppContact',
+        type: 'whatsAppContacts',
         formattedName: messageJson?.contacts[0]?.name?.formatted_name,
       };
     }
@@ -335,14 +332,12 @@ function metaInbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: JSON.stringify( messageJson),
+    text: JSON.stringify(messageJson),
   };
 }
 
 function metaOutbound(message): ContentUnion {
   const messageJson = message?.content?.message || message?.content || message;
-
-  console.log('messageJson Outbound', messageJson);
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
@@ -421,23 +416,19 @@ function metaOutbound(message): ContentUnion {
     };
   }
 
-  //WhatsApp Business Cloud-specific
+  //WhatsApp Business Cloud
   if (message.source === Source.whatsapp) {
-
     //Template
-    if (messageJson.type === 'template' && messageJson?.components) {
+    if (messageJson.type === 'template' && messageJson.template?.components) {
       return {
         type: 'whatsApptemplate',
-        components: messageJson.components,
+        components: messageJson.template.components,
       };
     }
 
     //Media
     if (messageJson.type in WhatsAppMediaType) {
       const media = messageJson.type;
-      console.log('media', media);
-      console.log('messageJson.type[media]', messageJson.type[media]);
-
       return {
         type: 'whatsAppMedia',
         mediaType: media,
@@ -449,7 +440,7 @@ function metaOutbound(message): ContentUnion {
     //Location
     if (messageJson.type === 'location') {
       return {
-        type: 'location',
+        type: 'whatsAppLocation',
         longitude: messageJson.location.longitude,
         latitude: messageJson.location.latitude,
         name: messageJson.location?.name,
@@ -463,7 +454,6 @@ function metaOutbound(message): ContentUnion {
       const actionToBeRendered = isActionRenderable ? {...messageJson?.interactive?.action} : null;
       return {
         type: 'whatsAppInteractive',
-        interactiveType: messageJson?.interactive?.type,
         action: actionToBeRendered,
         header: messageJson.interactive?.header ?? null,
         body: messageJson.interactive?.body ?? null,

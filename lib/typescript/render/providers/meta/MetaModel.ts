@@ -182,21 +182,21 @@ export interface DeletedMessageContent extends Content {
 
 //WhatsApp Business Cloud
 
-//WA template 
+//WA template
 export interface WhatsAppTemplate extends Content {
-  type: "whatsApptemplate";
+  type: 'whatsApptemplate';
   components?: WhatsAppComponents[];
 }
 
 export interface WhatsAppComponents {
-  type: 'body' | 'header' | 'button';
-  parameters: (WhatsAppParameterObject | WhatsAppButtonObject)[];
+  type: 'header' | 'body' | 'button';
+  parameters: (WhatsAppParameter | WhatsAppButton)[];
   sub_type?: 'quick_reply' | 'url';
   index?: number;
 }
 
-export interface WhatsAppParameterObject extends Content {
-  type: "currency" | "date_time" | "document" | "image" | "text" | "video";
+export interface WhatsAppParameter extends Content {
+  type: 'currency' | 'date_time' | 'document' | 'image' | 'text' | 'video';
   text?: string;
   currency?: WhatsAppCurrency;
   date_time?: WhatsAppDateTime;
@@ -215,29 +215,27 @@ export interface WhatsAppDateTime {
   fallback_value: string;
 }
 
-export interface WhatsAppButtonObject extends Content {
-  type: "button";
-  sub_type: "quick_reply";
-  index: string;
+export interface WhatsAppButton extends Content {
+  type: 'button';
   parameters: [
     {
-      type: string;
-      payload: string;
+      type: 'payload' | 'text';
+      payload?: string;
       text?: string;
     }
-  ]
+  ];
 }
 
 //WA Media
 type WhatsAppMediaContent = {
   link: string;
   caption?: string;
-}
+};
 
 export interface WhatsAppMediaInfo extends Content {
-  type: "whatsAppMedia";
+  type: 'whatsAppMedia';
   mediaType: WhatsAppMediaType;
-} 
+}
 
 type WhatsAppMedia = WhatsAppMediaInfo & WhatsAppMediaContent;
 
@@ -251,7 +249,7 @@ export enum WhatsAppMediaType {
 
 //WA Location
 export interface WhatsAppLocation extends Content {
-  type: 'location';
+  type: 'whatsAppLocation';
   longitude: string;
   latitude: string;
   name?: string;
@@ -261,18 +259,10 @@ export interface WhatsAppLocation extends Content {
 //WA Interactive
 export interface WhatsAppInteractive extends Content {
   type: 'whatsAppInteractive';
-  interactiveType: WhatsAppInteractiveType;
   action: WhatsAppInteractiveAction;
   header?: WhatsAppInteractiveHeader;
   body?: {text: string};
   footer?: {text: string};
-}
-
-export enum WhatsAppInteractiveType {
-  "button" = "button",
-  "list" = "list",
-  "product" = "product",
-  "product_list" = "product_list"
 }
 
 export interface WhatsAppInteractiveAction {
@@ -282,18 +272,18 @@ export interface WhatsAppInteractiveAction {
 
 export interface WhatsAppInteractiveButton {
   type: 'reply';
-  reply: {title: string;}
+  reply: {title: string};
 }
 
 export interface WhatsAppInteractiveHeader {
   type: 'text' | 'video' | 'image' | 'document';
   text?: string;
-  video?: {link: string; caption?: string;};
-  image?:  {link: string; caption?: string;};
-  document?:  {link: string; caption?: string};
+  video?: WhatsAppMediaContent;
+  image?: WhatsAppMediaContent;
+  document?: WhatsAppMediaContent;
 }
 
-//WA Contacts 
+//WA Contacts
 export interface WhatsAppContacts extends Content {
   type: 'whatsAppContacts';
   formattedName: string;
@@ -320,7 +310,7 @@ export type ContentUnion =
   | WhatsAppTemplate
   | WhatsAppMedia
   | WhatsAppLocation
-  | WhatsAppInteractive 
+  | WhatsAppInteractive
   | WhatsAppContacts;
 
 export type AttachmentUnion =

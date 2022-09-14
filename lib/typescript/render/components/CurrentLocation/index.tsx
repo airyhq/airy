@@ -11,9 +11,8 @@ interface CurrentLocationProps {
 }
 
 export const CurrentLocation = ({longitude, latitude, name, address, fromContact}: CurrentLocationProps) => {
-
-  if(!longitude)longitude = 'N/A';
-  if(!latitude)latitude = 'N/A';
+  if (!longitude) longitude = 'N/A';
+  if (!latitude) latitude = 'N/A';
 
   return (
     <div className={`${fromContact ? styles.contactContent : styles.memberContent}`}>
@@ -25,7 +24,15 @@ export const CurrentLocation = ({longitude, latitude, name, address, fromContact
         Latitude: {latitude}, Longitude: {longitude}
       </p>
       {name && (
-        <p className={styles.geolocation}> {name} {address && `, ${address}`}</p>
+        <p className={styles.geolocation}>
+          {' '}
+          {name}{' '}
+          {address && (
+            <a target="_blank" rel="noopener noreferrer" href={`http://maps.google.com/?q='${address}`}>
+              {address}
+            </a>
+          )}
+        </p>
       )}
     </div>
   );

@@ -1,52 +1,76 @@
 import React from 'react';
-import { WhatsAppMediaType } from '../../../MetaModel';
-import { WhatsAppMediaContent } from '../WhatsAppMedia';
+import Linkify from 'linkify-react';
+import {WhatsAppMediaType, WhatsAppComponents, WhatsAppParameter, WhatsAppButton} from '../../../MetaModel';
+import {WhatsAppMediaContent} from '../WhatsAppMedia';
 import styles from './index.module.scss';
 
 type WhatsAppTemplateProps = {
-  template: any;
+  components: WhatsAppComponents[];
 };
 
-export const WhatsAppTemplate = ({template}: WhatsAppTemplateProps) => {
-  console.log('compo template', template);
-  console.log('compo components', template?.components);
-
+export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
   return (
     <section className={styles.wrapper}>
-      {template?.components &&
-        template?.components.map(item => {
-          console.log('item', item);
+      {components &&
+        components.map(item => {
           return (
             <div className={styles[item.type]}>
               <>
-                {item.parameters.map(parameter => {
+                {item.parameters.map((parameter: WhatsAppParameter | WhatsAppButton) => {
                   let content;
 
-                    console.log('parameter', parameter);
+                  {
+                    parameter.type in WhatsAppMediaType &&
+                      (content = (
+                        <WhatsAppMediaContent
+                          mediaType={parameter.type as WhatsAppMediaType}
+                          link={parameter[parameter.type].link}
+                          caption={parameter[parameter.type]?.caption}
+                        />
+                      ));
+                  }
 
-                    {parameter.type in WhatsAppMediaType && (content = <WhatsAppMediaContent mediaType={parameter.type} link={parameter[parameter.type].link} caption={parameter[parameter.type]?.caption} />)}
+                  {
+                    parameter.type === 'text' && (content = <p>{parameter.text}</p>);
+                  }
 
-                    {
-                      parameter.type === 'text' && (content = <p>{parameter.text}</p>);
-                    }
-  
-                    {
-                      item.type === 'button' && (content = <p>{parameter?.text ?? parameter?.payload?.text ?? parameter?.payload}</p>);
-                    }
+                  {
+                    item.type === 'button' &&
+                      'text' in parameter &&
+                      (content = (
+                        <Linkify
+                          tagName="p"
+                          options={{
+                            defaultProtocol: 'https',
+                            className: `${styles.buttonURL}`,
+                            target: '_blank',
+                          }}
+                        >
+                          {parameter.text}
+                        </Linkify>
+                      ));
+                  }
 
-                    {
-                      parameter.type === 'currency' && (content = <p>{parameter.currency?.amount_1000 && parameter.currency?.code ? `${parameter.currency.amount_1000 / 1000} ${parameter.currency?.code}` : `${parameter?.currency?.fallback_value}`}</p>);
-                    }
+                  {
+                    item.type === 'button' && 'payload' in parameter && (content = <p>{parameter['payload']}</p>);
+                  }
 
-                    {
-                      parameter.type === 'date_time' && (content = <p>{parameter.date_time.fallback_value}</p>);
-                    }
+                  {
+                    parameter.type === 'currency' &&
+                      (content = (
+                        <p>
+                          {parameter.currency?.amount_1000 && parameter.currency?.code
+                            ? `${parseInt(parameter.currency.amount_1000) / 1000} ${parameter.currency?.code}`
+                            : `${parameter?.currency?.fallback_value}`}
+                        </p>
+                      ));
+                  }
 
+                  {
+                    parameter.type === 'date_time' && (content = <p> {parameter.date_time.fallback_value}</p>);
+                  }
 
-
-                    return(<div className={styles.contentTemplate}>{content}</div>)
-                  
-
+                  return <div className={styles.contentTemplate}>{content}</div>;
                 })}
               </>
             </div>

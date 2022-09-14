@@ -1,35 +1,22 @@
 import React from 'react';
-import {
-  WhatsAppInteractiveType,
-  WhatsAppInteractiveHeader,
-  WhatsAppMediaType,
-  WhatsAppInteractiveAction,
-} from '../../../MetaModel';
+import Linkify from 'linkify-react';
+import ReactMarkdown from 'react-markdown';
+import {WhatsAppInteractiveHeader, WhatsAppMediaType, WhatsAppInteractiveAction} from '../../../MetaModel';
 import {WhatsAppMediaContent} from '..';
 import {ReactComponent as ProductListIcon} from 'assets/images/icons/productList.svg';
 import styles from './index.module.scss';
 
-//interactiveType
-// button: Use it for Reply Buttons.
-// list: Use it for List Messages.
-// product: Use for Single Product Messages.
-// product_list: Use for Multi-Product Messages.
-
 type WhatsAppInteractiveTypeProps = {
-  interactiveType: WhatsAppInteractiveType;
   action: WhatsAppInteractiveAction;
   header?: WhatsAppInteractiveHeader;
   body?: {text: string};
   footer?: {text: string};
 };
 
-export const WhatsAppInteractive = ({interactiveType, action, header, body, footer}: WhatsAppInteractiveTypeProps) => {
-  console.log('interactive header', header);
-  console.log('interactive footer', footer);
-  console.log('interactibe body', body);
+export const WhatsAppInteractive = ({action, header, body, footer}: WhatsAppInteractiveTypeProps) => {
   return (
     <section>
-      <section className={styles.interactiveWrapper}>
+      <section className={styles.interactiveContent}>
         {header && (
           <section className={styles.header}>
             {header && header.type in WhatsAppMediaType && (
@@ -45,19 +32,39 @@ export const WhatsAppInteractive = ({interactiveType, action, header, body, foot
 
         {body && (
           <section className={styles.body}>
-            <p>{body.text}</p>
+            <p>
+              {' '}
+              <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
+                {body.text}
+              </ReactMarkdown>
+            </p>
           </section>
         )}
 
         {footer && (
           <section className={styles.footer}>
-            <p>{footer.text}</p>
+            {footer.text.startsWith('https') || footer.text.startsWith('http') ? (
+              <Linkify
+                tagName="p"
+                options={{
+                  defaultProtocol: 'https',
+                  className: `${styles.footerLink}`,
+                  target: '_blank',
+                }}
+              >
+                {footer.text}
+              </Linkify>
+            ) : (
+              <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
+                {footer.text}
+              </ReactMarkdown>
+            )}
           </section>
         )}
 
         {action && action?.button && (
           <section className={styles.actionButton}>
-              <ProductListIcon />
+            <ProductListIcon />
             <h2>{action.button}</h2>
           </section>
         )}

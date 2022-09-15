@@ -8,7 +8,3 @@ export * from './InstagramStoryMention';
 export * from './InstagramStoryReplies';
 export * from './MediaTemplate';
 export * from './QuickReplies';
-export * from './whatsApp/WhatsAppContacts';
-export * from './whatsApp/WhatsAppInteractive';
-export * from './whatsApp/WhatsAppTemplate';
-export * from './whatsApp/WhatsAppMedia';

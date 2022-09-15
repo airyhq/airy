@@ -22,7 +22,10 @@ import {
   Share,
   DeletedMessage,
 } from './components';
-import {WhatsAppTemplate, WhatsAppMedia, WhatsAppInteractive, WhatsAppContacts} from './components/whatsApp';
+import {WhatsAppTemplate} from './components/whatsApp/WhatsAppTemplate';
+import {WhatsAppMedia} from './components/whatsApp/WhatsAppMedia';
+import {WhatsAppInteractive} from './components/whatsApp/WhatsAppInteractive';
+import {WhatsAppContacts} from './components/whatsApp/WhatsAppContacts';
 import {Source} from 'model';
 
 export const MetaRender = (props: RenderPropsUnion) => {

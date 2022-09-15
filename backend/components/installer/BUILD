@@ -8,6 +8,7 @@ app_deps = [
     "//lib/java/spring/web:spring-web",
     "//:springboot_actuator",
     "//:k8s_client",
+    "@maven//:org_eclipse_jgit_org_eclipse_jgit",
 ]
 
 springboot(

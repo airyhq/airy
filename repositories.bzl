@@ -72,6 +72,7 @@ airy_jvm_deps = [
     "io.github.openfeign:feign-jackson:11.8",
     "io.github.openfeign:feign-okhttp:11.8",
     "io.kubernetes:client-java:16.0.0",
+    "org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r",
 ]
 
 excluded_artifacts = [

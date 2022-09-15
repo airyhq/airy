@@ -48,8 +48,28 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation?.lastMessage?.content?.message || conversation?.lastMessage?.content;
 
+    console.log('text', lastMessageContent);
+
     if (conversation?.lastMessage?.deliveryState === DeliveryState.failed) {
       return <ErrorMessageIcon style={{height: '20px', width: '20px'}} />;
+    }
+
+    //Wa Location
+    if (lastMessageContent.type === 'location') {
+      return (
+        <>
+          <Emoji symbol={'📍'} /> Location
+        </>
+      );
+    }
+
+    //Wa Contacts
+    if (lastMessageContent.type === 'contacts') {
+      return (
+        <>
+          <Emoji symbol={'👤'} /> Contact shared
+        </>
+      );
     }
 
     //google
@@ -139,6 +159,8 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     const lastMessageContent = conversation.lastMessage.content;
     const source = conversation.channel.source;
 
+    console.log('icon', lastMessageContent);
+
     const twilioWhatsAppOutboundMediaUrl = lastMessageContent?.MediaUrl;
 
     const twilioWhatsAppInboundImage =
@@ -173,6 +195,8 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
 
     if (
+      lastMessageContent?.type === 'image' ||
+      lastMessageContent?.type === 'sticker' ||
       lastMessageContent.message?.attachments?.[0].type === 'image' ||
       lastMessageContent?.attachment?.type === 'image' ||
       isImageFromGoogleSource(lastMessageContent.message?.text) ||
@@ -182,6 +206,7 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
 
     if (
+      lastMessageContent?.type === 'video' ||
       lastMessageContent.message?.attachments?.[0].type === 'video' ||
       lastMessageContent?.attachment?.type === 'video' ||
       twilioWhatsAppInboundVideo
@@ -190,6 +215,7 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
 
     if (
+      lastMessageContent?.type === 'audio' ||
       lastMessageContent.message?.attachments?.[0].type === 'audio' ||
       lastMessageContent?.attachment?.type === 'audio' ||
       twilioWhatsAppInboundAudio
@@ -198,6 +224,7 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
 
     if (
+      lastMessageContent?.type === 'document' ||
       lastMessageContent.message?.attachments?.[0].type === 'file' ||
       lastMessageContent?.attachment?.type === 'file' ||
       twilioWhatsAppInboundFile

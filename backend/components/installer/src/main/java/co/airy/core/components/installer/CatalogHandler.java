@@ -2,12 +2,14 @@ package co.airy.core.api.components.installer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
     private static final Logger log = AiryLoggerFactory.getLogger(CatalogHandler.class);
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private final File repoFolder;
     private final ApiClient apiClient;
     private final String namespace;
@@ -67,22 +69,23 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     public void listComponents() throws Exception {
         git.pull();
 
-        Set<String> components = Stream.of(repoFolder.listFiles())
+        List<Map<String, Object>> components = Stream.of(repoFolder.listFiles())
             .filter(f -> f.isDirectory())
             .map(File::getAbsoluteFile)
             //TODO: hanlde other description languages
             .map(f -> new File(f, "description.yaml"))
             .map(f -> {
-                String content = "";
+                Map<String, Object> config = null;
                 try {
-                    content = FileUtils.readFileToString(f, "UTF-8");
-                } catch (IOException e) {
-                    log.error("unable to read description %s", e);
+                    config = mapper.readValue(f, new TypeReference<Map<String, Object>>(){});
+                } catch(IOException e) {
+                    log.error("unable to read config %s", e);
                 }
 
-                return content;
+                return config;
             })
-            .collect(Collectors.toSet());
+            .filter(c -> c != null)
+            .collect(Collectors.toList());
 
         //FIXME: remove log
         log.info(components.toString());

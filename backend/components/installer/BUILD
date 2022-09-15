@@ -9,7 +9,6 @@ app_deps = [
     "//:springboot_actuator",
     "//:k8s_client",
     "@maven//:org_eclipse_jgit_org_eclipse_jgit",
-    "@maven//:commons_io_commons_io",
 ]
 
 springboot(

@@ -48,8 +48,6 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation?.lastMessage?.content?.message || conversation?.lastMessage?.content;
 
-    console.log('text', lastMessageContent);
-
     if (conversation?.lastMessage?.deliveryState === DeliveryState.failed) {
       return <ErrorMessageIcon style={{height: '20px', width: '20px'}} />;
     }
@@ -158,8 +156,6 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const lastMessageIsIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
     const source = conversation.channel.source;
-
-    console.log('icon', lastMessageContent);
 
     const twilioWhatsAppOutboundMediaUrl = lastMessageContent?.MediaUrl;
 

@@ -8,3 +8,4 @@ export * from './InstagramStoryMention';
 export * from './InstagramStoryReplies';
 export * from './MediaTemplate';
 export * from './QuickReplies';
+export * from './whatsApp';

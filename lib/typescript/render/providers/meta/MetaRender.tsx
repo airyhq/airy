@@ -21,12 +21,12 @@ import {
   StoryReplies,
   Share,
   DeletedMessage,
+  WhatsAppMedia,
+  WhatsAppTemplate,
+  WhatsAppInteractive,
+  WhatsAppContacts,
 } from './components';
 import {Source} from 'model';
-import {WhatsAppTemplate} from './components/whatsApp/WhatsAppTemplate';
-import {WhatsAppMedia} from './components/whatsApp/whatsAppMedia';
-import {WhatsAppInteractive} from './components/whatsApp/whatsAppInteractive';
-import {WhatsAppContacts} from './components/WhatsAppContacts';
 
 export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;

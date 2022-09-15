@@ -1,6 +1,6 @@
 import React from 'react';
 import Linkify from 'linkify-react';
-import {WhatsAppMediaType, WhatsAppComponents, WhatsAppParameter, WhatsAppButton} from '../../../MetaModel';
+import {WhatsAppMediaType, WhatsAppComponents, WhatsAppParameter, WhatsAppButton} from '../../MetaModel';
 import {WhatsAppMediaContent} from '../WhatsAppMedia';
 import styles from './index.module.scss';
 

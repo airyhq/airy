@@ -1,6 +1,6 @@
 import React from 'react';
-import {WhatsAppMediaType} from '../../../MetaModel';
-import {ImageWithFallback, Video, File} from '../../../../../components';
+import {WhatsAppMediaType} from '../../MetaModel';
+import {ImageWithFallback, Video, File} from '../../../../components';
 import {AudioClip} from 'components';
 import styles from './index.module.scss';
 

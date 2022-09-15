@@ -1,7 +1,7 @@
 import React from 'react';
 import Linkify from 'linkify-react';
 import ReactMarkdown from 'react-markdown';
-import {WhatsAppInteractiveHeader, WhatsAppMediaType, WhatsAppInteractiveAction} from '../../../MetaModel';
+import {WhatsAppInteractiveHeader, WhatsAppMediaType, WhatsAppInteractiveAction} from '../../MetaModel';
 import {WhatsAppMediaContent} from '../WhatsAppMedia';
 import {ReactComponent as ProductListIcon} from 'assets/images/icons/productList.svg';
 import styles from './index.module.scss';

@@ -12,9 +12,9 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
   return (
     <section className={styles.wrapper}>
       {components &&
-        components.map(item => {
+        components.map((item, index) => {
           return (
-            <div key={item.type} className={styles[item.type]}>
+            <div key={index} className={styles[item.type]}>
               <>
                 {item.parameters.map((parameter: WhatsAppParameter | WhatsAppButton) => {
                   let content;
@@ -71,7 +71,7 @@ export const WhatsAppTemplate = ({components}: WhatsAppTemplateProps) => {
                   }
 
                   return (
-                    <div className={styles.contentTemplate} key={parameter.type}>
+                    <div className={styles.contentTemplate} key={parameter.type + item.type}>
                       {content}
                     </div>
                   );

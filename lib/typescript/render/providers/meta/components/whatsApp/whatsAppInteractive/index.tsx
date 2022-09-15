@@ -32,12 +32,9 @@ export const WhatsAppInteractive = ({action, header, body, footer}: WhatsAppInte
 
         {body && (
           <section className={styles.body}>
-            <p>
-              {' '}
-              <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
-                {body.text}
-              </ReactMarkdown>
-            </p>
+            <ReactMarkdown skipHtml={true} linkTarget={'_blank'}>
+              {body.text}
+            </ReactMarkdown>
           </section>
         )}
 

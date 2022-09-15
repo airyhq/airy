@@ -12,18 +12,21 @@ import {
   MediaAttachment,
   WhatsAppMediaType,
 } from './MetaModel';
-import {ButtonTemplate} from './components/ButtonTemplate';
-import {GenericTemplate} from './components/GenericTemplate';
-import {MediaTemplate} from './components/MediaTemplate';
-import {FallbackAttachment} from './components/FallbackAttachment';
-import {StoryMention} from './components/InstagramStoryMention';
-import {StoryReplies} from './components/InstagramStoryReplies';
-import {Share} from './components/InstagramShare';
-import {DeletedMessage} from './components/DeletedMessage';
-import {WhatsAppTemplate, WhatsAppMedia} from './components/whatsApp';
+import {
+  ButtonTemplate,
+  GenericTemplate,
+  MediaTemplate,
+  FallbackAttachment,
+  StoryMention,
+  StoryReplies,
+  Share,
+  DeletedMessage,
+  WhatsAppTemplate,
+  WhatsAppMedia,
+  WhatsAppInteractive,
+  WhatsAppContacts,
+} from './components';
 import {Source} from 'model';
-import {WhatsAppInteractive} from './components/whatsApp/WhatsAppInteractive';
-import {WhatsAppContacts} from './components/whatsApp/WhatsAppContacts';
 
 export const MetaRender = (props: RenderPropsUnion) => {
   const message = props.message;

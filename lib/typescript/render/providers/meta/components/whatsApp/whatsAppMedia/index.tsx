@@ -12,22 +12,30 @@ interface WhatsAppMediaProps {
 
 const defaultText = 'N/A';
 
+//Caption: only use for document, image, or video media
+//https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages#media-object
+
 export const WhatsAppMedia = ({mediaType, link, caption}: WhatsAppMediaProps) => {
-  return (
-    <div className={styles.mediaWrapper}>
-      <WhatsAppMediaContent mediaType={mediaType} link={link} caption={caption} />
-    </div>
-  );
+  if (caption && mediaType !== 'audio') {
+    return (
+      <div className={styles.mediaWrapper}>
+        <WhatsAppMediaContent mediaType={mediaType} link={link} caption={caption} />
+      </div>
+    );
+  } else {
+    return <WhatsAppMediaContent mediaType={mediaType} link={link} caption={caption} />;
+  }
 };
 
 export const WhatsAppMediaContent = ({mediaType, link, caption}: WhatsAppMediaProps) => {
   let mediaContent = <p>{defaultText}</p>;
 
   if (mediaType === 'image' || mediaType === 'sticker') {
+    const isCaptionRenderable = caption && mediaType === 'image';
     mediaContent = (
       <>
-        <ImageWithFallback src={link} />{' '}
-        {caption && mediaType === 'image' ? <p className={styles.caption}>{caption}</p> : null}
+        <ImageWithFallback src={link} className={styles.imageMedia} />{' '}
+        {isCaptionRenderable ? <p className={styles.caption}>{caption}</p> : null}
       </>
     );
   }
@@ -51,12 +59,7 @@ export const WhatsAppMediaContent = ({mediaType, link, caption}: WhatsAppMediaPr
   }
 
   if (mediaType === WhatsAppMediaType.audio) {
-    mediaContent = (
-      <>
-        <AudioClip audioUrl={link} />
-        {caption ? <p className={styles.caption}>{caption}</p> : null}{' '}
-      </>
-    );
+    mediaContent = <AudioClip audioUrl={link} />;
   }
 
   return <>{mediaContent}</>;

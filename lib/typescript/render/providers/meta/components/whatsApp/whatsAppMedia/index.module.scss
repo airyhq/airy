@@ -17,17 +17,19 @@
   margin-top: 0;
 }
 
-.mediaWrapper a {
-  max-height: 200px;
-}
-
 .mediaWrapper img,
 .mediaWrapper video {
-  max-height: 200px;
+  max-width: 200px;
   border-radius: 12px;
 }
 
 .caption {
   @include font-xs;
   margin-top: 5px;
+}
+
+.imageMedia {
+  display: block;
+  border-radius: 12px;
+  max-width: 300px;
 }

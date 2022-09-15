@@ -1,7 +1,7 @@
 import {OutboundMapper} from './mapper';
 
 export class WhatsAppMapper extends OutboundMapper {
-  getTextPayload(text: string): any {
+  getTextPayload(text: string): {text: string} {
     return {
       text,
     };

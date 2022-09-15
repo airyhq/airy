@@ -21,11 +21,8 @@ import {
   StoryReplies,
   Share,
   DeletedMessage,
-  WhatsAppTemplate,
-  WhatsAppMedia,
-  WhatsAppInteractive,
-  WhatsAppContacts,
 } from './components';
+import {WhatsAppTemplate, WhatsAppMedia, WhatsAppInteractive, WhatsAppContacts} from './components/whatsApp';
 import {Source} from 'model';
 
 export const MetaRender = (props: RenderPropsUnion) => {

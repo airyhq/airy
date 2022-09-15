@@ -53,16 +53,16 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
   //status
   const needsConfig =
+    healthy &&
     connector &&
     connectors[itemName] &&
     isComponent &&
     enabled &&
-    healthy &&
     isConfigurableConnector() &&
     !isComponentConfigured &&
     !itemName.includes(Source.chatPlugin);
-  const isRunning = healthy && enabled;
-  const isNotHealthy = !healthy && enabled;
+  const isRunning = healthy && enabled && !needsConfig;
+  const isNotHealthy = !healthy;
   const isDisabled = !enabled;
 
   const triggerEnableDisableAction = (enabled: boolean) => {

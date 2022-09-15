@@ -9,7 +9,7 @@ resource "google_compute_network" "vpc" {
   auto_create_subnetworks = "false"
 }
 
-# Subnet # private_ip_google_access = false by default
+# Subnet
 resource "google_compute_subnetwork" "subnet" {
   name          = "${var.project_id}-subnet-public-0"
   region        = var.region
@@ -18,13 +18,10 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 # GKE cluster
-resource "google_container_cluster" "primary" {
+resource "google_container_cluster" "gke_core" {
   name     = "${var.project_id}-gke"
   location = var.zone
   
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So, we create the smallest possible default
-  # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
 
@@ -33,10 +30,10 @@ resource "google_container_cluster" "primary" {
 }
 
 # Separately Managed Node Pool
-resource "google_container_node_pool" "primary_nodes" {
-  name       = "${google_container_cluster.primary.name}-node-pool"
+resource "google_container_node_pool" "gke_core_nodes" {
+  name       = "${google_container_cluster.gke_core.name}-node-pool"
   location   = var.zone
-  cluster    = google_container_cluster.primary.name
+  cluster    = google_container_cluster.gke_core.name
   node_count = var.gke_num_nodes
 
   node_config {
@@ -66,8 +63,12 @@ module "gke_auth" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
 
   project_id   = var.project_id
-  location     = google_container_cluster.primary.location
-  cluster_name = google_container_cluster.primary.name
+  location     = google_container_cluster.gke_core.location
+  cluster_name = google_container_cluster.gke_core.name
+
+  depends_on = [
+    resource.google_container_cluster.gke_core
+  ]
 }
 
 resource "local_file" "kubeconfig" {

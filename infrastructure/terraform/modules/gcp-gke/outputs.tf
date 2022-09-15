@@ -11,11 +11,11 @@ output "project_id" {
   description = "GCloud Project ID"
 }
 output "kubernetes_cluster_name" {
-  value       = google_container_cluster.primary.name
+  value       = google_container_cluster.gke_core.name
   description = "GKE Cluster Name"
 }
 output "kubernetes_cluster_host" {
-  value       = google_container_cluster.primary.endpoint
+  value       = google_container_cluster.gke_core.endpoint
   description = "GKE Cluster Host"
 }
 output "kubeconfig_raw" {
@@ -25,8 +25,4 @@ output "kubeconfig_raw" {
 output "kubernetes_endpoint" {
   sensitive = true
   value     = module.gke_auth.host
-}
-output "ca_certificate" {
-  sensitive = true
-  value = module.gke_auth.cluster_ca_certificate
 }

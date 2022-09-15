@@ -1,5 +1,7 @@
 package co.airy.core.api.components.installer;
 
+import co.airy.core.api.components.installer.CatalogHandler;
+import co.airy.core.api.components.installer.InstallerHandler;
 import co.airy.core.api.components.installer.payload.InstallPayload;
 import co.airy.core.api.components.installer.payload.UninstallPayload;
 
@@ -18,16 +20,18 @@ import co.airy.log.AiryLoggerFactory;
 public class InstallerController {
     private static final Logger log = AiryLoggerFactory.getLogger(InstallerController.class);
 
-    private final InstallerHandler handler;
+    private final InstallerHandler intallerHandler;
+    private final CatalogHandler catalogHandler;
 
-    InstallerController(InstallerHandler handler) {
-        this.handler = handler;
+    InstallerController(InstallerHandler intallerHandler, CatalogHandler catalogHandler) {
+        this.intallerHandler = intallerHandler;
+        this.catalogHandler = catalogHandler;
     }
 
     @PostMapping("/components.install")
     public ResponseEntity<?> installComponent(@RequestBody @Valid InstallPayload payload) {
         try {
-            handler.installComponent(payload.getName());
+            intallerHandler.installComponent(payload.getName());
         } catch(Exception e) {
             log.error(e.getMessage());
         }
@@ -38,7 +42,7 @@ public class InstallerController {
     @PostMapping("/components.uninstall")
     public ResponseEntity<?> uninstallComponent(@RequestBody @Valid UninstallPayload payload) {
         try {
-            handler.uninstallComponent(payload.getName());
+            intallerHandler.uninstallComponent(payload.getName());
         } catch(Exception e) {
             log.error(e.getMessage());
         }
@@ -47,6 +51,11 @@ public class InstallerController {
 
     @PostMapping("/components.list")
     public ResponseEntity<?> listComponents() {
-        return ResponseEntity.status(HttpStatus.CREATED).body("");
+        try {
+            catalogHandler.listComponents();
+        } catch(Exception e) {
+            log.error(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 }

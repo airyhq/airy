@@ -6,14 +6,14 @@ import {WhatsAppMediaContent} from '..';
 import {ReactComponent as ProductListIcon} from 'assets/images/icons/productList.svg';
 import styles from './index.module.scss';
 
-type WhatsAppInteractiveTypeProps = {
+type WhatsAppInteractiveProps = {
   action: WhatsAppInteractiveAction;
   header?: WhatsAppInteractiveHeader;
   body?: {text: string};
   footer?: {text: string};
 };
 
-export const WhatsAppInteractive = ({action, header, body, footer}: WhatsAppInteractiveTypeProps) => {
+export const WhatsAppInteractive = ({action, header, body, footer}: WhatsAppInteractiveProps) => {
   return (
     <section>
       <section className={styles.interactiveContent}>

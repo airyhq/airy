@@ -432,12 +432,15 @@ function metaOutbound(message): ContentUnion {
     //Media
     if (messageJson.type in WhatsAppMediaType) {
       const media = messageJson.type;
-      return {
-        type: 'whatsAppMedia',
-        mediaType: media,
-        link: messageJson[media]?.link,
-        caption: messageJson[media]?.caption ?? null,
-      };
+
+      if (messageJson[media]?.link) {
+        return {
+          type: 'whatsAppMedia',
+          mediaType: media,
+          link: messageJson[media]?.link,
+          caption: messageJson[media]?.caption ?? null,
+        };
+      }
     }
 
     //Location

@@ -75,6 +75,7 @@ export const attachmentsExtensions = {
 };
 
 export const getAttachmentType = (fileName: string, source: string) => {
+  if (!fileName) return;
   const fileNameArr = fileName.split('.');
   const fileNameExtension = fileNameArr[fileNameArr.length - 1].toLowerCase();
 
@@ -103,6 +104,8 @@ export const getAttachmentType = (fileName: string, source: string) => {
 };
 
 export const getFileName = (fileUrl: string) => {
+  if (!fileUrl) return;
+
   const fileUrlArr = fileUrl.split('/');
 
   return fileUrlArr[fileUrlArr.length - 1].split('?')[0];

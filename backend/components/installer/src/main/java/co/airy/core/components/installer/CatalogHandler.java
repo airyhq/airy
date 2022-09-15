@@ -1,10 +1,13 @@
 package co.airy.core.api.components.installer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -22,6 +25,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
     private static final Logger log = AiryLoggerFactory.getLogger(CatalogHandler.class);
 
+    private final ObjectMapper mapper = new ObjectMapper();
     private final File repoFolder;
     private final ApiClient apiClient;
     private final String namespace;
@@ -68,7 +72,16 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
             .map(File::getAbsoluteFile)
             //TODO: hanlde other description languages
             .map(f -> new File(f, "description.yaml"))
-            .map(File::getPath)
+            .map(f -> {
+                String content = "";
+                try {
+                    content = FileUtils.readFileToString(f, "UTF-8");
+                } catch (IOException e) {
+                    log.error("unable to read description %s", e);
+                }
+
+                return content;
+            })
             .collect(Collectors.toSet());
 
         //FIXME: remove log

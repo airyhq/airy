@@ -1,5 +1,5 @@
 import {
-  cyChannelsChatPluginAddButton,
+  cyAddChannelButton,
   cyConnectorsAddNewButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
@@ -10,8 +10,9 @@ import {
 import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
 export const connectChatPluginConnector = (): void => {
-  cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-  cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).first().click({force: true});
+  cy.get(`[data-cy=${cyAddChannelButton}]`).click();
+  cy.wait(500);
+  cy.get(`[data-cy=${cyConnectorsAddNewButton}]`).click({force: true});
   cy.wait(500);
   cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'), {force: true});
   cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
@@ -23,7 +24,6 @@ export const createChatPluginConversation = (): void => {
   cy.wait(500);
   cy.connectChatPluginConnector();
 
-  cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
   cy.wait(500);
   cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
 

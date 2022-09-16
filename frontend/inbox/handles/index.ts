@@ -22,12 +22,6 @@ export const cyTagsTableRowDisplayDeleteModalButton = 'tagsTableRowDisplayDelete
 export const cyConnectorAddButton = 'connectorAddButton';
 export const cyAddChannelButton = 'addChannelButton';
 
-export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
-export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';
-export const cyChannelsTwilioSmsAddButton = 'channelsTwilioSmsAddButton';
-export const cyChannelsTwilioWhatsappAddButton = 'channelsTwilioWhatsappAddButton';
-export const cyChannelsGoogleAddButton = 'channelsGoogleAddButton';
-
 export const cyChannelsChatPluginList = 'channelsChatPluginList';
 export const cyChannelsFacebookList = 'channelsFacebookList';
 export const cyChannelsTwilioSmsList = 'channelsTwilioSmsList';
@@ -39,7 +33,6 @@ export const cyConnectorsAddNewButton = 'connectorsAddNewButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
 export const cyChannelCreatedChatPluginCloseButton = 'channelCreatedChatPluginCloseButton';
-export const cyChannelsFormBackButton = 'channelsFormBackButton';
 
 export const cyOpenStateButton = 'openStateButton';
 export const cyClosedStateButton = 'closedStateButton';

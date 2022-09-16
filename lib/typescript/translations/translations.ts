@@ -477,7 +477,6 @@ const resources = {
       //Status
       status: 'Status',
       componentName: 'Component Name',
-      healthStatus: 'Health Status',
       enabled: 'Enabled',
       enabledLowerCase: 'enabled',
       healthy: 'Healthy',
@@ -987,7 +986,6 @@ const resources = {
       //Status
       status: 'Status',
       componentName: 'Komponenten Name',
-      healthStatus: 'Gesundheitszustand',
       enabled: 'Aktiviert',
       enabledLowerCase: 'aktiviert',
       healthy: 'Gesund',
@@ -1488,7 +1486,6 @@ const resources = {
       //Status
       status: 'Statut',
       componentName: 'Nom du composant',
-      healthStatus: 'État de santé',
       enabled: 'Activé',
       enabledLowerCase: 'activé',
       healthy: 'Santé',
@@ -1993,7 +1990,6 @@ const resources = {
       //Status
       status: 'Estatus',
       componentName: 'Nombre del componente',
-      healthStatus: 'Estado de salud',
       enabled: 'Activado',
       enabledLowerCase: 'activado',
       healthy: 'Saludable',

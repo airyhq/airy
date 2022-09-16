@@ -80,7 +80,7 @@ const Status = (props: ConnectedProps<typeof connector>) => {
       </div>
       <div className={styles.listHeader}>
         <h2>{t('componentName')}</h2>
-        <h2>{t('healthStatus')}</h2>
+        <h2>{t('status')}</h2>
 
         <h2>{t('enabled')}</h2>
         <button onClick={handleRefresh} className={styles.refreshButton}>

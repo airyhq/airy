@@ -53,7 +53,6 @@ const ItemInfo = (props: ComponentInfoProps) => {
 
   //status
   const needsConfig =
-    healthy &&
     connector &&
     connectors[itemName] &&
     isComponent &&

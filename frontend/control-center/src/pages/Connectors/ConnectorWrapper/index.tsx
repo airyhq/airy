@@ -200,18 +200,16 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                     />
                   </div>
 
-                  {isConfigured && (
-                    <SmartButton
-                      title={isEnabled ? t('disableComponent') : t('enableComponent')}
-                      height={40}
-                      width={132}
-                      pending={isPending}
-                      onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
-                      styleVariant="small"
-                      type="button"
-                      disabled={isPending}
-                    />
-                  )}
+                  <SmartButton
+                    title={isEnabled ? t('disableComponent') : t('enableComponent')}
+                    height={40}
+                    width={132}
+                    pending={isPending}
+                    onClick={isEnabled ? openConfigurationModal : enableDisableComponentToggle}
+                    styleVariant="small"
+                    type="button"
+                    disabled={isPending}
+                  />
                 </div>
               </div>
             </div>

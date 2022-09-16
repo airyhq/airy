@@ -15,7 +15,6 @@ import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-import {cyChannelsFormBackButton} from 'handles';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {useTranslation} from 'react-i18next';
@@ -81,7 +80,7 @@ const ChannelsList = () => {
 
   return (
     <div className={styles.wrapper}>
-      <LinkButton dataCy={cyChannelsFormBackButton} onClick={() => navigate(-1)} type="button">
+      <LinkButton onClick={() => navigate(-1)} type="button">
         <div className={styles.linkButtonContainer}>
           <ArrowLeftIcon className={styles.backIcon} />
           {connectorsRoute ? t('channelsCapital') : ''}

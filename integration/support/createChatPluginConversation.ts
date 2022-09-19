@@ -4,7 +4,6 @@ import {
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
   cyChannelsChatPluginList,
-  cyChannelsFormBackButton,
   cyChannelCreatedChatPluginCloseButton,
 } from 'handles';
 import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';

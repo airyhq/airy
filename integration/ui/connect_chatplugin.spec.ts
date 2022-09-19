@@ -1,4 +1,4 @@
-import {cyChannelsFormBackButton, cyChannelsChatPluginList} from 'handles';
+import {cyChannelsChatPluginList} from 'handles';
 
 declare global {
   namespace Cypress {

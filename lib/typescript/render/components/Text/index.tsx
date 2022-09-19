@@ -13,6 +13,7 @@ export const Text = ({text, fromContact}: TextRenderProps) => (
     className={`${fromContact ? styles.contactContent : styles.memberContent}`}
     options={{
       defaultProtocol: 'https',
+      target: '_blank',
       className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,
     }}
   >

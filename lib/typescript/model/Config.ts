@@ -26,8 +26,11 @@ export enum Language {
 
 export const getComponents = (config: Config) => {
   const {services} = config;
+  const servicesSorted = Object.fromEntries(
+    Object.entries(services).sort((a, b) => a[1].component.localeCompare(b[1].component))
+  );
 
-  return Object.keys(services).reduce((agg, key) => {
+  return Object.keys(servicesSorted).reduce((agg, key) => {
     const {healthy, enabled, component} = services[key];
 
     return {

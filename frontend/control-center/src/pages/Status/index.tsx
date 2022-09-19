@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps, useSelector} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {getClientConfig, getConnectorsConfiguration, listComponents} from '../../actions';
 import {StateModel} from '../../reducers';
 import {ComponentListItem} from './ComponentListItem';
@@ -14,12 +14,17 @@ const mapDispatchToProps = {
   listComponents,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => {
+  return {
+    components: Object.entries(state.data.config.components),
+    catalog: state.data.catalog,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Status = (props: ConnectedProps<typeof connector>) => {
-  const {getClientConfig, getConnectorsConfiguration, listComponents} = props;
-  const components = useSelector((state: StateModel) => Object.entries(state.data.config.components));
-  const catalogList = useSelector((state: StateModel) => state.data.catalog);
+  const {components, catalog, getClientConfig, getConnectorsConfiguration, listComponents} = props;
   const [spinAnim, setSpinAnim] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
   const {t} = useTranslation();
@@ -56,7 +61,7 @@ const Status = (props: ConnectedProps<typeof connector>) => {
   const formatToComponentName = (name: string) => {
     let formattedName;
     if (name.includes('enterprise')) {
-      formattedName = `'airy-enterprise'/${name}`;
+      formattedName = `airy-enterprise/${name}`;
     } else {
       formattedName = `airy-core/${name}`;
     }
@@ -85,10 +90,10 @@ const Status = (props: ConnectedProps<typeof connector>) => {
         </button>
       </div>
       <div className={styles.listItems}>
-        {Object.entries(catalogList).length > 0 &&
+        {Object.entries(catalog).length > 0 &&
           components.map((component, index) => {
             const formattedName = formatToComponentName(component[0]);
-            const catalogItem = catalogList[formattedName];
+            const catalogItem = catalog[formattedName];
             return (
               <ComponentListItem
                 key={index}

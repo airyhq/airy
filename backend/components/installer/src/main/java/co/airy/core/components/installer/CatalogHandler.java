@@ -19,6 +19,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
+import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
 import io.kubernetes.client.openapi.ApiClient;
 
@@ -69,15 +70,15 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     public void listComponents() throws Exception {
         git.pull();
 
-        List<Map<String, Object>> components = Stream.of(repoFolder.listFiles())
+        List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
             .filter(f -> f.isDirectory())
             .map(File::getAbsoluteFile)
             //TODO: hanlde other description languages
             .map(f -> new File(f, "description.yaml"))
             .map(f -> {
-                Map<String, Object> config = null;
+                ComponentDetails config = null;
                 try {
-                    config = mapper.readValue(f, new TypeReference<Map<String, Object>>(){});
+                    config = mapper.readValue(f, ComponentDetails.class);
                 } catch(IOException e) {
                     log.error("unable to read config %s", e);
                 }

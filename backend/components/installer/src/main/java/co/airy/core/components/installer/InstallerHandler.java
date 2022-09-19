@@ -51,52 +51,66 @@ public class InstallerHandler {
 
     //TODO: Add return value and correct exception handleling
     public void installComponent(String componentName) throws Exception {
-       final CoreV1Api api = new CoreV1Api(apiClient);
-       final Map<String, String> coreConfig = getConfigMap(api, "core-config");
-       final String globals = coreConfig.get("global.yaml");
-       final String version = coreConfig.get("APP_IMAGE_TAG");
-       final Map<String, Repository> repositories = getRepositories(api);
-       final Component component = getComponentFromName(repositories, componentName, version);
-       final List<String> cmd = getInstallCommand(component, globals);
+        final CoreV1Api api = new CoreV1Api(apiClient);
+        final Map<String, String> coreConfig = getConfigMap(api, "core-config");
+        final String globals = coreConfig.get("global.yaml");
+        final String version = coreConfig.get("APP_IMAGE_TAG");
+        final Map<String, Repository> repositories = getRepositories(api);
+        final Component component = getComponentFromName(repositories, componentName, version);
+        final List<String> cmd = getInstallCommand(component, globals);
 
 
-       launchHelmJob(componentName, cmd);
+        launchHelmJob(componentName, cmd);
 
-       //TODO: handle error properly
-       log.info(globals);
-       log.info(version);
+        //TODO: handle error properly
+        log.info(globals);
+        log.info(version);
     }
 
     //TODO: Add return value and correct exception handleling
     public void uninstallComponent(String componentName) throws Exception {
-       //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
-       String[] names = componentName.split("/");
-       final List<String> cmd = getUninstallCommand(names[1]);
+        //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
+        String[] names = componentName.split("/");
+        final List<String> cmd = getUninstallCommand(names[1]);
 
 
-       launchHelmJob(componentName, cmd);
+        launchHelmJob(componentName, cmd);
+    }
+
+    public Map<String, Boolean> getInstalledComponents() throws Exception {
+
+        ArrayList<String> cmd = new ArrayList<>();
+        cmd.add("sh");
+        cmd.add("-c");
+        cmd.add(String.format(
+                    "helm -n %s list | awk '{print $1}' | tail -n +2",
+                    namespace));
+
+        final V1Job job = launchHelmJob("helm-installed", cmd);
+
+        return null;
     }
 
     private Component getComponentFromName(
             Map<String, Repository> repositories,
             String componentName,
             String version) throws NoSuchElementException {
-       //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
-       String[] names = componentName.split("/");
+        //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
+        String[] names = componentName.split("/");
 
-       final Repository repo = repositories.get(names[0]);
-       if (repo == null) {
+        final Repository repo = repositories.get(names[0]);
+        if (repo == null) {
             log.error("repository %s not found", names[0]);
             //TODO: do better error handleling
             throw new NoSuchElementException();
-       }
+        }
 
-       return Component.builder()
-           .name(names[1])
-           .url(String.format("%s/charts/%s-%s.tgz", repo.getUrl(), names[1], version))
-           .username(repo.getUsername())
-           .password(repo.getPassword())
-           .build();
+        return Component.builder()
+            .name(names[1])
+            .url(String.format("%s/charts/%s-%s.tgz", repo.getUrl(), names[1], version))
+            .username(repo.getUsername())
+            .password(repo.getPassword())
+            .build();
     }
 
     private Map<String, Repository> getRepositories(CoreV1Api api) throws ApiException, JsonProcessingException {
@@ -131,7 +145,7 @@ public class InstallerHandler {
         return data;
     }
 
-    private void launchHelmJob(String componentName, List<String> cmd) throws Exception {
+    private V1Job launchHelmJob(String jobName, List<String> cmd) throws Exception {
         final V1Job job = new V1Job()
             .metadata(new V1ObjectMeta().name("helm-test"))
             .spec(new V1JobSpec()
@@ -160,7 +174,8 @@ public class InstallerHandler {
                 null,
                 null,
                 null);
-        final V1Job responseJob = response.getData();
+
+        return response.getData();
     }
 
     private List<String> getInstallCommand(Component component, String globals) {
@@ -182,8 +197,6 @@ public class InstallerHandler {
 
     private List<String> getUninstallCommand(String componentName) {
         ArrayList<String> cmd = new ArrayList<>();
-        cmd.add("sh");
-        cmd.add("-c");
         cmd.add(String.format(
                     "helm -n %s uninstall %s",
                     namespace,
@@ -191,6 +204,4 @@ public class InstallerHandler {
 
         return cmd;
     }
-
-
 }

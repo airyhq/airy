@@ -19,6 +19,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
+import co.airy.core.api.components.installer.InstallerHandler;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
 import io.kubernetes.client.openapi.ApiClient;
@@ -30,18 +31,15 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private final File repoFolder;
-    private final ApiClient apiClient;
-    private final String namespace;
+    private final InstallerHandler installerHandler;
     private final String catalogUri;
     private Git git;
 
     CatalogHandler(
-            ApiClient apiClient,
-            @Value("${kubernetes.namespace}") String namespace,
+            InstallerHandler installerHandler,
             @Value("${catalog.uri}") String catalogUri,
             @Value("${catalog.directory}") String catalogDir) {
-        this.apiClient = apiClient;
-        this.namespace = namespace;
+        this.installerHandler = installerHandler;
         this.catalogUri = catalogUri;
         this.repoFolder = new File(catalogDir);
     }
@@ -65,13 +63,13 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
         }
     }
 
-
     //TODO: Add return value and correct exception handleling and return value
     public void listComponents() throws Exception {
         git.pull();
+        Map<String, Boolean> installedComponents = installerHandler.getInstalledComponents();
 
         List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
-            .filter(f -> f.isDirectory())
+            .filter(f -> f.isDirectory() && !f.isHidden())
             .map(File::getAbsoluteFile)
             //TODO: hanlde other description languages
             .map(f -> new File(f, "description.yaml"))

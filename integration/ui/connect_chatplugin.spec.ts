@@ -1,4 +1,4 @@
-import {cyChannelsFormBackButton, cyChannelsChatPluginList} from 'handles';
+import {cyChannelsChatPluginList} from 'handles';
 
 declare global {
   namespace Cypress {
@@ -20,7 +20,7 @@ describe('Connect chatplugin channel', () => {
     cy.connectChatPluginConnector();
 
     cy.url().should('include', '/control-center/connectors');
-    cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
+
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
   });
 });

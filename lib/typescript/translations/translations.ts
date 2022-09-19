@@ -415,6 +415,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'An Inbox to view and organize all your conversations.',
 
+      //AiryContacts
+      airyContactsDescription: 'View and manage contacts for personalized interactions.',
+
       //Connectors
       connectors: 'Connectors',
       noResults: 'Result not found.',
@@ -859,6 +862,9 @@ const resources = {
 
       //Inbox
       frontendinboxDescription: 'Ein Inbox zum Anzeigen und Organisieren aller Ihrer Konversationen.',
+
+      //AiryContacts
+      airyContactsDescription: 'Anzeigen und Verwalten von Kontakten für personalisierte Interaktionen.',
 
       //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
@@ -1426,6 +1432,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'Une boîte de réception pour afficher et organiser toutes vos conversations.',
 
+      //AiryContacts
+      airyContactsDescription: 'Un outil de gestion de contacts pour des conversations personnalisées',
+
       //Connectors
       connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
@@ -1930,6 +1939,9 @@ const resources = {
 
       //Inbox
       frontendinboxDescription: 'Una bandeja de entrada para ver y organizar todas tus conversaciones.',
+
+      //AiryContacts
+      airyContactsDescription: 'Administre contactos para interacciones personalizadas.',
 
       //Connectors
       connectors: 'Conectores',

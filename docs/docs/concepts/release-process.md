@@ -25,12 +25,11 @@ Once a release day comes, we execute the following steps:
   - `chmod +x airy`
 - We test the release using `./airy create --provider=minikube`.
 - We run the Cypress tests with the command `./node_modules/.bin/cypress open -C integration/cypress.config.ts`
-  Note that:
-  - Any additional hot-fix is committed directly to the release branch
-  - You must wait for all the images to be pushed via CI
-- We create the draft release which is used for the Changelog `./scripts/release.sh changelog x.y.z`.
-- Once we're satisfied with the release, we publish the release (we wait for the CI to complete before proceeding):
-  - We clean up the draft release. If the upgrade to the new version requires manual steps, we detail them.
+- Any additional fix is committed directly to the release branch. Then we must wait for all the images to be pushed via CI and test again.
+- Once we're satisfied with the release we execute the following steps:
+  - We create the draft release through the CI which used for the Changelog `./scripts/release.sh changelog x.y.z`.
+  - We clean up the draft release once it is there.
+  - If the upgrade to the new version requires manual steps, we detail them.
   - We run `./scripts/release.sh finish x.y.z`
   - We update the version string to `x.y.z` and the sha to `https://airy-core-binaries.s3.amazonaws.com/x.y.z/darwin/amd64/airy_darwin_sha256sum.txt` in the [Homebrew
     Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)

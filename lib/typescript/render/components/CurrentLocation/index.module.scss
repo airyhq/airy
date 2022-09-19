@@ -19,9 +19,23 @@
   color: var(--color-text-contrast);
 }
 
+.contactContent a,
+.contactContent a:hover,
+.contactContent a:visited,
+.contactContent a:active {
+  color: var(--color-text-contrast);
+}
+
 .memberContent {
   @extend .textMessage;
   background: var(--color-airy-blue);
+  color: white;
+}
+
+.memberContent a,
+.memberContent a:hover,
+.memberContent a:visited,
+.memberContent a:active {
   color: white;
 }
 
@@ -31,4 +45,11 @@
 
 .geolocation {
   @include font-s;
+}
+
+.geolocation a:link,
+.geolocation a:active,
+.geolocation a:visited,
+.geolocation a:hover {
+  text-decoration: none;
 }

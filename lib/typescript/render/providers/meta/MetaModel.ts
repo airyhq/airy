@@ -180,7 +180,116 @@ export interface DeletedMessageContent extends Content {
   type: 'deletedMessage';
 }
 
-// Add a new facebook content model here:
+//WhatsApp Business Cloud
+
+//WA template
+export interface WhatsAppTemplate extends Content {
+  type: 'whatsAppTemplate';
+  components?: WhatsAppComponents[];
+}
+
+export interface WhatsAppComponents {
+  type: 'header' | 'body' | 'button';
+  parameters: (WhatsAppParameter | WhatsAppButton)[];
+  sub_type?: 'quick_reply' | 'url';
+  index?: number;
+}
+
+export interface WhatsAppParameter extends Content {
+  type: 'currency' | 'date_time' | 'document' | 'image' | 'text' | 'video';
+  text?: string;
+  currency?: WhatsAppCurrency;
+  date_time?: WhatsAppDateTime;
+  document?: WhatsAppMedia;
+  image?: WhatsAppMedia;
+  video?: WhatsAppMedia;
+}
+
+export interface WhatsAppCurrency {
+  fallback_value: string;
+  code: string;
+  amount_1000: string;
+}
+
+export interface WhatsAppDateTime {
+  fallback_value: string;
+}
+
+export interface WhatsAppButton extends Content {
+  type: 'button';
+  parameters: [
+    {
+      type: 'payload' | 'text';
+      payload?: string;
+      text?: string;
+    }
+  ];
+}
+
+//WA Media
+type WhatsAppMediaContent = {
+  link: string;
+  caption?: string;
+};
+
+export interface WhatsAppMediaInfo extends Content {
+  type: 'whatsAppMedia';
+  mediaType: WhatsAppMediaType;
+}
+
+type WhatsAppMedia = WhatsAppMediaInfo & WhatsAppMediaContent;
+
+export enum WhatsAppMediaType {
+  video = 'video',
+  image = 'image',
+  document = 'document',
+  audio = 'audio',
+  sticker = 'sticker',
+}
+
+//WA Location
+export interface WhatsAppLocation extends Content {
+  type: 'whatsAppLocation';
+  longitude: string;
+  latitude: string;
+  name?: string;
+  address?: string;
+}
+
+//WA Interactive
+export interface WhatsAppInteractive extends Content {
+  type: 'whatsAppInteractive';
+  action: WhatsAppInteractiveAction;
+  header?: WhatsAppInteractiveHeader;
+  body?: {text: string};
+  footer?: {text: string};
+}
+
+export interface WhatsAppInteractiveAction {
+  button: string;
+  buttons: WhatsAppInteractiveButton[];
+}
+
+export interface WhatsAppInteractiveButton {
+  type: 'reply';
+  reply: {title: string};
+}
+
+export interface WhatsAppInteractiveHeader {
+  type: 'text' | 'video' | 'image' | 'document';
+  text?: string;
+  video?: WhatsAppMediaContent;
+  image?: WhatsAppMediaContent;
+  document?: WhatsAppMediaContent;
+}
+
+//WA Contacts
+export interface WhatsAppContacts extends Content {
+  type: 'whatsAppContacts';
+  formattedName: string;
+}
+
+// Add a new Meta content model here:
 export type ContentUnion =
   | TextContent
   | PostbackButton
@@ -197,7 +306,12 @@ export type ContentUnion =
   | StoryRepliesContent
   | ShareContent
   | Fallback
-  | DeletedMessageContent;
+  | DeletedMessageContent
+  | WhatsAppTemplate
+  | WhatsAppMedia
+  | WhatsAppLocation
+  | WhatsAppInteractive
+  | WhatsAppContacts;
 
 export type AttachmentUnion =
   | TextContent

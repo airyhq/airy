@@ -1,5 +1,5 @@
 import React from 'react';
-import {MediaTemplate as MediaTemplateModel} from '../../facebookModel';
+import {MediaTemplate as MediaTemplateModel} from '../../MetaModel';
 import {Buttons} from '../Buttons';
 import styles from './index.module.scss';
 

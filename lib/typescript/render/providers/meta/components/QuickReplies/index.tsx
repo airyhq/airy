@@ -3,7 +3,7 @@ import React from 'react';
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
-import {QuickReply, AttachmentUnion} from '../../facebookModel';
+import {QuickReply, AttachmentUnion} from '../../MetaModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';
 
 import styles from './index.module.scss';

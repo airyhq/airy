@@ -1155,10 +1155,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@emoji-mart/data@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@emoji-mart/data/-/data-1.0.5.tgz#62c837f1384eb2f94bec4c0dcfe8d230cc67e81d"
-  integrity sha512-HulW+jI7w3ghqRN4+i1LZYJ04bdsMJg5fJ7dr6rlVpsIYKmhpVA7/ACl9R3OB5aoMf8dqNdXftVss8qHCoOi+g==
+"@emoji-mart/data@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@emoji-mart/data/-/data-1.0.6.tgz#68f71be5e023653a3f9f73f4beadfd50848e2131"
+  integrity sha512-8wu3ec/kLCB0Y3K+pOKyY6Ob+xtQu3XhZvntdrpOTUQZ/PO6FW5PpFw7RE1kQ/up1fsVSJBl5mZ8Gs4SPwTYeg==
 
 "@emoji-mart/react@^1.0.1":
   version "1.0.1"

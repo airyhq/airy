@@ -56,7 +56,7 @@
     "@types/dom-mediacapture-record": "^1.0.11",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "18.7.13",
-    "@types/react": "18.0.17",
+    "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "@types/react-redux": "7.1.24",
     "@types/react-router-dom": "^5.3.3",
@@ -93,6 +93,6 @@
     "webpack-dev-server": "^4.10.1"
   },
   "resolutions": {
-    "@types/react": "18.0.17"
+    "@types/react": "18.0.20"
   }
 }

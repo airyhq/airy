@@ -14,7 +14,7 @@ Run Airy on minikube with one command.
 The goal of this document is to provide an overview of how to run Airy Core on
 your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
-## Create a minikube cluster
+## Install
 
 :::note
 
@@ -35,16 +35,16 @@ airy create --provider=minikube my-airy
 This will execute the following actions:
 
 1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--workspace` flag.
-2. Start a minikube cluster on your system and install Airy Core on it.
-3. Prints a URL for the `Airy Core` UI/APIs and another `ngrok` tunnel URL to connect your `Airy Core` instance to different [sources](../../sources/introduction.md) (see recording)
+2. Fetch the required Terraform modules in the `terraform` subdirectory, including the `install.sh` and `uninstall.sh` scripts.
+3. Run the `install.sh` script
+4. Start a minikube cluster on your system using Terraform, under the profile `airy-core`.
+5. Install the `Airy Core` helm chart on the minikube instance using Terraform (in a separate Terraform state then the minikube instance).
+6. Print the resulting URLs on which you can access the `Airy Core` installation and some additional information.
 
-import Script from "@site/src/components/Script";
-
-<Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
-
-::: note
+:::note
 
 The base URL for the [API](../../api/introduction.md) is the same to access the UI through your browser.
+You can use the printed `ngrok` URL to connect to different [sources](../../sources/introduction.md) to the instance running on your local machine.
 
 :::
 
@@ -57,14 +57,17 @@ airy create --provider=minikube --provider-config driver=virtualbox,cpus=4,memor
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).
 
-After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility.
-`airy create` adds the kubeconfig of your Airy Core instance to the default kubeconfig file `~/.kube/config`, under the context `airy-core`.
+After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. `airy create` creates the kubeconfig file `kube.conf` under the `terraform` directory in your workspace.
 
 :::note
 
-If the `airy create` command fails and you have installed a hypervisor for the first time, double-check that you have given it all the necessary permissions on your local machine.
+If the `airy create` command fails and you have installed a hypervisor for the first time, double-check that you have given it all the necessary permissions on your local machine. More information will be printed in the output from the Terraform installation.
 
 :::
+
+## Configure
+
+For more details on configuring your `Airy Core` instance please see our [Configuration Section](configuration.md). Under the `tools` section you can also find information on installing and activating third party tools for more detailed Kafka and data debugging.
 
 ## Integrate public webhooks
 
@@ -79,6 +82,7 @@ inside the Kubernetes cluster.
 To get the ngrok URL of your local Airy Core installation you can run:
 
 ```sh
+export KUBECONFIG=./terraform/kube.conf
 echo "https://$(minikube -p airy-core kubectl -- get cm core-config -o jsonpath='{.data.CORE_ID}').tunnel.airy.co"
 ```
 
@@ -115,15 +119,16 @@ description='Learn the Airy Basics with our Quick Start'
 link='getting-started/quickstart'
 />
 
-## Third party tools
+## Uninstall
 
-Third party tools can be activated in the `airy.yaml` configuration file, under the `tools` section.
-For more details please see our [Configuration Section](configuration.md).
+To uninstall `Airy Core` from AWS, run the `uninstall.sh` script located in the `WORKSPACE/terraform` directory. This script will run `terraform destroy` on both the `kubernetes` (minikube) and the `airy-core` state.
 
-## Uninstall Airy Core
+```
+cd terraform
+./uninstall.sh
+```
 
-You can remove the Airy Core minikube node from your machine completely running
-the following command:
+Deleting the minikube instance also removes Airy completely from your system:
 
 ```sh
 minikube -p airy-core delete

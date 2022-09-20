@@ -11,6 +11,10 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.ApiResponse;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1Job;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -23,8 +27,6 @@ import org.springframework.stereotype.Service;
 import co.airy.core.api.components.installer.HelmJobHandler;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
-import io.kubernetes.client.openapi.ApiClient;
-import io.kubernetes.client.openapi.models.V1Job;
 
 @Service
 public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent>, DisposableBean {
@@ -34,15 +36,18 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private final File repoFolder;
     private final String catalogUri;
+    private final ApiClient apiClient;
     private final String namespace;
     private final HelmJobHandler helmJobHandler;
     private Git git;
 
     CatalogHandler(
+            ApiClient apiClient,
             HelmJobHandler helmJobHandler,
             @Value("${catalog.uri}") String catalogUri,
             @Value("${catalog.directory}") String catalogDir,
             @Value("${kubernetes.namespace}") String namespace) {
+        this.apiClient = apiClient;
         this.catalogUri = catalogUri;
         this.repoFolder = new File(catalogDir);
         this.helmJobHandler = helmJobHandler;
@@ -105,6 +110,20 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                     namespace));
 
         final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
+        final String jobName = job.getMetadata().getName();
+        final CoreV1Api api = new CoreV1Api(apiClient);
+        final ApiResponse<String> response = api.readNamespacedPodLogWithHttpInfo(
+                jobName,
+                namespace,
+                "",
+                false,
+                false,
+                0,
+                "",
+                false,
+                0,
+                0,
+                false);
 
         return null;
     }

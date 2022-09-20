@@ -7,16 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.ApiResponse;
-import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1ConfigMap;
-import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1JobSpec;
-import io.kubernetes.client.openapi.models.V1ObjectMeta;
-import io.kubernetes.client.openapi.models.V1PodSpec;
-import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
-import io.kubernetes.client.util.Yaml;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +25,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import co.airy.core.api.components.installer.model.Repository;
+import co.airy.core.api.components.installer.HelmJobHandler;
 import co.airy.core.api.components.installer.model.Component;
+import co.airy.core.api.components.installer.model.Repository;
 import co.airy.log.AiryLoggerFactory;
 
 @Service
@@ -41,11 +36,13 @@ public class InstallerHandler {
     private static final Logger log = AiryLoggerFactory.getLogger(InstallerHandler.class);
 
     private final ApiClient apiClient;
+    private final HelmJobHandler helmJobHandler;
     private final String namespace;
     private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    InstallerHandler(ApiClient apiClient, @Value("${kubernetes.namespace}") String namespace) {
+    InstallerHandler(ApiClient apiClient, HelmJobHandler helmJobHandler, @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
+        this.helmJobHandler = helmJobHandler;
         this.namespace = namespace;
     }
 
@@ -60,7 +57,7 @@ public class InstallerHandler {
         final List<String> cmd = getInstallCommand(component, globals);
 
 
-        launchHelmJob(componentName, cmd);
+        helmJobHandler.launchHelmJob(componentName, cmd);
 
         //TODO: handle error properly
         log.info(globals);
@@ -74,21 +71,7 @@ public class InstallerHandler {
         final List<String> cmd = getUninstallCommand(names[1]);
 
 
-        launchHelmJob(componentName, cmd);
-    }
-
-    public Map<String, Boolean> getInstalledComponents() throws Exception {
-
-        ArrayList<String> cmd = new ArrayList<>();
-        cmd.add("sh");
-        cmd.add("-c");
-        cmd.add(String.format(
-                    "helm -n %s list | awk '{print $1}' | tail -n +2",
-                    namespace));
-
-        final V1Job job = launchHelmJob("helm-installed", cmd);
-
-        return null;
+        helmJobHandler.launchHelmJob(componentName, cmd);
     }
 
     private Component getComponentFromName(
@@ -143,39 +126,6 @@ public class InstallerHandler {
         }
 
         return data;
-    }
-
-    private V1Job launchHelmJob(String jobName, List<String> cmd) throws Exception {
-        final V1Job job = new V1Job()
-            .metadata(new V1ObjectMeta().name("helm-test"))
-            .spec(new V1JobSpec()
-                    .template(new V1PodTemplateSpec()
-                        .spec(new V1PodSpec()
-                            .addContainersItem(new V1Container()
-                                .name("helm-test")
-                                .image("alpine/helm:latest")
-                                .command(cmd))
-                            .restartPolicy("Never")
-                            .serviceAccountName("airy-controller")))
-                    .backoffLimit(4)
-                    //FIXME: To change to 0
-                    .ttlSecondsAfterFinished(30));
-
-
-
-        //FIXME: remove log
-        log.info(Yaml.dump(job));
-
-        final BatchV1Api api = new BatchV1Api(apiClient);
-        final ApiResponse<V1Job> response = api.createNamespacedJobWithHttpInfo(
-                namespace,
-                job,
-                null,
-                null,
-                null,
-                null);
-
-        return response.getData();
     }
 
     private List<String> getInstallCommand(Component component, String globals) {

@@ -2,6 +2,7 @@ package co.airy.core.api.components.installer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,10 +20,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import co.airy.core.api.components.installer.InstallerHandler;
+import co.airy.core.api.components.installer.HelmJobHandler;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
 import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.models.V1Job;
 
 @Service
 public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent>, DisposableBean {
@@ -31,17 +33,20 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private final File repoFolder;
-    private final InstallerHandler installerHandler;
     private final String catalogUri;
+    private final String namespace;
+    private final HelmJobHandler helmJobHandler;
     private Git git;
 
     CatalogHandler(
-            InstallerHandler installerHandler,
+            HelmJobHandler helmJobHandler,
             @Value("${catalog.uri}") String catalogUri,
-            @Value("${catalog.directory}") String catalogDir) {
-        this.installerHandler = installerHandler;
+            @Value("${catalog.directory}") String catalogDir,
+            @Value("${kubernetes.namespace}") String namespace) {
         this.catalogUri = catalogUri;
         this.repoFolder = new File(catalogDir);
+        this.helmJobHandler = helmJobHandler;
+        this.namespace = namespace;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     //TODO: Add return value and correct exception handleling and return value
     public void listComponents() throws Exception {
         git.pull();
-        Map<String, Boolean> installedComponents = installerHandler.getInstalledComponents();
+        Map<String, Boolean> installedComponents = getInstalledComponents();
 
         List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
             .filter(f -> f.isDirectory() && !f.isHidden())
@@ -88,5 +93,19 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
         //FIXME: remove log
         log.info(components.toString());
+    }
+
+    public Map<String, Boolean> getInstalledComponents() throws Exception {
+
+        ArrayList<String> cmd = new ArrayList<>();
+        cmd.add("sh");
+        cmd.add("-c");
+        cmd.add(String.format(
+                    "helm -n %s list | awk '{print $1}' | tail -n +2",
+                    namespace));
+
+        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
+
+        return null;
     }
 }

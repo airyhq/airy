@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,16 +21,21 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.UUID;
 
+import static co.airy.crypto.Signature.getSha1;
+
 @RestController
 public class WebhookController implements DisposableBean {
     private final String sourceWhatsappEvents = new SourceWhatsappEvents().name();
     private final String webhookSecret;
+    private final String appSecret;
 
     private final Producer<String, String> producer;
 
     WebhookController(@Value("${kafka.brokers}") String brokers,
-                      @Value("${webhookSecret}") String webhookSecret) {
+                      @Value("${webhookSecret}") String webhookSecret,
+                      @Value("${appSecret}") String appSecret) {
         this.webhookSecret = webhookSecret;
+        this.appSecret = appSecret;
         final Properties props = new Properties();
 
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
@@ -52,7 +58,11 @@ public class WebhookController implements DisposableBean {
     }
 
     @PostMapping("/whatsapp")
-    ResponseEntity<Void> accept(@RequestBody String event) {
+    ResponseEntity<Void> accept(@RequestBody String event, @RequestHeader("x-hub-signature") String signature) {
+        if (!isSignatureValid(event, signature)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         String requestId = UUID.randomUUID().toString();
         try {
             ProducerRecord<String, String> record = new ProducerRecord<>(sourceWhatsappEvents, requestId, event);
@@ -61,6 +71,19 @@ public class WebhookController implements DisposableBean {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
+    }
+
+    private boolean isSignatureValid(String payload, String signature) {
+        if (signature == null) {
+            return false;
+        }
+        final String[] splits = signature.split("=");
+        if (splits.length != 2) {
+            return false;
+        }
+        final String givenSha = splits[1];
+        final String expectedSha = getSha1(payload + appSecret);
+        return expectedSha.equals(givenSha);
     }
 
     @Override

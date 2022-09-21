@@ -12,6 +12,7 @@ app_deps = [
     "//lib/java/uuid",
     "//lib/java/log",
     "//lib/java/tracking",
+    "//lib/java/crypto",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/kafka/core:spring-kafka-core",

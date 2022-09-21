@@ -17,7 +17,13 @@ public class ComponentDetails {
     }
 
     @JsonAnySetter
-    public void add(String key, Object value) {
+    public ComponentDetails add(String key, Object value) {
         props.put(key, value);
+
+        return this;
+    }
+
+    public String getName() {
+        return (String) props.getOrDefault("name", "");
     }
 }

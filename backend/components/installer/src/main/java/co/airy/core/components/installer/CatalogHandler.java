@@ -3,6 +3,7 @@ package co.airy.core.api.components.installer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +16,9 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
+import io.kubernetes.client.openapi.models.V1ObjectMeta;
+import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.openapi.models.V1PodList;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -79,22 +83,23 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
         Map<String, Boolean> installedComponents = getInstalledComponents();
 
         List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
-            .filter(f -> f.isDirectory() && !f.isHidden())
-            .map(File::getAbsoluteFile)
-            //TODO: hanlde other description languages
-            .map(f -> new File(f, "description.yaml"))
-            .map(f -> {
-                ComponentDetails config = null;
-                try {
-                    config = mapper.readValue(f, ComponentDetails.class);
-                } catch(IOException e) {
-                    log.error("unable to read config %s", e);
-                }
+                .filter(f -> f.isDirectory() && !f.isHidden())
+                .map(File::getAbsoluteFile)
+                //TODO: hanlde other description languages
+                .map(f -> new File(f, "description.yaml"))
+                .map(f -> {
+                    ComponentDetails config = null;
+                    try {
+                        config = mapper.readValue(f, ComponentDetails.class);
+                    } catch(IOException e) {
+                        log.error("unable to read config %s", e);
+                    }
 
-                return config;
-            })
-            .filter(c -> c != null)
-            .collect(Collectors.toList());
+                    return config;
+                })
+                .filter(c -> c != null)
+                .map(c -> c.add("installed", installedComponents.getOrDefault(c.getName(), Boolean.FALSE)))
+                .collect(Collectors.toList());
 
         //FIXME: remove log
         log.info(components.toString());
@@ -110,21 +115,55 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                     namespace));
 
         final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
-        final String jobName = job.getMetadata().getName();
         final CoreV1Api api = new CoreV1Api(apiClient);
+        final ApiResponse<V1PodList> listResponse = api.listNamespacedPodWithHttpInfo(
+                job.getMetadata().getNamespace(),
+                null,
+                null,
+                null,
+                null,
+                "job-name",
+                null,
+                null,
+                null,
+                null,
+                null);
+        final String jobName = listResponse
+                .getData()
+                .getItems()
+                .stream()
+                .map(V1Pod::getMetadata)
+                .filter(m -> m.getLabels().get("job-name").equals(job.getMetadata().getName()))
+                .map(V1ObjectMeta::getName)
+                .findAny()
+                .orElse("");
+
+        if (jobName.isEmpty()) {
+            //TODO: handle and throws exception
+            return null;
+        }
+
+        final ApiResponse<V1Pod> jobStatus = api.readNamespacedPodStatusWithHttpInfo(
+                jobName,
+                job.getMetadata().getNamespace(),
+                null);
+
         final ApiResponse<String> response = api.readNamespacedPodLogWithHttpInfo(
                 jobName,
-                namespace,
+                job.getMetadata().getNamespace(),
                 "",
-                false,
-                false,
-                0,
-                "",
-                false,
-                0,
-                0,
-                false);
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
 
-        return null;
+        //TODO: handle non 200 resposnes
+        return Arrays.asList(response.getData().split("\\n"))
+                .stream()
+                .collect(Collectors.toMap(e -> e, e -> true));
     }
 }

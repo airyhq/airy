@@ -83,8 +83,6 @@ public class InstallerHandler {
             Map<String, Repository> repositories,
             String componentName,
             String version) throws Exception {
-        //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
-        String[] names = componentName.split("/");
 
         ComponentDetails componentDetails = catalogHandler.getComponentByName(componentName);
         if (componentDetails.isInstalled()) {

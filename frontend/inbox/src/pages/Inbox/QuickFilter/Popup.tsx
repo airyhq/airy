@@ -18,13 +18,15 @@ import {useTranslation} from 'react-i18next';
 
 function mapStateToProps(state: StateModel) {
   const channels: Channel[] = Object.values(allChannels(state));
+  const conversations = Object.values(state.data.conversations.all.items);
+
   return {
     user: state.data.user,
     filter: state.data.conversations.filtered.currentFilter,
     tags: state.data.tags.all,
     channels,
-    sources: channels.reduce<Set<string>>((acc, {source}) => {
-      acc.add(source);
+    sources: conversations.reduce<Set<string>>((acc, {channel}) => {
+      acc.add(channel.source);
       return acc;
     }, new Set<string>()),
   };
@@ -46,6 +48,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
   const [channelSearch, setChannelSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
   const {t} = useTranslation();
+
+  console.log('sources', sources);
 
   useEffect(() => {
     listTags();

@@ -50,7 +50,7 @@ const channelsReducer = (state = {}, action: Action): ChannelsState => {
         },
       };
     case getType(actions.setCurrentChannelsAction):
-      return action.payload.reduce(setChannel, state);
+      return action.payload.reduce(setChannel, {});
     case getType(actions.addChannelsAction):
       return action.payload.reduce(setChannel, state);
     case getType(actions.setChannelAction):

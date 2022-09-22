@@ -25,8 +25,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import co.airy.core.api.components.installer.CatalogHandler;
 import co.airy.core.api.components.installer.HelmJobHandler;
 import co.airy.core.api.components.installer.model.Component;
+import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.core.api.components.installer.model.Repository;
 import co.airy.log.AiryLoggerFactory;
 
@@ -37,12 +39,18 @@ public class InstallerHandler {
 
     private final ApiClient apiClient;
     private final HelmJobHandler helmJobHandler;
+    private final CatalogHandler catalogHandler;
     private final String namespace;
     private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    InstallerHandler(ApiClient apiClient, HelmJobHandler helmJobHandler, @Value("${kubernetes.namespace}") String namespace) {
+    InstallerHandler(
+            ApiClient apiClient,
+            HelmJobHandler helmJobHandler,
+            CatalogHandler catalogHandler,
+            @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.helmJobHandler = helmJobHandler;
+        this.catalogHandler = catalogHandler;
         this.namespace = namespace;
     }
 
@@ -57,7 +65,7 @@ public class InstallerHandler {
         final List<String> cmd = getInstallCommand(component, globals);
 
 
-        helmJobHandler.launchHelmJob(componentName, cmd);
+        helmJobHandler.launchHelmJob(String.format("helm-install-%s", componentName), cmd);
 
         //TODO: handle error properly
         log.info(globals);
@@ -66,31 +74,34 @@ public class InstallerHandler {
 
     //TODO: Add return value and correct exception handleling
     public void uninstallComponent(String componentName) throws Exception {
-        //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
-        String[] names = componentName.split("/");
-        final List<String> cmd = getUninstallCommand(names[1]);
+        final List<String> cmd = getUninstallCommand(componentName);
 
-
-        helmJobHandler.launchHelmJob(componentName, cmd);
+        helmJobHandler.launchHelmJob(String.format("helm-uninstall-%s", componentName), cmd);
     }
 
     private Component getComponentFromName(
             Map<String, Repository> repositories,
             String componentName,
-            String version) throws NoSuchElementException {
+            String version) throws Exception {
         //FIXME: to be removed when we remove the notion of repos and we get the repository name from github config
         String[] names = componentName.split("/");
 
-        final Repository repo = repositories.get(names[0]);
+        ComponentDetails componentDetails = catalogHandler.getComponentByName(componentName);
+        if (componentDetails.isInstalled()) {
+            //TODO: do better exception
+            throw new Exception("Already installed");
+        }
+
+        final Repository repo = repositories.get(componentDetails.getRepository());
         if (repo == null) {
-            log.error("repository %s not found", names[0]);
+            log.error("repository %s not found", componentDetails.getRepository());
             //TODO: do better error handleling
             throw new NoSuchElementException();
         }
 
         return Component.builder()
-            .name(names[1])
-            .url(String.format("%s/charts/%s-%s.tgz", repo.getUrl(), names[1], version))
+            .name(componentDetails.getName())
+            .url(String.format("%s/charts/%s-%s.tgz", repo.getUrl(), componentDetails.getName(), version))
             .username(repo.getUsername())
             .password(repo.getPassword())
             .build();

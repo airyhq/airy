@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,13 +79,25 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
         }
     }
 
-    //TODO: Add return value and correct exception handleling and return value
     public List<ComponentDetails> listComponents() throws Exception {
+        return getComponents((s -> true));
+    }
+
+    public ComponentDetails getComponentByName(String componentName) throws Exception {
+        return getComponents((s -> s.equals(componentName)))
+            .stream()
+            .findAny()
+            //FIXME: throws exception instead
+            .orElse(null);
+    }
+
+    //TODO: Add return value and correct exception handleling and return value
+    private List<ComponentDetails> getComponents(Function<String, Boolean> condition) throws Exception {
         git.pull();
         final Map<String, Boolean> installedComponents = getInstalledComponents();
 
         final List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
-                .filter(f -> f.isDirectory() && !f.isHidden())
+                .filter(f -> f.isDirectory() && !f.isHidden() && condition.apply(f.getName()))
                 .map(File::getAbsoluteFile)
                 //TODO: hanlde other description languages
                 .map(f -> new File(f, "description.yaml"))
@@ -105,7 +118,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
         return components;
     }
 
-    public Map<String, Boolean> getInstalledComponents() throws Exception {
+    private Map<String, Boolean> getInstalledComponents() throws Exception {
 
         ArrayList<String> cmd = new ArrayList<>();
         cmd.add("sh");

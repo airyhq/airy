@@ -29,6 +29,10 @@ public class ComponentDetails {
         return (String) props.getOrDefault("name", "");
     }
 
+    public String getRepository() {
+        return (String) props.getOrDefault("repository", "");
+    }
+
     public boolean isInstalled() {
         return (boolean) props.getOrDefault("installed", false);
     }

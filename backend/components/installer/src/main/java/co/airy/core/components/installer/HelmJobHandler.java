@@ -41,12 +41,12 @@ public class HelmJobHandler {
 
     public V1Job launchHelmJob(String jobName, List<String> cmd) throws Exception {
         final V1Job job = new V1Job()
-            .metadata(new V1ObjectMeta().name("helm-test"))
+            .metadata(new V1ObjectMeta().name(jobName))
             .spec(new V1JobSpec()
                     .template(new V1PodTemplateSpec()
                         .spec(new V1PodSpec()
                             .addContainersItem(new V1Container()
-                                .name("helm-test")
+                                .name(jobName)
                                 .image("alpine/helm:latest")
                                 .command(cmd))
                             .restartPolicy("Never")

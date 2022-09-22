@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.core.api.components.installer.model.ComponentDetails;
 
 @RestController
 public class InstallerController {
@@ -52,10 +54,11 @@ public class InstallerController {
     @PostMapping("/components.list")
     public ResponseEntity<?> listComponents() {
         try {
-            catalogHandler.listComponents();
+            final List<ComponentDetails> components = catalogHandler.listComponents();
+            return ResponseEntity.status(HttpStatus.OK).body(ComponentDetails.componentsDetailsListToMap(components));
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
     }
 }

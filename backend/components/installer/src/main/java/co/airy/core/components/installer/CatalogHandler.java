@@ -29,6 +29,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import co.airy.core.api.components.installer.HelmJobHandler;
+import co.airy.core.api.components.installer.NotCompletedException;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
 
@@ -78,11 +79,11 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     }
 
     //TODO: Add return value and correct exception handleling and return value
-    public void listComponents() throws Exception {
+    public List<ComponentDetails> listComponents() throws Exception {
         git.pull();
-        Map<String, Boolean> installedComponents = getInstalledComponents();
+        final Map<String, Boolean> installedComponents = getInstalledComponents();
 
-        List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
+        final List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
                 .filter(f -> f.isDirectory() && !f.isHidden())
                 .map(File::getAbsoluteFile)
                 //TODO: hanlde other description languages
@@ -101,8 +102,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                 .map(c -> c.add("installed", installedComponents.getOrDefault(c.getName(), Boolean.FALSE)))
                 .collect(Collectors.toList());
 
-        //FIXME: remove log
-        log.info(components.toString());
+        return components;
     }
 
     public Map<String, Boolean> getInstalledComponents() throws Exception {
@@ -143,10 +143,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
             return null;
         }
 
-        final ApiResponse<V1Pod> jobStatus = api.readNamespacedPodStatusWithHttpInfo(
-                jobName,
-                job.getMetadata().getNamespace(),
-                null);
+        helmJobHandler.waitForCompletedStatus(api, jobName, job.getMetadata().getNamespace());
 
         final ApiResponse<String> response = api.readNamespacedPodLogWithHttpInfo(
                 jobName,

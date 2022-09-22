@@ -49,8 +49,6 @@ const PopUpFilter = (props: PopUpFilterProps) => {
   const [tagSearch, setTagSearch] = useState('');
   const {t} = useTranslation();
 
-  console.log('sources', sources);
-
   useEffect(() => {
     listTags();
   }, [listTags]);

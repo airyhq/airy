@@ -8,37 +8,23 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//:springboot_websocket",
-    "//backend/avro:user",
     "//backend/model/message",
-    "//backend/model/channel",
     "//backend/model/metadata",
-    "//backend/model/conversation",
     "//backend:read-receipt",
     "//lib/java/date",
     "//lib/java/uuid",
-    "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
-    "//lib/java/kafka/schema:application-communication-users",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "@maven//:org_springframework_security_spring_security_core",
-    "@maven//:org_apache_lucene_lucene_queryparser",
-    "@maven//:org_apache_lucene_lucene_analyzers_common",
-    "@maven//:org_apache_lucene_lucene_core",
 ]
 
 springboot(
-    name = "api-communication",
+    name = "unread-counter",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
-)
-
-java_library(
-    name = "test-util",
-    srcs = glob(["src/test/java/co/airy/core/communication/util/**/*.java"]),
-    deps = [":app"] + app_deps,
 )
 
 [
@@ -48,7 +34,6 @@ java_library(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            ":test-util",
             "//backend:base_test",
             "//lib/java/kafka/test:kafka-test",
             "//lib/java/spring/test:spring-test",
@@ -58,8 +43,8 @@ java_library(
 ]
 
 container_release(
-    registry = "ghcr.io/airyhq/api",
-    repository = "communication",
+    registry = "ghcr.io/airyhq/components",
+    repository = "unread-counter",
 )
 
 check_pkg(name = "buildifier")

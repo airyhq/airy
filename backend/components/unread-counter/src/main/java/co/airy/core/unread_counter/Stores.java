@@ -1,0 +1,112 @@
+package co.airy.core.unread_counter;
+
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.ReadReceipt;
+import co.airy.avro.communication.ValueType;
+import co.airy.core.unread_counter.dto.CountAction;
+import co.airy.core.unread_counter.dto.UnreadCountState;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
+import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.metadata.MetadataKeys;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
+import java.util.concurrent.ExecutionException;
+
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
+import static java.util.stream.Collectors.toCollection;
+
+@Component
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+    private static final String appId = "UnreadCounterStores";
+
+    private final KafkaStreamsWrapper streams;
+    private final KafkaProducer<String, SpecificRecordBase> producer;
+
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
+
+    Stores(KafkaStreamsWrapper streams,
+           KafkaProducer<String, SpecificRecordBase> producer
+    ) {
+        this.streams = streams;
+        this.producer = producer;
+    }
+
+    private void startStream() {
+        final StreamsBuilder builder = new StreamsBuilder();
+
+        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
+
+        final KStream<String, CountAction> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
+                .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
+
+        // produce unread count metadata
+        messageStream.filter((messageId, message) -> message != null && message.getIsFromContact())
+                .selectKey((messageId, message) -> message.getConversationId())
+                .mapValues(message -> CountAction.increment(message.getSentAt()))
+                .merge(resetStream)
+                .groupByKey()
+                .aggregate(UnreadCountState::new, (conversationId, countAction, unreadCountState) -> {
+                    if (countAction.getActionType().equals(CountAction.ActionType.INCREMENT)) {
+                        unreadCountState.getMessageSentDates().add(countAction.getReadDate());
+                    } else {
+                        unreadCountState.setMessageSentDates(
+                                unreadCountState.getMessageSentDates().stream()
+                                        .filter((timestamp) -> timestamp > countAction.getReadDate())
+                                        .collect(toCollection(HashSet::new)));
+                    }
+
+                    return unreadCountState;
+                }).toStream()
+                .map((conversationId, unreadCountState) -> {
+                    final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.UNREAD_COUNT,
+                            unreadCountState.getUnreadCount().toString());
+                    metadata.setValueType(ValueType.number);
+                    return KeyValue.pair(getId(metadata).toString(), metadata);
+                })
+                .to(applicationCommunicationMetadata);
+
+        streams.start(builder.build(), appId);
+    }
+
+    public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
+    }
+
+
+    @Override
+    public void destroy() {
+        if (streams != null) {
+            streams.close();
+        }
+    }
+
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
+        startStream();
+    }
+
+
+    @Override
+    public Health health() {
+        return Health.status(Status.UP).build();
+    }
+}
+

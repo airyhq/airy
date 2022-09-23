@@ -3,7 +3,7 @@ FROM openjdk:8-jre-alpine
 LABEL maintainer "https://github.com/airyhq"
 LABEL name="kafka" version=${INSTALL_KAFKA_VERSION}
 
-ENV INSTALL_KAFKA_VERSION 2.7.0
+ENV INSTALL_KAFKA_VERSION 2.8.2
 ENV INSTALL_SCALA_VERSION 2.13
 ENV INSTALL_MIRROR="https://downloads.apache.org/"
 

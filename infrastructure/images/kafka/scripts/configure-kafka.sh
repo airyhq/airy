@@ -20,7 +20,7 @@ ADVERTISED_LISTENERS=$(echo "${AIRY_ADVERTISED_LISTENERS}" | \
 # Insert all other KAFKA_* env variables as settings
 for VAR in $(env)
 do
-  if [[ $VAR =~ ^KAFKA_ && ! $VAR =~ ^KAFKA_VERSION && ! $VAR =~ ^KAFKA_[0-9] && ! $VAR =~ ^KAFKA_PORT && ! $VAR =~ ^KAFKA_SERVICE_ ]]; then
+  if [[ $VAR =~ ^KAFKA_ && ! $VAR =~ ^KAFKA_VERSION && ! $VAR =~ ^KAFKA_[0-9] && ! $VAR =~ ^KAFKA_PORT && ! $VAR =~ ^KAFKA_OPTS && ! $VAR =~ ^KAFKA_SERVICE_ ]]; then
     kafka_name=$(echo "$VAR" | sed -r "s/KAFKA_(.*)=.*/\1/g" | tr '[:upper:]' '[:lower:]' | tr _ .)
     env_var=$(echo "$VAR" | sed -r "s/(.*)=.*/\1/g")
     echo "$kafka_name=${!env_var}" >> /etc/kafka/server.properties

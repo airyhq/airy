@@ -25,39 +25,39 @@ spec:
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
-        - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.unread_counter.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
-          imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: security
-            - configMapRef:
-                name: kafka-config
-            - configMapRef:
-                name: "{{ .Values.components.api.unread_counter.name }}"
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              httpHeaders:
-                - name: Health-Check
-                  value: health-check
-            initialDelaySeconds: 120
-            periodSeconds: 10
-            failureThreshold: 3
-          resources:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.unread_counter.image }}:{{ default .Chart.Version .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: security
+          - configMapRef:
+              name: kafka-config
+          - configMapRef:
+              name: "{{ .Values.components.api.unread_counter.name }}"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          failureThreshold: 3
+        resources:
 {{ toYaml .Values.components.api.unread_counter.resources | indent 10 }}
       initContainers:
-        - name: wait
-          image: "{{ .Values.global.busyboxImage }}"
-          imagePullPolicy: IfNotPresent
-          command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
-          envFrom:
-            - configMapRef:
-                name: kafka-config
-          volumeMounts:
-            - name: provisioning-scripts
-              mountPath: /opt/provisioning
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh" ]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+          - name: provisioning-scripts
+            mountPath: /opt/provisioning
       volumes:
         - name: provisioning-scripts
           configMap:

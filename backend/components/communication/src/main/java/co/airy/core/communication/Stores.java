@@ -77,7 +77,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String usersStore = "users-store";
     private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
-    private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, SpecificRecordBase> producer,
@@ -103,36 +102,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                         || isMessageMetadata(metadata) || isChannelMetadata(metadata))
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(metadataStore));
-
-        // TODO: Split unread counts into its own app?
-        final KStream<String, CountAction> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
-                .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
-
-        // produce unread count metadata
-        messageStream.filter((messageId, message) -> message != null && message.getIsFromContact())
-                .selectKey((messageId, message) -> message.getConversationId())
-                .mapValues(message -> CountAction.increment(message.getSentAt()))
-                .merge(resetStream)
-                .groupByKey()
-                .aggregate(UnreadCountState::new, (conversationId, countAction, unreadCountState) -> {
-                    if (countAction.getActionType().equals(CountAction.ActionType.INCREMENT)) {
-                        unreadCountState.getMessageSentDates().add(countAction.getReadDate());
-                    } else {
-                        unreadCountState.setMessageSentDates(
-                                unreadCountState.getMessageSentDates().stream()
-                                        .filter((timestamp) -> timestamp > countAction.getReadDate())
-                                        .collect(toCollection(HashSet::new)));
-                    }
-
-                    return unreadCountState;
-                }).toStream()
-                .map((conversationId, unreadCountState) -> {
-                    final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.UNREAD_COUNT,
-                            unreadCountState.getUnreadCount().toString());
-                    metadata.setValueType(ValueType.number);
-                    return KeyValue.pair(getId(metadata).toString(), metadata);
-                })
-                .to(applicationCommunicationMetadata);
 
         final KGroupedTable<String, MessageContainer> messageGroupedTable = messageStream.toTable()
                 .leftJoin(metadataTable, (message, metadataMap) -> MessageContainer.builder()
@@ -224,10 +193,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public ReadOnlyLuceneStore getConversationLuceneStore() {
         return luceneProvider;
-    }
-
-    public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
     }
 
     public void storeMessage(Message message) throws ExecutionException, InterruptedException {

@@ -142,30 +142,6 @@ public class ConversationsController {
         return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
     }
 
-    @PostMapping({"/conversations.markRead", "/conversations.mark-read"})
-    ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload payload) {
-        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-        final String conversationId = payload.getConversationId().toString();
-        final Conversation conversation = store.get(conversationId);
-
-        if (conversation == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        final ReadReceipt readReceipt = ReadReceipt.newBuilder()
-                .setConversationId(conversationId)
-                .setReadDate(Instant.now().toEpochMilli())
-                .build();
-
-        try {
-            stores.storeReadReceipt(readReceipt);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
-        }
-
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping("/conversations.tag")
     ResponseEntity<?> conversationTag(@RequestBody @Valid ConversationTagRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();

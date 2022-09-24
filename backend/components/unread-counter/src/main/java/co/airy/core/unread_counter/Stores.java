@@ -103,10 +103,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         startStream();
     }
 
-
     @Override
     public Health health() {
-        return Health.status(Status.UP).build();
+        if (streams == null || !streams.state().isRunningOrRebalancing()) {
+            return Health.down().build();
+        }
+        return Health.up().build();
     }
 }
 

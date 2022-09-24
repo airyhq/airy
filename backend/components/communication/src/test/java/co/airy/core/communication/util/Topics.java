@@ -11,10 +11,9 @@ public class Topics {
     public static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     public static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     public static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    public static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
     public static final ApplicationCommunicationUsers applicationCommunicationUsers = new ApplicationCommunicationUsers();
 
     public static Topic[] getTopics() {
-        return new Topic[]{applicationCommunicationMessages, applicationCommunicationChannels, applicationCommunicationMetadata, applicationCommunicationReadReceipts, applicationCommunicationUsers};
+        return new Topic[]{applicationCommunicationMessages, applicationCommunicationChannels, applicationCommunicationMetadata, applicationCommunicationUsers};
     }
 }

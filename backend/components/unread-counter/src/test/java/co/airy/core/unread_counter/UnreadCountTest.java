@@ -110,7 +110,7 @@ class UnreadCountTest {
                             metadata.getKey().equals(MetadataKeys.ConversationKeys.UNREAD_COUNT)
                                     && metadata.getValue().equals("0")), equalTo(true));
                 },
-                "Conversation unread count not set");
+                "Conversation unread count not reset");
 
     }
 }

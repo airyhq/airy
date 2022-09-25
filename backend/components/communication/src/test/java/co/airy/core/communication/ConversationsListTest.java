@@ -81,8 +81,8 @@ class ConversationsListTest {
                     Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),
             TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, ""), 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, Map.of("user_data.erp.id", "abc"), 2),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, Map.of("user_data.erp.id", "abc", MetadataKeys.ConversationKeys.UNREAD_COUNT, "2"), 2),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, Map.of(MetadataKeys.ConversationKeys.UNREAD_COUNT, "5"), 5)
     );
 
     @BeforeAll

@@ -48,7 +48,7 @@ public class UnreadCountState implements Serializable {
     */
     private void cleanUpReadMap(long timestamp) {
         for (Map.Entry<String, Long> entry : messagesReadAt.entrySet()) {
-            if (timestamp  - entry.getValue() > 30_000) {
+            if (timestamp - entry.getValue() > 30_000) {
                 messagesReadAt.remove(entry.getKey());
             }
         }

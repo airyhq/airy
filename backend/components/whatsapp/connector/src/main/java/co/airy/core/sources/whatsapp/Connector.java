@@ -1,11 +1,13 @@
 package co.airy.core.sources.whatsapp;
 
+import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.whatsapp.api.Api;
 import co.airy.core.sources.whatsapp.api.ApiException;
 import co.airy.core.sources.whatsapp.api.model.SendMessageResponse;
+import co.airy.core.sources.whatsapp.dto.MessageWithChannel;
 import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
@@ -16,6 +18,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -83,6 +86,11 @@ public class Connector {
 
     private boolean isMessageStale(Message message) {
         return ChronoUnit.SECONDS.between(Instant.ofEpochMilli(message.getSentAt()), Instant.now()) > messageStaleAfterSec;
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public void markMessageRead(MessageWithChannel messageWithChannel) {
+        api.markMessageRead(messageWithChannel.getSourceMessageId(), messageWithChannel.getChannel());
     }
 
     @Bean

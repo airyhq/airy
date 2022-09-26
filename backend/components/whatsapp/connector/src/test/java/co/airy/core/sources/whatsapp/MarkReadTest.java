@@ -6,7 +6,7 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.whatsapp.api.Api;
-import co.airy.core.sources.whatsapp.payload.ConnectChannelRequestPayload;
+import co.airy.core.sources.whatsapp.dto.MessageWithChannel;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -24,7 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,17 +37,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -72,7 +73,7 @@ class MarkReadTest {
 
     @Autowired
     @InjectMocks
-    private Connector worker;
+    private Connector connector;
 
     @Autowired
     private Stores stores;
@@ -96,51 +97,47 @@ class MarkReadTest {
     @BeforeEach
     void beforeEach() throws Exception {
         MockitoAnnotations.openMocks(this);
-        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        retryOnException(() -> assertEquals(RUNNING, stores.getStreamState()), "Failed to reach RUNNING state.");
     }
 
     @Test
-    void canResetUnreadCount() throws Exception {
-        final Channel channel = Channel.newBuilder()
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(UUID.randomUUID().toString())
-                .setSource("facebook")
-                .setSourceChannelId("ps-id")
-                .build();
+    void canMarkMessageRead() throws Exception {
+        final String messageId = UUID.randomUUID().toString();
+        final String channelId = UUID.randomUUID().toString();
+        final String whatsappMessageId = "whatsapp message id";
+        final Metadata metadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.Source.ID, whatsappMessageId);
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        final ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+        doNothing().when(api).markMessageRead(idCaptor.capture(), Mockito.any(Channel.class));
 
-        final String conversationId = UUID.randomUUID().toString();
-        final Integer unreadMessages = 3;
-
-        // Messages from Airy should not increase the unread count
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationMessages.name(), "message-id", Message.newBuilder()
-                        .setId("message-id")
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
+                        .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
-                        .setSource("facebook")
-                        .setConversationId(conversationId)
-                        .setChannelId(channel.getId())
-                        .setContent("from airy")
-                        .setIsFromContact(false)
-                        .build())
-        ));
+                        .setSource("whatsapp")
+                        .setConversationId("conversationId")
+                        .setHeaders(Map.of())
+                        .setChannelId(channelId)
+                        .setContent("hello world")
+                        .setIsFromContact(true)
+                        .build()),
+                new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+                        .setToken("token")
+                        .setSourceChannelId("whatsapp-phone-number")
+                        .setSource("whatsapp")
+                        .setId(channelId)
+                        .setConnectionState(ChannelConnectionState.CONNECTED)
+                        .build()
+                ),
+                new ProducerRecord<>(applicationCommunicationMetadata.name(), getId(metadata).toString(), metadata)));
 
-        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
-
-        retryOnException(() -> webTestHelper.post("/conversations.info", payload)
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.metadata.unread_count", is(3.0))),
-                "Conversation not showing unread count");
-
-        webTestHelper.post("/conversations.mark-read", payload).andExpect(status().isNoContent());
-
-        retryOnException(
-                () -> webTestHelper.post("/conversations.info", payload)
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(0.0))),
-                "Conversation unread count did not reset");
+        retryOnException(() -> {
+            final Metadata userReadMetadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.READ_BY_USER, String.valueOf(Instant.now().toEpochMilli()));
+            kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMetadata.name(), getId(userReadMetadata).toString(), userReadMetadata));
+            final String actualMessageId = idCaptor.getValue();
+            assertEquals(actualMessageId, whatsappMessageId);
+        }, "message was not marked read");
     }
 }

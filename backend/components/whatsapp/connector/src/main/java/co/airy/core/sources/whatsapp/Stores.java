@@ -6,12 +6,14 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.whatsapp.dto.Conversation;
+import co.airy.core.sources.whatsapp.dto.MessageWithChannel;
 import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
 
 @Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
@@ -55,19 +58,37 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final StreamsBuilder builder = new StreamsBuilder();
 
         KStream<String, Channel> channelStream = builder.<String, Channel>stream(applicationCommunicationChannels);
+        final KStream<String, Metadata> metadataStream = builder.stream(applicationCommunicationMetadata);
 
-        channelStream.toTable(Materialized.as(channelsStore));
+        final KTable<String, Channel> channelsTable = channelStream
+                .filter((sourceChannelId, channel) -> "whatsapp".equals(channel.getSource()))
+                .toTable(Materialized.as(channelsStore));
 
         // Channels table
-        KTable<String, Channel> channelsTable = channelStream
+        KTable<String, Channel> connectedChannelsTable = channelStream
                 .filter((sourceChannelId, channel) -> "whatsapp".equals(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Whatsapp messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
-                .filter((messageId, message) -> message != null && "whatsapp".equals(message.getSource()))
-                .selectKey((messageId, message) -> message.getConversationId());
+                .filter((messageId, message) -> message != null && "whatsapp".equals(message.getSource()));
 
+        // Foreign key join on channels so that we have channels information for marking messages read
+        final KTable<String, MessageWithChannel> messagesWithChannel = messageStream.toTable().join(channelsTable, message1 -> message1.getChannelId(),
+                (message, channel) -> MessageWithChannel.builder().channel(channel).message(message).build());
+
+        // Contact messages table for marking them as read
+        final KTable<String, MessageWithChannel> markMessageReadTable = metadataStream
+                .filter((id, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.Source.ID))
+                .groupBy((id, metadata) -> getSubject(metadata).getIdentifier())
+                .reduce((v1, v2) -> v2)
+                .join(messagesWithChannel, (metadata, messageWithChannel) ->
+                        messageWithChannel.toBuilder().sourceMessageId(metadata.getValue()).build());
+
+        metadataStream.filter((id, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.READ_BY_USER))
+                .selectKey((id, metadata) -> getSubject(metadata).getIdentifier())
+                .join(markMessageReadTable, (metadata, messageWithChannel) -> messageWithChannel)
+                .peek((messageId, messageWithChannel) -> connector.markMessageRead(messageWithChannel));
 
         // Context table
         final KTable<String, Conversation> contextTable = messageStream
@@ -82,14 +103,16 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
                             return conversationBuilder.build();
                         })
-                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> conversation.toBuilder()
+                .join(connectedChannelsTable, Conversation::getChannelId, (conversation, channel) -> conversation.toBuilder()
                         .channelId(conversation.getChannelId())
                         .channel(channel)
                         .sourceConversationId(conversation.getSourceConversationId())
                         .build());
 
         // Send outbound messages
-        messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
+        messageStream
+                .selectKey((messageId, message) -> message.getConversationId())
+                .filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, conversation) -> new SendMessageRequest(conversation, message))
                 .flatMap((conversationId, sendMessageRequest) -> connector.sendMessage(sendMessageRequest))
                 .to((recordId, record, context) -> {

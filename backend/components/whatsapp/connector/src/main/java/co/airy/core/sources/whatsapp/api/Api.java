@@ -1,5 +1,6 @@
 package co.airy.core.sources.whatsapp.api;
 
+import co.airy.avro.communication.Channel;
 import co.airy.core.sources.whatsapp.api.model.LongLivingUserAccessToken;
 import co.airy.core.sources.whatsapp.api.model.SendMessageResponse;
 import co.airy.core.sources.whatsapp.dto.SendMessageRequest;
@@ -40,7 +41,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     private RestTemplate restTemplate;
 
     private static final String baseUrl = "https://graph.facebook.com/v14.0";
-    private static final String requestTemplate = baseUrl + "/%s/messages?access_token=%s";
+    private static final String messageTemplate = baseUrl + "/%s/messages?access_token=%s";
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final String appId;
@@ -72,11 +73,19 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     public SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest) throws JsonProcessingException {
         final String token = sendMessageRequest.getConversation().getChannel().getToken();
         final String phoneNumberId = sendMessageRequest.getConversation().getChannel().getSourceChannelId();
-        final JsonNode payload = mapper.fromSendMessageRequest(sendMessageRequest);
-        String reqUrl = String.format(requestTemplate, phoneNumberId, token);
+        final JsonNode payload = mapper.getSendMessageRequest(sendMessageRequest);
+        String reqUrl = String.format("%s/%s/messages?access_token=%s", baseUrl, phoneNumberId, token);
 
         final ResponseEntity<SendMessageResponse> responseEntity = restTemplate.postForEntity(reqUrl, new HttpEntity<>(payload, httpHeaders), SendMessageResponse.class);
         return responseEntity.getBody();
+    }
+
+    public void markMessageRead(String whatsappMessageId, Channel channel) {
+        final String token = channel.getToken();
+        final String phoneNumberId = channel.getSourceChannelId();
+        final JsonNode payload = mapper.getMarkMessageReadRequest(whatsappMessageId);
+        String reqUrl = String.format("%s/%s/messages?access_token=%s", baseUrl, phoneNumberId, token);
+        restTemplate.postForEntity(reqUrl, new HttpEntity<>(payload, httpHeaders), SendMessageResponse.class);
     }
 
     @Override

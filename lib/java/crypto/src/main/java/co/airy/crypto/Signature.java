@@ -2,7 +2,9 @@ package co.airy.crypto;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Signature {
@@ -27,11 +29,25 @@ public class Signature {
         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HmacSHA256");
         mac.init(secretKeySpec);
         byte[] hmac = mac.doFinal(content.getBytes());
+        return byteToHex(hmac);
+    }
+
+    public static String byteToHex(byte[] payload) {
         StringBuilder builder = new StringBuilder();
-        for (byte b : hmac) {
+        for (byte b : payload) {
             // TODO This is slow compared to the DataTypeConverter implementation
             builder.append(String.format("%02X", b).toLowerCase());
         }
         return builder.toString();
+    }
+
+    public static String getSha1(String content) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            digest.update(content.getBytes(StandardCharsets.UTF_8));
+            return byteToHex(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

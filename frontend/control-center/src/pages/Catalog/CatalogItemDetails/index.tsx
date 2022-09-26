@@ -227,7 +227,11 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
                 {t('uninstall')}
               </Button>
             ) : (
-              <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_COMPONENT_INSTALL_ROUTE)}>
+              <Button
+                styleVariant="normal"
+                type="submit"
+                onClick={() => navigate(NEW_COMPONENT_INSTALL_ROUTE, {state: {from: 'catalog'}})}
+              >
                 {t('toConfigure')}
               </Button>
             )}

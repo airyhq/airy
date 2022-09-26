@@ -7,15 +7,12 @@ import {installComponent} from '../../../actions/catalog';
 import {ComponentInfo, ConnectorPrice, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {
-  getConnectedRouteForComponent,
-  getNewChannelRouteForComponent,
-  getCatalogProductRouteForComponent,
-} from '../../../services';
+import {getCatalogProductRouteForComponent} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -48,14 +45,13 @@ const CatalogCard = (props: CatalogCardProps) => {
   const componentCard = useRef(null);
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const navigateConfigure = `${CONNECTORS_ROUTE}/${componentInfo?.source}/configure`;
+  const navigateConnected = `${CONNECTORS_ROUTE}/${componentInfo?.source}/connected`;
 
   //Commented until backend is ready for this!!!
   // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
 
   const isChannel = componentInfo?.isChannel;
-
-  const CONFIG_CONNECTED_ROUTE = getConnectedRouteForComponent(componentInfo.source, isChannel);
-  const NEW_CHANNEL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
 
   const openInstallModal = () => {
     setIsPending(true);
@@ -124,7 +120,7 @@ const CatalogCard = (props: CatalogCardProps) => {
         <Button
           styleVariant="extra-small"
           type="submit"
-          onClick={() => navigate(CONFIG_CONNECTED_ROUTE)}
+          onClick={() => (isChannel ? navigate(navigateConnected) : navigate(navigateConfigure))}
           buttonRef={installButtonCard}
         >
           {t('open').toUpperCase()}
@@ -200,7 +196,11 @@ const CatalogCard = (props: CatalogCardProps) => {
             close={closeModal}
             headerClassName={styles.headerModal}
           >
-            <Button styleVariant="normal" type="submit" onClick={() => navigate(NEW_CHANNEL_ROUTE)}>
+            <Button
+              styleVariant="normal"
+              type="submit"
+              onClick={() => navigate(navigateConfigure, {state: {from: 'catalog'}})}
+            >
               {t('toConfigure')}
             </Button>
           </SettingsModal>

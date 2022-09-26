@@ -44,6 +44,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
             <Route path={`connected`} element={<ConnectorConfig />} />
             <Route path={`new`} element={<ConnectorConfig />} />
+            <Route path={`configure`} element={<ConnectorConfig />} />
             <Route path={`:channelId`} element={<ConnectorConfig />} />
           </Route>
 

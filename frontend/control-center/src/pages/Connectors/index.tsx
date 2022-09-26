@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
-import {Channel, Source} from 'model';
+import {Channel, ComponentInfo, Source} from 'model';
 import InfoCard from './InfoCard';
 import {StateModel} from '../../reducers';
 import {allChannelsConnected} from '../../selectors/channels';
@@ -27,24 +27,30 @@ export interface ConnectorCardComponentInfo {
   source: Source;
 }
 
+const mapStateToProps = (state: StateModel) => {
+  return {
+    components: state.data.config.components,
+    connectors: state.data.connector,
+    catalogList: state.data.catalog,
+  };
+};
+
 const mapDispatchToProps = {
   listChannels,
   getConnectorsConfiguration,
   listComponents,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {listChannels, getConnectorsConfiguration, listComponents} = props;
+  const {components, connectors, catalogList, listChannels, getConnectorsConfiguration, listComponents} = props;
   const [connectorsPageList, setConnectorsPageList] = useState<[] | ConnectorCardComponentInfo[]>([]);
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
-  const components = useSelector((state: StateModel) => state.data.config.components);
-  const connectors = useSelector((state: StateModel) => state.data.connector);
-  const catalogList = useSelector((state: StateModel) => state.data.catalog);
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
   const [hasInstalledComponents, setHasInstalledComponents] = useState(false);
   const pageTitle = 'Connectors';
+  const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   const catalogListArr = Object.entries(catalogList);
   const emptyCatalogList = catalogListArr.length === 0;
@@ -77,6 +83,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         }
       });
 
+      listArr.sort(sortByName);
       setConnectorsPageList(listArr);
     }
   }, [catalogList]);

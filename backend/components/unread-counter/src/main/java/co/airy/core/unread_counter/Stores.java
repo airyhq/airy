@@ -20,16 +20,21 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
+import static co.airy.model.message.MessageRepository.isNewMessage;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 import static java.util.stream.Collectors.toCollection;
 
 @Component
@@ -58,28 +63,35 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
 
         // produce unread count metadata
-        messageStream.filter((messageId, message) -> message != null && message.getIsFromContact())
+        messageStream.filter((messageId, message) -> message != null && message.getIsFromContact() && isNewMessage(message))
                 .selectKey((messageId, message) -> message.getConversationId())
-                .mapValues(message -> CountAction.increment(message.getSentAt()))
+                .mapValues(message -> CountAction.increment(message.getSentAt(), message.getId()))
                 .merge(resetStream)
                 .groupByKey()
                 .aggregate(UnreadCountState::new, (conversationId, countAction, unreadCountState) -> {
                     if (countAction.getActionType().equals(CountAction.ActionType.INCREMENT)) {
-                        unreadCountState.getMessageSentDates().add(countAction.getReadDate());
+                        unreadCountState.getUnreadMessagesSentAt().put(countAction.getMessageId(), countAction.getTimestamp());
                     } else {
-                        unreadCountState.setMessageSentDates(
-                                unreadCountState.getMessageSentDates().stream()
-                                        .filter((timestamp) -> timestamp > countAction.getReadDate())
-                                        .collect(toCollection(HashSet::new)));
+                        unreadCountState.markMessagesReadAfter(countAction.getTimestamp());
                     }
 
-                    return unreadCountState;
+                    return unreadCountState.toBuilder().build();
                 }).toStream()
-                .map((conversationId, unreadCountState) -> {
+                .flatMap((conversationId, unreadCountState) -> {
+                    final List<KeyValue<String, Metadata>> records = new ArrayList<>();
+
                     final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.UNREAD_COUNT,
                             unreadCountState.getUnreadCount().toString());
                     metadata.setValueType(ValueType.number);
-                    return KeyValue.pair(getId(metadata).toString(), metadata);
+                    records.add(KeyValue.pair(getId(metadata).toString(), metadata));
+
+                    records.addAll(unreadCountState.getMessagesReadAt().entrySet().stream().map((entry) -> {
+                        final Metadata messageMetadata = newMessageMetadata(entry.getKey(), MetadataKeys.MessageKeys.READ_BY_USER, entry.getValue().toString());
+                        messageMetadata.setValueType(ValueType.number);
+                        return KeyValue.pair(getId(messageMetadata).toString(), messageMetadata);
+                    }).collect(Collectors.toSet()));
+
+                    return records;
                 })
                 .to(applicationCommunicationMetadata);
 

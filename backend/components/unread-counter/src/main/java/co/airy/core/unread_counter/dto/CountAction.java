@@ -16,13 +16,14 @@ public class CountAction implements Serializable {
     }
 
     private ActionType actionType;
-    private long readDate;
+    private long timestamp;
+    private String messageId;
 
-    public static CountAction reset(long readDate) {
-        return new CountAction(ActionType.RESET, readDate);
+    public static CountAction reset(long timestamp) {
+        return new CountAction(ActionType.RESET, timestamp, null);
     }
 
-    public static CountAction increment(long readDate) {
-        return new CountAction(ActionType.INCREMENT, readDate);
+    public static CountAction increment(long timestamp, String messageId) {
+        return new CountAction(ActionType.INCREMENT, timestamp, messageId);
     }
 }

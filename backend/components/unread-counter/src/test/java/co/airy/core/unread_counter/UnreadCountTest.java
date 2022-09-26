@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -69,11 +70,11 @@ class UnreadCountTest {
     @Test
     void canResetUnreadCount() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
-
+        final String messageId = UUID.randomUUID().toString();
         // Messages from Airy should not increase the unread count
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationMessages.name(), "message-id", Message.newBuilder()
-                        .setId("message-id")
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
+                        .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
@@ -103,12 +104,16 @@ class UnreadCountTest {
 
         retryOnException(
                 () -> {
-                    final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
+                    final List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
 
-                    assertThat(metadataList.size(), equalTo(1));
+                    assertThat(metadataList.size(), equalTo(2));
                     assertThat(metadataList.stream().anyMatch((metadata) ->
                             metadata.getKey().equals(MetadataKeys.ConversationKeys.UNREAD_COUNT)
                                     && metadata.getValue().equals("0")), equalTo(true));
+
+                    assertThat(metadataList.stream().anyMatch((metadata) ->
+                            metadata.getKey().equals(MetadataKeys.MessageKeys.READ_BY_USER) && getSubject(metadata).getNamespace().equals("message")
+                                    && getSubject(metadata).getIdentifier().equals(messageId)), equalTo(true));
                 },
                 "Conversation unread count not reset");
 

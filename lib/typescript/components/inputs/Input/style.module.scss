@@ -92,6 +92,8 @@
 
 .inputHint {
   @include font-s;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 4px;
   margin-bottom: 8px;
   color: var(--color-text-contrast);

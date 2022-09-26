@@ -39,9 +39,9 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
         <div key={index} className={styles.input}>
           <Input
             type={isUrl ? 'url' : hasSteps ? 'number' : 'text'}
-            step={hasSteps && 0.01}
-            min={hasSteps && 0.1}
-            max={hasSteps && 0.9}
+            step={hasSteps ? 0.01 : undefined}
+            min={hasSteps ? 0.1 : undefined}
+            max={hasSteps ? 0.9 : undefined}
             name={key}
             value={valueTyped === 'string' || valueTyped === 'optionalString' ? '' : valueTyped}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput({...input, [keyTyped]: e.target.value})}

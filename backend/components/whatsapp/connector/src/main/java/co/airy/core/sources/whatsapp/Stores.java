@@ -74,8 +74,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .filter((messageId, message) -> message != null && "whatsapp".equals(message.getSource()));
 
         // Foreign key join on channels so that we have channels information for marking messages read
-        final KTable<String, MessageWithChannel> messagesWithChannel = messageStream.toTable().join(channelsTable, message1 -> message1.getChannelId(),
-                (message, channel) -> MessageWithChannel.builder().channel(channel).message(message).build());
+        final KTable<String, MessageWithChannel> messagesWithChannel = messageStream.toTable().join(channelsTable, Message::getChannelId,
+                (message,    channel) -> MessageWithChannel.builder().channel(channel).message(message).build());
 
         // Contact messages table for marking them as read
         final KTable<String, MessageWithChannel> markMessageReadTable = metadataStream
@@ -92,6 +92,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Context table
         final KTable<String, Conversation> contextTable = messageStream
+                .selectKey((messageId, message) -> message.getConversationId())
                 .groupByKey()
                 .aggregate(Conversation::new,
                         (conversationId, message, conversation) -> {

@@ -57,5 +57,5 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
       );
     });
 
-  return inputArr;
+  return <>{inputArr}</>;
 };

@@ -114,7 +114,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
     return (
       <section className={styles.componentDescription}>
         <h1>{t('Description')}</h1>
-        <p>{componentInfo.description}</p>
+        <p style={{whiteSpace: 'pre-wrap'}}>{componentInfo.description}</p>        
       </section>
     );
   };

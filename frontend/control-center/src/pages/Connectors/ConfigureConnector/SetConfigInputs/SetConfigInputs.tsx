@@ -15,7 +15,7 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
   const {configurationValues, storedConfig, source} = props;
   const [input, setInput] = useState(storedConfig || configurationValues);
   const {t} = useTranslation();
-  const inputArr: any = [];
+  const inputArr: React.ReactElement[] = [];
 
   useEffect(() => {
     props.setConfig(input);

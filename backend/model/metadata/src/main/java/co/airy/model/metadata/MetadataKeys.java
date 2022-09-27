@@ -48,6 +48,7 @@ public class MetadataKeys {
         public static final String SUGGESTIONS = "suggestions";
         public static final String ERROR = "error";
         public static final String LANGUAGE = "language";
+        public static final String READ_BY_USER = "user_read"; // Indicates whether an Airy user has read this message
 
         public static class Source {
             public static final String ID = "source.id";

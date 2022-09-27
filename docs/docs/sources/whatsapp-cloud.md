@@ -8,12 +8,6 @@ import SuccessBox from "@site/src/components/SuccessBox";
 import ButtonBox from "@site/src/components/ButtonBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-:::warning
-
-This source is still under development. You can track the progress [here](https://github.com/airyhq/airy/milestone/38).
-
-:::
-
 <TLDR>
 
 Connect with **2 billion WhatsApp users** via messages and templates.

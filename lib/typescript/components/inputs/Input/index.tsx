@@ -401,11 +401,9 @@ class InputComponent extends Component<InputProps, IState> {
         )}
         <div className={styles.inputHint} data-testid="input-hint">
           {typeof validationResult === 'string' || wasBlurred || showErrors ? (
-            <span>
-              <Translation text={validationResult as string} />
-            </span>
+            <Translation text={validationResult as string} />
           ) : (
-            <span>{hint}</span>
+            hint
           )}
         </div>
       </label>

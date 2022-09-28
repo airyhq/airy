@@ -32,10 +32,14 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
+        //declare stream's builder object
         final StreamsBuilder builder = new StreamsBuilder();
 
         final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
         final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+
+        //tells streams what to do and what you want these events to be processed with
+        //call the filter operator and specify what you are filtering 
 
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
@@ -53,6 +57,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     throw new IllegalStateException("Unknown type for record " + record);
                 });
 
+       //start stream, this creates a thread that is connected to kafka 
         streams.start(builder.build(), appId);
     }
 

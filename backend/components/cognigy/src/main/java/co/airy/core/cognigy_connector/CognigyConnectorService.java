@@ -1,8 +1,7 @@
 package co.airy.core.cognigy;
 
 import co.airy.avro.communication.Message;
-import co.airy.core. cognigy.models.MessageSend;
-import co.airy.core. cognigy.models.MessageSendResponse;
+import co.airy.core.cognigy.models.MessageSendResponse;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class  CognigyConnectorService {
     private final  CognigyClient  cognigyClient;
@@ -24,18 +24,20 @@ public class  CognigyConnectorService {
     private static final Logger log = AiryLoggerFactory.getLogger(CognigyConnectorService.class);
     private final MessageHandler messageHandler;
 
-     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient) {
-        this.cognigyClient =  cognigyClient;
-        this.messageHandler = messageHandler;
+     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient,String userId, String sessionId, String restEndpointURL) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.restEndpointURL = restEndpointURL;
     }
 
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
+
         try {
-            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(MessageSend.builder()
+            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(this.userId, this.sessionId, this.restEndpointURL)
                     .message(getTextFromContent(userMessage.getContent()))
                     .sender(userMessage.getId())
-                    .build());
+                    .build();
             for (MessageSendResponse  cognigyResponse:  cognigyResponseList) {
                 try {
                     Message message = messageHandler.getMessage(userMessage, cognigyResponse);

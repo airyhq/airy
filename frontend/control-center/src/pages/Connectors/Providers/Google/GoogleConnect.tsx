@@ -115,6 +115,7 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
           fontClass="font-base"
         />
         <Input
+          type="url"
           id="image"
           label={t('imageUrlOptional')}
           placeholder={t('addAnUrl')}

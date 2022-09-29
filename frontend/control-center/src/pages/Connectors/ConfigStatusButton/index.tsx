@@ -25,7 +25,7 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
         break;
       case ComponentStatus.notConfigured:
         event.stopPropagation();
-        navigate(configurationRoute);
+        configurationRoute && navigate(configurationRoute, {state: {from: 'connectors'}});
         break;
       default:
         break;

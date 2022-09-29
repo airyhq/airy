@@ -1,4 +1,4 @@
-import {ComponentStatus} from '../pages/Connectors';
+import {ComponentStatus} from 'model';
 
 export const getComponentStatus = (
   isHealthy: boolean,

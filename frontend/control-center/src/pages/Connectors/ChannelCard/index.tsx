@@ -5,12 +5,13 @@ import {useNavigate} from 'react-router-dom';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
 import {useTranslation} from 'react-i18next';
 import {ConfigStatusButton} from '../ConfigStatusButton';
-import {ComponentStatus, ConnectorCardComponentInfo} from '..';
+import {ComponentStatus} from 'model';
 import {cyAddChannelButton} from 'handles';
 import {getConnectedRouteForComponent, getNewChannelRouteForComponent} from '../../../services';
+import {Connector} from 'model';
 
 type ChannelCardProps = {
-  componentInfo: ConnectorCardComponentInfo;
+  componentInfo: Connector;
   channelsToShow?: number;
   componentStatus?: ComponentStatus;
 };
@@ -40,8 +41,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
             : navigate(CONFIGURATION_ROUTE_NEW, {state: {from: 'new'}});
       }}
       className={styles.container}
-      data-cy={cyAddChannelButton}
-    >
+      data-cy={cyAddChannelButton}>
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}

@@ -14,11 +14,13 @@
     font-weight: 800;
     margin-top: 32px;
     margin-bottom: 32px;
+    color: var(--color-text-contrast);
   }
 
   p {
     @include font-m;
     text-align: center;
+    color: var(--color-text-gray);
   }
 }
 

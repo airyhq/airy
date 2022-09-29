@@ -1,26 +1,10 @@
 import {StateModel} from '../reducers';
 import {useSelector} from 'react-redux';
-import {Channel, Source} from 'model';
+import {Channel, Connector, ConnectorName, ConnectorsModel, Source} from 'model';
 import {createSelector} from 'reselect';
 import {merge} from 'lodash-es';
 import {removePrefix} from '../services';
 import {allChannelsConnected} from './channels';
-
-type Connector = {
-  name?: string;
-  isInstalled?: boolean;
-  isEnabled?: boolean;
-  isHealthy?: boolean;
-  isConfigured?: boolean;
-  configureValues?: {};
-  isChannel?: boolean;
-  connectedChannels?: number;
-  status?: string;
-};
-
-export type ConnectorsModel = {
-  [connectorName: string]: Connector;
-};
 
 export const useCurrentConnectorForSource = (source: Source) => {
   const connectors = useSelector((state: StateModel) => state.data.connector);
@@ -49,15 +33,21 @@ export const getMergedConnectors = createSelector(
       const connectedChannels = channelsBySource(catalog[1].source).length;
       const isChannel = catalog[1].isChannel?.includes('true') ?? false;
       const isInstalled = catalog[1].installed;
+      const price = catalog[1].price;
+      const source = catalog[1].source;
       const name = removePrefix(catalog[0]);
+      const displayName = catalog[1].displayName;
 
       structuredCatalog = {
         name: name,
+        displayName: displayName,
         isInstalled: isInstalled,
         isConfigured: !isInstalled && false,
         isHealthy: !isInstalled && false,
         isEnabled: !isInstalled && false,
         isChannel: isChannel,
+        price: price,
+        source: source,
         connectedChannels: connectedChannels,
       };
       catalogList[structuredCatalog.name] = structuredCatalog;
@@ -65,7 +55,7 @@ export const getMergedConnectors = createSelector(
 
     Object.entries(connectors).map(connector => {
       let isConfigured = false;
-      if (Object.values(connector[1]).length > 0) {
+      if (Object.values(connector[1]).length > 0 || connector[0] === ConnectorName.sourcesChatPlugin) {
         isConfigured = true;
       }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'components';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {ComponentStatus} from '..';
+import {ComponentStatus} from 'model';
 import {useNavigate} from 'react-router-dom';
 import {STATUS_ROUTE} from '../../../routes/routes';
 

@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {listComponents} from '../../actions/catalog';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
 import {ComponentInfo, ConnectorPrice} from 'model';
 import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
+import {listComponents, getConnectorsConfiguration, listChannels} from '../../actions';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -16,18 +16,26 @@ const mapStateToProps = (state: StateModel) => {
 
 const mapDispatchToProps = {
   listComponents,
+  getConnectorsConfiguration,
+  listChannels,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
-  const {catalogList, listComponents} = props;
+  const {catalogList, listComponents, getConnectorsConfiguration, listChannels} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
     listComponents().catch((error: Error) => {
       console.error(error);
     });

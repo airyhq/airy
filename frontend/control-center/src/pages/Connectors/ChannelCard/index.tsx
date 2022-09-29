@@ -41,7 +41,8 @@ export const ChannelCard = (props: ChannelCardProps) => {
             : navigate(CONFIGURATION_ROUTE_NEW, {state: {from: 'new'}});
       }}
       className={styles.container}
-      data-cy={cyAddChannelButton}>
+      data-cy={cyAddChannelButton}
+    >
       <div className={styles.channelCard}>
         <div className={styles.logoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}

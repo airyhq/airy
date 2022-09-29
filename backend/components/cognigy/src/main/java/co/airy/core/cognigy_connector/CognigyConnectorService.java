@@ -24,17 +24,15 @@ public class  CognigyConnectorService {
     private static final Logger log = AiryLoggerFactory.getLogger(CognigyConnectorService.class);
     private final MessageHandler messageHandler;
 
-     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient,String userId, String sessionId, String restEndpointURL) {
-        this.userId = userId;
-        this.sessionId = sessionId;
-        this.restEndpointURL = restEndpointURL;
+     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient) {
+
     }
 
-    public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
+    public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage, String userId, String sessionId, String restEndpointURL) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
 
         try {
-            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(this.userId, this.sessionId, this.restEndpointURL)
+            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(userId, sessionId, restEndpointURL)
                     .message(getTextFromContent(userMessage.getContent()))
                     .sender(userMessage.getId())
                     .build();

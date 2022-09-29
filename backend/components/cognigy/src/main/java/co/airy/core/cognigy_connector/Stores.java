@@ -19,6 +19,12 @@ import org.springframework.stereotype.Component;
 
 import static co.airy.model.message.MessageRepository.isNewMessage;
 
+//Kafka streams: java library used to write your own stream processing applications 
+//it's an unrelated process that connects to the broker over the network 
+//Kafka Streams is a standalone application that streams records to and from Kafka 
+
+//event streams: series or sequences of key value pairs which are independent of each other 
+
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "cognigy-connector";
@@ -32,14 +38,35 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
-        //declare stream's builder object
+
+        //define kafka stream topology using streams builder class:
+        //- create an instance of this stream builder class
         final StreamsBuilder builder = new StreamsBuilder();
 
+        //-
         final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
         final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
 
+        //the builder.stream is going to just take in an input topic 
+        //which is just the name of the topic that you want to stream these events from 
+        //and a consumed configuration object (= key and the value of the record)
+
         //tells streams what to do and what you want these events to be processed with
+
+        //filter:
         //call the filter operator and specify what you are filtering 
+        ///filter defines which events should be filtered out of the event stream 
+        //and which one should be kept 
+
+        //a filter creates a new event stream with only those events which you care about 
+
+        //in the filter you have access to the key and the value 
+        //and you define a predicate on these values 
+        //and return just a true or false whether or not you want to keep them 
+
+        //flatMap() method first flattens the input 
+
+        //as a performance optimization, prefer mapValues over map?
 
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),

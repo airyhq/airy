@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/lib/go/k8s"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/helm/cmd/helm/search"
@@ -14,10 +13,9 @@ import (
 )
 
 type ComponentsList struct {
-	ClientSet      *kubernetes.Clientset
-	Namespace      string
-	Index          *search.Index
-	DeployedCharts *cache.DeployedCharts
+	ClientSet *kubernetes.Clientset
+	Namespace string
+	Index     *search.Index
 }
 
 func (s *ComponentsList) ServeHTTP(w http.ResponseWriter, r *http.Request) {

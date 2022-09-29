@@ -7,12 +7,13 @@ import {installComponent} from '../../../actions/catalog';
 import {ComponentInfo, ConnectorPrice, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {getCatalogProductRouteForComponent} from '../../../services';
+import {getCatalogProductRouteForComponent, getConnectedRouteForComponent, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
+import {getMergedConnectors} from '../../../selectors';
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
@@ -20,6 +21,7 @@ type CatalogCardProps = {
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
+  connectors: getMergedConnectors(state),
 });
 
 const mapDispatchToProps = {
@@ -31,7 +33,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 export const availabilityFormatted = (availability: string) => availability.split(',');
 
 const CatalogCard = (props: CatalogCardProps) => {
-  const {component, componentInfo, installComponent} = props;
+  const {component, connectors, componentInfo, installComponent} = props;
+  const hasConnectedChannels = connectors[removePrefix(componentInfo?.name)].connectedChannels > 0;
+  const isConfigured = connectors[removePrefix(componentInfo?.name)].isConfigured;
+  const isChannel = connectors[removePrefix(componentInfo?.name)].isChannel;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
@@ -46,12 +51,9 @@ const CatalogCard = (props: CatalogCardProps) => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const navigateConfigure = `${CONNECTORS_ROUTE}/${componentInfo?.source}/configure`;
-  const navigateConnected = `${CONNECTORS_ROUTE}/${componentInfo?.source}/connected`;
 
   //Commented until backend is ready for this!!!
   // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
-
-  const isChannel = componentInfo?.isChannel;
 
   const openInstallModal = () => {
     setIsPending(true);
@@ -120,7 +122,11 @@ const CatalogCard = (props: CatalogCardProps) => {
         <Button
           styleVariant="extra-small"
           type="submit"
-          onClick={() => (isChannel ? navigate(navigateConnected) : navigate(navigateConfigure))}
+          onClick={() =>
+            navigate(
+              getConnectedRouteForComponent(componentInfo?.source, isChannel, hasConnectedChannels, isConfigured)
+            )
+          }
           buttonRef={installButtonCard}
         >
           {t('open').toUpperCase()}

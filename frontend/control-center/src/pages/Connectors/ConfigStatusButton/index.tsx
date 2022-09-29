@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'components';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {ComponentStatus} from '..';
+import {ComponentStatus} from 'model';
 import {useNavigate} from 'react-router-dom';
 import {STATUS_ROUTE} from '../../../routes/routes';
 
@@ -13,7 +13,7 @@ interface ConfigStatusButtonProps {
 }
 
 export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
-  const {componentStatus, customStyle, configurationRoute} = props;
+  const {componentStatus, customStyle} = props;
   const {t} = useTranslation();
   const navigate = useNavigate();
 
@@ -22,10 +22,6 @@ export const ConfigStatusButton = (props: ConfigStatusButtonProps) => {
       case ComponentStatus.notHealthy:
         event.stopPropagation();
         navigate(STATUS_ROUTE);
-        break;
-      case ComponentStatus.notConfigured:
-        event.stopPropagation();
-        configurationRoute && navigate(configurationRoute, {state: {from: 'connectors'}});
         break;
       default:
         break;

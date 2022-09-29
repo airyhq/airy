@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
-import {useCurrentComponentForSource} from '../../../selectors';
+import {getMergedConnectors, useCurrentComponentForSource} from '../../../selectors';
 import {getConnectorsConfiguration, listComponents} from '../../../actions';
 import {Source} from 'model';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
@@ -25,8 +25,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => ({
   components: state.data.config.components,
-  catalog: state.data.catalog,
-  connectors: state.data.connector,
+  connectors: getMergedConnectors(state),
 });
 
 type LocationState = {
@@ -36,8 +35,8 @@ type LocationState = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
-  const {components, catalog, connectors, getConnectorsConfiguration, listComponents} = props;
-
+  const {components, connectors, getConnectorsConfiguration, listComponents} = props;
+  const {t} = useTranslation();
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,16 +46,13 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const configurePath = params['*'] === 'configure';
   const connectorInfo = useCurrentComponentForSource(source as Source);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
-  const [isConfigured, setIsConfigured] = useState(false);
   const [lineTitle, setLineTitle] = useState('');
   const [lineTitleRoute, setLineTitleRoute] = useState('');
   const configValues = connectorInfo.source === source && connectorInfo.configurationValues;
   const parsedConfigValues = configValues && JSON.parse(configValues);
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
-  const {t} = useTranslation();
   const isAiryInternalConnector = source === Source.chatPlugin;
-  const isCatalogList = Object.entries(catalog).length > 0;
   const previousPath = (location.state as LocationState)?.from;
   const currentPath = params['*'];
   const navigateNew = `${CONNECTORS_ROUTE}/${source}/new`;
@@ -64,6 +60,9 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const navigateChannelId = `${CONNECTORS_ROUTE}/${source}/${channelId || previousPath}`;
   const notConfigured = previousPath === 'connectors' || previousPath === 'status' || previousPath === 'catalog';
+  const hasConnectedChannels = connectors[removePrefix(connectorInfo?.name)].connectedChannels > 0;
+  const isChannel = connectors[removePrefix(connectorInfo?.name)].isChannel;
+  const isConfigured = connectors[removePrefix(connectorInfo?.name)].isConfigured;
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -78,19 +77,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     if (connectorInfo) determineLineTitle();
   }, [connectorInfo]);
-
-  useEffect(() => {
-    if (connectors && connectorInfo && connectorInfo?.name) {
-      const connectorName = removePrefix(connectorInfo.name);
-      if (connectors[connectorName] && Object.keys(connectors[connectorName]).length > 0) {
-        setIsConfigured(true);
-      }
-    }
-  }, [connectorInfo, connectors]);
-
-  useEffect(() => {
-    if (isCatalogList) isAiryInternalConnector && setIsConfigured(true);
-  }, [isCatalogList]);
 
   useEffect(() => {
     if (components && connectorInfo && connectorInfo?.name)
@@ -111,20 +97,20 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       return;
     }
 
-    if (newChannel || previousPath === 'new') {
+    if (configurePath && !isChannel) {
+      setLineTitle(t('configuration'));
+      return;
+    }
+
+    if (newChannel || !hasConnectedChannels) {
       setLineTitle(t('addChannel'));
       setLineTitleRoute(navigateNew);
       return;
     }
 
-    if (connectedChannels || previousPath === 'connected') {
+    if (connectedChannels || hasConnectedChannels) {
       setLineTitle(t('channelsCapital'));
       setLineTitleRoute(navigateConnected);
-      return;
-    }
-
-    if (configurePath) {
-      setLineTitle(t('configuration'));
       return;
     }
   };
@@ -160,19 +146,19 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       {!(source === Source.chatPlugin && (newChannel || channelId)) && (
         <div className={styles.channelsLineContainer}>
           <div className={styles.channelsLineItems}>
-            {!notConfigured && (
+            {(!isConfigured || isAiryInternalConnector || !isChannel) && (
               <span
                 className={
-                  connectedChannels || newChannel || channelId || (configurePath && !previousPath)
+                  connectedChannels || newChannel || channelId || (configurePath && !isChannel)
                     ? styles.activeItem
                     : styles.inactiveItem
                 }
-                onClick={() => previousPath && navigate(lineTitleRoute, {state: {from: currentPath}})}
+                onClick={() => isChannel && navigate(lineTitleRoute, {state: {from: currentPath}})}
               >
                 {lineTitle}
               </span>
             )}
-            {((source !== Source.chatPlugin && connectorInfo.isChannel) || notConfigured) && (
+            {((source !== Source.chatPlugin && connectorInfo.isChannel) || (notConfigured && isChannel)) && (
               <span
                 className={configurePath ? styles.activeItem : styles.inactiveItem}
                 onClick={() => !configurePath && navigate(navigateConfigure, {state: {from: currentPath}})}

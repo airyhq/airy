@@ -3,14 +3,14 @@ import {useNavigate} from 'react-router-dom';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {connect, ConnectedProps} from 'react-redux';
 import {ConfigStatusButton} from '../ConfigStatusButton';
-import {ComponentStatus} from '..';
+import {ComponentStatus} from 'model';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {ConnectorCardComponentInfo} from '../index';
 import {getNewChannelRouteForComponent} from '../../../services';
 import styles from './index.module.scss';
+import {Connector} from 'model';
 
 type InfoCardProps = {
-  componentInfo: ConnectorCardComponentInfo;
+  componentInfo: Connector;
   componentStatus?: ComponentStatus;
 } & ConnectedProps<typeof connector>;
 

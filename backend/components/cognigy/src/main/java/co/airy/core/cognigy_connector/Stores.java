@@ -19,11 +19,10 @@ import org.springframework.stereotype.Component;
 
 import static co.airy.model.message.MessageRepository.isNewMessage;
 
-//Kafka streams: java library used to write your own stream processing applications 
-//it's an unrelated process that connects to the broker over the network 
-//Kafka Streams is a standalone application that streams records to and from Kafka 
+//Kafka streams: java lib that streams records to and from Kafka 
 
-//event streams: series or sequences of key value pairs which are independent of each other 
+//event streams: series or sequences of key value pairs 
+//which are independent of each other 
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {

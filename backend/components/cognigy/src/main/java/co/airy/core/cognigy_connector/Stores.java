@@ -39,17 +39,24 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event){
 
+        //StreamsBuilder provide the high-level Kafka Streams DSL to specify a Kafka Streams topology.
         //define kafka stream topology using streams builder class:
         //- create an instance of this stream builder class
+        //the StreamsBuilder class is used to construct the design of the topology
         final StreamsBuilder builder = new StreamsBuilder();
 
-        //-
+        
         final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
         final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
 
-        //the builder.stream is going to just take in an input topic 
+        //Construct a stream from the input topic (new ApplicationCommunicationMessages().name())
+        //the builder.stream is going to just take in an input topic (new ApplicationCommunicationMessages().name())
         //which is just the name of the topic that you want to stream these events from 
+
         //and a consumed configuration object (= key and the value of the record)
+        //---> Consumed.with(Topology.AutoOffsetReset.LATEST)
+        //Topology is a directed acyclic graph of stream processing nodes that represents 
+        //the stream processing logic of a Kafka Streams application.
 
         //tells streams what to do and what you want these events to be processed with
 
@@ -64,10 +71,17 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         //and you define a predicate on these values 
         //and return just a true or false whether or not you want to keep them 
 
+        //MAPPING:
+        //Transform events by chaining together one or more transformations
         //flatMap() method first flattens the input 
+        //as a performance optimization, prefer flatMapValues over flatMap?
 
-        //as a performance optimization, prefer mapValues over map?
+        //to function: specifying a destination topic 
+       //Transformed events are streamed as the output of the topology
+       // using the to function specifying a destination topic 
+       //as well as the serializers required to encode the data.
 
+       //topology defined within the builder
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
@@ -85,6 +99,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 });
 
        //start stream, this creates a thread that is connected to kafka 
+       //builder.build() --> returns an instance of the created Topology 
         streams.start(builder.build(), appId);
     }
 

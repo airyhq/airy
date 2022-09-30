@@ -2,6 +2,8 @@ package co.airy.core.cognigy;
 
 import co.airy.avro.communication.Message;
 import co.airy.core.cognigy.models.MessageSendResponse;
+import co.airy.core.cognigy.models.MessageSend;
+
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,17 +27,18 @@ public class  CognigyConnectorService {
     private final MessageHandler messageHandler;
 
      CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient) {
-
+        this.messageHandler = messageHandler;
+        this.cognigyClient = cognigyClient;
     }
 
-    public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage, String userId, String sessionId, String restEndpointURL) {
+    public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
 
         try {
-            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(userId, sessionId, restEndpointURL)
-                    .message(getTextFromContent(userMessage.getContent()))
-                    .sender(userMessage.getId())
-                    .build();
+            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(MessageSend.builder()
+            .message(getTextFromContent(userMessage.getContent()))
+            .sender(userMessage.getId())
+            .build());
             for (MessageSendResponse  cognigyResponse:  cognigyResponseList) {
                 try {
                     Message message = messageHandler.getMessage(userMessage, cognigyResponse);

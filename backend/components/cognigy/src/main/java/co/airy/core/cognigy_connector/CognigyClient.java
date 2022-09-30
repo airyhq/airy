@@ -1,6 +1,8 @@
 package co.airy.core.cognigy;
 
+import co.airy.core.cognigy.models.MessageSend;
 import co.airy.core.cognigy.models.MessageSendResponse;
+
 import feign.Headers;
 import feign.RequestLine;
 import feign.Body;
@@ -12,6 +14,7 @@ public interface  CognigyClient {
     @RequestLine("POST {restEndpointURL}")
     @Headers("Content-Type: application/json")
     @Body("%7B\"userId\": \"{userId}\", \"sessionId\": \"{sessionId}\"%7D")
-    List<MessageSendResponse> sendMessage(@Param("userId") String userId, @Param("sessionId") String sessionId, @Param("restEndpointURL") String restEndpointURL);
+    List<MessageSendResponse> sendMessage(MessageSend content);
 
+//List<MessageSendResponse> sendMessage(MessageSend content, @Param("userId") String userId, @Param("sessionId") String sessionId, @Param("restEndpointURL") String restEndpointURL);
 }

@@ -495,6 +495,8 @@ const resources = {
       Free: 'Free',
       Paid: 'Paid',
       ['REQUEST ACCESS']: 'REQUEST ACCESS',
+      searchByNamePlaceholder: 'Search by name',
+      searchByType: 'Search by type',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -1029,6 +1031,8 @@ const resources = {
       Free: 'Kostenlos',
       Paid: 'Kostenpflichtig',
       ['REQUEST ACCESS']: 'ANFRAGE ZUGANG',
+      searchByNamePlaceholder: 'Suche nach Name',
+      searchByType: 'Suche nach Typ',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1557,6 +1561,8 @@ const resources = {
       Free: 'Gratuit',
       Paid: 'Payant',
       ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
+      searchByNamePlaceholder: 'Recherche par nom',
+      searchByType: 'Recherche par type',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -2089,6 +2095,8 @@ const resources = {
       Free: 'Gratis',
       Paid: 'Premium',
       ['REQUEST ACCESS']: 'SOLICITAR ACCESO',
+      searchByNamePlaceholder: 'Buscar por nombre',
+      searchByType: 'Buscar por tipo',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

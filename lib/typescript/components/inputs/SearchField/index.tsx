@@ -12,10 +12,21 @@ type Props = {
   resetClicked?: () => void;
   autoFocus?: boolean;
   dataCy?: string;
+  className?: string;
   style?: CSSProperties;
 };
 
-export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus, dataCy, style}: Props) => {
+export const SearchField = ({
+  id,
+  placeholder,
+  value,
+  setValue,
+  resetClicked,
+  autoFocus,
+  dataCy,
+  className,
+  style,
+}: Props) => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
     setValue('');
@@ -25,7 +36,7 @@ export const SearchField = ({id, placeholder, value, setValue, resetClicked, aut
   }, [value, setValue]);
 
   return (
-    <div className={styles.component} style={style}>
+    <div className={`${className} ${styles.component}`} style={style}>
       <div className={styles.searchIcon}>
         <SearchIcon aria-hidden="true" className={styles.searchIcon} />
       </div>

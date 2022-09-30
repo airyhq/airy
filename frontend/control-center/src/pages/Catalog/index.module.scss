@@ -31,6 +31,18 @@
   color: var(--color-text-contrast);
 }
 
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  h1 {
+    @include font-l;
+    font-weight: bold;
+  }
+  span {
+    @include font-m;
+  }
+}
+
 .notificationAnimation {
   display: flex;
   align-items: center;

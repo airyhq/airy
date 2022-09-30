@@ -6,7 +6,13 @@ export const useAnimation = (
   animationState: Dispatch<SetStateAction<boolean>>,
   timeOut: number
 ) => {
-  setTimeout(() => setState(!currentState), timeOut);
-  setTimeout(() => animationState(true), timeOut);
-  animationState(false);
+  new Promise(resolve => {
+    !currentState && setState(true);
+    animationState(!currentState);
+    resolve(true);
+  }).then(() => {
+    setTimeout(() => {
+      setState(!currentState);
+    }, timeOut);
+  });
 };

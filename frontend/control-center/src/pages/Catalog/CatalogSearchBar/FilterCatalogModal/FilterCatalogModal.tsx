@@ -68,14 +68,7 @@ export const FilterCatalogModal = (props: FilterCatalogModalProps) => {
       </div>
       <div className={styles.line} />
       <div className={styles.actionButtons}>
-        <Button
-          // onClick={() => {
-          // setCurrentFilter(FilterTypes.all), props.setCurrentFilter(FilterTypes.all);
-          // }}
-          onClick={clearFilter}
-          styleVariant="text"
-          className={styles.clearAllButton}
-        >
+        <Button onClick={clearFilter} styleVariant="text" className={styles.clearAllButton}>
           {t('clearAll')}
         </Button>
         <Button onClick={applyFilter}>{t('apply')}</Button>

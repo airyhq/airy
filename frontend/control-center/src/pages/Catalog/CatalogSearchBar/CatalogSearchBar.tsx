@@ -1,10 +1,11 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from 'react';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as FilterIcon} from 'assets/images/icons/filterAlt.svg';
 import styles from './CatalogSearchBar.module.scss';
 import {ListenOutsideClick, SearchField} from 'components';
 import {useTranslation} from 'react-i18next';
 import {FilterCatalogModal, FilterTypes} from './FilterCatalogModal/FilterCatalogModal';
+import {useAnimation} from 'render';
 
 type CatalogSearchBarProps = {
   currentFilter: FilterTypes;
@@ -18,6 +19,11 @@ export const CatalogSearchBar = (props: CatalogSearchBarProps) => {
   const [currentFilter, setCurrentFilter] = useState(props.currentFilter);
   const [showSearchField, setShowingSearchField] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [animationAction, setAnimationAction] = useState(false);
+
+  const toggleShowFilter = useCallback(() => {
+    useAnimation(showFilter, setShowFilter, setAnimationAction, 500);
+  }, [showFilter, setShowFilter]);
 
   useEffect(() => {
     props.setCurrentFilter(currentFilter);
@@ -27,15 +33,12 @@ export const CatalogSearchBar = (props: CatalogSearchBarProps) => {
     setShowingSearchField(true);
   };
 
-  const handleFilterClick = () => {
-    setShowFilter(!showFilter);
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.iconContainer}>
         {showSearchField ? (
           <SearchField
+            autoFocus
             className={styles.searchField}
             placeholder={t('searchByNamePlaceholder')}
             value={query}
@@ -50,18 +53,21 @@ export const CatalogSearchBar = (props: CatalogSearchBarProps) => {
           height={24}
           width={24}
           className={currentFilter !== FilterTypes.all ? styles.filterIcon : ''}
-          onClick={handleFilterClick}
+          onClick={toggleShowFilter}
         />
-
-        {showFilter && (
-          <ListenOutsideClick onOuterClick={() => setShowFilter(!showFilter)}>
-            <FilterCatalogModal
-              currentFilter={currentFilter}
-              setCurrentFilter={setCurrentFilter}
-              setShowFilter={setShowFilter}
-            />
-          </ListenOutsideClick>
-        )}
+        <div
+          className={`${styles.filterModal} ${animationAction ? styles.filterModalAnimIn : styles.filterModalAnimOut}`}
+        >
+          {showFilter && (
+            <ListenOutsideClick onOuterClick={showFilter && toggleShowFilter}>
+              <FilterCatalogModal
+                currentFilter={currentFilter}
+                setCurrentFilter={setCurrentFilter}
+                setShowFilter={toggleShowFilter}
+              />
+            </ListenOutsideClick>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -108,12 +108,18 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       </div>
 
       <section className={styles.catalogListContainer}>
-        {orderedCatalogList &&
+        {orderedCatalogList && orderedCatalogList.length > 0 ? (
           orderedCatalogList.map((infoItem: ComponentInfo) => {
             if (infoItem?.name && infoItem?.displayName) {
               return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
             }
-          })}
+          })
+        ) : (
+          <div className={styles.notFoundContainer}>
+            <h1>{t('nothingFound')}</h1>
+            <span>{t('noMatchingCatalogs')}</span>
+          </div>
+        )}
       </section>
     </section>
   );

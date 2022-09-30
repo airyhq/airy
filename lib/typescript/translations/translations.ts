@@ -497,7 +497,7 @@ const resources = {
       ['REQUEST ACCESS']: 'REQUEST ACCESS',
       searchByNamePlaceholder: 'Search by name',
       searchByType: 'Search by type',
-      noMatchingCatalogs: 'We could not find a conversation matching your criterias.',
+      noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,

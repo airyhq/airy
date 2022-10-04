@@ -14,10 +14,11 @@ import {useTranslation} from 'react-i18next';
 
 type TwilioConnectProps = {
   channel?: Channel;
-  source: string;
-  pageTitle: string;
-  buttonText: string;
-  infoLink: string;
+  source?: string;
+  pageTitle?: string;
+  buttonText?: string;
+  infoLink?: string;
+  modal?: boolean;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
@@ -25,7 +26,7 @@ const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
-  const {channel, source, buttonText, connectTwilioWhatsapp, connectTwilioSms} = props;
+  const {channel, source, buttonText, connectTwilioWhatsapp, connectTwilioSms, modal} = props;
   const {t} = useTranslation();
 
   const navigate = useNavigate();
@@ -118,45 +119,45 @@ const TwilioConnect = (props: TwilioConnectProps) => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <form className={styles.formContainer}>
-        <div className={styles.formContent}>
-          <div className={styles.formContentNumber}>
-            <Input
-              label={t('twilioPhoneNumber')}
-              placeholder={t('twilioPhoneNumberPlaceholder')}
-              value={numberInput}
-              required={true}
-              height={32}
-              autoFocus={true}
-              onChange={handleNumberInput}
-              fontClass="font-base"
-            />
-          </div>
-          <div className={styles.formContentName}>
-            <Input
-              label={t('nameOptional')}
-              placeholder={t('addAName')}
-              value={nameInput}
-              required={false}
-              height={32}
-              onChange={handleNameInput}
-              fontClass="font-base"
-            />
-          </div>
-          <div className={styles.formContentNumber}>
-            <UrlInputField
-              label={t('imageUrlOptional')}
-              placeholder={t('addAnUrl')}
-              value={imageUrlInput}
-              required={false}
-              height={32}
-              onChange={handleImageUrlInput}
-              fontClass="font-base"
-            />
-          </div>
+    <form>
+      <div className={styles.formContent}>
+        <div className={styles.formContentNumber}>
+          <Input
+            label={t('twilioPhoneNumber')}
+            placeholder={t('twilioPhoneNumberPlaceholder')}
+            value={numberInput}
+            required={true}
+            height={32}
+            autoFocus={true}
+            onChange={handleNumberInput}
+            fontClass="font-base"
+          />
+        </div>
+        <div className={styles.formContentName}>
+          <Input
+            label={t('nameOptional')}
+            placeholder={t('addAName')}
+            value={nameInput}
+            required={false}
+            height={32}
+            onChange={handleNameInput}
+            fontClass="font-base"
+          />
+        </div>
+        <div className={styles.formContentNumber}>
+          <UrlInputField
+            label={t('imageUrlOptional')}
+            placeholder={t('addAnUrl')}
+            value={imageUrlInput}
+            required={false}
+            height={32}
+            onChange={handleImageUrlInput}
+            fontClass="font-base"
+          />
+        </div>
+        <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
           <SmartButton
-            title={newButtonText !== '' ? newButtonText : buttonText}
+            title={modal ? t('create') : newButtonText !== '' ? newButtonText : buttonText}
             height={40}
             width={160}
             pending={isPending}
@@ -167,17 +168,17 @@ const TwilioConnect = (props: TwilioConnectProps) => {
             onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}
           />
         </div>
-        {notification?.show && (
-          <NotificationComponent
-            type={notification.info ? 'sticky' : 'fade'}
-            show={notification.show}
-            text={notification.text}
-            info={notification.info}
-            setShowFalse={setNotification}
-          />
-        )}
-      </form>
-    </div>
+      </div>
+      {notification?.show && (
+        <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
+          show={notification.show}
+          text={notification.text}
+          info={notification.info}
+          setShowFalse={setNotification}
+        />
+      )}
+    </form>
   );
 };
 

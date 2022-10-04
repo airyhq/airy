@@ -50,6 +50,16 @@
   }
 }
 
+.inputContainerModal {
+  @extend .inputContainer;
+  align-items: center;
+  width: 100%;
+
+  label {
+    width: 75%;
+  }
+}
+
 .subtitle {
   display: flex;
   flex-direction: column;
@@ -59,4 +69,10 @@
     width: 17px;
     height: 13px;
   }
+}
+
+.smartButtonContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }

@@ -2,6 +2,8 @@ export * from './ConnectChannelRequestPayload';
 export * from './ConnectChatPluginRequestPayload';
 export * from './ConnectTwilioSmsRequestPayload';
 export * from './ConnectTwilioWhatsappRequestPayload';
+export * from './ConnectWhatsappRequestPayload';
+export * from './ConnectViberRequestPayload';
 export * from './ConnectChannelGoogleRequestPayload';
 export * from './ConnectChannelInstagramRequestPayload';
 export * from './CreateTagRequestPayload';

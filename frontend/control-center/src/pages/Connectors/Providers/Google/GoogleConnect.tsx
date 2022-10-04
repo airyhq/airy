@@ -20,8 +20,12 @@ const mapDispatchToProps = {
 
 const connector = connect(null, mapDispatchToProps);
 
-const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
-  const {connectGoogleChannel} = props;
+type GoogleConnectProps = {
+  modal?: boolean;
+} & ConnectedProps<typeof connector>;
+
+const GoogleConnect = (props: GoogleConnectProps) => {
+  const {connectGoogleChannel, modal} = props;
   const channel = useCurrentChannel();
   const navigate = useNavigate();
   const {t} = useTranslation();
@@ -90,11 +94,13 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.inputContainer}>
+      <div className={modal ? styles.inputContainerModal : styles.inputContainer}>
         <Input
           id="id"
           label={t('agentId')}
           placeholder={t('googleAgentPlaceholder')}
+          showLabelIcon
+          tooltipText={t('addAgentId')}
           value={id}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
           minLength={6}
@@ -107,6 +113,8 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
           id="name"
           label={t('name')}
           placeholder={t('addAName')}
+          showLabelIcon
+          tooltipText={t('addName')}
           value={name}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           required={true}
@@ -117,26 +125,29 @@ const GoogleConnect = (props: ConnectedProps<typeof connector>) => {
         <Input
           type="url"
           id="image"
-          label={t('imageUrlOptional')}
+          label={t('imageUrl')}
           placeholder={t('addAnUrl')}
+          showLabelIcon
+          tooltipText={t('optional')}
           value={image}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
           height={32}
           fontClass="font-base"
         />
       </div>
-      <SmartButton
-        title={newButtonTitle !== '' ? newButtonTitle : buttonTitle}
-        height={40}
-        width={160}
-        pending={isPending}
-        className={styles.connectButton}
-        type="submit"
-        styleVariant="normal"
-        disabled={buttonStatus() || isPending}
-        onClick={() => connectNewChannel()}
-      />
-      {notification?.show && (
+      <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
+        <SmartButton
+          title={modal ? t('create') : newButtonTitle !== '' ? newButtonTitle : buttonTitle}
+          height={40}
+          width={160}
+          pending={isPending}
+          type="submit"
+          styleVariant="normal"
+          disabled={buttonStatus() || isPending}
+          onClick={() => connectNewChannel()}
+        />
+      </div>
+      {notification?.show && !modal && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}

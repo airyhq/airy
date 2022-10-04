@@ -370,6 +370,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Agent ID',
+      addAgentId: 'Add Agent ID',
       googleAgentPlaceholder: 'Add the agent ID provided by your Google Partner',
       connectGoogle: 'Connect Google Business Messages',
       googleConfigurationText:
@@ -423,6 +424,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'World #1 chat app.',
+      whatsappPhoneNumberId: 'Phone Number Id',
+      whatsappPhoneNumberIdPlaceholder: 'Add your Phone Number Id',
+      whatsappPhoneNumberIdTooltip: 'Add your Phone Number Id',
 
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
@@ -463,6 +467,7 @@ const resources = {
       noChannelsConnected: 'This connector does not have any connected channels yet.',
       optional: 'Optional',
       configuration: 'Configuration',
+      createChannel: 'Create Channel',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -892,6 +897,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Weltweite Chat-App Nr. 1',
+      whatsappPhoneNumberId: 'Telefonnummer Id',
+      whatsappPhoneNumberIdPlaceholder: 'Telefonnummer Id hinzufügen',
+      whatsappPhoneNumberIdTooltip: 'Telefonnummer Id hinzufügen',
 
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
@@ -930,6 +938,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Agent ID',
+      addAgentId: 'Agent ID hinzufügen',
       googleAgentPlaceholder: 'Fügen Sie die von Ihrem Google-Partner bereitgestellte Agent-ID hinzu',
       connectGoogle: 'Google Business-Nachrichten verbinden',
       googleConfigurationText:
@@ -996,6 +1005,7 @@ const resources = {
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
       optional: 'Optional',
       configuration: 'Konfiguration',
+      createChannel: 'Kanal erstellen',
 
       //Request Access
 
@@ -1425,6 +1435,7 @@ const resources = {
 
       //Google Business Messages
       agentId: `ID de l'agent`,
+      addAgentId: `Ajouter l'ID de l'agent`,
       googleAgentPlaceholder: `Ajoutez l'identifiant de l'agent fourni par votre partenaire Google`,
       connectGoogle: 'Connecter les messages Google Business',
       googleConfigurationText:
@@ -1477,6 +1488,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Première application de chat au monde',
+      whatsappPhoneNumberId: 'Numéro de téléphone',
+      whatsappPhoneNumberIdPlaceholder: 'Ajoutez votre numéro de téléphone',
+      whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
 
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
@@ -1517,6 +1531,7 @@ const resources = {
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
       optional: 'Optionnel',
       configuration: 'Configuration',
+      createChannel: 'Créer un canal',
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -1956,6 +1971,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Identificación del agente',
+      addAgentId: 'Añadir ID de agente',
       googleAgentPlaceholder: 'Añade el ID de agente proporcionado por tu Google Partner',
       connectGoogle: 'Conectar los mensajes de Google Business',
       googleConfigurationText:
@@ -2009,6 +2025,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
+      whatsappPhoneNumberId: 'Número de teléfono Id',
+      whatsappPhoneNumberIdPlaceholder: 'Añada su número de teléfono',
+      whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
@@ -2049,6 +2068,7 @@ const resources = {
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
       optional: 'Opcional',
       configuration: 'Configuración',
+      createChannel: 'Crear canal',
 
       //Request Access
       comingSoon: 'Próximamente',

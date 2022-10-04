@@ -12,6 +12,7 @@ import {
   ConnectChatPluginRequestPayload,
   ConnectTwilioSmsRequestPayload,
   ConnectTwilioWhatsappRequestPayload,
+  ConnectWhatsappRequestPayload,
   ConnectChannelGoogleRequestPayload,
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
@@ -31,6 +32,7 @@ import {
   EnableDisableComponentRequestPayload,
   UpdateComponentConfigurationRequestPayload,
   InstallUninstallComponentRequestPayload,
+  ConnectViberRequestPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -41,6 +43,7 @@ import {
   connectChatPluginChannelDef,
   connectTwilioSmsChannelDef,
   connectTwilioWhatsappChannelDef,
+  connectWhatsappChannelDef,
   connectGoogleChannelDef,
   updateChannelDef,
   disconnectChannelDef,
@@ -75,6 +78,7 @@ import {
   installComponentDef,
   uninstallComponentDef,
   componentsListDef,
+  connectViberChannelDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -192,6 +196,10 @@ export class HttpClient {
   public connectTwilioWhatsappChannel = this.getRequest<ConnectTwilioWhatsappRequestPayload, Channel>(
     connectTwilioWhatsappChannelDef
   );
+
+  public connectWhatsappChannel = this.getRequest<ConnectWhatsappRequestPayload, Channel>(connectWhatsappChannelDef);
+
+  public connectViberChannel = this.getRequest<ConnectViberRequestPayload, Channel>(connectViberChannelDef);
 
   public connectGoogleChannel = this.getRequest<ConnectChannelGoogleRequestPayload, Channel>(connectGoogleChannelDef);
 

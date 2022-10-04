@@ -1,19 +1,23 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.formContainer {
-  margin-top: 24px;
-}
-
 .formContent {
-  display: block;
+  display: flex;
   flex-direction: column;
+  width: 20rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .formContentNumber {
-  height: 62px;
-  width: 474px;
-  margin: 24px 0px 58px 0px;
+  height: 82px;
+  width: 70%;
+}
+
+.formContentName {
+  height: 82px;
+  width: 70%;
 }
 
 .formImageCard {
@@ -65,12 +69,6 @@
   color: var(--color-text-gray);
 }
 
-.formContentName {
-  height: 62px;
-  width: 474px;
-  margin: 24px 0px 58px 0px;
-}
-
 .inputField {
   @include font-base;
   background-color: transparent;
@@ -79,14 +77,6 @@
   border-radius: 4px;
   border: 1px solid var(--color-dark-elements-gray);
   margin: 5px 0px 5px 0px;
-}
-
-.wrapper {
-  background: var(--color-background-white);
-  display: block;
-  border-radius: 10px;
-  width: 100%;
-  min-height: calc(100vh - 170px);
 }
 
 .headline {
@@ -112,4 +102,10 @@
     fill: var(--color-airy-blue);
   }
   margin-right: 8px;
+}
+
+.smartButtonContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }

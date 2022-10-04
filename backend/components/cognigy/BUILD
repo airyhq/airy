@@ -22,7 +22,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "cognigy",
+    name = "cognigy-connector",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
@@ -46,5 +46,5 @@ springboot(
 
 container_release(
     registry = "ghcr.io/airyhq/connectors",
-    repository = "cognigy",
+    repository = "cognigy-connector",
 )

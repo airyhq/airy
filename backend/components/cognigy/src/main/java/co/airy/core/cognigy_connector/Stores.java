@@ -1,4 +1,4 @@
-package co.airy.core.cognigy;
+package co.airy.core.cognigy_connector;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;

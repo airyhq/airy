@@ -1,5 +1,4 @@
-package co.airy.core.cognigy;
-
+package co.airy.core.cognigy_connector;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;

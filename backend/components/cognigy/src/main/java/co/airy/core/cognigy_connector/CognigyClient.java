@@ -1,4 +1,4 @@
-package co.airy.core.cognigy;
+package co.airy.core.cognigy_connector;
 
 import co.airy.core.cognigy.models.MessageSend;
 import co.airy.core.cognigy.models.MessageSendResponse;

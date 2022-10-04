@@ -4,8 +4,8 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessageContainers;
-import co.airy.model.contacts.Contact;
-import co.airy.model.contacts.ConversationContact;
+import co.airy.model.contact.Contact;
+import co.airy.model.contact.ConversationContact;
 import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -23,6 +23,7 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -37,8 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.model.contacts.MetadataRepository.newContactMetadata;
-import static co.airy.model.contacts.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.model.contact.MetadataRepository.newContactMetadata;
+import static co.airy.model.contact.Contact.MetadataKeys.CONVERSATIONS;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
@@ -184,7 +185,9 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     public List<Contact> getAllContacts() {
         final ReadOnlyKeyValueStore<String, MetadataMap> store = getContactStore();
         final List<Contact> contacts = new ArrayList<>();
-        store.all().forEachRemaining(entry -> contacts.add(Contact.fromMetadataMap(entry.value)));
+        try (KeyValueIterator<String, MetadataMap> iterator = store.all()) {
+            iterator.forEachRemaining(entry -> contacts.add(Contact.fromMetadataMap(entry.value)));
+        }
         return contacts;
     }
 

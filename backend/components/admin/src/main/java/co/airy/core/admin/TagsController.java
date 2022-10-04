@@ -68,10 +68,11 @@ public class TagsController {
     @PostMapping("/tags.list")
     ResponseEntity<ListTagsResponsePayload> listTags() {
         final ReadOnlyKeyValueStore<String, Tag> store = stores.getTagsStore();
-        final KeyValueIterator<String, Tag> iterator = store.all();
-
-        List<Tag> tags = new ArrayList<>();
-        iterator.forEachRemaining(kv -> tags.add(kv.value));
+        List<Tag> tags;
+        try (KeyValueIterator<String, Tag> iterator = store.all()) {
+            tags = new ArrayList<>();
+            iterator.forEachRemaining(kv -> tags.add(kv.value));
+        }
 
         final List<TagPayload> data = tags.stream().map(TagPayload::fromTag).collect(toList());
 

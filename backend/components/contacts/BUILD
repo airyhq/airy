@@ -6,9 +6,8 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//backend/model/contact",
     "//backend/model/conversation",
-    "//backend/model/contacts",
-    "//backend/model/conversations",
     "//backend/model/metadata",
     "//backend/model/message",
     "//lib/java/uuid",

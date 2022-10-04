@@ -50,10 +50,11 @@ public class ChannelsController {
         try {
             final List<PageWithConnectInfo> pagesInfo = api.getPagesInfo(payload.getAuthToken());
 
-            final KeyValueIterator<String, Channel> iterator = stores.getChannelsStore().all();
-
-            List<Channel> channels = new ArrayList<>();
-            iterator.forEachRemaining(kv -> channels.add(kv.value));
+            List<Channel> channels;
+            try (KeyValueIterator<String, Channel> iterator = stores.getChannelsStore().all()) {
+                channels = new ArrayList<>();
+                iterator.forEachRemaining(kv -> channels.add(kv.value));
+            }
 
             final List<String> connectedSourceIds = channels
                     .stream()

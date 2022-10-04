@@ -5,7 +5,7 @@ import co.airy.core.contacts.util.TestConversation;
 import co.airy.core.contacts.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.model.contacts.Contact;
+import co.airy.model.contact.Contact;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.junit.jupiter.api.AfterAll;

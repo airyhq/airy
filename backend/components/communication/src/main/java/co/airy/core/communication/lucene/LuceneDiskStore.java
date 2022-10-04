@@ -4,6 +4,7 @@ import co.airy.core.communication.dto.ConversationIndex;
 import co.airy.core.communication.dto.LuceneQueryResult;
 import co.airy.kafka.core.serdes.KafkaHybridSerde;
 import co.airy.log.AiryLoggerFactory;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.StateStore;
@@ -53,7 +54,10 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
         context.register(stateStore, (key, value) -> {
             // Restoration callback
             try {
-                final ConversationIndex conversation = (ConversationIndex) context.valueSerde().deserializer().deserialize(topic, value);
+                final ConversationIndex conversation;
+                try (Serde<?> valueSerde = context.valueSerde()) {
+                    conversation = (ConversationIndex) valueSerde.deserializer().deserialize(topic, value);
+                }
                 lucene.put(conversation);
             } catch (IOException e) {
                 throw new RuntimeException(e);

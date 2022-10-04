@@ -24,6 +24,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -170,7 +171,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public List<ChannelContainer> getAllChannels() {
         final ReadOnlyKeyValueStore<String, ChannelContainer> store = getChannelsStore();
         final ArrayList<ChannelContainer> channels = new ArrayList<>();
-        store.all().forEachRemaining((record) -> channels.add(record.value));
+        try (KeyValueIterator<String, ChannelContainer> iterator = store.all()) {
+            iterator.forEachRemaining((record) -> channels.add(record.value));
+        }
         return channels;
     }
 
@@ -186,7 +189,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public List<Source> getAllSources() {
         final ReadOnlyKeyValueStore<String, Source> store = getSourcesStore();
         final ArrayList<Source> sources = new ArrayList<>();
-        store.all().forEachRemaining((record) -> sources.add(record.value));
+        try (KeyValueIterator<String, Source> iterator = store.all()) {
+            iterator.forEachRemaining((record) -> sources.add(record.value));
+        }
         return sources;
     }
 

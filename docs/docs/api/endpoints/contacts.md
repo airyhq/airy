@@ -14,7 +14,8 @@ these contacts to your existing CRM solutions.
 
 :::note
 
-This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
+This feature is disabled by default. To enable it you need to set the `integration.contacts.enabled` field in
+your [airy.yaml config](getting-started/installation/configuration.md) to `true`.
 
 :::
 
@@ -38,14 +39,17 @@ All request fields are optional, but an empty payload will not be accepted.
   "display_name": "Barabara Liskov",
   "avatar_url": "https://example.org/avatar.jpg",
   "title": "Professor",
-  "timezone": "", // relative to GMT
-  "gender": "female", // female, male or any other value
+  "timezone": "",
+  // relative to GMT
+  "gender": "female",
+  // female, male or any other value
   "locale": "en_US",
   "organization_name": "Massachusetts Institute of Technology",
   "via": {
     "phone": "+1234567",
     "email": "b.liskov@mit.org",
-    "key": "value" // allows for any additional key and value (arrays are prohibited)
+    "key": "value"
+    // allows for any additional key and value (arrays are prohibited)
   },
   "address": {
     "organization_name": "Massachusetts Institute of Technology",
@@ -68,7 +72,8 @@ All request fields are optional, but an empty payload will not be accepted.
     },
     "salesforce_id": "ABC123",
     "zendesk_id": "XYZ789",
-    "key": "value" // allows for any additional key and value (arrays are prohibited)
+    "key": "value"
+    // allows for any additional key and value (arrays are prohibited)
   }
 }
 ```
@@ -78,6 +83,41 @@ All request fields are optional, but an empty payload will not be accepted.
 import ContactResponsePayload from './contacts-response-payload.mdx'
 
 <ContactResponsePayload />
+
+### List recent messages
+
+`POST /contacts.recent-messages`
+
+**Sample request**
+
+```json5
+{
+  "contact_id": "id of the contact to query",
+  "filter_sources": ["salesforce_history"],
+  // (optional) inclusive OR filter of sources to show
+  "cursors": {
+    // (optional)
+    "conversation-id": "conversation message list cursor"
+    // allows scrolling within the messages of a conversation
+  }
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "conversation-id-1": {
+    "source": "salesforce_history",
+    // metadata?
+    "data": [],
+    // Same as for paginated message list https://airy.co/docs/core/api/endpoints/messages#list
+    "pagination_data": {}
+  },
+  "conversation-id-2": {}
+  // ...
+}
+```
 
 ### Import contacts
 
@@ -211,14 +251,16 @@ Get a single contact by contact or conversation id.
 
 `POST /contacts.update`
 
-All fields set on the [creation request](#create-contact) can be updated. To remove a field set it to the empty string `""`.
+All fields set on the [creation request](#create-contact) can be updated. To remove a field set it to the empty
+string `""`.
 
 **Sample request**
 
 ```json5
 {
   "id": "6b80b10c-ae6e-4995-844d-c56c4da11623",
-  "display_name": "Barbara Liskov" //
+  "display_name": "Barbara Liskov"
+  //
 }
 ```
 

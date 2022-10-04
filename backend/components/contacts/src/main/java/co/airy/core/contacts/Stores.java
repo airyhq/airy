@@ -2,6 +2,8 @@ package co.airy.core.contacts;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessageContainers;
 import co.airy.model.contacts.Contact;
 import co.airy.model.contacts.ConversationContact;
 import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
@@ -50,6 +52,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final String contactsStore = "contacts-store";
     private final String conversationsStore = "conversations-store";
+    private final String messagesStore = "messages-store";
     private final String conversationToContactStore = "conversation-to-contact-map";
     private final String applicationCommunicationContacts = new ApplicationCommunicationContacts().name();
 
@@ -157,6 +160,11 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                             .map((metadata) -> KeyValue.pair(getId(metadata).toString(), metadata)).collect(toList());
                 })
                 .to(applicationCommunicationContacts);
+
+        // Conversations data necessary for the contact messages endpoint
+        builder.table((new ApplicationCommunicationConversations().name()), Materialized.as(conversationsStore));
+
+        builder.table((new ApplicationCommunicationMessageContainers().name()), Materialized.as(messagesStore));
 
         streams.start(builder.build(), appId);
     }

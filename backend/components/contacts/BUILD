@@ -8,6 +8,7 @@ app_deps = [
     "//backend:base_app",
     "//backend/model/conversation",
     "//backend/model/contacts",
+    "//backend/model/conversations",
     "//backend/model/metadata",
     "//backend/model/message",
     "//lib/java/uuid",

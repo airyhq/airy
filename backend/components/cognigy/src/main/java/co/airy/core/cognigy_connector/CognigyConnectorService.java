@@ -37,8 +37,6 @@ public class  CognigyConnectorService {
 
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
-        log.info("hey");
-
         try {
             MessageSendResponse  cognigyResponse = this.cognigyClient.sendMessage(MessageSend.builder()
             .text(getTextFromContent(userMessage.getContent()))

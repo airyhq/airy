@@ -43,8 +43,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).peek((messageId, message) -> log.info(messageId))
-        .filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
+        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
                 .flatMap((messageId, message) ->  cognigyConnectorService.send(message))
                 .to((recordId, record, context) -> {
                     if (record instanceof Metadata) {

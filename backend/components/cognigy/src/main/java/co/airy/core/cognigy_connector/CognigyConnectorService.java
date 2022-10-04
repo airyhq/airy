@@ -12,6 +12,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,12 @@ public class  CognigyConnectorService {
 
     private static final Logger log = AiryLoggerFactory.getLogger(CognigyConnectorService.class);
     private final MessageHandler messageHandler;
+    private final String userId;
 
-     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient) {
+     CognigyConnectorService(MessageHandler messageHandler, CognigyClient  cognigyClient, @Value("${cognigy.userId}") String userId) {
         this.messageHandler = messageHandler;
         this.cognigyClient = cognigyClient;
+        this.userId = userId;
     }
 
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
@@ -39,6 +42,8 @@ public class  CognigyConnectorService {
         try {
             MessageSendResponse  cognigyResponse = this.cognigyClient.sendMessage(MessageSend.builder()
             .text(getTextFromContent(userMessage.getContent()))
+            .userId(userId)
+            .sessionId(userMessage.getConversationId())
             .build());
             Message message = messageHandler.getMessage(userMessage, cognigyResponse);
             result.add(KeyValue.pair(message.getId(), message));

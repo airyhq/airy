@@ -21,8 +21,13 @@ import java.util.Optional;
 @Service
 public class  CognigyConnectorService {
     private final  CognigyClient  cognigyClient;
+
+    //parse JSON with Jackson (=JSON processor for Java)
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    //Logger object: used to log messages for a specific system / application
+    //The LoggerFactory is a utility class producing Loggers for various logging APIs, 
+    //most notably for log4j, logback and JDK 1.4 logging
     private static final Logger log = AiryLoggerFactory.getLogger(CognigyConnectorService.class);
     private final MessageHandler messageHandler;
 
@@ -31,6 +36,9 @@ public class  CognigyConnectorService {
         this.cognigyClient = cognigyClient;
     }
 
+    //list in Java: sequence of elements according to an order
+    //create key, value list
+    //SpecificRecordBase: Avro -> Base class for generated record classes.
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
 

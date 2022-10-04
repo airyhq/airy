@@ -48,7 +48,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
         final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
 
-        //Construct a stream from the input topic (new ApplicationCommunicationMessages().name())
+        //Construct a stream from the input topic (new ApplicationCommunicationMessages().name()):
+        //this stream is typed: its key is String, its value is Message
         //the builder.stream is going to just take in an input topic (new ApplicationCommunicationMessages().name())
         //which is just the name of the topic that you want to stream these events from 
 

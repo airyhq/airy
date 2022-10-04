@@ -37,7 +37,7 @@ type ConnectedChannelsListProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
-  const {listChannels, offset} = props;
+  const {offset} = props;
   const {source} = useParams();
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -75,12 +75,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     const lastPageIndex = firstPageIndex + listPageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, listPageSize, channels.length, filteredChannels.length]);
-
-  useEffect(() => {
-    listChannels().catch((error: Error) => {
-      console.error(error);
-    });
-  }, []);
 
   useEffect(() => {
     getInfo();

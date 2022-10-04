@@ -1,3 +1,25 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.formRow {
+  height: 80px;
+  margin-bottom: 16px;
+
+  label {
+    @include font-s;
+  }
+
+  &:hover {
+    .actionToolTip {
+      display: block;
+    }
+  }
+
+  button {
+    margin-top: 16px;
+  }
+}
+
 .formWrapper {
   align-self: center;
 }

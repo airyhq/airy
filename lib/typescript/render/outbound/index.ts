@@ -1,4 +1,4 @@
-import {FacebookMapper} from './facebook';
+import {MetaMapper} from './facebook';
 import {ChatpluginMapper} from './chatplugin';
 import {GoogleMapper} from './google';
 import {TwilioMapper} from './twilio';
@@ -9,7 +9,7 @@ export const getOutboundMapper = (source: string) => {
   switch (source) {
     case 'facebook':
     case 'instagram':
-      return new FacebookMapper();
+      return new MetaMapper();
     case 'google':
       return new GoogleMapper();
     case 'chatplugin':

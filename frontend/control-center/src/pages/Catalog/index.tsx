@@ -1,41 +1,60 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {connect, ConnectedProps, useSelector} from 'react-redux';
-import {listComponents} from '../../actions/catalog';
+import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
-import {ComponentInfo} from 'model';
+import {ComponentInfo, ConnectorPrice} from 'model';
 import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
+import {listComponents, getConnectorsConfiguration, listChannels} from '../../actions';
+
+const mapStateToProps = (state: StateModel) => {
+  return {
+    catalogList: Object.values(state.data.catalog),
+  };
+};
 
 const mapDispatchToProps = {
   listComponents,
+  getConnectorsConfiguration,
+  listChannels,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
-  const {listComponents} = props;
-  const [orderedCatalogList, setOrderedCatalogList] = useState([]);
-  const catalogList = useSelector((state: StateModel) => state.data.catalog);
+  const {catalogList, listComponents, getConnectorsConfiguration, listChannels} = props;
+  const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
+  const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
     listComponents().catch((error: Error) => {
       console.error(error);
     });
     setPageTitle(catalogPageTitle);
   }, []);
 
-  useEffect(() => {
-    setOrderedCatalogList(Object.values(catalogList).sort(sortByInstall));
-  }, [catalogList]);
+  useLayoutEffect(() => {
+    const sortedByInstalled = [...catalogList]
+      .filter((component: ComponentInfo) => component.installed && component.price !== ConnectorPrice.requestAccess)
+      .sort(sortByName);
+    const sortedByUninstalled = [...catalogList]
+      .filter((component: ComponentInfo) => !component.installed && component.price !== ConnectorPrice.requestAccess)
+      .sort(sortByName);
+    const sortedByAccess = [...catalogList]
+      .filter((component: ComponentInfo) => component.price === ConnectorPrice.requestAccess)
+      .sort(sortByName);
 
-  const sortByInstall = (a: ComponentInfo) => {
-    if (a.installed) return 1;
-    return -1;
-  };
+    setOrderedCatalogList(sortedByInstalled.concat(sortedByUninstalled).concat(sortedByAccess));
+  }, [catalogList]);
 
   return (
     <section className={styles.catalogWrapper}>

@@ -19,7 +19,7 @@ The goal of this document is to provide an overview of how to run Airy Core on
 AWS cloud platform, using the [AWS Elastic Kubernetes
 Service](https://aws.amazon.com/eks/).
 
-## Configure AWS
+## Configure
 
 :::note
 
@@ -79,7 +79,7 @@ Refer to the following links for more information on AWS Service Limits:
 - [AWS Service Quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
 - [AWS Well-Architected Framework Concepts](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.service-limits.en.html)
 
-## Create a cluster
+## Install
 
 To create the cluster you must setup your local AWS environment, by [configuring
 your local AWS

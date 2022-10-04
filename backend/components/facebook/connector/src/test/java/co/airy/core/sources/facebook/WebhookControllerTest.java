@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static co.airy.crypto.Signature.getSha1;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +47,9 @@ class WebhookControllerTest {
     @Autowired
     private Stores stores;
 
+    @Value("${facebook.app-secret}")
+    private String appSecret;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceFacebookEvents);
@@ -63,12 +68,22 @@ class WebhookControllerTest {
     }
 
     @Test
-    void canAcceptAnything() throws Exception {
-        mvc.perform(post("/facebook").content("whatever")).andExpect(status().isOk());
+    void validatesSignature() throws Exception {
+        // Fails without signature header
+        mvc.perform(post("/facebook")
+                .header("x-hub-signature", "sha1=something")
+                .content("payload")).andExpect(status().isForbidden());
+
+        final String payload = "some payload";
+        final String signature = getSha1(payload + appSecret);
+
+        mvc.perform(post("/facebook")
+                .header("x-hub-signature", "sha1=" + signature)
+                .content(payload)).andExpect(status().isOk());
 
         List<String> records = kafkaTestHelper.consumeValues(1, sourceFacebookEvents.name());
 
         assertThat(records, hasSize(1));
-        assertEquals("whatever", records.get(0));
+        assertEquals(payload, records.get(0));
     }
 }

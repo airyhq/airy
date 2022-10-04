@@ -1,3 +1,5 @@
+import {Source} from './Source';
+
 export enum ConnectorName {
   apiAdmin = 'api-admin',
   apiCommunication = 'api-communication',
@@ -28,3 +30,21 @@ export enum ConnectorPrice {
   paid = 'Paid',
   requestAccess = 'REQUEST ACCESS',
 }
+
+export type Connector = {
+  name?: string;
+  displayName?: string;
+  isInstalled?: boolean;
+  isEnabled?: boolean;
+  isHealthy?: boolean;
+  isConfigured?: boolean;
+  configureValues?: {};
+  isChannel?: boolean;
+  connectedChannels?: number;
+  price?: string;
+  source?: Source;
+};
+
+export type ConnectorsModel = {
+  [connectorName: string]: Connector;
+};

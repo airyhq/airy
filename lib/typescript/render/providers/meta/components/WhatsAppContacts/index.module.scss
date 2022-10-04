@@ -1,0 +1,23 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.contactsWrapper {
+  max-width: 300px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-template-border-gray);
+}
+
+.contactsWrapper img {
+  width: 50px;
+}
+
+.contactsWrapper h1 {
+  margin-left: 10px;
+  @include font-s-bold;
+  color: var(--color-text-contrast);
+  word-break: break-word;
+}

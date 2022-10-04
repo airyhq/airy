@@ -10,6 +10,7 @@ import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
+import {CONNECTORS_ROUTE} from '../../../routes/routes';
 
 type ComponentInfoProps = {
   healthy: boolean;
@@ -36,13 +37,15 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const [componentEnabled, setComponentEnabled] = useState(enabled);
   const [enablePopupVisible, setEnablePopupVisible] = useState(false);
   const isVisible = isExpanded || isComponent;
+  const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const {t} = useTranslation();
 
   const isConfigurableConnector = () => {
     let isConfigurable = false;
 
     Object.entries(catalogList).forEach(elem => {
-      if (elem[1] && elem[1].source && elem[1].source === source) isConfigurable = true;
+      if (elem[1] && elem[1].source && elem[1].source === source && elem[1].source !== Source.webhooks)
+        isConfigurable = true;
     });
 
     return isConfigurable;
@@ -56,8 +59,6 @@ const ItemInfo = (props: ComponentInfoProps) => {
     connector &&
     connectors[itemName] &&
     isComponent &&
-    enabled &&
-    healthy &&
     isConfigurableConnector() &&
     !isComponentConfigured &&
     !itemName.includes(Source.chatPlugin);
@@ -108,15 +109,7 @@ const ItemInfo = (props: ComponentInfoProps) => {
           </div>
 
           <div className={styles.healthyStatus}>
-            {needsConfig ? (
-              <Tooltip
-                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
-                hoverElementHeight={20}
-                hoverElementWidth={20}
-                tooltipContent={t('needsConfiguration')}
-                direction="right"
-              />
-            ) : isRunning ? (
+            {isRunning ? (
               <Tooltip
                 hoverElement={<CheckmarkIcon className={`${styles.icons} ${styles.runningHealthy}`} />}
                 hoverElementHeight={20}
@@ -144,12 +137,23 @@ const ItemInfo = (props: ComponentInfoProps) => {
               )
             )}
           </div>
-
-          {isComponent && !needsConfig && (
-            <div className={styles.enabled}>
-              <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
-            </div>
-          )}
+          {isComponent &&
+            (!needsConfig ? (
+              <div className={styles.enabled}>
+                <Toggle value={componentEnabled} updateValue={onEnableComponent} size="small" variant="green" />
+              </div>
+            ) : (
+              <div className={styles.enabled}>
+                <Tooltip
+                  hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.installedNotConfigured}`} />}
+                  hoverElementHeight={20}
+                  hoverElementWidth={20}
+                  tooltipContent={t('needsConfiguration')}
+                  direction="right"
+                  navigateTo={navigateConfigure}
+                />
+              </div>
+            ))}
         </div>
       )}
 

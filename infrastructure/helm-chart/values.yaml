@@ -45,6 +45,12 @@ components:
       enabled: true
       image: api/communication
       resources: {}
+    unread_counter:
+      name: unread-counter
+      mandatory: true
+      enabled: true
+      image: components/unread-counter
+      resources: {}
     websocket:
       name: api-websocket
       mandatory: true

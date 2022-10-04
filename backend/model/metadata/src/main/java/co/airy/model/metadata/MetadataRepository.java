@@ -7,10 +7,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class MetadataRepository {
-    public interface MetadataConstructor {
-        Metadata apply(String id, String key, String value);
-    }
-
     public static Metadata newConversationMetadata(String conversationId, String key, String value) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation", conversationId).toString())

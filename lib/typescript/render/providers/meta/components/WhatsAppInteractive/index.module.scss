@@ -1,0 +1,76 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.interactiveContent {
+  width: 200px;
+  max-width: 500px;
+  border-radius: 12px;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-template-border-gray);
+  @include font-base;
+}
+
+.header {
+  width: 100%;
+  padding: 10px 20px 10px 10px;
+  color: var(--color-text-contrast);
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+.header img,
+.header video {
+  max-width: 150px;
+  border-radius: 12px;
+}
+
+.header h1 {
+  font-weight: bold;
+}
+
+.body {
+  color: var(--color-text-contrast);
+  padding: 5px 20px 5px 10px;
+}
+
+.footer {
+  color: var(--color-text-gray);
+  padding: 5px 0px 5px 10px;
+}
+
+.footerLink,
+.footerLink:active,
+.footerLink:visited,
+.footerLink:hover {
+  color: var(--color-text-gray);
+  text-decoration: none;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--color-template-border-gray);
+}
+.actionButton svg {
+  fill: var(--color-elements-blue);
+  margin-right: 4px;
+}
+
+.actionButton h2,
+.actionReplyButton h2 {
+  color: var(--color-elements-blue);
+}
+
+.actionReplyButton {
+  max-width: 500px;
+  padding: 5px;
+  margin-top: 5px;
+  background-color: var(--color-background-white);
+  border-radius: 12px;
+  border: 1px solid var(--color-template-border-gray);
+  text-align: center;
+  @include font-base;
+}

@@ -13,8 +13,5 @@ import java.util.List;
 public interface  CognigyClient {
     @RequestLine("POST {restEndpointURL}")
     @Headers("Content-Type: application/json")
-    @Body("%7B\"userId\": \"{userId}\", \"sessionId\": \"{sessionId}\"%7D")
-    List<MessageSendResponse> sendMessage(MessageSend content);
-
-//List<MessageSendResponse> sendMessage(MessageSend content, @Param("userId") String userId, @Param("sessionId") String sessionId, @Param("restEndpointURL") String restEndpointURL);
+    MessageSendResponse sendMessage(MessageSend content);
 }

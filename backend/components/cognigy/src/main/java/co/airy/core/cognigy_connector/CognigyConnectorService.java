@@ -34,20 +34,14 @@ public class  CognigyConnectorService {
 
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
+        log.info("hey");
 
         try {
-            List<MessageSendResponse>  cognigyResponseList = this.cognigyClient.sendMessage(MessageSend.builder()
-            .message(getTextFromContent(userMessage.getContent()))
-            .sender(userMessage.getId())
+            MessageSendResponse  cognigyResponse = this.cognigyClient.sendMessage(MessageSend.builder()
+            .text(getTextFromContent(userMessage.getContent()))
             .build());
-            for (MessageSendResponse  cognigyResponse:  cognigyResponseList) {
-                try {
-                    Message message = messageHandler.getMessage(userMessage, cognigyResponse);
-                    result.add(KeyValue.pair(message.getId(), message));
-                } catch (Exception e) {
-                    log.info(String.format("could not handle response for data type for message id %s %s. Please inspect the",  cognigyResponse.toString(), e));
-                }
-            }
+            Message message = messageHandler.getMessage(userMessage, cognigyResponse);
+            result.add(KeyValue.pair(message.getId(), message));
         } catch (Exception e) {
             log.error(String.format("could not call the  Cognigy webhook for message id %s %s", userMessage.getId(), e));
         }

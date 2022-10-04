@@ -14,9 +14,10 @@ import java.lang.String;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 
 public class MessageSend {
-    private String message;
-    private String sender;
+    private String text;
+    private String userId;
+    private String sessionId;
 }

@@ -15,6 +15,8 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+import co.airy.log.AiryLoggerFactory;
+import org.slf4j.Logger;
 
 import static co.airy.model.message.MessageRepository.isNewMessage;
 
@@ -23,6 +25,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private static final String appId = "cognigy-connector";
     private final KafkaStreamsWrapper streams;
     private  CognigyConnectorService  cognigyConnectorService;
+    private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
 
     Stores(KafkaStreamsWrapper streams,  CognigyConnectorService  cognigyConnectorService) {
         this.streams = streams;
@@ -40,7 +43,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
                 Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
+        ).peek((messageId, message) -> log.info(messageId))
+        .filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
                 .flatMap((messageId, message) ->  cognigyConnectorService.send(message))
                 .to((recordId, record, context) -> {
                     if (record instanceof Metadata) {

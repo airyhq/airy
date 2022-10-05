@@ -5,9 +5,6 @@ custom_java_library(
     name = "conversation",
     srcs = glob(["src/main/java/co/airy/model/conversation/**/*.java"]),
     visibility = ["//visibility:public"],
-    exports = [
-        "//lib/java/kafka/schema:application-communication-conversations",
-    ],
     deps = [
         "//:jackson",
         "//:lombok",

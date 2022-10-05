@@ -7,7 +7,6 @@ custom_java_library(
     visibility = ["//visibility:public"],
     exports = [
         "//backend/avro:message-avro",
-        "//lib/java/kafka/schema:application-communication-message-containers",
         "//lib/java/kafka/schema:application-communication-messages",
     ],
     deps = [

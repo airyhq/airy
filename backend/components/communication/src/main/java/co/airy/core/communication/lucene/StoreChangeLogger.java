@@ -25,8 +25,8 @@ import org.apache.kafka.streams.state.StateSerdes;
 /**
  * This file is copied and licensed as-is from the Kafka Streams source
  * since the underlying class is not public.
- * <p>
- * see <a href="https://github.com/apache/kafka/blob/33ba2820f4fbb459172022a83d761a7c674a8fdd/streams/src/main/java/org/apache/kafka/streams/state/internals/StoreChangeLogger.java#L33">...</a>
+ *
+ * see https://github.com/apache/kafka/blob/33ba2820f4fbb459172022a83d761a7c674a8fdd/streams/src/main/java/org/apache/kafka/streams/state/internals/StoreChangeLogger.java#L33
  */
 class StoreChangeLogger<K, V> {
 

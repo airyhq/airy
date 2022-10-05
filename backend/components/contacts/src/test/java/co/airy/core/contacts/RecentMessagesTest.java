@@ -23,10 +23,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,8 +67,8 @@ public class RecentMessagesTest {
     void canListRecentMessages() throws Exception {
         final TestConversation conversation1 = TestConversation.from("messenger", 3);
         final TestConversation conversation2 = TestConversation.from("purchases", 1);
-        final UUID conversationId1 = conversation1.getConversationId();
-        final UUID conversationId2 = conversation2.getConversationId();
+        final UUID conversationId1 = UUID.fromString(conversation1.getConversationId());
+        final UUID conversationId2 = UUID.fromString(conversation2.getConversationId());
         kafkaTestHelper.produceRecords(conversation1.getRecords());
         kafkaTestHelper.produceRecords(conversation2.getRecords());
 
@@ -78,11 +78,13 @@ public class RecentMessagesTest {
                         conversationId2, "purchases"))
                 .build());
 
+        // TimeUnit.SECONDS.sleep(10000);
+
         retryOnException(() -> {
             webTestHelper.post("/contacts.recent-messages", "{\"contact_id\":\"" + contactId + "\"}")
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.data['" + conversationId1 + "'].data.length()", equalTo(3)))
-                    .andExpect(jsonPath("$.data['" + conversationId2 + "'].data.length()", equalTo(1)));
-        }, "Contacts were not listed");
+                    .andExpect(jsonPath("$['" + conversationId1 + "'].data.length()", equalTo(3)))
+                    .andExpect(jsonPath("$['" + conversationId2 + "'].data.length()", equalTo(1)));
+        }, "Contact messages were not listed");
     }
 }

@@ -14,7 +14,6 @@ import co.airy.core.communication.lucene.LuceneDiskStore;
 import co.airy.core.communication.lucene.LuceneProvider;
 import co.airy.core.communication.lucene.ReadOnlyLuceneStore;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
@@ -123,7 +122,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 }, Materialized.as(messagesStore));
 
         // Conversation stores
-        final KStream<String, Conversation> conversationsStream = messageGroupedTable
+        messageGroupedTable
                 .aggregate(Conversation::new,
                         (conversationId, container, aggregate) -> {
                             if (aggregate.getLastMessageContainer() == null) {
@@ -144,7 +143,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
                             return aggregate;
                         }, (conversationId, container, aggregate) -> {
-                            // If the deleted message was the last message we have no way of replacing it,
+                            // If the deleted message was the last message we have no way of replacing it
                             // so we have no choice but to keep it
                             return aggregate;
                         })
@@ -160,11 +159,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     }
                     return conversation;
                 }, Materialized.as(conversationsStore))
-                .toStream();
-
-        conversationsStream.to(new ApplicationCommunicationConversations().name());
-
-        conversationsStream.process(IndexingProcessor.getSupplier(conversationsLuceneStore), conversationsLuceneStore);
+                .toStream()
+                .process(IndexingProcessor.getSupplier(conversationsLuceneStore), conversationsLuceneStore);
 
         builder.table(new ApplicationCommunicationUsers().name(), Materialized.as(usersStore));
 
@@ -268,15 +264,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public List<MessageContainer> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
-        final Messages messagesTreeSet = store.get(conversationId);
+        final Messages messages = store.get(conversationId);
 
-        if (messagesTreeSet == null) {
+        if (messages == null) {
             return null;
         }
         // Enrich messages with user information
-        List<String> senderIds = messagesTreeSet.stream().map((container) -> container.getMessage().getSenderId()).collect(Collectors.toList());
+        List<String> senderIds = messages.stream().map((container) -> container.getMessage().getSenderId()).collect(Collectors.toList());
         Map<String, User> users = collectUsers(senderIds);
-        return messagesTreeSet.stream().peek((container) -> {
+        return messages.stream().peek((container) -> {
             final User user = users.get(container.getMessage().getSenderId());
 
             container.setSender(Sender.builder().id(container.getMessage().getSenderId())

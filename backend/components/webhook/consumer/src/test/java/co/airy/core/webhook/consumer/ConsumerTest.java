@@ -127,7 +127,7 @@ public class ConsumerTest {
         final Job job = new Job();
         job.setId(1);
         job.setData(bytes);
-        when(beanstalkConsumer.reserveJob(Mockito.anyLong())).thenReturn(job);
+        when(beanstalkConsumer.reserveJob(Mockito.anyLong())).thenReturn(job).thenReturn(null);
 
         retryOnException(() -> mockServer.verify(), "Endpoint was not called", 10_000);
     }

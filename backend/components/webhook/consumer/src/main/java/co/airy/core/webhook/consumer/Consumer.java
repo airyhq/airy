@@ -34,7 +34,7 @@ public class Consumer implements DisposableBean {
 
     @Scheduled(fixedDelay = 50)
     public void process() {
-        final Job job = consumer.reserveJob(10);
+        final Job job = consumer.reserveJob(30);
         if (job == null) {
             return;
         }

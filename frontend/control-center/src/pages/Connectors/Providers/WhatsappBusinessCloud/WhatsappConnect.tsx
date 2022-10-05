@@ -29,10 +29,16 @@ const WhatsappConnect = (props: WhatsappConnectProps) => {
   const [userToken, setUserToken] = useState(channel?.metadata?.userToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
+  const [error, setError] = useState(false);
+  const connectError = t('connectFailed');
   const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [newButtonTitle, setNewButtonTitle] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    modal && setError(false);
+  }, [phoneNumberId, userToken, name]);
 
   useEffect(() => {
     if (channel?.sourceChannelId !== phoneNumberId && !!channel) {
@@ -73,6 +79,7 @@ const WhatsappConnect = (props: WhatsappConnectProps) => {
       })
       .catch((error: Error) => {
         setNotification({show: true, text: t('updateFailed'), successful: false});
+        modal && setError(true);
         console.error(error);
       })
       .finally(() => {
@@ -133,7 +140,7 @@ const WhatsappConnect = (props: WhatsappConnectProps) => {
           fontClass="font-base"
         />
       </div>
-      <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
+      <div className={`${modal ? styles.smartButtonModalContainer : styles.smartButtonContainer}`}>
         <SmartButton
           title={modal ? t('create') : newButtonTitle !== '' ? newButtonTitle : buttonTitle}
           height={40}
@@ -144,8 +151,9 @@ const WhatsappConnect = (props: WhatsappConnectProps) => {
           disabled={buttonStatus() || isPending}
           onClick={() => connectNewChannel()}
         />
+        {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
       </div>
-      {notification?.show && (
+      {notification?.show && !modal && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}

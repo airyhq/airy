@@ -32,11 +32,16 @@ const GoogleConnect = (props: GoogleConnectProps) => {
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
+  const [error, setError] = useState(false);
+  const connectError = t('connectFailed');
   const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
-  const [errorMessage, setErrorMessage] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isPending, setIsPending] = useState(false);
   const [newButtonTitle, setNewButtonTitle] = useState('');
+
+  useEffect(() => {
+    modal && setError(false);
+  }, [id, name]);
 
   const buttonStatus = () => {
     return (
@@ -84,7 +89,7 @@ const GoogleConnect = (props: GoogleConnectProps) => {
           successful: false,
           info: false,
         });
-        setErrorMessage(t('errorMessage'));
+        modal && setError(true);
         console.error(error);
       })
       .finally(() => {
@@ -106,7 +111,6 @@ const GoogleConnect = (props: GoogleConnectProps) => {
           minLength={6}
           required={true}
           height={32}
-          hint={errorMessage}
           fontClass="font-base"
         />
         <Input
@@ -135,7 +139,7 @@ const GoogleConnect = (props: GoogleConnectProps) => {
           fontClass="font-base"
         />
       </div>
-      <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
+      <div className={`${modal ? styles.smartButtonModalContainer : styles.smartButtonContainer}`}>
         <SmartButton
           title={modal ? t('create') : newButtonTitle !== '' ? newButtonTitle : buttonTitle}
           height={40}
@@ -146,6 +150,7 @@ const GoogleConnect = (props: GoogleConnectProps) => {
           disabled={buttonStatus() || isPending}
           onClick={() => connectNewChannel()}
         />
+        {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
       </div>
       {notification?.show && !modal && (
         <NotificationComponent

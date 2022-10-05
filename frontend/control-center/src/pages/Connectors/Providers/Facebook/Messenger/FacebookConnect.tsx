@@ -29,11 +29,16 @@ const FacebookConnect = (props: FacebookConnectProps) => {
   const [token, setToken] = useState(channel?.metadata?.pageToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
+  const [error, setError] = useState(false);
+  const connectError = t('connectFailed');
   const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [newButtonTitle, setNewButtonTitle] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    modal && setError(false);
+  }, [id, token]);
 
   useEffect(() => {
     if (channel?.sourceChannelId !== id && !!channel) {
@@ -76,8 +81,8 @@ const FacebookConnect = (props: FacebookConnectProps) => {
         navigate(CONNECTORS_ROUTE + '/facebook/connected', {replace: true});
       })
       .catch((error: Error) => {
-        setNotification({show: true, text: t('updateFailed'), successful: false});
-        setErrorMessage(t('errorMessage'));
+        setNotification({show: true, text: channel ? t('updateFailed') : t('connectFailed'), successful: false});
+        modal && setError(true);
         console.error(error);
       })
       .finally(() => {
@@ -99,7 +104,6 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           minLength={6}
           required={true}
           height={32}
-          hint={errorMessage}
           fontClass="font-base"
         />
         <Input
@@ -112,7 +116,6 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
           required={true}
           height={32}
-          hint={errorMessage}
           fontClass="font-base"
         />
         <Input
@@ -141,7 +144,7 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           fontClass="font-base"
         />
       </div>
-      <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
+      <div className={`${modal ? styles.smartButtonModalContainer : styles.smartButtonContainer}`}>
         <SmartButton
           title={modal ? t('create') : newButtonTitle !== '' ? newButtonTitle : buttonTitle}
           height={40}
@@ -152,8 +155,9 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           disabled={buttonStatus() || isPending}
           onClick={() => connectNewChannel()}
         />
+        {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
       </div>
-      {notification?.show && (
+      {notification?.show && !modal && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}

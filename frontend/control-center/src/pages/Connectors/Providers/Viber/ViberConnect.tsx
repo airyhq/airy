@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {connectViberChannel} from '../../../../actions/channel';
@@ -27,9 +27,15 @@ const ViberConnect = (props: ViberConnectProps) => {
   const {t} = useTranslation();
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
+  const [error, setError] = useState(false);
+  const connectError = t('connectFailed');
   const buttonTitle = channel ? t('updatePage') : t('connectPage') || '';
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    setError(false);
+  }, [name, image]);
 
   const buttonStatus = () => {
     return (
@@ -92,7 +98,7 @@ const ViberConnect = (props: ViberConnectProps) => {
           fontClass="font-base"
         />
       </div>
-      <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
+      <div className={`${modal ? styles.smartButtonModalContainer : styles.smartButtonContainer}`}>
         <SmartButton
           title={modal ? t('create') : buttonTitle}
           height={40}
@@ -103,8 +109,9 @@ const ViberConnect = (props: ViberConnectProps) => {
           disabled={buttonStatus() || isPending}
           onClick={() => connectNewChannel()}
         />
+        {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
       </div>
-      {notification?.show && (
+      {notification?.show && !modal && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}

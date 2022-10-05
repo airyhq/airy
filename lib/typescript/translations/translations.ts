@@ -495,6 +495,9 @@ const resources = {
       Free: 'Free',
       Paid: 'Paid',
       ['REQUEST ACCESS']: 'REQUEST ACCESS',
+      searchByNamePlaceholder: 'Search by name',
+      searchByType: 'Search by type',
+      noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -1029,6 +1032,9 @@ const resources = {
       Free: 'Kostenlos',
       Paid: 'Kostenpflichtig',
       ['REQUEST ACCESS']: 'ANFRAGE ZUGANG',
+      searchByNamePlaceholder: 'Suche nach Name',
+      searchByType: 'Suche nach Typ',
+      noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1557,6 +1563,9 @@ const resources = {
       Free: 'Gratuit',
       Paid: 'Payant',
       ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
+      searchByNamePlaceholder: 'Recherche par nom',
+      searchByType: 'Recherche par type',
+      noMatchingCatalogs: `Nous n'avons pas pu trouver de Catalog correspondant à vos critères.`,
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -2089,6 +2098,9 @@ const resources = {
       Free: 'Gratis',
       Paid: 'Premium',
       ['REQUEST ACCESS']: 'SOLICITAR ACCESO',
+      searchByNamePlaceholder: 'Buscar por nombre',
+      searchByType: 'Buscar por tipo',
+      noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

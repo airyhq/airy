@@ -1,0 +1,76 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  svg {
+    margin-left: 16px;
+    color: var(--color-text-gray);
+
+    &:hover {
+      cursor: pointer;
+      color: var(--color-airy-blue);
+    }
+  }
+  .filterIcon {
+    transition: background 0.5s ease;
+    color: var(--color-background-white);
+    margin-left: 16px;
+    background: var(--color-airy-logo-blue);
+    border-radius: 24px;
+  }
+}
+
+.searchField {
+  width: 200px;
+  background: var(--color-background-white);
+  border: 1px solid var(--color-airy-blue);
+  border-radius: 4px;
+
+  svg {
+    color: black;
+  }
+}
+
+@keyframes animateFilterModalIn {
+  0% {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes animateFilterModalOut {
+  0% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+}
+
+.filterModal {
+  position: absolute;
+  top: 170px;
+  right: 54px;
+}
+
+.filterModalAnimIn {
+  animation: animateFilterModalIn 500ms ease;
+}
+.filterModalAnimOut {
+  animation: animateFilterModalOut 500ms ease;
+}

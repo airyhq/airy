@@ -93,8 +93,9 @@ import ContactResponsePayload from './contacts-response-payload.mdx'
 ```json5
 {
   "contact_id": "id of the contact to query",
-  "filter_sources": ["salesforce_history"],
+  "include_sources": ["salesforce_history"],
   // (optional) inclusive OR filter of sources to show
+  "page_size": 20, // (optional) pagination size
   "cursors": {
     // (optional)
     "conversation-id": "conversation message list cursor"
@@ -109,7 +110,6 @@ import ContactResponsePayload from './contacts-response-payload.mdx'
 {
   "conversation-id-1": {
     "source": "salesforce_history",
-    // metadata?
     "data": [],
     // Same as for paginated message list https://airy.co/docs/core/api/endpoints/messages#list
     "pagination_data": {}

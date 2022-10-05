@@ -35,18 +35,25 @@ public class ConversationsController {
     @PostMapping("/contacts.recent-messages")
     public ResponseEntity<?> recentMessages(@RequestBody @Valid RecentMessagesRequestPayload payload) {
         final String contactId = payload.getContactId().toString();
-        final Map<UUID, String> cursors = Optional.ofNullable(payload.getCursors()).orElse(new HashMap<>());
 
         final Contact contact = stores.getContact(contactId);
         if (contact == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequestErrorResponsePayload("Contact not found"));
         }
 
+        final Map<UUID, String> cursors = payload.getCursors();
+        final int pageSize = payload.getPageSize();
+        final List<String> includeSources = payload.getIncludeSources();
         Map<String, RecentMessagesResponsePayload> response = new HashMap<>();
         for (Map.Entry<UUID, String> entry : contact.getConversations().entrySet()) {
-            try{
+            // Skip sources not included in the filter list
+            if (!includeSources.isEmpty() && !includeSources.contains(entry.getValue())) {
+                continue;
+            }
+
+            try {
                 final UUID conversationId = entry.getKey();
-                final RecentMessagesResponsePayload messages = fetchMessages(conversationId.toString(), cursors.get(conversationId));
+                final RecentMessagesResponsePayload messages = fetchMessages(conversationId.toString(), pageSize, cursors.get(conversationId));
                 response.put(conversationId.toString(), messages);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -57,24 +64,17 @@ public class ConversationsController {
     }
 
 
-    private RecentMessagesResponsePayload fetchMessages(String conversationId, String cursor) {
+    private RecentMessagesResponsePayload fetchMessages(String conversationId, int pageSize, String cursor) {
         final List<Message> messages = stores.getMessages(conversationId);
         if (messages == null) {
             return null;
         }
 
-        Paginator<Message> paginator = new Paginator<>(messages, Message::getId).perPage(20).from(cursor);
+        Paginator<Message> paginator = new Paginator<>(messages, Message::getId).perPage(pageSize).from(cursor);
 
         Page<Message> page = paginator.page();
 
-        return RecentMessagesResponsePayload.builder()
-                .data(page.getData().stream().map(MessageResponsePayload::fromMessage).collect(toList()))
-                .paginationData(PaginationData.builder()
-                        .nextCursor(page.getNextCursor())
-                        .previousCursor(cursor)
-                        .total(messages.size())
-                        .build())
-                .build();
+        return RecentMessagesResponsePayload.builder().data(page.getData().stream().map(MessageResponsePayload::fromMessage).collect(toList())).paginationData(PaginationData.builder().nextCursor(page.getNextCursor()).previousCursor(cursor).total(messages.size()).build()).build();
     }
 }
 

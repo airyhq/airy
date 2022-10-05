@@ -6,15 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecentMessagesRequestPayload {
     @NotNull
     private UUID contactId;
-    private Map<UUID, String> cursors;
+    private List<String> includeSources = new ArrayList<>();
+    private int pageSize = 20;
+    private Map<UUID, String> cursors = new HashMap<>();
 }

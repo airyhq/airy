@@ -25,15 +25,15 @@ const CreateUpdateSection = (props: InstallUpdateSectionProps) => {
   const {channel, displayName, imageUrl, setNotification, modal} = props;
 
   const [submit, setSubmit] = useState(false);
-  const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name);
-  const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl);
+  const [newDisplayName, setNewDisplayName] = useState(displayName || channel?.metadata?.name || '');
+  const [newImageUrl, setNewImageUrl] = useState(imageUrl || channel?.metadata?.imageUrl || '');
   const [isPending, setIsPending] = useState(false);
   const {t} = useTranslation();
 
   const updateConnection = (displayName: string, imageUrl?: string) => {
     setIsPending(true);
     props
-      .updateChannel({channelId: channel.id, name: displayName, imageUrl: imageUrl})
+      .updateChannel({channelId: channel?.id, name: displayName, imageUrl: imageUrl})
       .then(() => {
         setNotification({show: true, text: t('updateSuccessful'), successful: true});
       })

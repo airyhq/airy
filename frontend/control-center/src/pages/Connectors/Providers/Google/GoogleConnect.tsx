@@ -85,7 +85,7 @@ const GoogleConnect = (props: GoogleConnectProps) => {
       .catch((error: Error) => {
         setNotification({
           show: true,
-          text: buttonTitle === t('connectPage') ? t('createFailed') : 'updateFailed',
+          text: buttonTitle === t('connectPage') ? t('connectFailed') : 'updateFailed',
           successful: false,
           info: false,
         });

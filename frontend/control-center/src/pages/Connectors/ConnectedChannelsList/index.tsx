@@ -24,7 +24,6 @@ import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
-import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {ConnectChannelModal} from '../ConnectChannelModal/ConnectChannelModal';
 
 const mapDispatchToProps = {
@@ -142,7 +141,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </button>
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-            // onClick={() => navigate(path)}
             onClick={() => setShowNewConnectionModal(true)}
             data-cy={cyConnectorsAddNewButton}
           >

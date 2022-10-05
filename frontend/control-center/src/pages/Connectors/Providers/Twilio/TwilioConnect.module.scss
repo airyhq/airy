@@ -4,20 +4,20 @@
 .formContent {
   display: flex;
   flex-direction: column;
-  width: 20rem;
   width: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
-.formContentNumber {
-  height: 82px;
-  width: 70%;
+.formContentModal {
+  @extend .formContent;
+  align-items: center;
 }
 
-.formContentName {
+.formRow {
   height: 82px;
-  width: 70%;
+  width: 75%;
+  max-width: 20rem;
 }
 
 .formImageCard {
@@ -107,5 +107,21 @@
 .smartButtonContainer {
   display: flex;
   width: 100%;
+  align-items: flex-start;
+  flex-direction: column;
+  span {
+    @include font-base;
+    color: var(--color-red-alert);
+    opacity: 0;
+    transition: all 1s ease;
+  }
+  .errorMessage {
+    opacity: 1;
+    transform: translateY(50%);
+  }
+}
+
+.smartButtonModalContainer {
+  @extend .smartButtonContainer;
   align-items: center;
 }

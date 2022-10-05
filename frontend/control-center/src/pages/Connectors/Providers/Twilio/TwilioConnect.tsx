@@ -9,7 +9,7 @@ import {Channel, NotificationModel, Source} from 'model';
 import styles from './TwilioConnect.module.scss';
 
 import {CONNECTORS_ROUTE} from '../../../../routes/routes';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 
 type TwilioConnectProps = {
@@ -26,16 +26,23 @@ const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
-  const {channel, source, buttonText, connectTwilioWhatsapp, connectTwilioSms, modal} = props;
+  const {channel, buttonText, connectTwilioWhatsapp, connectTwilioSms, modal} = props;
   const {t} = useTranslation();
-
+  const params = useParams();
+  const {source} = params;
   const navigate = useNavigate();
   const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
   const [nameInput, setNameInput] = useState(channel?.metadata?.name || '');
   const [imageUrlInput, setImageUrlInput] = useState(channel?.metadata?.imageUrl || '');
+  const [error, setError] = useState(false);
+  const connectError = t('connectFailed');
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [newButtonText, setNewButtonText] = useState('');
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    modal && setError(false);
+  }, [numberInput]);
 
   useEffect(() => {
     if (channel?.sourceChannelId !== numberInput && !!channel) {
@@ -77,7 +84,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
       imageUrl: imageUrlInput,
     };
 
-    if (source === Source.twilioWhatsApp) {
+    if (source === Source.twilioWhatsApp || props.source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload)
         .then(() => {
           navigate(CONNECTORS_ROUTE + `/twilio.whatsapp/connected`, {
@@ -92,13 +99,14 @@ const TwilioConnect = (props: TwilioConnectProps) => {
             successful: false,
             info: false,
           });
+          modal && setError(true);
           console.error(error);
         })
         .finally(() => {
           setIsPending(false);
         });
     }
-    if (source === Source.twilioSMS) {
+    if (source === Source.twilioSMS || props.source === Source.twilioSMS) {
       connectTwilioSms(connectPayload)
         .then(() => {
           navigate(CONNECTORS_ROUTE + `/twilio.sms/connected`, {replace: true, state: {source: 'twilio.sms'}});
@@ -110,6 +118,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
             successful: false,
             info: false,
           });
+          modal && setError(true);
           console.error(error);
         })
         .finally(() => {
@@ -119,57 +128,56 @@ const TwilioConnect = (props: TwilioConnectProps) => {
   };
 
   return (
-    <form>
-      <div className={styles.formContent}>
-        <div className={styles.formContentNumber}>
-          <Input
-            label={t('twilioPhoneNumber')}
-            placeholder={t('twilioPhoneNumberPlaceholder')}
-            value={numberInput}
-            required={true}
-            height={32}
-            autoFocus={true}
-            onChange={handleNumberInput}
-            fontClass="font-base"
-          />
-        </div>
-        <div className={styles.formContentName}>
-          <Input
-            label={t('nameOptional')}
-            placeholder={t('addAName')}
-            value={nameInput}
-            required={false}
-            height={32}
-            onChange={handleNameInput}
-            fontClass="font-base"
-          />
-        </div>
-        <div className={styles.formContentNumber}>
-          <UrlInputField
-            label={t('imageUrlOptional')}
-            placeholder={t('addAnUrl')}
-            value={imageUrlInput}
-            required={false}
-            height={32}
-            onChange={handleImageUrlInput}
-            fontClass="font-base"
-          />
-        </div>
-        <div className={styles.smartButtonContainer} style={modal ? {justifyContent: 'center'} : {}}>
-          <SmartButton
-            title={modal ? t('create') : newButtonText !== '' ? newButtonText : buttonText}
-            height={40}
-            width={160}
-            pending={isPending}
-            className={styles.connectButton}
-            type="submit"
-            styleVariant="normal"
-            disabled={buttonStatus() || isPending}
-            onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}
-          />
-        </div>
+    <form className={modal ? styles.formContentModal : styles.formContent}>
+      <div className={styles.formRow}>
+        <Input
+          label={t('twilioPhoneNumber')}
+          placeholder={t('twilioPhoneNumberPlaceholder')}
+          value={numberInput}
+          required={true}
+          height={32}
+          autoFocus={true}
+          onChange={handleNumberInput}
+          fontClass="font-base"
+        />
       </div>
-      {notification?.show && (
+      <div className={styles.formRow}>
+        <Input
+          label={t('nameOptional')}
+          placeholder={t('addAName')}
+          value={nameInput}
+          required={false}
+          height={32}
+          onChange={handleNameInput}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <UrlInputField
+          label={t('imageUrlOptional')}
+          placeholder={t('addAnUrl')}
+          value={imageUrlInput}
+          required={false}
+          height={32}
+          onChange={handleImageUrlInput}
+          fontClass="font-base"
+        />
+      </div>
+      <div className={`${modal ? styles.smartButtonModalContainer : styles.smartButtonContainer}`}>
+        <SmartButton
+          title={modal ? t('create') : newButtonText !== '' ? newButtonText : buttonText}
+          height={40}
+          width={160}
+          pending={isPending}
+          className={styles.connectButton}
+          type="submit"
+          styleVariant="normal"
+          disabled={buttonStatus() || isPending}
+          onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}
+        />
+        {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
+      </div>
+      {notification?.show && !modal && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}
           show={notification.show}

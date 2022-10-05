@@ -34,7 +34,7 @@ const ViberConnect = (props: ViberConnectProps) => {
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
-    setError(false);
+    modal && setError(false);
   }, [name, image]);
 
   const buttonStatus = () => {
@@ -64,6 +64,7 @@ const ViberConnect = (props: ViberConnectProps) => {
       })
       .catch((error: Error) => {
         setNotification({show: true, text: t('updateFailed'), successful: false});
+        modal && setError(true);
         console.error(error);
       })
       .finally(() => {

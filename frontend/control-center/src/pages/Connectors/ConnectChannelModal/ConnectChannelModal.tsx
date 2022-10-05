@@ -1,6 +1,6 @@
 import {Source} from 'model';
 import React from 'react';
-import CreateUpdateSection from '../Providers/Airy/ChatPlugin/sections/CreateUpdateSection/CreateUpdateSection';
+import ConnectNewChatPlugin from '../Providers/Airy/ChatPlugin/sections/ConnectNewChatPlugin';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioConnect from '../Providers/Twilio/TwilioConnect';
@@ -18,7 +18,7 @@ export const ConnectChannelModal = (props: ConnectChannelModaProps) => {
   const InputValues = () => {
     switch (source) {
       case Source.chatPlugin:
-        return <CreateUpdateSection modal />;
+        return <ConnectNewChatPlugin modal />;
       case Source.google:
         return <GoogleConnect modal />;
       case Source.facebook:

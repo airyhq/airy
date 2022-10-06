@@ -156,6 +156,8 @@ public class InstallerHandler {
 
     private List<String> getUninstallCommand(String componentName) {
         ArrayList<String> cmd = new ArrayList<>();
+        cmd.add("sh");
+        cmd.add("-c");
         cmd.add(String.format(
                     "helm -n %s uninstall %s",
                     namespace,

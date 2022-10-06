@@ -35,7 +35,6 @@ springboot(
     for file in glob(["src/test/java/**/*Test.java"])
 ]
 
-
 container_release(
     registry = "ghcr.io/airyhq/api/components",
     repository = "installer",

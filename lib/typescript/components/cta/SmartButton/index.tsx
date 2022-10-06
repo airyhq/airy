@@ -48,13 +48,6 @@ export const SmartButton = ({
   height,
   width,
 }: ButtonProps) => {
-  const [buttonWidth, setButtonWidth] = useState(0);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    setButtonWidth(ref?.current?.offsetWidth);
-  }, [ref?.current]);
-
   const styleFor = (variant: styleVariantType) => {
     switch (variant) {
       case 'extra-small':
@@ -86,17 +79,9 @@ export const SmartButton = ({
 
   return (
     <button
-      ref={buttonRef || ref || null}
+      ref={buttonRef || null}
       type={type || 'button'}
-      style={
-        height && width
-          ? {height: height, width: width}
-          : style
-          ? style
-          : buttonWidth
-          ? {minWidth: `${buttonWidth}px`}
-          : {minWidth: '160px'}
-      }
+      style={height && width ? {height: height, minWidth: width} : style}
       disabled={disabled || pending || false}
       className={`${styleFor(styleVariant)} ${className}`}
       onClick={onClick}

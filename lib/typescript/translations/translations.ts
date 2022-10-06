@@ -98,6 +98,7 @@ const resources = {
       //Status
       all: 'All',
       open: 'Open',
+      openCatalog: 'Open',
       closed: 'Closed',
 
       //Message
@@ -638,6 +639,7 @@ const resources = {
       //Status
       all: 'Alle',
       open: 'Offen',
+      openCatalog: 'Öffnen',
       closed: 'Geschlossen',
 
       //Message
@@ -1175,6 +1177,7 @@ const resources = {
       //Status
       all: 'Tous',
       open: 'Ouvert',
+      openCatalog: 'Ouvert',
       closed: 'Fermé',
 
       //Message
@@ -1713,6 +1716,7 @@ const resources = {
       //Status
       all: 'Todo',
       open: 'Abrir',
+      openCatalog: 'Abrir',
       closed: 'Cerrado',
 
       //Message

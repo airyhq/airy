@@ -153,7 +153,7 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           type="submit"
           styleVariant="normal"
           disabled={buttonStatus() || isPending}
-          onClick={() => connectNewChannel()}
+          onClick={connectNewChannel}
         />
         {modal && <span className={error ? styles.errorMessage : ''}>{connectError}</span>}
       </div>

@@ -55,15 +55,16 @@ export const CatalogSearchBar = (props: CatalogSearchBarProps) => {
           className={currentFilter !== FilterTypes.all ? styles.filterIcon : ''}
           onClick={toggleShowFilter}
         />
-        <div
-          className={`${styles.filterModal} ${animationAction ? styles.filterModalAnimIn : styles.filterModalAnimOut}`}
-        >
+        <div>
           {showFilter && (
             <ListenOutsideClick onOuterClick={showFilter && toggleShowFilter}>
               <FilterCatalogModal
                 currentFilter={currentFilter}
                 setCurrentFilter={setCurrentFilter}
                 setShowFilter={toggleShowFilter}
+                animation={`${styles.filterModal} ${
+                  animationAction ? styles.filterModalAnimIn : styles.filterModalAnimOut
+                }`}
               />
             </ListenOutsideClick>
           )}

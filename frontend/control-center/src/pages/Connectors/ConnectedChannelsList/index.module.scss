@@ -169,6 +169,11 @@
   border-radius: 32px;
 }
 
+.connectChannelModalHeader {
+  @include font-xl;
+  margin-bottom: 28px;
+}
+
 @keyframes searchFieldAnimation {
   0% {
     width: 0px;

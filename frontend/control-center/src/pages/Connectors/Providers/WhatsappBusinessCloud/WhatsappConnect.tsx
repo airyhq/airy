@@ -1,32 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {connectFacebookChannel} from '../../../../../actions/channel';
+import {connectWhatsappChannel} from '../../../../actions/channel';
 import {Input, NotificationComponent, SmartButton} from 'components';
-import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
-import styles from './FacebookConnect.module.scss';
-import {useCurrentChannel} from '../../../../../selectors/channels';
+import {ConnectWhatsappRequestPayload} from 'httpclient/src';
+import styles from './WhatsappConnect.module.scss';
+import {useCurrentChannel} from '../../../../selectors/channels';
 import {NotificationModel} from 'model';
 import {useNavigate} from 'react-router-dom';
-import {CONNECTORS_ROUTE} from '../../../../../routes/routes';
+import {CONNECTORS_ROUTE} from '../../../../routes/routes';
 
 const mapDispatchToProps = {
-  connectFacebookChannel,
+  connectWhatsappChannel,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
-type FacebookConnectProps = {
+type WhatsappConnectProps = {
   modal?: boolean;
 } & ConnectedProps<typeof connector>;
 
-const FacebookConnect = (props: FacebookConnectProps) => {
-  const {connectFacebookChannel, modal} = props;
+const WhatsappConnect = (props: WhatsappConnectProps) => {
+  const {connectWhatsappChannel, modal} = props;
   const channel = useCurrentChannel();
   const navigate = useNavigate();
   const {t} = useTranslation();
-  const [id, setId] = useState(channel?.sourceChannelId || '');
-  const [token, setToken] = useState(channel?.metadata?.pageToken || '');
+  const [phoneNumberId, setPhoneNumberId] = useState(channel?.sourceChannelId || '');
+  const [userToken, setUserToken] = useState(channel?.metadata?.userToken || '');
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [error, setError] = useState(false);
@@ -38,22 +38,22 @@ const FacebookConnect = (props: FacebookConnectProps) => {
 
   useEffect(() => {
     modal && setError(false);
-  }, [id, token]);
+  }, [phoneNumberId, userToken, name]);
 
   useEffect(() => {
-    if (channel?.sourceChannelId !== id && !!channel) {
+    if (channel?.sourceChannelId !== phoneNumberId && !!channel) {
       setNotification({show: true, text: t('newChannelInfo'), info: true});
       setNewButtonTitle(t('connect'));
     } else {
       setNewButtonTitle(buttonTitle);
     }
-  }, [id]);
+  }, [phoneNumberId]);
 
   const buttonStatus = () => {
     return (
-      !(id.length > 5 && token != '') ||
-      (channel?.sourceChannelId === id &&
-        channel?.metadata?.pageToken === token &&
+      !(phoneNumberId.length > 5 && userToken !== '' && name !== '') ||
+      (channel?.sourceChannelId === phoneNumberId &&
+        channel?.metadata?.pageToken === userToken &&
         channel?.metadata?.name === name &&
         channel?.metadata?.imageUrl === image) ||
       (!!channel?.metadata?.imageUrl && image === '')
@@ -61,13 +61,10 @@ const FacebookConnect = (props: FacebookConnectProps) => {
   };
 
   const connectNewChannel = () => {
-    const connectPayload: ConnectChannelFacebookRequestPayload = {
-      pageId: id,
-      pageToken: token,
-      ...(name &&
-        name !== '' && {
-          name,
-        }),
+    const connectPayload: ConnectWhatsappRequestPayload = {
+      phoneNumberId: phoneNumberId,
+      userToken: userToken,
+      name: name,
       ...(image &&
         image !== '' && {
           imageUrl: image,
@@ -76,12 +73,12 @@ const FacebookConnect = (props: FacebookConnectProps) => {
 
     setIsPending(true);
 
-    connectFacebookChannel(connectPayload)
+    connectWhatsappChannel(connectPayload)
       .then(() => {
-        navigate(CONNECTORS_ROUTE + '/facebook/connected', {replace: true});
+        navigate(CONNECTORS_ROUTE + '/whatsapp/connected', {replace: true});
       })
       .catch((error: Error) => {
-        setNotification({show: true, text: channel ? t('updateFailed') : t('connectFailed'), successful: false});
+        setNotification({show: true, text: t('updateFailed'), successful: false});
         modal && setError(true);
         console.error(error);
       })
@@ -95,14 +92,14 @@ const FacebookConnect = (props: FacebookConnectProps) => {
       <div className={modal ? styles.inputContainerModal : styles.inputContainer}>
         <Input
           id="id"
-          label={t('facebookPageId')}
-          placeholder={t('facebookPageIdPlaceholder')}
+          label={t('whatsappPhoneNumberId')}
+          placeholder={t('whatsappPhoneNumberIdPlaceholder')}
           showLabelIcon
-          tooltipText={t('inputTooltipFacebookAppId')}
-          value={id}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
+          tooltipText={t('whatsappPhoneNumberIdTooltip')}
+          value={phoneNumberId}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPhoneNumberId(event.target.value)}
           minLength={6}
-          required={true}
+          required
           height={32}
           fontClass="font-base"
         />
@@ -110,11 +107,11 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           id="token"
           label={t('token')}
           placeholder={t('tokenPlaceholder')}
-          value={token}
+          value={userToken}
           showLabelIcon
           tooltipText={t('token')}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
-          required={true}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUserToken(event.target.value)}
+          required
           height={32}
           fontClass="font-base"
         />
@@ -122,11 +119,11 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           id="name"
           label={t('name')}
           placeholder={t('addAName')}
-          hint={t('nameFacebookPlaceholder')}
           showLabelIcon
-          tooltipText={t('optional')}
+          tooltipText={t('addName')}
           value={name}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+          required
           height={32}
           fontClass="font-base"
         />
@@ -137,7 +134,6 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           placeholder={t('addAnUrl')}
           showLabelIcon
           tooltipText={t('optional')}
-          hint={t('imageFacebookHint')}
           value={image}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
           height={32}
@@ -171,4 +167,4 @@ const FacebookConnect = (props: FacebookConnectProps) => {
   );
 };
 
-export default connector(FacebookConnect);
+export default connector(WhatsappConnect);

@@ -17,6 +17,8 @@ import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
 import ConfigureConnector from '../ConfigureConnector';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
+import WhatsappConnect from '../Providers/WhatsappBusinessCloud/WhatsappConnect';
+import ViberConnect from '../Providers/Viber/ViberConnect';
 
 const mapDispatchToProps = {
   getConnectorsConfiguration,
@@ -133,9 +135,10 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       if (source === Source.facebook) return <FacebookConnect />;
       if (source === Source.instagram) return <InstagramConnect />;
       if (source === Source.google) return <GoogleConnect />;
+      if (source === Source.whatsapp) return <WhatsappConnect />;
       if (source === Source.twilioSMS) return <TwilioSmsConnect />;
       if (source === Source.twilioWhatsApp) return <TwilioWhatsappConnect />;
-      if (source === Source.viber) return <p>{t('pageUnderConstruction')}</p>;
+      if (source === Source.viber) return <ViberConnect />;
     }
 
     return <ConnectedChannelsList offset={offset} />;

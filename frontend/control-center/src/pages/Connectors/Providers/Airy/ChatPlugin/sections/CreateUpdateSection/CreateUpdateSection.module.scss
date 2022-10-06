@@ -1,8 +1,33 @@
 .formWrapper {
   align-self: center;
   display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.settings {
+.inputContainer {
   width: 20rem;
+  .input {
+    height: 82px;
+    width: 75%;
+  }
+}
+
+.inputContainerModal {
+  @extend .inputContainer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .input {
+    height: 82px;
+    width: 75%;
+  }
+}
+
+.smartButtonContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-top: 32px;
 }

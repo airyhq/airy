@@ -24,6 +24,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -129,7 +130,9 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final ReadOnlyKeyValueStore<String, Webhook> store = getWebhookStore();
 
         final ArrayList<Webhook> webhooks = new ArrayList<>();
-        store.all().forEachRemaining((it) -> webhooks.add(it.value));
+        try (KeyValueIterator<String, Webhook> iterator = store.all()) {
+            iterator.forEachRemaining((it) -> webhooks.add(it.value));
+        }
         return webhooks;
     }
 

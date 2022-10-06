@@ -2,12 +2,13 @@ package co.airy.core.contacts;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.model.contacts.Contact;
-import co.airy.model.contacts.ConversationContact;
+import co.airy.core.contacts.dto.Messages;
 import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.contact.Contact;
+import co.airy.model.contact.ConversationContact;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
@@ -19,8 +20,10 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -35,8 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.model.contacts.MetadataRepository.newContactMetadata;
-import static co.airy.model.contacts.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.model.contact.Contact.MetadataKeys.CONVERSATIONS;
+import static co.airy.model.contact.MetadataRepository.newContactMetadata;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.CONTACT;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
@@ -50,6 +53,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final String contactsStore = "contacts-store";
     private final String conversationsStore = "conversations-store";
+    private final String messagesStore = "messages-store";
     private final String conversationToContactStore = "conversation-to-contact-map";
     private final String applicationCommunicationContacts = new ApplicationCommunicationContacts().name();
 
@@ -87,9 +91,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
 
 
+        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
         // 1. Auto create contacts if they don't exist
         // 2. Populate contact metadata with conversation metadata (if missing)
-        builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+        messageStream
                 .filter((messageId, message) -> message != null)
                 .groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
@@ -158,6 +163,19 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 })
                 .to(applicationCommunicationContacts);
 
+        // Conversations data necessary for the contact messages endpoint
+        messageStream.toTable()
+                .groupBy((messageId, message) -> KeyValue.pair(message.getConversationId(), message))
+                .aggregate(Messages::new,
+                        (key, value, aggregate) -> {
+                            aggregate.update(value);
+                            return aggregate;
+                        }, (key, value, aggregate) -> {
+                            aggregate.remove(value);
+                            return aggregate;
+                        }, Materialized.as(messagesStore));
+
+
         streams.start(builder.build(), appId);
     }
 
@@ -169,6 +187,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         return streams.acquireLocalStore(conversationsStore);
     }
 
+    private ReadOnlyKeyValueStore<String, Messages> getMessagesStore() {
+        return streams.acquireLocalStore(messagesStore);
+    }
+
     private ReadOnlyKeyValueStore<String, MetadataMap> getConversationToContactStore() {
         return streams.acquireLocalStore(conversationToContactStore);
     }
@@ -176,7 +198,9 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     public List<Contact> getAllContacts() {
         final ReadOnlyKeyValueStore<String, MetadataMap> store = getContactStore();
         final List<Contact> contacts = new ArrayList<>();
-        store.all().forEachRemaining(entry -> contacts.add(Contact.fromMetadataMap(entry.value)));
+        try (KeyValueIterator<String, MetadataMap> iterator = store.all()) {
+            iterator.forEachRemaining(entry -> contacts.add(Contact.fromMetadataMap(entry.value)));
+        }
         return contacts;
     }
 
@@ -199,10 +223,22 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         }
     }
 
+    public List<Message> getMessages(String conversationId) {
+        final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
+        final Messages messages = store.get(conversationId);
+
+        if (messages == null) {
+            return null;
+        }
+        return new ArrayList<>(messages);
+    }
+
+
     @Override
     public Health health() {
         getContactStore();
         getConversationsStore();
+        getMessagesStore();
         getConversationToContactStore();
         return Health.up().build();
     }

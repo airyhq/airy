@@ -189,19 +189,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public List<ChannelContainer> getChannels() {
         final ReadOnlyKeyValueStore<String, ChannelContainer> store = getConnectedChannelsStore();
 
-        final KeyValueIterator<String, ChannelContainer> iterator = store.all();
-
-        List<ChannelContainer> channels = new ArrayList<>();
-        iterator.forEachRemaining(kv -> channels.add(kv.value));
+        List<ChannelContainer> channels;
+        try (KeyValueIterator<String, ChannelContainer> iterator = store.all()) {
+            channels = new ArrayList<>();
+            iterator.forEachRemaining(kv -> channels.add(kv.value));
+        }
 
         return channels;
     }
 
     public List<Template> getTemplates() {
-        final KeyValueIterator<String, Template> iterator = getTemplatesStore().all();
-
-        List<Template> templates = new ArrayList<>();
-        iterator.forEachRemaining(kv -> templates.add(kv.value));
+        List<Template> templates;
+        try (KeyValueIterator<String, Template> iterator = getTemplatesStore().all()) {
+            templates = new ArrayList<>();
+            iterator.forEachRemaining(kv -> templates.add(kv.value));
+        }
 
         return templates;
     }
@@ -212,16 +214,20 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public List<Webhook> getWebhooks() {
-        final KeyValueIterator<String, Webhook> iterator = getWebhookStore().all();
-        List<Webhook> webhooks = new ArrayList<>();
-        iterator.forEachRemaining(kv -> webhooks.add(kv.value));
+        List<Webhook> webhooks;
+        try (KeyValueIterator<String, Webhook> iterator = getWebhookStore().all()) {
+            webhooks = new ArrayList<>();
+            iterator.forEachRemaining(kv -> webhooks.add(kv.value));
+        }
         return webhooks;
     }
 
     public List<User> getUsers() {
-        final KeyValueIterator<String, User> iterator = getUsersStore().all();
-        List<User> users = new ArrayList<>();
-        iterator.forEachRemaining(kv -> users.add(kv.value));
+        List<User> users;
+        try (KeyValueIterator<String, User> iterator = getUsersStore().all()) {
+            users = new ArrayList<>();
+            iterator.forEachRemaining(kv -> users.add(kv.value));
+        }
         return users;
     }
 

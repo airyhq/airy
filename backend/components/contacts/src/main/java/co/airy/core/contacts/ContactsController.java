@@ -1,7 +1,7 @@
 package co.airy.core.contacts;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.model.contacts.Contact;
+import co.airy.model.contact.Contact;
 import co.airy.core.contacts.payload.ContactInfoRequestPayload;
 import co.airy.core.contacts.payload.ContactResponsePayload;
 import co.airy.core.contacts.payload.ContactWithMergeHistoryResponsePayload;
@@ -35,7 +35,7 @@ import java.util.Comparator;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-public class ContactsController implements HealthIndicator {
+public class ContactsController {
     private final Stores stores;
 
     public ContactsController(Stores stores) {
@@ -214,11 +214,6 @@ public class ContactsController implements HealthIndicator {
         }
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-    }
-
-    @Override
-    public Health health() {
-        return Health.up().build();
     }
 }
 

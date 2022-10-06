@@ -2,7 +2,7 @@ package co.airy.core.contacts;
 
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import co.airy.model.contacts.Contact;
+import co.airy.model.contact.Contact;
 import co.airy.core.contacts.payload.DeleteContactPayload;
 import co.airy.core.contacts.util.TestContact;
 import co.airy.core.contacts.util.Topics;
@@ -76,7 +76,7 @@ public class DeleteContactTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)));
         }, "Contact was not created");
-        
+
         webTestHelper.post(
                 "/contacts.delete",
                 objectMapper.writeValueAsString(DeleteContactPayload.builder().id(UUID.fromString(contactId)).build()))

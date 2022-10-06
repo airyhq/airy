@@ -16,7 +16,6 @@ import java.lang.String;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-
 public class MessageSend {
     private String message;
     private String sender;

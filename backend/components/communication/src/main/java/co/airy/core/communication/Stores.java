@@ -264,15 +264,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public List<MessageContainer> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
-        final Messages messagesTreeSet = store.get(conversationId);
+        final Messages messages = store.get(conversationId);
 
-        if (messagesTreeSet == null) {
+        if (messages == null) {
             return null;
         }
         // Enrich messages with user information
-        List<String> senderIds = messagesTreeSet.stream().map((container) -> container.getMessage().getSenderId()).collect(Collectors.toList());
+        List<String> senderIds = messages.stream().map((container) -> container.getMessage().getSenderId()).collect(Collectors.toList());
         Map<String, User> users = collectUsers(senderIds);
-        return messagesTreeSet.stream().peek((container) -> {
+        return messages.stream().peek((container) -> {
             final User user = users.get(container.getMessage().getSenderId());
 
             container.setSender(Sender.builder().id(container.getMessage().getSenderId())

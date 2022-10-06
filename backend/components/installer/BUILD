@@ -14,7 +14,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "contacts",
+    name = "api-components-installer",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,

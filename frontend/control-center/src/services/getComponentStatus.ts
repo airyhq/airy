@@ -1,4 +1,4 @@
-import {ComponentStatus} from '../pages/Connectors';
+import {ComponentStatus} from 'model';
 
 export const getComponentStatus = (
   isHealthy: boolean,
@@ -6,8 +6,8 @@ export const getComponentStatus = (
   isConfigured: boolean,
   isEnabled: boolean
 ) => {
-  if (isInstalled && !isEnabled) return ComponentStatus.disabled;
   if (isInstalled && !isConfigured) return ComponentStatus.notConfigured;
-  if (!isHealthy) return ComponentStatus.notHealthy;
+  if (isInstalled && !isEnabled) return ComponentStatus.disabled;
+  if (isInstalled && isConfigured && isEnabled && !isHealthy) return ComponentStatus.notHealthy;
   if (isInstalled && isConfigured && isEnabled) return ComponentStatus.enabled;
 };

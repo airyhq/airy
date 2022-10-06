@@ -30,7 +30,7 @@ const mapStateToProps = (state: StateModel) => ({
   version: state.data.config.clusterVersion,
 });
 
-const controlCenterUrl = `${env.API_HOST}/control-center`;
+const controlCenterUrl = `${env.API_HOST}/control-center/`;
 const logoutUrl = `${env.API_HOST}/logout`;
 
 const connector = connect(mapStateToProps);

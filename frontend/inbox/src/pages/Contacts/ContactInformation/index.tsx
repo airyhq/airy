@@ -1,5 +1,5 @@
 import {updateContactDetails, updateConversationContactInfo} from '../../../actions';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
@@ -87,16 +87,16 @@ const ContactInformation = (props: ContactInformationProps) => {
       });
     }
 
-    setShowEditDisplayName(!saveEditDisplayName);
+    toggleEditDisplayName();
   };
 
-  const cancelEditDisplayName = () => {
+  const toggleEditDisplayName = useCallback(() => {
     setDisplayName(contact?.displayName);
     useAnimation(showEditDisplayName, setShowEditDisplayName, setFade, 400);
-  };
+  }, [showEditDisplayName, setShowEditDisplayName]);
 
   const editDisplayName = () => {
-    setShowEditDisplayName(!showEditDisplayName);
+    toggleEditDisplayName();
   };
 
   const getUpdatedInfo = () => {
@@ -163,7 +163,7 @@ const ContactInformation = (props: ContactInformationProps) => {
                         dataCy={cyDisplayNameInput}
                       />
                       <div className={styles.displayNameButtons}>
-                        <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
+                        <button className={styles.cancelEdit} onClick={toggleEditDisplayName}>
                           <CloseIcon />
                         </button>
                         <button

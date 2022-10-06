@@ -1,31 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps, useSelector} from 'react-redux';
-import {Channel, Source} from 'model';
+import React, {useEffect} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
+import {Connector, Source} from 'model';
 import InfoCard from './InfoCard';
 import {StateModel} from '../../reducers';
-import {allChannelsConnected} from '../../selectors/channels';
 import {listChannels, listComponents, getConnectorsConfiguration} from '../../actions';
 import {setPageTitle} from '../../services/pageTitle';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
 import {ChannelCard} from './ChannelCard';
 import {SimpleLoader} from 'components';
-import {getComponentStatus, formatComponentNameToConfigKey} from '../../services';
+import {getComponentStatus} from '../../services';
 import styles from './index.module.scss';
-
-export enum ComponentStatus {
-  enabled = 'Enabled',
-  notConfigured = 'Not Configured',
-  disabled = 'Disabled',
-  notHealthy = 'Not Healthy',
-}
-
-export interface ConnectorCardComponentInfo {
-  name: string;
-  displayName: string;
-  configKey: string;
-  isChannel?: string;
-  source: Source;
-}
+import {getMergedConnectors} from '../../selectors';
 
 const mapDispatchToProps = {
   listChannels,
@@ -33,100 +18,82 @@ const mapDispatchToProps = {
   listComponents,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => {
+  return {
+    connectors: getMergedConnectors(state),
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {listChannels, getConnectorsConfiguration, listComponents} = props;
-  const [connectorsPageList, setConnectorsPageList] = useState<[] | ConnectorCardComponentInfo[]>([]);
-  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
-  const components = useSelector((state: StateModel) => state.data.config.components);
-  const connectors = useSelector((state: StateModel) => state.data.connector);
-  const catalogList = useSelector((state: StateModel) => state.data.catalog);
-  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
-  const [hasInstalledComponents, setHasInstalledComponents] = useState(false);
-  const pageTitle = 'Connectors';
+  const {connectors, listChannels, getConnectorsConfiguration, listComponents} = props;
+  const installedConnectors = Object.values(connectors).filter(
+    (connector: Connector) => connector.isInstalled && connector.source !== Source.webhooks && connector.price
+  );
+  const hasAvailableConnectors =
+    Object.values(connectors).filter((connector: Connector) => connector.source !== Source.webhooks && connector.price)
+      .length > 0;
 
-  const catalogListArr = Object.entries(catalogList);
-  const emptyCatalogList = catalogListArr.length === 0;
+  const hasInstalledComponents = installedConnectors.length > 0;
+  const pageTitle = 'Connectors';
+  const sortByName = (a: Connector, b: Connector) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
     listChannels().catch((error: Error) => {
       console.error(error);
     });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
     setPageTitle(pageTitle);
   }, []);
-
-  useEffect(() => {
-    getConnectorsConfiguration();
-    if (emptyCatalogList) {
-      listComponents().catch((error: Error) => {
-        console.error(error);
-      });
-    } else {
-      const listArr = [];
-      catalogListArr.map(component => {
-        if (
-          component[1] &&
-          component[1]?.name &&
-          component[1]?.displayName &&
-          component[1].installed === true &&
-          component[1].source !== 'webhooks'
-        ) {
-          setHasInstalledComponents(true);
-          listArr.push({
-            name: component[1].name,
-            displayName: component[1].displayName,
-            configKey: formatComponentNameToConfigKey(component[1].name),
-            source: component[1].source,
-            isChannel: component[1].isChannel,
-          });
-        }
-      });
-
-      setConnectorsPageList(listArr);
-    }
-  }, [catalogList]);
 
   return (
     <div className={styles.channelsWrapper}>
       <div className={styles.channelsHeadline}>
         <div>
           <h1 className={styles.channelsHeadlineText}>Connectors</h1>
-          {emptyCatalogList && <SimpleLoader />}
+          {!hasAvailableConnectors && <SimpleLoader />}
         </div>
       </div>
       <div className={styles.wrapper}>
-        {!hasInstalledComponents && catalogListArr.length > 0 ? (
+        {!hasInstalledComponents ? (
           <EmptyStateConnectors />
         ) : (
           <>
-            {connectorsPageList.map((item: ConnectorCardComponentInfo) => {
-              if (components && components[item.configKey] && connectors[item.configKey] && catalogList[item.name]) {
-                const isConfigured =
-                  Object.keys(connectors[item.configKey]).length > 0 || item.source === Source.chatPlugin;
-                const isEnabled = components[item.configKey]?.enabled;
-                const isHealthy = components[item.configKey]?.healthy;
-                const isInstalled = catalogList[item.name].installed;
-
-                if (item.isChannel === 'true') {
-                  return (
-                    <ChannelCard
-                      key={item.displayName}
-                      componentInfo={item}
-                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
-                      channelsToShow={channelsBySource(item.source).length}
-                    />
-                  );
-                }
-                if (!item.isChannel) {
-                  return (
-                    <InfoCard
-                      key={item.displayName}
-                      componentInfo={item}
-                      componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
-                    />
-                  );
-                }
+            {installedConnectors.sort(sortByName).map((connector: Connector) => {
+              if (connector.isChannel) {
+                return (
+                  <ChannelCard
+                    key={connector.name}
+                    componentInfo={connector}
+                    componentStatus={getComponentStatus(
+                      connector.isHealthy,
+                      connector.isInstalled,
+                      connector.isConfigured,
+                      connector.isEnabled
+                    )}
+                    channelsToShow={connector.connectedChannels}
+                  />
+                );
+              }
+              if (!connector.isChannel) {
+                return (
+                  <InfoCard
+                    key={connector.name}
+                    componentInfo={connector}
+                    componentStatus={getComponentStatus(
+                      connector.isHealthy,
+                      connector.isInstalled,
+                      connector.isConfigured,
+                      connector.isEnabled
+                    )}
+                  />
+                );
               }
             })}
           </>

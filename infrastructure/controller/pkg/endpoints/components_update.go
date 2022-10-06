@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/lib/go/k8s"
 	"github.com/airyhq/airy/lib/go/payloads"
 	"k8s.io/client-go/kubernetes"
@@ -15,9 +14,8 @@ import (
 )
 
 type ComponentsUpdate struct {
-	DeployedCharts *cache.DeployedCharts
-	clientSet      *kubernetes.Clientset
-	namespace      string
+	clientSet *kubernetes.Clientset
+	namespace string
 }
 
 func (s *ComponentsUpdate) ServeHTTP(w http.ResponseWriter, r *http.Request) {

@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listChannels} from '../../../actions/channel';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 import {StateModel} from '../../../reducers';
 import {allChannels} from '../../../selectors/channels';
 import {Channel, ScreenDimensions, Source} from 'model';
-import {SearchField} from 'components';
+import {SearchField, SettingsModal} from 'components';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
@@ -24,7 +24,7 @@ import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
 import {useAnimation} from 'render/services/useAnimation';
 import {useTranslation} from 'react-i18next';
-import {CONNECTORS_ROUTE} from '../../../routes/routes';
+import {ConnectChannelModal} from '../ConnectChannelModal/ConnectChannelModal';
 
 const mapDispatchToProps = {
   listChannels,
@@ -37,10 +37,9 @@ type ConnectedChannelsListProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
-  const {listChannels, offset} = props;
+  const {offset} = props;
   const {source} = useParams();
   const {t} = useTranslation();
-  const navigate = useNavigate();
   const channels = useSelector((state: StateModel) => {
     return Object.values(allChannels(state)).filter((channel: Channel) => channel.source === source);
   });
@@ -50,14 +49,13 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
   const [animationAction, setAnimationAction] = useState(false);
   const [dataCyChannelList, setDataCyChannelList] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showNewConnectionModal, setShowNewConnectionModal] = useState(false);
   const screenDimensions: ScreenDimensions = {height: screen.height, width: screen.width};
   const ITEM_LINE_HEIGHT = 64;
   const MARGIN_TOP = 128;
   const PADDING_BOTTOM = 32;
   const PAGINATION_HEIGHT = 54;
   const ADDITIONAL_SPACE = 60;
-
-  const path = `${CONNECTORS_ROUTE}/${source}/new`;
 
   const filteredChannels = channels.filter((channel: Channel) =>
     channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -75,12 +73,6 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     const lastPageIndex = firstPageIndex + listPageSize;
     return filteredChannels.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, listPageSize, channels.length, filteredChannels.length]);
-
-  useEffect(() => {
-    listChannels().catch((error: Error) => {
-      console.error(error);
-    });
-  }, []);
 
   useEffect(() => {
     getInfo();
@@ -143,7 +135,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </button>
           <button
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-            onClick={() => navigate(path)}
+            onClick={() => setShowNewConnectionModal(true)}
             data-cy={cyConnectorsAddNewButton}
           >
             <PlusIcon className={styles.plusIcon} />
@@ -174,6 +166,15 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </div>
         )}
       </div>
+      {showNewConnectionModal && (
+        <SettingsModal
+          title={t('createChannel')}
+          close={() => setShowNewConnectionModal(false)}
+          headerClassName={styles.connectChannelModalHeader}
+        >
+          <ConnectChannelModal source={source as Source} />
+        </SettingsModal>
+      )}
       {areConnectedChannels && (
         <Pagination
           totalCount={filteredChannels.length}

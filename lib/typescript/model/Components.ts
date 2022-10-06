@@ -21,3 +21,10 @@ export interface ComponentInfo {
   isChannel?: string;
   configurationValues?: string;
 }
+
+export enum ComponentStatus {
+  enabled = 'Enabled',
+  notConfigured = 'Not Configured',
+  disabled = 'Disabled',
+  notHealthy = 'Not Healthy',
+}

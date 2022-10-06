@@ -4,16 +4,9 @@ import {useTranslation} from 'react-i18next';
 import {Link, useParams} from 'react-router-dom';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {StateModel} from '../../../reducers';
-import {
-  connectChatPlugin,
-  updateChannel,
-  disconnectChannel,
-  enableDisableComponent,
-  getConnectorsConfiguration,
-  listComponents,
-} from '../../../actions';
+import {enableDisableComponent, getConnectorsConfiguration, listComponents} from '../../../actions';
 import {LinkButton, InfoButton} from 'components';
-import {NotificationModel, Source, ComponentInfo} from 'model';
+import {NotificationModel, Source, ComponentInfo, Channel} from 'model';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {getComponentStatus, removePrefix} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
@@ -21,11 +14,9 @@ import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCircle.svg';
 import styles from './index.module.scss';
+import {allChannelsConnected} from '../../../selectors';
 
 const mapDispatchToProps = {
-  connectChatPlugin,
-  updateChannel,
-  disconnectChannel,
   enableDisableComponent,
   getConnectorsConfiguration,
   listComponents,
@@ -35,6 +26,7 @@ const mapStateToProps = (state: StateModel) => ({
   config: state.data.config,
   components: state.data.config.components,
   catalog: state.data.catalog,
+  connectors: state.data.connector,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -44,12 +36,21 @@ type ConnectorWrapperProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConnectorWrapper = (props: ConnectorWrapperProps) => {
-  const {components, catalog, enableDisableComponent, getConnectorsConfiguration, listComponents, config, Outlet} =
-    props;
+  const {
+    components,
+    catalog,
+    connectors,
+    enableDisableComponent,
+    getConnectorsConfiguration,
+    listComponents,
+    config,
+    Outlet,
+  } = props;
 
-  const connectors = useSelector((state: StateModel) => state.data.connector);
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
   const componentName = connectorInfo && removePrefix(connectorInfo?.name);
+  const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
+  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel?.source === Source);
   const [configurationModal, setConfigurationModal] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [isEnabled, setIsEnabled] = useState<boolean | null>(components[connectorInfo && componentName]?.enabled);
@@ -115,7 +116,8 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
   }, [config, connectorInfo, components]);
 
   const determineBackRoute = (channelId: string, newChannel: boolean, connectorHasChannels: string | undefined) => {
-    const channelRoute = (channelId || newChannel) && connectorHasChannels;
+    const channelRoute =
+      (channelId || newChannel) && connectorHasChannels && channelsBySource(connectorInfo?.source).length > 0;
 
     if (channelRoute) {
       setBackRoute(CONNECTOR_CONNECTED_ROUTE);
@@ -199,7 +201,6 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                       text={t('infoButtonText')}
                     />
                   </div>
-
                   {isConfigured && (
                     <SmartButton
                       title={isEnabled ? t('disableComponent') : t('enableComponent')}

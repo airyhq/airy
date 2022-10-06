@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useCallback, useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel, TagColor} from 'model';
 
@@ -89,7 +89,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const showAddTags = () => {
     setTagName('');
-    setShowTagsDialog(true);
+    toggleCloseDialog();
   };
 
   const addTag = (tag: TagModel) => {
@@ -138,7 +138,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
       createTag({name: tagName.trim(), color}).then((tag: TagModel) => {
         if (tag) {
           addTag(tag);
-          setShowTagsDialog(false);
+          toggleCloseDialog();
         }
       });
     }
@@ -154,16 +154,20 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
       console.error(error);
     });
 
-    setShowEditDisplayName(!saveEditDisplayName);
+    toggleEditDisplayName();
   };
 
-  const cancelEditDisplayName = () => {
+  const toggleCloseDialog = useCallback(() => {
+    useAnimation(showTagsDialog, setShowTagsDialog, setFade, 400);
+  }, [showTagsDialog, setShowTagsDialog]);
+
+  const toggleEditDisplayName = useCallback(() => {
     setDisplayName(conversation.metadata.contact.displayName);
     useAnimation(showEditDisplayName, setShowEditDisplayName, setFade, 400);
-  };
+  }, [showEditDisplayName, setShowEditDisplayName]);
 
   const editDisplayName = () => {
-    setShowEditDisplayName(!showEditDisplayName);
+    toggleEditDisplayName();
   };
 
   const getUpdatedInfo = () => {
@@ -189,7 +193,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
     return (
       <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
-        <Dialog close={() => useAnimation(showTagsDialog, setShowTagsDialog, setFade, 400)}>
+        <Dialog close={toggleCloseDialog}>
           <form className={styles.addTags} onSubmit={submitForm}>
             <Input
               type="text"
@@ -293,7 +297,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                       dataCy={cyDisplayNameInput}
                     />
                     <div className={styles.displayNameButtons}>
-                      <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
+                      <button className={styles.cancelEdit} onClick={toggleEditDisplayName}>
                         <CloseIcon />
                       </button>
                       <button

@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/airyhq/airy/lib/go/payloads"
 	helmCli "github.com/mittwald/go-helm-client"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -17,10 +16,9 @@ import (
 )
 
 type ComponentsInstallUninstall struct {
-	Cli            helmCli.Client
-	ClientSet      *kubernetes.Clientset
-	Namespace      string
-	DeployedCharts *cache.DeployedCharts
+	Cli       helmCli.Client
+	ClientSet *kubernetes.Clientset
+	Namespace string
 }
 
 func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +85,6 @@ func (s *ComponentsInstallUninstall) ServeHTTP(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	s.DeployedCharts.RefreshDeployedCharts()
 	w.WriteHeader(http.StatusAccepted)
 }
 

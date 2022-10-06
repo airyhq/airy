@@ -36,7 +36,7 @@ springboot(
 
 custom_java_library(
     name = "test-util",
-    srcs = ["src/test/java/co/airy/core/api/admin/util/Topics.java"],
+    srcs = ["src/test/java/co/airy/core/admin/util/Topics.java"],
     deps = app_deps,
 )
 

@@ -37,7 +37,7 @@ springboot(
 
 java_library(
     name = "test-util",
-    srcs = glob(["src/test/java/co/airy/core/api/communication/util/**/*.java"]),
+    srcs = glob(["src/test/java/co/airy/core/communication/util/**/*.java"]),
     deps = [":app"] + app_deps,
 )
 

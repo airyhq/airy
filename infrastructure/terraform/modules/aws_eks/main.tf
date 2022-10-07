@@ -30,6 +30,26 @@ module "vpc" {
   tags = merge(var.tags, { Terraform = "true" })
 }
 
+data "aws_subnets" "private" {
+  count = var.vpc_id == "" ? 1 : 0
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+
+  tags = {
+    Tier = "Private"
+  }
+}
+
+data "aws_subnets" "public" {
+  count = var.vpc_id ==  "" ? 1 : 0
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+}
+
 locals {
   vpc = (
     local.create_vpc ?
@@ -40,8 +60,8 @@ locals {
     } :
     {
       id              = var.vpc_id
-      private_subnets = var.private_subnets
-      public_subnets  = var.public_subnets
+      private_subnets = data.aws_subnets.private[0].ids
+      public_subnets  = data.aws_subnets.public[0].ids
     }
   )
 }
@@ -53,8 +73,7 @@ module "eks" {
   cluster_version        = var.cluster_version
   cluster_name           = var.core_id
   vpc_id                 = local.vpc.id
-  subnets                = [local.vpc.private_subnets[0], local.vpc.public_subnets[1]]
-  fargate_subnets        = [local.vpc.private_subnets[0]]
+  subnets                = concat(module.vpc.private_subnets,module.vpc.public_subnets) # [local.vpc.private_subnets[0], local.vpc.public_subnets[1]]
   write_kubeconfig       = false
   map_users              = var.kubernetes_users
   tags                   = var.tags

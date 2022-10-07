@@ -34,11 +34,12 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
       const isUrl = label.includes('Url');
       const hasSteps = source === Source.dialogflow && replacedKey.includes('Level');
       const stepPlaceholder = `0.1 ${t('to')} 0.9`;
+      const sensitive = label.includes('Token') || label.includes('Password') || label.includes('Secret');
 
       inputArr.push(
         <div key={index} className={styles.input}>
           <Input
-            type={isUrl ? 'url' : hasSteps ? 'number' : 'text'}
+            type={sensitive ? 'password' : isUrl ? 'url' : hasSteps ? 'number' : 'text'}
             step={hasSteps ? 0.01 : undefined}
             min={hasSteps ? 0.1 : undefined}
             max={hasSteps ? 0.9 : undefined}

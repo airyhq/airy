@@ -322,8 +322,8 @@ class InputComponent extends Component<InputProps, IState> {
           )}
           {this.props.maxLength > 0 && this.props.showCounter ? (
             <div className={styles.inputMaxLength}>
-              <span className={value.length > this.props.maxLength ? styles.inputMaxLengthError : ''}>
-                {Math.max(0, this.props.maxLength - value.length)}
+              <span className={value?.length > this.props.maxLength ? styles.inputMaxLengthError : ''}>
+                {Math.max(0, this.props.maxLength - value?.length)}
               </span>
             </div>
           ) : (

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Button, Input} from 'components';
+import {Input, SmartButton} from 'components';
 import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
 import styles from './ConnectNewChatPlugin.module.scss';
 import {connectChatPlugin} from '../../../../../../actions/channel';
@@ -23,11 +23,13 @@ const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
   const {modal, connectNew, connectChatPlugin} = props;
   const [displayName, setDisplayName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [isPending, setIsPending] = useState(false);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const CHAT_PLUGIN_ROUTE = `${CONNECTORS_ROUTE}/chatplugin`;
 
   const createNewConnection = (displayName: string, imageUrl?: string) => {
+    setIsPending(true);
     connectChatPlugin({
       name: displayName,
       ...(imageUrl.length > 0 && {
@@ -39,6 +41,9 @@ const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
       })
       .catch((error: Error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   };
 
@@ -76,19 +81,20 @@ const ConnectNewChatPlugin = (props: ConnectNewChatPluginProps) => {
           fontClass="font-base"
         />
       </div>
-      <Button
+      <SmartButton
+        title={t('create')}
+        pending={isPending}
+        height={40}
+        width={176}
         type="submit"
         styleVariant="small"
         disabled={displayName === ''}
-        style={{width: '176px', height: '40px'}}
         dataCy={cyChannelsChatPluginFormSubmitButton}
         onClick={(event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
           createNewConnection(displayName, imageUrl);
         }}
-      >
-        {t('create')}
-      </Button>
+      />
     </form>
   );
 };

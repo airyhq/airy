@@ -157,6 +157,13 @@
   }
 }
 
+.searchFieldContainer {
+  display: flex;
+  justify-content: flex-end;
+  height: 32px;
+  margin-bottom: 16px;
+}
+
 .searchFieldButtons {
   display: flex;
   align-items: center;
@@ -164,7 +171,7 @@
 
 .searchField {
   min-width: 300px;
-  animation: searchFieldAnimation 3000ms ease;
+  animation: searchFieldAnimation 300ms ease;
   height: 32px;
   border-radius: 32px;
 }

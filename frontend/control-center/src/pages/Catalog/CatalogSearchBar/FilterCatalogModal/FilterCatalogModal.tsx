@@ -15,6 +15,7 @@ type FilterCatalogModalProps = {
   currentFilter: FilterTypes;
   setCurrentFilter: Dispatch<SetStateAction<FilterTypes>>;
   setShowFilter: Dispatch<SetStateAction<boolean>>;
+  animation: string;
 };
 
 export const FilterCatalogModal = (props: FilterCatalogModalProps) => {
@@ -35,7 +36,7 @@ export const FilterCatalogModal = (props: FilterCatalogModalProps) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${props.animation}`}>
       <div className={styles.titleContainer}>
         <h1>{t('searchByType')}</h1>
         <CloseIcon className={styles.closeIcon} height={12} width={12} onClick={() => props.setShowFilter(false)} />

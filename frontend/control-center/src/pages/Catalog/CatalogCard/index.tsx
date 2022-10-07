@@ -129,7 +129,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           }
           buttonRef={installButtonCard}
         >
-          {t('open').toUpperCase()}
+          {t('openCatalog').toUpperCase()}
         </Button>
       );
     }
@@ -137,7 +137,7 @@ const CatalogCard = (props: CatalogCardProps) => {
     return (
       <SmartButton
         height={24}
-        width={80}
+        width={installButtonCard?.current?.offsetWidth}
         className={styles.smartButton}
         styleVariant="green"
         type="submit"

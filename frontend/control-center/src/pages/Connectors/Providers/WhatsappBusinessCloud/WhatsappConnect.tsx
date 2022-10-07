@@ -104,6 +104,7 @@ const WhatsappConnect = (props: WhatsappConnectProps) => {
           fontClass="font-base"
         />
         <Input
+          type="password"
           id="token"
           label={t('token')}
           placeholder={t('tokenPlaceholder')}

@@ -36,10 +36,12 @@
   flex-direction: column;
   h1 {
     @include font-l;
+    color: var(--color-text-contrast);
     font-weight: bold;
   }
   span {
     @include font-m;
+    color: var(--color-text-gray);
   }
 }
 

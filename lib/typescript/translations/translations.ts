@@ -98,6 +98,7 @@ const resources = {
       //Status
       all: 'All',
       open: 'Open',
+      openCatalog: 'Open',
       closed: 'Closed',
 
       //Message
@@ -638,6 +639,7 @@ const resources = {
       //Status
       all: 'Alle',
       open: 'Offen',
+      openCatalog: 'Öffnen',
       closed: 'Geschlossen',
 
       //Message
@@ -1175,6 +1177,7 @@ const resources = {
       //Status
       all: 'Tous',
       open: 'Ouvert',
+      openCatalog: 'Ouvert',
       closed: 'Fermé',
 
       //Message
@@ -1185,7 +1188,7 @@ const resources = {
       newMessagesWillAppearHere: 'Vos nouveaux messages apparaîtront ici',
       newMessagesWillAppearHereText:
         'Nous commençons à afficher les messages à partir du moment où vous connectez un canal. Vos conversations apparaîtront ici dès que vos contacts vous enverront des messages.',
-      nothingFound: 'Rien trouvé',
+      nothingFound: 'Aucun résultat',
       noMatchingConversations: `Nous n'avons pas pu trouver de conversation correspondant à vos critères.`,
 
       //Metadata
@@ -1580,7 +1583,7 @@ const resources = {
       ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
       searchByNamePlaceholder: 'Recherche par nom',
       searchByType: 'Recherche par type',
-      noMatchingCatalogs: `Nous n'avons pas pu trouver de Catalog correspondant à vos critères.`,
+      noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1713,6 +1716,7 @@ const resources = {
       //Status
       all: 'Todo',
       open: 'Abrir',
+      openCatalog: 'Abrir',
       closed: 'Cerrado',
 
       //Message

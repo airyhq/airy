@@ -107,6 +107,7 @@ const FacebookConnect = (props: FacebookConnectProps) => {
           fontClass="font-base"
         />
         <Input
+          type="password"
           id="token"
           label={t('token')}
           placeholder={t('tokenPlaceholder')}

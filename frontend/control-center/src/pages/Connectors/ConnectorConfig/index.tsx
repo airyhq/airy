@@ -140,26 +140,28 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   return (
     <>
       <div className={styles.channelsLineContainer}>
-        <div className={styles.channelsLineItems}>
-          <span
-            className={
-              connectedChannels || newChannel || channelId || (configurePath && !isChannel)
-                ? styles.activeItem
-                : styles.inactiveItem
-            }
-            onClick={() => isChannel && navigate(lineTitleRoute, {state: {from: currentPath}})}
-          >
-            {lineTitle}
-          </span>
-          {((source !== Source.chatPlugin && connectorInfo.isChannel) || (notConfigured && isChannel)) && (
+        {!(source === Source.chatPlugin && (newChannel || channelId)) && (
+          <div className={styles.channelsLineItems}>
             <span
-              className={configurePath ? styles.activeItem : styles.inactiveItem}
-              onClick={() => !configurePath && navigate(navigateConfigure, {state: {from: currentPath}})}
+              className={
+                connectedChannels || newChannel || channelId || (configurePath && !isChannel)
+                  ? styles.activeItem
+                  : styles.inactiveItem
+              }
+              onClick={() => isChannel && navigate(lineTitleRoute, {state: {from: currentPath}})}
             >
-              {t('configuration')}
+              {lineTitle}
             </span>
-          )}
-        </div>
+            {((source !== Source.chatPlugin && connectorInfo.isChannel) || (notConfigured && isChannel)) && (
+              <span
+                className={configurePath ? styles.activeItem : styles.inactiveItem}
+                onClick={() => !configurePath && navigate(navigateConfigure, {state: {from: currentPath}})}
+              >
+                {t('configuration')}
+              </span>
+            )}
+          </div>
+        )}
         <div className={styles.line} />
       </div>
       <div

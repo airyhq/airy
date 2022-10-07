@@ -3,7 +3,7 @@ FROM openjdk:8-jre-alpine
 LABEL maintainer "https://github.com/airyhq"
 LABEL name="kafka" version=${INSTALL_KAFKA_VERSION}
 
-ENV INSTALL_KAFKA_VERSION 2.8.2
+ENV INSTALL_KAFKA_VERSION 3.3.1
 ENV INSTALL_SCALA_VERSION 2.13
 ENV INSTALL_MIRROR="https://downloads.apache.org/"
 
@@ -23,9 +23,7 @@ ENV PATH /sbin:/opt/kafka/bin/:$PATH
 WORKDIR /opt/kafka
 
 COPY config/server.properties /etc/kafka/server.properties
-COPY config/zookeeper.properties /etc/kafka/zookeeper.properties
 COPY /scripts/configure-kafka.sh /root/configure-kafka.sh
-COPY /scripts/configure-zookeeper.sh /root/configure-zookeeper.sh
 COPY /scripts/entrypoint.sh /root/entrypoint.sh
 
 ENTRYPOINT ["/root/entrypoint.sh"]

@@ -83,14 +83,14 @@ Congratulations! You are now ready to connect Cognigy.AI to your Airy Core insta
 </SuccessBox>
 
 Connecting Cognigy.AI to your Airy Core instance can be done through API request or
-through the [Airy Control Center UI]().
+through the [Airy Control Center UI](/ui/control-center/introduction).
 
 We cover both options in this section: keep reading for connecting Cognigy.AI via
-API request, scroll down to the [next section]() for connecting Cognigy.AI via the [Airy Control Center UI]().
+API request, scroll down to the next section for connecting Cognigy.AI via the [Airy Control Center UI](/ui/control-center/introduction).
 
 ## Install and Configure Cognigy.AI to your Airy instance via API request
 
-To install Cognigy.AI on your instance, send a API request to the [Components Install endpoint](api/endpoints/components#install).
+To install Cognigy.AI on your instance, send a API request to the [Components Install endpoint](/api/endpoints/components#install).
 
 The request body should be:
 
@@ -119,7 +119,7 @@ Use the REST Endpoint URL and User ID you got in the previous steps (step 3 and 
 }
 ```
 
-The request is considered successful if `cognigy`is returned in the list of configured components
+The request is considered successful if `cognigy` is returned in the list of configured components
 and the request status code is `200`.
 
 ```json
@@ -129,3 +129,19 @@ and the request status code is `200`.
   }
 }
 ```
+
+Cognigy.AI is now installed and configured. Sroll down for the next step: interacting
+with your cognigy.AI conversation.
+
+## Install and Configure Cognigy.AI to your Airy instance via the Control Center UI
+
+On the [Airy Control Center UI](/ui/control-center/introduction), navigate to the Catalog and select Cognigy.AI. Click on the `Install` button.
+
+Once the installation is completed, navigate to the [Control Center's Connectors page](/ui/control-center/connectors) and select Cognigy.AI: this will open the connectors' configuration page.
+
+Paste the REST Endpoint URL and User ID you got in the previous steps (step 3 and step 5)
+in the respective fields and save this configuration.
+
+Cognigy.AI is now installed and configured: the next step is interacting with your cognigy.AI conversation.
+
+## Interact with your Cognigy.AI conversation

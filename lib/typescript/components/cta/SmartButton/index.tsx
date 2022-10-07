@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties} from 'react';
 import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 
 import styles from './index.module.scss';

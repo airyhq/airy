@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, Image, File, Video} from '../../components';
 import {AudioClip} from 'components';
-import {CurrentLocation} from './components/CurrentLocation';
+import {CurrentLocation} from '../../components/CurrentLocation';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
 import {decodeURIComponentMessage, getAttachmentType} from '../../services';

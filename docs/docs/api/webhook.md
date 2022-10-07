@@ -23,9 +23,9 @@ The outbound webhook integration enables you to programmatically participate in
 conversations by sending messages or reacting to them. Here's a common
 integration pattern:
 
-- Call the [subscribe](#subscribing) endpoint
+- Call the [`subscribe`](#subscribing) endpoint
 - Consume on your URL of choice [events](#events)
-- React to those events by calling the [send message](/api/endpoints/messages.md#send) endpoint
+- React to those events by calling the [`send message`](/api/endpoints/messages.md#send) endpoint
 
 You must de-duplicate messages on arrival as the webhook _does not_ guarantee
 events uniqueness. Your webhook also has to respond to every message with a status code of `200`.

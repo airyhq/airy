@@ -2,7 +2,6 @@ package providers
 
 import (
 	"cli/pkg/console"
-	"cli/pkg/kube"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
 	"cli/pkg/workspace"
@@ -19,7 +18,7 @@ const (
 )
 
 type Provider interface {
-	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
+	Provision(providerConfig map[string]string, dir workspace.ConfigDir) error
 	GetOverrides() template.Variables
 	CheckEnvironment() error
 	PreInstallation(workspace string) (string, error)

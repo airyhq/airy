@@ -6,8 +6,8 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//backend/model/contact",
     "//backend/model/conversation",
-    "//backend/model/contacts",
     "//backend/model/metadata",
     "//backend/model/message",
     "//lib/java/uuid",
@@ -38,6 +38,7 @@ custom_java_library(
     name = "test-util",
     srcs = [
         "src/test/java/co/airy/core/contacts/util/TestContact.java",
+        "src/test/java/co/airy/core/contacts/util/TestConversation.java",
         "src/test/java/co/airy/core/contacts/util/Topics.java",
     ],
     deps = test_deps,

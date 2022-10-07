@@ -1,23 +1,20 @@
-.newPageParagraph {
-  margin: 24px 0;
-  color: var(--color-text-gray);
-}
-
 .formWrapper {
-  width: 340px;
-  align-self: center;
-}
-
-.formRow {
-  margin-bottom: 16px;
-
-  &:hover {
-    .actionToolTip {
-      display: block;
-    }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  button {
+    margin-top: 32px;
   }
 }
 
-.settings {
-  width: 20rem;
+.formWrapperModal {
+  @extend .formWrapper;
+  align-items: center;
+}
+
+.formRow {
+  height: 82px;
+  width: 75%;
+  max-width: 20rem;
 }

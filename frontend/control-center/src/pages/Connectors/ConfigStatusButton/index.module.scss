@@ -26,13 +26,6 @@
   }
 }
 
-.buttonDisabled,
-.buttonDisabled:hover,
-.buttonDisabled:active,
-.buttonDisabled:visited {
-  background: var(--color-disable-status-config);
-}
-
 .buttonNotHealthy,
 .buttonNotHealthy:hover,
 .buttonNotHealthy:active,
@@ -42,4 +35,11 @@
     cursor: pointer;
     background: var(--color-red-alert-pressed);
   }
+}
+
+.buttonDisabled,
+.buttonDisabled:hover,
+.buttonDisabled:active,
+.buttonDisabled:visited {
+  background: var(--color-disable-status-config);
 }

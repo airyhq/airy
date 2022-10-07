@@ -26,6 +26,11 @@ tools:
     enabled: true
 serviceAccount: airy-admin
 limitRange: false
+repositories:
+  - name: airy-core
+    url: "https://helm.airy.co"
+    username:
+    password:
 components:
   api:
     admin:
@@ -39,6 +44,12 @@ components:
       mandatory: true
       enabled: true
       image: api/communication
+      resources: {}
+    unread_counter:
+      name: unread-counter
+      mandatory: true
+      enabled: true
+      image: components/unread-counter
       resources: {}
     websocket:
       name: api-websocket

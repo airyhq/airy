@@ -1,0 +1,55 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  @include font-base;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.contactContent a,
+.contactContent a:hover,
+.contactContent a:visited,
+.contactContent a:active {
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}
+
+.memberContent a,
+.memberContent a:hover,
+.memberContent a:visited,
+.memberContent a:active {
+  color: white;
+}
+
+.text {
+  font-family: 'Lato', sans-serif;
+}
+
+.geolocation {
+  @include font-s;
+}
+
+.geolocation a:link,
+.geolocation a:active,
+.geolocation a:visited,
+.geolocation a:hover {
+  text-decoration: none;
+}

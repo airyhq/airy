@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/airyhq/airy/infrastructure/controller/pkg/cache"
 	"github.com/gorilla/mux"
 	helmCli "github.com/mittwald/go-helm-client"
 	"helm.sh/helm/v3/pkg/repo"
@@ -48,12 +47,11 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	}
 
 	helmCli, helmIndex := mustGetHelmClientAndIndex(namespace, kubeConfig, clientSet, repoFilePath)
-	deployedCharts := cache.MustNewDeployedCharts(helmCli)
 
 	services := &Services{clientSet: clientSet, namespace: namespace}
 	r.Handle("/services", services)
 
-	componentsUpdate := &ComponentsUpdate{DeployedCharts: deployedCharts, clientSet: clientSet, namespace: namespace}
+	componentsUpdate := &ComponentsUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/components.update", componentsUpdate)
 
 	componentsDelete := &ComponentsDelete{clientSet: clientSet, namespace: namespace}
@@ -65,11 +63,11 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	clusterUpdate := &ClusterUpdate{clientSet: clientSet, namespace: namespace}
 	r.Handle("/cluster.update", clusterUpdate)
 
-	componentsInstallUninstall := ComponentsInstallUninstall{DeployedCharts: deployedCharts, Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
+	componentsInstallUninstall := ComponentsInstallUninstall{Cli: helmCli, ClientSet: clientSet, Namespace: namespace}
 	r.Handle("/components.install", &componentsInstallUninstall)
 	r.Handle("/components.uninstall", &componentsInstallUninstall)
 
-	componentsList := ComponentsList{DeployedCharts: deployedCharts, ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
+	componentsList := ComponentsList{ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
 	r.Handle("/components.list", &componentsList)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

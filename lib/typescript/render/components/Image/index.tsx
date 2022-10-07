@@ -1,6 +1,6 @@
 import React from 'react';
 import {ImageWithFallback} from '../ImageWithFallback';
-import {ImageContent} from '../../providers/facebook/facebookModel';
+import {ImageContent} from '../../providers/meta/MetaModel';
 import {Text} from '../../components/Text';
 import styles from './index.module.scss';
 

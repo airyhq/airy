@@ -114,7 +114,7 @@ class SendMessageTest {
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setToken(token)
-                        .setSourceChannelId("ps-id")
+                        .setSourceChannelId("whatsapp phone number")
                         .setSource("whatsapp")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -166,6 +166,7 @@ class SendMessageTest {
                                 .build())
         ));
 
+        // TimeUnit.SECONDS.sleep(5);
 
         final List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
 

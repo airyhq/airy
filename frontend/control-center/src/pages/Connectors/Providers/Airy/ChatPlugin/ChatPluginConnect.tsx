@@ -12,7 +12,7 @@ import {cyChannelCreatedChatPluginCloseButton} from 'handles';
 import {Button, LinkButton, NotificationComponent, SettingsModal} from 'components';
 import {Channel, NotificationModel, Source, ChatpluginConfig, DefaultConfig} from 'model';
 
-import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
+import ConnectNewChatPlugin from './sections/ConnectNewChatPlugin';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airyAvatar.svg';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
@@ -61,23 +61,6 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
   const {t} = useTranslation();
   const CHAT_PLUGIN_ROUTE = `${CONNECTORS_ROUTE}/chatplugin`;
 
-  const createNewConnection = (displayName: string, imageUrl?: string) => {
-    props
-      .connectChatPlugin({
-        name: displayName,
-        ...(imageUrl.length > 0 && {
-          imageUrl: imageUrl,
-        }),
-      })
-      .then((id: string) => {
-        setCurrentChannelId(id);
-        setShowCreatedModal(true);
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
-  };
-
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm(t('deleteChannel'))) {
       props.disconnectChannel({source: 'chatplugin', channelId: channel.id}).catch((error: Error) => {
@@ -111,11 +94,16 @@ const ChatPluginConnect = (props: ConnectedProps<typeof connector>) => {
     navigate(`${CONNECTORS_ROUTE}/${Source.chatPlugin}/connected`);
   };
 
+  const handleNewConnection = (id: string, showModal: boolean) => {
+    setCurrentChannelId(id);
+    setShowCreatedModal(showModal);
+  };
+
   const PageContent = () => {
     switch (currentPage) {
       case Pages.createUpdate:
         if (newChannel) {
-          return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
+          return <ConnectNewChatPlugin connectNew={handleNewConnection} />;
         }
         if (channelId?.length > 0) {
           return (

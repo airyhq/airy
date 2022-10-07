@@ -151,6 +151,7 @@ const resources = {
       uninstallComponentText: 'Are you sure you want to uninstall this component?',
       restart: 'Restart',
       restartComponentUpdate: 'We will restart the component to apply your update.',
+      pageUnderConstruction: 'page under construction - coming soon!',
 
       //Channels
       toConfigure: 'To configure',
@@ -193,6 +194,7 @@ const resources = {
       reset: 'Reset',
       preview: 'Preview',
       sample: 'Sample',
+      add: 'Add',
       undoStep: 'Undo',
       deleteChannel: 'Do you really want to delete this channel?',
       addChanne: 'Add channel',
@@ -283,16 +285,39 @@ const resources = {
       installCodeNpm1: 'You can install your ',
       installCodeNpm2: ' library here:',
 
+      //Facebook Messenger
+      inputTooltipFacebookAppId: 'Your Facebook App Id',
+      inputTooltipFacebookAppSecret: 'Your Facebook App Secret',
+      inputTooltipFacebookWebhookSecret: 'Your Facebook Webhook Secret',
+
+      //Google
+      inputTooltipGoogleSaFile: 'Your Google Sa File',
+      inputTooltipGooglePartnerKey: 'Your Google Partner Key',
+
+      //Viber
+      inputTooltipViberAuthToken: 'Your Viber Auth Token',
+
+      //Twilio SMS
+      inputTooltipTwiliosmsAuthToken: 'Your Twilio SMS Auth Token',
+      inputTooltipTwiliosmsAccountSid: 'Your Twilio SMS Account Sid',
+
+      //Whatsapp Business Cloud
+      inputTooltipWhatsappAppId: 'Your Whatsapp App Id',
+      inputTooltipWhatsappAppSecret: 'Your Whatsapp App Secret',
+      inputTooltipWhatsappPhoneNumber: 'Your Phone Number',
+      inputTooltipWhatsappName: 'Your Name',
+      inputTooltipWhatsappAvatarUrl: 'Your Avatar Url',
+
       //Zendesk
       zendeskDescription: 'Make customers happy via text, mobile, phone, email, live chat, social media.',
       ZendeskSubDomain: 'Zendesk Subdomain',
       AddDomain: 'Add domain',
-      ZendeskDomain: 'Your zendesk subdomain',
       username: 'Username',
       AddUsername: 'Add Username',
-      ZendeskUsername: 'Your zendesk username',
-      ZendeskToken: 'A zendesk API token associated to your user',
       APIToken: 'API Token',
+      inputTooltipZendeskDomain: 'Your Zendesk Subdomain',
+      inputTooltipZendeskUsername: 'Your Zendesk Username',
+      inputTooltipZendeskToken: 'A Zendesk API token associated to your user',
 
       //Dialogflow
       dialogflowDescription: 'Conversational AI with virtual agents',
@@ -302,29 +327,35 @@ const resources = {
       AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
-      fromCloudConsole: 'given by the Cloud Console',
-      amountSuggestions: 'amount for suggestions',
-      amountReplies: 'amount for replies',
+      inputTooltipDialogflowProjectId: 'given by the Cloud Console',
+      inputTooltipDialogflowDialogflowCredentials: 'given by the Cloud Console',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'amount for suggestions',
+      inputTooltipDialogflowReplyConfidenceLevel: 'amount for replies',
       to: 'to',
       processorWaitingTime: 'Processor waiting time',
       processorCheckPeriod: 'Processor check period',
-      waitingDefault: 'Default value: 5000',
-      checkDefault: 'Default value: 2500',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Default value: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Default value: 2500',
       defaultLanguage: 'Default language',
-      defaultLanguageTooltip: 'Default value: en',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Default value: en',
 
       //Salesforce
       salesforceDescription:
         "Increase sales performance with the world's No. 1 CRM platform for business of all sizes.",
       salesforceOrgUrl: 'Organization URL',
       yourSalesforceOrgUrl: 'Your Salesforce organization URL',
-      salesforceOrgUrlExample: 'Example: https://org.my.salesforce.com',
       Username: 'Username',
-      yourSalesforceUsername: 'Your Salesforce username',
       Password: 'Password',
-      yourSalesforcePassword: 'Your Salesforce password',
       securityToken: 'Security Token',
-      yourSalesforceSecurityToken: 'Your Salesforce Security Token',
+      inputTooltipSalesforceUrl: 'Example: https://org.my.salesforce.com',
+      inputTooltipSalesforceUsername: 'Your Salesforce Username',
+      inputTooltipSalesforcePassword: 'Your Salesforce Password',
+      inputTooltipSalesforceSecurityToken: 'Your Salesforce Security Token',
+
+      //Rasa
+      inputTooltipRasaWebhookUrl: 'Example: http://webhooks.rasa',
+      inputTooltipRasaApiHost: 'Your Rasa Api Host',
+      inputTooltipRasaToken: 'Your Rasa Token',
 
       //Facebook Messenger
       connectMessenger: 'Connect Messenger',
@@ -339,6 +370,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Agent ID',
+      addAgentId: 'Add Agent ID',
       googleAgentPlaceholder: 'Add the agent ID provided by your Google Partner',
       connectGoogle: 'Connect Google Business Messages',
       googleConfigurationText:
@@ -348,6 +380,12 @@ const resources = {
       googleConfigurationText2: `Check Airy's Documentation`,
       googleConfigurationText3: 'for more information.',
       newGoogleConnection: 'You are about to connect a new channel',
+
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
 
       //Instagram
       instagramAccount: 'Facebook Page ID connected to the Instagram account',
@@ -386,6 +424,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'World #1 chat app.',
+      whatsappPhoneNumberId: 'Phone Number Id',
+      whatsappPhoneNumberIdPlaceholder: 'Add your Phone Number Id',
+      whatsappPhoneNumberIdTooltip: 'Add your Phone Number Id',
 
       //Congnigy
       congnigyDescription: 'A low-code UI for conversational AI.',
@@ -408,6 +449,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'An Inbox to view and organize all your conversations.',
 
+      //AiryContacts
+      airyContactsDescription: 'View and manage contacts for personalized interactions.',
+
       //Connectors
       connectors: 'Connectors',
       noResults: 'Result not found.',
@@ -423,14 +467,23 @@ const resources = {
       noChannelsConnected: 'This connector does not have any connected channels yet.',
       optional: 'Optional',
       configuration: 'Configuration',
+      createChannel: 'Create Channel',
 
-      //Rasa
-      rasaWebhookPlaceholder: 'Your Rasa Webhook Url',
-      rasaWebhookTooltip: 'Example: http://webhooks.rasa',
-      rasaApihostPlaceholder: 'Your Rasa Api Host',
-      rasaApihostTooltip: 'Your Rasa Api Host',
-      rasaTokenPlaceholder: 'Your Rasa Token',
-      rasaTokenTooltip: 'Your Rasa Token',
+      //Request Access
+      comingSoon: 'Coming Soon',
+      notifyMe: 'Notify Me',
+      notifyMeRequestSent: 'Requested',
+      infoNotifyMe: 'We will already send a notification to',
+      notifyMeTitle: 'To get back to you',
+      notifyMeSuccessful: 'We got your request. We will get back to you as soon as we process your request',
+      emailCapital: 'Email',
+      addEmail: 'Add email',
+      notifyMeEmailTooltip: 'The email will be used as the request email',
+      addName: 'Add name',
+      notifyMeNameTooltip: 'The name will be used as the request name',
+      addMessage: 'Add message',
+      message: 'Message',
+      send: 'Send',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Your App ID',
@@ -447,6 +500,9 @@ const resources = {
       Free: 'Free',
       Paid: 'Paid',
       ['REQUEST ACCESS']: 'REQUEST ACCESS',
+      searchByNamePlaceholder: 'Search by name',
+      searchByType: 'Search by type',
+      noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -638,6 +694,7 @@ const resources = {
       Update: 'Aktualisieren',
       restart: 'Neu starten',
       restartComponentUpdate: 'Wir werden die Komponente neu starten, um Ihr Update anzuwenden.',
+      pageUnderConstruction: 'Seite im Aufbau - kommt bald!',
 
       //Channels
       toConfigure: 'Konfigurieren',
@@ -680,6 +737,7 @@ const resources = {
       reset: 'Zurücksetzen',
       preview: 'Vorschau',
       sample: 'Muster',
+      add: 'Hinzufügen',
       deleteChannel: 'Wollen Sie diesen Kanal wirklich löschen?',
       addChanne: 'Kanal hinzufügen',
       infoButtonText: 'mehr Informationen',
@@ -769,16 +827,39 @@ const resources = {
       installCodeNpm1: 'Sie können Ihre ',
       installCodeNpm2: '-Bibliothek hier installieren:',
 
+      //Facebook Messenger
+      inputTooltipFacebookAppId: 'Ihre Facebook App Id',
+      inputTooltipFacebookAppSecret: 'Ihr Facebook App Secret',
+      inputTooltipFacebookWebhookSecret: 'Ihr Facebook Webhook Secret',
+
+      //Google
+      inputTooltipGoogleSaFile: 'Ihre Google Sa File',
+      inputTooltipGooglePartnerKey: 'Ihr Google Partner Schlüssel',
+
+      //Viber
+      inputTooltipViberAuthToken: 'Ihr Viber Auth Token',
+
+      //Twilio SMS
+      inputTooltipTwiliosmsAuthToken: 'Ihr Twilio SMS Auth Token',
+      inputTooltipTwiliosmsAccountSid: 'Ihr Twilio SMS Account Sid',
+
+      //Whatsapp Business Cloud
+      inputTooltipWhatsappAppId: 'Ihre Whatsapp App Id',
+      inputTooltipWhatsappAppSecret: 'Ihr Whatsapp App Secret',
+      inputTooltipWhatsappPhoneNumber: 'Ihre Handynummer',
+      inputTooltipWhatsappName: 'Ihr Name',
+      inputTooltipWhatsappAvatarUrl: 'Ihre Avatar Url',
+
       //Zendesk
       zendeskDescription: 'Machen Sie Kunden glücklich per SMS, E-Mail, Live-Chat, Social Media.',
       ZendeskSubDomain: 'Zendesk Subdomäne',
       AddDomain: 'Domäne hinzufügen',
-      ZendeskDomain: 'Ihre Zendesk-Subdomäne',
       username: 'Benutzername',
       AddUsername: 'Benutzername hinzufügen',
-      ZendeskUsername: 'Ihr Zendesk Benutzername',
-      ZendeskToken: 'Ihr Zendesk-API-Token',
       APIToken: 'API-Token',
+      inputTooltipZendeskDomain: 'Ihre Zendesk-Subdomäne',
+      inputTooltipZendeskUsername: 'Ihr Zendesk Benutzername',
+      inputTooltipZendeskToken: 'Ihr Zendesk-API-Token',
 
       //Dialogflow
       dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
@@ -804,16 +885,24 @@ const resources = {
         'Steigern Sie die Vertriebsleistung mit der weltweit führenden CRM-Plattform für Unternehmen.',
       salesforceOrgUrl: 'Organisations-URL',
       yourSalesforceOrgUrl: 'Ihre Salesforce-Organisations-URL',
-      salesforceOrgUrlExample: 'Beispiel: https://org.my.salesforce.com',
       Username: 'Benutzername',
-      yourSalesforceUsername: 'Ihr Salesforce-Benutzername',
       Password: 'Passwort',
-      yourSalesforcePassword: 'Ihr Salesforce-Passwort',
       securityToken: 'Sicherheitstoken',
-      yourSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+      inputTooltipSalesforceUrl: 'Beispiel: https://org.my.salesforce.com',
+      inputTooltipSalesforceUsername: 'Ihr Salesforce-Benutzername',
+      inputTooltipSalesforcePassword: 'Ihr Salesforce-Passwort',
+      inputTooltipSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
+
+      //Rasa
+      inputTooltipRasaWebhookUrl: 'Beispiel: http://webhooks.rasa',
+      inputTooltipRasaApiHost: 'Ihr Rasa Api Host',
+      inputTooltipRasaToken: 'Ihr Rasa-Token',
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Weltweite Chat-App Nr. 1',
+      whatsappPhoneNumberId: 'Telefonnummer Id',
+      whatsappPhoneNumberIdPlaceholder: 'Telefonnummer Id hinzufügen',
+      whatsappPhoneNumberIdTooltip: 'Telefonnummer Id hinzufügen',
 
       //Congnigy
       congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
@@ -836,6 +925,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'Ein Inbox zum Anzeigen und Organisieren aller Ihrer Konversationen.',
 
+      //AiryContacts
+      airyContactsDescription: 'Anzeigen und Verwalten von Kontakten für personalisierte Interaktionen.',
+
       //Facebook Messenger
       connectMessenger: 'Messenger verbinden',
       facebookConfiguration: 'Die Facebook-Quelle erfordert die folgende Konfiguration:',
@@ -849,6 +941,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Agent ID',
+      addAgentId: 'Agent ID hinzufügen',
       googleAgentPlaceholder: 'Fügen Sie die von Ihrem Google-Partner bereitgestellte Agent-ID hinzu',
       connectGoogle: 'Google Business-Nachrichten verbinden',
       googleConfigurationText:
@@ -858,6 +951,12 @@ const resources = {
       googleConfigurationText2: 'Prüfen Sie die Dokumentation von Airy',
       googleConfigurationText3: 'für weitere Informationen.',
       newGoogleConnection: 'Sie sind dabei, einen neuen Kanal zu verbinden',
+
+      //IBM Watson Assistant
+      ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
 
       //Instagram
       instagramAccount: 'Facebook-Seiten-ID, die mit dem Instagram-Konto verbunden ist',
@@ -909,14 +1008,24 @@ const resources = {
       noChannelsConnected: 'Mit diesem Anschluss sind noch keine Kanäle verbunden.',
       optional: 'Optional',
       configuration: 'Konfiguration',
+      createChannel: 'Kanal erstellen',
 
-      //Rasa
-      rasaWebhookPlaceholder: 'Ihre Rasa Webhook Url',
-      rasaWebhookTooltip: 'Beispiel: http://webhooks.rasa',
-      rasaApihostPlaceholder: 'Ihr Rasa Api Host',
-      rasaApihostTooltip: 'Ihr Rasa Api-Host',
-      rasaTokenPlaceholder: 'Ihr Rasa Token',
-      rasaTokenTooltip: 'Ihr Rasa-Token',
+      //Request Access
+
+      comingSoon: 'Bald verfügbar',
+      notifyMe: 'Informier mich',
+      notifyMeRequestSent: 'Angefordert',
+      infoNotifyMe: 'Wir senden bereits eine Benachrichtigung an',
+      notifyMeTitle: 'Um auf Sie zurück zu kommen',
+      notifyMeSuccessful:
+        'Wir haben Ihre Anfrage erhalten. Wir werden uns mit Ihnen in Verbindung setzen, sobald wir Ihre Anfrage bearbeitet haben',
+      addEmail: 'E-Mail hinzufügen',
+      notifyMeEmailTooltip: 'Die E-Mail wird als Anfrage-E-Mail verwendet.',
+      addName: 'Name hinzufügen',
+      notifyMeNameTooltip: 'Der Name wird als Name der Anfrage verwendet.',
+      addMessage: 'Nachricht hinzufügen',
+      message: 'Nachricht',
+      send: 'Senden',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Ihre App ID',
@@ -933,6 +1042,9 @@ const resources = {
       Free: 'Kostenlos',
       Paid: 'Kostenpflichtig',
       ['REQUEST ACCESS']: 'ANFRAGE ZUGANG',
+      searchByNamePlaceholder: 'Suche nach Name',
+      searchByType: 'Suche nach Typ',
+      noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1116,6 +1228,7 @@ const resources = {
       Update: 'Mettre à jour',
       restart: 'Redémarrer',
       restartComponentUpdate: 'Nous allons redémarrer le composant pour appliquer votre mise à jour.',
+      pageUnderConstruction: 'page en construction - bientôt disponible !',
 
       //Channels
       toConfigure: 'configuration',
@@ -1158,6 +1271,7 @@ const resources = {
       reset: 'Réinitialiser',
       preview: 'Aperçu',
       sample: 'Echantillon',
+      add: 'Ajouter',
       deleteChannel: 'Voulez-vous vraiment supprimer ce canal?',
       addChanne: 'Ajouter un canal',
       infoButtonText: `plus d'informations`,
@@ -1231,16 +1345,39 @@ const resources = {
       installCustomize: 'Installation et personnalisation',
       addLiveChatToWebsite: 'Ajoutez Airy Live Chat à votre site web et à votre application.',
 
+      //Facebook Messenger
+      inputTooltipFacebookAppId: 'Ton Facebook App Id',
+      inputTooltipFacebookAppSecret: 'Ton Facebook App Secret',
+      inputTooltipFacebookWebhookSecret: 'Ton Facebook Webhook Secret',
+
+      //Google
+      inputTooltipGoogleSaFile: 'Ton Google Sa File',
+      inputTooltipGooglePartnerKey: 'Ton Google Partner Key',
+
+      //Viber
+      inputTooltipViberAuthToken: 'Ton Viber Auth Token',
+
+      //Twilio SMS
+      inputTooltipTwiliosmsAuthToken: 'Ton Twilio SMS Auth Token',
+      inputTooltipTwiliosmsAccountSid: 'Ton Twilio SMS Account Sid',
+
+      //Whatsapp Business Cloud
+      inputTooltipWhatsappAppId: 'Votre Whatsapp App Id',
+      inputTooltipWhatsappAppSecret: 'Votre Whatsapp App Secret',
+      inputTooltipWhatsappPhoneNumber: 'Votre numéro de téléphone',
+      inputTooltipWhatsappName: 'Votre nom',
+      inputTooltipWhatsappAvatarUrl: 'Votre Avatar Url',
+
       //Zendesk
       zendeskDescription: "Un service client d'excellence par SMS, e-mail, chat, réseaux sociaux.",
       ZendeskSubDomain: 'Sous-domaine Zendesk',
       AddDomain: 'Ajouter un domaine',
-      ZendeskDomain: 'Ton sous-domaine Zendesk',
       username: "Nom d'utilisateur",
       AddUsername: "Ajouter un nom d'utilisateur",
-      ZendeskUsername: "Ton nom d'utilisateur Zendesk",
-      ZendeskToken: 'Un token API Zendesk associée à ton utilisateur',
       APIToken: 'Token API',
+      inputTooltipZendeskDomain: 'Ton sous-domaine Zendesk',
+      inputTooltipZendeskUsername: `Ton nom d'utilisateur Zendesk`,
+      inputTooltipZendeskToken: 'Un token API Zendesk associée à ton utilisateur',
 
       //Dialogflow
       dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
@@ -1266,13 +1403,13 @@ const resources = {
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
       salesforceOrgUrl: 'URL',
       yourSalesforceOrgUrl: 'URL Salesforce de votre organisation',
-      salesforceOrgUrlExample: 'Exemple : https://org.my.salesforce.com',
       Username: "Nom d'utilisateur",
-      yourSalesforceUsername: "Nom d'utilisateur Salesforce",
       Password: 'Mot de passe',
-      yourSalesforcePassword: 'Mot de passe Salesforce',
       securityToken: 'Jeton de sécurité',
-      yourSalesforceSecurityToken: 'Jeton de sécurité Salesforce',
+      inputTooltipSalesforceUrl: 'Exemple : https://org.my.salesforce.com',
+      inputTooltipSalesforceUsername: "Nom d'utilisateur Salesforce",
+      inputTooltipSalesforcePassword: 'Mot de passe Salesforce',
+      inputTooltipSalesforceSecurityToken: 'Jeton de sécurité Salesforce',
 
       //Facebook Messenger
       facebookPageId: 'ID de la page Facebook',
@@ -1304,6 +1441,7 @@ const resources = {
 
       //Google Business Messages
       agentId: `ID de l'agent`,
+      addAgentId: `Ajouter l'ID de l'agent`,
       googleAgentPlaceholder: `Ajoutez l'identifiant de l'agent fourni par votre partenaire Google`,
       connectGoogle: 'Connecter les messages Google Business',
       googleConfigurationText:
@@ -1313,6 +1451,12 @@ const resources = {
       googleConfigurationText2: `Vérifiez la documentation d'Airy`,
       googleConfigurationText3: `pour plus d'informations.`,
       newGoogleConnection: 'Vous êtes sur le point de connecter un nouveau canal',
+
+      //IBM Watson Assistant
+      ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
+
+      //Amazon S3
+      amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
 
       //Instagram
       instagramAccount: 'ID de la page Facebook connectée au compte Instagram',
@@ -1350,6 +1494,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Première application de chat au monde',
+      whatsappPhoneNumberId: 'Numéro de téléphone',
+      whatsappPhoneNumberIdPlaceholder: 'Ajoutez votre numéro de téléphone',
+      whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
 
       //Congnigy
       congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
@@ -1372,6 +1519,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'Une boîte de réception pour afficher et organiser toutes vos conversations.',
 
+      //AiryContacts
+      airyContactsDescription: 'Un outil de gestion de contacts pour des conversations personnalisées',
+
       //Connectors
       connectors: 'Connecteurs',
       noResults: 'Résultat non trouvé.',
@@ -1387,6 +1537,23 @@ const resources = {
       noChannelsConnected: "Ce connecteur n'a pas encore de canaux connectés.",
       optional: 'Optionnel',
       configuration: 'Configuration',
+      createChannel: 'Créer un canal',
+
+      //Request Access
+      comingSoon: 'Prochainement',
+      notifyMe: 'Notifiez-moi',
+      notifyMeRequestSent: 'Demandé',
+      infoNotifyMe: 'Nous allons déjà envoyer une notification à',
+      notifyMeTitle: 'Pour vous recontacter',
+      notifyMeSuccessful:
+        'Nous avons reçu votre demande. Nous vous contacterons dès que nous aurons traité votre demande',
+      addEmail: 'Ajouter un e-mail',
+      notifyMeEmailTooltip: `L'email sera utilisé comme email de demande`,
+      addName: 'Ajouter un nom',
+      notifyMeNameTooltip: 'Le nom sera utilisé comme nom de la demande',
+      addMessage: 'Ajouter un message',
+      message: 'Message',
+      send: 'Envoyer',
 
       //Rasa
       rasaWebhookPlaceholder: 'URL Webhook de Rasa',
@@ -1411,6 +1578,9 @@ const resources = {
       Free: 'Gratuit',
       Paid: 'Payant',
       ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
+      searchByNamePlaceholder: 'Recherche par nom',
+      searchByType: 'Recherche par type',
+      noMatchingCatalogs: `Nous n'avons pas pu trouver de Catalog correspondant à vos critères.`,
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1598,6 +1768,7 @@ const resources = {
       Update: 'Actualizar',
       restart: 'Reiniciar',
       restartComponentUpdate: 'Reiniciaremos el componente para aplicar su actualización.',
+      pageUnderConstruction: 'página en construcción - próximamente!',
 
       //Channels
       toConfigure: 'configurar',
@@ -1640,6 +1811,7 @@ const resources = {
       reset: 'Restablecer',
       preview: 'Vista previa',
       sample: 'Muestra',
+      add: 'Añadir',
       deleteChannel: '¿Realmente quieres borrar este canal?',
       addChanne: 'Añadir canal',
       infoButtonText: 'más información',
@@ -1729,17 +1901,40 @@ const resources = {
       installCodeNpm1: 'Puede instalar su biblioteca ',
       installCodeNpm2: ' aquí:',
 
+      //Facebook Messenger
+      inputTooltipFacebookAppId: 'Tu Facebook App Id',
+      inputTooltipFacebookAppSecret: 'Tu Facebook App Secret',
+      inputTooltipFacebookWebhookSecret: 'Tu Facebook Webhook Secret',
+
+      //Google
+      inputTooltipGoogleSaFile: 'Tu Google Sa File',
+      inputTooltipGooglePartnerKey: 'Tu Google Partner Key',
+
+      //Viber
+      inputTooltipViberAuthToken: 'Tu Viber Auth Token',
+
+      //Twilio SMS
+      inputTooltipTwiliosmsAuthToken: 'Tu Twilio SMS Auth Token',
+      inputTooltipTwiliosmsAccountSid: 'Tu Twilio SMS Account Sid',
+
+      //Whatsapp Business Cloud
+      inputTooltipWhatsappAppId: 'Su Id. de aplicación de Whatsapp',
+      inputTooltipWhatsappAppSecret: 'El secreto de tu aplicación de Whatsapp',
+      inputTooltipWhatsappPhoneNumber: 'Su número de teléfono',
+      inputTooltipWhatsappName: 'Su nombre',
+      inputTooltipWhatsappAvatarUrl: 'La url de su avatar',
+
       //Zendesk
       zendeskDescription:
         'Mantén a tus clientes satisfechos a través de mensajes de texto, correos electrónicos, chat en vivo.',
       ZendeskSubDomain: 'subdominio Zendesk',
       AddDomain: 'Añadir el subdominio',
-      ZendeskDomain: 'Tu subdominio Zendesk',
       username: 'nombre de usuario',
       AddUsername: 'Añadir el nombre de usuario',
-      ZendeskUsername: 'Tu nombre de usuario Zendesk',
-      ZendeskToken: 'Un token de API Zendesk asociado a tu usuario',
       APIToken: 'Token de API',
+      inputTooltipZendeskDomain: 'Tu subdominio Zendesk',
+      inputTooltipZendeskUsername: `Tu nombre de usuario Zendesk`,
+      inputTooltipZendeskToken: 'Un token de API Zendesk asociado a tu usuario',
 
       //Dialogflow
       dialogflowDescription: 'IA conversacional con agentes virtuales',
@@ -1764,13 +1959,13 @@ const resources = {
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
       salesforceOrgUrl: 'URL de la organización',
       yourSalesforceOrgUrl: 'La URL de su organización de Salesforce',
-      salesforceOrgUrlExample: 'Ejemplo: https://org.my.salesforce.com',
       Username: 'Nombre de usuario',
-      yourSalesforceUsername: 'Su nombre de usuario de Salesforce',
       Password: 'Contraseña',
-      yourSalesforcePassword: 'Su contraseña de Salesforce',
       securityToken: 'Token de seguridad',
-      yourSalesforceSecurityToken: 'Su token de seguridad de Salesforce',
+      inputTooltipSalesforceUrl: 'Ejemplo: https://org.my.salesforce.com',
+      inputTooltipSalesforceUsername: 'Su nombre de usuario de Salesforce',
+      inputTooltipSalesforcePassword: 'Su contraseña de Salesforce',
+      inputTooltipSalesforceSecurityToken: 'Su token de seguridad de Salesforce',
 
       //Facebook Messenger
       connectMessenger: 'Conectar con Messenger',
@@ -1785,6 +1980,7 @@ const resources = {
 
       //Google Business Messages
       agentId: 'Identificación del agente',
+      addAgentId: 'Añadir ID de agente',
       googleAgentPlaceholder: 'Añade el ID de agente proporcionado por tu Google Partner',
       connectGoogle: 'Conectar los mensajes de Google Business',
       googleConfigurationText:
@@ -1794,6 +1990,12 @@ const resources = {
       googleConfigurationText2: `Compruebe la documentación de Airy`,
       googleConfigurationText3: 'para más información.',
       newGoogleConnection: 'Estás a punto de conectar un nuevo canal',
+
+      //IBM Watson Assistant
+      ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
+
+      //Amazon S3
+      amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
 
       //Instagram
       instagramAccount: 'ID de la página de Facebook conectada a la cuenta de Instagram',
@@ -1832,6 +2034,9 @@ const resources = {
 
       //WhatsApp Business Cloud
       whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
+      whatsappPhoneNumberId: 'Número de teléfono Id',
+      whatsappPhoneNumberIdPlaceholder: 'Añada su número de teléfono',
+      whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
       //Congnigy
       congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
@@ -1854,6 +2059,9 @@ const resources = {
       //Inbox
       frontendinboxDescription: 'Una bandeja de entrada para ver y organizar todas tus conversaciones.',
 
+      //AiryContacts
+      airyContactsDescription: 'Administre contactos para interacciones personalizadas.',
+
       //Connectors
       connectors: 'Conectores',
       noResults: 'Resultado no encontrado.',
@@ -1869,6 +2077,23 @@ const resources = {
       noChannelsConnected: 'Este conector aún no tiene ningún canal conectado.',
       optional: 'Opcional',
       configuration: 'Configuración',
+      createChannel: 'Crear canal',
+
+      //Request Access
+      comingSoon: 'Próximamente',
+      notifyMe: 'Notificarme',
+      notifyMeRequestSent: 'Solicitado',
+      infoNotifyMe: 'Ya enviaremos una notificación a',
+      notifyMeTitle: 'Para volver a llamarte',
+      notifyMeSuccessful:
+        'Hemos recibido su solicitud. Nos pondremos en contacto con usted en cuanto procesemos su solicitud',
+      addEmail: 'Añadir correo electrónico',
+      notifyMeEmailTooltip: 'En este correo electrónico se notificará su solicitud',
+      addName: 'Añadir nombre',
+      notifyMeNameTooltip: 'El nombre se utilizará como nombre de la solicitud',
+      addMessage: 'Añadir mensaje',
+      message: 'Mensaje',
+      send: 'Enviar',
 
       //Rasa
       rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
@@ -1893,6 +2118,9 @@ const resources = {
       Free: 'Gratis',
       Paid: 'Premium',
       ['REQUEST ACCESS']: 'SOLICITAR ACCESO',
+      searchByNamePlaceholder: 'Buscar por nombre',
+      searchByType: 'Buscar por tipo',
+      noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

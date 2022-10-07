@@ -58,6 +58,23 @@
   }
 }
 
+.greenOutlineButton {
+  @extend .extraSmallButton;
+  background-color: transparent;
+  border: 1px solid var(--color-soft-green);
+  color: var(--color-soft-green);
+
+  &:hover {
+    background-color: rgba($color: #0da36b, $alpha: 0.2);
+    border: 1px solid #0da36b;
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+    color: var(--color-background-white);
+  }
+}
+
 .smallButton {
   @extend .button;
   @include font-base;
@@ -96,6 +113,70 @@
   @include font-base;
   height: 32px;
   padding: 3px 16px;
+}
+
+.greenButton {
+  @extend .extraSmallButton;
+  background-color: var(--color-soft-green);
+
+  &:hover {
+    background-color: var(--color-green-pressed);
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+  }
+}
+
+.greenOutlineButton {
+  @extend .extraSmallButton;
+  background-color: transparent;
+  border: 1px solid var(--color-soft-green);
+  color: var(--color-soft-green);
+
+  &:hover {
+    background-color: rgba($color: #0da36b, $alpha: 0.2);
+    border: 1px solid #0da36b;
+  }
+
+  &:active {
+    background-color: var(--color-green-pressed);
+    color: var(--color-background-white);
+  }
+}
+
+.purpleButton {
+  @extend .extraSmallButton;
+  background-color: rgba($color: #a30d8b, $alpha: 0.2);
+  border: 1px solid var(--color-notify-me);
+  color: var(--color-notify-me);
+
+  &:hover {
+    background: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+
+  &:active {
+    background-color: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+}
+
+.purpleOutlineButton {
+  @extend .extraSmallButton;
+  background-color: transparent;
+  border: 1px solid var(--color-notify-me);
+  color: var(--color-notify-me);
+
+  &:hover {
+    background: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
+
+  &:active {
+    background-color: var(--color-notify-me);
+    color: var(--color-background-white);
+  }
 }
 
 .linkButton {

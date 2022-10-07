@@ -17,7 +17,7 @@
   "homepage": "https://github.com/airyhq/airy#readme",
   "dependencies": {
     "node-fetch": "^2.0.0",
-    "camelcase-keys": "^7.0.0",
+    "camelcase-keys": "^8.0.2",
     "form-data": "^4.0.0"
   },
   "devDependencies": {

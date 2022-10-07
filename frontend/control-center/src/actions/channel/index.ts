@@ -13,6 +13,8 @@ import {
   UpdateChannelRequestPayload,
   ConnectChannelGoogleRequestPayload,
   ConnectChannelInstagramRequestPayload,
+  ConnectWhatsappRequestPayload,
+  ConnectViberRequestPayload,
 } from 'httpclient/src';
 
 import {HttpClientInstance} from '../../httpClient';
@@ -51,6 +53,19 @@ export const connectInstagramChannel =
       dispatch(addChannelsAction([response]));
       return Promise.resolve(response);
     });
+
+export const connectWhatsappChannel =
+  (requestPayload: ConnectWhatsappRequestPayload) => async (dispatch: Dispatch<any>) =>
+    HttpClientInstance.connectWhatsappChannel(requestPayload).then((response: Channel) => {
+      dispatch(addChannelsAction([response]));
+      return Promise.resolve(response);
+    });
+
+export const connectViberChannel = (requestPayload: ConnectViberRequestPayload) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.connectViberChannel(requestPayload).then((response: Channel) => {
+    dispatch(addChannelsAction([response]));
+    return Promise.resolve(response);
+  });
 
 export const connectChatPlugin = (requestPayload: ConnectChatPluginRequestPayload) => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.connectChatPluginChannel(requestPayload).then((response: Channel) => {

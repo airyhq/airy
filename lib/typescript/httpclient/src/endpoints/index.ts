@@ -4,6 +4,8 @@ export * from './connectFacebookChannel';
 export * from './connectChatPluginChannel';
 export * from './connectTwilioSmsChannel';
 export * from './connectTwilioWhatsappChannel';
+export * from './connectWhatsappChannel';
+export * from './connectViberChannel';
 export * from './connectGoogleChannel';
 export * from './connectInstagramChannel';
 export * from './disconnectChannel';

@@ -17,7 +17,7 @@ import {env} from '../../env';
 import {useAnimation} from 'render';
 import {useTranslation} from 'react-i18next';
 import i18next from 'i18next';
-import {Language, ComponentName} from 'model';
+import {Language, Source} from 'model';
 
 interface TopBarProps {
   isAdmin: boolean;
@@ -44,7 +44,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [chevronLanguageAnim, setChevronLanguageAnim] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem('language') || Language.english);
   const {t} = useTranslation();
-  const inboxEnabled = props.components[ComponentName.frontendInbox]?.enabled || false;
+  const inboxEnabled = props.components[Source.frontendInbox]?.enabled || false;
 
   useLayoutEffect(() => {
     handleLanguage(localStorage.getItem('language'));

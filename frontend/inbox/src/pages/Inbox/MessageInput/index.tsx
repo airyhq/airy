@@ -283,6 +283,9 @@ const MessageInput = (props: Props) => {
         case Source.viber:
           message.message = outboundMapper.getTextPayload(input);
           break;
+        case Source.whatsapp:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
       }
 
       sendMessages(message).then(() => {

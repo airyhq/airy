@@ -2,21 +2,18 @@ package aws
 
 import (
 	"cli/pkg/console"
-	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	tmpl "cli/pkg/workspace/template"
 	"io"
-	"math/rand"
 	"os"
 	"os/exec"
 	"strings"
-	"time"
+
+	"github.com/airyhq/airy/lib/go/tools"
 
 	getter "github.com/hashicorp/go-getter"
 	"gopkg.in/segmentio/analytics-go.v3"
 )
-
-var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 
 type provider struct {
 	w         io.Writer
@@ -68,15 +65,14 @@ type KubeConfig struct {
 	CertificateData string
 }
 
-func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
+func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) error {
 	installPath := dir.GetPath(".")
-	id := RandString(8)
+	id := tools.RandString(8)
 	p.analytics.Track(analytics.Identify{
 		AnonymousId: id,
 		Traits: analytics.NewTraits().
 			Set("provider", "AWS"),
 	})
-	name := "Airy-" + id
 	cmd := exec.Command("/bin/bash", "install.sh")
 	cmd.Dir = installPath
 	cmd.Stdin = os.Stdin
@@ -87,18 +83,5 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	if err != nil {
 		console.Exit("Error with Terraform installation", err)
 	}
-	ctx := kube.KubeCtx{
-		KubeConfigPath: "./kube.conf", // change this into a CLI
-		ContextName:    name,
-	}
-	return ctx, nil
-}
-
-func RandString(n int) string {
-	rand.Seed(time.Now().UnixNano())
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
+	return nil
 }

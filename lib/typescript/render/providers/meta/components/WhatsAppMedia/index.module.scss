@@ -1,0 +1,35 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.mediaWrapper {
+  max-width: 500px;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-template-border-gray);
+}
+
+.mediaWrapper :first-child {
+  margin-top: 0;
+}
+
+.mediaWrapper img,
+.mediaWrapper video {
+  max-width: 200px;
+  border-radius: 12px;
+}
+
+.caption {
+  @include font-xs;
+  margin-top: 5px;
+}
+
+.imageMedia {
+  display: block;
+  border-radius: 12px;
+  max-width: 300px;
+}

@@ -17,6 +17,7 @@ go_library(
         "//cli/pkg/kube",
         "//cli/pkg/workspace",
         "//cli/pkg/workspace/template",
+        "//lib/go/tools",
         "@com_github_hashicorp_go_getter//:go-getter",
         "@in_gopkg_segmentio_analytics_go_v3//:analytics-go_v3",
     ],

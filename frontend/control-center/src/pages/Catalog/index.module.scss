@@ -13,6 +13,12 @@
   width: 100%;
 }
 
+.headlineSearchBarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .catalogListContainer {
   display: flex;
   flex-wrap: wrap;
@@ -23,6 +29,18 @@
   font-weight: 900;
   margin-bottom: 15px;
   color: var(--color-text-contrast);
+}
+
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  h1 {
+    @include font-l;
+    font-weight: bold;
+  }
+  span {
+    @include font-m;
+  }
 }
 
 .notificationAnimation {

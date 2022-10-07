@@ -1,7 +1,7 @@
 import {OutboundMapper} from './mapper';
 import {getAttachmentType} from '../services';
 
-export class FacebookMapper extends OutboundMapper {
+export class MetaMapper extends OutboundMapper {
   getTextPayload(text: string): any {
     return {
       text,

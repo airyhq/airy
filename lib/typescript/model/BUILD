@@ -8,6 +8,7 @@ ts_web_library(
     name = "model",
     deps = [
         "@npm//@types/node",
+        "@npm//camelcase-keys",
     ],
 )
 

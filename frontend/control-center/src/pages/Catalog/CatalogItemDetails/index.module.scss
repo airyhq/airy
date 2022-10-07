@@ -187,3 +187,37 @@
 .headerModal {
   @include font-xl;
 }
+
+.availabilitySoonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.soonTag {
+  @include font-xs-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 4px;
+  height: 22px;
+  width: 50px;
+  border-radius: 5px;
+  background: var(--color-notify-me);
+  color: var(--color-background-white);
+}
+
+//As long the backend is not ready!!!
+.comingSoonTag {
+  @include font-base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  height: 50px;
+  width: 180px;
+  color: var(--color-background-white);
+  background: var(--color-notify-me);
+  margin-top: 15px;
+  white-space: nowrap;
+}

@@ -6,13 +6,6 @@ import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
-import FacebookConnect from './pages/Connectors/Providers/Facebook/Messenger/FacebookConnect';
-import ChatPluginConnect from './pages/Connectors/Providers/Airy/ChatPlugin/ChatPluginConnect';
-import ConnectedChannelsList from './pages/Connectors/ConnectedChannelsList';
-import TwilioSmsConnect from './pages/Connectors/Providers/Twilio/SMS/TwilioSmsConnect';
-import TwilioWhatsappConnect from './pages/Connectors/Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
-import GoogleConnect from './pages/Connectors/Providers/Google/GoogleConnect';
-import InstagramConnect from './pages/Connectors/Providers/Instagram/InstagramConnect';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
 import Catalog from './pages/Catalog';
@@ -21,8 +14,6 @@ import Connectors from './pages/Connectors';
 import Webhooks from './pages/Webhooks';
 import Status from './pages/Status';
 import Inbox from './pages/Inbox';
-import ChannelsList from './pages/Inbox/ChannelsList';
-import InboxOutlet from './pages/Inbox/InboxOutlet';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 
@@ -53,32 +44,16 @@ const App = (props: ConnectedProps<typeof connector>) => {
           <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
             <Route path={`connected`} element={<ConnectorConfig />} />
             <Route path={`new`} element={<ConnectorConfig />} />
+            <Route path={`configure`} element={<ConnectorConfig />} />
             <Route path={`:channelId`} element={<ConnectorConfig />} />
           </Route>
 
           <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>
-            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
-            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ConnectedChannelsList />} />
-            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
-            <Route path={`google/:channelId`} element={<GoogleConnect />} />
-            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-
             <Route path={`:componentName`} element={<CatalogProductPage />} />
             <Route index element={<Catalog />} />
           </Route>
 
-          <Route path={`${INBOX_ROUTE}/*`} element={<InboxOutlet />}>
-            <Route path={`facebook/:channelId`} element={<FacebookConnect />} />
-            <Route path={`chatplugin/:channelId`} element={<ChatPluginConnect />} />
-            <Route path={`connected/:source`} element={<ChannelsList />} />
-            <Route path={`twilio.sms/:channelId`} element={<TwilioSmsConnect />} />
-            <Route path={`twilio.whatsapp/:channelId`} element={<TwilioWhatsappConnect />} />
-            <Route path={`google/:channelId`} element={<GoogleConnect />} />
-            <Route path={`instagram/:channelId`} element={<InstagramConnect />} />
-            <Route index element={<Inbox />} />
-          </Route>
+          <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />
 
           <Route element={<NotFound />} />
           <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />

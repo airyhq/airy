@@ -73,7 +73,8 @@ module "eks" {
   cluster_version        = var.cluster_version
   cluster_name           = var.core_id
   vpc_id                 = local.vpc.id
-  subnets                = concat(module.vpc.private_subnets,module.vpc.public_subnets)
+  subnets                = [local.vpc.private_subnets[0], local.vpc.public_subnets[1]]
+  fargate_subnets        = [local.vpc.private_subnets[0]]
   write_kubeconfig       = false
   map_users              = var.kubernetes_users
   tags                   = var.tags

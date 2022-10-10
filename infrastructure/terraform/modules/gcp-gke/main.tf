@@ -1,25 +1,25 @@
 provider "google" {
   project = var.project_id
-  region    = var.region
+  region  = var.region
 }
 
 resource "google_compute_network" "vpc" {
-  name                    = var.vpc_name
+  name = var.vpc_name
 }
 
 resource "google_container_cluster" "gke_core" {
-  name     = "${var.project_id}-gke"
-  location = var.region
+  name                     = var.gke_name
+  location                 = var.region
   remove_default_node_pool = true
   initial_node_count       = 1
-  network    = google_compute_network.vpc.name
+  network                  = google_compute_network.vpc.name
 }
 
 resource "google_container_node_pool" "gke_core_nodes" {
-  name       = "${google_container_cluster.gke_core.name}-node-pool"
-  location   = var.region
-  cluster    = google_container_cluster.gke_core.name
-  node_count = var.gke_num_nodes
+  name           = "${google_container_cluster.gke_core.name}-node-pool"
+  location       = var.region
+  cluster        = google_container_cluster.gke_core.name
+  node_count     = var.gke_num_nodes
   node_locations = var.gke_node_locations
 
   node_config {
@@ -31,7 +31,7 @@ resource "google_container_node_pool" "gke_core_nodes" {
       "https://www.googleapis.com/auth/monitoring",
     ]
 
-    tags         = ["gke-node", "${var.project_id}-gke"]
+    tags = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }

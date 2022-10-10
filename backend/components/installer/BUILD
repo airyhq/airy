@@ -5,6 +5,7 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//backend/model/metadata",
     "//lib/java/spring/web:spring-web",
     "//:springboot_actuator",
     "//:k8s_client",
@@ -29,6 +30,7 @@ springboot(
             ":app",
             "//backend:base_test",
             "//lib/java/test",
+            "//lib/java/kafka/test:kafka-test",
             "//lib/java/spring/test:spring-test",
         ] + app_deps,
     )

@@ -32,6 +32,7 @@ springboot(
             "//lib/java/test",
             "//lib/java/kafka/test:kafka-test",
             "//lib/java/spring/test:spring-test",
+            "@maven//:org_mockito_mockito_inline",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

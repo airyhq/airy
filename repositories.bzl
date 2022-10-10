@@ -48,6 +48,7 @@ airy_jvm_deps = [
     "org.junit.jupiter:junit-jupiter-engine:5.8.1",
     "org.junit.jupiter:junit-jupiter:5.8.1",
     "org.mockito:mockito-core:%s" % MOCKITO_VERSION,
+    "org.mockito:mockito-inline:%s" % MOCKITO_VERSION,
     "org.projectlombok:lombok:1.18.10",
     "org.springframework.boot:spring-boot-loader:%s" % SPRING_BOOT,
     "org.springframework.boot:spring-boot-starter-actuator:%s" % SPRING_BOOT,

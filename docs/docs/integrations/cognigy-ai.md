@@ -28,7 +28,16 @@ The first step is to create an account on the [Cognigy.AI platform](https://www.
 
 ## Step 2: Create a Cognigy.AI Flow
 
-The second step is to create a Flow on the Cognigy.AI platform: follow this [guide](https://support.cognigy.com/hc/en-us/articles/360014524180-Design-a-Flow-and-add-a-Message#-3-tell-the-va-what-to-say-0-2) from the Cognigy.AI documentation.
+<TLDR>
+
+A conversation Flow describes the logic and sequence of a conversation. It defines what your Virtual Agent (VA) can do and how it handles the interaction.
+
+- From the [Cognigy.AI documentation](https://support.cognigy.com/hc/en-us/articles/360014524180-Design-a-Flow-and-add-a-Message#-3-tell-the-va-what-to-say-0-2)
+
+</TLDR>
+
+The second step is to create a Flow on the Cognigy.AI platform: this [guide](https://support.cognigy.com/hc/en-us/articles/360014524180-Design-a-Flow-and-add-a-Message#-3-tell-the-va-what-to-say-0-2) provides excellent
+step-by-step instructions.
 
 Here is a screenshot of a simple Cognigy.AI Flow:
 

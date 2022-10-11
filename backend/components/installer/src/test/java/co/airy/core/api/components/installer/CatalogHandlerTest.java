@@ -33,6 +33,10 @@ import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
@@ -146,7 +150,26 @@ public class CatalogHandlerTest {
 
         try (MockedConstruction<CoreV1Api> apiMock = Mockito.mockConstruction(CoreV1Api.class, fn)) {
             List<ComponentDetails> listComponents = catalogHandler.listComponents();
-            listComponents.getClass();
+
+            assertThat(cmd.getValue().size(), equalTo(3));
+            assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace list | awk '{print $1}' | tail -n +2")); 
+
+            //NOTE: We are just going to get some of the components in the list, and check his validity
+            ComponentDetails enterpriseSalesforceContactsIngestion = listComponents
+                .stream()
+                .filter((c -> c.getName().equals("enterprise-salesforce-contacts-ingestion")))
+                .findAny()
+                .orElse(null);
+            assertThat(enterpriseSalesforceContactsIngestion, is(notNullValue()));
+            assertThat(enterpriseSalesforceContactsIngestion.isInstalled(), is(true));
+
+            ComponentDetails congnigyConnector = listComponents
+                .stream()
+                .filter((c -> c.getName().equals("congnigy-connector")))
+                .findAny()
+                .orElse(null);
+            assertThat(congnigyConnector, is(notNullValue()));
+            assertThat(congnigyConnector.isInstalled(), is(false));
         }
 
     }

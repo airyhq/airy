@@ -24,13 +24,11 @@ Cognigy.AI was developed in order to overcome most of the challenges in building
 
 ## Step 1: Create a Cognigy.AI Live Agent
 
-The first step is to create an account on the [Cognigy.AI platform](https://www.cognigy.com/products/cognigy-ai).
-
-Then, create a Live Agent on the Cognigy.AI platform: follow this [guide](https://docs.cognigy.com/ai/resources/agents/agents/) from the Cognigy.AI documentation.
+The first step is to create an account on the [Cognigy.AI platform](https://www.cognigy.com/products/cognigy-ai). Next, create a Live Agent: this [guide](https://docs.cognigy.com/ai/resources/agents/agents/) from the Cognigy.AI documentation details the necessary steps.
 
 ## Step 2: Create a Cognigy.AI Flow
 
-The second step is to create a Flow on the Cognigy.AI platform: follow the steps outlined in this [guide](https://support.cognigy.com/hc/en-us/articles/360014524180-Design-a-Flow-and-add-a-Message#-3-tell-the-va-what-to-say-0-2) from the Cognigy.AI documentation.
+The second step is to create a Flow on the Cognigy.AI platform: follow this [guide](https://support.cognigy.com/hc/en-us/articles/360014524180-Design-a-Flow-and-add-a-Message#-3-tell-the-va-what-to-say-0-2) from the Cognigy.AI documentation.
 
 Here is a screenshot of a simple Cognigy.AI Flow:
 
@@ -46,11 +44,11 @@ The REST Endpoint lets you connect to a Cognigy Flow directly through a REST int
 
 </TLDR>
 
-Next, create a Cognigy.AI REST Endpoint. On your agent dashboard on the Cognigy.AI platform, select `Endpoints` from the `Build` section of the sidebar menu. Click on the button `+ New Endpoint`: this will trigger a configuration menu to open.
+On your agent dashboard on the Cognigy.AI platform, select `Endpoints` from the `Build` section of the sidebar menu. Click on the button `+ New Endpoint`: this will trigger a configuration menu to open.
 
-Type a name for this Endpoint, select the Flow you previously created in the `Flow` dropdown, select `Rest`from the list in the `Endpoint Type` list (scroll down to find the REST type) and click on the `Save` button to save this configuration.
+Type a name for this Endpoint, select the Flow you previously created in the `Flow` dropdown, select `REST` from the `Endpoint Type` list (scroll down to find the REST type) and click on the `Save` button to save this configuration.
 
-Note down your REST Endpoint URL, you will need it later on.
+Note down your REST Endpoint URL, you will need it later on for the [step 6](/integrations/cognigy-ai#step-6-option-1-install-and-configure-cognigyai-to-your-airy-instance-via-api-request).
 
 ## Step 4: Create an API key
 
@@ -86,7 +84,7 @@ through the [Airy Control Center UI](/ui/control-center/introduction).
 We cover both options in this section: keep reading for connecting Cognigy.AI via
 API request, scroll down to the next section for connecting Cognigy.AI via the [Airy Control Center UI](/ui/control-center/introduction).
 
-## Step 6 (option 1): Install and Configure Cognigy.AI to your Airy instance via API request
+## Step 6 (option 1): Install and configure Cognigy.AI to your Airy instance via API request
 
 To install Cognigy.AI send a request to the [Components Install endpoint](/api/endpoints/components#install).
 
@@ -94,7 +92,7 @@ The request body should be:
 
 ```json
 {
-  "name": "airy-core/cognigy"
+  "name": "airy-core/cognigy-connector"
 }
 ```
 
@@ -106,7 +104,7 @@ Use the REST Endpoint URL and User ID you got in the previous steps ([step 3](/i
 {
   "components": [
     {
-      "name": "cognigy",
+      "name": "cognigy-connector",
       "enabled": true,
       "data": {
         "restEndpointUrl": "yourRestEndpointUrl",
@@ -117,20 +115,19 @@ Use the REST Endpoint URL and User ID you got in the previous steps ([step 3](/i
 }
 ```
 
-The request is considered successful if `cognigy` is returned in the list of configured components
-and the request status code is `200`.
+The request is considered successful if `cognigy-connector` is returned in the list of configured components and the request status code is `200`.
 
 ```json
 {
   "components": {
-    "cognigy": true
+    "cognigy-connector": true
   }
 }
 ```
 
 Cognigy.AI is now installed and configured.
 
-## Step 6 (option 2): Install and Configure Cognigy.AI to your Airy instance via the Control Center UI
+## Step 6 (option 2): Install and configure Cognigy.AI to your Airy instance via the Control Center UI
 
 On the [Airy Control Center UI](/ui/control-center/introduction), navigate to the [Catalog](/ui/control-center/catalog) and select Cognigy.AI. Click on the `Install` button.
 
@@ -143,6 +140,10 @@ Cognigy.AI is now installed and configured.
 
 ## Step 7: Cognigy.AI's connection with Airy
 
-To test the connection write a message to one of your channels: Airy Core will
+Write a message to one of your channels: Airy Core will
 forward it to your Cognigy.AI installation, which will respond according to the Cognigy.AI Flow
 using the Airy Core API.
+
+The screenshot below was taken on an instance's [Airy Core Inbox UI](/ui/inbox/introduction). It shows an example where a message sent to Airy Core is automatically responded to according to a [Cognigy.AI Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) where the Live Agent responds "Hello from Cognigy!👋" to a contact's first message.
+
+<img alt="Cognigy.AI Airy connection" src={useBaseUrl('img/integrations/cognigy/messagingExample.png')} />

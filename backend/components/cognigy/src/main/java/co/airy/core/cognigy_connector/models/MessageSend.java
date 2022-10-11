@@ -1,4 +1,4 @@
-package co.airy.core.rasa_connector.models;
+package co.airy.core.cognigy.models;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,14 +7,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.String;
 
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class AiryAttachment {
-    String type;
-    AiryPayload payload;
+@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
+
+public class MessageSend {
+    private String text;
+    private String userId;
+    private String sessionId;
 }

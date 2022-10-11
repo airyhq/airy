@@ -1,6 +1,6 @@
 ---
-title: Cognigy AI
-sidebar_label: Cognigy AI
+title: Cognigy.AI
+sidebar_label: Cognigy.AI
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';

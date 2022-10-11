@@ -3,6 +3,7 @@ package co.airy.core.api.components.installer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import co.airy.spring.core.AirySpringBootApplication;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1ConfigMap;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1ObjectMeta;
 import io.kubernetes.client.openapi.models.V1Pod;
@@ -41,6 +43,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +94,45 @@ public class InstallerHandlerTest {
 
     @Test
     public void canInstallComponent() throws Exception {
+        final ComponentDetails sourcesChatplugin = new ComponentDetails()
+            .add("name", "sources-chatplugin")
+            .add("repository", "airy-core")
+            .add("installed", false);
+
+        doReturn(sourcesChatplugin).when(catalogHandler).getComponentByName("sources-chatplugin");
+
+        final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
+            final ApiResponse<V1ConfigMap> coreConfigResponse = new ApiResponse<>(
+                    200,
+                    null,
+                    new V1ConfigMap().data(getCoreConfig()));
+
+            doReturn(coreConfigResponse).when(mock).readNamespacedConfigMapWithHttpInfo(
+                    "core-config",
+                    "test-namespace",
+                    null);
+
+            doReturn(null).when(helmJobHandler).launchHelmJob(
+                    eq("helm-install-sources-chatplugin"),
+                    cmd.capture());
+
+            final ApiResponse<V1ConfigMap> repositoriesResponse = new ApiResponse<>(
+                    200,
+                    null,
+                    new V1ConfigMap().data(getRepositoriesConfig()));
+
+            doReturn(repositoriesResponse).when(mock).readNamespacedConfigMapWithHttpInfo(
+                    "repositories",
+                    "test-namespace",
+                    null);
+        };
+
+        try (MockedConstruction<CoreV1Api> apiMock = Mockito.mockConstruction(CoreV1Api.class, fn)) {
+            installerHandler.installComponent("sources-chatplugin");
+
+            assertThat(cmd.getValue().size(), equalTo(3));
+            assertThat(cmd.getValue().get(2), equalTo(getHelmInstallCmd())); 
+        }
     }
 
     @Test
@@ -103,5 +145,40 @@ public class InstallerHandlerTest {
 
         assertThat(cmd.getValue().size(), equalTo(3));
         assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace uninstall enterprise-dialogflow-connector")); 
+    }
+
+    private Map<String, String> getCoreConfig() {
+        return Map.of(
+                "global.yaml", getGlobals(),
+                "APP_IMAGE_TAG", "0.50.0-alpha");
+    }
+
+    private String getGlobals() {
+        final List<String> globals = List.of(
+            "global:",
+            "  containerRegistry: ghcr.io/airyhq",
+            "  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest",
+            "  host: test.airy.co",
+            "  apiHost: https://test.airy.co",
+            "  ingress:",
+            "    letsencrypt: false");
+
+        return String.join("\n", globals);
+    }
+
+    private Map<String, String> getRepositoriesConfig() throws Exception {
+        final String repositoriesBlob = StreamUtils.copyToString(
+                getClass().getClassLoader().getResourceAsStream("repositories.json"),
+                StandardCharsets.UTF_8);
+
+        return Map.of("repositories.json", repositoriesBlob);
+    }
+
+    private String getHelmInstallCmd() throws Exception {
+        final String helmInstallCmd = StreamUtils.copyToString(
+                getClass().getClassLoader().getResourceAsStream("helm-install-cmd.txt"),
+                StandardCharsets.UTF_8);
+
+        return helmInstallCmd.substring(0, helmInstallCmd.length() - 1);
     }
 }

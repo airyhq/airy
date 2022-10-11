@@ -98,7 +98,7 @@ public class CatalogHandlerTest {
     }
 
     @Test
-    void canGetComponents(@TempDir File tempDir) throws Exception {
+    public void canGetComponents(@TempDir File tempDir) throws Exception {
         callOnApplicationEvent(tempDir);
 
         final V1Job job = new V1Job()

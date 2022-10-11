@@ -36,10 +36,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
-    console.log('query', query);
-  }, [query]);
-
-  useEffect(() => {
     listChannels().catch((error: Error) => {
       console.error(error);
     });

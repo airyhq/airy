@@ -113,12 +113,11 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           <div className={styles.searchField}>
             {showingSearchField && (
               <SearchField
-                className={animationAction ? styles.animateIn : styles.animateOut}
+                className={`${styles.searchInput} ${animationAction ? styles.animateIn : styles.animateOut}`}
                 placeholder={t('search')}
                 value={searchText}
                 setValue={(value: string) => setSearchText(value)}
                 autoFocus={true}
-                style={{height: '32px', borderRadius: '32px'}}
                 resetClicked={() => setSearchText('')}
               />
             )}

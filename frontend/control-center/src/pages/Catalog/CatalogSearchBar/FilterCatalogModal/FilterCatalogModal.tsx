@@ -32,7 +32,7 @@ export const FilterCatalogModal = (props: FilterCatalogModalProps) => {
   const clearFilter = () => {
     setCurrentFilter(FilterTypes.all);
     props.setCurrentFilter(FilterTypes.all);
-    localStorage.setItem('catalogCurrentTypeFilter', currentFilter);
+    localStorage.setItem('catalogCurrentTypeFilter', FilterTypes.all);
   };
 
   return (

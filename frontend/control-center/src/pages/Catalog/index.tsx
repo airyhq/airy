@@ -36,6 +36,10 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
+    console.log('query', query);
+  }, [query]);
+
+  useEffect(() => {
     listChannels().catch((error: Error) => {
       console.error(error);
     });
@@ -51,7 +55,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   useLayoutEffect(() => {
     if (query && currentFilter === FilterTypes.all) {
       const filteredCatalogByName = [...catalogList].filter((component: ComponentInfo) =>
-        component?.displayName?.toLowerCase().includes(query)
+        component?.displayName?.toLowerCase().startsWith(query.toLowerCase())
       );
       setOrderedCatalogList(filteredCatalogByName);
     } else {
@@ -73,7 +77,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
           query !== ''
             ? setOrderedCatalogList(
                 sortedByInstalled.filter((component: ComponentInfo) =>
-                  component?.displayName?.toLowerCase().includes(query)
+                  component?.displayName?.toLowerCase().startsWith(query.toLowerCase())
                 )
               )
             : setOrderedCatalogList(sortedByInstalled);
@@ -82,7 +86,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
           query !== ''
             ? setOrderedCatalogList(
                 sortedByAccess.filter((component: ComponentInfo) =>
-                  component?.displayName?.toLowerCase().includes(query)
+                  component?.displayName?.toLowerCase().startsWith(query.toLowerCase())
                 )
               )
             : setOrderedCatalogList(sortedByAccess);
@@ -91,7 +95,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
           query !== ''
             ? setOrderedCatalogList(
                 sortedByUninstalled.filter((component: ComponentInfo) =>
-                  component?.displayName?.toLowerCase().includes(query)
+                  component?.displayName?.toLowerCase().startsWith(query.toLowerCase())
                 )
               )
             : setOrderedCatalogList(sortedByUninstalled);

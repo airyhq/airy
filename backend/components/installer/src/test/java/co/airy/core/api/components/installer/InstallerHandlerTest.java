@@ -26,7 +26,6 @@ import io.kubernetes.client.openapi.models.V1PodList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -42,7 +41,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +70,12 @@ public class InstallerHandlerTest {
     @MockBean
     private CatalogHandler catalogHandler;
 
+    @Autowired
+    private InstallerHandler installerHandler;
+
+    @Captor
+    private ArgumentCaptor<ArrayList<String>> cmd;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(
@@ -91,5 +95,13 @@ public class InstallerHandlerTest {
 
     @Test
     public void canUninstallComponent() throws Exception {
+        doReturn(null).when(helmJobHandler).launchHelmJob(
+                eq("helm-uninstall-enterprise-dialogflow-connector"),
+                cmd.capture());
+
+        installerHandler.uninstallComponent("enterprise-dialogflow-connector");
+
+        assertThat(cmd.getValue().size(), equalTo(3));
+        assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace uninstall enterprise-dialogflow-connector")); 
     }
 }

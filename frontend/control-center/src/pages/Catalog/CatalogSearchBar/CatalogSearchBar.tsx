@@ -29,30 +29,32 @@ export const CatalogSearchBar = (props: CatalogSearchBarProps) => {
     props.setCurrentFilter(currentFilter);
   }, [currentFilter]);
 
-  const handleSearchClick = () => {
-    setShowingSearchField(true);
-  };
+  const handleSearchClick = () => setShowingSearchField(!showSearchField);
 
   return (
     <div className={styles.container}>
       <div className={styles.iconContainer}>
         {showSearchField ? (
-          <SearchField
-            autoFocus
-            className={styles.searchField}
-            placeholder={t('searchByNamePlaceholder')}
-            value={query}
-            setValue={(value: string) => {
-              setQuery(value), props.setQuery(value);
-            }}
-          />
+          <ListenOutsideClick onOuterClick={showSearchField && handleSearchClick}>
+            <SearchField
+              autoFocus
+              className={styles.searchField}
+              placeholder={t('searchByNamePlaceholder')}
+              value={query}
+              setValue={(value: string) => {
+                setQuery(value), props.setQuery(value);
+              }}
+            />
+          </ListenOutsideClick>
         ) : (
           <SearchIcon height={20} width={20} className={styles.searchIcon} onClick={handleSearchClick} />
         )}
         <FilterIcon
           height={24}
           width={24}
-          className={currentFilter !== FilterTypes.all ? styles.filterIcon : ''}
+          className={
+            currentFilter !== FilterTypes.all ? `${styles.filterIcon} ${styles.filterIconSelected}` : styles.filterIcon
+          }
           onClick={toggleShowFilter}
         />
         <div>

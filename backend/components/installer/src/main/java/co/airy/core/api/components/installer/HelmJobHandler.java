@@ -12,10 +12,10 @@ import io.kubernetes.client.openapi.models.V1ObjectMeta;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodSpec;
 import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
-import io.kubernetes.client.util.Yaml;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
@@ -40,6 +40,11 @@ public class HelmJobHandler {
     }
 
     public V1Job launchHelmJob(String jobName, List<String> cmd) throws Exception {
+        final V1Job runningJob = isJobAlreadyRunning(jobName);
+        if (runningJob != null) {
+            return runningJob;
+        }
+
         final V1Job job = new V1Job()
             .metadata(new V1ObjectMeta().name(jobName))
             .spec(new V1JobSpec()
@@ -51,8 +56,8 @@ public class HelmJobHandler {
                                 .command(cmd))
                             .restartPolicy("Never")
                             .serviceAccountName("airy-controller")))
-                    .backoffLimit(4)
-                    .ttlSecondsAfterFinished(1));
+                    .backoffLimit(0)
+                    .ttlSecondsAfterFinished(10));
 
         final BatchV1Api api = new BatchV1Api(apiClient);
         final ApiResponse<V1Job> response = api.createNamespacedJobWithHttpInfo(
@@ -80,5 +85,22 @@ public class HelmJobHandler {
         if (!jobStatus.getData().getStatus().getPhase().equals("Succeeded")) {
             throw new NotCompletedException();
         }
+    }
+
+    private V1Job isJobAlreadyRunning(String jobName) {
+        try {
+            final BatchV1Api api = new BatchV1Api(apiClient);
+            final ApiResponse<V1Job> response = api.readNamespacedJobWithHttpInfo(
+                    jobName,
+                    namespace,
+                    null);
+            return response.getData();
+        } catch (ApiException e) {
+            if (e.getCode() == HttpStatus.NOT_FOUND.value()) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

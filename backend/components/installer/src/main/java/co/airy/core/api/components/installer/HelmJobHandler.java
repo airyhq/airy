@@ -52,13 +52,7 @@ public class HelmJobHandler {
                             .restartPolicy("Never")
                             .serviceAccountName("airy-controller")))
                     .backoffLimit(4)
-                    //FIXME: To change to 0
-                    .ttlSecondsAfterFinished(30));
-
-
-
-        //FIXME: remove log
-        log.info(Yaml.dump(job));
+                    .ttlSecondsAfterFinished(1));
 
         final BatchV1Api api = new BatchV1Api(apiClient);
         final ApiResponse<V1Job> response = api.createNamespacedJobWithHttpInfo(

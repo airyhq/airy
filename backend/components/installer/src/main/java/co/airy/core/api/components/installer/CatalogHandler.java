@@ -87,7 +87,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
         return getComponents((s -> s.equals(componentName)))
             .stream()
             .findAny()
-            //FIXME: throws exception instead
+            //TODO: throws exception instead
             .orElse(null);
     }
 

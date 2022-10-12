@@ -23,15 +23,29 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
 
   source !== Source.chatPlugin &&
     Object.entries(configurationValues).forEach((item, index) => {
-      const key = item[0];
+      let key = item[0];
       const keyTyped = key as keyof typeof input;
       const valueTyped = input[keyTyped] || '';
       const toolTip = key.charAt(0).toUpperCase() + key.slice(1);
-      const replacedKey = key.replace(/([A-Z])/g, ' $1');
+
+      if (key.includes('URL')) {
+        key = key.replace('URL', 'Url');
+      } else if (key.includes('API')) {
+        key = key.replace('API', 'Api');
+      }
+
+      let replacedKey = key.replace(/([A-Z])/g, ' $1');
+
+      if (replacedKey.includes('Url')) {
+        replacedKey = replacedKey.replace('Url', 'URL');
+      } else if (key.includes('Api')) {
+        replacedKey = replacedKey.replace('Api', 'API');
+      }
+
       const label = replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1);
       const placeholder = `${replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1)}`;
       const capitalSource = source?.charAt(0).toUpperCase() + source?.slice(1).replace('.', '');
-      const isUrl = label.includes('Url');
+      const isUrl = label.includes('URL');
       const hasSteps = source === Source.dialogflow && replacedKey.includes('Level');
       const stepPlaceholder = `0.1 ${t('to')} 0.9`;
       const sensitive = label.includes('Token') || label.includes('Password') || label.includes('Secret');

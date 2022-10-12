@@ -429,8 +429,8 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Add your Phone Number Id',
       whatsappPhoneNumberIdTooltip: 'Add your Phone Number Id',
 
-      //Congnigy
-      congnigyDescription: 'A low-code UI for conversational AI.',
+      //Cognigy.AI
+      cognigyDescription: 'A low-code UI for conversational AI.',
 
       //Rasa
       rasaDescription: 'Open source conversational AI.',
@@ -906,8 +906,8 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Telefonnummer Id hinzufügen',
       whatsappPhoneNumberIdTooltip: 'Telefonnummer Id hinzufügen',
 
-      //Congnigy
-      congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+      //Cognigy.AI
+      cognigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
 
       //Rasa
       rasaDescription: 'Open-Source-Gesprächs-KI.',
@@ -1501,8 +1501,8 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Ajoutez votre numéro de téléphone',
       whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
 
-      //Congnigy
-      congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
+      //Cognigy.AI
+      cognigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
 
       //Rasa
       rasaDescription: 'IA conversationnelle open source.',
@@ -2042,8 +2042,8 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Añada su número de teléfono',
       whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
-      //Congnigy
-      congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      //Cognigy.AI
+      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
 
       //Rasa
       rasaDescription: 'IA conversacional Open Source.',

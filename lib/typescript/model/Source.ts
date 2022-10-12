@@ -10,7 +10,7 @@ export enum Source {
   zendesk = 'zendesk',
   dialogflow = 'dialogflow',
   salesforce = 'salesforce',
-  congnigy = 'congnigy',
+  cognigy = 'cognigy',
   rasa = 'rasa',
   webhooks = 'webhooks',
   amelia = 'amelia',

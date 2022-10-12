@@ -155,6 +155,6 @@ To test the connection, write a message to one of your channels: Airy Core will
 forward it to your Cognigy.AI installation, which will respond according to the Cognigy.AI Flow
 using the Airy Core API.
 
-The screenshot below was taken on a [Airy Live Chat Plugin channel](/sources/chatplugin/overview) from an Airy instance connected to Cognigy.AI. It shows an example where a message sent to Airy Core is automatically responded to according to a [Cognigy.AI Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) where the Live Agent responds "Hi from Cognigy! 👋" to a contact's first message.
+The screenshot below was taken on a [Airy Live Chat Plugin](/sources/chatplugin/overview) channel from an Airy instance connected to Cognigy.AI. It shows an example where a message sent to Airy Core is automatically responded to according to a [Cognigy.AI Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) where the Live Agent responds "Hi from Cognigy! 👋" to a contact's first message.
 
-<img alt="Cognigy.AI Airy connection" src={useBaseUrl('img/integrations/cognigy/messagingExample.png')} />
+<center><img alt="Cognigy.AI Airy connection" src={useBaseUrl('img/integrations/cognigy/messagingExample.png')} /></center>

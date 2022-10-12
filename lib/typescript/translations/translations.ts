@@ -431,6 +431,8 @@ const resources = {
 
       //Cognigy.AI
       cognigyDescription: 'A low-code UI for conversational AI.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpoint URL',
+      inputTooltipCognigyCognigyUserId: 'User ID',
 
       //Rasa
       rasaDescription: 'Open source conversational AI.',
@@ -908,6 +910,8 @@ const resources = {
 
       //Cognigy.AI
       cognigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpunkt-URL',
+      inputTooltipCognigyCognigyUserId: 'Benutzer-ID',
 
       //Rasa
       rasaDescription: 'Open-Source-Gesprächs-KI.',
@@ -1502,7 +1506,9 @@ const resources = {
       whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
 
       //Cognigy.AI
-      cognigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
+      cognigyDescription: "L'IA conversationnelle en quelques clics.",
+      inputTooltipCognigyCognigyRestEndpointURL: 'URL Endpoint REST',
+      inputTooltipCognigyCognigyUserId: "ID d'utilisateur",
 
       //Rasa
       rasaDescription: 'IA conversationnelle open source.',
@@ -2044,6 +2050,8 @@ const resources = {
 
       //Cognigy.AI
       cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'URL del Endpoint REST',
+      inputTooltipCognigyCognigyUserId: 'ID de usuario',
 
       //Rasa
       rasaDescription: 'IA conversacional Open Source.',

@@ -26,6 +26,14 @@ spec:
         - name: app
           image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.components.installer.image }}:{{ default .Chart.Version }}"
           imagePullPolicy: Always
+          args:
+            - "-Djdk.tls.client.protocols=TLSv1.2"
+            - "-jar"
+            - "app_springboot.jar"
+            - "-XshowSettings:vm"
+            - "-XX:MaxRAMPercentage=70"
+            - "-XX:-UseCompressedOops"
+            - "-Dsun.net.inetaddr.ttl=0"
           envFrom:
             - configMapRef:
                 name: security
@@ -73,6 +81,7 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3
+      serviceAccountName: {{ .Values.serviceAccount }}
       volumes:
         - name: {{ .Values.components.api.components.installer.name }}
           configMap:

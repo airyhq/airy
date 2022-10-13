@@ -1,5 +1,0 @@
-apiVersion: v2
-appVersion: "1.0"
-description: A Helm chart for the Api components installer 
-name: api-components-installer
-version: 1.0

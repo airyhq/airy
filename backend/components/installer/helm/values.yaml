@@ -1,7 +1,0 @@
-component: api-components-installer
-mandatory: true
-enabled: true
-image: components/api-components-installer
-global:
-  containerRegistry: ghcr.io/airyhq
-resources: {}

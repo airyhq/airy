@@ -33,6 +33,13 @@ repositories:
     password:
 components:
   api:
+    components:
+      installer:
+        name: api-components-installer
+        image: api/components/installer
+        mandatory: true
+        enabled: true
+        resources: {}
     admin:
       name: api-admin
       image: api/admin

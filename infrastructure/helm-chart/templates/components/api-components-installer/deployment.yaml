@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.component }}
+  name: {{ .Values.components.api.components.installer.name }}
   labels:
-    app: {{ .Values.component }}
+    app: {{ .Values.components.api.components.installer.name }}
     core.airy.co/managed: "true"
-    core.airy.co/mandatory: "{{ .Values.mandatory }}"
-    core.airy.co/component: {{ .Values.component }}
+    core.airy.co/mandatory: "{{ .Values.components.api.components.installer.mandatory }}"
+    core.airy.co/component: {{ .Values.components.api.components.installer.name }}
 spec:
-  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  replicas: {{ if .Values.components.api.components.installer.enabled }} 1 {{ else }} 0 {{ end }}
   selector:
     matchLabels:
-      app: {{ .Values.component }}
+      app: {{ .Values.components.api.components.installer.name }}
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -20,11 +20,11 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.component }}
+        app: {{ .Values.components.api.components.installer.name }}
     spec:
       containers:
         - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ default .Chart.Version }}"
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.components.installer.image }}:{{ default .Chart.Version }}"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -32,13 +32,8 @@ spec:
             - configMapRef:
                 name: kafka-config
           env:
-            - name: RASA_WEBHOOK_URL
-              valueFrom:
-                configMapKeyRef:
-                  key: rasaWebhookUrl
-                  name: {{ .Values.component }}
             - name: SERVICE_NAME
-              value: {{ .Values.component }}
+              value: {{ .Values.components.api.components.installer.name }}
             - name: KUBERNETES_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -79,6 +74,6 @@ spec:
             periodSeconds: 10
             failureThreshold: 3
       volumes:
-        - name: {{ .Values.component }}
+        - name: {{ .Values.components.api.components.installer.name }}
           configMap:
-            name: {{ .Values.component }}
+            name: {{ .Values.components.api.components.installer.name }}

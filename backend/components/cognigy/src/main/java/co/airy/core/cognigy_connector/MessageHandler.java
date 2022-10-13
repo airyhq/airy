@@ -4,6 +4,7 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core. cognigy.models.MessageSendResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -41,8 +42,11 @@ public class MessageHandler {
     }
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
-        final String text = response.getText();
-        if (text == null) {
+
+        final JsonNode message = response.getMessage();
+        System.out.println(message);
+
+        if (message == null) {
             return null;
         }
 
@@ -52,27 +56,27 @@ public class MessageHandler {
                 final ObjectNode representative = getNode();
                 representative.put("representativeType", "BOT");
                 node.set("representative", representative);
-                node.put("text", text);
+                node.put("text", message);
                 return mapper.writeValueAsString(node);
             }
             case "viber": {
-                node.put("text", text);
-                node.put("type", text);
+                node.put("text", message);
+                node.put("type", message);
                 return mapper.writeValueAsString(node);
             }
             case "chatplugin":
             case "instagram":
             case "facebook": {
-                node.put("text", text);
+                node.put("text", message);
                 return mapper.writeValueAsString(node);
             }
             case "twilio.sms":
             case "twilio.whatsapp": {
-                node.put("Body", text);
+                node.put("Body", message);
                 return mapper.writeValueAsString(node);
             }
             case "whatsapp": {
-                node.put("Body", text);
+                node.put("Body", message);
                 return mapper.writeValueAsString(node);
             }
 

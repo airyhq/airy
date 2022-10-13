@@ -14,5 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class MessageSendResponse {
-    private JsonNode message;
+    private String text;
+    private JsonNode data;
 }

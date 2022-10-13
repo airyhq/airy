@@ -43,10 +43,10 @@ public class MessageHandler {
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
 
-        final JsonNode message = response.getMessage();
-        System.out.println(message);
+        final String text = response.getText();
+        final JsonNode data = response.getData();
 
-        if (message == null) {
+        if (text == null || data == null) {
             return null;
         }
 
@@ -56,27 +56,28 @@ public class MessageHandler {
                 final ObjectNode representative = getNode();
                 representative.put("representativeType", "BOT");
                 node.set("representative", representative);
-                node.put("text", message);
+                node.put("text", text);
                 return mapper.writeValueAsString(node);
             }
             case "viber": {
-                node.put("text", message);
-                node.put("type", message);
+                node.put("text", text);
+                node.put("type", "text");
                 return mapper.writeValueAsString(node);
             }
             case "chatplugin":
             case "instagram":
             case "facebook": {
-                node.put("text", message);
+                node.put("text", text);
+                node.put("message", data);
                 return mapper.writeValueAsString(node);
             }
             case "twilio.sms":
             case "twilio.whatsapp": {
-                node.put("Body", message);
+                node.put("Body", text);
                 return mapper.writeValueAsString(node);
             }
             case "whatsapp": {
-                node.put("Body", message);
+                node.put("Body", text);
                 return mapper.writeValueAsString(node);
             }
 

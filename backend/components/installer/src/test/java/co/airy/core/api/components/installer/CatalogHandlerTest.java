@@ -100,6 +100,7 @@ public class CatalogHandlerTest {
         final V1Job job = new V1Job()
             .metadata(new V1ObjectMeta().name("helm-installed").namespace("test-namespace"));
 
+        //TODO: Move all of this to InstalledComponentsHandlerTest class & mock here
         doReturn(job).when(helmJobHandler).launchHelmJob(eq(job.getMetadata().getName()), cmd.capture());
         doReturn("helm-installed-test").when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq(job));
 

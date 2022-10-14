@@ -2,8 +2,6 @@ package co.airy.core.api.components.installer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -12,10 +10,6 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import io.kubernetes.client.openapi.ApiClient;
-import io.kubernetes.client.openapi.ApiResponse;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Job;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -25,8 +19,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import co.airy.core.api.components.installer.HelmJobHandler;
-import co.airy.core.api.components.installer.NotCompletedException;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.log.AiryLoggerFactory;
 
@@ -38,22 +30,16 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private final File repoFolder;
     private final String catalogUri;
-    private final ApiClient apiClient;
-    private final String namespace;
-    private final HelmJobHandler helmJobHandler;
+    private final InstalledComponentsHandler installedComponentsHandler;
     private Git git;
 
     CatalogHandler(
-            ApiClient apiClient,
-            HelmJobHandler helmJobHandler,
+            InstalledComponentsHandler installedComponentsHandler,
             @Value("${catalog.uri}") String catalogUri,
-            @Value("${catalog.directory}") String catalogDir,
-            @Value("${kubernetes.namespace}") String namespace) {
-        this.apiClient = apiClient;
+            @Value("${catalog.directory}") String catalogDir) {
         this.catalogUri = catalogUri;
         this.repoFolder = new File(catalogDir);
-        this.helmJobHandler = helmJobHandler;
-        this.namespace = namespace;
+        this.installedComponentsHandler = installedComponentsHandler;
     }
 
     @Override
@@ -87,10 +73,11 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
             .orElse(null);
     }
 
+
     //TODO: Add return value and correct exception handleling and return value
     private List<ComponentDetails> getComponents(Function<String, Boolean> condition) throws Exception {
         git.pull();
-        final Map<String, Boolean> installedComponents = getInstalledComponents();
+        final Map<String, Boolean> installedComponents = installedComponentsHandler.getInstalledComponentsCache();
 
         final List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
                 .filter(f -> f.isDirectory() && !f.isHidden() && condition.apply(f.getName()))
@@ -112,43 +99,5 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                 .collect(Collectors.toList());
 
         return components;
-    }
-
-    private Map<String, Boolean> getInstalledComponents() throws Exception {
-
-        ArrayList<String> cmd = new ArrayList<>();
-        cmd.add("sh");
-        cmd.add("-c");
-        cmd.add(String.format(
-                    "helm -n %s list | awk '{print $1}' | tail -n +2",
-                    namespace));
-
-        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
-        final CoreV1Api api = new CoreV1Api(apiClient);
-
-        final String podName = helmJobHandler.waitForCompletedStatus(api, job);
-
-        final ApiResponse<String> response = api.readNamespacedPodLogWithHttpInfo(
-                podName,
-                job.getMetadata().getNamespace(),
-                "",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        final Map<String, Boolean> installedComponents = Arrays.asList(response.getData().split("\\n"))
-                .stream()
-                .collect(Collectors.toMap(e -> e, e -> true));
-
-        if (installedComponents == null) {
-            throw new JobEmptyException();
-        }
-
-        return installedComponents;
     }
 }

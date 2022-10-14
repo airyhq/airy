@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import co.airy.log.AiryLoggerFactory;
+import io.kubernetes.client.openapi.ApiException;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 
 @RestController
@@ -35,6 +36,8 @@ public class InstallerController {
         try {
             intallerHandler.installComponent(payload.getName());
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch(ApiException e) {
+            log.error(String.format("unable to perform install (%s)", e.getResponseBody()), e);
         } catch(Exception e) {
             log.error("unable to perform install", e);
         }
@@ -47,6 +50,8 @@ public class InstallerController {
         try {
             intallerHandler.uninstallComponent(payload.getName());
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch(ApiException e) {
+            log.error(String.format("unable to perform uninstall (%s)", e.getResponseBody()), e);
         } catch(Exception e) {
             log.error("unable to perform uninstall", e);
         }
@@ -58,6 +63,8 @@ public class InstallerController {
         try {
             final List<ComponentDetails> components = catalogHandler.listComponents();
             return ResponseEntity.status(HttpStatus.OK).body(ComponentDetails.componentsDetailsListToMap(components));
+        } catch(ApiException e) {
+            log.error(String.format("unable to perform list (%s)", e.getResponseBody()), e);
         } catch(Exception e) {
             log.error("unable to perform list", e);
         }

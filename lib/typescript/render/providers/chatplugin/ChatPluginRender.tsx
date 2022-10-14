@@ -114,7 +114,7 @@ function mapContent(message): ContentUnion {
   }
 
   if (messageContent.quick_replies || isCognigyQuickReplies) {
-    if (messageContent.quick_replies.length > 13) {
+    if (messageContent?.quick_replies?.length > 13) {
       messageContent.quick_replies = messageContent.quick_replies.slice(0, 13);
     }
 
@@ -128,7 +128,7 @@ function mapContent(message): ContentUnion {
 
     return {
       type: 'quickReplies',
-      text: messageContent.text,
+      text: messageContent?.text ?? messageContent?.data?._cognigy?._default?._quickReplies?.text,
       quickReplies: messageContent?.quick_replies || cognigyQuickReplies,
     };
   }

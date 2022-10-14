@@ -397,8 +397,8 @@ function metaOutbound(message): ContentUnion {
     };
   }
 
-  if (messageJson.quick_replies || isCognigyQuickReplies) {
-    if (messageJson.quick_replies.length > 13) {
+  if (messageJson?.quick_replies || isCognigyQuickReplies) {
+    if (messageJson?.quick_replies?.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
 
@@ -412,7 +412,7 @@ function metaOutbound(message): ContentUnion {
 
     return {
       type: 'quickReplies',
-      text: messageJson.text,
+      text: messageJson?.text || messageJson?.data?._cognigy?._default?._quickReplies?.text,
       quickReplies: messageJson?.quick_replies || cognigyQuickReplies,
     };
   }

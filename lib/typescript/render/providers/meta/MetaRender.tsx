@@ -340,25 +340,33 @@ function metaInbound(message): ContentUnion {
 }
 
 function metaOutbound(message): ContentUnion {
-  const messageJson = message?.content?.message || message?.content || message;
+  let messageJson;
 
-  const isCognigyQuickReplies = messageJson?.data?.type === 'quickReplies';
-  const cognigyQuickReplies = messageJson?.data?._cognigy?._default?._quickReplies?.quickReplies;
+  if (message.content?.message && Object.entries(message.content?.message).length > 0) {
+    messageJson = message.content.message;
+  } else if (message.content) {
+    messageJson = message.content;
+  } else {
+    messageJson = message;
+  }
 
-  const isCognigyImage = messageJson?.data?.type === 'image';
-  const cognigyImage = messageJson?.data?._cognigy?._default?._image;
+  const isCognigyQuickReplies = messageJson?.type === 'quickReplies';
+  const cognigyQuickReplies = messageJson?._cognigy?._default?._quickReplies;
 
-  const isCognigyVideo = messageJson?.data?.type === 'video';
-  const cognigyVideo = messageJson?.data?._cognigy?._default?._video;
+  const isCognigyImage = messageJson?.type === 'image';
+  const cognigyImage = messageJson?._cognigy?._default?._image;
 
-  const isCognigyAudio = messageJson?.data?.type === 'audio';
-  const cognigyAudio = messageJson?.data?._cognigy?._default?._audio;
+  const isCognigyVideo = messageJson?.type === 'video';
+  const cognigyVideo = messageJson?._cognigy?._default?._video;
 
-  const isCognigyButtons = messageJson?.data?.type === 'buttons';
-  const cognigyButtons = messageJson?.data?._cognigy?._default?._buttons;
+  const isCognigyAudio = messageJson?.type === 'audio';
+  const cognigyAudio = messageJson?._cognigy?._default?._audio;
 
-  const isCognigyCarousel = messageJson?.data?.type === 'gallery';
-  const cognigyCarousel = messageJson?.data?._cognigy?._default?._gallery;
+  const isCognigyButtons = messageJson?.type === 'buttons';
+  const cognigyButtons = messageJson?._cognigy?._default?._buttons;
+
+  const isCognigyCarousel = messageJson?.type === 'gallery';
+  const cognigyCarousel = messageJson?._cognigy?._default?._gallery;
 
   //messages sent through cognigy.AI flow
   if (isCognigyImage) {
@@ -398,8 +406,16 @@ function metaOutbound(message): ContentUnion {
   }
 
   if (messageJson?.quick_replies || isCognigyQuickReplies) {
+    let quickRepliesText;
+
     if (messageJson?.quick_replies?.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
+    }
+
+    if (isCognigyQuickReplies) {
+      quickRepliesText = cognigyQuickReplies?.text;
+    } else {
+      quickRepliesText = messageJson?.text;
     }
 
     if (messageJson.attachment || messageJson.attachments) {
@@ -412,7 +428,7 @@ function metaOutbound(message): ContentUnion {
 
     return {
       type: 'quickReplies',
-      text: messageJson?.text || messageJson?.data?._cognigy?._default?._quickReplies?.text,
+      text: quickRepliesText,
       quickReplies: messageJson?.quick_replies || cognigyQuickReplies,
     };
   }

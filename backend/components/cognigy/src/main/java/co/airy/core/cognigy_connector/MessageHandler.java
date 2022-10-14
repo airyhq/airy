@@ -65,7 +65,9 @@ public class MessageHandler {
             case "instagram":
             case "facebook": {
                 node.put("text", text);
-                node.put("message", data);
+                if(!data.isEmpty()){
+                    node.put("message", data);
+                }
                 return mapper.writeValueAsString(node);
             }
             case "twilio.sms":

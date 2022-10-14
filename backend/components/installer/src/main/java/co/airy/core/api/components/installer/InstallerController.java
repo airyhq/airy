@@ -35,10 +35,10 @@ public class InstallerController {
         try {
             intallerHandler.installComponent(payload.getName());
         } catch(Exception e) {
-            log.error(e.getMessage());
+            log.error("unable to perform install", e);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
     }
 
     @PostMapping("/components.uninstall")
@@ -46,9 +46,9 @@ public class InstallerController {
         try {
             intallerHandler.uninstallComponent(payload.getName());
         } catch(Exception e) {
-            log.error(e.getMessage());
+            log.error("unable to perform uninstall", e);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
     }
 
     @PostMapping("/components.list")
@@ -57,7 +57,7 @@ public class InstallerController {
             final List<ComponentDetails> components = catalogHandler.listComponents();
             return ResponseEntity.status(HttpStatus.OK).body(ComponentDetails.componentsDetailsListToMap(components));
         } catch(Exception e) {
-            log.error(e.getMessage());
+            log.error("unable to perform list", e);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
     }

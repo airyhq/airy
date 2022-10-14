@@ -10,6 +10,7 @@ import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1JobSpec;
 import io.kubernetes.client.openapi.models.V1ObjectMeta;
 import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.openapi.models.V1PodList;
 import io.kubernetes.client.openapi.models.V1PodSpec;
 import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
 
@@ -73,18 +74,43 @@ public class HelmJobHandler {
 
     @Retryable(value = NotCompletedException.class, maxAttemptsExpression = "${retry.maxAttempts}",
                backoff = @Backoff(delayExpression = "${retry.maxDelay}"))
-    public void waitForCompletedStatus(
-            CoreV1Api api,
-            String jobName,
-            String namespace) throws NotCompletedException, ApiException {
-        final ApiResponse<V1Pod> jobStatus = api.readNamespacedPodStatusWithHttpInfo(
-                jobName,
+    public String waitForCompletedStatus(CoreV1Api api, V1Job job) throws NotCompletedException, ApiException {
+        final ApiResponse<V1PodList> listResponse = api.listNamespacedPodWithHttpInfo(
+                job.getMetadata().getNamespace(),
+                null,
+                null,
+                null,
+                null,
+                "job-name",
+                null,
+                null,
+                null,
+                null,
+                null);
+        final String podName = listResponse
+                .getData()
+                .getItems()
+                .stream()
+                .map(V1Pod::getMetadata)
+                .filter(m -> m.getLabels().get("job-name").equals(job.getMetadata().getName()))
+                .map(V1ObjectMeta::getName)
+                .findAny()
+                .orElse("");
+
+        if (podName.isEmpty()) {
+            throw new NotCompletedException();
+        }
+
+        final ApiResponse<V1Pod> podStatus = api.readNamespacedPodStatusWithHttpInfo(
+                podName,
                 namespace,
                 null);
 
-        if (!jobStatus.getData().getStatus().getPhase().equals("Succeeded")) {
+        if (!podStatus.getData().getStatus().getPhase().equals("Succeeded")) {
             throw new NotCompletedException();
         }
+
+        return podName;
     }
 
     private V1Job isJobAlreadyRunning(String jobName) {

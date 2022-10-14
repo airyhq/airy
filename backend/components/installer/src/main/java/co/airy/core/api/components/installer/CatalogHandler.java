@@ -10,16 +10,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
-import io.kubernetes.client.openapi.models.V1ObjectMeta;
-import io.kubernetes.client.openapi.models.V1Pod;
-import io.kubernetes.client.openapi.models.V1PodList;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -129,37 +125,11 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
         final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
         final CoreV1Api api = new CoreV1Api(apiClient);
-        final ApiResponse<V1PodList> listResponse = api.listNamespacedPodWithHttpInfo(
-                job.getMetadata().getNamespace(),
-                null,
-                null,
-                null,
-                null,
-                "job-name",
-                null,
-                null,
-                null,
-                null,
-                null);
-        final String jobName = listResponse
-                .getData()
-                .getItems()
-                .stream()
-                .map(V1Pod::getMetadata)
-                .filter(m -> m.getLabels().get("job-name").equals(job.getMetadata().getName()))
-                .map(V1ObjectMeta::getName)
-                .findAny()
-                .orElse("");
 
-        if (jobName.isEmpty()) {
-            //TODO: handle and throws exception
-            return null;
-        }
-
-        helmJobHandler.waitForCompletedStatus(api, jobName, job.getMetadata().getNamespace());
+        final String podName = helmJobHandler.waitForCompletedStatus(api, job);
 
         final ApiResponse<String> response = api.readNamespacedPodLogWithHttpInfo(
-                jobName,
+                podName,
                 job.getMetadata().getNamespace(),
                 "",
                 null,
@@ -171,9 +141,14 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                 null,
                 null);
 
-        //TODO: handle non 200 resposnes
-        return Arrays.asList(response.getData().split("\\n"))
+        final Map<String, Boolean> installedComponents = Arrays.asList(response.getData().split("\\n"))
                 .stream()
                 .collect(Collectors.toMap(e -> e, e -> true));
+
+        if (installedComponents == null) {
+            throw new JobEmptyException();
+        }
+
+        return installedComponents;
     }
 }

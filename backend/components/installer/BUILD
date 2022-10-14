@@ -11,7 +11,9 @@ app_deps = [
     "//:k8s_client",
     "@maven//:org_eclipse_jgit_org_eclipse_jgit",
     "@maven//:org_springframework_retry_spring_retry",
+    "@maven//:org_springframework_boot_spring_boot_starter_cache",
     "@maven//:org_aspectj_aspectjweaver",
+
 ]
 
 springboot(

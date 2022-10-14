@@ -2,7 +2,7 @@ package co.airy.core.cognigy_connector;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.core. cognigy.models.MessageSendResponse;
+import co.airy.core.cognigy.models.MessageSendResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,12 +43,9 @@ public class MessageHandler {
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
 
-        final String text = response.getText();
-        final JsonNode data = response.getData();
-
-        if (text == null || data == null) {
-            return null;
-        }
+        final JsonNode messageNode = mapper.valueToTree(response);
+        final String text = messageNode.get("text").textValue();
+        final JsonNode data = messageNode.findValue("data");
 
         final ObjectNode node = getNode();
         switch (source) {

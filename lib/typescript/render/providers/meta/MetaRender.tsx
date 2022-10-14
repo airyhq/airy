@@ -342,7 +342,62 @@ function metaInbound(message): ContentUnion {
 function metaOutbound(message): ContentUnion {
   const messageJson = message?.content?.message || message?.content || message;
 
-  if (messageJson.quick_replies) {
+  const isCognigyQuickReplies = messageJson?.data?.type === 'quickReplies';
+  const cognigyQuickReplies = messageJson?.data?._cognigy?._default?._quickReplies?.quickReplies;
+
+  const isCognigyImage = messageJson?.data?.type === 'image';
+  const cognigyImage = messageJson?.data?._cognigy?._default?._image;
+
+  const isCognigyVideo = messageJson?.data?.type === 'video';
+  const cognigyVideo = messageJson?.data?._cognigy?._default?._video;
+
+  const isCognigyAudio = messageJson?.data?.type === 'audio';
+  const cognigyAudio = messageJson?.data?._cognigy?._default?._audio;
+
+  const isCognigyButtons = messageJson?.data?.type === 'buttons';
+  const cognigyButtons = messageJson?.data?._cognigy?._default?._buttons;
+
+  const isCognigyCarousel = messageJson?.data?.type === 'gallery';
+  const cognigyCarousel = messageJson?.data?._cognigy?._default?._gallery;
+
+  //messages sent through cognigy.AI flow
+  if (isCognigyImage) {
+    return {
+      type: 'image',
+      imageUrl: cognigyImage.imageUrl,
+    };
+  }
+
+  if (isCognigyVideo) {
+    return {
+      type: 'video',
+      videoUrl: cognigyVideo.videoUrl,
+    };
+  }
+
+  if (isCognigyAudio) {
+    return {
+      type: 'audio',
+      audioUrl: cognigyAudio.audioUrl,
+    };
+  }
+
+  if (isCognigyButtons) {
+    return {
+      type: 'buttonTemplate',
+      text: cognigyButtons?.payload?.text ?? null,
+      buttons: cognigyButtons.buttons,
+    };
+  }
+
+  if (isCognigyCarousel) {
+    return {
+      type: 'genericTemplate',
+      elements: cognigyCarousel.items,
+    };
+  }
+
+  if (messageJson.quick_replies || isCognigyQuickReplies) {
     if (messageJson.quick_replies.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
@@ -358,7 +413,7 @@ function metaOutbound(message): ContentUnion {
     return {
       type: 'quickReplies',
       text: messageJson.text,
-      quickReplies: messageJson.quick_replies,
+      quickReplies: messageJson?.quick_replies || cognigyQuickReplies,
     };
   }
 

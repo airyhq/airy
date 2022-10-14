@@ -79,7 +79,41 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 function mapContent(message): ContentUnion {
   const messageContent = message.content?.message ?? message.content ?? message;
 
-  if (messageContent.quick_replies) {
+  const isCognigyQuickReplies = messageContent?.data?.type === 'quickReplies';
+  const cognigyQuickReplies = messageContent?.data?._cognigy?._default?._quickReplies?.quickReplies;
+
+  const isCognigyImage = messageContent?.data?.type === 'image';
+  const cognigyImage = messageContent?.data?._cognigy?._default?._image;
+
+  const isCognigyVideo = messageContent?.data?.type === 'video';
+  const cognigyVideo = messageContent?.data?._cognigy?._default?._video;
+
+  const isCognigyAudio = messageContent?.data?.type === 'audio';
+  const cognigyAudio = messageContent?.data?._cognigy?._default?._audio;
+
+  //messages sent through cognigy.AI flow
+  if (isCognigyImage) {
+    return {
+      type: 'image',
+      imageUrl: cognigyImage.imageUrl,
+    };
+  }
+
+  if (isCognigyVideo) {
+    return {
+      type: 'video',
+      videoUrl: cognigyVideo.videoUrl,
+    };
+  }
+
+  if (isCognigyAudio) {
+    return {
+      type: 'audio',
+      audioUrl: cognigyAudio.audioUrl,
+    };
+  }
+
+  if (messageContent.quick_replies || isCognigyQuickReplies) {
     if (messageContent.quick_replies.length > 13) {
       messageContent.quick_replies = messageContent.quick_replies.slice(0, 13);
     }
@@ -95,7 +129,7 @@ function mapContent(message): ContentUnion {
     return {
       type: 'quickReplies',
       text: messageContent.text,
-      quickReplies: messageContent.quick_replies,
+      quickReplies: messageContent?.quick_replies || cognigyQuickReplies,
     };
   }
 

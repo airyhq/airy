@@ -20,8 +20,6 @@ import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1ObjectMeta;
-import io.kubernetes.client.openapi.models.V1Pod;
-import io.kubernetes.client.openapi.models.V1PodList;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,13 +37,11 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -105,30 +101,9 @@ public class CatalogHandlerTest {
             .metadata(new V1ObjectMeta().name("helm-installed").namespace("test-namespace"));
 
         doReturn(job).when(helmJobHandler).launchHelmJob(eq(job.getMetadata().getName()), cmd.capture());
-        doNothing().when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq("helm-installed-test"), eq("test-namespace"));
+        doReturn("helm-installed-test").when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq(job));
 
         final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
-            final ApiResponse<V1PodList> listResponse = new ApiResponse<>(
-                    200,
-                    null,
-                    new V1PodList().items(List.of(
-                            new V1Pod().metadata(new V1ObjectMeta()
-                                .name("helm-installed-test")
-                                .labels(Map.of("job-name", "helm-installed"))))));
-
-            doReturn(listResponse).when(mock).listNamespacedPodWithHttpInfo(
-                job.getMetadata().getNamespace(),
-                null,
-                null,
-                null,
-                null,
-                "job-name",
-                null,
-                null,
-                null,
-                null,
-                null);
-
             final ApiResponse<String> response = new ApiResponse<>(
                     200,
                     null,

@@ -23,8 +23,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import co.airy.core.api.components.installer.CatalogHandler;
-import co.airy.core.api.components.installer.HelmJobHandler;
 import co.airy.core.api.components.installer.model.Component;
 import co.airy.core.api.components.installer.model.ComponentDetails;
 import co.airy.core.api.components.installer.model.Repository;
@@ -38,6 +36,7 @@ public class InstallerHandler {
     private final ApiClient apiClient;
     private final HelmJobHandler helmJobHandler;
     private final CatalogHandler catalogHandler;
+    private final InstallerHandlerCacheManager installerHandlerCacheManager;
     private final String namespace;
     private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -45,10 +44,12 @@ public class InstallerHandler {
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
             CatalogHandler catalogHandler,
+            InstallerHandlerCacheManager installerHandlerCacheManager,
             @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.helmJobHandler = helmJobHandler;
         this.catalogHandler = catalogHandler;
+        this.installerHandlerCacheManager = installerHandlerCacheManager;
         this.namespace = namespace;
     }
 
@@ -63,18 +64,18 @@ public class InstallerHandler {
         final List<String> cmd = getInstallCommand(component, globals);
 
 
-        helmJobHandler.launchHelmJob(String.format("helm-install-%s", componentName), cmd);
-
-        //TODO: handle error properly
-        log.info(globals);
-        log.info(version);
+        final String jobName = String.format("helm-install-%s", componentName);
+        helmJobHandler.launchHelmJob(jobName, cmd);
+        installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
 
     //TODO: Add return value and correct exception handleling
     public void uninstallComponent(String componentName) throws Exception {
         final List<String> cmd = getUninstallCommand(componentName);
 
-        helmJobHandler.launchHelmJob(String.format("helm-uninstall-%s", componentName), cmd);
+        final String jobName = String.format("helm-uninstall-%s", componentName);
+        helmJobHandler.launchHelmJob(jobName, cmd);
+        installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
 
     private Component getComponentFromName(

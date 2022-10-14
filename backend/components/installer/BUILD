@@ -7,6 +7,7 @@ app_deps = [
     "//backend:base_app",
     "//backend/model/metadata",
     "//lib/java/spring/web:spring-web",
+    "//lib/java/spring/async:spring-async",
     "//:springboot_actuator",
     "//:k8s_client",
     "@maven//:org_eclipse_jgit_org_eclipse_jgit",

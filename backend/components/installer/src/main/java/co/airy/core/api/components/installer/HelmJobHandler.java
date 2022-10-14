@@ -72,6 +72,17 @@ public class HelmJobHandler {
         return response.getData();
     }
 
+    @Retryable(value = JobEmptyException.class, maxAttemptsExpression = "${retry.maxAttempts}",
+               backoff = @Backoff(delayExpression = "${retry.maxDelay}"))
+    public V1Job getJobByName(String jobName) throws JobEmptyException {
+        final V1Job job = isJobAlreadyRunning(jobName);
+        if (job == null) {
+            throw new JobEmptyException();
+        }
+
+        return job;
+    }
+
     @Retryable(value = NotCompletedException.class, maxAttemptsExpression = "${retry.maxAttempts}",
                backoff = @Backoff(delayExpression = "${retry.maxDelay}"))
     public String waitForCompletedStatus(CoreV1Api api, V1Job job) throws NotCompletedException, ApiException {

@@ -34,21 +34,23 @@ public class InstallerController {
     public ResponseEntity<?> installComponent(@RequestBody @Valid InstallPayload payload) {
         try {
             intallerHandler.installComponent(payload.getName());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } catch(Exception e) {
             log.error("unable to perform install", e);
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @PostMapping("/components.uninstall")
     public ResponseEntity<?> uninstallComponent(@RequestBody @Valid UninstallPayload payload) {
         try {
             intallerHandler.uninstallComponent(payload.getName());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } catch(Exception e) {
             log.error("unable to perform uninstall", e);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @PostMapping("/components.list")
@@ -59,6 +61,6 @@ public class InstallerController {
         } catch(Exception e) {
             log.error("unable to perform list", e);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }

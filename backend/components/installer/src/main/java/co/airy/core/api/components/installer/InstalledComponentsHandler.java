@@ -9,15 +9,19 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import co.airy.core.api.components.installer.HelmJobHandler;
+import co.airy.log.AiryLoggerFactory;
 
 @Component
 public class InstalledComponentsHandler {
+
+    private static final Logger log = AiryLoggerFactory.getLogger(InstallerHandler.class);
 
     private final ApiClient apiClient;
     private final String namespace;

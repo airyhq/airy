@@ -13,7 +13,6 @@ app_deps = [
     "@maven//:org_springframework_retry_spring_retry",
     "@maven//:org_springframework_boot_spring_boot_starter_cache",
     "@maven//:org_aspectj_aspectjweaver",
-
 ]
 
 springboot(

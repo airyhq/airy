@@ -53,7 +53,6 @@ public class InstallerHandler {
         this.namespace = namespace;
     }
 
-    //TODO: Add return value and correct exception handleling
     public void installComponent(String componentName) throws Exception {
         final CoreV1Api api = new CoreV1Api(apiClient);
         final Map<String, String> coreConfig = getConfigMap(api, "core-config");
@@ -69,7 +68,6 @@ public class InstallerHandler {
         installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
 
-    //TODO: Add return value and correct exception handleling
     public void uninstallComponent(String componentName) throws Exception {
         final List<String> cmd = getUninstallCommand(componentName);
 
@@ -85,14 +83,12 @@ public class InstallerHandler {
 
         ComponentDetails componentDetails = catalogHandler.getComponentByName(componentName);
         if (componentDetails.isInstalled()) {
-            //TODO: do better exception
             throw new Exception("Already installed");
         }
 
         final Repository repo = repositories.get(componentDetails.getRepository());
         if (repo == null) {
             log.error("repository %s not found", componentDetails.getRepository());
-            //TODO: do better error handleling
             throw new NoSuchElementException();
         }
 
@@ -108,7 +104,6 @@ public class InstallerHandler {
         final String repositoriesBlob = getConfigMap(api, "repositories").get("repositories.json");
         if (repositoriesBlob == null || repositoriesBlob.isEmpty()) {
             log.error("repositories json configuration not found");
-            //TODO: do better error handleling
             throw new ApiException();
         }
 
@@ -124,12 +119,10 @@ public class InstallerHandler {
                 namespace,
                 null);
 
-        //TODO: handle http error
         final V1ConfigMap config = response.getData();
         final Map<String, String> data = config.getData();
         if (data == null) {
             log.error("core-config configuration not found");
-            //TODO: do better error handleling
             throw new ApiException();
         }
 

@@ -74,7 +74,6 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
     }
 
 
-    //TODO: Add return value and correct exception handleling and return value
     private List<ComponentDetails> getComponents(Function<String, Boolean> condition) throws Exception {
         git.pull();
         final Map<String, Boolean> installedComponents = installedComponentsHandler.getInstalledComponentsCache();

@@ -1557,7 +1557,7 @@ const resources = {
       createChannel: 'Créer un canal',
       succuessfulConfiguration: 'Configuration appliquée avec succès',
       updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
-      failedConfiguration: `Échec de l'application de la configuration`,
+      failedConfiguration: 'La configuration a échoué',
       updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
 
       //Request Access

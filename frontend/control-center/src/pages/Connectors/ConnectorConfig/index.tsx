@@ -5,7 +5,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
 import {getMergedConnectors, useCurrentComponentForSource} from '../../../selectors';
 import {getConnectorsConfiguration, listComponents} from '../../../actions';
-import {Source} from 'model';
+import {NotificationModel, Source} from 'model';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
@@ -19,6 +19,7 @@ import ConfigureConnector from '../ConfigureConnector';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import WhatsappConnect from '../Providers/WhatsappBusinessCloud/WhatsappConnect';
 import ViberConnect from '../Providers/Viber/ViberConnect';
+import {NotificationComponent} from 'components';
 
 const mapDispatchToProps = {
   getConnectorsConfiguration,
@@ -63,6 +64,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const isChannel = connectors[removePrefix(connectorInfo?.name)].isChannel;
   const isConfigured = connectors[removePrefix(connectorInfo?.name)].isConfigured;
   const isEnabled = connectors[removePrefix(connectorInfo.name)]?.isEnabled;
+  const [notification, setNotification] = useState<NotificationModel>(null);
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -119,6 +121,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
           isConfigured={isConfigured}
           configValues={parsedConfigValues}
           source={connectorInfo.source}
+          setNotification={setNotification}
         />
       );
     }
@@ -142,16 +145,18 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       <div className={styles.channelsLineContainer}>
         {!(source === Source.chatPlugin && (newChannel || channelId)) && (
           <div className={styles.channelsLineItems}>
-            <span
-              className={
-                connectedChannels || newChannel || channelId || (configurePath && !isChannel)
-                  ? styles.activeItem
-                  : styles.inactiveItem
-              }
-              onClick={() => isChannel && navigate(lineTitleRoute, {state: {from: currentPath}})}
-            >
-              {lineTitle}
-            </span>
+            {(isConfigured || !isChannel) && (
+              <span
+                className={
+                  connectedChannels || newChannel || channelId || (configurePath && !isChannel)
+                    ? styles.activeItem
+                    : styles.inactiveItem
+                }
+                onClick={() => isChannel && navigate(lineTitleRoute, {state: {from: currentPath}})}
+              >
+                {lineTitle}
+              </span>
+            )}
             {((source !== Source.chatPlugin && connectorInfo.isChannel) || (notConfigured && isChannel)) && (
               <span
                 className={configurePath ? styles.activeItem : styles.inactiveItem}
@@ -170,6 +175,15 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       >
         <PageContent />
       </div>
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          info={notification.info}
+          setShowFalse={setNotification}
+        />
+      )}
     </>
   );
 };

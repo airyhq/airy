@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import RestartPopUp from '../RestartPopUp';
 import {SmartButton} from 'components';
 import {cyConnectorAddButton} from 'handles';
@@ -10,6 +10,7 @@ import {SetConfigInputs} from './SetConfigInputs/SetConfigInputs';
 import {removePrefix} from '../../../services';
 import {updateConnectorConfiguration} from '../../../actions';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
+import {NotificationModel} from 'model';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -29,6 +30,7 @@ type ConfigureConnectorProps = {
   isConfigured: boolean;
   configValues: {[key: string]: string};
   source: string;
+  setNotification: Dispatch<SetStateAction<NotificationModel>>;
 } & ConnectedProps<typeof connector>;
 
 const ConfigureConnector = (props: ConfigureConnectorProps) => {
@@ -66,8 +68,20 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
     };
 
     updateConnectorConfiguration(payload)
+      .then(() => {
+        props.setNotification({
+          show: true,
+          text: isConfigured ? t('updateSuccessfulConfiguration') : t('successfulConfiguration'),
+          successful: true,
+        });
+      })
       .catch((error: Error) => {
         console.error(error);
+        props.setNotification({
+          show: true,
+          text: isConfigured ? t('updateFailedConfiguration') : t('failedConfiguration'),
+          successful: false,
+        });
       })
       .finally(() => {
         setIsPending(false);

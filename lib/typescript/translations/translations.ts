@@ -471,6 +471,10 @@ const resources = {
       optional: 'Optional',
       configuration: 'Configuration',
       createChannel: 'Create Channel',
+      succuessfulConfiguration: 'Configuration successful applied',
+      updateSuccessfulConfiguration: 'Configuration successful updated',
+      failedConfiguration: 'Applying configuration failed',
+      updateFailedConfiguration: 'Updating configuration failed',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -1015,6 +1019,10 @@ const resources = {
       optional: 'Optional',
       configuration: 'Konfiguration',
       createChannel: 'Kanal erstellen',
+      succuessfulConfiguration: 'Konfiguration erfolgreich angewendet',
+      updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
+      failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
+      updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
 
       //Request Access
 
@@ -1547,6 +1555,10 @@ const resources = {
       optional: 'Optionnel',
       configuration: 'Configuration',
       createChannel: 'Créer un canal',
+      succuessfulConfiguration: 'Configuration appliquée avec succès',
+      updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
+      failedConfiguration: `Échec de l'application de la configuration`,
+      updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -2090,6 +2102,10 @@ const resources = {
       optional: 'Opcional',
       configuration: 'Configuración',
       createChannel: 'Crear canal',
+      succuessfulConfiguration: 'Configuración aplicada con éxito',
+      updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
+      failedConfiguration: 'Fallo en la aplicación de la configuración',
+      updateFailedConfiguration: 'Fallo en la actualización de la configuración',
 
       //Request Access
       comingSoon: 'Próximamente',

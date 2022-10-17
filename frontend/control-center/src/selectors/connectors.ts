@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 import {Channel, Connector, ConnectorName, ConnectorsModel, Source} from 'model';
 import {createSelector} from 'reselect';
 import {merge} from 'lodash-es';
-import {removePrefix} from '../services';
 import {allChannelsConnected} from './channels';
 
 export const useCurrentConnectorForSource = (source: Source) => {
@@ -35,7 +34,7 @@ export const getMergedConnectors = createSelector(
       const isInstalled = catalog[1].installed;
       const price = catalog[1].price;
       const source = catalog[1].source;
-      const name = removePrefix(catalog[0]);
+      const name = catalog[0];
       const displayName = catalog[1].displayName;
 
       structuredCatalog = {

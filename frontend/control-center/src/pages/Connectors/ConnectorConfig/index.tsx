@@ -13,7 +13,6 @@ import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import ConnectedChannelsList from '../ConnectedChannelsList';
-import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
 import ConfigureConnector from '../ConfigureConnector';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
@@ -60,10 +59,10 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const navigateChannelId = `${CONNECTORS_ROUTE}/${source}/${channelId || previousPath}`;
   const notConfigured = previousPath === 'connectors' || previousPath === 'status' || previousPath === 'catalog';
-  const hasConnectedChannels = connectors[removePrefix(connectorInfo?.name)].connectedChannels > 0;
-  const isChannel = connectors[removePrefix(connectorInfo?.name)].isChannel;
-  const isConfigured = connectors[removePrefix(connectorInfo?.name)].isConfigured;
-  const isEnabled = connectors[removePrefix(connectorInfo.name)]?.isEnabled;
+  const hasConnectedChannels = connectors[connectorInfo?.name].connectedChannels > 0;
+  const isChannel = connectors[connectorInfo?.name].isChannel;
+  const isConfigured = connectors[connectorInfo?.name].isConfigured;
+  const isEnabled = connectors[connectorInfo.name]?.isEnabled;
   const [notification, setNotification] = useState<NotificationModel>(null);
 
   useLayoutEffect(() => {
@@ -145,7 +144,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
       <div className={styles.channelsLineContainer}>
         {!(source === Source.chatPlugin && (newChannel || channelId)) && (
           <div className={styles.channelsLineItems}>
-            {(isConfigured || !isChannel) && (
+            {(isConfigured || !isChannel || source === Source.chatPlugin) && (
               <span
                 className={
                   connectedChannels || newChannel || channelId || (configurePath && !isChannel)

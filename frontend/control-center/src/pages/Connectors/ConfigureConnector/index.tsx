@@ -7,7 +7,6 @@ import styles from './index.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {SetConfigInputs} from './SetConfigInputs/SetConfigInputs';
-import {removePrefix} from '../../../services';
 import {updateConnectorConfiguration} from '../../../actions';
 import {UpdateComponentConfigurationRequestPayload} from 'httpclient/src';
 import {NotificationModel} from 'model';
@@ -36,7 +35,6 @@ type ConfigureConnectorProps = {
 const ConfigureConnector = (props: ConfigureConnectorProps) => {
   const {componentName, isConfigured, configValues, isEnabled, updateConnectorConfiguration, source} = props;
   const {t} = useTranslation();
-  const displayName = componentName && removePrefix(componentName);
   const [config, setConfig] = useState(configValues);
   const [isPending, setIsPending] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
@@ -60,7 +58,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
     const payload: UpdateComponentConfigurationRequestPayload = {
       components: [
         {
-          name: componentName && removePrefix(componentName),
+          name: componentName,
           enabled: true,
           data: configurationValues,
         },
@@ -95,7 +93,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
           <div className={styles.formRow}>
             <SetConfigInputs
               configurationValues={configValues}
-              storedConfig={props.config[displayName]}
+              storedConfig={props.config[componentName]}
               setConfig={setConfig}
               source={source}
             />

@@ -119,14 +119,6 @@ List all the components, both installed and not installed.
 
 `POST /components.list`
 
-**Sample request**
-
-```json5
-{
-  "repository": "airy-core" // optional
-}
-```
-
 **Sample response**
 
 ```json5
@@ -156,11 +148,11 @@ Install a new component.
 
 ```json
 {
-  "name": "airy-core/sources-chatplugin"
+  "name": "sources-chatplugin"
 }
 ```
 
-**(201) Success Response Payload**
+**(202) Success Response Payload**
 
 ## Uninstall
 
@@ -172,11 +164,11 @@ Uninstall an existing component.
 
 ```json
 {
-  "name": "airy-enterprise/enterprise-dialogflow-connector"
+  "name": "enterprise-dialogflow-connector"
 }
 ```
 
-**(201) Success Response Payload**
+**(202) Success Response Payload**
 
 ```
 

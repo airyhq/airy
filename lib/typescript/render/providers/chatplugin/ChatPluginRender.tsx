@@ -77,11 +77,61 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 }
 
 function mapContent(message): ContentUnion {
-  const messageContent = message.content?.message ?? message.content ?? message;
+  let messageContent;
 
-  if (messageContent.quick_replies) {
-    if (messageContent.quick_replies.length > 13) {
+  if (message.content?.message && Object.entries(message.content?.message).length > 0) {
+    messageContent = message.content.message;
+  } else if (message.content) {
+    messageContent = message.content;
+  } else {
+    messageContent = message;
+  }
+
+  const isCognigyQuickReplies = messageContent?.type === 'quickReplies';
+  const cognigyQuickReplies = messageContent?._cognigy?._default?._quickReplies;
+
+  const isCognigyImage = messageContent?.type === 'image';
+  const cognigyImage = messageContent?._cognigy?._default?._image;
+
+  const isCognigyVideo = messageContent?.type === 'video';
+  const cognigyVideo = messageContent?._cognigy?._default?._video;
+
+  const isCognigyAudio = messageContent?.type === 'audio';
+  const cognigyAudio = messageContent?._cognigy?._default?._audio;
+
+  //messages sent through cognigy.AI flow
+  if (isCognigyImage) {
+    return {
+      type: 'image',
+      imageUrl: cognigyImage.imageUrl,
+    };
+  }
+
+  if (isCognigyVideo) {
+    return {
+      type: 'video',
+      videoUrl: cognigyVideo.videoUrl,
+    };
+  }
+
+  if (isCognigyAudio) {
+    return {
+      type: 'audio',
+      audioUrl: cognigyAudio.audioUrl,
+    };
+  }
+
+  if (messageContent.quick_replies || isCognigyQuickReplies) {
+    let quickRepliesText;
+
+    if (messageContent?.quick_replies?.length > 13) {
       messageContent.quick_replies = messageContent.quick_replies.slice(0, 13);
+    }
+
+    if (isCognigyQuickReplies) {
+      quickRepliesText = cognigyQuickReplies?.text;
+    } else {
+      quickRepliesText = messageContent?.text;
     }
 
     if (messageContent.attachment || messageContent.attachments) {
@@ -94,8 +144,8 @@ function mapContent(message): ContentUnion {
 
     return {
       type: 'quickReplies',
-      text: messageContent.text,
-      quickReplies: messageContent.quick_replies,
+      text: quickRepliesText,
+      quickReplies: messageContent?.quick_replies || cognigyQuickReplies?.quickReplies,
     };
   }
 
@@ -140,7 +190,7 @@ function mapContent(message): ContentUnion {
     };
   }
 
-  if (messageContent.text) {
+  if (typeof messageContent.text === 'string' && messageContent.text !== '') {
     return {
       type: 'text',
       text: messageContent.text,

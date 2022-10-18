@@ -2,8 +2,9 @@ package co.airy.core.cognigy_connector;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.core. cognigy.models.MessageSendResponse;
+import co.airy.core.cognigy.models.MessageSendResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -41,10 +42,10 @@ public class MessageHandler {
     }
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
-        final String text = response.getText();
-        if (text == null) {
-            return null;
-        }
+
+        final JsonNode messageNode = mapper.valueToTree(response);
+        final String text = messageNode.get("text").textValue();
+        final JsonNode data = messageNode.findValue("data");
 
         final ObjectNode node = getNode();
         switch (source) {
@@ -57,13 +58,16 @@ public class MessageHandler {
             }
             case "viber": {
                 node.put("text", text);
-                node.put("type", text);
+                node.put("type", "text");
                 return mapper.writeValueAsString(node);
             }
             case "chatplugin":
             case "instagram":
             case "facebook": {
                 node.put("text", text);
+                if(!data.isEmpty()){
+                    node.put("message", data);
+                }
                 return mapper.writeValueAsString(node);
             }
             case "twilio.sms":

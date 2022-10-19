@@ -68,7 +68,7 @@ cd "$RULEDIR"/outputjar || exit
 
 ls -d **/* | sort > list.txt
 
-# echo list.txt
+echo list.txt
 
 jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" @list.txt
 

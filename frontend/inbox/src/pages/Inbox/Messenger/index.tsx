@@ -39,7 +39,7 @@ const Messenger = (props: ConnectedProps<typeof connector>) => {
         </section>
       )}
 
-      <MessengerContainer {...props} />
+      <MessengerContainer />
     </section>
   );
 };

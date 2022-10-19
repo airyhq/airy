@@ -174,6 +174,7 @@ const resources = {
       channelsCapital: 'Channels',
       addChannel: 'Add Channel',
       disconnectChannel: 'Disconnect Channel',
+      editChannel: 'Edit Channel',
       confirmDisconnectChannelTitle: 'Confirm Channel Disconnection',
       confirmDisconnectChannelText:
         'You are about to disconnect a channel. You will not receive any new messages in Airy or be able to send messages anymore.',
@@ -724,6 +725,7 @@ const resources = {
       addChannel: 'Kanal hinzufügen',
       channelsCapital: 'Kanäle',
       disconnectChannel: 'Kanal entfernen',
+      editChannel: 'Kanal bearbeiten',
       confirmDisconnectChannelTitle: 'Bestätigung der Kanaltrennung',
       confirmDisconnectChannelText:
         'Sie sind dabei, die Verbindung zu einem Kanal zu trennen. Sie werden keine neuen Nachrichten in Airy erhalten und können keine Nachrichten mehr senden.',
@@ -1265,6 +1267,7 @@ const resources = {
       addChannel: 'Ajouter un canal',
       channelsCapital: 'Canaux',
       disconnectChannel: 'Déconnecter du canal',
+      editChannel: 'Éditer le canal',
       confirmDisconnectChannelTitle: 'Confirmer la déconnexion du canal',
       confirmDisconnectChannelText:
         'Vous êtes sur le point de déconnecter un canal. Vous ne recevrez plus de nouveaux messages dans Airy et ne pourrez plus envoyer de messages.',
@@ -1812,6 +1815,7 @@ const resources = {
       addChannel: 'Añadir canal',
       channelsCapital: 'Canales',
       disconnectChannel: 'Desconectar el canal',
+      editChannel: 'Editar el canal',
       confirmDisconnectChannelTitle: 'Confirmar la desconexión del canal',
       confirmDisconnectChannelText:
         'Estás a punto de desconectar un canal. No recibirás ningún mensaje nuevo en Airy ni podrás volver a enviar mensajes.',

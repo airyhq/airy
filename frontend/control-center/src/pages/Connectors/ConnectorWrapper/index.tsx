@@ -98,7 +98,10 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
       );
 
       const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
-      const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
+      const connectorSourceInfoFormatted = connectorSourceInfoArr && {
+        name: connectorSourceInfoArr[0],
+        ...connectorSourceInfoArr[1],
+      };
 
       const connectorHasChannels = connectorSourceInfoFormatted?.isChannel;
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
@@ -111,10 +111,25 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   };
 
   const BodyContent = () => {
+    const bodyContentDescription = useRef(null);
+
+    const parseContent = (str: string) => {
+      const parser = new DOMParser();
+      const htmlDoc = parser.parseFromString(str, 'text/html');
+      const content = htmlDoc.body;
+      const element = content.querySelector('div');
+      bodyContentDescription.current.appendChild(element);
+    };
+
+    useEffect(() => {
+      if (bodyContentDescription && bodyContentDescription?.current) {
+        parseContent(componentInfo.description);
+      }
+    }, [bodyContentDescription]);
+
     return (
-      <section className={styles.componentDescription}>
+      <section className={styles.componentDescription} ref={bodyContentDescription}>
         <h1>{t('Description')}</h1>
-        <>{componentInfo.description}</>
       </section>
     );
   };

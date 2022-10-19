@@ -39,6 +39,11 @@ jobs:
         env:
           GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
 
+      - name: Debug jar build
+        run: |
+          locale
+          bazel build //backend/components/communication
+
       - name: Install dependencies
         run: yarn install
 

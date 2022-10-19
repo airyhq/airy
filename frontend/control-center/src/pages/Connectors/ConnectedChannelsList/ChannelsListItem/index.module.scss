@@ -95,10 +95,13 @@
 .listButtons {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 50px;
+  width: 50px;
   svg {
     color: var(--color-text-gray);
     &:hover {
+      cursor: pointer;
       color: var(--color-airy-blue);
     }
   }
@@ -269,4 +272,8 @@ header {
 
 .checkmarkIcon {
   fill: var(--color-soft-green);
+}
+
+.editIcon {
+  margin-bottom: 1px;
 }

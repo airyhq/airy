@@ -7,13 +7,16 @@ type TooltipProps = {
   hoverElementHeight?: number;
   hoverElementWidth: number;
   tooltipContent: string;
-  direction: 'top' | 'right' | 'bottom' | 'left';
+  direction: 'top' | 'right' | 'bottom' | 'left' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
   navigateTo?: string;
 };
 
 export const Tooltip = (props: TooltipProps) => {
   const {hoverElement, hoverElementHeight, hoverElementWidth, tooltipContent, direction, navigateTo} = props;
   const navigate = useNavigate();
+  const left = direction === 'bottomLeft' || direction === 'topLeft';
+  const right = direction === 'bottomRight' || direction === 'topRight';
+  const margin = hoverElementWidth + 5;
 
   const handleOnClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
@@ -32,7 +35,12 @@ export const Tooltip = (props: TooltipProps) => {
       >
         {hoverElement}
       </div>
-      <span className={`${styles.tooltipContent} ${styles[direction]}`}>{tooltipContent}</span>
+      <span
+        className={`${styles.tooltipContent} ${styles[direction]}`}
+        style={left ? {left: `${margin}px`} : right ? {right: `${margin}px`} : {}}
+      >
+        {tooltipContent}
+      </span>
     </div>
   );
 };

@@ -14,6 +14,7 @@ type Props = {
   dataCy?: string;
   className?: string;
   style?: CSSProperties;
+  animation?: string;
 };
 
 export const SearchField = ({
@@ -26,6 +27,7 @@ export const SearchField = ({
   dataCy,
   className,
   style,
+  animation,
 }: Props) => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
@@ -36,7 +38,7 @@ export const SearchField = ({
   }, [value, setValue]);
 
   return (
-    <div className={`${className} ${styles.component}`} style={style}>
+    <div className={`${className} ${styles.component} ${animation}`} style={style}>
       <div className={styles.searchIcon}>
         <SearchIcon aria-hidden="true" className={styles.searchIcon} />
       </div>

@@ -1,3 +1,5 @@
+@import 'assets/scss/animations.scss';
+
 .containerSearch {
   display: flex;
   width: 100%;
@@ -27,15 +29,6 @@
   animation-fill-mode: forwards;
 }
 
-@keyframes searchFieldAnimation {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
-}
-
 .backIcon {
   cursor: pointer;
   height: 13px;
@@ -53,8 +46,16 @@
   padding-right: 14px;
 }
 
-.searchFieldWidth {
+.searchField {
   width: 100%;
+}
+
+.animateIn {
+  animation: searchfieldAnimIn 400ms ease;
+}
+
+.animateOut {
+  animation: searchfieldAnimOut 400ms forwards;
 }
 
 .searchBox {
@@ -106,6 +107,7 @@
   height: 24px;
   width: 24px;
   margin-left: 12px;
+  color: var(--color-text-gray);
   &:hover {
     svg {
       path {

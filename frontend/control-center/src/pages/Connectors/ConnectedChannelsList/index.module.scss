@@ -170,10 +170,11 @@
 }
 
 .searchField {
-  min-width: 300px;
-  animation: searchFieldAnimation 300ms ease;
+  width: 300px;
   height: 32px;
-  border-radius: 32px;
+  background: var(--color-background-white);
+  border: 1px solid var(--color-airy-blue);
+  border-radius: 4px;
 }
 
 .connectChannelModalHeader {
@@ -226,16 +227,10 @@
   color: var(--color-dark-elements-gray);
 }
 
-.searchInput {
-  background: var(--color-background-white);
-  border: 1px solid var(--color-airy-blue);
-  border-radius: 4px;
-}
-
 .animateIn {
   animation: searchfieldAnimIn 300ms ease;
 }
 
 .animateOut {
-  animation: searchfieldAnimOut 300ms ease;
+  animation: searchfieldAnimOut 300ms forwards;
 }

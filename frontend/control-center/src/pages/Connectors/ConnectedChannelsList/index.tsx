@@ -110,18 +110,17 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     <div className={styles.wrapper}>
       <div className={styles.searchFieldContainer}>
         <div className={styles.searchFieldButtons}>
-          <div className={styles.searchField}>
-            {showingSearchField && (
-              <SearchField
-                className={`${styles.searchInput} ${animationAction ? styles.animateIn : styles.animateOut}`}
-                placeholder={t('search')}
-                value={searchText}
-                setValue={(value: string) => setSearchText(value)}
-                autoFocus={true}
-                resetClicked={() => setSearchText('')}
-              />
-            )}
-          </div>
+          {showingSearchField && (
+            <SearchField
+              className={styles.searchField}
+              animation={animationAction ? styles.animateIn : styles.animateOut}
+              placeholder={t('search')}
+              value={searchText}
+              setValue={(value: string) => setSearchText(value)}
+              autoFocus={true}
+              resetClicked={() => setSearchText('')}
+            />
+          )}
         </div>
         <div className={styles.buttons}>
           <button onClick={showSearchFieldToggle}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {SearchField} from 'components';
@@ -16,6 +16,7 @@ import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
 import Popup from '../QuickFilter/Popup';
 import {formatConversationCount} from '../../../services/format/numbers';
 import {useTranslation} from 'react-i18next';
+import {useAnimation} from 'render';
 
 const mapDispatchToProps = {
   setSearch,
@@ -37,6 +38,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const {t} = useTranslation();
 
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
+  const [animationAction, setAnimationAction] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -44,18 +46,11 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     resetFilteredConversationAction();
   }, [resetFilteredConversationAction]);
 
-  const onClickSearch = () => {
-    if (isShowingSearchInput) {
-      setSearch(currentFilter, null);
-    }
-    setIsShowingSearchInput(!isShowingSearchInput);
-  };
-
-  const onClickBack = () => {
-    setSearch(currentFilter, null);
-    setIsShowingSearchInput(!isShowingSearchInput);
+  const showSearchFieldToggle = useCallback(() => {
+    useAnimation(isShowingSearchInput, setIsShowingSearchInput, setAnimationAction, 400);
     setSearchText('');
-  };
+    setSearch(currentFilter, null);
+  }, [isShowingSearchInput, setIsShowingSearchInput]);
 
   const handleSearch = (value: string) => {
     setSearch(currentFilter, value);
@@ -86,25 +81,30 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
 
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
-      <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
+      <button
+        type="button"
+        className={styles.backButton}
+        onClick={showSearchFieldToggle}
+        data-cy={cySearchFieldBackButton}
+      >
         <BackIcon className={styles.backIcon} />
       </button>
-      <div className={styles.searchFieldWidth}>
-        <SearchField
-          placeholder={t('search')}
-          value={searchText}
-          setValue={setValue}
-          resetClicked={onClickSearch}
-          autoFocus={true}
-          dataCy={cySearchField}
-        />
-      </div>
+      <SearchField
+        className={styles.searchField}
+        animation={animationAction ? styles.animateIn : styles.animateOut}
+        placeholder={t('search')}
+        value={searchText}
+        setValue={setValue}
+        resetClicked={() => setSearchText('')}
+        autoFocus={true}
+        dataCy={cySearchField}
+      />
     </div>
   ) : (
     <div className={styles.containerSearchHeadline}>
       <InboxConversationCount />
       <div className={styles.searchBox}>
-        <button type="button" className={styles.searchButton} onClick={onClickSearch} data-cy={cySearchButton}>
+        <button type="button" className={styles.searchButton} onClick={showSearchFieldToggle} data-cy={cySearchButton}>
           <IconSearch className={styles.searchIcon} title={t('search')} />
         </button>
         <button

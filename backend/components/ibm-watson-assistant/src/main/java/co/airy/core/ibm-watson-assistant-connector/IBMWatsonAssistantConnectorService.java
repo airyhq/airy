@@ -3,6 +3,7 @@ package co.airy.core.ibm_watson_assistant_connector;
 import co.airy.avro.communication.Message;
 import co.airy.core.ibm_watson_assistant.models.MessageSendResponse;
 import co.airy.core.ibm_watson_assistant.models.MessageSend;
+import co.airy.core.ibm_watson_assistant.models.MessageInput;
 
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,15 +29,15 @@ public class  IBMWatsonAssistantConnectorService {
     private static final Logger log = AiryLoggerFactory.getLogger(IBMWatsonAssistantConnectorService.class);
     private final MessageHandler messageHandler;
 
-    public class MessageInput(messageType, text){
-        public String messageType;
-        public String text;
-
-        public MessageInput(String messageType, String text) {
-            messageType = messageType;
-            text = text;
-        }
-    }
+//    public class MessageInput{
+//        public String messageType;
+//        public String text;
+//
+//        public MessageInput(String messageType, String text) {
+//            message_type = messageType;
+//            text = text;
+//        }
+//    }
 
      IBMWatsonAssistantConnectorService(MessageHandler messageHandler, IBMWatsonAssistantClient  IBMWatsonAssistantClient) {
         this.messageHandler = messageHandler;
@@ -48,7 +49,9 @@ public class  IBMWatsonAssistantConnectorService {
 
         final MessageInput input = new MessageInput("text", getTextFromContent(userMessage.getContent()));
         try {
-            MessageSendResponse  IBMWatsonAssistantResponse = this.IBMWatsonAssistantClient.sendMessage(MessageSend.builder().input(input).sessionId(IBMWatsonSessionId)
+            MessageSendResponse  IBMWatsonAssistantResponse = this.IBMWatsonAssistantClient.sendMessage(MessageSend.builder()
+            .input(input)
+            .sessionId(userMessage.getConversationId())
             .build());
             Message message = messageHandler.getMessage(userMessage, IBMWatsonAssistantResponse);
             result.add(KeyValue.pair(message.getId(), message));

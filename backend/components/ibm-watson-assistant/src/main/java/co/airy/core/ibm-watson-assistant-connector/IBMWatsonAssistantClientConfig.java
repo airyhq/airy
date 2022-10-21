@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class  IBMWatsonAssistantClientConfig {
     @Bean
-    public  IBMWatsonAssistantClient  IBMWatsonAssistantClient(@Value("${ibm-watson-assistant.URL}") String IBMWatsonAssistantURL, @Value("${ibm-watson-assistant.APIKey}") String IBMWatsonAssistantAPIKey, @Value("${ibm-watson-assistant.sessionId}") String IBMWatsonSessionId) {
+    public  IBMWatsonAssistantClient  IBMWatsonAssistantClient(@Value("${ibm-watson-assistant.URL}") String IBMWatsonAssistantURL) {
         return Feign.builder()
                 .client(new OkHttpClient())
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .logger(new feign.Logger.ErrorLogger())
                 .logLevel(feign.Logger.Level.FULL)
-                .target(IBMWatsonAssistantClient.class, IBMWatsonAssistantURL, IBMWatsonAssistantAPIKey, IBMWatsonSessionId);
+                .target(IBMWatsonAssistantClient.class, IBMWatsonAssistantURL);
     }
 }

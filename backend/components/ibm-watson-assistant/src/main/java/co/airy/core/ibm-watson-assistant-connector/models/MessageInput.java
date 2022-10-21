@@ -1,6 +1,5 @@
 package co.airy.core.ibm_watson_assistant.models;
 
-import co.airy.core.ibm_watson_assistant.models.MessageSend;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.lang.String;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 
-public class MessageSend {
-    private MessageInput input;
-    private String sessionId;
+public class MessageInput {
+    private String message_type;
+    private String text;
 }

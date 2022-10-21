@@ -18,6 +18,7 @@ import java.lang.String;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 
 public class MessageSend {
-    private MessageInput input;
     private String sessionId;
+    private String assistantId;
+    private MessageInput input;
 }

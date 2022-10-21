@@ -28,30 +28,24 @@ public class  IBMWatsonAssistantConnectorService {
 
     private static final Logger log = AiryLoggerFactory.getLogger(IBMWatsonAssistantConnectorService.class);
     private final MessageHandler messageHandler;
-
-//    public class MessageInput{
-//        public String messageType;
-//        public String text;
-//
-//        public MessageInput(String messageType, String text) {
-//            message_type = messageType;
-//            text = text;
-//        }
-//    }
-
-     IBMWatsonAssistantConnectorService(MessageHandler messageHandler, IBMWatsonAssistantClient  IBMWatsonAssistantClient) {
+    private final String assistantId;
+    
+     IBMWatsonAssistantConnectorService(MessageHandler messageHandler, IBMWatsonAssistantClient  IBMWatsonAssistantClient, @Value("${ibm-watson-assistant.assistantId}") String assistantId) {
         this.messageHandler = messageHandler;
         this.IBMWatsonAssistantClient = IBMWatsonAssistantClient;
+        this.assistantId = assistantId;
     }
 
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
 
         final MessageInput input = new MessageInput("text", getTextFromContent(userMessage.getContent()));
+
         try {
             MessageSendResponse  IBMWatsonAssistantResponse = this.IBMWatsonAssistantClient.sendMessage(MessageSend.builder()
-            .input(input)
             .sessionId(userMessage.getConversationId())
+            .assistantId(assistantId)
+            .input(input)
             .build());
             Message message = messageHandler.getMessage(userMessage, IBMWatsonAssistantResponse);
             result.add(KeyValue.pair(message.getId(), message));

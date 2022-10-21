@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import RestartPopUp from '../RestartPopUp';
 import {SmartButton} from 'components';
 import {cyConnectorAddButton} from 'handles';
@@ -38,6 +38,14 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
   const [config, setConfig] = useState(configValues);
   const [isPending, setIsPending] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [configurationButtonDisabled, setConfigurationButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    Object.keys(config).length > 0 &&
+      Object.values(config).map(item => {
+        item !== 'string' && item !== '' ? setConfigurationButtonDisabled(false) : setConfigurationButtonDisabled(true);
+      });
+  }, [config]);
 
   const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -101,7 +109,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
         pending={isPending}
         styleVariant="small"
         type="button"
-        disabled={false}
+        disabled={configurationButtonDisabled}
         onClick={e => updateConfig(e)}
         dataCy={cyConnectorAddButton}
       />

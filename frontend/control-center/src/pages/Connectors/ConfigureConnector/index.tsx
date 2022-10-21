@@ -88,7 +88,6 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
 
   return (
     <section className={styles.formWrapper}>
-      {/* <div> */}
       <SetConfigInputs
         configurationValues={configValues}
         storedConfig={props.config[componentName]}
@@ -106,7 +105,6 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
         onClick={e => updateConfig(e)}
         dataCy={cyConnectorAddButton}
       />
-      {/* </div> */}
       {isUpdateModalVisible && (
         <RestartPopUp
           componentName={componentName}

@@ -3,10 +3,10 @@ package co.airy.core.ibm_watson_assistant_connector;
 import co.airy.avro.communication.Message;
 import co.airy.core.ibm_watson_assistant.models.MessageSendResponse;
 import co.airy.core.ibm_watson_assistant.models.MessageSend;
-import co.airy.core.ibm_watson_assistant.models.MessageInput;
 
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -39,13 +39,17 @@ public class  IBMWatsonAssistantConnectorService {
     public List<KeyValue<String, SpecificRecordBase>> send(Message userMessage) {
         final List<KeyValue<String, SpecificRecordBase>> result = new ArrayList<>();
 
-        final MessageInput input = new MessageInput("text", getTextFromContent(userMessage.getContent()));
+        ObjectMapper mapper = new ObjectMapper();
+        final ObjectNode inputNode = mapper.createObjectNode();
+        inputNode.put("message_type", "text");
+        inputNode.put("text", getTextFromContent(userMessage.getContent()));
+
 
         try {
             MessageSendResponse  IBMWatsonAssistantResponse = this.IBMWatsonAssistantClient.sendMessage(MessageSend.builder()
             .sessionId(userMessage.getConversationId())
             .assistantId(assistantId)
-            .input(input)
+            .input(inputNode)
             .build());
             Message message = messageHandler.getMessage(userMessage, IBMWatsonAssistantResponse);
             result.add(KeyValue.pair(message.getId(), message));

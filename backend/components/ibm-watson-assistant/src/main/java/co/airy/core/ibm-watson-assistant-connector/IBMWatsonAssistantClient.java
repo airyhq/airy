@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface IBMWatsonAssistantClient {
     @RequestLine("POST {URL}")
-    @Headers("Content-Type: application/json, Authorization {APIKey}")
+    @Headers({ "Content-Type: application/json", "Authorization: apikey {APIKey}" })
     MessageSendResponse sendMessage(MessageSend content);
 }

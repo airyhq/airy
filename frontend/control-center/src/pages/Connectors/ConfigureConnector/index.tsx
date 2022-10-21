@@ -88,29 +88,25 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
 
   return (
     <section className={styles.formWrapper}>
-      <div className={styles.settings}>
-        <form>
-          <div className={styles.formRow}>
-            <SetConfigInputs
-              configurationValues={configValues}
-              storedConfig={props.config[componentName]}
-              setConfig={setConfig}
-              source={source}
-            />
-            <SmartButton
-              height={40}
-              width={260}
-              title={isConfigured ? t('Update') : t('configure')}
-              pending={isPending}
-              styleVariant="small"
-              type="button"
-              disabled={false}
-              onClick={e => updateConfig(e)}
-              dataCy={cyConnectorAddButton}
-            />
-          </div>
-        </form>
-      </div>
+      {/* <div> */}
+      <SetConfigInputs
+        configurationValues={configValues}
+        storedConfig={props.config[componentName]}
+        setConfig={setConfig}
+        source={source}
+      />
+      <SmartButton
+        height={40}
+        width={220}
+        title={isConfigured ? t('Update') : t('configure')}
+        pending={isPending}
+        styleVariant="small"
+        type="button"
+        disabled={false}
+        onClick={e => updateConfig(e)}
+        dataCy={cyConnectorAddButton}
+      />
+      {/* </div> */}
       {isUpdateModalVisible && (
         <RestartPopUp
           componentName={componentName}

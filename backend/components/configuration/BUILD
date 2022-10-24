@@ -9,6 +9,7 @@ app_deps = [
     "//lib/java/spring/web:spring-web",
     "//:springboot_actuator",
     "//:k8s_client",
+    "//:feign",
 ]
 
 springboot(

@@ -37,6 +37,17 @@ spec:
                 name: core-config
             - configMapRef:
                 name: "{{ .Values.name }}"
+          env:
+            - name: REQUESTED_CPU
+              valueFrom:
+                resourceFieldRef:
+                  containerName: app
+                  resource: requests.cpu
+            - name: LIMIT_CPU
+              valueFrom:
+                resourceFieldRef:
+                  containerName: app
+                  resource: limits.cpu
           livenessProbe:
             httpGet:
               path: /actuator/health

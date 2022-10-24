@@ -75,17 +75,17 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Foreign key join on channels so that we have channels information for marking messages read
         final KTable<String, MessageWithChannel> messagesWithChannel = messageStream.toTable().join(channelsTable, Message::getChannelId,
-                (message,    channel) -> MessageWithChannel.builder().channel(channel).message(message).build());
+                (message, channel) -> MessageWithChannel.builder().channel(channel).message(message).build());
 
         // Contact messages table for marking them as read
         final KTable<String, MessageWithChannel> markMessageReadTable = metadataStream
-                .filter((id, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.Source.ID))
+                .filter((id, metadata) -> metadata != null && metadata.getKey().equals(MetadataKeys.MessageKeys.Source.ID))
                 .groupBy((id, metadata) -> getSubject(metadata).getIdentifier())
                 .reduce((v1, v2) -> v2)
                 .join(messagesWithChannel, (metadata, messageWithChannel) ->
                         messageWithChannel.toBuilder().sourceMessageId(metadata.getValue()).build());
 
-        metadataStream.filter((id, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.READ_BY_USER))
+        metadataStream.filter((id, metadata) -> metadata != null && metadata.getKey().equals(MetadataKeys.MessageKeys.READ_BY_USER))
                 .selectKey((id, metadata) -> getSubject(metadata).getIdentifier())
                 .join(markMessageReadTable, (metadata, messageWithChannel) -> messageWithChannel)
                 .peek((messageId, messageWithChannel) -> connector.markMessageRead(messageWithChannel));

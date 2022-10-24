@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {disconnectChannel} from '../../../../actions/channel';
 
-import {SettingsModal, Button} from 'components';
+import {SettingsModal, Button, Tooltip} from 'components';
 import {Channel} from 'model';
 
 import {ReactComponent as CheckMarkFilledIcon} from 'assets/images/icons/checkmarkFilled.svg';
@@ -61,26 +61,31 @@ const ChannelListItem = (props: ChannelListItemProps) => {
             {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           </div>
           <div className={styles.listButtons}>
-            <Button
-              styleVariant="link"
-              style={{marginRight: '0px', padding: '0px'}}
-              type="button"
-              onClick={() =>
-                navigate(`/${path}/${channel.source}/${channel.id}`, {
-                  state: {channel: channel},
-                })
+            <Tooltip
+              hoverElement={
+                <PencilIcon
+                  className={styles.editIcon}
+                  height={16}
+                  width={16}
+                  onClick={() =>
+                    navigate(`/${path}/${channel.source}/${channel.id}`, {
+                      state: {channel: channel},
+                    })
+                  }
+                />
               }
-            >
-              <PencilIcon height={16} width={16} />
-            </Button>
-            <Button
-              style={{marginLeft: '16px', padding: '0px'}}
-              styleVariant="link"
-              type="button"
-              onClick={togglePopupVisibility}
-            >
-              <DisconnectIcon height={18} width={18} />
-            </Button>
+              hoverElementWidth={16}
+              hoverElementHeight={16}
+              tooltipContent={t('editChannel')}
+              direction="left"
+            />
+            <Tooltip
+              hoverElement={<DisconnectIcon height={18} width={18} onClick={togglePopupVisibility} />}
+              hoverElementWidth={18}
+              hoverElementHeight={18}
+              tooltipContent={t('disconnectChannel')}
+              direction="topLeft"
+            />
           </div>
         </div>
       </div>

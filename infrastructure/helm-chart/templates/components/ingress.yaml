@@ -239,6 +239,27 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
+          - path: /components.list
+            pathType: Prefix
+            backend:
+              service:
+                name: api-components-installer
+                port:
+                  number: 80
+          - path: /components.install
+            pathType: Prefix
+            backend:
+              service:
+                name: api-components-installer
+                port:
+                  number: 80
+          - path: /components.uninstall
+            pathType: Prefix
+            backend:
+              service:
+                name: api-components-installer
+                port:
+                  number: 80
 {{- if .Values.global.host }}
       host: {{ .Values.global.host }}
  {{- if .Values.global.ingress.letsencrypt }}

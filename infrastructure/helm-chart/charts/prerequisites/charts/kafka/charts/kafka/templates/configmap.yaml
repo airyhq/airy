@@ -1,0 +1,14 @@
+{{- if .Values.sasl }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kafka-jaas
+data:
+  kafka_jaas.conf: |
+    KafkaServer {
+      org.apache.kafka.common.security.plain.PlainLoginModule required
+      username={{- default "admin" .Values.jaasUsername | quote }}
+      password={{- default (randAlphaNum 32) .Values.jaasPassword | quote }}
+      user_admin={{- default (randAlphaNum 64) .Values.jaasAdminPassword | quote }};
+    };
+{{- end }}

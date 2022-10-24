@@ -32,30 +32,6 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Create a default fully qualified zookeeper name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "kafka.zookeeper.fullname" -}}
-{{- $name := default "zookeeper" (index .Values "zookeeper" "nameOverride") -}}
-{{- printf "%s-headless" $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{/*
-Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s service discovery,
-else use user-provided URL
-*/}}
-{{- define "kafka.zookeeper.service-name" }}
-{{- if (index .Values "zookeeper" "enabled") -}}
-{{- $clientPort := default 2181 (index .Values "zookeeper" "clientPort") | int -}}
-{{- printf "%s:%d" (include "kafka.zookeeper.fullname" .) $clientPort }}
-{{- else -}}
-{{- $zookeeperConnect := printf "%s" (index .Values "zookeeper" "url") }}
-{{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
-{{- default $zookeeperConnect $zookeeperConnectOverride }}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Form the Advertised Listeners. We will use the value of nodeport.firstListenerPort to create the
 external advertised listeners if configurationOverrides.advertised.listeners is not set.
 */}}
@@ -90,4 +66,15 @@ Create a variable containing all the datadirs created.
 {{- define "kafka.prometheus.name" -}}
 {{- $name := "prometheus-prometheus-kafka-exporter" -}}
 {{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "kafka.controller-quorum-voters" -}}
+  {{- $firstControllerPort := .Values.firstControllerPort -}}
+  {{- $brokers := .Values.brokers -}}
+  {{- range $k, $v := until ($brokers|int) -}}
+    {{- printf "%d@kafka-%d:%d" $k $k (add ($firstControllerPort|int) $k) -}}
+    {{- if (lt $k (sub $brokers  1 )) -}}
+      {{- printf "," -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

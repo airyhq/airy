@@ -45,11 +45,11 @@ export const QuickReplies = ({
       <div className={styles.container}>
         {quickReplies.map((reply: QuickReply) => (
           <button type="button" key={reply.title} className={styles.replyButton} onClick={() => clickPostback(reply)}>
-            {reply.image_url && (
+            {(reply?.image_url ?? reply?.imageUrl) && (
               <ImageWithFallback
                 className={styles.quickReplyImage}
                 alt={reply.title}
-                src={reply.image_url}
+                src={reply?.image_url ?? reply?.imageUrl}
                 isTemplate
               />
             )}

@@ -157,16 +157,24 @@
   }
 }
 
+.searchFieldContainer {
+  display: flex;
+  justify-content: flex-end;
+  height: 32px;
+  margin-bottom: 16px;
+}
+
 .searchFieldButtons {
   display: flex;
   align-items: center;
 }
 
 .searchField {
-  min-width: 300px;
-  animation: searchFieldAnimation 3000ms ease;
+  width: 300px;
   height: 32px;
-  border-radius: 32px;
+  background: var(--color-background-white);
+  border: 1px solid var(--color-airy-blue);
+  border-radius: 4px;
 }
 
 .connectChannelModalHeader {
@@ -224,5 +232,5 @@
 }
 
 .animateOut {
-  animation: searchfieldAnimOut 300ms ease;
+  animation: searchfieldAnimOut 300ms forwards;
 }

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.components.api.components.installer.name }}"
+  labels:
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.components.api.components.installer.mandatory }}"
+    core.airy.co/component: "{{ .Values.components.api.components.installer.name }}"
+    core.airy.co/enterprise: "false"
+  annotations:
+    core.airy.co/enabled: "{{ .Values.components.api.components.installer.enabled }}"

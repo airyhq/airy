@@ -1,7 +1,16 @@
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
 .addColumn {
   display: flex;
 }
 
 .input {
+  width: 400px;
   height: 80px;
+  margin-right: 24px;
 }

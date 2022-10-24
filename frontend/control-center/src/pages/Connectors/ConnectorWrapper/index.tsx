@@ -8,7 +8,7 @@ import {enableDisableComponent, getConnectorsConfiguration, listComponents} from
 import {LinkButton, InfoButton} from 'components';
 import {NotificationModel, Source, ComponentInfo, Channel} from 'model';
 import {ConfigStatusButton} from '../ConfigStatusButton';
-import {getComponentStatus, removePrefix} from '../../../services';
+import {getComponentStatus} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName, getChannelAvatar} from '../../../components';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
@@ -48,7 +48,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
   } = props;
 
   const [connectorInfo, setConnectorInfo] = useState<ComponentInfo | null>(null);
-  const componentName = connectorInfo && removePrefix(connectorInfo?.name);
+  const componentName = connectorInfo?.name;
   const channels = useSelector((state: StateModel) => Object.values(allChannelsConnected(state)));
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel?.source === Source);
   const [configurationModal, setConfigurationModal] = useState(false);
@@ -98,7 +98,10 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
       );
 
       const connectorSourceInfoArr: [string, ComponentInfo] = connectorSourceInfo[0];
-      const connectorSourceInfoFormatted = {name: connectorSourceInfoArr[0], ...connectorSourceInfoArr[1]};
+      const connectorSourceInfoFormatted = connectorSourceInfoArr && {
+        name: connectorSourceInfoArr[0],
+        ...connectorSourceInfoArr[1],
+      };
 
       const connectorHasChannels = connectorSourceInfoFormatted?.isChannel;
 

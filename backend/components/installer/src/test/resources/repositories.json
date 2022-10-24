@@ -1,0 +1,10 @@
+{
+  "repositories": [
+    {
+      "name": "airy-core",
+      "password": null,
+      "url": "https://helm.airy.co",
+      "username": null
+    }
+  ]
+}

@@ -39,7 +39,9 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
   const [isLanguageDropdownOn, setLanguageDropdownOn] = useState(false);
   const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') === 'dark' ? true : false);
-  const [animationAction, setAnimationAction] = useState(false);
+  const [animationActionFaq, setAnimationActionFaq] = useState(false);
+  const [animationActionLanguage, setAnimationActionLanguage] = useState(false);
+  const [animationActionAccount, setAnimationActionAccount] = useState(false);
   const [chevronAnim, setChevronAnim] = useState(false);
   const [chevronLanguageAnim, setChevronLanguageAnim] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem('language') || Language.english);
@@ -52,16 +54,16 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
 
   const toggleAccountDropdown = useCallback(() => {
     setChevronAnim(!chevronAnim);
-    useAnimation(isAccountDropdownOn, setAccountDropdownOn, setAnimationAction, 300);
+    useAnimation(isAccountDropdownOn, setAccountDropdownOn, setAnimationActionAccount, 300);
   }, [setAccountDropdownOn, isAccountDropdownOn]);
 
   const toggleFaqDropdown = useCallback(() => {
-    useAnimation(isFaqDropdownOn, setFaqDropdownOn, setAnimationAction, 300);
+    useAnimation(isFaqDropdownOn, setFaqDropdownOn, setAnimationActionFaq, 300);
   }, [setFaqDropdownOn, isFaqDropdownOn]);
 
   const toggleLanguageDropdown = useCallback(() => {
     setChevronLanguageAnim(!chevronLanguageAnim);
-    useAnimation(isLanguageDropdownOn, setLanguageDropdownOn, setAnimationAction, 300);
+    useAnimation(isLanguageDropdownOn, setLanguageDropdownOn, setAnimationActionLanguage, 300);
   }, [setLanguageDropdownOn, isLanguageDropdownOn]);
 
   const toggleDarkTheme = () => {
@@ -120,7 +122,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
           <div className={styles.help} onClick={toggleFaqDropdown}>
             ?
           </div>
-          <div className={animationAction ? styles.animateIn : styles.animateOut}>
+          <div className={animationActionFaq ? styles.animateIn : styles.animateOut}>
             {isFaqDropdownOn && (
               <ListenOutsideClick onOuterClick={toggleFaqDropdown}>
                 <div className={styles.dropdownContainer}>
@@ -165,7 +167,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
               </span>
             </div>
           </div>
-          <div className={animationAction ? styles.animateIn : styles.animateOut}>
+          <div className={animationActionLanguage ? styles.animateIn : styles.animateOut}>
             {isLanguageDropdownOn && (
               <ListenOutsideClick onOuterClick={toggleLanguageDropdown}>
                 <div className={styles.dropdownContainer}>
@@ -220,7 +222,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
               </div>
             </div>
 
-            <div className={animationAction ? styles.animateIn : styles.animateOut}>
+            <div className={animationActionAccount ? styles.animateIn : styles.animateOut}>
               {isAccountDropdownOn && (
                 <ListenOutsideClick onOuterClick={toggleAccountDropdown}>
                   <div className={styles.dropdownContainer}>

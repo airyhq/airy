@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {listChannels} from '../../../actions/channel';
 import {useParams} from 'react-router-dom';
@@ -101,29 +101,26 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     }
   };
 
-  const showSearchFieldToggle = () => {
+  const showSearchFieldToggle = useCallback(() => {
     useAnimation(showingSearchField, setShowingSearchField, setAnimationAction, 300);
     setSearchText('');
-  };
+  }, [showingSearchField, setShowingSearchField]);
 
   return (
     <div className={styles.wrapper}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', height: '32px', marginBottom: '16px'}}>
+      <div className={styles.searchFieldContainer}>
         <div className={styles.searchFieldButtons}>
-          <div className={styles.searchField}>
-            <div className={animationAction ? styles.animateIn : styles.animateOut}>
-              {showingSearchField && (
-                <SearchField
-                  placeholder={t('search')}
-                  value={searchText}
-                  setValue={(value: string) => setSearchText(value)}
-                  autoFocus={true}
-                  style={{height: '32px', borderRadius: '32px'}}
-                  resetClicked={() => setSearchText('')}
-                />
-              )}
-            </div>
-          </div>
+          {showingSearchField && (
+            <SearchField
+              className={styles.searchField}
+              animation={animationAction ? styles.animateIn : styles.animateOut}
+              placeholder={t('search')}
+              value={searchText}
+              setValue={(value: string) => setSearchText(value)}
+              autoFocus={true}
+              resetClicked={() => setSearchText('')}
+            />
+          )}
         </div>
         <div className={styles.buttons}>
           <button onClick={showSearchFieldToggle}>

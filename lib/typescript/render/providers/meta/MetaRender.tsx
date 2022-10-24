@@ -340,11 +340,82 @@ function metaInbound(message): ContentUnion {
 }
 
 function metaOutbound(message): ContentUnion {
-  const messageJson = message?.content?.message || message?.content || message;
+  let messageJson;
 
-  if (messageJson.quick_replies) {
-    if (messageJson.quick_replies.length > 13) {
+  if (message.content?.message && Object.entries(message.content?.message).length > 0) {
+    messageJson = message.content.message;
+  } else if (message.content) {
+    messageJson = message.content;
+  } else {
+    messageJson = message;
+  }
+
+  const isCognigyQuickReplies = messageJson?.type === 'quickReplies';
+  const cognigyQuickReplies = messageJson?._cognigy?._default?._quickReplies;
+
+  const isCognigyImage = messageJson?.type === 'image';
+  const cognigyImage = messageJson?._cognigy?._default?._image;
+
+  const isCognigyVideo = messageJson?.type === 'video';
+  const cognigyVideo = messageJson?._cognigy?._default?._video;
+
+  const isCognigyAudio = messageJson?.type === 'audio';
+  const cognigyAudio = messageJson?._cognigy?._default?._audio;
+
+  const isCognigyButtons = messageJson?.type === 'buttons';
+  const cognigyButtons = messageJson?._cognigy?._default?._buttons;
+
+  const isCognigyCarousel = messageJson?.type === 'gallery';
+  const cognigyCarousel = messageJson?._cognigy?._default?._gallery;
+
+  //messages sent through cognigy.AI flow
+  if (isCognigyImage) {
+    return {
+      type: 'image',
+      imageUrl: cognigyImage.imageUrl,
+    };
+  }
+
+  if (isCognigyVideo) {
+    return {
+      type: 'video',
+      videoUrl: cognigyVideo.videoUrl,
+    };
+  }
+
+  if (isCognigyAudio) {
+    return {
+      type: 'audio',
+      audioUrl: cognigyAudio.audioUrl,
+    };
+  }
+
+  if (isCognigyButtons) {
+    return {
+      type: 'buttonTemplate',
+      text: cognigyButtons?.payload?.text ?? null,
+      buttons: cognigyButtons.buttons,
+    };
+  }
+
+  if (isCognigyCarousel) {
+    return {
+      type: 'genericTemplate',
+      elements: cognigyCarousel.items,
+    };
+  }
+
+  if (messageJson?.quick_replies || isCognigyQuickReplies) {
+    let quickRepliesText;
+
+    if (messageJson?.quick_replies?.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
+    }
+
+    if (isCognigyQuickReplies) {
+      quickRepliesText = cognigyQuickReplies?.text;
+    } else {
+      quickRepliesText = messageJson?.text;
     }
 
     if (messageJson.attachment || messageJson.attachments) {
@@ -357,8 +428,8 @@ function metaOutbound(message): ContentUnion {
 
     return {
       type: 'quickReplies',
-      text: messageJson.text,
-      quickReplies: messageJson.quick_replies,
+      text: quickRepliesText,
+      quickReplies: messageJson?.quick_replies || cognigyQuickReplies,
     };
   }
 

@@ -5,7 +5,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {StateModel} from '../../../reducers';
 import {getMergedConnectors, useCurrentComponentForSource} from '../../../selectors';
 import {getConnectorsConfiguration, listComponents} from '../../../actions';
-import {Source} from 'model';
+import {NotificationModel, Source} from 'model';
 import ChatPluginConnect from '../Providers/Airy/ChatPlugin/ChatPluginConnect';
 import FacebookConnect from '../Providers/Facebook/Messenger/FacebookConnect';
 import InstagramConnect from '../Providers/Instagram/InstagramConnect';
@@ -13,12 +13,12 @@ import GoogleConnect from '../Providers/Google/GoogleConnect';
 import TwilioSmsConnect from '../Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from '../Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 import ConnectedChannelsList from '../ConnectedChannelsList';
-import {removePrefix} from '../../../services';
 import styles from './index.module.scss';
 import ConfigureConnector from '../ConfigureConnector';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import WhatsappConnect from '../Providers/WhatsappBusinessCloud/WhatsappConnect';
 import ViberConnect from '../Providers/Viber/ViberConnect';
+import {NotificationComponent} from 'components';
 
 const mapDispatchToProps = {
   getConnectorsConfiguration,
@@ -26,7 +26,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  components: state.data.config.components,
   connectors: getMergedConnectors(state),
 });
 
@@ -37,7 +36,7 @@ type LocationState = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
-  const {components, connectors, getConnectorsConfiguration, listComponents} = props;
+  const {connectors, getConnectorsConfiguration, listComponents} = props;
   const {t} = useTranslation();
   const params = useParams();
   const navigate = useNavigate();
@@ -47,14 +46,12 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const connectedChannels = params['*'] === 'connected';
   const configurePath = params['*'] === 'configure';
   const connectorInfo = useCurrentComponentForSource(source as Source);
-  const [isEnabled, setIsEnabled] = useState<boolean | null>(null);
   const [lineTitle, setLineTitle] = useState('');
   const [lineTitleRoute, setLineTitleRoute] = useState('');
   const configValues = connectorInfo.source === source && connectorInfo.configurationValues;
   const parsedConfigValues = configValues && JSON.parse(configValues);
   const pageContentRef = useRef(null);
   const [offset, setOffset] = useState(pageContentRef?.current?.offsetTop);
-  const isAiryInternalConnector = source === Source.chatPlugin;
   const previousPath = (location.state as LocationState)?.from;
   const currentPath = params['*'];
   const navigateNew = `${CONNECTORS_ROUTE}/${source}/new`;
@@ -62,9 +59,11 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const navigateChannelId = `${CONNECTORS_ROUTE}/${source}/${channelId || previousPath}`;
   const notConfigured = previousPath === 'connectors' || previousPath === 'status' || previousPath === 'catalog';
-  const hasConnectedChannels = connectors[removePrefix(connectorInfo?.name)].connectedChannels > 0;
-  const isChannel = connectors[removePrefix(connectorInfo?.name)].isChannel;
-  const isConfigured = connectors[removePrefix(connectorInfo?.name)].isConfigured;
+  const hasConnectedChannels = connectors[connectorInfo?.name]?.connectedChannels > 0;
+  const isChannel = connectors[connectorInfo?.name]?.isChannel;
+  const isConfigured = connectors[connectorInfo?.name]?.isConfigured;
+  const isEnabled = connectors[connectorInfo.name]?.isEnabled;
+  const [notification, setNotification] = useState<NotificationModel>(null);
 
   useLayoutEffect(() => {
     setOffset(pageContentRef?.current?.offsetTop);
@@ -79,11 +78,6 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   useEffect(() => {
     if (connectorInfo) determineLineTitle();
   }, [connectorInfo]);
-
-  useEffect(() => {
-    if (components && connectorInfo && connectorInfo?.name)
-      setIsEnabled(components[removePrefix(connectorInfo.name)]?.enabled);
-  }, [connectorInfo, components]);
 
   const determineLineTitle = () => {
     const newAiryChatPluginPage = newChannel && source === Source.chatPlugin;
@@ -126,6 +120,7 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
           isConfigured={isConfigured}
           configValues={parsedConfigValues}
           source={connectorInfo.source}
+          setNotification={setNotification}
         />
       );
     }
@@ -146,10 +141,10 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <>
-      {!(source === Source.chatPlugin && (newChannel || channelId)) && (
-        <div className={styles.channelsLineContainer}>
+      <div className={styles.channelsLineContainer}>
+        {!(source === Source.chatPlugin && (newChannel || channelId)) && (
           <div className={styles.channelsLineItems}>
-            {(!isConfigured || isAiryInternalConnector || !isChannel) && (
+            {(isConfigured || !isChannel || source === Source.chatPlugin) && (
               <span
                 className={
                   connectedChannels || newChannel || channelId || (configurePath && !isChannel)
@@ -170,15 +165,24 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
               </span>
             )}
           </div>
-          <div className={styles.line} />
-        </div>
-      )}
+        )}
+        <div className={styles.line} />
+      </div>
       <div
         ref={pageContentRef}
         className={!(source == Source.chatPlugin && (newChannel || channelId)) ? styles.pageContentContainer : ''}
       >
         <PageContent />
       </div>
+      {notification?.show && (
+        <NotificationComponent
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          info={notification.info}
+          setShowFalse={setNotification}
+        />
+      )}
     </>
   );
 };

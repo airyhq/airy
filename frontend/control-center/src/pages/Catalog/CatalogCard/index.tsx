@@ -7,7 +7,7 @@ import {installComponent} from '../../../actions/catalog';
 import {ComponentInfo, ConnectorPrice, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {getCatalogProductRouteForComponent, getConnectedRouteForComponent, removePrefix} from '../../../services';
+import {getCatalogProductRouteForComponent, getConnectedRouteForComponent} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
@@ -34,9 +34,9 @@ export const availabilityFormatted = (availability: string) => availability.spli
 
 const CatalogCard = (props: CatalogCardProps) => {
   const {component, connectors, componentInfo, installComponent} = props;
-  const hasConnectedChannels = connectors[removePrefix(componentInfo?.name)].connectedChannels > 0;
-  const isConfigured = connectors[removePrefix(componentInfo?.name)].isConfigured;
-  const isChannel = connectors[removePrefix(componentInfo?.name)].isChannel;
+  const hasConnectedChannels = connectors[componentInfo?.name].connectedChannels > 0;
+  const isConfigured = connectors[componentInfo?.name].isConfigured;
+  const isChannel = connectors[componentInfo?.name].isChannel;
   const isInstalled = component[componentInfo?.name]?.installed;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
@@ -129,7 +129,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           }
           buttonRef={installButtonCard}
         >
-          {t('open').toUpperCase()}
+          {t('openCatalog').toUpperCase()}
         </Button>
       );
     }
@@ -137,7 +137,7 @@ const CatalogCard = (props: CatalogCardProps) => {
     return (
       <SmartButton
         height={24}
-        width={80}
+        width={installButtonCard?.current?.offsetWidth}
         className={styles.smartButton}
         styleVariant="green"
         type="submit"

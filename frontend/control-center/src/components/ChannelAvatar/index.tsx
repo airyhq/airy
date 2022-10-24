@@ -10,7 +10,7 @@ import {ReactComponent as ViberAvatar} from 'assets/images/icons/viber.svg';
 import {ReactComponent as ZendeskAvatar} from 'assets/images/icons/zendeskLogo.svg';
 import {ReactComponent as DialogflowAvatar} from 'assets/images/icons/dialogflowLogo.svg';
 import {ReactComponent as SalesforceAvatar} from 'assets/images/icons/salesforceLogo.svg';
-import {ReactComponent as CongnigyAvatar} from 'assets/images/icons/congnigyLogo.svg';
+import {ReactComponent as CognigyAvatar} from 'assets/images/icons/cognigyLogo.svg';
 import {ReactComponent as RasaAvatar} from 'assets/images/icons/rasaLogo.svg';
 import {ReactComponent as AmeliaAvatar} from 'assets/images/icons/ameliaLogo.svg';
 import {ReactComponent as AmazonS3Avatar} from 'assets/images/icons/amazons3Logo.svg';
@@ -67,9 +67,9 @@ export const getChannelAvatar = (source: string) => {
     case Source.salesforce:
     case 'Salesforce':
       return <SalesforceAvatar />;
-    case Source.congnigy:
-    case 'Congnigy':
-      return <CongnigyAvatar />;
+    case Source.cognigy:
+    case 'Cognigy.AI':
+      return <CognigyAvatar />;
     case Source.rasa:
     case 'Rasa':
       return <RasaAvatar />;

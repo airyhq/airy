@@ -24,14 +24,25 @@
 
 .componentDescription {
   padding-left: 30px;
+  padding-bottom: 30px;
+
   h1 {
     @include font-m;
     font-weight: 800;
     margin: 20px 0;
   }
 
+  h2 {
+    @include font-base;
+    font-weight: 800;
+  }
+
   p {
     width: 80%;
+  }
+
+  ul {
+    padding-left: 30px;
   }
 }
 

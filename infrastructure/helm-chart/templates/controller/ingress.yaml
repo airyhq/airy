@@ -14,7 +14,21 @@ spec:
   rules:
     - http:
         paths:
-          - path: /components.
+          - path: /components.get
+            pathType: Prefix
+            backend:
+              service:
+                name: airy-controller
+                port:
+                  number: 80
+          - path: /components.update
+            pathType: Prefix
+            backend:
+              service:
+                name: airy-controller
+                port:
+                  number: 80
+          - path: /components.delete
             pathType: Prefix
             backend:
               service:

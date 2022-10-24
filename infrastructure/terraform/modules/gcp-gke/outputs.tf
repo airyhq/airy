@@ -4,5 +4,5 @@ output "kubernetes_cluster_name" {
 }
 output "kubeconfig_raw" {
   sensitive = true
-  value = module.gke_auth.kubeconfig_raw
+  value     = module.gke_auth.kubeconfig_raw
 }

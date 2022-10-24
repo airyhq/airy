@@ -12,11 +12,10 @@ import {allConversations} from '../../../selectors/conversations';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 
 const mapStateToProps = (state: StateModel) => ({
-  loading: state.data.conversations.all.paginationData.loading,
   conversations: allConversations(state),
 });
 
-const connector = connect(mapStateToProps);
+const connector = connect(mapStateToProps, null);
 
 const Messenger = (props: ConnectedProps<typeof connector>) => {
   const {conversations} = props;
@@ -40,7 +39,7 @@ const Messenger = (props: ConnectedProps<typeof connector>) => {
         </section>
       )}
 
-      <MessengerContainer {...props} />
+      <MessengerContainer />
     </section>
   );
 };

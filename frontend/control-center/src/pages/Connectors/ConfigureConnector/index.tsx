@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import RestartPopUp from '../RestartPopUp';
 import {SmartButton} from 'components';
 import {cyConnectorAddButton} from 'handles';
@@ -38,6 +38,14 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
   const [config, setConfig] = useState(configValues);
   const [isPending, setIsPending] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [configurationButtonDisabled, setConfigurationButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    Object.keys(config).length > 0 &&
+      Object.values(config).map(item => {
+        item !== 'string' && item !== '' ? setConfigurationButtonDisabled(false) : setConfigurationButtonDisabled(true);
+      });
+  }, [config]);
 
   const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -88,29 +96,23 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
 
   return (
     <section className={styles.formWrapper}>
-      <div className={styles.settings}>
-        <form>
-          <div className={styles.formRow}>
-            <SetConfigInputs
-              configurationValues={configValues}
-              storedConfig={props.config[componentName]}
-              setConfig={setConfig}
-              source={source}
-            />
-            <SmartButton
-              height={40}
-              width={260}
-              title={isConfigured ? t('Update') : t('configure')}
-              pending={isPending}
-              styleVariant="small"
-              type="button"
-              disabled={false}
-              onClick={e => updateConfig(e)}
-              dataCy={cyConnectorAddButton}
-            />
-          </div>
-        </form>
-      </div>
+      <SetConfigInputs
+        configurationValues={configValues}
+        storedConfig={props.config[componentName]}
+        setConfig={setConfig}
+        source={source}
+      />
+      <SmartButton
+        height={40}
+        width={220}
+        title={isConfigured ? t('Update') : t('configure')}
+        pending={isPending}
+        styleVariant="small"
+        type="button"
+        disabled={configurationButtonDisabled}
+        onClick={e => updateConfig(e)}
+        dataCy={cyConnectorAddButton}
+      />
       {isUpdateModalVisible && (
         <RestartPopUp
           componentName={componentName}

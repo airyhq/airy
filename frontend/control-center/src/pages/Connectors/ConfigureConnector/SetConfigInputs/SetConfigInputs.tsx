@@ -72,5 +72,9 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
       );
     });
 
-  return <>{inputArr}</>;
+  return (
+    <div className={styles.inputsContainer} style={inputArr.length > 4 ? {height: '42vh'} : {}}>
+      {inputArr}
+    </div>
+  );
 };

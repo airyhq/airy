@@ -306,6 +306,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Your Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Your Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Your Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Your Phone Number',
       inputTooltipWhatsappName: 'Your Name',
       inputTooltipWhatsappAvatarUrl: 'Your Avatar Url',
@@ -329,17 +330,17 @@ const resources = {
       AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
-      inputTooltipDialogflowProjectId: 'given by the Cloud Console',
-      inputTooltipDialogflowDialogflowCredentials: 'given by the Cloud Console',
-      inputTooltipDialogflowSuggestionConfidenceLevel: 'amount for suggestions',
-      inputTooltipDialogflowReplyConfidenceLevel: 'amount for replies',
+      inputTooltipDialogflowProjectId: 'Given by the Cloud Console',
+      inputTooltipDialogflowDialogflowCredentials: 'Given by the Cloud Console',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Amount for suggestions',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Amount for replies',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Default language: en',
       to: 'to',
       processorWaitingTime: 'Processor waiting time',
       processorCheckPeriod: 'Processor check period',
       inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Default value: 5000',
       inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Default value: 2500',
       defaultLanguage: 'Default language',
-      inputTooltipDialogflowConnectorDefaultLanguage: 'Default value: en',
 
       //Salesforce
       salesforceDescription:
@@ -472,7 +473,7 @@ const resources = {
       optional: 'Optional',
       configuration: 'Configuration',
       createChannel: 'Create Channel',
-      succuessfulConfiguration: 'Configuration successful applied',
+      successfulConfiguration: 'Configuration successful applied',
       updateSuccessfulConfiguration: 'Configuration successful updated',
       failedConfiguration: 'Applying configuration failed',
       updateFailedConfiguration: 'Updating configuration failed',
@@ -856,6 +857,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Ihre Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Ihr Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Ihr Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Ihre Handynummer',
       inputTooltipWhatsappName: 'Ihr Name',
       inputTooltipWhatsappAvatarUrl: 'Ihre Avatar Url',
@@ -889,6 +891,13 @@ const resources = {
       checkDefault: 'Standardwert: 2500',
       defaultLanguage: 'Standardsprache',
       defaultLanguageTooltip: 'Standardwert: en',
+      inputTooltipDialogflowProjectId: 'Projekt-ID',
+      inputTooltipDialogflowDialogflowCredentials: 'Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Anzahl der Vorschläge',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Anzahl der Antworten',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Standardwert: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Standardwert: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Standardwert: en',
 
       //Salesforce
       salesforceDescription:
@@ -1021,7 +1030,7 @@ const resources = {
       optional: 'Optional',
       configuration: 'Konfiguration',
       createChannel: 'Kanal erstellen',
-      succuessfulConfiguration: 'Konfiguration erfolgreich angewendet',
+      successfulConfiguration: 'Konfiguration erfolgreich angewendet',
       updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
       failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
       updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
@@ -1248,7 +1257,7 @@ const resources = {
       pageUnderConstruction: 'page en construction - bientôt disponible !',
 
       //Channels
-      toConfigure: 'configuration',
+      toConfigure: 'Configuration',
       configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
@@ -1382,6 +1391,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Votre Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Votre Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Votre Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Votre numéro de téléphone',
       inputTooltipWhatsappName: 'Votre nom',
       inputTooltipWhatsappAvatarUrl: 'Votre Avatar Url',
@@ -1416,6 +1426,13 @@ const resources = {
       checkDefault: 'valeur par défaut: 2500',
       defaultLanguage: 'Langue utilisée',
       defaultLanguageTooltip: 'valeur par défaut: en',
+      inputTooltipDialogflowProjectId: 'ID du project',
+      inputTooltipDialogflowDialogflowCredentials: 'Ajouter les Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Niveau de confiance des réponses',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Valeur par défaut: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Valeur par défaut: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Langue utilisée',
 
       //Salesforce
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
@@ -1558,7 +1575,7 @@ const resources = {
       optional: 'Optionnel',
       configuration: 'Configuration',
       createChannel: 'Créer un canal',
-      succuessfulConfiguration: 'Configuration appliquée avec succès',
+      successfulConfiguration: 'Configuration appliquée avec succès',
       updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
       failedConfiguration: 'La configuration a échoué',
       updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
@@ -1796,7 +1813,7 @@ const resources = {
       pageUnderConstruction: 'página en construcción - próximamente!',
 
       //Channels
-      toConfigure: 'configurar',
+      toConfigure: 'Configurar',
       configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
@@ -1946,6 +1963,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Su Id. de aplicación de Whatsapp',
       inputTooltipWhatsappAppSecret: 'El secreto de tu aplicación de Whatsapp',
+      inputTooltipWhatsappWebhookSecret: 'Su Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Su número de teléfono',
       inputTooltipWhatsappName: 'Su nombre',
       inputTooltipWhatsappAvatarUrl: 'La url de su avatar',
@@ -1980,6 +1998,13 @@ const resources = {
       checkDefault: 'valor por defecto: 2500',
       defaultLanguage: 'Idioma por defecto',
       defaultLanguageTooltip: 'valor por defecto: en',
+      inputTooltipDialogflowProjectId: 'ID del proyecto',
+      inputTooltipDialogflowDialogflowCredentials: 'Añadir los Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Nivel de confianza para sugerencias',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Nivel de confianza para respuestas',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Valor por defecto: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Valor por defecto: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Valor por defecto: en',
 
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
@@ -2106,7 +2131,7 @@ const resources = {
       optional: 'Opcional',
       configuration: 'Configuración',
       createChannel: 'Crear canal',
-      succuessfulConfiguration: 'Configuración aplicada con éxito',
+      successfulConfiguration: 'Configuración aplicada con éxito',
       updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
       failedConfiguration: 'Fallo en la aplicación de la configuración',
       updateFailedConfiguration: 'Fallo en la actualización de la configuración',

@@ -139,13 +139,13 @@ public class CatalogHandlerTest {
             assertThat(enterpriseSalesforceContactsIngestion, is(notNullValue()));
             assertThat(enterpriseSalesforceContactsIngestion.isInstalled(), is(true));
 
-            ComponentDetails congnigyConnector = listComponents
+            ComponentDetails cognigyConnector = listComponents
                 .stream()
-                .filter((c -> c.getName().equals("congnigy-connector")))
+                .filter((c -> c.getName().equals("cognigy-connector")))
                 .findAny()
                 .orElse(null);
-            assertThat(congnigyConnector, is(notNullValue()));
-            assertThat(congnigyConnector.isInstalled(), is(false));
+            assertThat(cognigyConnector, is(notNullValue()));
+            assertThat(cognigyConnector.isInstalled(), is(false));
         }
 
     }

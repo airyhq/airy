@@ -1,0 +1,25 @@
+servers: 1
+image: ghcr.io/airyhq/infrastructure/kafka
+imageTag: 2.7.0
+imagePullPolicy: IfNotPresent
+imagePullSecrets:
+podManagementPolicy: OrderedReady
+updateStrategy: RollingUpdate
+tickTime: 2000
+syncLimit: 5
+initLimit: 10
+maxClientCnxns: 60
+autoPurgeSnapRetainCount: 3
+autoPurgePurgeInterval: 24
+heapOptions: "-Xms512M -Xmx512M"
+serverPort: 2888
+leaderElectionPort: 3888
+clientPort: 2181
+persistence:
+  enabled: true
+  dataDirSize: 5Gi
+  dataLogDirSize: 5Gi
+resources: {}
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []

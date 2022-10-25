@@ -42,7 +42,7 @@ public class InstalledComponentsHandler {
             .encoder(new JacksonEncoder())
             .decoder(new JacksonDecoder())
             .logger(new feign.Logger.ErrorLogger())
-            .logLevel(feign.Logger.Level.FULL)
+            .logLevel(feign.Logger.Level.BASIC)
             .target(ApiComponentsInstallerClient.class, componentsListUrl);
     }
 }

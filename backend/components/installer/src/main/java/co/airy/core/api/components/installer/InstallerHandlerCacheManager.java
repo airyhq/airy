@@ -4,6 +4,8 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -40,5 +42,11 @@ public class InstallerHandlerCacheManager {
         } catch(Exception e) {
             log.error("unable to reset cache", e);
         }
+    }
+
+    public void changeInstallationStatus(String componentName, String status) throws Exception {
+        Map<String, String> cacheStore = installedComponentsHandler.getInstalledComponentsCache();
+        cacheStore.put(componentName, status);
+        installedComponentsHandler.setInstalledComponentsCache(cacheStore);
     }
 }

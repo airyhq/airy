@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import co.airy.core.api.components.installer.model.Component;
 import co.airy.core.api.components.installer.model.ComponentDetails;
+import co.airy.core.api.components.installer.model.InstallationStatus;
 import co.airy.core.api.components.installer.model.Repository;
 import co.airy.log.AiryLoggerFactory;
 
@@ -65,6 +66,7 @@ public class InstallerHandler {
 
         final String jobName = String.format("helm-install-%s", componentName);
         helmJobHandler.launchHelmJob(jobName, cmd);
+        installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
         installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
 
@@ -73,6 +75,7 @@ public class InstallerHandler {
 
         final String jobName = String.format("helm-uninstall-%s", componentName);
         helmJobHandler.launchHelmJob(jobName, cmd);
+        installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
         installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
 

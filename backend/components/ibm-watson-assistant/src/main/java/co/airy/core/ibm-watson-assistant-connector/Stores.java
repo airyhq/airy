@@ -24,16 +24,16 @@ import static co.airy.model.message.MessageRepository.isNewMessage;
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "ibm-watson-assistant-connector";
     private final KafkaStreamsWrapper streams;
-    private  IBMWatsonAssistantConnectorService  IBMWatsonAssistantConnectorService;
+    private IbmWatsonAssistantConnectorService ibmWatsonAssistantConnectorService;
     private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
 
-    Stores(KafkaStreamsWrapper streams,  IBMWatsonAssistantConnectorService  IBMWatsonAssistantConnectorService) {
+    Stores(KafkaStreamsWrapper streams, IbmWatsonAssistantConnectorService ibmWatsonAssistantConnectorService) {
         this.streams = streams;
-        this.IBMWatsonAssistantConnectorService =  IBMWatsonAssistantConnectorService;
+        this.ibmWatsonAssistantConnectorService = ibmWatsonAssistantConnectorService;
     }
 
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event){
+    public void onApplicationEvent(ApplicationStartedEvent event) {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -42,9 +42,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         builder.<String, Message>stream(
                 new ApplicationCommunicationMessages().name(),
-                Consumed.with(Topology.AutoOffsetReset.LATEST)
-        ).filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
-                .flatMap((messageId, message) ->  IBMWatsonAssistantConnectorService.send(message))
+                Consumed.with(Topology.AutoOffsetReset.LATEST))
+                .filter((messageId, message) -> message != null && isNewMessage(message) && message.getIsFromContact())
+                .flatMap((messageId, message) -> ibmWatsonAssistantConnectorService.send(message))
                 .to((recordId, record, context) -> {
                     if (record instanceof Metadata) {
                         return applicationCommunicationMetadata;
@@ -60,7 +60,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     @Override
-    public void destroy(){
+    public void destroy() {
         if (streams != null) {
             streams.close();
         }

@@ -1,0 +1,188 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta1
+{{- end }}
+{{- $brokers := .Values.brokers | int }}
+kind: StatefulSet
+metadata:
+  name: {{ template "kafka.fullname" . }}
+  labels:
+    app: {{ template "kafka.name" . }}
+    chart: {{ template "kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ template "kafka.name" . }}
+      release: {{ .Release.Name }}
+  {{- end }}
+  serviceName: {{ template "kafka.fullname" . }}-headless
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  replicas: {{ $brokers }}
+  updateStrategy:
+    type: {{ .Values.updateStrategy }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "kafka.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - {{ template "kafka.name" . }}
+                  - key: "release"
+                    operator: In
+                    values:
+                    - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: {{ template "kafka.name" . }}-broker
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: kafka
+        {{- if .Values.nodeport.enabled }}
+          {{- $root := . }}
+          {{- range $i, $e := until $brokers }}
+        - containerPort: {{ add $root.Values.firstListenerPort $i }}
+          name: nodeport-{{ $i }}
+          {{- end }}
+        {{- end }}
+        {{- $root := . }}
+        {{- range $i, $e := until $brokers }}
+        - containerPort: {{ add $root.Values.firstControllerPort $i }}
+          name: controller-{{ $i }}
+        {{- end }}
+        {{- if .Values.sasl }}
+        - containerPort: {{ .Values.saslPort }}
+          name: kafka-sasl
+        {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: AIRY_LISTENERS
+          value: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:AIRY_BROKER_PORT,CONTROLLER://0.0.0.0:AIRY_CONTROLLER_PORT{{- if .Values.sasl }},SASL_PLAINTEXT://0.0.0.0:{{ .Values.saslPort }}{{- end }}
+        - name: AIRY_ADVERTISED_LISTENERS
+          value: PLAINTEXT://AIRY_POD_NAME.{{ template "kafka.fullname" . }}-headless.AIRY_NAMESPACE:9092,EXTERNAL://AIRY_HOST_IP:AIRY_BROKER_PORT{{- if .Values.sasl }},SASL_PLAINTEXT://AIRY_POD_NAME.kafka-headless.AIRY_NAMESPACE:{{ .Values.saslPort }}{{- end }}
+        - name: AIRY_CONTROLLER_QUORUM_VOTERS
+          value: {{ template "kafka.controller-quorum-voters" . }}
+        - name: AIRY_FIRST_LISTENER_PORT
+          value: "{{ .Values.firstListenerPort }}"
+        - name: AIRY_FIRST_CONTROLLER_PORT
+          value: "{{ .Values.firstControllerPort }}"
+        - name: KAFKA_HEAP_OPTS
+          value: {{ .Values.heapOptions }}
+        {{- range $key, $value := .Values.configurationOverrides }}
+        - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- if .Values.sasl }}
+        - name: KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND
+          value: "true"
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,SASL_PLAINTEXT:SASL_PLAINTEXT
+        - name: KAFKA_SASL_ENABLED_MECHANISMS
+          value: PLAIN
+        - name: KAFKA_OPTS
+          value: -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
+        {{- else }}
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+        {{- end }}
+        args: ["kafka-server-start.sh", "/etc/kafka/server.properties"]
+        volumeMounts:
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.sasl }}
+          - name: kafka-jaas
+            mountPath: /etc/kafka/kafka_server_jaas.conf
+            subPath: kafka_jaas.conf
+        {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      initContainers:
+      - name: fix-permissions
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - "chown -R 1000 /opt/kafka/"
+        volumeMounts:
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
+        {{- end }}
+      volumes:
+      {{- if not .Values.persistence.enabled }}
+      - name: datadir-0
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.sasl }}
+      - name: kafka-jaas
+        configMap:
+          name: kafka-jaas
+        name: kafka-jaas
+      {{- end }}
+      - name: kafka-helper-scripts
+        configMap:
+          name: kafka-helper-scripts
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+  {{- $root := . }}
+  {{- range $k, $e := until $disksPerBroker }}
+  - metadata:
+      name: datadir-{{$k}}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "{{ $root.Values.persistence.size }}"
+      {{- if $root.Values.persistence.storageClass }}
+      {{- if (eq "-" $root.Values.persistence.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ $root.Values.persistence.storageClass }}"
+      {{- end }}
+      {{- end }}
+{{- end }}
+{{- end }}

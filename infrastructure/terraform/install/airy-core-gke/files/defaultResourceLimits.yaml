@@ -1,0 +1,175 @@
+prerequisites:
+  kafka:
+    kafka:
+      resources:
+        requests:
+          cpu: "300m"  
+          memory: "512Mi"
+        limits:
+          cpu: "2000m"
+          memory: "4096Mi"
+    zookeeper:
+      resources:
+        requests:
+          cpu: "100m"  
+          memory: "128Mi"
+        limits:
+          cpu: "1000m"
+          memory: "2048Mi"
+components:
+  api:
+    admin:
+      resources:
+        requests:
+          cpu: "100m"  
+          memory: "128Mi"
+        limits:
+          cpu: "1000m"
+          memory: "1024Mi"
+    communication:
+      communication:
+        resources:
+          requests:
+            cpu: "200m"  
+            memory: "128Mi"
+          limits:
+            cpu: "2000m"
+            memory: "2048Mi"
+      websocket:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+  frontend:
+    ui:
+      resources:
+        requests:
+          cpu: "50m"  
+          memory: "64Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+  integration:
+    source-api:
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "128Mi"
+        limits:
+          cpu: "1000m"
+          memory: "1024Mi"
+    webhook:
+      consumer:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      publisher:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "2048Mi"
+  media:
+    resolver:
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "128Mi"
+        limits:
+          cpu: "1000m"
+          memory: "1024Mi"
+  sources:
+    chatplugin:
+      backend:
+        resources:
+          requests:
+            cpu: "50m"  
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      frontend:
+        resources:
+          requests:
+            cpu: "50m"  
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "1024Mi"
+    facebook:
+      connector:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      eventsRouter:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+    google:
+      connector:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      eventsRouter:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+    twilio:
+      connector:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      eventsRouter:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+    viber:
+      connector:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      eventsRouter:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"

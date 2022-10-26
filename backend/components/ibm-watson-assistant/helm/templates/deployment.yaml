@@ -32,15 +32,20 @@ spec:
             - configMapRef:
                 name: kafka-config
           env:
-            - name: COGNIGY_RESTENDPOINT_URL
+            - name: IBMWATSONASSISTANT_URL
               valueFrom:
                 configMapKeyRef:
-                  key: ibm-watson-assistantRestEndpointURL
+                  key: ibm-watson-assistant.URL
                   name: {{ .Values.component }}
-            - name: COGNIGY_USERID
+            - name: IBMWATSONASSISTANT_APIKEY
               valueFrom:
                 configMapKeyRef:
-                  key: ibm-watson-assistantUserId
+                  key: ibm-watson-assistant.apiKey
+                  name: {{ .Values.component }}
+            - name: IBMWATSONASSISTANT_ASSISTANTID
+              valueFrom:
+                configMapKeyRef:
+                  key: ibm-watson-assistant.assistantId
                   name: {{ .Values.component }}
             - name: SERVICE_NAME
               value: {{ .Values.component }}

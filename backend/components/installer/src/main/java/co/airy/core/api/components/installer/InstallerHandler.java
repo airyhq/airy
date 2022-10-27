@@ -95,9 +95,6 @@ public class InstallerHandler {
             String version) throws Exception {
 
         ComponentDetails componentDetails = catalogHandler.getComponentByName(componentName);
-        if (componentDetails.isInstalled()) {
-            throw new Exception("Already installed");
-        }
 
         final Repository repo = repositories.get(componentDetails.getRepository());
         if (repo == null) {

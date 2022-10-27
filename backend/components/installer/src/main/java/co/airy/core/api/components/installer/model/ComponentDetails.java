@@ -33,8 +33,8 @@ public class ComponentDetails {
         return (String) props.getOrDefault("repository", "");
     }
 
-    public boolean isInstalled() {
-        return (boolean) props.getOrDefault("installed", false);
+    public String getInstallationStatus() {
+        return (String) props.getOrDefault("installationStatus", InstallationStatus.uninstalled);
     }
 
     public static Map<String, Object> componentsDetailsListToMap(List<ComponentDetails> componentsDetails) {

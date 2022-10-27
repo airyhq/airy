@@ -8,13 +8,13 @@ variable "region" {
   description = "The region is us-central1"
 }
 
-variable "gke_name" {
+variable "cluster_name" {
   description = "The name of the created GKE cluster"
-  default     = "airy-gke-test"
+  default     = "airy-gke"
 }
 
 variable "vpc_name" {
-  default     = "core-vpc-test"
+  default     = "core-vpc"
   description = "The name of the created VPC"
 }
 

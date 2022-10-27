@@ -1,5 +1,5 @@
 output "cluster_name" {
-  value = module.gcp-gke.gke_name
+  value = module.gcp-gke.kubernetes_cluster_name
 }
 
 output "kubeconfig_path" {

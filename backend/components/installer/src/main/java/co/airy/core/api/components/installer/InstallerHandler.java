@@ -55,6 +55,11 @@ public class InstallerHandler {
     }
 
     public void installComponent(String componentName) throws Exception {
+        if (installerHandlerCacheManager.isInstalled(componentName)) {
+            log.info(String.format("component %s is already or in the process of installation", componentName));
+            return;
+        }
+
         final CoreV1Api api = new CoreV1Api(apiClient);
         final Map<String, String> coreConfig = getConfigMap(api, "core-config");
         final String globals = coreConfig.get("global.yaml");
@@ -71,6 +76,11 @@ public class InstallerHandler {
     }
 
     public void uninstallComponent(String componentName) throws Exception {
+        if (installerHandlerCacheManager.isUninstalled(componentName)) {
+            log.info(String.format("component %s is already or in the process of uninstallation", componentName));
+            return;
+        }
+
         final List<String> cmd = getUninstallCommand(componentName);
 
         final String jobName = String.format("helm-uninstall-%s", componentName);

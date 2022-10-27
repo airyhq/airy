@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.core.api.components.installer.model.InstallationStatus;
 
 @Component
 public class InstallerHandlerCacheManager {
@@ -48,5 +49,23 @@ public class InstallerHandlerCacheManager {
         Map<String, String> cacheStore = installedComponentsHandler.getInstalledComponentsCache();
         cacheStore.put(componentName, status);
         installedComponentsHandler.setInstalledComponentsCache(cacheStore);
+    }
+
+    public boolean isInstalled(String componentName) throws Exception {
+        final String installationStatus = installedComponentsHandler
+            .getInstalledComponentsCache()
+            .getOrDefault(componentName, InstallationStatus.uninstalled);
+
+        return installationStatus.equals(InstallationStatus.installed)
+            || installationStatus.equals(InstallationStatus.pending);
+    }
+
+    public boolean isUninstalled(String componentName) throws Exception {
+        final String installationStatus = installedComponentsHandler
+            .getInstalledComponentsCache()
+            .getOrDefault(componentName, InstallationStatus.uninstalled);
+
+        return installationStatus.equals(InstallationStatus.uninstalled)
+            || installationStatus.equals(InstallationStatus.pending);
     }
 }

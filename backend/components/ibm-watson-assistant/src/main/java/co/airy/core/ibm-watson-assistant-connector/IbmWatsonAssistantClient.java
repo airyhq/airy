@@ -7,7 +7,7 @@ import feign.RequestLine;
 import feign.Headers;
 
 public interface IbmWatsonAssistantClient {
-    @RequestLine("POST ")
-    @Headers({ "Content-Type: application/json"})
+    @RequestLine("POST")
+    @Headers("Content-Type: application/json")
     MessageSendResponse sendMessage(MessageSend content);
 }

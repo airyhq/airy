@@ -2,13 +2,18 @@ package co.airy.core.api.components.configuration;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.airy.core.api.components.configuration.model.ComponentConfig;
+import co.airy.core.api.components.configuration.payload.DeleteComponentsConfigPayload;
+import co.airy.core.api.components.configuration.payload.UpdateComponentsConfigPayload;
 import co.airy.log.AiryLoggerFactory;
 import io.kubernetes.client.openapi.ApiException;
 
@@ -23,12 +28,12 @@ public class ConfigurationController {
     }
 
     @PostMapping("/components.config.update")
-    public ResponseEntity<?> updateComponentsConfig() {
+    public ResponseEntity<?> updateComponentsConfig(@RequestBody @Valid UpdateComponentsConfigPayload payload) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/components.config.delete")
-    public ResponseEntity<?> deleteComponentsConfig() {
+    public ResponseEntity<?> deleteComponentsConfig(@RequestBody @Valid DeleteComponentsConfigPayload payload) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -1,25 +1,6 @@
 provider "google" {
   project = var.project_id
   region  = var.region
-  #credentials = file("credentials.json")
-}
-
-resource "google_service_account" "gke_core_sa" {
-  account_id   = "gke-core-sa"
-  display_name = "Service Account For Terraform GKE Cluster"
-}
-
-# note this requires the terraform to be run regularly
-resource "time_rotating" "gke_core_key_rotation" {
-  rotation_days = 90
-}
-
-resource "google_service_account_key" "gke_core_key" {
-  service_account_id = google_service_account.gke_core_sa.name
-
-  keepers = {
-    rotation_time = time_rotating.gke_core_key_rotation.rotation_rfc3339
-  }
 }
 
 resource "google_compute_network" "vpc" {
@@ -46,16 +27,9 @@ resource "google_container_node_pool" "gke_core_nodes" {
     preemptible  = true
     machine_type = var.gke_instance_type
 
-    # Google recommends custom service accounts that have cloud-platform scope and
-    # permissions granted via IAM Roles.
-    service_account = google_service_account.gke_core_sa.email
-
-
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
-      "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/userinfo.email",
     ]
 
     tags = ["gke-node", "${var.project_id}-gke"]

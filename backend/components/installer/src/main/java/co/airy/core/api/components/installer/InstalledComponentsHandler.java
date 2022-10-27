@@ -2,11 +2,8 @@ package co.airy.core.api.components.installer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
@@ -17,7 +14,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.stereotype.Component;
 
 import co.airy.log.AiryLoggerFactory;
@@ -32,17 +28,14 @@ public class InstalledComponentsHandler {
     private final ApiClient apiClient;
     private final String namespace;
     private final HelmJobHandler helmJobHandler;
-    private final ConcurrentMapCacheManager cache;
 
     InstalledComponentsHandler(
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
-            ConcurrentMapCacheManager cache,
             @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.namespace = namespace;
         this.helmJobHandler = helmJobHandler;
-        this.cache = cache;
     }
 
 
@@ -88,31 +81,14 @@ public class InstalledComponentsHandler {
                 null,
                 null);
 
-        final Map<String, String> installedComponents = Stream.concat(
-                getStoredInCache().entrySet().stream(),
-                Arrays.asList(response.getData().split("\\n"))
+        final Map<String, String> installedComponents = Arrays.asList(response.getData().split("\\n"))
                     .stream()
-                    .collect(Collectors.toMap(e -> e, e -> InstallationStatus.installed))
-                    .entrySet()
-                    .stream())
-            .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (v1, v2) -> v2));
+                    .collect(Collectors.toMap(e -> e, e -> InstallationStatus.installed));
 
         if (installedComponents == null) {
             throw new JobEmptyException();
         }
 
         return installedComponents;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, String> getStoredInCache() {
-        final Map<String, String> storedInCache = cache
-            .getCache("installedComponents")
-            .get(KEY, HashMap.class);
-
-        return Optional.ofNullable(storedInCache).orElse(new HashMap<>());
     }
 }

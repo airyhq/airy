@@ -104,6 +104,7 @@ module.exports = {
       '🛠️ Integrations': [
         {
           'Conversational AI /NLP': [
+            'integrations/ibm-watson-assistant',
             'integrations/cognigy-ai',
             'integrations/rasa-assistant',
             'integrations/rasa-suggested-replies',

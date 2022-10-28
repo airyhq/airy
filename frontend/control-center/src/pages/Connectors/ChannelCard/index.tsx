@@ -27,6 +27,19 @@ export const ChannelCard = (props: ChannelCardProps) => {
     componentInfo.isConfigured
   );
 
+  const configuredComponent = componentStatus !== ComponentStatus.notConfigured;
+
+  const ChannelsMention = () => {
+    return (
+      <>
+        <p>
+          {channelsToShow} {configuredComponent && channelsToShow === 1 ? t('channel') : t('channels')}
+        </p>
+        <ArrowRightIcon className={styles.arrowIcon} />
+      </>
+    );
+  };
+
   return (
     <div
       onClick={event => {
@@ -42,10 +55,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
         </div>
         <div className={styles.linkContainer}>
           {componentStatus && <ConfigStatusButton componentStatus={componentStatus} configurationRoute={route} />}
-          <span>
-            {channelsToShow} {channelsToShow === 1 ? t('channel') : t('channels')}
-          </span>
-          <ArrowRightIcon className={styles.arrowIcon} />
+          {configuredComponent && <ChannelsMention />}
         </div>
       </div>
     </div>

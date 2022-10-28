@@ -66,6 +66,9 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     });
   };
 
+  console.log(connectors);
+  
+
   useLayoutEffect(() => {
     if (query && currentFilter === FilterTypes.all) {
       const filteredCatalogByName = [...catalogList].filter((component: ComponentInfo) =>
@@ -83,7 +86,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       const sortedByUninstalled = [...catalogList]
         .filter(
           (component: ComponentInfo) =>
-            component.installationStatus === InstallationStatus.uninstalled &&
+            component.installationStatus === InstallationStatus.uninstalled || component.installationStatus === undefined &&
             component.price !== ConnectorPrice.requestAccess
         )
         .sort(sortByName);

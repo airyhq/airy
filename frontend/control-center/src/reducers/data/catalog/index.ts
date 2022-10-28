@@ -22,7 +22,8 @@ export default function connectorsReducer(state = defaultState, action: Action):
         ...state,
         [action.payload.name]: {
           ...state[action.payload.name],
-          installed: true,
+          installationStatus: 'installed',
+          // installed: true,
         },
       };
     }
@@ -31,7 +32,8 @@ export default function connectorsReducer(state = defaultState, action: Action):
         ...state,
         [action.payload.name]: {
           ...state[action.payload.name],
-          installed: false,
+          // installed: false,
+          installationStatus: 'uninstalled',
         },
       };
     }

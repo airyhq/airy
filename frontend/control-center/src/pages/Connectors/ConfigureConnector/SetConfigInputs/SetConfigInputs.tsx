@@ -30,7 +30,9 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
 
       if (key.includes('URL')) {
         key = key.replace('URL', 'Url');
-      } else if (key.includes('API')) {
+      }
+
+      if (key.includes('API')) {
         key = key.replace('API', 'Api');
       }
 
@@ -38,8 +40,14 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
 
       if (replacedKey.includes('Url')) {
         replacedKey = replacedKey.replace('Url', 'URL');
-      } else if (key.includes('Api')) {
+      }
+
+      if (replacedKey.includes('Api')) {
         replacedKey = replacedKey.replace('Api', 'API');
+      }
+
+      if (replacedKey.includes('ibm')) {
+        replacedKey = replacedKey.replace('ibm', 'IBM');
       }
 
       const label = replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1);

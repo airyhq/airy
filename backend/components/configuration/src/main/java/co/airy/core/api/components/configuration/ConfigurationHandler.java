@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import co.airy.core.api.components.configuration.model.ComponentConfig;
+import co.airy.core.api.components.configuration.payload.DeleteComponentsConfigPayload;
 import co.airy.log.AiryLoggerFactory;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiResponse;
@@ -61,5 +62,11 @@ public class ConfigurationHandler {
                         .data(Optional.ofNullable(c.getData()).orElse(new HashMap<>()))
                         .build())
             .collect(Collectors.toList());
+    }
+
+    public void deleteComponentsConfig(DeleteComponentsConfigPayload components) {
+        final Map<String, Boolean> installedComponents = installedComponentsHandler.getInstalledComponents();
+        final CoreV1Api api = new CoreV1Api(apiClient);
+
     }
 }

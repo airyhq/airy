@@ -1,0 +1,7 @@
+component: ibm-watson-assistant-connector
+mandatory: false
+enabled: false
+image: connectors/ibm-watson-assistant-connector
+global:
+  containerRegistry: ghcr.io/airyhq
+resources: {}

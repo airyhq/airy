@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import co.airy.core.api.components.installer.model.ComponentDetails;
+import co.airy.core.api.components.installer.model.InstallationStatus;
 import co.airy.log.AiryLoggerFactory;
 
 @Service
@@ -76,7 +77,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
 
     private List<ComponentDetails> getComponents(Function<String, Boolean> condition) throws Exception {
         git.pull();
-        final Map<String, Boolean> installedComponents = installedComponentsHandler.getInstalledComponentsCache();
+        final Map<String, String> installedComponents = installedComponentsHandler.getInstalledComponentsCache();
 
         final List<ComponentDetails> components = Stream.of(repoFolder.listFiles())
                 .filter(f -> f.isDirectory() && !f.isHidden() && condition.apply(f.getName()))
@@ -94,7 +95,7 @@ public class CatalogHandler implements ApplicationListener<ApplicationReadyEvent
                     return config;
                 })
                 .filter(c -> c != null)
-                .map(c -> c.add("installed", installedComponents.getOrDefault(c.getName(), Boolean.FALSE)))
+                .map(c -> c.add("installationStatus", installedComponents.getOrDefault(c.getName(), InstallationStatus.uninstalled)))
                 .collect(Collectors.toList());
 
         return components;

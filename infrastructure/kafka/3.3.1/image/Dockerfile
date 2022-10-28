@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:19-jdk-alpine3.16
 
 LABEL maintainer "https://github.com/airyhq"
 LABEL name="kafka" version=${INSTALL_KAFKA_VERSION}

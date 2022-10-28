@@ -4,11 +4,14 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.core.api.components.installer.model.InstallationStatus;
 
 @Component
 public class InstallerHandlerCacheManager {
@@ -40,5 +43,29 @@ public class InstallerHandlerCacheManager {
         } catch(Exception e) {
             log.error("unable to reset cache", e);
         }
+    }
+
+    public void changeInstallationStatus(String componentName, String status) throws Exception {
+        Map<String, String> cacheStore = installedComponentsHandler.getInstalledComponentsCache();
+        cacheStore.put(componentName, status);
+        installedComponentsHandler.setInstalledComponentsCache(cacheStore);
+    }
+
+    public boolean isInstalled(String componentName) throws Exception {
+        final String installationStatus = installedComponentsHandler
+            .getInstalledComponentsCache()
+            .getOrDefault(componentName, InstallationStatus.uninstalled);
+
+        return installationStatus.equals(InstallationStatus.installed)
+            || installationStatus.equals(InstallationStatus.pending);
+    }
+
+    public boolean isUninstalled(String componentName) throws Exception {
+        final String installationStatus = installedComponentsHandler
+            .getInstalledComponentsCache()
+            .getOrDefault(componentName, InstallationStatus.uninstalled);
+
+        return installationStatus.equals(InstallationStatus.uninstalled)
+            || installationStatus.equals(InstallationStatus.pending);
     }
 }

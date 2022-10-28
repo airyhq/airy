@@ -47,6 +47,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import co.airy.core.api.components.installer.model.InstallationStatus;
+
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -137,7 +139,7 @@ public class CatalogHandlerTest {
                 .findAny()
                 .orElse(null);
             assertThat(enterpriseSalesforceContactsIngestion, is(notNullValue()));
-            assertThat(enterpriseSalesforceContactsIngestion.isInstalled(), is(true));
+            assertThat(enterpriseSalesforceContactsIngestion.getInstallationStatus(), equalTo(InstallationStatus.installed));
 
             ComponentDetails cognigyConnector = listComponents
                 .stream()
@@ -145,7 +147,7 @@ public class CatalogHandlerTest {
                 .findAny()
                 .orElse(null);
             assertThat(cognigyConnector, is(notNullValue()));
-            assertThat(cognigyConnector.isInstalled(), is(false));
+            assertThat(cognigyConnector.getInstallationStatus(), equalTo(InstallationStatus.uninstalled));
         }
 
     }

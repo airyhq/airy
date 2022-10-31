@@ -17,7 +17,7 @@ export enum Source {
   mobile = 'mobile',
   whatsapp = 'whatsapp',
   frontendInbox = 'frontend-inbox',
-  ibm = 'ibm',
+  ibmWatsonAssistant = 'ibmWatsonAssistant',
   amazons3 = 'amazons3',
 }
 

@@ -436,6 +436,12 @@ const resources = {
       inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpoint URL',
       inputTooltipCognigyCognigyUserId: 'User ID',
 
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'Conversational AI For Business',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API key',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistant Id',
+
       //Rasa
       rasaDescription: 'Open source conversational AI.',
 
@@ -927,6 +933,12 @@ const resources = {
       cognigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
       inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpunkt-URL',
       inputTooltipCognigyCognigyUserId: 'Benutzer-ID',
+
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'Konversations-KI für Unternehmen',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'Ihre URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API-Schlüssel',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistenten-ID',
 
       //Rasa
       rasaDescription: 'Open-Source-Gesprächs-KI.',
@@ -1538,6 +1550,12 @@ const resources = {
       inputTooltipCognigyCognigyRestEndpointURL: 'URL Endpoint REST',
       inputTooltipCognigyCognigyUserId: "ID d'utilisateur",
 
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: "L'IA conversationnelle pour les entreprises",
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clé API',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: "ID de l'assistant",
+
       //Rasa
       rasaDescription: 'IA conversationnelle open source.',
 
@@ -2090,9 +2108,15 @@ const resources = {
       whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
       //Cognigy.AI
-      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional',
       inputTooltipCognigyCognigyRestEndpointURL: 'URL del Endpoint REST',
       inputTooltipCognigyCognigyUserId: 'ID de usuario',
+
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'IA conversacional para las empresas',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clave API',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'ID del asistente',
 
       //Rasa
       rasaDescription: 'IA conversacional Open Source.',

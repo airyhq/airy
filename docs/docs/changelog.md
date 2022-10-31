@@ -3,6 +3,60 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.51.0
+
+#### 🚀 Features
+
+- [[#3881](https://github.com/airyhq/airy/issues/3881)] Increase timeout for helm job
+- [[#3864](https://github.com/airyhq/airy/issues/3864)] Improved configure connectors container [[#3865](https://github.com/airyhq/airy/pull/3865)]
+- [[#3642](https://github.com/airyhq/airy/issues/3642)] Added tooltips channel connectors [[#3859](https://github.com/airyhq/airy/pull/3859)]
+- [[#3719](https://github.com/airyhq/airy/issues/3719)] Updating all Source Connector [[#3849](https://github.com/airyhq/airy/pull/3849)]
+- [[#3825](https://github.com/airyhq/airy/issues/3825)] Support Cognigy AI non text flow nodes [[#3826](https://github.com/airyhq/airy/pull/3826)]
+- [[#3839](https://github.com/airyhq/airy/issues/3839)] Adapted connectors useSelector according components.get
+- [[#3822](https://github.com/airyhq/airy/issues/3822)] Added Notification Configurations [[#3834](https://github.com/airyhq/airy/pull/3834)]
+- [[#3693](https://github.com/airyhq/airy/issues/3693)] API components installer [[#3761](https://github.com/airyhq/airy/pull/3761)]
+- [[#3762](https://github.com/airyhq/airy/issues/3762)] Cognigy connector [[#3778](https://github.com/airyhq/airy/pull/3778)]
+
+#### 🐛 Bug Fixes
+
+- [[#3862](https://github.com/airyhq/airy/issues/3862)] Fixed icons and improved animations [[#3863](https://github.com/airyhq/airy/pull/3863)]
+- [[#3835](https://github.com/airyhq/airy/issues/3835)] Fix unread counter crash [[#3836](https://github.com/airyhq/airy/pull/3836)]
+- [[#3820](https://github.com/airyhq/airy/issues/3820)] Fixes for Cognigy AI on Control Center [[#3821](https://github.com/airyhq/airy/pull/3821)]
+- [[#3813](https://github.com/airyhq/airy/issues/3813)] Fixes to SearchBar on the Control Center UI  [[#3818](https://github.com/airyhq/airy/pull/3818)]
+- [[#3804](https://github.com/airyhq/airy/issues/3804)] Fix using existing subnets for AWS [[#3812](https://github.com/airyhq/airy/pull/3812)]
+- [[#3800](https://github.com/airyhq/airy/issues/3800)] Minor fixes [[#3803](https://github.com/airyhq/airy/pull/3803)]
+
+#### 📚 Documentation
+
+- [[#3801](https://github.com/airyhq/airy/issues/3801)] Cognigy AI docs [[#3807](https://github.com/airyhq/airy/pull/3807)]
+
+#### 🧰 Maintenance
+
+- Bump @types/node from 18.8.2 to 18.11.4 [[#3872](https://github.com/airyhq/airy/pull/3872)]
+- Bump react-redux from 8.0.2 to 8.0.4 [[#3772](https://github.com/airyhq/airy/pull/3772)]
+- Bump @testing-library/dom from 8.18.1 to 8.19.0 [[#3846](https://github.com/airyhq/airy/pull/3846)]
+- Bump i18next from 21.9.2 to 21.10.0 [[#3847](https://github.com/airyhq/airy/pull/3847)]
+- Bump @babel/preset-env from 7.19.3 to 7.19.4 [[#3848](https://github.com/airyhq/airy/pull/3848)]
+- Bump @pmmmwh/react-refresh-webpack-plugin from 0.5.7 to 0.5.8 [[#3843](https://github.com/airyhq/airy/pull/3843)]
+- Bump @svgr/webpack from 6.4.0 to 6.5.0 [[#3845](https://github.com/airyhq/airy/pull/3845)]
+- Bump babel-jest from 29.1.2 to 29.2.0 [[#3842](https://github.com/airyhq/airy/pull/3842)]
+- Bump cypress from 10.9.0 to 10.10.0 [[#3844](https://github.com/airyhq/airy/pull/3844)]
+- Bump @babel/plugin-proposal-object-rest-spread from 7.18.9 to 7.19.4 [[#3837](https://github.com/airyhq/airy/pull/3837)]
+- Bump @svgr/plugin-svgo from 6.3.1 to 6.5.0 [[#3831](https://github.com/airyhq/airy/pull/3831)]
+- Bump jest-environment-jsdom from 29.1.2 to 29.2.0 [[#3832](https://github.com/airyhq/airy/pull/3832)]
+- Bump minimist from 1.2.6 to 1.2.7 [[#3833](https://github.com/airyhq/airy/pull/3833)]
+- Bump eslint-plugin-react from 7.31.8 to 7.31.10 [[#3828](https://github.com/airyhq/airy/pull/3828)]
+- Bump @reduxjs/toolkit from 1.8.5 to 1.8.6 [[#3808](https://github.com/airyhq/airy/pull/3808)]
+- Bump preact from 10.11.0 to 10.11.2 [[#3829](https://github.com/airyhq/airy/pull/3829)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.51.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.51.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.51.0/windows/amd64/airy.exe)
+
 ## 0.50.1
 
 #### Hotfix
@@ -1287,46 +1341,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.31.1/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.31.1/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.31.1/windows/amd64/airy.exe)
-
-## 0.31.0
-
-#### 🚀 Features
-
-- [[#628](https://github.com/airyhq/airy/issues/628)] Make library compatible with node.js [[#2426](https://github.com/airyhq/airy/pull/2426)]
-- [[#2405](https://github.com/airyhq/airy/issues/2405)] Icons for Rendering/Sending File Attachments [[#2420](https://github.com/airyhq/airy/pull/2420)]
-- [[#2406](https://github.com/airyhq/airy/issues/2406)] Instagram Source: Render Messages with Media & Share in Inbox UI [[#2419](https://github.com/airyhq/airy/pull/2419)]
-- [[#2109](https://github.com/airyhq/airy/issues/2109)] Render send file attachments via facebook messenger [[#2404](https://github.com/airyhq/airy/pull/2404)]
-- [[#2257](https://github.com/airyhq/airy/issues/2257)] Add analytics demo [[#2325](https://github.com/airyhq/airy/pull/2325)]
-
-#### 🐛 Bug Fixes
-
-- [[#2390](https://github.com/airyhq/airy/issues/2390)] Add ingress class for ngrok [[#2408](https://github.com/airyhq/airy/pull/2408)]
-- [[#2390](https://github.com/airyhq/airy/issues/2390)] Switch to nginx ingress controller [[#2402](https://github.com/airyhq/airy/pull/2402)]
-- [[#2394](https://github.com/airyhq/airy/issues/2394)] Fixes source api ingress typo [[#2395](https://github.com/airyhq/airy/pull/2395)]
-
-#### 📚 Documentation
-
-- [[#2401](https://github.com/airyhq/airy/issues/2401)] Improve AWS docs [[#2409](https://github.com/airyhq/airy/pull/2409)]
-- [[#2257](https://github.com/airyhq/airy/issues/2257)] Rename files [[#2412](https://github.com/airyhq/airy/pull/2412)]
-- [[#2390](https://github.com/airyhq/airy/issues/2390)] Document supported Minikube versions [[#2391](https://github.com/airyhq/airy/pull/2391)]
-
-#### 🧰 Maintenance
-
-- Bump cypress from 8.3.1 to 8.4.1 [[#2418](https://github.com/airyhq/airy/pull/2418)]
-- Bump @babel/preset-env from 7.15.4 to 7.15.6 [[#2417](https://github.com/airyhq/airy/pull/2417)]
-- Bump axios from 0.21.1 to 0.21.4 in /docs [[#2410](https://github.com/airyhq/airy/pull/2410)]
-- Bump @types/node from 16.7.13 to 16.9.4 [[#2415](https://github.com/airyhq/airy/pull/2415)]
-- Bump terser-webpack-plugin from 5.2.3 to 5.2.4 [[#2398](https://github.com/airyhq/airy/pull/2398)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.31.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.31.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.31.0/windows/amd64/airy.exe)
-
-#### Upgrade notes
-
-In the `airy.yaml` file, `host` is moved from the `kubernetes` section, into the `ingress` section.
 

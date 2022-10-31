@@ -3,6 +3,7 @@ package providers
 import (
 	"cli/pkg/console"
 	"cli/pkg/providers/aws"
+	"cli/pkg/providers/gcp"
 	"cli/pkg/providers/minikube"
 	"cli/pkg/workspace"
 	"cli/pkg/workspace/template"
@@ -15,6 +16,7 @@ type ProviderName string
 const (
 	Minikube ProviderName = "minikube"
 	Aws      ProviderName = "aws"
+	Gcp      ProviderName = "gcp"
 )
 
 type Provider interface {
@@ -34,5 +36,8 @@ func MustGet(providerName ProviderName, w io.Writer, analytics *console.AiryAnal
 		return aws.New(w, analytics)
 	}
 
+	if providerName == Gcp {
+		return gcp.New(w, analytics)
+	}
 	panic(fmt.Sprintf("unknown provider \"%v\"", providerName))
 }

@@ -33,14 +33,14 @@ func (p *provider) GetOverrides() tmpl.Variables {
 	}
 }
 func (p *provider) CheckEnvironment() error {
-	return workspace.CheckBinaries([]string{"terraform", "gcp"})
+	return workspace.CheckBinaries([]string{"terraform", "gcloud"})
 }
 func (p *provider) PreInstallation(workspacePath string) (string, error) {
 	remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
 	installDir := workspacePath + "/terraform"
 	installFlags := strings.Join([]string{"PROVIDER=gcp-gke", "WORKSPACE=" + workspacePath}, "\n")
 
-	var gitGetter = &getter.Client{
+	gitGetter := &getter.Client{
 		Src: remoteUrl,
 		Dst: installDir,
 		Dir: true,

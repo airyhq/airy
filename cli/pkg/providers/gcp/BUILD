@@ -1,13 +1,12 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "aws",
+    name = "gcp",
     srcs = [
         "gcp.go",
         "files.go",
     ],
     embedsrcs = [
-        "rolepolicy.json",
         "kubeConfigTemplate.yaml",
     ],
     importpath = "cli/pkg/providers/gcp",

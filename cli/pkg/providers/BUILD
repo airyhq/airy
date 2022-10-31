@@ -9,6 +9,7 @@ go_library(
         "//cli/pkg/console",
         "//cli/pkg/kube",
         "//cli/pkg/providers/aws",
+        "//cli/pkg/providers/gcp",
         "//cli/pkg/providers/minikube",
         "//cli/pkg/workspace",
         "//cli/pkg/workspace/template",

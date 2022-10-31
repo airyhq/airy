@@ -13,6 +13,7 @@ resource "google_container_cluster" "gke_core" {
   remove_default_node_pool = true
   initial_node_count       = 1
   network                  = google_compute_network.vpc.name
+
 }
 
 resource "google_container_node_pool" "gke_core_nodes" {
@@ -38,7 +39,6 @@ resource "google_container_node_pool" "gke_core_nodes" {
     labels = {
       env = var.project_id
     }
-
   }
 
   depends_on = [resource.google_container_cluster.gke_core]

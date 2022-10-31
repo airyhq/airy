@@ -48,6 +48,7 @@ airy_jvm_deps = [
     "org.junit.jupiter:junit-jupiter-engine:5.8.1",
     "org.junit.jupiter:junit-jupiter:5.8.1",
     "org.mockito:mockito-core:%s" % MOCKITO_VERSION,
+    "org.mockito:mockito-inline:%s" % MOCKITO_VERSION,
     "org.projectlombok:lombok:1.18.10",
     "org.springframework.boot:spring-boot-loader:%s" % SPRING_BOOT,
     "org.springframework.boot:spring-boot-starter-actuator:%s" % SPRING_BOOT,
@@ -57,6 +58,7 @@ airy_jvm_deps = [
     "org.springframework.boot:spring-boot-starter-websocket:%s" % SPRING_BOOT,
     "org.springframework.boot:spring-boot-starter-security:%s" % SPRING_BOOT,
     "org.springframework.boot:spring-boot-starter-oauth2-client:%s" % SPRING_BOOT,
+    "org.springframework.boot:spring-boot-starter-cache:%s" % SPRING_BOOT,
     "org.springframework.security.oauth:spring-security-oauth2:2.4.1.RELEASE",
     "org.springframework.retry:spring-retry:1.3.2",
     "org.springframework:spring-aop:%s" % SPRING,
@@ -71,6 +73,9 @@ airy_jvm_deps = [
     "io.github.openfeign:feign-core:11.8",
     "io.github.openfeign:feign-jackson:11.8",
     "io.github.openfeign:feign-okhttp:11.8",
+    "io.kubernetes:client-java:16.0.0",
+    "org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r",
+    "commons-io:commons-io:2.11.0",
 ]
 
 excluded_artifacts = [

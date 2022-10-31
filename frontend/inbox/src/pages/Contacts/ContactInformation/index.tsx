@@ -55,7 +55,7 @@ const ContactInformation = (props: ContactInformationProps) => {
   } = props;
   const {t} = useTranslation();
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
-  const [displayName, setDisplayName] = useState(contact?.displayName);
+  const [displayName, setDisplayName] = useState(contact?.displayName || '');
   const [fade, setFade] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCanceled, setEditingCanceled] = useState(false);
@@ -91,7 +91,6 @@ const ContactInformation = (props: ContactInformationProps) => {
   };
 
   const toggleEditDisplayName = useCallback(() => {
-    setDisplayName(contact?.displayName);
     useAnimation(showEditDisplayName, setShowEditDisplayName, setFade, 400);
   }, [showEditDisplayName, setShowEditDisplayName]);
 

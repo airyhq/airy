@@ -98,6 +98,7 @@ const resources = {
       //Status
       all: 'All',
       open: 'Open',
+      openCatalog: 'Open',
       closed: 'Closed',
 
       //Message
@@ -173,6 +174,7 @@ const resources = {
       channelsCapital: 'Channels',
       addChannel: 'Add Channel',
       disconnectChannel: 'Disconnect Channel',
+      editChannel: 'Edit Channel',
       confirmDisconnectChannelTitle: 'Confirm Channel Disconnection',
       confirmDisconnectChannelText:
         'You are about to disconnect a channel. You will not receive any new messages in Airy or be able to send messages anymore.',
@@ -304,6 +306,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Your Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Your Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Your Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Your Phone Number',
       inputTooltipWhatsappName: 'Your Name',
       inputTooltipWhatsappAvatarUrl: 'Your Avatar Url',
@@ -327,17 +330,17 @@ const resources = {
       AddGoogleApplicationCredentials: 'Add the Google Application Credentials',
       SuggestionConfidenceLevel: 'Suggestion Confidence Level',
       ReplyConfidenceLevel: 'Reply Confidence Level',
-      inputTooltipDialogflowProjectId: 'given by the Cloud Console',
-      inputTooltipDialogflowDialogflowCredentials: 'given by the Cloud Console',
-      inputTooltipDialogflowSuggestionConfidenceLevel: 'amount for suggestions',
-      inputTooltipDialogflowReplyConfidenceLevel: 'amount for replies',
+      inputTooltipDialogflowProjectId: 'Given by the Cloud Console',
+      inputTooltipDialogflowDialogflowCredentials: 'Given by the Cloud Console',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Amount for suggestions',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Amount for replies',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Default language: en',
       to: 'to',
       processorWaitingTime: 'Processor waiting time',
       processorCheckPeriod: 'Processor check period',
       inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Default value: 5000',
       inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Default value: 2500',
       defaultLanguage: 'Default language',
-      inputTooltipDialogflowConnectorDefaultLanguage: 'Default value: en',
 
       //Salesforce
       salesforceDescription:
@@ -428,8 +431,10 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Add your Phone Number Id',
       whatsappPhoneNumberIdTooltip: 'Add your Phone Number Id',
 
-      //Congnigy
-      congnigyDescription: 'A low-code UI for conversational AI.',
+      //Cognigy.AI
+      cognigyDescription: 'A low-code UI for conversational AI.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpoint URL',
+      inputTooltipCognigyCognigyUserId: 'User ID',
 
       //Rasa
       rasaDescription: 'Open source conversational AI.',
@@ -468,6 +473,10 @@ const resources = {
       optional: 'Optional',
       configuration: 'Configuration',
       createChannel: 'Create Channel',
+      successfulConfiguration: 'Configuration successful applied',
+      updateSuccessfulConfiguration: 'Configuration successful updated',
+      failedConfiguration: 'Applying configuration failed',
+      updateFailedConfiguration: 'Updating configuration failed',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -638,6 +647,7 @@ const resources = {
       //Status
       all: 'Alle',
       open: 'Offen',
+      openCatalog: 'Öffnen',
       closed: 'Geschlossen',
 
       //Message
@@ -716,6 +726,7 @@ const resources = {
       addChannel: 'Kanal hinzufügen',
       channelsCapital: 'Kanäle',
       disconnectChannel: 'Kanal entfernen',
+      editChannel: 'Kanal bearbeiten',
       confirmDisconnectChannelTitle: 'Bestätigung der Kanaltrennung',
       confirmDisconnectChannelText:
         'Sie sind dabei, die Verbindung zu einem Kanal zu trennen. Sie werden keine neuen Nachrichten in Airy erhalten und können keine Nachrichten mehr senden.',
@@ -846,6 +857,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Ihre Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Ihr Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Ihr Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Ihre Handynummer',
       inputTooltipWhatsappName: 'Ihr Name',
       inputTooltipWhatsappAvatarUrl: 'Ihre Avatar Url',
@@ -879,6 +891,13 @@ const resources = {
       checkDefault: 'Standardwert: 2500',
       defaultLanguage: 'Standardsprache',
       defaultLanguageTooltip: 'Standardwert: en',
+      inputTooltipDialogflowProjectId: 'Projekt-ID',
+      inputTooltipDialogflowDialogflowCredentials: 'Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Anzahl der Vorschläge',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Anzahl der Antworten',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Standardwert: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Standardwert: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Standardwert: en',
 
       //Salesforce
       salesforceDescription:
@@ -904,8 +923,10 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Telefonnummer Id hinzufügen',
       whatsappPhoneNumberIdTooltip: 'Telefonnummer Id hinzufügen',
 
-      //Congnigy
-      congnigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+      //Cognigy.AI
+      cognigyDescription: 'Eine Low-Code-Benutzeroberfläche für Konversations-KI.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpunkt-URL',
+      inputTooltipCognigyCognigyUserId: 'Benutzer-ID',
 
       //Rasa
       rasaDescription: 'Open-Source-Gesprächs-KI.',
@@ -1009,6 +1030,10 @@ const resources = {
       optional: 'Optional',
       configuration: 'Konfiguration',
       createChannel: 'Kanal erstellen',
+      successfulConfiguration: 'Konfiguration erfolgreich angewendet',
+      updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
+      failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
+      updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
 
       //Request Access
 
@@ -1175,6 +1200,7 @@ const resources = {
       //Status
       all: 'Tous',
       open: 'Ouvert',
+      openCatalog: 'Ouvert',
       closed: 'Fermé',
 
       //Message
@@ -1185,7 +1211,7 @@ const resources = {
       newMessagesWillAppearHere: 'Vos nouveaux messages apparaîtront ici',
       newMessagesWillAppearHereText:
         'Nous commençons à afficher les messages à partir du moment où vous connectez un canal. Vos conversations apparaîtront ici dès que vos contacts vous enverront des messages.',
-      nothingFound: 'Rien trouvé',
+      nothingFound: 'Aucun résultat',
       noMatchingConversations: `Nous n'avons pas pu trouver de conversation correspondant à vos critères.`,
 
       //Metadata
@@ -1231,7 +1257,7 @@ const resources = {
       pageUnderConstruction: 'page en construction - bientôt disponible !',
 
       //Channels
-      toConfigure: 'configuration',
+      toConfigure: 'Configuration',
       configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
@@ -1250,6 +1276,7 @@ const resources = {
       addChannel: 'Ajouter un canal',
       channelsCapital: 'Canaux',
       disconnectChannel: 'Déconnecter du canal',
+      editChannel: 'Éditer le canal',
       confirmDisconnectChannelTitle: 'Confirmer la déconnexion du canal',
       confirmDisconnectChannelText:
         'Vous êtes sur le point de déconnecter un canal. Vous ne recevrez plus de nouveaux messages dans Airy et ne pourrez plus envoyer de messages.',
@@ -1364,6 +1391,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Votre Whatsapp App Id',
       inputTooltipWhatsappAppSecret: 'Votre Whatsapp App Secret',
+      inputTooltipWhatsappWebhookSecret: 'Votre Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Votre numéro de téléphone',
       inputTooltipWhatsappName: 'Votre nom',
       inputTooltipWhatsappAvatarUrl: 'Votre Avatar Url',
@@ -1398,6 +1426,13 @@ const resources = {
       checkDefault: 'valeur par défaut: 2500',
       defaultLanguage: 'Langue utilisée',
       defaultLanguageTooltip: 'valeur par défaut: en',
+      inputTooltipDialogflowProjectId: 'ID du project',
+      inputTooltipDialogflowDialogflowCredentials: 'Ajouter les Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Niveau de confiance des suggestions',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Niveau de confiance des réponses',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Valeur par défaut: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Valeur par défaut: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Langue utilisée',
 
       //Salesforce
       salesforceDescription: 'Augmentez vos performances commerciales avec la plateforme CRM n° 1 au monde.',
@@ -1498,8 +1533,10 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Ajoutez votre numéro de téléphone',
       whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
 
-      //Congnigy
-      congnigyDescription: "Une interface utilisateur low-code pour l'IA conversationnelle.",
+      //Cognigy.AI
+      cognigyDescription: "L'IA conversationnelle en quelques clics.",
+      inputTooltipCognigyCognigyRestEndpointURL: 'URL Endpoint REST',
+      inputTooltipCognigyCognigyUserId: "ID d'utilisateur",
 
       //Rasa
       rasaDescription: 'IA conversationnelle open source.',
@@ -1538,6 +1575,10 @@ const resources = {
       optional: 'Optionnel',
       configuration: 'Configuration',
       createChannel: 'Créer un canal',
+      successfulConfiguration: 'Configuration appliquée avec succès',
+      updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
+      failedConfiguration: 'La configuration a échoué',
+      updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -1580,7 +1621,7 @@ const resources = {
       ['REQUEST ACCESS']: "DEMANDE D'ACCÈS",
       searchByNamePlaceholder: 'Recherche par nom',
       searchByType: 'Recherche par type',
-      noMatchingCatalogs: `Nous n'avons pas pu trouver de Catalog correspondant à vos critères.`,
+      noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -1713,6 +1754,7 @@ const resources = {
       //Status
       all: 'Todo',
       open: 'Abrir',
+      openCatalog: 'Abrir',
       closed: 'Cerrado',
 
       //Message
@@ -1771,7 +1813,7 @@ const resources = {
       pageUnderConstruction: 'página en construcción - próximamente!',
 
       //Channels
-      toConfigure: 'configurar',
+      toConfigure: 'Configurar',
       configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
       chatpluginDescription: 'El mejor navegador de su clase',
@@ -1790,6 +1832,7 @@ const resources = {
       addChannel: 'Añadir canal',
       channelsCapital: 'Canales',
       disconnectChannel: 'Desconectar el canal',
+      editChannel: 'Editar el canal',
       confirmDisconnectChannelTitle: 'Confirmar la desconexión del canal',
       confirmDisconnectChannelText:
         'Estás a punto de desconectar un canal. No recibirás ningún mensaje nuevo en Airy ni podrás volver a enviar mensajes.',
@@ -1920,6 +1963,7 @@ const resources = {
       //Whatsapp Business Cloud
       inputTooltipWhatsappAppId: 'Su Id. de aplicación de Whatsapp',
       inputTooltipWhatsappAppSecret: 'El secreto de tu aplicación de Whatsapp',
+      inputTooltipWhatsappWebhookSecret: 'Su Whatsapp Webhook Secret',
       inputTooltipWhatsappPhoneNumber: 'Su número de teléfono',
       inputTooltipWhatsappName: 'Su nombre',
       inputTooltipWhatsappAvatarUrl: 'La url de su avatar',
@@ -1954,6 +1998,13 @@ const resources = {
       checkDefault: 'valor por defecto: 2500',
       defaultLanguage: 'Idioma por defecto',
       defaultLanguageTooltip: 'valor por defecto: en',
+      inputTooltipDialogflowProjectId: 'ID del proyecto',
+      inputTooltipDialogflowDialogflowCredentials: 'Añadir los Google Application Credentials',
+      inputTooltipDialogflowSuggestionConfidenceLevel: 'Nivel de confianza para sugerencias',
+      inputTooltipDialogflowReplyConfidenceLevel: 'Nivel de confianza para respuestas',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorMaxWaitMillis: 'Valor por defecto: 5000',
+      inputTooltipDialogflowConnectorStoreMessagesProcessorCheckPeriodMillis: 'Valor por defecto: 2500',
+      inputTooltipDialogflowConnectorDefaultLanguage: 'Valor por defecto: en',
 
       //Salesforce
       salesforceDescription: 'Aumente sus resultados de ventas con la plataforma de CRM n.º 1 del mundo.',
@@ -2038,8 +2089,10 @@ const resources = {
       whatsappPhoneNumberIdPlaceholder: 'Añada su número de teléfono',
       whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
-      //Congnigy
-      congnigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      //Cognigy.AI
+      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      inputTooltipCognigyCognigyRestEndpointURL: 'URL del Endpoint REST',
+      inputTooltipCognigyCognigyUserId: 'ID de usuario',
 
       //Rasa
       rasaDescription: 'IA conversacional Open Source.',
@@ -2078,6 +2131,10 @@ const resources = {
       optional: 'Opcional',
       configuration: 'Configuración',
       createChannel: 'Crear canal',
+      successfulConfiguration: 'Configuración aplicada con éxito',
+      updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
+      failedConfiguration: 'Fallo en la aplicación de la configuración',
+      updateFailedConfiguration: 'Fallo en la actualización de la configuración',
 
       //Request Access
       comingSoon: 'Próximamente',

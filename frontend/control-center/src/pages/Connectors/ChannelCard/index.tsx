@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {ConfigStatusButton} from '../ConfigStatusButton';
 import {ComponentStatus} from 'model';
 import {cyAddChannelButton} from 'handles';
-import {getConnectedRouteForComponent, getNewChannelRouteForComponent} from '../../../services';
+import {getConnectedRouteForComponent} from '../../../services';
 import {Connector} from 'model';
 
 type ChannelCardProps = {
@@ -20,25 +20,17 @@ export const ChannelCard = (props: ChannelCardProps) => {
   const {componentInfo, channelsToShow, componentStatus} = props;
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const CONFIGURATION_ROUTE = getConnectedRouteForComponent(
+  const route = getConnectedRouteForComponent(
     componentInfo.source,
     componentInfo.isChannel,
-    componentStatus !== ComponentStatus.notConfigured
-  );
-
-  const CONFIGURATION_ROUTE_NEW = getNewChannelRouteForComponent(
-    componentInfo.source,
-    componentInfo?.isChannel,
-    componentStatus !== ComponentStatus.notConfigured
+    componentInfo.connectedChannels > 0,
+    componentInfo.isConfigured
   );
 
   return (
     <div
       onClick={event => {
-        event.stopPropagation(),
-          channelsToShow > 0
-            ? navigate(CONFIGURATION_ROUTE, {state: {from: 'connected'}})
-            : navigate(CONFIGURATION_ROUTE_NEW, {state: {from: 'new'}});
+        event.stopPropagation(), navigate(route);
       }}
       className={styles.container}
       data-cy={cyAddChannelButton}
@@ -49,9 +41,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
           {componentInfo.displayName}
         </div>
         <div className={styles.linkContainer}>
-          {componentStatus && (
-            <ConfigStatusButton componentStatus={componentStatus} configurationRoute={CONFIGURATION_ROUTE} />
-          )}
+          {componentStatus && <ConfigStatusButton componentStatus={componentStatus} configurationRoute={route} />}
           <span>
             {channelsToShow} {channelsToShow === 1 ? t('channel') : t('channels')}
           </span>

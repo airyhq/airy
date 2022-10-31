@@ -29,6 +29,34 @@
   width: 100%;
 }
 
+.tooltipContainer.topLeft {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContainer.topRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContainer.bottomLeft {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContainer.bottomRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
 .tooltipContent {
   @include font-s-bold;
   display: none;
@@ -36,7 +64,6 @@
   border-radius: 4px;
   padding: 4px 6px;
   color: var(--color-text-contrast);
-  max-width: 180px;
   position: relative;
 }
 
@@ -67,6 +94,34 @@
   line-height: 14px;
   white-space: nowrap;
   margin-right: 12px;
+}
+
+.hoverElement:hover ~ .tooltipContent.topLeft {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  bottom: 32px;
+}
+
+.hoverElement:hover ~ .tooltipContent.topRight {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  bottom: 32px;
+}
+
+.hoverElement:hover ~ .tooltipContent.bottomLeft {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  top: 32px;
+}
+
+.hoverElement:hover ~ .tooltipContent.bottomRight {
+  display: flex;
+  line-height: 14px;
+  white-space: nowrap;
+  top: 32px;
 }
 
 .hoverElement ~ .tooltipContent.top::after {
@@ -109,4 +164,45 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent transparent var(--color-tooltip-gray);
+}
+
+.hoverElement ~ .tooltipContent.topLeft::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-tooltip-gray) transparent transparent transparent;
+}
+
+.hoverElement ~ .tooltipContent.topRight::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-tooltip-gray) transparent transparent transparent;
+}
+
+.hoverElement ~ .tooltipContent.bottomLeft::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-tooltip-gray) transparent;
+}
+
+.hoverElement ~ .tooltipContent.bottomRight::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 10px;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-tooltip-gray) transparent;
 }

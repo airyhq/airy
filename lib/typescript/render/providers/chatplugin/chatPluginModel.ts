@@ -106,6 +106,7 @@ export interface QuickReply extends Content {
   title: string;
   payload: QuickReplyCommand;
   image_url?: string;
+  imageUrl: string;
 }
 
 export interface QuickReplyCommand extends Command {

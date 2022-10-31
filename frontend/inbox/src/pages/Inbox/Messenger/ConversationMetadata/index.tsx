@@ -162,7 +162,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   }, [showTagsDialog, setShowTagsDialog]);
 
   const toggleEditDisplayName = useCallback(() => {
-    setDisplayName(conversation.metadata.contact.displayName);
     useAnimation(showEditDisplayName, setShowEditDisplayName, setFade, 400);
   }, [showEditDisplayName, setShowEditDisplayName]);
 

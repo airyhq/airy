@@ -30,6 +30,26 @@ module "vpc" {
   tags = merge(var.tags, { Terraform = "true" })
 }
 
+data "aws_subnets" "private" {
+  count = var.vpc_id == "" ? 1 : 0
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+
+  tags = {
+    Tier = "Private"
+  }
+}
+
+data "aws_subnets" "public" {
+  count = var.vpc_id ==  "" ? 1 : 0
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+}
+
 locals {
   vpc = (
     local.create_vpc ?
@@ -40,8 +60,8 @@ locals {
     } :
     {
       id              = var.vpc_id
-      private_subnets = var.private_subnets
-      public_subnets  = var.public_subnets
+      private_subnets = data.aws_subnets.private[0].ids
+      public_subnets  = data.aws_subnets.public[0].ids
     }
   )
 }

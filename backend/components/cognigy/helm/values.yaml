@@ -1,0 +1,7 @@
+component: cognigy-connector
+mandatory: false
+enabled: false
+image: connectors/cognigy-connector
+global:
+  containerRegistry: ghcr.io/airyhq
+resources: {}

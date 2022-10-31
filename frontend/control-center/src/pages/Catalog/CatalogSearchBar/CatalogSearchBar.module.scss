@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
 
 .container {
   display: flex;
@@ -11,7 +12,6 @@
   align-items: center;
   justify-content: space-between;
   svg {
-    margin-left: 16px;
     color: var(--color-text-gray);
 
     &:hover {
@@ -19,46 +19,28 @@
       color: var(--color-airy-blue);
     }
   }
+
   .filterIcon {
+    margin-left: 16px;
+  }
+
+  .filterIconSelected {
     transition: background 0.5s ease;
     color: var(--color-background-white);
-    margin-left: 16px;
     background: var(--color-airy-logo-blue);
     border-radius: 24px;
   }
 }
 
 .searchField {
-  width: 200px;
+  width: 300px;
   background: var(--color-background-white);
   border: 1px solid var(--color-airy-blue);
   border-radius: 4px;
+  height: 32px;
 
   svg {
     color: black;
-  }
-}
-
-@keyframes animateFilterModalIn {
-  0% {
-    transform: translateX(200px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-}
-
-@keyframes animateFilterModalOut {
-  0% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(200px);
-    opacity: 0;
   }
 }
 
@@ -72,5 +54,13 @@
   animation: animateFilterModalIn 500ms ease;
 }
 .filterModalAnimOut {
-  animation: animateFilterModalOut 500ms ease;
+  animation: animateFilterModalOut 500ms forwards;
+}
+
+.animateIn {
+  animation: searchfieldAnimIn 300ms ease;
+}
+
+.animateOut {
+  animation: searchfieldAnimOut 300ms forwards;
 }

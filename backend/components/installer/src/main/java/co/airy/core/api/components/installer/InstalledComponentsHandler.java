@@ -29,16 +29,19 @@ public class InstalledComponentsHandler {
     private final String namespace;
     private final HelmJobHandler helmJobHandler;
     private final Stores stores;
+    private final GitHandler gitHandler;
 
     InstalledComponentsHandler(
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
             Stores stores,
+            GitHandler gitHandler,
             @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.namespace = namespace;
         this.helmJobHandler = helmJobHandler;
         this.stores = stores;
+        this.gitHandler = gitHandler;
     }
 
 
@@ -99,6 +102,9 @@ public class InstalledComponentsHandler {
             throw new JobEmptyException();
         }
 
-        return installedComponents;
+        return gitHandler.listAvailableCompnents()
+            .stream()
+            .map(name -> Map.entry(name, installedComponents.getOrDefault(name, InstallationStatus.uninstalled)))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

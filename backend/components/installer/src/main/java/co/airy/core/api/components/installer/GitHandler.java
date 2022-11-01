@@ -50,6 +50,15 @@ public class GitHandler implements ApplicationListener<ApplicationReadyEvent>, D
             .collect(Collectors.toList());
     }
 
+    public List<String> listAvailableCompnents() {
+        git.pull();
+
+        return Stream.of(repoFolder.listFiles())
+            .filter(f -> f.isDirectory() && !f.isHidden())
+            .map(File::getName)
+            .collect(Collectors.toList());
+    }
+
     @Override
     public void destroy() {
         if (repoFolder != null) {

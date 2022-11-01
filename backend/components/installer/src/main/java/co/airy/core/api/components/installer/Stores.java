@@ -30,7 +30,7 @@ public class Stores implements HealthIndicator {
 
     private Map<String, String> prevoiusCacheMap = new HashMap<>();
 
-    public Stores(KafkaProducer<String, SpecificRecordBase> producer) {
+    Stores(KafkaProducer<String, SpecificRecordBase> producer) {
         this.producer = producer;
     }
 
@@ -44,8 +44,6 @@ public class Stores implements HealthIndicator {
 
     @Synchronized
     public void storeFromCacheMap(Map<String, String> cacheStore) throws Exception {
-        log.info(prevoiusCacheMap.toString());
-        log.info(cacheStore.toString());
         final List<Metadata> cacheChanges = cacheStore
             .entrySet()
             .stream()
@@ -59,9 +57,12 @@ public class Stores implements HealthIndicator {
             .flatMap(List::stream)
             .collect(Collectors.toList());
 
-        log.info(cacheChanges.toString());
-        //storeComponent(cacheChanges);
-        prevoiusCacheMap = cacheStore;
+        storeComponent(cacheChanges);
+
+        prevoiusCacheMap = cacheStore
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override

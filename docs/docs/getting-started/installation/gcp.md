@@ -15,8 +15,7 @@ import DiamondSVG from "@site/static/icons/diamond.svg";
 Run Airy Core on GCP with one command.
 </TLDR>
 
-The goal of this document is to provide an overview of how to run Airy Core on
-AWS cloud platform, using the [GCP Kubernetes Engine](https://cloud.google.com/kubernetes-engine).
+The goal of this document is to provide an overview of how to run Airy Core on Google Cloud Platform, using the [GCP Kubernetes Engine](https://cloud.google.com/kubernetes-engine).
 
 ## Configure
 
@@ -28,7 +27,7 @@ account](https://cloud.google.com/free). We also recommend installing the [Insta
 :::
 
 Once you have installed the GCloud CLI, you now need to configure the application
-to be able to connect to your AWS account:
+to be able to connect to your GCP account:
 
 ```
 gcloud init
@@ -63,19 +62,16 @@ resources for Airy Core to run:
 
 ## Install
 
-To create the cluster you must setup your local AWS environment, by [configuring
-your local AWS
+To create the cluster you must setup your local GCP environment, by [configuring
+your local GCP
 profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
-for the AWS account where all the resources will be created.
+for the GCP account where all the resources will be created.
 
 Download and install the [Airy CLI](cli/introduction.md).
 
-Export your AWS_PROFILE and AWS_REGION as described in the [AWS
-documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
-
 :::warning
 
-If you want to use Airy Core with auto-generated HTTPS certificates, refer to the [Let's Encrypt section](/getting-started/installation/aws#https-using-lets-encrypt) for customizing your `airy.yaml` file before proceeding.
+If you want to use Airy Core with auto-generated HTTPS certificates, refer to the [Let's Encrypt section](/getting-started/installation/gcp#https-using-lets-encrypt) for customizing your `airy.yaml` file before proceeding.
 
 :::
 
@@ -111,14 +107,14 @@ kubectl get pods --kubeconfig .terraform/kube.conf
 
 ### Common issues
 
-AWS has a limit on the number of objects you can create depending on your account.
+GCP has a limit on the number of objects you can create depending on your account.
 
 ```
 Error creating vpc:  operation error EC2: CreateVpc, https response error StatusCode: 400, RequestID: 64210ff5-9aca-4ab7-b993-3727637a59d6, api error VpcLimitExceeded: The maximum number of VPCs has been reached.
 ```
 
 When encountering this, you can delete some of the resources just as described
-on [here](/getting-started/installation/aws#uninstall-airy-core)
+on [here](/getting-started/installation/gcp#uninstall-airy-core)
 
 ## Secure your Airy core
 
@@ -137,7 +133,7 @@ To enable authenticaiton to the API and in the UI, refer to our [Authentication 
 
 This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
 
-#### Upload certificates to AWS ACM
+#### Upload certificates to Google Authenticator
 
 You should use a valid HTTPS certificate to secure your `Airy Core` instance. This certificate is created for and can only be used with a specific hostname. This hostname will be the FQDN on which `Airy Core` will be reachable.
 
@@ -147,19 +143,8 @@ Usually these HTTPS certificates come as a bundle of:
 - public certificate (public.crt)
 - public certificate authority bundle file (ca-bundle.crt)
 
-Use the following command to upload your HTTPS certificate files to AWS ACM, so that they can be used by the AWS LoadBalancer.
+Use the following command to upload your HTTPS certificate files to Google Authenticator, so that they can be used by the Google Cloud Load Balancing.
 
-```sh
-aws acm import-certificate --certificate fileb://public.crt --certificate-chain fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
-```
-
-After the certificate has been uploaded to AWS ACM, you will need the unique ARN of the certificate,for the next step.
-
-:::note
-
-If you don't have your own HTTPS certificate you can request one from AWS ACM.
-
-:::
 
 #### Upgrade your Airy Core instance
 
@@ -181,7 +166,7 @@ airy upgrade
 
 #### Setup your DNS
 
-You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
 
 ```sh
 kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
@@ -204,7 +189,7 @@ You can customize your installation of `Airy Core` to install an ingress control
 To customize your Airy Core installation, you need to create an initial config file using the following command
 
 ```sh
-airy create --provider aws --init-only
+airy create --provider gcp --init-only
 ```
 
 Then edit your `airy.yaml` file and add the following configuration
@@ -233,7 +218,7 @@ In case you have created your Airy Core instance without Let's Encrypt and want 
 
 #### Setup your DNS
 
-You should create a CNAME DNS record for the hostname that you set under `ingress.host` in the previous step to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+You should create a CNAME DNS record for the hostname that you set under `ingress.host` in the previous step to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
 
 ```sh
 export KUBECONFIG="PATH/TO/DIR/kube.conf"
@@ -255,7 +240,7 @@ After this, your `Airy Core` will be reachable under HTTPS and on your desired h
 The public webhooks will be accessible on the public hostname, at a path specific for each source individually.
 Refer to the [sources documentation](/sources/introduction) for more information.
 
-To get the public URL of your AWS Airy Core installation run:
+To get the public URL of your GCP Airy Core installation run:
 
 ```sh
 airy api endpoint
@@ -263,7 +248,7 @@ airy api endpoint
 
 ## Next steps
 
-Now that you have a running installation of `Airy Core` on AWS you can connect it
+Now that you have a running installation of `Airy Core` on GCP you can connect it
 to messaging sources. Check out our Quickstart guide to learn more:
 
 <ButtonBox
@@ -281,4 +266,4 @@ For more details please see our [Configuration Section](configuration.md).
 
 ## Uninstall Airy Core
 
-To uninstall `Airy Core` from AWS, run the `uninstall.sh` script located in the `WORKSPACE/terraform` directory. This script will run `terraform destroy` on both the `kubernetes` (GKE) and the `airy-core` state.
+To uninstall `Airy Core` from GCP, run the `uninstall.sh` script located in the `WORKSPACE/terraform` directory. This script will run `terraform destroy` on both the `kubernetes` (GKE) and the `airy-core` state.

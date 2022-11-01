@@ -34,7 +34,7 @@ gcloud init
 ```
 
 Through `gcloud init`, the GCloud CLI will prompt you for four pieces of
-information. 
+information.
 
 ```
 gcloud init
@@ -47,13 +47,12 @@ Default output format [None]: json
 Apart from an Google Kubernetes Engine cluster, `airy create` will create of all the necessary GCP
 resources for Airy Core to run:
 
-|                        Service & pricing                        | Resources created by default                                                                        | Description                                                                                                                            | Overwrite [^1] |
-| :-------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :------------: |
-|         [**VPC**](https://cloud.google.com/vpc/docs/vpc)          | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | VPC which will contain all the created compute and network resources                                                                   |      Yes       |
-|    [**GKE**](https://cloud.google.com/kubernetes-engine/docs)     | 1 GKE cluster                                                                                       | Kubernetes cluster to store all the Airy Core resources                                                                                |       No       |
-|    [**EC2**](https://calculator.aws/#/createCalculator/EC2)     | 2 EC2 instances, 4 EBS Volumes (10GB gp2 each)                                                      | The instances are a part of the `Node group` attached to the EKS cluster. The default instance type is: `n1-standard-2`, os type: `Linux`. |      Yes       |
-|     [**S3**](https://calculator.aws/#/createCalculator/S3)      | /                                                                                                   | Optional for the "Media resolver" component. Should be created independently. [^4]                                                     |      Yes       |
-| [**ELB**](https://aws.amazon.com/elasticloadbalancing/pricing/) | 1 Elastic Load Balancer                                                                             | Network Load Balancer created by the ingress controller Kubernetes service                                                             |       No       |
+|                                   Service & pricing                                    | Resources created by default                                                                         | Description                                                                                                                                                | Overwrite [^1] |
+| :------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------: |
+|                    [**VPC**](https://cloud.google.com/vpc/docs/vpc)                    | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | VPC which will contain all the created compute and network resources                                                                                       |      Yes       |
+|               [**GKE**](https://cloud.google.com/kubernetes-engine/docs)               | 1 GKE cluster                                                                                        | Kubernetes cluster to store all the Airy Core resources                                                                                                    |       No       |
+|  [**GCE**](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos)   | 6 Google Compute Engine Instances                                                                    | The instances are a part of the `Node Pool` attached to the GKE cluster. The default instance type is: `n1-standard-2`, os type: `Container-Optimized OS`. |      Yes       |
+| [**GLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer                                                                                | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              |       No       |
 
 [^1]: Options which can be overwritten with flags to the `airy create` command.
 [^2]: IAM roles are free of charge.
@@ -144,7 +143,6 @@ Usually these HTTPS certificates come as a bundle of:
 - public certificate authority bundle file (ca-bundle.crt)
 
 Use the following command to upload your HTTPS certificate files to Google Authenticator, so that they can be used by the Google Cloud Load Balancing.
-
 
 #### Upgrade your Airy Core instance
 

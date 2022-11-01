@@ -55,15 +55,12 @@ resources for Airy Core to run:
 | [**GLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer                                                                                | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              |       No       |
 
 [^1]: Options which can be overwritten with flags to the `airy create` command.
-[^2]: IAM roles are free of charge.
-[^3]: Attached policies: "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy", "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly", "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy".
-[^4]: The s3 bucket will should have PublicRead privileges. For writing to the S3 bucket, AWS credentials must be [configured](/getting-started/installation/configuration.md#components) in the `airy.yaml` file.
 
 ## Install
 
 To create the cluster you must setup your local GCP environment, by [configuring
 your local GCP
-profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+profile](https://cloud.google.com/sdk/docs/install-sdk)
 for the GCP account where all the resources will be created.
 
 Download and install the [Airy CLI](cli/introduction.md).

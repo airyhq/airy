@@ -40,6 +40,8 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const {t} = useTranslation();
 
+  console.log('source', source);
+
   const isConfigurableConnector = () => {
     let isConfigurable = false;
 
@@ -65,6 +67,13 @@ const ItemInfo = (props: ComponentInfoProps) => {
   const isRunning = healthy && enabled;
   const isNotHealthy = !healthy && enabled;
   const isDisabled = !enabled;
+
+  if (source === Source.viber) {
+    console.log('connectors[itemName]', connectors[itemName]);
+    console.log('needsConfig', needsConfig);
+    console.log('isConfigurableConnector()', isConfigurableConnector());
+    console.log('isComponentConfigured', isComponentConfigured);
+  }
 
   const triggerEnableDisableAction = (enabled: boolean) => {
     enableDisableComponent({components: [{name: itemName, enabled: enabled}]});

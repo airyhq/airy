@@ -62,17 +62,6 @@ const Status = (props: ConnectedProps<typeof connector>) => {
     setSpinAnim(!spinAnim);
   };
 
-  const formatToComponentName = (name: string) => {
-    let formattedName;
-    if (name.includes('enterprise')) {
-      formattedName = `airy-enterprise/${name}`;
-    } else {
-      formattedName = `airy-core/${name}`;
-    }
-
-    return formattedName;
-  };
-
   return (
     <section className={styles.statusWrapper}>
       <div className={styles.statusLastRefreshContainer}>
@@ -96,8 +85,7 @@ const Status = (props: ConnectedProps<typeof connector>) => {
       <div className={styles.listItems}>
         {Object.entries(catalog).length > 0 &&
           components.map((component, index) => {
-            const formattedName = formatToComponentName(component[0]);
-            const catalogItem = catalog[formattedName];
+            const catalogItem = catalog[component[0]];
             return (
               <ComponentListItem
                 key={index}

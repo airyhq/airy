@@ -28,29 +28,39 @@ public class InstalledComponentsHandler {
     private final ApiClient apiClient;
     private final String namespace;
     private final HelmJobHandler helmJobHandler;
+    private final Stores stores;
 
     InstalledComponentsHandler(
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
+            Stores stores,
             @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.namespace = namespace;
         this.helmJobHandler = helmJobHandler;
+        this.stores = stores;
     }
 
 
     @Cacheable(key = "#root.target.KEY", value = "installedComponents")
     public Map<String, String> getInstalledComponentsCache() throws Exception {
-        return getInstalledComponents();
+        final Map<String, String> installedComponents = getInstalledComponents();
+
+        stores.storeFromCacheMap(installedComponents);
+        return installedComponents;
     }
 
     @CachePut(key = "#root.target.KEY", value = "installedComponents")
     public Map<String, String> putInstalledComponentsCache() throws Exception {
-        return getInstalledComponents();
+        final Map<String, String> installedComponents = getInstalledComponents();
+
+        stores.storeFromCacheMap(installedComponents);
+        return installedComponents;
     }
 
     @CachePut(key = "#root.target.KEY", value = "installedComponents")
     public Map<String, String> setInstalledComponentsCache(Map<String, String> cache) throws Exception {
+        stores.storeFromCacheMap(cache);
         return cache;
     }
 

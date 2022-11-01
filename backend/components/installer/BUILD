@@ -5,6 +5,7 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//backend/model/component",
     "//backend/model/metadata",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/async:spring-async",

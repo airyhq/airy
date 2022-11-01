@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, uninstallComponent} from '../../../actions/catalog';
 import {StateModel} from '../../../reducers';
-import {ComponentInfo, ConnectorPrice, Modal, ModalType, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted} from '../CatalogCard';
@@ -15,6 +15,7 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
+import {InstallerLoader} from 'components/loaders/InstallerLoader';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
@@ -49,7 +50,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
   const navigate = useNavigate();
   const NEW_COMPONENT_INSTALL_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
-  const isInstalled = component[componentInfo?.name]?.installed;
+  const isInstalled = component[componentInfo?.name]?.installationStatus === InstallationStatus.installed;
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');

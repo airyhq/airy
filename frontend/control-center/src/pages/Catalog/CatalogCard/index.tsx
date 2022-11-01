@@ -1,11 +1,11 @@
-import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
 import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
-import {Button, NotificationComponent, SettingsModal} from 'components';
+import {Button, NotificationComponent, SettingsModal, Tooltip} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getCatalogProductRouteForComponent, getConnectedRouteForComponent} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
@@ -17,18 +17,22 @@ import {getMergedConnectors} from '../../../selectors';
 import {InstallerLoader} from 'components/loaders/InstallerLoader';
 
 export type ObservationInstallStatus = {
-  status: boolean;
+  pending: boolean;
   name: string;
+  retries: number;
 };
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
   setObserveInstallStatus: Dispatch<SetStateAction<ObservationInstallStatus>>;
-  isInstalling: boolean;
+  // isInstalled: boolean;
+  // isPending: boolean;
+  showConfigureModal: string;
+  blockInstalling: boolean;
+  installStatus: InstallationStatus;
 } & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
-  component: state.data.catalog,
   connectors: getMergedConnectors(state),
 });
 
@@ -41,12 +45,19 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 export const availabilityFormatted = (availability: string) => availability.split(',');
 
 const CatalogCard = (props: CatalogCardProps) => {
-  const {component, connectors, componentInfo, installComponent, setObserveInstallStatus} = props;
+  const {
+    connectors,
+    componentInfo,
+    installComponent,
+    setObserveInstallStatus,
+    showConfigureModal,
+    blockInstalling,
+    installStatus,
+  } = props;
   const hasConnectedChannels = connectors[componentInfo?.name].connectedChannels > 0;
   const isConfigured = connectors[componentInfo?.name].isConfigured;
   const isChannel = connectors[componentInfo?.name].isChannel;
-  const isInstalled = component[componentInfo?.name]?.installationStatus === InstallationStatus.installed;
-  const [isInstalling, setIsInstalling] = useState(props.isInstalling);
+  const [isPending, setIsPending] = useState(props.installStatus === InstallationStatus.pending);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -63,20 +74,21 @@ const CatalogCard = (props: CatalogCardProps) => {
   //Commented until backend is ready for this!!!
   // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
 
+  useEffect(() => {
+    showConfigureModal === componentInfo?.name && (setIsModalVisible(true), setIsPending(false));
+  }, [showConfigureModal]);
+
   const openInstallModal = () => {
-    setIsInstalling(true);
+    // setIsPending(true);
     installComponent({name: componentInfo.name})
       .then(() => {
-        setNotification({show: true, successful: true, text: t('successfullyInstalled')});
-        setIsModalVisible(true);
-        setObserveInstallStatus({status: true, name: componentInfo?.name});
+        setObserveInstallStatus({pending: true, name: componentInfo?.name, retries: 0});
       })
       .catch(() => {
         setNotification({show: true, successful: false, text: t('failedInstall')});
+        setObserveInstallStatus({pending: false, name: componentInfo?.name, retries: 0});
+        setIsPending(false);
       });
-    // .finally(() => {
-    //   setIsPending(false);
-    // });
   };
 
   const closeModal = () => {
@@ -126,7 +138,7 @@ const CatalogCard = (props: CatalogCardProps) => {
       );
     }
 
-    if (isInstalled) {
+    if (installStatus === InstallationStatus.installed) {
       return (
         <Button
           styleVariant="extra-small"
@@ -144,34 +156,52 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
 
     return (
-      <Button
-        className={styles.smartButton}
-        styleVariant="green"
-        type="submit"
-        onClick={openInstallModal}
-        disabled={isInstalling}
-        buttonRef={installButtonCard}
-      >
-        {isInstalling ? t('pending').toUpperCase() : t('install').toUpperCase()}
-      </Button>
-      // <SmartButton
-      //   height={24}
-      //   width={installButtonCard?.current?.offsetWidth}
-      //   className={styles.smartButton}
-      //   styleVariant="green"
-      //   type="submit"
-      //   title={isInstalling ? t('pending').toUpperCase() : t('install').toUpperCase()}
-      //   onClick={openInstallModal}
-      //   pending={isInstalling}
-      //   disabled={isPending}
-      //   buttonRef={installButtonCard}
-      // />
+      <>
+        {blockInstalling ? (
+          <Tooltip
+            hoverElement={
+              <Button
+                className={styles.smartButton}
+                styleVariant="green"
+                type="submit"
+                onClick={openInstallModal}
+                disabled={blockInstalling}
+                buttonRef={installButtonCard}
+              >
+                {installStatus === InstallationStatus.pending ? t('pending').toUpperCase() : t('install').toUpperCase()}
+              </Button>
+            }
+            hoverElementWidth={400}
+            direction="right"
+            position="absolute"
+            top={84}
+            left={100}
+            tooltipContent={t('tooltipInstallingQueue')}
+          />
+        ) : (
+          <Button
+            className={styles.smartButton}
+            styleVariant="green"
+            type="submit"
+            onClick={openInstallModal}
+            disabled={blockInstalling}
+            buttonRef={installButtonCard}
+          >
+            {installStatus === InstallationStatus.pending ? t('pending').toUpperCase() : t('install').toUpperCase()}
+          </Button>
+        )}
+      </>
     );
   };
 
   return (
     <>
-      <InstallerLoader installing={isInstalling} borderRadius={10} marginRight={28} marginBottom={36}>
+      <InstallerLoader
+        installing={installStatus === InstallationStatus.pending}
+        borderRadius={10}
+        marginRight={28}
+        marginBottom={36}
+      >
         <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
           <section className={styles.cardLogoTitleContainer}>
             <div className={styles.componentLogo}>
@@ -186,7 +216,6 @@ const CatalogCard = (props: CatalogCardProps) => {
               </p>
             </div>
           </section>
-
           <div className={styles.descriptionInfo}>
             {componentInfo.name && (
               <p>
@@ -255,6 +284,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           info={notification.info}
         />
       )}
+
       {notifyMeNotification?.show && (
         <NotificationComponent
           type="sticky"

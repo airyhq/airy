@@ -483,6 +483,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration successful updated',
       failedConfiguration: 'Applying configuration failed',
       updateFailedConfiguration: 'Updating configuration failed',
+      tooltipInstallingQueue: 'You are already installing a connector, please wait',
 
       //Request Access
       comingSoon: 'Coming Soon',

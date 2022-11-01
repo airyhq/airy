@@ -1,6 +1,7 @@
 import {Source} from './Source';
 
 export enum ConnectorName {
+  amazonLexV2 = 'amazon-lex-v2-connector',
   apiAdmin = 'api-admin',
   apiCommunication = 'api-communication',
   apiContacts = 'api-contacts',

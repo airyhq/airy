@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
-import {ComponentInfo, ConnectorPrice, InstallationStatus} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
 import CatalogCard, {ObservationInstallStatus} from './CatalogCard';
 import styles from './index.module.scss';
 import {listComponents} from '../../actions';
@@ -11,6 +11,7 @@ import {CatalogSearchBar} from './CatalogSearchBar/CatalogSearchBar';
 import {FilterTypes} from './CatalogSearchBar/FilterCatalogModal/FilterCatalogModal';
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import {getMergedConnectors} from '../../selectors';
+import {NotificationComponent} from 'components';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -28,8 +29,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const Catalog = (props: ConnectedProps<typeof connector>) => {
   const {catalogList, connectors} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
-  const [observeInstallStatus, setObserveInstallStatus] = useState<ObservationInstallStatus>({status: false, name: ''});
-  const isInstalling = connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.pending;
+  const [observeInstallStatus, setObserveInstallStatus] = useState<ObservationInstallStatus>(null);
+  const [notification, setNotification] = useState<NotificationModel>(null);
+  const [showConfigureModal, setShowConfigureModal] = useState('');
+  const [blockInstalling, setBlockInstalling] = useState(false);
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
   const [currentFilter, setCurrentFilter] = useState(
@@ -37,37 +40,56 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   );
   const [query, setQuery] = useState('');
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
-  let numberOfTries = 0;
 
   useEffect(() => {
     setPageTitle(catalogPageTitle);
   }, []);
 
   useEffect(() => {
-    retry(props.listComponents);
-  }, [observeInstallStatus, numberOfTries]);
+    if (connectors[observeInstallStatus?.name]?.installationStatus !== InstallationStatus.pending) {
+      setBlockInstalling(false);
+    }
 
-  const retry = (callback, times = 10) => {
-    return new Promise(resolve => {
-      const interval = setInterval(async () => {
-        numberOfTries++;
-        if (numberOfTries === times || !isInstalling) {
-          console.log(`Trying for the last time... (${times})`);
-          clearInterval(interval);
-        }
-        try {
-          await callback();
-          console.log(`Operation successful, retried ${numberOfTries} times.`);
-          resolve(true);
-        } catch (err) {
-          console.log(`Unsuccessful, retried ${numberOfTries} times... ${err}`);
-        }
-      }, 5000);
-    });
+    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.installed) {
+      setNotification({show: true, successful: true, text: t('successfullyInstalled')});
+      setShowConfigureModal(observeInstallStatus?.name);
+    }
+
+    // if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.uninstalled) {
+    //   setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
+    //   setBlockInstalling(false);
+    //   console.log(connectors[observeInstallStatus?.name]?.installationStatus);
+    // }
+
+    observeInstallStatus?.pending && recallComponentsList(observeInstallStatus?.retries);
+
+    !observeInstallStatus &&
+      Object.values(connectors).map(connector => {
+        connector.installationStatus === InstallationStatus.pending &&
+          (setObserveInstallStatus({pending: true, name: connector.name, retries: 0}),
+          recallComponentsList(observeInstallStatus?.retries));
+      });
+  }, [observeInstallStatus, connectors[observeInstallStatus?.name]?.installationStatus]);
+
+  const recallComponentsList = (retries: number) => {
+    setBlockInstalling(true);
+    const maxRetries = 15;
+    setTimeout(() => {
+      retries++;
+      setObserveInstallStatus({...observeInstallStatus, retries: retries});
+      if (
+        observeInstallStatus?.retries === maxRetries ||
+        (connectors[observeInstallStatus?.name]?.installationStatus !== InstallationStatus.pending && retries > 1)
+      ) {
+        setObserveInstallStatus({...observeInstallStatus, pending: false});
+        console.log('DONE');
+      } else {
+        setBlockInstalling(true);
+        props.listComponents();
+        console.log(observeInstallStatus);
+      }
+    }, 5000);
   };
-
-  console.log(connectors);
-  
 
   useLayoutEffect(() => {
     if (query && currentFilter === FilterTypes.all) {
@@ -86,7 +108,8 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       const sortedByUninstalled = [...catalogList]
         .filter(
           (component: ComponentInfo) =>
-            component.installationStatus === InstallationStatus.uninstalled || component.installationStatus === undefined &&
+            (component.installationStatus === InstallationStatus.uninstalled ||
+              component.installationStatus === InstallationStatus.pending) &&
             component.price !== ConnectorPrice.requestAccess
         )
         .sort(sortByName);
@@ -130,39 +153,55 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, [catalogList, currentFilter, query]);
 
   return (
-    <section className={styles.catalogWrapper}>
-      <div className={styles.headlineSearchBarContainer}>
-        <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
-        {catalogList.length > 0 && (
-          <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
-        )}
-      </div>
-      {catalogList.length > 0 ? (
-        <section className={styles.catalogListContainer}>
-          {orderedCatalogList && orderedCatalogList.length > 0 ? (
-            orderedCatalogList.map((infoItem: ComponentInfo) => {
-              if (infoItem?.name && infoItem?.displayName) {
-                return (
-                  <CatalogCard
-                    componentInfo={infoItem}
-                    key={infoItem.displayName}
-                    setObserveInstallStatus={setObserveInstallStatus}
-                    isInstalling={isInstalling}
-                  />
-                );
-              }
-            })
-          ) : (
-            <div className={styles.notFoundContainer}>
-              <h1>{t('nothingFound')}</h1>
-              <span>{t('noMatchingCatalogs')}</span>
-            </div>
+    <>
+      <section className={styles.catalogWrapper}>
+        <div className={styles.headlineSearchBarContainer}>
+          <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
+          {catalogList.length > 0 && (
+            <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
           )}
-        </section>
-      ) : (
-        <AiryLoader height={240} width={240} position="relative" top={220} />
+        </div>
+        {catalogList.length > 0 ? (
+          <section className={styles.catalogListContainer}>
+            {orderedCatalogList && orderedCatalogList.length > 0 ? (
+              orderedCatalogList.map((infoItem: ComponentInfo) => {
+                if (infoItem?.name && infoItem?.displayName) {
+                  return (
+                    <CatalogCard
+                      componentInfo={infoItem}
+                      key={infoItem.displayName}
+                      setObserveInstallStatus={setObserveInstallStatus}
+                      showConfigureModal={showConfigureModal}
+                      installStatus={infoItem.installationStatus}
+                      // isPending={infoItem.installationStatus === InstallationStatus.pending}
+                      // isInstalled={infoItem.installationStatus === InstallationStatus.installed}
+                      blockInstalling={blockInstalling}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <div className={styles.notFoundContainer}>
+                <h1>{t('nothingFound')}</h1>
+                <span>{t('noMatchingCatalogs')}</span>
+              </div>
+            )}
+          </section>
+        ) : (
+          <AiryLoader height={240} width={240} position="relative" top={220} />
+        )}
+      </section>
+      {notification?.show && (
+        <NotificationComponent
+          type={notification.info ? 'sticky' : 'fade'}
+          show={notification.show}
+          text={notification.text}
+          successful={notification.successful}
+          setShowFalse={setNotification}
+          info={notification.info}
+        />
       )}
-    </section>
+    </>
   );
 };
 

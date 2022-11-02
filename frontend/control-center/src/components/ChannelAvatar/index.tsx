@@ -83,9 +83,8 @@ export const getChannelAvatar = (source: string) => {
     case Source.amazonLexV2:
     case 'Amazon LEX V2':
       return <AmazonLexV2Avatar />;
-    case Source.ibm:
-    case 'IBM Watson Assistant':
     case Source.ibmWatsonAssistant:
+    case 'IBM Watson Assistant':
       return <IbmWatsonAssistantAvatar />;
     default:
       return <AiryAvatar />;

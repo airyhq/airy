@@ -23,7 +23,6 @@ export default function connectorsReducer(state = defaultState, action: Action):
         [action.payload.name]: {
           ...state[action.payload.name],
           installationStatus: 'pending',
-          // installed: true,
         },
       };
     }
@@ -32,8 +31,7 @@ export default function connectorsReducer(state = defaultState, action: Action):
         ...state,
         [action.payload.name]: {
           ...state[action.payload.name],
-          // installed: false,
-          installationStatus: 'uninstalled',
+          installationStatus: 'pending',
         },
       };
     }

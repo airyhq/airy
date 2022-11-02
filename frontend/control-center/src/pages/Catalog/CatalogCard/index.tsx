@@ -25,8 +25,6 @@ export type ObservationInstallStatus = {
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
   setObserveInstallStatus: Dispatch<SetStateAction<ObservationInstallStatus>>;
-  // isInstalled: boolean;
-  // isPending: boolean;
   showConfigureModal: string;
   blockInstalling: boolean;
   installStatus: InstallationStatus;
@@ -57,7 +55,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   const hasConnectedChannels = connectors[componentInfo?.name].connectedChannels > 0;
   const isConfigured = connectors[componentInfo?.name].isConfigured;
   const isChannel = connectors[componentInfo?.name].isChannel;
-  const [isPending, setIsPending] = useState(props.installStatus === InstallationStatus.pending);
+  const [isPending, setIsPending] = useState(installStatus === InstallationStatus.pending);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -76,10 +74,13 @@ const CatalogCard = (props: CatalogCardProps) => {
 
   useEffect(() => {
     showConfigureModal === componentInfo?.name && (setIsModalVisible(true), setIsPending(false));
-  }, [showConfigureModal]);
+    if (connectors[componentInfo?.name].installationStatus !== InstallationStatus.pending) {
+      setIsPending(false);
+    }
+  }, [showConfigureModal, connectors[componentInfo?.name].installationStatus]);
 
   const openInstallModal = () => {
-    // setIsPending(true);
+    setIsPending(true);
     installComponent({name: componentInfo.name})
       .then(() => {
         setObserveInstallStatus({pending: true, name: componentInfo?.name, retries: 0});
@@ -138,7 +139,7 @@ const CatalogCard = (props: CatalogCardProps) => {
       );
     }
 
-    if (installStatus === InstallationStatus.installed) {
+    if (connectors[componentInfo?.name].installationStatus === InstallationStatus.installed) {
       return (
         <Button
           styleVariant="extra-small"
@@ -165,10 +166,12 @@ const CatalogCard = (props: CatalogCardProps) => {
                 styleVariant="green"
                 type="submit"
                 onClick={openInstallModal}
-                disabled={blockInstalling}
+                disabled={blockInstalling || isPending}
                 buttonRef={installButtonCard}
               >
-                {installStatus === InstallationStatus.pending ? t('pending').toUpperCase() : t('install').toUpperCase()}
+                {installStatus === InstallationStatus.pending || isPending
+                  ? t('pending').toUpperCase()
+                  : t('install').toUpperCase()}
               </Button>
             }
             hoverElementWidth={400}
@@ -184,10 +187,12 @@ const CatalogCard = (props: CatalogCardProps) => {
             styleVariant="green"
             type="submit"
             onClick={openInstallModal}
-            disabled={blockInstalling}
+            disabled={blockInstalling || isPending}
             buttonRef={installButtonCard}
           >
-            {installStatus === InstallationStatus.pending ? t('pending').toUpperCase() : t('install').toUpperCase()}
+            {installStatus === InstallationStatus.pending || isPending
+              ? t('pending').toUpperCase()
+              : t('install').toUpperCase()}
           </Button>
         )}
       </>
@@ -196,81 +201,83 @@ const CatalogCard = (props: CatalogCardProps) => {
 
   return (
     <>
-      <InstallerLoader
-        installing={installStatus === InstallationStatus.pending}
-        borderRadius={10}
-        marginRight={28}
-        marginBottom={36}
-      >
-        <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
-          <section className={styles.cardLogoTitleContainer}>
-            <div className={styles.componentLogo}>
-              {getChannelAvatar(componentInfo.displayName)}
-              <CatalogCardButton />
-            </div>
-            <div className={styles.componentInfo}>
-              <h1>{componentInfo.displayName}</h1>
-              <p>
-                {' '}
-                <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
-              </p>
-            </div>
-          </section>
-          <div className={styles.descriptionInfo}>
-            {componentInfo.name && (
-              <p>
-                <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
-              </p>
-            )}
-
-            <p className={`${styles.availability} ${styles.bolded}`}>
-              <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
-              {t('availableFor')}:
-            </p>
-            <div className={styles.availableForSoonContainer}>
-              <div>
-                {componentInfo?.availableFor &&
-                  availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-                    <button key={service}>{service}</button>
-                  ))}
+      <div className={styles.installerLoaderWrapper}>
+        <InstallerLoader
+          installing={installStatus === InstallationStatus.pending || isPending}
+          borderRadius={10}
+          marginRight={28}
+          marginBottom={36}
+        >
+          <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
+            <section className={styles.cardLogoTitleContainer}>
+              <div className={styles.componentLogo}>
+                {getChannelAvatar(componentInfo.displayName)}
+                <CatalogCardButton />
               </div>
-              {/* Commented until backend is ready for this!!!
+              <div className={styles.componentInfo}>
+                <h1>{componentInfo.displayName}</h1>
+                <p>
+                  {' '}
+                  <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
+                </p>
+              </div>
+            </section>
+            <div className={styles.descriptionInfo}>
+              {componentInfo.name && (
+                <p>
+                  <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
+                </p>
+              )}
+
+              <p className={`${styles.availability} ${styles.bolded}`}>
+                <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
+                {t('availableFor')}:
+              </p>
+              <div className={styles.availableForSoonContainer}>
+                <div>
+                  {componentInfo?.availableFor &&
+                    availabilityFormatted(componentInfo.availableFor).map((service: string) => (
+                      <button key={service}>{service}</button>
+                    ))}
+                </div>
+                {/* Commented until backend is ready for this!!!
 
              {componentInfo?.price === ConnectorPrice.requestAccess && (
               <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
             )} */}
+              </div>
             </div>
-          </div>
 
-          {isModalVisible && (
-            <SettingsModal
-              Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
-              wrapperClassName={styles.enableModalContainerWrapper}
-              containerClassName={styles.enableModalContainer}
-              title={`${componentInfo.displayName} ${t('installed')}`}
-              close={closeModal}
-              headerClassName={styles.headerModal}
-            >
-              <Button
-                styleVariant="normal"
-                type="submit"
-                onClick={() => navigate(navigateConfigure, {state: {from: 'catalog'}})}
+            {isModalVisible && (
+              <SettingsModal
+                Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
+                wrapperClassName={styles.enableModalContainerWrapper}
+                containerClassName={styles.enableModalContainer}
+                title={`${componentInfo.displayName} ${t('installed')}`}
+                close={closeModal}
+                headerClassName={styles.headerModal}
               >
-                {t('toConfigure')}
-              </Button>
-            </SettingsModal>
-          )}
+                <Button
+                  styleVariant="normal"
+                  type="submit"
+                  onClick={() => navigate(navigateConfigure, {state: {from: 'catalog'}})}
+                >
+                  {t('toConfigure')}
+                </Button>
+              </SettingsModal>
+            )}
 
-          {isNotifyMeModalVisible && (
-            <NotifyMeModal
-              source={componentInfo.source}
-              setIsModalVisible={setIsNotifyMeModalVisible}
-              setNotification={setNotifyMeNotification}
-              setForceClose={setForceClose}
-            />
-          )}
-        </article>
-      </InstallerLoader>
+            {isNotifyMeModalVisible && (
+              <NotifyMeModal
+                source={componentInfo.source}
+                setIsModalVisible={setIsNotifyMeModalVisible}
+                setNotification={setNotifyMeNotification}
+                setForceClose={setForceClose}
+              />
+            )}
+          </article>
+        </InstallerLoader>
+      </div>
 
       {notification?.show && (
         <NotificationComponent

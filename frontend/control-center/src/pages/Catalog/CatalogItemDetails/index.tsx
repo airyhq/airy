@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {installComponent, uninstallComponent} from '../../../actions/catalog';
+import {installComponent, listComponents, uninstallComponent} from '../../../actions/catalog';
 import {StateModel} from '../../../reducers';
 import {ComponentInfo, ConnectorPrice, InstallationStatus, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
@@ -15,15 +15,17 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/leftArrowCirc
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
-import {InstallerLoader} from 'components/loaders/InstallerLoader';
+import {getMergedConnectors} from '../../../selectors/connectors';
 
 const mapStateToProps = (state: StateModel) => ({
   component: state.data.catalog,
+  connectors: getMergedConnectors(state),
 });
 
 const mapDispatchToProps = {
   installComponent,
   uninstallComponent,
+  listComponents,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -33,7 +35,7 @@ interface LocationState {
 }
 
 const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
-  const {component, installComponent, uninstallComponent} = props;
+  const {component, connectors, installComponent, uninstallComponent, listComponents} = props;
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
@@ -41,10 +43,12 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
-  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
+  const [pendingNotification, setPendingNotification] = useState<NotificationModel>(null);
   const [forceClose, setForceClose] = useState(false);
+  const [installStarted, setInstallStarted] = useState(false);
+  const [blockInstalling, setBlockInstalling] = useState(false);
   const notified = localStorage.getItem(`notified.${componentInfo.source}`);
   const {t} = useTranslation();
   const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
@@ -54,21 +58,54 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   const uninstallText = t('uninstall') + ` ${componentInfo.displayName}`;
   const installText = `${componentInfo.displayName} ` + t('installed');
+  const [retries, setRetries] = useState(0);
+
+  useEffect(() => {
+    Object.values(connectors).map(connector => {
+      if (connector.installationStatus === InstallationStatus.pending) {
+        setBlockInstalling(true);
+        componentInfo.price !== ConnectorPrice.requestAccess &&
+          setPendingNotification({show: true, successful: false, text: t('tooltipInstallingQueue'), info: true});
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    installStarted && recallComponentsList(retries);
+    if (connectors[componentInfo?.name]?.installationStatus === InstallationStatus.uninstalled && retries > 0) {
+      setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
+    }
+    if (connectors[componentInfo?.name]?.installationStatus === InstallationStatus.installed && retries > 0) {
+      setModal({type: ModalType.install, title: installText});
+      setIsModalVisible(true);
+    }
+  }, [connectors[componentInfo?.name]?.installationStatus, installStarted, retries, setRetries]);
+
+  const recallComponentsList = (retries: number) => {
+    const maxRetries = 15;
+    setTimeout(() => {
+      retries++;
+      setRetries(retries);
+      if (
+        retries === maxRetries ||
+        (connectors[componentInfo?.name]?.installationStatus !== InstallationStatus.pending && retries > 1)
+      ) {
+        setInstallStarted(false);
+        setRetries(0);
+      } else {
+        listComponents();
+      }
+    }, 5000);
+  };
 
   const openModalInstall = () => {
     if (!isInstalled) {
-      setIsPending(true);
       installComponent({name: componentInfo.name})
         .then(() => {
-          setModal({type: ModalType.install, title: installText});
-          setNotification({show: true, successful: true, text: t('successfullyInstalled')});
-          setIsModalVisible(true);
+          setInstallStarted(true);
         })
         .catch(() => {
           setNotification({show: true, successful: false, text: t('failedInstall')});
-        })
-        .finally(() => {
-          setIsPending(false);
         });
     } else {
       setModal({type: ModalType.uninstall, title: uninstallText});
@@ -81,17 +118,13 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   };
 
   const confirmUninstall = () => {
-    setIsPending(true);
     setIsModalVisible(false);
     uninstallComponent({name: `${componentInfo.name}`})
       .then(() => {
-        setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
+        setInstallStarted(true);
       })
       .catch(() => {
         setNotification({show: true, successful: false, text: t('failedUninstall')});
-      })
-      .finally(() => {
-        setIsPending(false);
       });
   };
 
@@ -164,8 +197,9 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
               }
               height={50}
               width={180}
+              disabled={blockInstalling}
               onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
-              pending={isPending}
+              pending={connectors[componentInfo.name].installationStatus === InstallationStatus.pending}
               styleVariant={
                 componentInfo?.price === ConnectorPrice.requestAccess
                   ? notified
@@ -285,6 +319,18 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
           forceClose={forceClose}
           setForceClose={setForceClose}
           info={notification.info}
+        />
+      )}
+      {pendingNotification?.show && (
+        <NotificationComponent
+          type="sticky"
+          show={pendingNotification.show}
+          text={pendingNotification.text}
+          successful={pendingNotification.successful}
+          setShowFalse={setPendingNotification}
+          forceClose={forceClose}
+          setForceClose={setForceClose}
+          info={pendingNotification.info}
         />
       )}
       {notifyMeNotification?.show && (

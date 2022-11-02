@@ -387,6 +387,9 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
 
+      //Amazon Lex V2
+      amazonLexV2Description: 'A web service for building conversational interface for apps using voice and text.',
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
 
@@ -483,7 +486,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration successful updated',
       failedConfiguration: 'Applying configuration failed',
       updateFailedConfiguration: 'Updating configuration failed',
-      tooltipInstallingQueue: 'You are already installing a connector, please wait',
+      tooltipInstallingQueue: 'Please wait for other connectors to be installed/uninstalled',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -989,6 +992,10 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
 
+      //Amazon Lex V2
+      amazonLexV2Description:
+        'Ein Webdienst zur Erstellung von Konversationsschnittstellen für Anwendungen mit Sprache und Text.',
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
 
@@ -1047,6 +1054,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
       failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
       updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
+      tooltipInstallingQueue: 'Bitte warten Sie, bis andere Connector installiert/deinstalliert sind',
 
       //Request Access
 
@@ -1503,6 +1511,10 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
 
+      //Amazon Lex V2
+      amazonLexV2Description:
+        'Un service web pour construire une interface conversationnelle pour les applications utilisant la voix et le texte.',
+
       //Amazon S3
       amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
 
@@ -1598,6 +1610,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
       failedConfiguration: 'La configuration a échoué',
       updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
+      tooltipInstallingQueue: `Veuillez attendre que d'autres connecteurs soient installés/désinstallés.`,
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -2064,6 +2077,10 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
 
+      //Amazon Lex V2
+      amazonLexV2Description:
+        'Un servicio web para construir una interfaz conversacional para aplicaciones utilizando voz y texto.',
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
 
@@ -2160,6 +2177,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
       failedConfiguration: 'Fallo en la aplicación de la configuración',
       updateFailedConfiguration: 'Fallo en la actualización de la configuración',
+      tooltipInstallingQueue: 'Espere a que se instalen/desinstalen otros conectores',
 
       //Request Access
       comingSoon: 'Próximamente',

@@ -1,11 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
-import {ComponentInfo, ConnectorPrice, NotificationModel} from 'model';
-import {Button, NotificationComponent, SettingsModal, SmartButton} from 'components';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
+import {Button, NotificationComponent, SettingsModal} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getCatalogProductRouteForComponent, getConnectedRouteForComponent} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
@@ -14,9 +14,17 @@ import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
 import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {getMergedConnectors} from '../../../selectors';
+import {InstallerLoader} from 'components/loaders/InstallerLoader';
+
+export type ObservationInstallStatus = {
+  status: boolean;
+  name: string;
+};
 
 type CatalogCardProps = {
   componentInfo: ComponentInfo;
+  setObserveInstallStatus: Dispatch<SetStateAction<ObservationInstallStatus>>;
+  isInstalling: boolean;
 } & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
@@ -33,14 +41,14 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 export const availabilityFormatted = (availability: string) => availability.split(',');
 
 const CatalogCard = (props: CatalogCardProps) => {
-  const {component, connectors, componentInfo, installComponent} = props;
+  const {component, connectors, componentInfo, installComponent, setObserveInstallStatus} = props;
   const hasConnectedChannels = connectors[componentInfo?.name].connectedChannels > 0;
   const isConfigured = connectors[componentInfo?.name].isConfigured;
   const isChannel = connectors[componentInfo?.name].isChannel;
-  const isInstalled = component[componentInfo?.name]?.installed;
+  const isInstalled = component[componentInfo?.name]?.installationStatus === InstallationStatus.installed;
+  const [isInstalling, setIsInstalling] = useState(props.isInstalling);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
-  const [isPending, setIsPending] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [notifyMeNotification, setNotifyMeNotification] = useState<NotificationModel>(null);
   const [forceClose, setForceClose] = useState(false);
@@ -56,18 +64,19 @@ const CatalogCard = (props: CatalogCardProps) => {
   // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;
 
   const openInstallModal = () => {
-    setIsPending(true);
+    setIsInstalling(true);
     installComponent({name: componentInfo.name})
       .then(() => {
         setNotification({show: true, successful: true, text: t('successfullyInstalled')});
         setIsModalVisible(true);
+        setObserveInstallStatus({status: true, name: componentInfo?.name});
       })
       .catch(() => {
         setNotification({show: true, successful: false, text: t('failedInstall')});
-      })
-      .finally(() => {
-        setIsPending(false);
       });
+    // .finally(() => {
+    //   setIsPending(false);
+    // });
   };
 
   const closeModal = () => {
@@ -135,92 +144,105 @@ const CatalogCard = (props: CatalogCardProps) => {
     }
 
     return (
-      <SmartButton
-        height={24}
-        width={installButtonCard?.current?.offsetWidth}
+      <Button
         className={styles.smartButton}
         styleVariant="green"
         type="submit"
-        title={t('install').toUpperCase()}
         onClick={openInstallModal}
-        pending={isPending}
-        disabled={isPending}
+        disabled={isInstalling}
         buttonRef={installButtonCard}
-      />
+      >
+        {isInstalling ? t('pending').toUpperCase() : t('install').toUpperCase()}
+      </Button>
+      // <SmartButton
+      //   height={24}
+      //   width={installButtonCard?.current?.offsetWidth}
+      //   className={styles.smartButton}
+      //   styleVariant="green"
+      //   type="submit"
+      //   title={isInstalling ? t('pending').toUpperCase() : t('install').toUpperCase()}
+      //   onClick={openInstallModal}
+      //   pending={isInstalling}
+      //   disabled={isPending}
+      //   buttonRef={installButtonCard}
+      // />
     );
   };
 
   return (
     <>
-      <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
-        <section className={styles.cardLogoTitleContainer}>
-          <div className={styles.componentLogo}>
-            {getChannelAvatar(componentInfo.displayName)}
-            <CatalogCardButton />
-          </div>
-          <div className={styles.componentInfo}>
-            <h1>{componentInfo.displayName}</h1>
-            <p>
-              {' '}
-              <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
-            </p>
-          </div>
-        </section>
-
-        <div className={styles.descriptionInfo}>
-          {componentInfo.name && (
-            <p>
-              <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
-            </p>
-          )}
-
-          <p className={`${styles.availability} ${styles.bolded}`}>
-            <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
-            {t('availableFor')}:
-          </p>
-          <div className={styles.availableForSoonContainer}>
-            <div>
-              {componentInfo?.availableFor &&
-                availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-                  <button key={service}>{service}</button>
-                ))}
+      <InstallerLoader installing={isInstalling} borderRadius={10} marginRight={28} marginBottom={36}>
+        <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
+          <section className={styles.cardLogoTitleContainer}>
+            <div className={styles.componentLogo}>
+              {getChannelAvatar(componentInfo.displayName)}
+              <CatalogCardButton />
             </div>
-            {/* Commented until backend is ready for this!!!
+            <div className={styles.componentInfo}>
+              <h1>{componentInfo.displayName}</h1>
+              <p>
+                {' '}
+                <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
+              </p>
+            </div>
+          </section>
+
+          <div className={styles.descriptionInfo}>
+            {componentInfo.name && (
+              <p>
+                <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
+              </p>
+            )}
+
+            <p className={`${styles.availability} ${styles.bolded}`}>
+              <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
+              {t('availableFor')}:
+            </p>
+            <div className={styles.availableForSoonContainer}>
+              <div>
+                {componentInfo?.availableFor &&
+                  availabilityFormatted(componentInfo.availableFor).map((service: string) => (
+                    <button key={service}>{service}</button>
+                  ))}
+              </div>
+              {/* Commented until backend is ready for this!!!
 
              {componentInfo?.price === ConnectorPrice.requestAccess && (
               <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
             )} */}
+            </div>
           </div>
-        </div>
 
-        {isModalVisible && (
-          <SettingsModal
-            Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
-            wrapperClassName={styles.enableModalContainerWrapper}
-            containerClassName={styles.enableModalContainer}
-            title={`${componentInfo.displayName} ${t('installed')}`}
-            close={closeModal}
-            headerClassName={styles.headerModal}
-          >
-            <Button
-              styleVariant="normal"
-              type="submit"
-              onClick={() => navigate(navigateConfigure, {state: {from: 'catalog'}})}
+          {isModalVisible && (
+            <SettingsModal
+              Icon={<CheckmarkIcon className={styles.checkmarkIcon} />}
+              wrapperClassName={styles.enableModalContainerWrapper}
+              containerClassName={styles.enableModalContainer}
+              title={`${componentInfo.displayName} ${t('installed')}`}
+              close={closeModal}
+              headerClassName={styles.headerModal}
             >
-              {t('toConfigure')}
-            </Button>
-          </SettingsModal>
-        )}
+              <Button
+                styleVariant="normal"
+                type="submit"
+                onClick={() => navigate(navigateConfigure, {state: {from: 'catalog'}})}
+              >
+                {t('toConfigure')}
+              </Button>
+            </SettingsModal>
+          )}
 
-        {isNotifyMeModalVisible && (
-          <NotifyMeModal
-            source={componentInfo.source}
-            setIsModalVisible={setIsNotifyMeModalVisible}
-            setNotification={setNotifyMeNotification}
-            setForceClose={setForceClose}
-          />
-        )}
-      </article>
+          {isNotifyMeModalVisible && (
+            <NotifyMeModal
+              source={componentInfo.source}
+              setIsModalVisible={setIsNotifyMeModalVisible}
+              setNotification={setNotifyMeNotification}
+              setForceClose={setForceClose}
+            />
+          )}
+        </article>
+      </InstallerLoader>
+
       {notification?.show && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}

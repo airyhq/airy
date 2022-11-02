@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import co.airy.log.AiryLoggerFactory;
 
@@ -125,6 +126,46 @@ public class HelmJobHandler {
 
         return podName;
     }
+
+    public Map<String, String> getInstallationPodsStatus(CoreV1Api api) throws ApiException {
+        final ApiResponse<V1PodList> listResponse = api.listNamespacedPodWithHttpInfo(
+                namespace,
+                null,
+                null,
+                null,
+                null,
+                "helm in (install, uninstall)",
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        final List<String> podNames = listResponse
+                .getData()
+                .getItems()
+                .stream()
+                .map(j -> j.getMetadata().getName())
+                .collect(Collectors.toList());
+
+        return podNames
+            .stream()
+            .map(podName -> {
+                String status = "";
+                try {
+                    final ApiResponse<V1Pod> podStatus = api.readNamespacedPodStatusWithHttpInfo(
+                            podName,
+                            namespace,
+                            null);
+                    status = podStatus.getData().getStatus().getPhase();
+                } catch (ApiException e) {
+                    log.error(String.format("can't get status for pod %s error: %s", podName, e.getResponseBody()));
+                }
+                return Map.entry(podName, status);
+            })
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
 
     private V1Job isJobAlreadyRunning(String jobName) {
         try {

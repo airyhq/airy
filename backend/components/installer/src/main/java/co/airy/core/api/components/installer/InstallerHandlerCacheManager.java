@@ -32,14 +32,19 @@ public class InstallerHandlerCacheManager {
     }
 
     @Async("threadPoolTaskExecutor")
-    public void resetCacheAfterJob(String jobName) {
+    public void resetCacheAfterJob(String jobName, String componentName, String status) {
         try {
             final V1Job job = helmJobHandler.getJobByName(jobName);
             final CoreV1Api api = new CoreV1Api(apiClient);
-            helmJobHandler.waitForCompletedStatus(api, job);
+            //final String podName = helmJobHandler.waitForCompletedStatus(api, job);
+            changeInstallationStatus(componentName, status);
+            final Map<String, String> otherPods = helmJobHandler.getInstallationPodsStatus(api);
+            log.info(otherPods.toString());
 
-            installedComponentsHandler.putInstalledComponentsCache();
-            log.info("cache reset");
+            /*
+             *installedComponentsHandler.putInstalledComponentsCache();
+             *log.info("cache reset");
+             */
         } catch(Exception e) {
             log.error("unable to reset cache", e);
         }

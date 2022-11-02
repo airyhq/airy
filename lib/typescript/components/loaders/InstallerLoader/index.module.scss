@@ -1,0 +1,21 @@
+.container {
+  background: transparent;
+  transform-style: preserve-3d;
+}
+
+.containerInstalling {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color: #000000, $alpha: 0.3);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.loader {
+  display: none;
+}
+
+.loaderInstalling {
+  position: absolute;
+}

@@ -3,30 +3,33 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
-import {ComponentInfo, ConnectorPrice} from 'model';
-import CatalogCard from './CatalogCard';
+import {ComponentInfo, ConnectorPrice, InstallationStatus} from 'model';
+import CatalogCard, {ObservationInstallStatus} from './CatalogCard';
 import styles from './index.module.scss';
-import {listComponents, getConnectorsConfiguration, listChannels} from '../../actions';
+import {listComponents} from '../../actions';
 import {CatalogSearchBar} from './CatalogSearchBar/CatalogSearchBar';
 import {FilterTypes} from './CatalogSearchBar/FilterCatalogModal/FilterCatalogModal';
+import {AiryLoader} from 'components/loaders/AiryLoader';
+import {getMergedConnectors} from '../../selectors';
 
 const mapStateToProps = (state: StateModel) => {
   return {
     catalogList: Object.values(state.data.catalog),
+    connectors: getMergedConnectors(state),
   };
 };
 
 const mapDispatchToProps = {
   listComponents,
-  getConnectorsConfiguration,
-  listChannels,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
-  const {catalogList, listComponents, getConnectorsConfiguration, listChannels} = props;
+  const {catalogList, connectors} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
+  const [observeInstallStatus, setObserveInstallStatus] = useState<ObservationInstallStatus>({status: false, name: ''});
+  const isInstalling = connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.pending;
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
   const [currentFilter, setCurrentFilter] = useState(
@@ -34,19 +37,34 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   );
   const [query, setQuery] = useState('');
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
+  let numberOfTries = 0;
 
   useEffect(() => {
-    listChannels().catch((error: Error) => {
-      console.error(error);
-    });
-    getConnectorsConfiguration().catch((error: Error) => {
-      console.error(error);
-    });
-    listComponents().catch((error: Error) => {
-      console.error(error);
-    });
     setPageTitle(catalogPageTitle);
   }, []);
+
+  useEffect(() => {
+    retry(props.listComponents);
+  }, [observeInstallStatus, numberOfTries]);
+
+  const retry = (callback, times = 10) => {
+    return new Promise(resolve => {
+      const interval = setInterval(async () => {
+        numberOfTries++;
+        if (numberOfTries === times || !isInstalling) {
+          console.log(`Trying for the last time... (${times})`);
+          clearInterval(interval);
+        }
+        try {
+          await callback();
+          console.log(`Operation successful, retried ${numberOfTries} times.`);
+          resolve(true);
+        } catch (err) {
+          console.log(`Unsuccessful, retried ${numberOfTries} times... ${err}`);
+        }
+      }, 5000);
+    });
+  };
 
   useLayoutEffect(() => {
     if (query && currentFilter === FilterTypes.all) {
@@ -56,10 +74,18 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       setOrderedCatalogList(filteredCatalogByName);
     } else {
       const sortedByInstalled = [...catalogList]
-        .filter((component: ComponentInfo) => component.installed && component.price !== ConnectorPrice.requestAccess)
+        .filter(
+          (component: ComponentInfo) =>
+            component.installationStatus === InstallationStatus.installed &&
+            component.price !== ConnectorPrice.requestAccess
+        )
         .sort(sortByName);
       const sortedByUninstalled = [...catalogList]
-        .filter((component: ComponentInfo) => !component.installed && component.price !== ConnectorPrice.requestAccess)
+        .filter(
+          (component: ComponentInfo) =>
+            component.installationStatus === InstallationStatus.uninstalled &&
+            component.price !== ConnectorPrice.requestAccess
+        )
         .sort(sortByName);
       const sortedByAccess = [...catalogList]
         .filter((component: ComponentInfo) => component.price === ConnectorPrice.requestAccess)
@@ -104,23 +130,35 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     <section className={styles.catalogWrapper}>
       <div className={styles.headlineSearchBarContainer}>
         <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
-        <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
-      </div>
-
-      <section className={styles.catalogListContainer}>
-        {orderedCatalogList && orderedCatalogList.length > 0 ? (
-          orderedCatalogList.map((infoItem: ComponentInfo) => {
-            if (infoItem?.name && infoItem?.displayName) {
-              return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
-            }
-          })
-        ) : (
-          <div className={styles.notFoundContainer}>
-            <h1>{t('nothingFound')}</h1>
-            <span>{t('noMatchingCatalogs')}</span>
-          </div>
+        {catalogList.length > 0 && (
+          <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
         )}
-      </section>
+      </div>
+      {catalogList.length > 0 ? (
+        <section className={styles.catalogListContainer}>
+          {orderedCatalogList && orderedCatalogList.length > 0 ? (
+            orderedCatalogList.map((infoItem: ComponentInfo) => {
+              if (infoItem?.name && infoItem?.displayName) {
+                return (
+                  <CatalogCard
+                    componentInfo={infoItem}
+                    key={infoItem.displayName}
+                    setObserveInstallStatus={setObserveInstallStatus}
+                    isInstalling={isInstalling}
+                  />
+                );
+              }
+            })
+          ) : (
+            <div className={styles.notFoundContainer}>
+              <h1>{t('nothingFound')}</h1>
+              <span>{t('noMatchingCatalogs')}</span>
+            </div>
+          )}
+        </section>
+      ) : (
+        <AiryLoader height={240} width={240} position="relative" top={220} />
+      )}
     </section>
   );
 };

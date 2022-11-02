@@ -27,6 +27,7 @@
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
     "react-i18next": "^11.18.6",
+    "react-lottie": "^1.2.3",
     "react-markdown": "^8.0.2",
     "react-modal": "^3.14.4",
     "react-redux": "8.0.4",

@@ -70,7 +70,7 @@ public class InstallerHandler {
 
 
         final String jobName = String.format("helm-install-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd);
+        helmJobHandler.launchHelmJob(jobName, cmd, "install");
         installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
         installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }
@@ -84,7 +84,7 @@ public class InstallerHandler {
         final List<String> cmd = getUninstallCommand(componentName);
 
         final String jobName = String.format("helm-uninstall-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd);
+        helmJobHandler.launchHelmJob(jobName, cmd, "uninstall");
         installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
         installerHandlerCacheManager.resetCacheAfterJob(jobName);
     }

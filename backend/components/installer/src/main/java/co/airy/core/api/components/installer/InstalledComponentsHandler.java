@@ -76,7 +76,7 @@ public class InstalledComponentsHandler {
                     "helm -n %s list | awk '{print $1}' | tail -n +2",
                     namespace));
 
-        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
+        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd, "installed");
         final CoreV1Api api = new CoreV1Api(apiClient);
 
         final String podName = helmJobHandler.waitForCompletedStatus(api, job);

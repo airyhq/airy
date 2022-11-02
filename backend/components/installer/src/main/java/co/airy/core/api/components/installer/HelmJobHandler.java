@@ -23,6 +23,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 import co.airy.log.AiryLoggerFactory;
 
@@ -40,7 +41,7 @@ public class HelmJobHandler {
         this.namespace = namespace;
     }
 
-    public V1Job launchHelmJob(String jobName, List<String> cmd) throws Exception {
+    public V1Job launchHelmJob(String jobName, List<String> cmd, String label) throws Exception {
         final V1Job runningJob = isJobAlreadyRunning(jobName);
         if (runningJob != null) {
             return runningJob;
@@ -50,6 +51,7 @@ public class HelmJobHandler {
             .metadata(new V1ObjectMeta().name(jobName))
             .spec(new V1JobSpec()
                     .template(new V1PodTemplateSpec()
+                        .metadata(new V1ObjectMeta().labels(Map.of("helm", label)))
                         .spec(new V1PodSpec()
                             .addContainersItem(new V1Container()
                                 .name(jobName)

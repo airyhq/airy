@@ -1,6 +1,7 @@
 import React from 'react';
 import Lottie from 'react-lottie';
-import * as animationData from './data.json';
+// import * as animationData from './data.json';
+import animationData from './data.json';
 
 type AiryLoaderProps = {
   height?: number;

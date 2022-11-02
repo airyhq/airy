@@ -62,9 +62,9 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     Object.values(connectors).map(connector => {
-      if (connector.installationStatus === InstallationStatus.pending) {
+      if (connector?.installationStatus === InstallationStatus.pending) {
         setBlockInstalling(true);
-        componentInfo.price !== ConnectorPrice.requestAccess &&
+        componentInfo?.price !== ConnectorPrice.requestAccess &&
           setPendingNotification({show: true, successful: false, text: t('tooltipInstallingQueue'), info: true});
       }
     });
@@ -199,7 +199,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
               width={180}
               disabled={blockInstalling}
               onClick={componentInfo?.price === ConnectorPrice.requestAccess ? handleNotifyMeClick : openModalInstall}
-              pending={connectors[componentInfo.name].installationStatus === InstallationStatus.pending}
+              pending={connectors[componentInfo?.name]?.installationStatus === InstallationStatus.pending}
               styleVariant={
                 componentInfo?.price === ConnectorPrice.requestAccess
                   ? notified

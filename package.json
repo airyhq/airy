@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^28.1.7",
+    "@types/react-lottie": "^1.2.6",
     "audio-recorder-polyfill": "^0.4.1",
     "camelcase-keys": "^8.0.2",
     "core-js": "3.25.5",

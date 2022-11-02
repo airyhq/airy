@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import Lottie from 'react-lottie';
-import * as animationData from './spinnerLoader.json';
+import animationData from './spinnerLoader.json';
 
 type InstallerLoaderProps = {
   children?: React.ReactNode;

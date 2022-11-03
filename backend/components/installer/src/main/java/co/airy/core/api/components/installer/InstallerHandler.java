@@ -70,9 +70,9 @@ public class InstallerHandler {
 
 
         final String jobName = String.format("helm-install-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd, "install");
+        helmJobHandler.launchHelmJob(jobName, cmd, Map.of("helm", "install", "component", componentName));
         installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
-        installerHandlerCacheManager.resetCacheAfterJob(jobName, componentName, InstallationStatus.installed);
+        installerHandlerCacheManager.resetCacheAfterJob();
     }
 
     public void uninstallComponent(String componentName) throws Exception {
@@ -84,9 +84,9 @@ public class InstallerHandler {
         final List<String> cmd = getUninstallCommand(componentName);
 
         final String jobName = String.format("helm-uninstall-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd, "uninstall");
+        helmJobHandler.launchHelmJob(jobName, cmd, Map.of("helm", "uninstall", "component", componentName));
         installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
-        installerHandlerCacheManager.resetCacheAfterJob(jobName, componentName, InstallationStatus.uninstalled);
+        installerHandlerCacheManager.resetCacheAfterJob();
     }
 
     private Component getComponentFromName(

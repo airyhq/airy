@@ -4,16 +4,21 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import co.airy.log.AiryLoggerFactory;
 import co.airy.core.api.components.installer.model.InstallationStatus;
+import co.airy.core.api.components.installer.model.ComponentStatus;
 
 @Component
+@EnableScheduling
 public class InstallerHandlerCacheManager {
 
     private static final Logger log = AiryLoggerFactory.getLogger(InstallerHandlerCacheManager.class);
@@ -21,6 +26,7 @@ public class InstallerHandlerCacheManager {
     private final HelmJobHandler helmJobHandler;
     private final ApiClient apiClient;
     private final InstalledComponentsHandler installedComponentsHandler;
+    private boolean resetCache = false;
 
     InstallerHandlerCacheManager(
             ApiClient apiClient,
@@ -31,23 +37,8 @@ public class InstallerHandlerCacheManager {
         this.installedComponentsHandler = installedComponentsHandler;
     }
 
-    @Async("threadPoolTaskExecutor")
-    public void resetCacheAfterJob(String jobName, String componentName, String status) {
-        try {
-            final V1Job job = helmJobHandler.getJobByName(jobName);
-            final CoreV1Api api = new CoreV1Api(apiClient);
-            //final String podName = helmJobHandler.waitForCompletedStatus(api, job);
-            changeInstallationStatus(componentName, status);
-            final Map<String, String> otherPods = helmJobHandler.getInstallationPodsStatus(api);
-            log.info(otherPods.toString());
-
-            /*
-             *installedComponentsHandler.putInstalledComponentsCache();
-             *log.info("cache reset");
-             */
-        } catch(Exception e) {
-            log.error("unable to reset cache", e);
-        }
+    public void resetCacheAfterJob() {
+        resetCache = true;
     }
 
     public void changeInstallationStatus(String componentName, String status) throws Exception {
@@ -72,5 +63,45 @@ public class InstallerHandlerCacheManager {
 
         return installationStatus.equals(InstallationStatus.uninstalled)
             || installationStatus.equals(InstallationStatus.pending);
+    }
+
+    @Scheduled(fixedRateString = "${retry.maxDelay}")
+    private void resetCacheWorker() {
+        if (!resetCache) {
+            return;
+        }
+
+        try {
+            final CoreV1Api api = new CoreV1Api(apiClient);
+            final List<ComponentStatus> componentsStatus = helmJobHandler.getInstallationComponentsStatus(api);
+
+            //FIXME: remove log
+            log.info(componentsStatus.toString());
+            if (componentsStatus.size() == 0) {
+                resetCache = false;
+                installedComponentsHandler.putInstalledComponentsCache();
+                log.info("cache reset");
+                return;
+            }
+
+            componentsStatus
+                .stream()
+                .filter(cs -> cs.getStatus().equals("Succeeded"))
+                .forEach(cs -> {
+                    try {
+                        changeInstallationStatus(
+                                cs.getComponentName(),
+                                cs.getExpectedInstallationStatus());
+                        //FIXME: remove log
+                        log.info(String.format("%s -> %s", cs.getComponentName(), cs.getExpectedInstallationStatus()));
+                    } catch (Exception e) {
+                        log.error(String.format("unable to set expected status for %s, %s", 
+                                    cs.getComponentName(),
+                                    e));
+                    }
+                });
+        } catch (Exception e) {
+            log.error("unable to reset cache", e);
+        }
     }
 }

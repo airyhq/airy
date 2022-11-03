@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.core.api.components.installer.model.InstallationStatus;
+import co.airy.core.api.components.installer.model.ComponentStatus;
 
 @Component
 @EnableRetry
@@ -42,7 +44,7 @@ public class HelmJobHandler {
         this.namespace = namespace;
     }
 
-    public V1Job launchHelmJob(String jobName, List<String> cmd, String label) throws Exception {
+    public V1Job launchHelmJob(String jobName, List<String> cmd, Map<String, String> labels) throws Exception {
         final V1Job runningJob = isJobAlreadyRunning(jobName);
         if (runningJob != null) {
             return runningJob;
@@ -52,7 +54,7 @@ public class HelmJobHandler {
             .metadata(new V1ObjectMeta().name(jobName))
             .spec(new V1JobSpec()
                     .template(new V1PodTemplateSpec()
-                        .metadata(new V1ObjectMeta().labels(Map.of("helm", label)))
+                        .metadata(new V1ObjectMeta().labels(labels))
                         .spec(new V1PodSpec()
                             .addContainersItem(new V1Container()
                                 .name(jobName)
@@ -127,7 +129,7 @@ public class HelmJobHandler {
         return podName;
     }
 
-    public Map<String, String> getInstallationPodsStatus(CoreV1Api api) throws ApiException {
+    public List<ComponentStatus> getInstallationComponentsStatus(CoreV1Api api) throws ApiException {
         final ApiResponse<V1PodList> listResponse = api.listNamespacedPodWithHttpInfo(
                 namespace,
                 null,
@@ -141,29 +143,35 @@ public class HelmJobHandler {
                 null,
                 null);
 
-        final List<String> podNames = listResponse
+        return listResponse
                 .getData()
                 .getItems()
                 .stream()
-                .map(j -> j.getMetadata().getName())
+                .map(j -> ComponentStatus
+                        .builder()
+                        .podName(j.getMetadata().getName())
+                        .componentName(j.getMetadata().getLabels().get("component"))
+                        .expectedInstallationStatus(j
+                            .getMetadata()
+                            .getLabels()
+                            .get("helm")
+                            .equals("install") ? InstallationStatus.installed : InstallationStatus.uninstalled)
+                        .build())
+                .map(cs -> {
+                    String status = "";
+                    try {
+                        final ApiResponse<V1Pod> podStatus = api.readNamespacedPodStatusWithHttpInfo(
+                                cs.getPodName(),
+                                namespace,
+                                null);
+                        status = podStatus.getData().getStatus().getPhase();
+                    } catch (ApiException e) {
+                        log.error(String.format("can't get status for pod %s error: %s", cs.getPodName(), e.getResponseBody()));
+                    }
+                    cs.setStatus(status);
+                    return cs;
+                })
                 .collect(Collectors.toList());
-
-        return podNames
-            .stream()
-            .map(podName -> {
-                String status = "";
-                try {
-                    final ApiResponse<V1Pod> podStatus = api.readNamespacedPodStatusWithHttpInfo(
-                            podName,
-                            namespace,
-                            null);
-                    status = podStatus.getData().getStatus().getPhase();
-                } catch (ApiException e) {
-                    log.error(String.format("can't get status for pod %s error: %s", podName, e.getResponseBody()));
-                }
-                return Map.entry(podName, status);
-            })
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 

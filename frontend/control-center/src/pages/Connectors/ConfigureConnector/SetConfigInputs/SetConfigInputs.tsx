@@ -51,12 +51,13 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
       }
 
       const label = replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1);
-      const placeholder = `${replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1)}`;
+      const defaultPlaceholder = `${replacedKey.charAt(0).toUpperCase() + replacedKey.slice(1)}`;
       const capitalSource = source?.charAt(0).toUpperCase() + source?.slice(1).replace('.', '');
       const isUrl = label.includes('URL');
       const hasSteps = source === Source.dialogflow && replacedKey.includes('Level');
       const stepPlaceholder = `0.1 ${t('to')} 0.9`;
       const sensitive = label.includes('Token') || label.includes('Password') || label.includes('Secret');
+      const placeholder = source === 'rasa' ? t(`rasaPlaceholder`) : hasSteps ? stepPlaceholder : defaultPlaceholder;
 
       inputArr.push(
         <div key={index} className={styles.input}>
@@ -69,7 +70,7 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
             value={valueTyped === 'string' || valueTyped === 'optionalString' ? '' : valueTyped}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput({...input, [keyTyped]: e.target.value})}
             label={label}
-            placeholder={hasSteps ? stepPlaceholder : placeholder}
+            placeholder={placeholder}
             showLabelIcon
             tooltipText={t(`inputTooltip${capitalSource}${toolTip}`)}
             required={valueTyped !== 'optionalString'}

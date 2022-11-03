@@ -356,9 +356,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Your Salesforce Security Token',
 
       //Rasa
-      inputTooltipRasaWebhookUrl: 'Example: http://webhooks.rasa',
-      inputTooltipRasaApiHost: 'Your Rasa Api Host',
-      inputTooltipRasaToken: 'Your Rasa Token',
+      inputTooltipRasaRasaWebhookUrl: 'http://<host>:<port> (example: htpp://localhost:5005)',
+      rasaPlaceholder: 'http://<host>:<port>',
 
       //Facebook Messenger
       connectMessenger: 'Connect Messenger',
@@ -923,9 +922,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
       //Rasa
-      inputTooltipRasaWebhookUrl: 'Beispiel: http://webhooks.rasa',
-      inputTooltipRasaApiHost: 'Ihr Rasa Api Host',
-      inputTooltipRasaToken: 'Ihr Rasa-Token',
+      inputTooltipRasaRasaRestWebhookUrl: 'http://<Betreiber>:<Port> (Beispiel: htpp://localhost:5005)',
+      rasaPlaceholder: 'http://<Betreiber>:<Port>',
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Weltweite Chat-App Nr. 1',
@@ -1221,7 +1219,7 @@ const resources = {
       //Status
       all: 'Tous',
       open: 'Ouvert',
-      openCatalog: 'Ouvert',
+      openCatalog: 'Ouvrir',
       closed: 'Fermé',
 
       //Message
@@ -1629,12 +1627,8 @@ const resources = {
       send: 'Envoyer',
 
       //Rasa
-      rasaWebhookPlaceholder: 'URL Webhook de Rasa',
-      rasaWebhookTooltip: 'Exemple : http://webhooks.rasa',
-      rasaApihostPlaceholder: `Hôte de l'API Rasa`,
-      rasaApihostTooltip: `Hôte de l'API Rasa`,
-      rasaTokenPlaceholder: 'Token Rasa',
-      rasaTokenTooltip: 'Token Rasa',
+      inputTooltipRasaRasaRestWebhookUrl: 'http://<hôte>:<port> (example: htpp://localhost:5005)',
+      rasaPlaceholder: 'http://<hôte>:<port>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Votre App ID',
@@ -2196,12 +2190,8 @@ const resources = {
       send: 'Enviar',
 
       //Rasa
-      rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
-      rasaWebhookTooltip: 'Ejemplo: http://webhooks.rasa',
-      rasaApihostPlaceholder: 'Su anfitrión Rasa Api',
-      rasaApihostTooltip: 'Su anfitrión Rasa Api',
-      rasaTokenPlaceholder: 'Su ficha Rasa',
-      rasaTokenTooltip: 'Su ficha Rasa',
+      inputTooltipRasaRasaRestWebhookUrl: 'host + port (ejemplo: http://0.0.0.0:5005)',
+      rasaPlaceholder: 'http://<host>:<port>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Su App ID',

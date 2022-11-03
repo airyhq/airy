@@ -35,17 +35,17 @@ spec:
             - name: IBMWATSONASSISTANT_URL
               valueFrom:
                 configMapKeyRef:
-                  key: ibm-watson-assistant.URL
+                  key: ibmWatsonAssistantURL
                   name: {{ .Values.component }}
             - name: IBMWATSONASSISTANT_APIKEY
               valueFrom:
                 configMapKeyRef:
-                  key: ibm-watson-assistant.apiKey
+                  key: ibmWatsonAssistantApiKey
                   name: {{ .Values.component }}
             - name: IBMWATSONASSISTANT_ASSISTANTID
               valueFrom:
                 configMapKeyRef:
-                  key: ibm-watson-assistant.assistantId
+                  key: ibmWatsonAssistantAssistantId
                   name: {{ .Values.component }}
             - name: SERVICE_NAME
               value: {{ .Values.component }}

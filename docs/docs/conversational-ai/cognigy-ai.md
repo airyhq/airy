@@ -52,7 +52,7 @@ step-by-step instructions.
 
 Here is a screenshot of a simple Cognigy.AI Flow:
 
-<img alt="Cognigy.AI Flow" src={useBaseUrl('img/integrations/cognigy/flow.png')} />
+<img alt="Cognigy.AI Flow" src={useBaseUrl('img/conversational-ai/cognigy/flow.png')} />
 
 ## Step 3: Create a Cognigy.AI REST Endpoint
 
@@ -116,7 +116,7 @@ The request body should be:
 }
 ```
 
-Once the installation is successful (indicated by a 201 response status code), you can configure the component with the [Components Update](/api/endpoints/components#update) endpoint.
+Once the installation is successful (indicated by a 200 response status code), you can configure the component with the [Components Update](/api/endpoints/components#update) endpoint.
 
 Use the REST Endpoint URL and User ID you got in the previous steps ([step 3](/integrations/cognigy-ai#step-3-create-a-cognigyai-rest-endpoint) and [step 5](/integrations/cognigy-ai#step-5-find-your-cognigyai-user-id)) to compose the request body:
 
@@ -165,4 +165,4 @@ forward it to your Cognigy.AI installation, which will respond to the Airy Core 
 
 The screenshot below was taken on a [Airy Live Chat Plugin](/sources/chatplugin/overview) channel from an Airy instance connected to Cognigy.AI. It shows an example where a message sent to Airy Core is automatically responded to according to a [Cognigy.AI Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) where the Live Agent responds "Hi from Cognigy! 👋" to a contact's first message.
 
-<center><img alt="Cognigy.AI Airy connection" src={useBaseUrl('img/integrations/cognigy/messagingExample.png')} /></center>
+<center><img alt="Cognigy.AI Airy connection" src={useBaseUrl('img/conversational-ai/cognigy/messagingExample.png')} /></center>

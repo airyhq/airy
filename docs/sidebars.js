@@ -101,13 +101,14 @@ module.exports = {
       ],
     },
     {
-      '🛠️ Integrations': [
+      '🤖 Conversational AI': [
+        'conversational-ai/ibm-watson-assistant',
+        'conversational-ai/cognigy-ai',
+        'conversational-ai/rasa',
         {
-          'Conversational AI /NLP': [
-            'integrations/ibm-watson-assistant',
-            'integrations/cognigy-ai',
-            'integrations/rasa-assistant',
-            'integrations/rasa-suggested-replies',
+          Integrations: [
+            'conversational-ai/integrations/rasa-assistant',
+            'conversational-ai/integrations/rasa-suggested-replies',
           ],
         },
       ],

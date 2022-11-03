@@ -65,7 +65,7 @@ The request body should be:
 }
 ```
 
-Once the installation is successful (indicated by a 201 response status code), you can configure the component using the [Components Update](/api/endpoints/components#update) endpoint.
+Once the installation is successful (indicated by a 200 response status code), you can configure the component using the [Components Update](/api/endpoints/components#update) endpoint.
 
 Use the `URL`, `apiKey`, and `Assistant ID` you noted in the previous step to compose the request body:
 
@@ -114,4 +114,4 @@ forward it to your [IBM Watson Assistant](https://cloud.ibm.com/catalog/services
 
 The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an Airy instance connected to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant). It shows an example where a message sent to Airy Core is responded to by an [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation. In this specific installation, the assistant was programmed to respond "Hello from IBM Watson Assistant!" to a contact's message.
 
-<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/integrations/ibmWatsonAssistant/messagingExample.png')} /></center>
+<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai/ibmWatsonAssistant/messagingExample.png')} /></center>

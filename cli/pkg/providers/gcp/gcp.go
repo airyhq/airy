@@ -29,9 +29,10 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 
 func (p *provider) GetOverrides() tmpl.Variables {
 	return tmpl.Variables{
-		LoadbalancerAnnotations: map[string]string{"service.beta.kubernetes.io/gcp-load-balancer-type": "nlb"},
+		NgrokEnabled: true,
 	}
 }
+
 func (p *provider) CheckEnvironment() error {
 	return workspace.CheckBinaries([]string{"terraform", "gcloud"})
 }

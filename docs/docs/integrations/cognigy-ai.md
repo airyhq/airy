@@ -15,10 +15,21 @@ Cognigy.AI was developed in order to overcome most of the challenges in building
 
 </TLDR>
 
+Integrating [Cognigy.AI](https://docs.cognigy.com/ai/platform-overview/) with your Airy Core instance enables you to leverage its conversational AI capabilities on all your instance's channels.
+
+When [Cognigy.AI](https://docs.cognigy.com/ai/platform-overview/) is integrated with an Airy Core instance, Airy Core will forward the messages to the Cognigy.AI agent's installation, which will respond to the Airy Core API according to its conversation flow.
+
 :::tip What you will learn
 
-- The required steps to configure your Cognigy.AI agent
-- How to connect Cognigy.AI to Airy Core
+- How to configure your Cognigy.AI agent
+- How to connect Cognigy.AI to your Airy Core instance
+
+:::
+
+:::note Prerequisites
+
+- A running Airy Core installation (refer to the [Get
+  Started section](getting-started/installation/introduction.md))
 
 :::
 
@@ -89,11 +100,9 @@ Congratulations! You are now ready to connect Cognigy.AI to your Airy Core insta
 </SuccessBox>
 <br />
 
-Connecting Cognigy.AI to your Airy Core instance can be done through API request or
-through the [Airy Control Center UI](/ui/control-center/introduction).
+import InstallationOptions from './installation-options.mdx'
 
-We cover both options in this section: keep reading for connecting Cognigy.AI via
-API request, scroll down to the next section for connecting Cognigy.AI via the [Airy Control Center UI](/ui/control-center/introduction).
+<InstallationOptions />
 
 ## Step 6 (option 1): Install and configure Cognigy.AI to your Airy instance via API request
 
@@ -103,11 +112,11 @@ The request body should be:
 
 ```json
 {
-  "name": "airy-core/cognigy-connector"
+  "name": "cognigy-connector"
 }
 ```
 
-Once the installation is successful, you can configure the component with the [Components Update](/api/endpoints/components#update) endpoint.
+Once the installation is successful (indicated by a 201 response status code), you can configure the component with the [Components Update](/api/endpoints/components#update) endpoint.
 
 Use the REST Endpoint URL and User ID you got in the previous steps ([step 3](/integrations/cognigy-ai#step-3-create-a-cognigyai-rest-endpoint) and [step 5](/integrations/cognigy-ai#step-5-find-your-cognigyai-user-id)) to compose the request body:
 
@@ -126,7 +135,7 @@ Use the REST Endpoint URL and User ID you got in the previous steps ([step 3](/i
 }
 ```
 
-The request is considered successful if `cognigy-connector` is returned in the list of configured components and the request status code is `200`.
+The request is considered successful if the component's name (in this case: `cognigy-connector`) is returned in the list of configured components.
 
 ```json
 {
@@ -140,7 +149,7 @@ Cognigy.AI is now installed and configured.
 
 ## Step 6 (option 2): Install and configure Cognigy.AI to your Airy instance via the Control Center UI
 
-On the [Airy Control Center UI](/ui/control-center/introduction), navigate to the [Catalog](/ui/control-center/catalog) and select Cognigy.AI. Click on the `Install` button.
+On the [Airy Control Center UI](/ui/control-center/introduction), navigate to the [Catalog](/ui/control-center/catalog) and select `Cognigy.AI`. Click on the `Install` button.
 
 Once the installation is completed, navigate to the [Control Center's Connectors page](/ui/control-center/connectors) and select Cognigy.AI: this will open the connector's configuration page.
 
@@ -152,8 +161,7 @@ Cognigy.AI is now installed and configured.
 ## Step 7: Cognigy.AI's connection with Airy
 
 To test the connection, write a message to one of your channels: Airy Core will
-forward it to your Cognigy.AI installation, which will respond according to the Cognigy.AI Flow
-using the Airy Core API.
+forward it to your Cognigy.AI installation, which will respond to the Airy Core API according to its conversation [Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) .
 
 The screenshot below was taken on a [Airy Live Chat Plugin](/sources/chatplugin/overview) channel from an Airy instance connected to Cognigy.AI. It shows an example where a message sent to Airy Core is automatically responded to according to a [Cognigy.AI Flow](/integrations/cognigy-ai#step-2-create-a-cognigyai-flow) where the Live Agent responds "Hi from Cognigy! 👋" to a contact's first message.
 

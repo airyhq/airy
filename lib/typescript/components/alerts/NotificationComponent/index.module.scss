@@ -80,14 +80,17 @@
 .translateYAnimFade {
   animation-name: translateYFade;
   animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .translateYAnimSticky {
   animation-name: translateYSticky;
   animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .translateYAnimStickyClose {
   animation-name: translateYStickyClose;
   animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
 }

@@ -5,8 +5,6 @@
 .catalogCard {
   width: 340px;
   height: 248px;
-  margin-bottom: 28px;
-  margin-right: 36px;
   padding: 0px 12px 0px 20px;
   display: flex;
   flex-direction: column;
@@ -16,11 +14,22 @@
   outline: 2px solid transparent;
   @include font-s;
   transition: all 0.1s;
+  z-index: -1;
+  position: relative;
+  pointer-events: all;
 
   &:hover {
     outline: 2px solid var(--color-airy-blue);
     border: 1px solid transparent;
     cursor: pointer;
+  }
+}
+
+.installerLoaderWrapper {
+  position: relative;
+  z-index: 1;
+  &:hover {
+    z-index: 2;
   }
 }
 

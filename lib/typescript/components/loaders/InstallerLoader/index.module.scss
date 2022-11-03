@@ -1,0 +1,20 @@
+.container {
+  background: transparent;
+  pointer-events: none;
+}
+
+.containerInstalling {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color: #000000, $alpha: 0.3);
+  pointer-events: all;
+}
+
+.loader {
+  display: none;
+}
+
+.loaderInstalling {
+  position: absolute;
+}

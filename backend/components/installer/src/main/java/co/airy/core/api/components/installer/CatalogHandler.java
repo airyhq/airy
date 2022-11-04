@@ -21,11 +21,11 @@ public class CatalogHandler {
     private static final Logger log = AiryLoggerFactory.getLogger(CatalogHandler.class);
 
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    private final InstalledComponentsHandler installedComponentsHandler;
+    private final InstallationStatusComponentsHandler installedComponentsHandler;
     private final GitHandler gitHandler;
 
     CatalogHandler(
-            InstalledComponentsHandler installedComponentsHandler,
+            InstallationStatusComponentsHandler installedComponentsHandler,
             GitHandler gitHandler) {
         this.installedComponentsHandler = installedComponentsHandler;
         this.gitHandler = gitHandler;
@@ -45,7 +45,7 @@ public class CatalogHandler {
 
 
     private List<ComponentDetails> getComponents(Function<String, Boolean> condition) throws Exception {
-        final Map<String, String> installedComponents = installedComponentsHandler.getInstalledComponentsCache();
+        final Map<String, String> installedComponents = installedComponentsHandler.getInstallationStatusComponentsCache();
 
         final List<ComponentDetails> components = gitHandler.getComponentsDescriptionFiles(condition)
                 .stream()

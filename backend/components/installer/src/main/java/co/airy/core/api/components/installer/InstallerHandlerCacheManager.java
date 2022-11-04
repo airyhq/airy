@@ -25,13 +25,13 @@ public class InstallerHandlerCacheManager {
 
     private final HelmJobHandler helmJobHandler;
     private final ApiClient apiClient;
-    private final InstalledComponentsHandler installedComponentsHandler;
+    private final InstallationStatusComponentsHandler installedComponentsHandler;
     private boolean resetCache = false;
 
     InstallerHandlerCacheManager(
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
-            InstalledComponentsHandler installedComponentsHandler) {
+            InstallationStatusComponentsHandler installedComponentsHandler) {
         this.apiClient = apiClient;
         this.helmJobHandler = helmJobHandler;
         this.installedComponentsHandler = installedComponentsHandler;
@@ -42,14 +42,14 @@ public class InstallerHandlerCacheManager {
     }
 
     public void changeInstallationStatus(String componentName, String status) throws Exception {
-        Map<String, String> cacheStore = installedComponentsHandler.getInstalledComponentsCache();
+        Map<String, String> cacheStore = installedComponentsHandler.getInstallationStatusComponentsCache();
         cacheStore.put(componentName, status);
-        installedComponentsHandler.setInstalledComponentsCache(cacheStore);
+        installedComponentsHandler.setInstallationStatusComponentsCache(cacheStore);
     }
 
     public boolean isInstalled(String componentName) throws Exception {
         final String installationStatus = installedComponentsHandler
-            .getInstalledComponentsCache()
+            .getInstallationStatusComponentsCache()
             .getOrDefault(componentName, InstallationStatus.uninstalled);
 
         return installationStatus.equals(InstallationStatus.installed)
@@ -58,7 +58,7 @@ public class InstallerHandlerCacheManager {
 
     public boolean isUninstalled(String componentName) throws Exception {
         final String installationStatus = installedComponentsHandler
-            .getInstalledComponentsCache()
+            .getInstallationStatusComponentsCache()
             .getOrDefault(componentName, InstallationStatus.uninstalled);
 
         return installationStatus.equals(InstallationStatus.uninstalled)
@@ -79,7 +79,7 @@ public class InstallerHandlerCacheManager {
             log.info(componentsStatus.toString());
             if (componentsStatus.size() == 0) {
                 resetCache = false;
-                installedComponentsHandler.putInstalledComponentsCache();
+                installedComponentsHandler.putInstallationStatusComponentsCache();
                 log.info("cache reset");
                 return;
             }

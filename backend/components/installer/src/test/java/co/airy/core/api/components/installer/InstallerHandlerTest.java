@@ -74,6 +74,9 @@ public class InstallerHandlerTest {
     @Captor
     private ArgumentCaptor<ArrayList<String>> cmd;
 
+    @Captor
+    private ArgumentCaptor<Map<String, String>> labels;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(
@@ -97,7 +100,7 @@ public class InstallerHandlerTest {
         doReturn(sourcesChatplugin).when(catalogHandler).getComponentByName("sources-chatplugin");
         doReturn(false).when(installerHandlerCacheManager).isInstalled("sources-chatplugin");
         doNothing().when(installerHandlerCacheManager).changeInstallationStatus("sources-chatplugin", InstallationStatus.pending);
-        doNothing().when(installerHandlerCacheManager).resetCacheAfterJob("helm-install-sources-chatplugin");
+        doNothing().when(installerHandlerCacheManager).resetCacheAfterJob();
 
         final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
             final ApiResponse<V1ConfigMap> coreConfigResponse = new ApiResponse<>(
@@ -112,7 +115,8 @@ public class InstallerHandlerTest {
 
             doReturn(null).when(helmJobHandler).launchHelmJob(
                     eq("helm-install-sources-chatplugin"),
-                    cmd.capture());
+                    cmd.capture(),
+                    labels.capture());
 
             final ApiResponse<V1ConfigMap> repositoriesResponse = new ApiResponse<>(
                     200,
@@ -130,6 +134,8 @@ public class InstallerHandlerTest {
 
             assertThat(cmd.getValue().size(), equalTo(3));
             assertThat(cmd.getValue().get(2), equalTo(getHelmInstallCmd())); 
+            assertThat(labels.getValue().get("helm"), equalTo("install"));
+            assertThat(labels.getValue().get("component"), equalTo("sources-chatplugin"));
         }
     }
 
@@ -137,16 +143,19 @@ public class InstallerHandlerTest {
     public void canUninstallComponent() throws Exception {
         doReturn(null).when(helmJobHandler).launchHelmJob(
                 eq("helm-uninstall-enterprise-dialogflow-connector"),
-                cmd.capture());
+                cmd.capture(),
+                labels.capture());
 
         doReturn(false).when(installerHandlerCacheManager).isUninstalled("enterprise-dialogflow-connector");
         doNothing().when(installerHandlerCacheManager).changeInstallationStatus("enterprise-dialogflow-connector", InstallationStatus.pending);
-        doNothing().when(installerHandlerCacheManager).resetCacheAfterJob("helm-install-enterprise-dialogflow-connector");
+        doNothing().when(installerHandlerCacheManager).resetCacheAfterJob();
 
         installerHandler.uninstallComponent("enterprise-dialogflow-connector");
 
         assertThat(cmd.getValue().size(), equalTo(3));
         assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace uninstall enterprise-dialogflow-connector")); 
+        assertThat(labels.getValue().get("helm"), equalTo("uninstall"));
+        assertThat(labels.getValue().get("component"), equalTo("enterprise-dialogflow-connector"));
     }
 
     private Map<String, String> getCoreConfig() {

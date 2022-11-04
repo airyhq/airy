@@ -42,6 +42,7 @@ import static org.mockito.Mockito.doReturn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,8 +74,14 @@ public class CatalogHandlerTest {
     @Autowired
     private CatalogHandler catalogHandler;
 
+    @Autowired
+    private GitHandler gitHandler;
+
     @Captor
     private ArgumentCaptor<ArrayList<String>> cmd;
+
+    @Captor
+    private ArgumentCaptor<Map<String, String>> labels;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -89,12 +96,6 @@ public class CatalogHandlerTest {
         kafkaTestHelper.afterAll();
     }
 
-
-    @Test
-    public void canOnApplicationEvent(@TempDir File tempDir) throws Exception {
-        callOnApplicationEvent(tempDir);
-    }
-
     @Test
     public void canGetComponents(@TempDir File tempDir) throws Exception {
         callOnApplicationEvent(tempDir);
@@ -103,7 +104,10 @@ public class CatalogHandlerTest {
             .metadata(new V1ObjectMeta().name("helm-installed").namespace("test-namespace"));
 
         //TODO: Move all of this to InstalledComponentsHandlerTest class & mock here
-        doReturn(job).when(helmJobHandler).launchHelmJob(eq(job.getMetadata().getName()), cmd.capture());
+        doReturn(job).when(helmJobHandler).launchHelmJob(
+                eq(job.getMetadata().getName()),
+                cmd.capture(),
+                labels.capture());
         doReturn("helm-installed-test").when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq(job));
 
         final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
@@ -127,10 +131,11 @@ public class CatalogHandlerTest {
         };
 
         try (MockedConstruction<CoreV1Api> apiMock = Mockito.mockConstruction(CoreV1Api.class, fn)) {
-            List<ComponentDetails> listComponents = catalogHandler.listComponents();
+            final List<ComponentDetails> listComponents = catalogHandler.listComponents();
 
             assertThat(cmd.getValue().size(), equalTo(3));
             assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace list | awk '{print $1}' | tail -n +2")); 
+            assertThat(labels.getValue().get("helm"), equalTo("installed"));
 
             //NOTE: We are just going to get some of the components in the list, and check his validity
             ComponentDetails enterpriseSalesforceContactsIngestion = listComponents
@@ -153,8 +158,8 @@ public class CatalogHandlerTest {
     }
 
     private void callOnApplicationEvent(File tempDir) throws Exception {
-        ReflectionTestUtils.setField(catalogHandler, "repoFolder", tempDir);
-        catalogHandler.onApplicationEvent(event);
+        ReflectionTestUtils.setField(gitHandler, "repoFolder", tempDir);
+        gitHandler.onApplicationEvent(event);
     }
 
     private String getInstalledComponents() {

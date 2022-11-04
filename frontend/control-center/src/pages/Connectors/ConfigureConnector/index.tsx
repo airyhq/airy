@@ -35,7 +35,7 @@ type ConfigureConnectorProps = {
 const ConfigureConnector = (props: ConfigureConnectorProps) => {
   const {componentName, isConfigured, configValues, isEnabled, updateConnectorConfiguration, source} = props;
   const {t} = useTranslation();
-  const [config, setConfig] = useState(configValues);
+  const [config, setConfig] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [configurationButtonDisabled, setConfigurationButtonDisabled] = useState(true);
@@ -43,7 +43,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
   useEffect(() => {
     Object.keys(config).length > 0 &&
       Object.values(config).map(item => {
-        item !== 'string' && item !== '' ? setConfigurationButtonDisabled(false) : setConfigurationButtonDisabled(true);
+        item ? setConfigurationButtonDisabled(false) : setConfigurationButtonDisabled(true);
       });
   }, [config]);
 

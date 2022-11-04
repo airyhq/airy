@@ -41,6 +41,13 @@ Airy Core contains the following components:
     link='/sources/introduction'
 />
 <ButtonBox
+    icon={<GearSVG />}
+    iconInvertible={true}
+    title='Integrations'
+    description="Integrations for NLP tool Rasa"
+    link='/conversational-ai-connectors/integrations/rasa-assistant'
+/>
+<ButtonBox
     icon={<HighVoltageSVG />}
     iconInvertible={true}
     title='APIs to access your data'
@@ -67,13 +74,6 @@ Airy Core contains the following components:
     title='UI: From an inbox to dashboards'
     description="Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use."
     link='/ui/inbox/introduction'
-/>
-<ButtonBox
-    icon={<GearSVG />}
-    iconInvertible={true}
-    title='Integrations'
-    description="Pre-made integrations into popular conversational tools, for example NLP tools like Rasa"
-    link='/integrations/rasa-assistant'
 />
 </ButtonBoxList>
 

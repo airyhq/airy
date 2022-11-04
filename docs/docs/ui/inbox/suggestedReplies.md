@@ -42,5 +42,5 @@ You can integrate the open-source machine learning framework Rasa to automate se
 icon={<RasaSVG />}
 title='Rasa integration'
 description='Configure Rasa to receive and reply to messages using Airy'
-link='integrations/rasa-assistant'
+link='conversational-ai-connectors/integrations/rasa-assistant'
 />

@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 :::note Prerequisites
 
-This guide assumes that you completed the [Rasa Chat assistant guide](/conversational-ai/integrations/rasa-assistant.md), which means you have:
+This guide assumes that you completed the [Rasa Chat assistant guide](/conversational-ai-connectors/integrations/rasa-assistant.md), which means you have:
 
 - a running Airy Core instance
 - a Rasa setup connected to that instance with a custom channel (see the [demo repository](https://github.com/airyhq/rasa-demo))

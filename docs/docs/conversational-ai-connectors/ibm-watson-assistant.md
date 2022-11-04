@@ -114,4 +114,4 @@ forward it to your [IBM Watson Assistant](https://cloud.ibm.com/catalog/services
 
 The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an instance connected to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) through Airy Core's IBM Watson Assistant [connector](/concepts/architecture#components). It shows an example where a message sent to Airy Core is responded to by an [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation where the assistant was programmed to respond "Hello from IBM Watson Assistant".
 
-<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai/ibmWatsonAssistant/messagingExample.png')} /></center>
+<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai-connectors/ibmWatsonAssistant/messagingExample.png')} /></center>

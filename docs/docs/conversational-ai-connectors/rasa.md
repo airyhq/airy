@@ -23,8 +23,8 @@ Airy Core includes an internal Rasa [connector](/concepts/architecture#component
 
 This guide outlines the steps to connect your Airy Core instance to Rasa Open Source through Airy Core's Rasa connector.
 
-- Check out our [Rasa Assistant integration guide](/conversational-ai/integrations/rasa-assistant) if you want to implement the Rasa installation from scratch.
-- Check out our [Rasa Suggested Replies integration guide](/conversational-ai/integrations/rasa-suggested-replies) if you want to use Rasa for [suggested replies](/ui/inbox/suggestedReplies) on your Airy Core instance.
+- Check out our [Rasa Assistant integration guide](/conversational-ai-connectors/integrations/rasa-assistant) if you want to implement the Rasa installation from scratch.
+- Check out our [Rasa Suggested Replies integration guide](/conversational-ai-connectors/integrations/rasa-suggested-replies) if you want to use Rasa for [suggested replies](/ui/inbox/suggestedReplies) on your Airy Core instance.
 
 :::
 
@@ -143,4 +143,4 @@ Once the server runs, write a message to one of your channels: Airy Core will fo
 
 The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an instance connected to [Rasa Open Source](https://rasa.com/docs/rasa/) through Airy Core's Rasa [connector](/concepts/architecture#components). It shows an example where a message sent to Airy Core is automatically responded to by a [Rasa Open Source](https://rasa.com/docs/rasa/) installation.
 
-<center><img alt="Airy connection with Rasa " src={useBaseUrl('img/conversational-ai/rasa/messagingExample.png')} /></center>
+<center><img alt="Airy connection with Rasa " src={useBaseUrl('img/conversational-ai-connectors/rasa/messagingExample.png')} /></center>

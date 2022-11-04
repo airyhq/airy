@@ -48,7 +48,7 @@ module.exports = {
       ],
     },
     {
-      '🤖 Conversational AI': [
+      '🤖 Conversational AI connectors': [
         'conversational-ai/cognigy-ai',
         'conversational-ai/ibm-watson-assistant',
         'conversational-ai/rasa',

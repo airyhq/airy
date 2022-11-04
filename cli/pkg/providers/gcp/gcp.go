@@ -28,9 +28,7 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 }
 
 func (p *provider) GetOverrides() tmpl.Variables {
-	return tmpl.Variables{
-		NgrokEnabled: true,
-	}
+	return tmpl.Variables{}
 }
 
 func (p *provider) CheckEnvironment() error {

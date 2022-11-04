@@ -15,14 +15,14 @@ The IBM Watson™ Assistant service combines machine learning, natural language 
 
 </TLDR>
 
-Integrating [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) with your Airy Core instance enables you to leverage its conversational AI capabilities on all your instance's [channels](getting-started/glossary.md#channel).
+Integrating [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) with your Airy Core instance enables you to leverage its conversational AI capabilities on all your instance's [channels](getting-started/glossary.md#channel). When [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) is integrated with an Airy Core instance, Airy Core will forward the messages to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation, which will respond to the Airy Core API according to its conversation flow.
 
-When [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) is integrated with an Airy Core instance, Airy Core will forward the messages to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation, which will respond to the Airy Core API according to its conversation flow.
+Airy Core includes an internal IBM Watson Assistant [connector](/concepts/architecture#components) that you can install on your Airy Core instance: this page will guide through the installation and configuration process.
 
 :::tip What you will learn
 
 - Finding your credentials on your IBM Cloud dashboard
-- How to connect your IBM Watson Assistant to Airy Core
+- How to connect your IBM Watson Assistant's installation to your Airy Core instance through Airy Core's IBM Watson Assistant connector
 
 :::
 
@@ -112,6 +112,6 @@ The [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assista
 To test the connection, write a message to one of your channels: Airy Core will
 forward it to your [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation, which will respond to the Airy Core API according to its conversation flow.
 
-The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an Airy instance connected to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant). It shows an example where a message sent to Airy Core is responded to by an [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation. In this specific installation, the assistant was programmed to respond "Hello from IBM Watson Assistant!" to a contact's message.
+The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an instance connected to the [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) through Airy Core's IBM Watson Assistant [connector](/concepts/architecture#components). It shows an example where a message sent to Airy Core is responded to by an [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) installation where the assistant was programmed to respond "Hello from IBM Watson Assistant".
 
 <center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai/ibmWatsonAssistant/messagingExample.png')} /></center>

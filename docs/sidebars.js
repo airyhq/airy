@@ -48,6 +48,19 @@ module.exports = {
       ],
     },
     {
+      '🤖 Conversational AI': [
+        'conversational-ai/cognigy-ai',
+        'conversational-ai/ibm-watson-assistant',
+        'conversational-ai/rasa',
+        {
+          Integrations: [
+            'conversational-ai/integrations/rasa-assistant',
+            'conversational-ai/integrations/rasa-suggested-replies',
+          ],
+        },
+      ],
+    },
+    {
       '🔌 API': [
         'api/introduction',
         {
@@ -97,19 +110,6 @@ module.exports = {
         },
         {
           Testing: ['ui/testing/integration-testing'],
-        },
-      ],
-    },
-    {
-      '🤖 Conversational AI': [
-        'conversational-ai/ibm-watson-assistant',
-        'conversational-ai/cognigy-ai',
-        'conversational-ai/rasa',
-        {
-          Integrations: [
-            'conversational-ai/integrations/rasa-assistant',
-            'conversational-ai/integrations/rasa-suggested-replies',
-          ],
         },
       ],
     },

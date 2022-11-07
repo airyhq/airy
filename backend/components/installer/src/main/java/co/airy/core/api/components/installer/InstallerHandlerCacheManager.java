@@ -75,8 +75,6 @@ public class InstallerHandlerCacheManager {
             final CoreV1Api api = new CoreV1Api(apiClient);
             final List<ComponentStatus> componentsStatus = helmJobHandler.getInstallationComponentsStatus(api);
 
-            //FIXME: remove log
-            log.info(componentsStatus.toString());
             if (componentsStatus.size() == 0) {
                 resetCache = false;
                 installedComponentsHandler.putInstallationStatusComponentsCache();
@@ -92,8 +90,6 @@ public class InstallerHandlerCacheManager {
                         changeInstallationStatus(
                                 cs.getComponentName(),
                                 cs.getExpectedInstallationStatus());
-                        //FIXME: remove log
-                        log.info(String.format("%s -> %s", cs.getComponentName(), cs.getExpectedInstallationStatus()));
                     } catch (Exception e) {
                         log.error(String.format("unable to set expected status for %s, %s", 
                                     cs.getComponentName(),

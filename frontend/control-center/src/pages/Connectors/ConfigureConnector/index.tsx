@@ -35,16 +35,24 @@ type ConfigureConnectorProps = {
 const ConfigureConnector = (props: ConfigureConnectorProps) => {
   const {componentName, isConfigured, configValues, isEnabled, updateConnectorConfiguration, source} = props;
   const {t} = useTranslation();
-  const [config, setConfig] = useState(configValues);
+  const [config, setConfig] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [configurationButtonDisabled, setConfigurationButtonDisabled] = useState(true);
 
   useEffect(() => {
-    Object.keys(config).length > 0 &&
+    if (Object.keys(config).length > 0) {
+      let filledInputs = 0;
       Object.values(config).map(item => {
-        item !== 'string' && item !== '' ? setConfigurationButtonDisabled(false) : setConfigurationButtonDisabled(true);
+        if (item) filledInputs++;
       });
+
+      if (filledInputs === Object.keys(configValues).length) {
+        setConfigurationButtonDisabled(false);
+      } else {
+        setConfigurationButtonDisabled(true);
+      }
+    }
   }, [config]);
 
   const updateConfig = (event: React.FormEvent<HTMLFormElement>) => {
@@ -95,7 +103,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
   };
 
   return (
-    <section className={styles.formWrapper}>
+    <form className={styles.formWrapper}>
       <SetConfigInputs
         configurationValues={configValues}
         storedConfig={props.config[componentName]}
@@ -113,6 +121,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
         onClick={e => updateConfig(e)}
         dataCy={cyConnectorAddButton}
       />
+
       {isUpdateModalVisible && (
         <RestartPopUp
           componentName={componentName}
@@ -120,7 +129,7 @@ const ConfigureConnector = (props: ConfigureConnectorProps) => {
           enableSubmitConfigData={enableSubmitConfigData}
         />
       )}
-    </section>
+    </form>
   );
 };
 

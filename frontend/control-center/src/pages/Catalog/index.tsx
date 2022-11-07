@@ -3,36 +3,30 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services';
-import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
-import CatalogCard, {ObservationInstallStatus} from './CatalogCard';
+import {ComponentInfo, ConnectorPrice} from 'model';
+import CatalogCard from './CatalogCard';
 import styles from './index.module.scss';
-import {listComponents} from '../../actions';
+import {listComponents, getConnectorsConfiguration, listChannels} from '../../actions';
 import {CatalogSearchBar} from './CatalogSearchBar/CatalogSearchBar';
 import {FilterTypes} from './CatalogSearchBar/FilterCatalogModal/FilterCatalogModal';
-import {AiryLoader} from 'components/loaders/AiryLoader';
-import {getMergedConnectors} from '../../selectors';
-import {NotificationComponent} from 'components';
 
 const mapStateToProps = (state: StateModel) => {
   return {
     catalogList: Object.values(state.data.catalog),
-    connectors: getMergedConnectors(state),
   };
 };
 
 const mapDispatchToProps = {
   listComponents,
+  getConnectorsConfiguration,
+  listChannels,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
-  const {catalogList, connectors, listComponents} = props;
+  const {catalogList, listComponents, getConnectorsConfiguration, listChannels} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
-  const [observeInstallStatus, setObserveInstallStatus] = useState<ObservationInstallStatus>(null);
-  const [notification, setNotification] = useState<NotificationModel>(null);
-  const [showConfigureModal, setShowConfigureModal] = useState('');
-  const [blockInstalling, setBlockInstalling] = useState(false);
   const {t} = useTranslation();
   const catalogPageTitle = t('Catalog');
   const [currentFilter, setCurrentFilter] = useState(
@@ -42,47 +36,17 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
     setPageTitle(catalogPageTitle);
   }, []);
-
-  useEffect(() => {
-    observeInstallStatus?.pending && recallComponentsList(observeInstallStatus?.retries);
-
-    !observeInstallStatus &&
-      Object.values(connectors).map(connector => {
-        connector.installationStatus === InstallationStatus.pending &&
-          (setObserveInstallStatus({pending: true, name: connector.name, retries: 0}),
-          recallComponentsList(observeInstallStatus?.retries));
-      });
-  }, [observeInstallStatus, connectors[observeInstallStatus?.name]?.installationStatus]);
-
-  const recallComponentsList = (retries: number) => {
-    connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.pending
-      ? setBlockInstalling(true)
-      : setBlockInstalling(false);
-
-    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.installed) {
-      setShowConfigureModal(observeInstallStatus?.name);
-    }
-
-    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.uninstalled) {
-      setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
-    }
-
-    const maxRetries = 15;
-    setTimeout(() => {
-      retries++;
-      setObserveInstallStatus({...observeInstallStatus, retries: retries});
-      if (
-        observeInstallStatus?.retries === maxRetries ||
-        (connectors[observeInstallStatus?.name]?.installationStatus !== InstallationStatus.pending && retries > 1)
-      ) {
-        setObserveInstallStatus({...observeInstallStatus, pending: false});
-      } else {
-        listComponents();
-      }
-    }, 5000);
-  };
 
   useLayoutEffect(() => {
     if (query && currentFilter === FilterTypes.all) {
@@ -92,19 +56,10 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       setOrderedCatalogList(filteredCatalogByName);
     } else {
       const sortedByInstalled = [...catalogList]
-        .filter(
-          (component: ComponentInfo) =>
-            component.installationStatus === InstallationStatus.installed &&
-            component.price !== ConnectorPrice.requestAccess
-        )
+        .filter((component: ComponentInfo) => component.installed && component.price !== ConnectorPrice.requestAccess)
         .sort(sortByName);
       const sortedByUninstalled = [...catalogList]
-        .filter(
-          (component: ComponentInfo) =>
-            (component.installationStatus === InstallationStatus.uninstalled ||
-              component.installationStatus === InstallationStatus.pending) &&
-            component.price !== ConnectorPrice.requestAccess
-        )
+        .filter((component: ComponentInfo) => !component.installed && component.price !== ConnectorPrice.requestAccess)
         .sort(sortByName);
       const sortedByAccess = [...catalogList]
         .filter((component: ComponentInfo) => component.price === ConnectorPrice.requestAccess)
@@ -146,53 +101,27 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, [catalogList, currentFilter, query]);
 
   return (
-    <>
-      <section className={styles.catalogWrapper}>
-        <div className={styles.headlineSearchBarContainer}>
-          <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
-          {catalogList.length > 0 && (
-            <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
-          )}
-        </div>
-        {catalogList.length > 0 ? (
-          <section className={styles.catalogListContainer}>
-            {orderedCatalogList && orderedCatalogList.length > 0 ? (
-              orderedCatalogList.map((infoItem: ComponentInfo) => {
-                if (infoItem?.name && infoItem?.displayName) {
-                  return (
-                    <CatalogCard
-                      componentInfo={infoItem}
-                      key={infoItem.displayName}
-                      setObserveInstallStatus={setObserveInstallStatus}
-                      showConfigureModal={showConfigureModal}
-                      installStatus={infoItem.installationStatus}
-                      blockInstalling={blockInstalling}
-                    />
-                  );
-                }
-              })
-            ) : (
-              <div className={styles.notFoundContainer}>
-                <h1>{t('nothingFound')}</h1>
-                <span>{t('noMatchingCatalogs')}</span>
-              </div>
-            )}
-          </section>
+    <section className={styles.catalogWrapper}>
+      <div className={styles.headlineSearchBarContainer}>
+        <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
+        <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
+      </div>
+
+      <section className={styles.catalogListContainer}>
+        {orderedCatalogList && orderedCatalogList.length > 0 ? (
+          orderedCatalogList.map((infoItem: ComponentInfo) => {
+            if (infoItem?.name && infoItem?.displayName) {
+              return <CatalogCard componentInfo={infoItem} key={infoItem.displayName} />;
+            }
+          })
         ) : (
-          <AiryLoader height={240} width={240} position="relative" top={220} />
+          <div className={styles.notFoundContainer}>
+            <h1>{t('nothingFound')}</h1>
+            <span>{t('noMatchingCatalogs')}</span>
+          </div>
         )}
       </section>
-      {notification?.show && (
-        <NotificationComponent
-          type={notification.info ? 'sticky' : 'fade'}
-          show={notification.show}
-          text={notification.text}
-          successful={notification.successful}
-          setShowFalse={setNotification}
-          info={notification.info}
-        />
-      )}
-    </>
+    </section>
   );
 };
 

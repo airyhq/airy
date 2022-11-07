@@ -14,7 +14,6 @@ import {ReactComponent as CognigyAvatar} from 'assets/images/icons/cognigyLogo.s
 import {ReactComponent as RasaAvatar} from 'assets/images/icons/rasaLogo.svg';
 import {ReactComponent as AmeliaAvatar} from 'assets/images/icons/ameliaLogo.svg';
 import {ReactComponent as AmazonS3Avatar} from 'assets/images/icons/amazons3Logo.svg';
-import {ReactComponent as AmazonLexV2Avatar} from 'assets/images/icons/amazonLexV2Logo.svg';
 import {ReactComponent as IbmWatsonAssistantAvatar} from 'assets/images/icons/ibmWatsonAssistantLogo.svg';
 
 import {Channel, Source} from 'model';
@@ -80,9 +79,6 @@ export const getChannelAvatar = (source: string) => {
     case Source.amazons3:
     case 'Amazon S3':
       return <AmazonS3Avatar />;
-    case Source.amazonLexV2:
-    case 'Amazon LEX V2':
-      return <AmazonLexV2Avatar />;
     case Source.ibmWatsonAssistant:
     case 'IBM Watson Assistant':
       return <IbmWatsonAssistantAvatar />;

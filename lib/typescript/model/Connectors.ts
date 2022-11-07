@@ -1,7 +1,6 @@
 import {Source} from './Source';
 
 export enum ConnectorName {
-  amazonLexV2 = 'amazon-lex-v2-connector',
   apiAdmin = 'api-admin',
   apiCommunication = 'api-communication',
   apiContacts = 'api-contacts',
@@ -26,12 +25,6 @@ export enum ConnectorName {
   zendenkConnector = 'zendesk-connector',
 }
 
-export enum InstallationStatus {
-  installed = 'installed',
-  pending = 'pending',
-  uninstalled = 'uninstalled',
-}
-
 export enum ConnectorPrice {
   free = 'Free',
   paid = 'Paid',
@@ -41,7 +34,7 @@ export enum ConnectorPrice {
 export type Connector = {
   name?: string;
   displayName?: string;
-  installationStatus?: InstallationStatus;
+  isInstalled?: boolean;
   isEnabled?: boolean;
   isHealthy?: boolean;
   isConfigured?: boolean;

@@ -3,7 +3,7 @@ package gcp
 import (
 	"cli/pkg/console"
 	"cli/pkg/workspace"
-	tmpl "cli/pkg/workspace/template"
+	"cli/pkg/workspace/template"
 	"io"
 	"os"
 	"os/exec"
@@ -27,8 +27,10 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 	}
 }
 
-func (p *provider) GetOverrides() tmpl.Variables {
-	return tmpl.Variables{}
+func (p *provider) GetOverrides() template.Variables {
+	return template.Variables{
+		NgrokEnabled: false,
+	}
 }
 
 func (p *provider) CheckEnvironment() error {

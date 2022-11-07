@@ -1,15 +1,22 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {Connector, InstallationStatus, Source} from 'model';
+import {Connector, Source} from 'model';
 import InfoCard from './InfoCard';
 import {StateModel} from '../../reducers';
+import {listChannels, listComponents, getConnectorsConfiguration} from '../../actions';
 import {setPageTitle} from '../../services/pageTitle';
 import {EmptyStateConnectors} from './EmptyStateConnectors';
 import {ChannelCard} from './ChannelCard';
+import {SimpleLoader} from 'components';
 import {getComponentStatus} from '../../services';
 import styles from './index.module.scss';
 import {getMergedConnectors} from '../../selectors';
-import {AiryLoader} from 'components/loaders/AiryLoader';
+
+const mapDispatchToProps = {
+  listChannels,
+  getConnectorsConfiguration,
+  listComponents,
+};
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -17,15 +24,12 @@ const mapStateToProps = (state: StateModel) => {
   };
 };
 
-const connector = connect(mapStateToProps, null);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {connectors} = props;
+  const {connectors, listChannels, getConnectorsConfiguration, listComponents} = props;
   const installedConnectors = Object.values(connectors).filter(
-    (connector: Connector) =>
-      connector.installationStatus === InstallationStatus.installed &&
-      connector.source !== Source.webhooks &&
-      connector.price
+    (connector: Connector) => connector.isInstalled && connector.source !== Source.webhooks && connector.price
   );
   const hasAvailableConnectors =
     Object.values(connectors).filter((connector: Connector) => connector.source !== Source.webhooks && connector.price)
@@ -36,6 +40,15 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const sortByName = (a: Connector, b: Connector) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
+    listChannels().catch((error: Error) => {
+      console.error(error);
+    });
+    getConnectorsConfiguration().catch((error: Error) => {
+      console.error(error);
+    });
+    listComponents().catch((error: Error) => {
+      console.error(error);
+    });
     setPageTitle(pageTitle);
   }, []);
 
@@ -44,12 +57,11 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
       <div className={styles.channelsHeadline}>
         <div>
           <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+          {!hasAvailableConnectors && <SimpleLoader />}
         </div>
       </div>
       <div className={styles.wrapper}>
-        {!hasAvailableConnectors ? (
-          <AiryLoader height={240} width={240} position="relative" top={220} />
-        ) : !hasInstalledComponents ? (
+        {!hasInstalledComponents ? (
           <EmptyStateConnectors />
         ) : (
           <>
@@ -61,7 +73,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     componentInfo={connector}
                     componentStatus={getComponentStatus(
                       connector.isHealthy,
-                      connector.installationStatus === InstallationStatus.installed,
+                      connector.isInstalled,
                       connector.isConfigured,
                       connector.isEnabled
                     )}
@@ -76,7 +88,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
                     componentInfo={connector}
                     componentStatus={getComponentStatus(
                       connector.isHealthy,
-                      connector.installationStatus === InstallationStatus.installed,
+                      connector.isInstalled,
                       connector.isConfigured,
                       connector.isEnabled
                     )}

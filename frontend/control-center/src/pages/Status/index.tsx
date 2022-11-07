@@ -7,7 +7,6 @@ import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg
 import {setPageTitle} from '../../services/pageTitle';
 import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {AiryLoader} from 'components/loaders/AiryLoader';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -72,37 +71,33 @@ const Status = (props: ConnectedProps<typeof connector>) => {
           {lastRefresh}
         </span>
       </div>
-      {Object.entries(catalog).length > 0 ? (
-        <>
-          <div className={styles.listHeader}>
-            <h2>{t('componentName')}</h2>
-            <h2>{t('healthStatus')}</h2>
-            <h2>{t('enabled')}</h2>
-            <button onClick={handleRefresh} className={styles.refreshButton}>
-              <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
-                <RefreshIcon />
-              </div>
-            </button>
+      <div className={styles.listHeader}>
+        <h2>{t('componentName')}</h2>
+        <h2>{t('healthStatus')}</h2>
+
+        <h2>{t('enabled')}</h2>
+        <button onClick={handleRefresh} className={styles.refreshButton}>
+          <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
+            <RefreshIcon />
           </div>
-          <div className={styles.listItems}>
-            {components.map((component, index) => {
-              const catalogItem = catalog[component[0]];
-              return (
-                <ComponentListItem
-                  key={index}
-                  healthy={component[1].healthy}
-                  enabled={component[1].enabled}
-                  services={component[1].services}
-                  componentName={component[0]}
-                  source={catalogItem?.source}
-                />
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <AiryLoader height={240} width={240} position="relative" />
-      )}
+        </button>
+      </div>
+      <div className={styles.listItems}>
+        {Object.entries(catalog).length > 0 &&
+          components.map((component, index) => {
+            const catalogItem = catalog[component[0]];
+            return (
+              <ComponentListItem
+                key={index}
+                healthy={component[1].healthy}
+                enabled={component[1].enabled}
+                services={component[1].services}
+                componentName={component[0]}
+                source={catalogItem?.source}
+              />
+            );
+          })}
+      </div>
     </section>
   );
 };

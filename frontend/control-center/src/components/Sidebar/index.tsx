@@ -4,7 +4,7 @@ import {useMatch} from 'react-router';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {useCurrentComponentForSource} from '../../selectors';
-import {InstallationStatus, Source} from 'model';
+import {Source} from 'model';
 import {CATALOG_ROUTE, CONNECTORS_ROUTE, INBOX_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
@@ -27,7 +27,7 @@ const Sidebar = (props: SideBarProps) => {
   const {version, components} = props;
   const componentInfo = useCurrentComponentForSource(Source.webhooks);
 
-  const webhooksEnabled = componentInfo.installationStatus === InstallationStatus.installed;
+  const webhooksEnabled = componentInfo.installed;
   const inboxEnabled = components[Source.frontendInbox]?.enabled || false;
   const showLine = inboxEnabled || webhooksEnabled;
 

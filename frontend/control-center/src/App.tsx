@@ -4,7 +4,7 @@ import TopBar from './components/TopBar';
 import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
-import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
@@ -16,40 +16,20 @@ import Status from './pages/Status';
 import Inbox from './pages/Inbox';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
-import {getConnectorsConfiguration, listChannels, listComponents} from './actions';
 
 const mapDispatchToProps = {
   getClientConfig,
-  listChannels,
-  getConnectorsConfiguration,
-  listComponents,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const App = (props: ConnectedProps<typeof connector>) => {
-  const location = useLocation();
-
   useEffect(() => {
-    props.getClientConfig().catch((error: Error) => {
-      console.error(error);
-    });
+    props.getClientConfig();
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
   }, []);
-
-  useEffect(() => {
-    props.listChannels().catch((error: Error) => {
-      console.error(error);
-    });
-    props.getConnectorsConfiguration().catch((error: Error) => {
-      console.error(error);
-    });
-    props.listComponents().catch((error: Error) => {
-      console.error(error);
-    });
-  }, [location]);
 
   return (
     <div className={styles.container}>

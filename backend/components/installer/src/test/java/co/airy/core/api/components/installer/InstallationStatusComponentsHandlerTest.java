@@ -72,10 +72,10 @@ public class InstallationStatusComponentsHandlerTest {
     private HelmJobHandler helmJobHandler;
 
     @Autowired
-    private CatalogHandler catalogHandler;
+    private GitHandler gitHandler;
 
     @Autowired
-    private GitHandler gitHandler;
+    private InstallationStatusComponentsHandler installationStatusComponentsHandler;
 
     @Captor
     private ArgumentCaptor<ArrayList<String>> cmd;
@@ -94,6 +94,58 @@ public class InstallationStatusComponentsHandlerTest {
     @AfterAll
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
+    }
+
+    @Test
+    public void canGetInstallationStatusComponentsCache(@TempDir File tempDir) throws Exception {
+        callOnApplicationEvent(tempDir);
+
+        final V1Job job = new V1Job()
+            .metadata(new V1ObjectMeta().name("helm-installed").namespace("test-namespace"));
+
+        doReturn(job).when(helmJobHandler).launchHelmJob(
+                eq(job.getMetadata().getName()),
+                cmd.capture(),
+                labels.capture());
+        doReturn("helm-installed-test").when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq(job));
+
+        final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
+            final ApiResponse<String> response = new ApiResponse<>(
+                    200,
+                    null,
+                    getInstalledComponents());
+
+            doReturn(response).when(mock).readNamespacedPodLogWithHttpInfo(
+                "helm-installed-test",
+                job.getMetadata().getNamespace(),
+                "",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        };
+
+        try (MockedConstruction<CoreV1Api> apiMock = Mockito.mockConstruction(CoreV1Api.class, fn)) {
+            final Map<String, String> installationStatues = installationStatusComponentsHandler.getInstallationStatusComponentsCache();
+
+            assertThat(cmd.getValue().size(), equalTo(3));
+            assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace list | awk '{print $1}' | tail -n +2")); 
+            assertThat(labels.getValue().get("helm"), equalTo("installed"));
+
+            assertThat(installationStatues.get("sources-facebook"), equalTo("installed"));
+            assertThat(installationStatues.get("enterprise-salesforce-contacts-ingestion"), equalTo("installed"));
+            assertThat(installationStatues.get("amazon-s3-connector"), equalTo("uninstalled"));
+            assertThat(installationStatues.get("mobile"), equalTo("uninstalled"));
+        }
+    }
+
+    private void callOnApplicationEvent(File tempDir) throws Exception {
+        ReflectionTestUtils.setField(gitHandler, "repoFolder", tempDir);
+        gitHandler.onApplicationEvent(event);
     }
 
     private String getInstalledComponents() {

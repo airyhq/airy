@@ -33,14 +33,3 @@ link='api/endpoints/messages#suggest-replies'
 import SuggestReplies from '../../api/endpoints/suggest-replies.mdx'
 
 <SuggestReplies />
-
-## Integration with Rasa for further message automation
-
-You can integrate the open-source machine learning framework Rasa to automate sending messages on your Airy Core instance.
-
-<ButtonBox
-icon={<RasaSVG />}
-title='Rasa integration'
-description='Configure Rasa to receive and reply to messages using Airy'
-link='conversational-ai-connectors/integrations/rasa-assistant'
-/>

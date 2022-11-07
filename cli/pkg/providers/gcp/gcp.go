@@ -2,6 +2,7 @@ package gcp
 
 import (
 	"cli/pkg/console"
+
 	"cli/pkg/workspace"
 	"cli/pkg/workspace/template"
 	"io"
@@ -28,9 +29,7 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 }
 
 func (p *provider) GetOverrides() template.Variables {
-	return template.Variables{
-		NgrokEnabled: false,
-	}
+	return template.Variables{}
 }
 
 func (p *provider) CheckEnvironment() error {

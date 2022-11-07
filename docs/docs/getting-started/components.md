@@ -11,7 +11,7 @@ import SpeechBalloonSVG from "@site/static/icons/speechBalloon.svg";
 import HighVoltageSVG from "@site/static/icons/highVoltage.svg";
 import ElectricPlugSVG from "@site/static/icons/electricPlug.svg";
 import FishingPoleSVG from "@site/static/icons/fishingPole.svg";
-import GearSVG from "@site/static/icons/gear.svg";
+import RobotSVG from "@site/static/icons/robot.svg";
 import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
@@ -41,11 +41,11 @@ Airy Core contains the following components:
     link='/sources/introduction'
 />
 <ButtonBox
-    icon={<GearSVG />}
+    icon={<RobotSVG />}
     iconInvertible={true}
-    title='Integrations'
-    description="Integrations for NLP tool Rasa"
-    link='/conversational-ai-connectors/integrations/rasa-assistant'
+    title='Conversational AI connectors'
+    description="Level up your channels' communication with Airy Core's conversational AI connectors"
+    link='/conversational-ai-connectors/overview'
 />
 <ButtonBox
     icon={<HighVoltageSVG />}

@@ -988,7 +988,7 @@ const resources = {
 
       //Amazon Lex V2
       amazonLexV2Description: 'Ein Webdienst zur Erstellung von Konversationsschnittstellen',
-      
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
 
@@ -1505,7 +1505,7 @@ const resources = {
 
       //Amazon Lex V2
       amazonLexV2Description: 'Un service web pour construire une interface conversationnelle.',
-      
+
       //Amazon S3
       amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
 
@@ -2065,7 +2065,7 @@ const resources = {
 
       //Amazon Lex V2
       amazonLexV2Description: 'Un servicio web para construir una interfaz conversacional.',
-      
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
 

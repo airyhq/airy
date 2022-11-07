@@ -17,14 +17,13 @@ With over 25 million downloads, Rasa Open Source is the most popular open source
 
 Integrating [Rasa Open Source](https://rasa.com/docs/rasa/) with your Airy Core instance enables you to leverage its conversational AI capabilities on all your instance's [channels](getting-started/glossary.md#channel). When [Rasa Open Source](https://rasa.com/docs/rasa/) is integrated with an Airy Core instance, Airy Core will forward the messages to the [Rasa Open Source](https://rasa.com/docs/rasa/) installation, which will respond to the Airy Core API according to its conversation flow.
 
-Airy Core includes an internal Rasa [connector](/concepts/architecture#components) that you can install on your Airy Core instance: this page will guide through the installation and configuration process.
+Airy Core includes an internal Rasa [connector](/concepts/architecture#components) that you can install and configure on your Airy Core instance. This page will guide through the installation and configuration process.
 
 :::note
 
 This guide outlines the steps to connect your Airy Core instance to Rasa Open Source through Airy Core's Rasa connector.
 
-- Check out our [Rasa Assistant integration guide](/conversational-ai-connectors/integrations/rasa-assistant) if you want to implement the Rasa installation from scratch.
-- Check out our [Rasa Suggested Replies integration guide](/conversational-ai-connectors/integrations/rasa-suggested-replies) if you want to use Rasa for [suggested replies](/ui/inbox/suggestedReplies) on your Airy Core instance.
+Check out our [blog post](https://blog.airy.co/how-to-level-up-customer-support-with-airy-rasa-x) if you are interested in building an integration from scratch between your Airy Core instance and Rasa X.
 
 :::
 

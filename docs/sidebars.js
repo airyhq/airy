@@ -52,12 +52,6 @@ module.exports = {
         'conversational-ai-connectors/cognigy-ai',
         'conversational-ai-connectors/ibm-watson-assistant',
         'conversational-ai-connectors/rasa',
-        {
-          Integrations: [
-            'conversational-ai-connectors/integrations/rasa-assistant',
-            'conversational-ai-connectors/integrations/rasa-suggested-replies',
-          ],
-        },
       ],
     },
     {

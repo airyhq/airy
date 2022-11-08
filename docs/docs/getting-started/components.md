@@ -37,7 +37,7 @@ Airy Core contains the following components:
     iconInvertible={true}
     title='Connectors'
     description="Connect anything to your Airy Core - from our Open-Source Airy Live Chat Plugin to Facebook Messenger, Instagram, Google's Business Messages, IBM Watson Assistant, and more. This is all possible through an ingestion platform that heavily relies on Apache Kafka to process incoming webhook data from different sources. We make sense of the data and reshape it into source independent contacts, conversations, and messages."
-    link='/sources/introduction'
+    link='/connectors/sources/introduction'
 />
 <ButtonBox
     icon={<HighVoltageSVG />}

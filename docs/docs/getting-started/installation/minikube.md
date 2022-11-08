@@ -44,7 +44,7 @@ This will execute the following actions:
 :::note
 
 The base URL for the [API](../../api/introduction.md) is the same to access the UI through your browser.
-You can use the printed `ngrok` URL to connect to different [sources](../../sources/introduction.md) to the instance running on your local machine.
+You can use the printed `ngrok` URL to connect to different [sources](../../connectors/sources/introduction.md) to the instance running on your local machine.
 
 :::
 

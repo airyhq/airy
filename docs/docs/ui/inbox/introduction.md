@@ -13,7 +13,7 @@ import ChannelsUI from "@site/static/icons/channelsUi.svg";
 import ContactsSVG from "@site/static/icons/contacts.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-The Inbox features a [Messenger](messenger), filled with the conversations from all of your [connectors](sources/introduction.md). You can chat, organize your conversations with features such as [Filters, Search](messenger#search-and-filter) and [Tags](tags), view and edit [contacts](contacts), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
+The Inbox features a [Messenger](messenger), filled with the conversations from all of your [connectors](connectors/sources/introduction.md). You can chat, organize your conversations with features such as [Filters, Search](messenger#search-and-filter) and [Tags](tags), view and edit [contacts](contacts), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
 
 To run the Inbox UI locally, you can start its development server with the command:<br/>
 `./scripts/web-dev.sh //frontend/inbox:bundle_server`

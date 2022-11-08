@@ -1,6 +1,6 @@
 ---
-title: Connectors
-sidebar_label: Connectors
+title: Connectors UI
+sidebar_label: Connectors UI
 ---
 
 import TLDR from "@site/src/components/TLDR";

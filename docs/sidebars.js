@@ -25,34 +25,39 @@ module.exports = {
       ],
     },
     {
-      '💬 Sources': [
-        'sources/introduction',
+      '💬 Connectors': [
+        'connectors/overview',
+        'ui/control-center/connectors',
         {
-          'Airy Live Chat Plugin': [
-            'sources/chatplugin/overview',
-            'sources/chatplugin/demo',
-            'sources/chatplugin/quickstart',
-            'sources/chatplugin/installation',
-            'sources/chatplugin/messageExamples',
-            'sources/chatplugin/customization',
+          Sources: [
+            'connectors/sources/introduction',
+            {
+              'Airy Live Chat Plugin': [
+                'connectors/sources/chatplugin/overview',
+                'connectors/sources/chatplugin/demo',
+                'connectors/sources/chatplugin/quickstart',
+                'connectors/sources/chatplugin/installation',
+                'connectors/sources/chatplugin/messageExamples',
+                'connectors/sources/chatplugin/customization',
+              ],
+            },
+            'connectors/sources/facebook',
+            'connectors/sources/whatsapp-cloud',
+            'connectors/sources/instagram',
+            'connectors/sources/google',
+            'connectors/sources/whatsapp-twilio',
+            'connectors/sources/sms-twilio',
+            'connectors/sources/viber',
           ],
         },
-        'sources/facebook',
-        'sources/whatsapp-cloud',
-        'sources/instagram',
-        'sources/google',
-        'sources/whatsapp-twilio',
-        'sources/sms-twilio',
-        'sources/viber',
-        'ui/control-center/connectors',
-      ],
-    },
-    {
-      '🤖 Conversational AI connectors': [
-        'conversational-ai-connectors/overview',
-        'conversational-ai-connectors/cognigy-ai',
-        'conversational-ai-connectors/ibm-watson-assistant',
-        'conversational-ai-connectors/rasa',
+        {
+          'Conversational AI': [
+            'connectors/conversational-ai/introduction',
+            'connectors/conversational-ai/cognigy-ai',
+            'connectors/conversational-ai/ibm-watson-assistant',
+            'connectors/conversational-ai/rasa',
+          ],
+        },
       ],
     },
     {

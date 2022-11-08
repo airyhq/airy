@@ -177,7 +177,7 @@ link='api/endpoints/channels#instagram'
 
 <br />
 
-import ConnectInstagram from '../api/endpoints/connect-instagram.mdx'
+import ConnectInstagram from '../../api/endpoints/connect-instagram.mdx'
 
 <ConnectInstagram />
 

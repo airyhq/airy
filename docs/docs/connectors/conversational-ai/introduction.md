@@ -1,6 +1,6 @@
 ---
-title: Overview
-sidebar_label: Overview
+title: Introduction
+sidebar_label: Introduction
 ---
 
 import RobotSVG from "@site/static/icons/robot.svg";
@@ -17,20 +17,20 @@ Airy Core features conversational AI [connectors](/concepts/architecture#compone
         iconInvertible={true}
         title='Cognigy AI'
         description='Conversational AI in a user-friendly interface'
-        link='conversational-ai-connectors/cognigy-ai'
+        link='connectors/conversational-ai/cognigy-ai'
     />
     <ButtonBox
         icon={<RobotSVG  />}
         title='IBM Watson Assistant'
         iconInvertible={true}
         description="An AI assistant that builds natural conversation flows"
-        link='conversational-ai-connectors/ibm-watson-assistant'
+        link='connectors/conversational-ai/ibm-watson-assistant'
     />
        <ButtonBox
         icon={<RobotSVG  />}
         title='Rasa Open Source'
         iconInvertible={true}
         description="The most popular open source framework for building AI assistants"
-        link='conversational-ai-connectors/rasa'
+        link='connectors/conversational-ai/rasa'
     />
 </ButtonBoxList>

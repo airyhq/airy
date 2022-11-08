@@ -114,7 +114,7 @@ link='api/endpoints/channels#google'
 
 <br/>
 
-import ConnectGoogle from '../api/endpoints/connect-google.mdx'
+import ConnectGoogle from '../../api/endpoints/connect-google.mdx'
 
 <ConnectGoogle />
 

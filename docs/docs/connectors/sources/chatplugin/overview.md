@@ -52,7 +52,7 @@ Completely customize your Live Chat and make it match your brand:
     icon={<HammerAndWrenchSVG />}
     title='Learn more about the customization of your Chat Plugin'
     description='From colors to shapes and sizes: everything is editable'
-    link='/sources/chatplugin/customization'
+    link='/connectors/sources/chatplugin/customization'
 />
 </ButtonBoxList>
 

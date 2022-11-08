@@ -13,7 +13,7 @@ We support two ways of customizing your Airy Chat Plugin. For most use cases the
 
 ### Basic customization
 
-After setting up your [first source](/sources/chatplugin/quickstart#step-1-set-up-your-first-source) you can customize your Airy Chat Plugin to your needs.
+After setting up your [first source](/connectors/sources/chatplugin/quickstart#step-1-set-up-your-first-source) you can customize your Airy Chat Plugin to your needs.
 
 On your instance's [Control Center](/ui/control-center/introduction), navigate to the [Catalog](/ui/control-center/catalog) on the left sidebar and select the Airy Live Chat connector.
 

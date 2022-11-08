@@ -140,6 +140,6 @@ If this command fails, make sure you've set up [your virtual environment](https:
 
 Once the server runs, write a message to one of your channels: Airy Core will forward it to your [Rasa Open Source](https://rasa.com/docs/rasa/) installation, which will respond to the Airy Core API according to its conversation flow.
 
-The screenshot below displays an [Airy Live Chat Plugin](/sources/chatplugin/overview) from an instance connected to [Rasa Open Source](https://rasa.com/docs/rasa/) through Airy Core's Rasa [connector](/concepts/architecture#components). It shows an example where a message sent to Airy Core is automatically responded to by a [Rasa Open Source](https://rasa.com/docs/rasa/) installation.
+The screenshot below displays an [Airy Live Chat Plugin](/connectors/sources/chatplugin/overview) from an instance connected to [Rasa Open Source](https://rasa.com/docs/rasa/) through Airy Core's Rasa [connector](/concepts/architecture#components). It shows an example where a message sent to Airy Core is automatically responded to by a [Rasa Open Source](https://rasa.com/docs/rasa/) installation.
 
 <center><img alt="Airy connection with Rasa " src={useBaseUrl('img/conversational-ai-connectors/rasa/messagingExample.png')} /></center>

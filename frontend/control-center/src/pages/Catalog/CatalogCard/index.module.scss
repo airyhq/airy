@@ -14,14 +14,20 @@
   outline: 2px solid transparent;
   @include font-s;
   transition: all 0.1s;
-  transform: translateZ(-10px);
+  z-index: -1;
   position: relative;
+  pointer-events: all;
 
   &:hover {
     outline: 2px solid var(--color-airy-blue);
     border: 1px solid transparent;
     cursor: pointer;
   }
+}
+
+.installerLoaderWrapper {
+  position: relative;
+  z-index: 0;
 }
 
 .cardLogoTitleContainer {

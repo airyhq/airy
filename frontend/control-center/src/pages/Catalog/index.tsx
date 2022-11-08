@@ -27,7 +27,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Catalog = (props: ConnectedProps<typeof connector>) => {
-  const {catalogList, connectors} = props;
+  const {catalogList, connectors, listComponents} = props;
   const [orderedCatalogList, setOrderedCatalogList] = useState<ComponentInfo[]>(catalogList);
   const [observeInstallStatus, setObserveInstallStatus] = useState<ObservationInstallStatus>(null);
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -46,21 +46,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   useEffect(() => {
-    if (connectors[observeInstallStatus?.name]?.installationStatus !== InstallationStatus.pending) {
-      setBlockInstalling(false);
-    }
-
-    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.installed) {
-      setNotification({show: true, successful: true, text: t('successfullyInstalled')});
-      setShowConfigureModal(observeInstallStatus?.name);
-    }
-
-    // if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.uninstalled) {
-    //   setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
-    //   setBlockInstalling(false);
-    //   console.log(connectors[observeInstallStatus?.name]?.installationStatus);
-    // }
-
     observeInstallStatus?.pending && recallComponentsList(observeInstallStatus?.retries);
 
     !observeInstallStatus &&
@@ -72,7 +57,18 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   }, [observeInstallStatus, connectors[observeInstallStatus?.name]?.installationStatus]);
 
   const recallComponentsList = (retries: number) => {
-    setBlockInstalling(true);
+    connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.pending
+      ? setBlockInstalling(true)
+      : setBlockInstalling(false);
+
+    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.installed) {
+      setShowConfigureModal(observeInstallStatus?.name);
+    }
+
+    if (connectors[observeInstallStatus?.name]?.installationStatus === InstallationStatus.uninstalled) {
+      setNotification({show: true, successful: true, text: t('successfullyUninstalled')});
+    }
+
     const maxRetries = 15;
     setTimeout(() => {
       retries++;
@@ -82,11 +78,8 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
         (connectors[observeInstallStatus?.name]?.installationStatus !== InstallationStatus.pending && retries > 1)
       ) {
         setObserveInstallStatus({...observeInstallStatus, pending: false});
-        console.log('DONE');
       } else {
-        setBlockInstalling(true);
-        props.listComponents();
-        console.log(observeInstallStatus);
+        listComponents();
       }
     }, 5000);
   };
@@ -173,8 +166,6 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                       setObserveInstallStatus={setObserveInstallStatus}
                       showConfigureModal={showConfigureModal}
                       installStatus={infoItem.installationStatus}
-                      // isPending={infoItem.installationStatus === InstallationStatus.pending}
-                      // isInstalled={infoItem.installationStatus === InstallationStatus.installed}
                       blockInstalling={blockInstalling}
                     />
                   );

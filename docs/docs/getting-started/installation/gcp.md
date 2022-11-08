@@ -47,12 +47,12 @@ Default output format [None]: json
 Apart from an Google Kubernetes Engine cluster, `airy create` will create of all the necessary GCP
 resources for Airy Core to run:
 
-|                                   Service & pricing                                    | Resources created by default                                                                         | Description                                                                                                                                                | Overwrite [^1] |
-| :------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------: |
-|                    [**VPC**](https://cloud.google.com/vpc/docs/vpc)                    | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | VPC which will contain all the created compute and network resources                                                                                       |      Yes       |
-|               [**GKE**](https://cloud.google.com/kubernetes-engine/docs)               | 1 GKE cluster                                                                                        | Kubernetes cluster to store all the Airy Core resources                                                                                                    |       No       |
-|  [**GCE**](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos)   | 6 Google Compute Engine Instances                                                                    | The instances are a part of the `Node Pool` attached to the GKE cluster. The default instance type is: `n1-standard-2`, os type: `Container-Optimized OS`. |      Yes       |
-| [**GLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer                                                                                | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              |       No       |
+| Service                                                                                | Resources and Pricing                                                                                                                                          | Description                                                                                                                                                | Overwrite [^1] |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| [**VPC**](https://cloud.google.com/vpc/docs/vpc)                                       | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled [^price](https://cloud.google.com/vpc/network-pricing#lb) | VPC which will contain all the created compute and network resources                                                                                       | Yes            |
+| [**GKE**](https://cloud.google.com/kubernetes-engine/docs)                             | 1 GKE cluster [^price](https://cloud.google.com/products/calculator#id=e178295f-5232-4319-8a16-708052357202)                                                   | Kubernetes cluster to store all the Airy Core resources                                                                                                    | No             |
+| [**GCE**](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos)    | 6 Google Compute Engine Instances [^price](https://cloud.google.com/products/calculator#id=0394acda-ce3a-4769-a453-9e2ea6ca4291)                               | The instances are a part of the `Node Pool` attached to the GKE cluster. The default instance type is: `n1-standard-2`, OS type: `Container-Optimized OS`. | Yes            |
+| [**CLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer [^price](https://cloud.google.com/products/calculator#id=da086850-b923-475e-a4bc-9edf3d73c9ed)                                           | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              | No             |
 
 [^1]: Options which can be overwritten with flags to the `airy create` command.
 
@@ -101,64 +101,6 @@ After the installation process, you can verify that all the pods are running wit
 kubectl get pods --kubeconfig .terraform/kube.conf
 ```
 
-### Common issues
-
-GCP has a limit on the number of objects you can create depending on your account.
-
-```
-Error creating vpc:  operation error EC2: CreateVpc, https response error StatusCode: 400, RequestID: 64210ff5-9aca-4ab7-b993-3727637a59d6, api error VpcLimitExceeded: The maximum number of VPCs has been reached.
-```
-
-When encountering this, you can delete some of the resources just as described
-on [here](/getting-started/installation/gcp#uninstall-airy-core)
-
-## Secure your Airy core
-
-:::warning
-Authentication and HTTPS are disabled by default in Airy Core.
-
-As this is intended **only for testing purposes**, `it is mandatory that you to secure your Airy Core installation` as explained in this section.
-
-:::
-
-### Authentication
-
-To enable authenticaiton to the API and in the UI, refer to our [Authentication configuration section](/getting-started/installation/security)
-
-### HTTPS with existing certificates
-
-This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
-
-#### Upload certificates to Google Authenticator
-
-You should use a valid HTTPS certificate to secure your `Airy Core` instance. This certificate is created for and can only be used with a specific hostname. This hostname will be the FQDN on which `Airy Core` will be reachable.
-
-Usually these HTTPS certificates come as a bundle of:
-
-- private key (private.key)
-- public certificate (public.crt)
-- public certificate authority bundle file (ca-bundle.crt)
-
-Use the following command to upload your HTTPS certificate files to Google Authenticator, so that they can be used by the Google Cloud Load Balancing.
-
-#### Upgrade your Airy Core instance
-
-Edit your `airy.yaml` file and add the following configuration:
-
-```
-ingress-controller:
-  host: "The-fqdn-used-in-your-certificate"
-  https: true
-  httpsTermination: "LoadBalancer"
-  httpsCertificate: "Your-unique-ACM-ARN"
-```
-
-Upgrade your Airy Core instance
-
-```sh
-airy upgrade
-```
-
 #### Setup your DNS
 
 You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
@@ -174,10 +116,6 @@ At this point, the frontend and the API services of `Airy Core` should be access
 ```sh
 airy api endpoint
 ```
-
-### HTTPS using Let's Encrypt
-
-You can customize your installation of `Airy Core` to install an ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
 
 #### Customize your Airy Core installation
 

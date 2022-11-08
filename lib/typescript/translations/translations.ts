@@ -991,12 +991,7 @@ const resources = {
       ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
 
       //Amazon Lex V2
-<<<<<<< HEAD
       amazonLexV2Description: 'Ein Webdienst zur Erstellung von Konversationsschnittstellen',
-=======
-      amazonLexV2Description:
-        'Ein Webdienst zur Erstellung von Konversationsschnittstellen für Anwendungen mit Sprache und Text.',
->>>>>>> af2588502 (fixed conflict)
 
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
@@ -1514,12 +1509,7 @@ const resources = {
       ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
 
       //Amazon Lex V2
-<<<<<<< HEAD
       amazonLexV2Description: 'Un service web pour construire une interface conversationnelle.',
-=======
-      amazonLexV2Description:
-        'Un service web pour construire une interface conversationnelle pour les applications utilisant la voix et le texte.',
->>>>>>> af2588502 (fixed conflict)
 
       //Amazon S3
       amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
@@ -2080,12 +2070,7 @@ const resources = {
       ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
 
       //Amazon Lex V2
-<<<<<<< HEAD
       amazonLexV2Description: 'Un servicio web para construir una interfaz conversacional.',
-=======
-      amazonLexV2Description:
-        'Un servicio web para construir una interfaz conversacional para aplicaciones utilizando voz y texto.',
->>>>>>> af2588502 (fixed conflict)
 
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',

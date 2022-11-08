@@ -197,7 +197,7 @@ link='api/endpoints/channels#facebook'
 
 <br />
 
-import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
+import ConnectFacebook from '../../api/endpoints/connect-facebook.mdx'
 
 <ConnectFacebook />
 

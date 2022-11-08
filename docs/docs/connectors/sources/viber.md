@@ -69,7 +69,7 @@ link='api/endpoints/channels#viber'
 
 <br />
 
-import ConnectViber from '../api/endpoints/connect-viber.mdx'
+import ConnectViber from '../../api/endpoints/connect-viber.mdx'
 
 <ConnectViber />
 

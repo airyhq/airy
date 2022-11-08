@@ -356,8 +356,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Your Salesforce Security Token',
 
       //Rasa
-      inputTooltipRasaRasaWebhookUrl: 'http://<host>:<port> (example: htpp://localhost:5005)',
-      rasaPlaceholder: 'http://<host>:<port>',
+      inputTooltipRasaRasaWebhookUrl: 'URL without trailing slash (example: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<host>',
 
       //Facebook Messenger
       connectMessenger: 'Connect Messenger',
@@ -918,8 +918,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'http://<Betreiber>:<Port> (Beispiel: htpp://localhost:5005)',
-      rasaPlaceholder: 'http://<Betreiber>:<Port>',
+      inputTooltipRasaRasaRestWebhookUrl: 'URL ohne Trailing Slashes (Beispiel: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<Betreiber>',
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Weltweite Chat-App Nr. 1',
@@ -1619,8 +1619,8 @@ const resources = {
       send: 'Envoyer',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'http://<hôte>:<port> (example: htpp://localhost:5005)',
-      rasaPlaceholder: 'http://<hôte>:<port>',
+      inputTooltipRasaRasaRestWebhookUrl: 'https://<hôte> (example: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<hôte>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Votre App ID',
@@ -2180,8 +2180,8 @@ const resources = {
       send: 'Enviar',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'host + port (ejemplo: http://0.0.0.0:5005)',
-      rasaPlaceholder: 'http://<host>:<port>',
+      inputTooltipRasaRasaRestWebhookUrl: 'URL (ejemplo: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<host>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Su App ID',

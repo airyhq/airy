@@ -72,7 +72,7 @@ link='api/endpoints/channels#sms'
 
 <ConnectTwilioSms />
 
-import ConnectTwilioSms from '../api/endpoints/connect-twilioSms.mdx'
+import ConnectTwilioSms from '../../api/endpoints/connect-twilioSms.mdx'
 
 ## Connect Twilio.SMS via the UI
 

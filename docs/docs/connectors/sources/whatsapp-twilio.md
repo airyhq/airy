@@ -72,7 +72,7 @@ link='api/endpoints/channels#whatsapp'
 
 <ConnectTwilioWhatsApp />
 
-import ConnectTwilioWhatsApp from '../api/endpoints/connect-twilioWhatsApp.mdx'
+import ConnectTwilioWhatsApp from '../../api/endpoints/connect-twilioWhatsApp.mdx'
 
 ### Connect Twilio.WhatsApp via the UI
 

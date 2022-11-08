@@ -39,7 +39,7 @@ icon={<ChannelsUI />}
 title='Connectors'
 iconInvertible={true}
 description='With the Control Center UI you can connect your connectors via UI'
-link='http://localhost/ui/control-center/introduction'
+link='/ui/control-center/connectors'
 />
 
 ## Sources guides
@@ -49,49 +49,49 @@ link='http://localhost/ui/control-center/introduction'
     icon={<AiryBubbleSVG />}
     title='Airy Live Chat Plugin'
     description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
-    link='/sources/chatplugin/overview'
+    link='connectors/sources/chatplugin/overview'
 />
 
 <ButtonBox
 icon={<FacebookMessengerSVG />}
 title='Facebook Messenger'
 description='Send and receive messages from Facebook Pages'
-link='sources/facebook'
+link='connectors/sources/facebook'
 />
 
 <ButtonBox
 icon={<InstagramSVG />}
 title='Instagram'
 description='Send and receive messages from Instagram accounts'
-link='sources/instagram'
+link='connectors/sources/instagram'
 />
 
 <ButtonBox
 icon={<GoogleSVG />}
 title='Google’s Business Messages'
 description='Start conversations from Google Maps & Google Search'
-link='sources/google'
+link='connectors/sources/google'
 />
 
 <ButtonBox
 icon={<WhatsAppSVG />}
 title='WhatsApp Business API'
 description='Connect with more than 1.5 billion people on WhatsApp'
-link='sources/whatsapp-twilio'
+link='connectors/sources/whatsapp-twilio'
 />
 
 <ButtonBox
 icon={<SmsSVG />}
 title='SMS'
 description='Connect Text Messaging to Airy & send and receive SMS'
-link='sources/sms-twilio'
+link='connectors/sources/sms-twilio'
 />
 
 <ButtonBox
 icon={<ViberSVG />}
 title='Viber'
 description='Connect the messaging app Viber to Airy'
-link='sources/viber'
+link='connectors/sources/viber'
 />
 
 </ButtonBoxList>

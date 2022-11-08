@@ -117,7 +117,7 @@ link='api/endpoints/channels#whatsapp'
 
 <br />
 
-import ConnectWhatsapp from '../api/endpoints/connect-whatsapp.mdx'
+import ConnectWhatsapp from '../../api/endpoints/connect-whatsapp.mdx'
 
 <ConnectWhatsapp />
 

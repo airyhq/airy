@@ -54,7 +54,7 @@ link='api/endpoints/channels#google'
 
 <br />
 
-import ConnectChatPlugin from '../../api/endpoints/connect-chatPlugin.mdx'
+import ConnectChatPlugin from '../../../api/endpoints/connect-chatPlugin.mdx'
 
 <ConnectChatPlugin />
 

@@ -3,13 +3,7 @@ output "kubernetes_cluster_name" {
   description = "GKE Cluster Name"
 }
 
-output "kubeconfig_raw" {
-  sensitive = true
-  value     = module.gke_auth.kubeconfig_raw
+output "kubeconfig_path" {
+  description = "The path of the generated KUBECONFIG file"
+  value       = var.kubeconfig_output_path
 }
-
-output "kubeconfig_output_path" {
-  value = var.kubeconfig_output_path
-}
-
-

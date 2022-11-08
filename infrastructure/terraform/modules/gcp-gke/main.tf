@@ -44,19 +44,19 @@ resource "google_container_node_pool" "gke_core_nodes" {
   depends_on = [resource.google_container_cluster.gke_core]
 }
 
-module "gke_auth" {
-  source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
-
-  project_id   = var.project_id
-  location     = google_container_cluster.gke_core.location
-  cluster_name = google_container_cluster.gke_core.name
+resource "null_resource" "kubeconfig_file" {
+  triggers = {
+    project_id      = var.project_id
+    region          = var.region
+    cluster_name    = var.gke_name
+    kubeconfig_path = var.kubeconfig_output_path
+  }
 
   depends_on = [
     resource.google_container_cluster.gke_core
   ]
-}
 
-resource "local_file" "kubeconfig" {
-  content  = module.gke_auth.kubeconfig_raw
-  filename = var.kubeconfig_output_path
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${self.triggers.kubeconfig_path} gcloud container clusters get-credentials ${self.triggers.cluster_name} --region ${self.triggers.region} --project ${self.triggers.project_id}"
+  }
 }

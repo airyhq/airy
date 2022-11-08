@@ -27,7 +27,6 @@ module.exports = {
     {
       '💬 Connectors': [
         'connectors/overview',
-        'ui/control-center/connectors',
         {
           Sources: [
             'connectors/sources/introduction',

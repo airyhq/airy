@@ -15,33 +15,23 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 
-import io.kubernetes.client.openapi.ApiClient;
-import io.kubernetes.client.openapi.ApiResponse;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Job;
-import io.kubernetes.client.openapi.models.V1ObjectMeta;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
-import org.mockito.Mockito;
+
+import io.kubernetes.client.openapi.ApiClient;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doReturn;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -70,11 +60,14 @@ public class CatalogHandlerTest {
     @MockBean
     private HelmJobHandler helmJobHandler;
 
+    @MockBean
+    private InstallationStatusComponentsHandler installationStatusComponentsHandler;
+
     @Autowired
     private CatalogHandler catalogHandler;
 
-    @Captor
-    private ArgumentCaptor<ArrayList<String>> cmd;
+    @Autowired
+    private GitHandler gitHandler;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -89,88 +82,57 @@ public class CatalogHandlerTest {
         kafkaTestHelper.afterAll();
     }
 
-
-    @Test
-    public void canOnApplicationEvent(@TempDir File tempDir) throws Exception {
-        callOnApplicationEvent(tempDir);
-    }
-
     @Test
     public void canGetComponents(@TempDir File tempDir) throws Exception {
         callOnApplicationEvent(tempDir);
 
-        final V1Job job = new V1Job()
-            .metadata(new V1ObjectMeta().name("helm-installed").namespace("test-namespace"));
+        doReturn(getInstallationStatues()).when(installationStatusComponentsHandler).getInstallationStatusComponentsCache();
 
-        //TODO: Move all of this to InstalledComponentsHandlerTest class & mock here
-        doReturn(job).when(helmJobHandler).launchHelmJob(eq(job.getMetadata().getName()), cmd.capture());
-        doReturn("helm-installed-test").when(helmJobHandler).waitForCompletedStatus(isA(CoreV1Api.class), eq(job));
+        final List<ComponentDetails> listComponents = catalogHandler.listComponents();
 
-        final MockedConstruction.MockInitializer<CoreV1Api> fn = (mock, context) -> {
-            final ApiResponse<String> response = new ApiResponse<>(
-                    200,
-                    null,
-                    getInstalledComponents());
+        //NOTE: We are just going to get some of the components in the list, and check his validity
+        ComponentDetails enterpriseSalesforceContactsIngestion = listComponents
+            .stream()
+            .filter((c -> c.getName().equals("enterprise-salesforce-contacts-ingestion")))
+            .findAny()
+            .orElse(null);
+        assertThat(enterpriseSalesforceContactsIngestion, is(notNullValue()));
+        assertThat(enterpriseSalesforceContactsIngestion.getInstallationStatus(), equalTo(InstallationStatus.installed));
 
-            doReturn(response).when(mock).readNamespacedPodLogWithHttpInfo(
-                "helm-installed-test",
-                job.getMetadata().getNamespace(),
-                "",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-        };
-
-        try (MockedConstruction<CoreV1Api> apiMock = Mockito.mockConstruction(CoreV1Api.class, fn)) {
-            List<ComponentDetails> listComponents = catalogHandler.listComponents();
-
-            assertThat(cmd.getValue().size(), equalTo(3));
-            assertThat(cmd.getValue().get(2), equalTo("helm -n test-namespace list | awk '{print $1}' | tail -n +2")); 
-
-            //NOTE: We are just going to get some of the components in the list, and check his validity
-            ComponentDetails enterpriseSalesforceContactsIngestion = listComponents
-                .stream()
-                .filter((c -> c.getName().equals("enterprise-salesforce-contacts-ingestion")))
-                .findAny()
-                .orElse(null);
-            assertThat(enterpriseSalesforceContactsIngestion, is(notNullValue()));
-            assertThat(enterpriseSalesforceContactsIngestion.getInstallationStatus(), equalTo(InstallationStatus.installed));
-
-            ComponentDetails cognigyConnector = listComponents
-                .stream()
-                .filter((c -> c.getName().equals("cognigy-connector")))
-                .findAny()
-                .orElse(null);
-            assertThat(cognigyConnector, is(notNullValue()));
-            assertThat(cognigyConnector.getInstallationStatus(), equalTo(InstallationStatus.uninstalled));
-        }
-
+        ComponentDetails cognigyConnector = listComponents
+            .stream()
+            .filter((c -> c.getName().equals("cognigy-connector")))
+            .findAny()
+            .orElse(null);
+        assertThat(cognigyConnector, is(notNullValue()));
+        assertThat(cognigyConnector.getInstallationStatus(), equalTo(InstallationStatus.uninstalled));
     }
 
     private void callOnApplicationEvent(File tempDir) throws Exception {
-        ReflectionTestUtils.setField(catalogHandler, "repoFolder", tempDir);
-        catalogHandler.onApplicationEvent(event);
+        ReflectionTestUtils.setField(gitHandler, "repoFolder", tempDir);
+        gitHandler.onApplicationEvent(event);
     }
 
-    private String getInstalledComponents() {
-        final List<String> installedComponents = List.of(
-            "api-contacts",
-            "enterprise-salesforce-contacts-ingestion",
-            "enterprise-zendesk-connector",
-            "integration-webhook",
-            "rasa-connector",
-            "sources-chatplugin",
-            "sources-facebook",
-            "sources-google",
-            "sources-twilio",
-            "sources-whatsapp");
-
-        return String.join("\n", installedComponents);
+    private Map<String, String> getInstallationStatues() {
+        return Map.ofEntries(
+                Map.entry("sources-whatsapp", "installed"),
+                Map.entry("integration-webhook", "installed"),
+                Map.entry("sources-chatplugin", "installed"),
+                Map.entry("enterprise-dialogflow-connector", "uninstalled"),
+                Map.entry("enterprise-zendesk-connector", "installed"),
+                Map.entry("mobile", "uninstalled"),
+                Map.entry("amazon-s3-connector", "uninstalled"),
+                Map.entry("sources-facebook", "installed"),
+                Map.entry("sources-twilio", "installed"),
+                Map.entry("amelia-connector", "uninstalled"),
+                Map.entry("sources-viber", "uninstalled"),
+                Map.entry("amazon-lex-v2-connector", "uninstalled"),
+                Map.entry("ibm-watson-assistant-connector", "uninstalled"),
+                Map.entry("rasa-connector", "installed"),
+                Map.entry("sources-google", "installed"),
+                Map.entry("cognigy-connector", "uninstalled"),
+                Map.entry("enterprise-salesforce-contacts-ingestion", "installed"));
     }
+
 
 }

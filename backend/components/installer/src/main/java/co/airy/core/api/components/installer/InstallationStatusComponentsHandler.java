@@ -20,7 +20,7 @@ import co.airy.log.AiryLoggerFactory;
 import co.airy.core.api.components.installer.model.InstallationStatus;
 
 @Component
-public class InstalledComponentsHandler {
+public class InstallationStatusComponentsHandler {
 
     private static final Logger log = AiryLoggerFactory.getLogger(InstallerHandler.class);
     public static final String KEY = "cache-key";
@@ -28,33 +28,46 @@ public class InstalledComponentsHandler {
     private final ApiClient apiClient;
     private final String namespace;
     private final HelmJobHandler helmJobHandler;
+    private final Stores stores;
+    private final GitHandler gitHandler;
 
-    InstalledComponentsHandler(
+    InstallationStatusComponentsHandler(
             ApiClient apiClient,
             HelmJobHandler helmJobHandler,
+            Stores stores,
+            GitHandler gitHandler,
             @Value("${kubernetes.namespace}") String namespace) {
         this.apiClient = apiClient;
         this.namespace = namespace;
         this.helmJobHandler = helmJobHandler;
+        this.stores = stores;
+        this.gitHandler = gitHandler;
     }
 
 
     @Cacheable(key = "#root.target.KEY", value = "installedComponents")
-    public Map<String, String> getInstalledComponentsCache() throws Exception {
-        return getInstalledComponents();
+    public Map<String, String> getInstallationStatusComponentsCache() throws Exception {
+        final Map<String, String> installedComponents = getInstallationStatusComponents();
+
+        stores.storeFromCacheMap(installedComponents);
+        return installedComponents;
     }
 
     @CachePut(key = "#root.target.KEY", value = "installedComponents")
-    public Map<String, String> putInstalledComponentsCache() throws Exception {
-        return getInstalledComponents();
+    public Map<String, String> putInstallationStatusComponentsCache() throws Exception {
+        final Map<String, String> installedComponents = getInstallationStatusComponents();
+
+        stores.storeFromCacheMap(installedComponents);
+        return installedComponents;
     }
 
     @CachePut(key = "#root.target.KEY", value = "installedComponents")
-    public Map<String, String> setInstalledComponentsCache(Map<String, String> cache) throws Exception {
+    public Map<String, String> setInstallationStatusComponentsCache(Map<String, String> cache) throws Exception {
+        stores.storeFromCacheMap(cache);
         return cache;
     }
 
-    private Map<String, String> getInstalledComponents() throws Exception {
+    private Map<String, String> getInstallationStatusComponents() throws Exception {
 
         ArrayList<String> cmd = new ArrayList<>();
         cmd.add("sh");
@@ -63,7 +76,7 @@ public class InstalledComponentsHandler {
                     "helm -n %s list | awk '{print $1}' | tail -n +2",
                     namespace));
 
-        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd);
+        final V1Job job = helmJobHandler.launchHelmJob("helm-installed", cmd, Map.of("helm", "installed"));
         final CoreV1Api api = new CoreV1Api(apiClient);
 
         final String podName = helmJobHandler.waitForCompletedStatus(api, job);
@@ -89,6 +102,9 @@ public class InstalledComponentsHandler {
             throw new JobEmptyException();
         }
 
-        return installedComponents;
+        return gitHandler.listAvailableCompnents()
+            .stream()
+            .map(name -> Map.entry(name, installedComponents.getOrDefault(name, InstallationStatus.uninstalled)))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

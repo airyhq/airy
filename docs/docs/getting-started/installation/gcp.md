@@ -17,12 +17,26 @@ Run Airy Core on GCP with one command.
 
 The goal of this document is to provide an overview of how to run Airy Core on Google Cloud Platform, using the [GCP Kubernetes Engine](https://cloud.google.com/kubernetes-engine).
 
+## Services used
+
+Apart from an Google Kubernetes Engine cluster, `airy create` will create of all the necessary GCP
+resources for Airy Core to run:
+
+| Service                                                                                | Resources                                                                                            | Pricing                                                                                                          | Description                                                                                                                                                | Overwrite [^1] |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| [**VPC**](https://cloud.google.com/vpc/docs/vpc)                                       | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | [ VPC pricing calculation](https://cloud.google.com/vpc/network-pricing#lb)                                      | VPC which will contain all the created compute and network resources                                                                                       | Yes            |
+| [**GKE**](https://cloud.google.com/kubernetes-engine/docs)                             | 1 GKE cluster                                                                                        | [ GKE pricing calculation](https://cloud.google.com/products/calculator#id=e178295f-5232-4319-8a16-708052357202) | Kubernetes cluster to store all the Airy Core resources                                                                                                    | No             |
+| [**GCE**](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos)    | 6 Google Compute Engine Instances                                                                    | [GCE pricing calculation](https://cloud.google.com/products/calculator#id=0394acda-ce3a-4769-a453-9e2ea6ca4291)  | The instances are a part of the `Node Pool` attached to the GKE cluster. The default instance type is: `n1-standard-2`, OS type: `Container-Optimized OS`. | Yes            |
+| [**CLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer                                                                                | [CLB pricing calculation](https://cloud.google.com/products/calculator#id=da086850-b923-475e-a4bc-9edf3d73c9ed)  | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              | No             |
+
+[^1]: Options which can be overwritten with flags to the `airy create` command.
+
 ## Configure
 
 :::note
 
-Prior to starting this guide, you must create an [GCP
-account](https://cloud.google.com/free). We also recommend installing the [Install the gcloud CLI](https://cloud.google.com/sdk/docs/install).
+Prior to starting this guide, you must create an [GCP account](https://cloud.google.com/free). To create the cluster you must setup your local GCP environment, by [configuring your local GCP profile](https://cloud.google.com/sdk/docs/install-sdk)
+for your GCP account where all the resources will be created.
 
 :::
 
@@ -42,26 +56,7 @@ Default region name [None]: us-central1
 Default output format [None]: json
 ```
 
-## Services used
-
-Apart from an Google Kubernetes Engine cluster, `airy create` will create of all the necessary GCP
-resources for Airy Core to run:
-
-| Service                                                                                | Resources                                                                                            | Pricing                                                                                                          | Description                                                                                                                                                | Overwrite [^1] |
-| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| [**VPC**](https://cloud.google.com/vpc/docs/vpc)                                       | 1 VPC, 36 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | [ VPC pricing calculation](https://cloud.google.com/vpc/network-pricing#lb)                                      | VPC which will contain all the created compute and network resources                                                                                       | Yes            |
-| [**GKE**](https://cloud.google.com/kubernetes-engine/docs)                             | 1 GKE cluster                                                                                        | [ GKE pricing calculation](https://cloud.google.com/products/calculator#id=e178295f-5232-4319-8a16-708052357202) | Kubernetes cluster to store all the Airy Core resources                                                                                                    | No             |
-| [**GCE**](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos)    | 6 Google Compute Engine Instances                                                                    | [GCE pricing calculation](https://cloud.google.com/products/calculator#id=0394acda-ce3a-4769-a453-9e2ea6ca4291)  | The instances are a part of the `Node Pool` attached to the GKE cluster. The default instance type is: `n1-standard-2`, OS type: `Container-Optimized OS`. | Yes            |
-| [**CLB**](https://cloud.google.com/load-balancing/docs/network/networklb-target-pools) | 1 Cloud Load Balancer                                                                                | [CLB pricing calculation](https://cloud.google.com/products/calculator#id=da086850-b923-475e-a4bc-9edf3d73c9ed)  | Network (target pool-based)Load Balancer created by the ingress controller Kubernetes service                                                              | No             |
-
-[^1]: Options which can be overwritten with flags to the `airy create` command.
-
 ## Install
-
-To create the cluster you must setup your local GCP environment, by [configuring
-your local GCP
-profile](https://cloud.google.com/sdk/docs/install-sdk)
-for the GCP account where all the resources will be created.
 
 Download and install the [Airy CLI](cli/introduction.md).
 
@@ -116,6 +111,10 @@ At this point, the frontend and the API services of `Airy Core` should be access
 ```sh
 airy api endpoint
 ```
+
+### HTTPS using Let's Encrypt
+
+You can customize your installation of `Airy Core` to install an ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
 
 #### Customize your Airy Core installation
 

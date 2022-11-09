@@ -2,15 +2,36 @@ package co.airy.core.sources.meta;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
+import co.airy.core.sources.meta.dto.Conversation;
+import co.airy.core.sources.meta.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.channel.dto.ChannelContainer;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 public abstract class MetaStores {
 
@@ -22,7 +43,7 @@ public abstract class MetaStores {
     protected final KafkaProducer<String, SpecificRecordBase> producer;
     protected final MetaConnector connector;
 
-    public startStream(String source) {
+    public void startStream(String source) {
         final StreamsBuilder builder = new StreamsBuilder();
 
         KStream<String, Channel> channelStream = builder.<String, Channel>stream(applicationCommunicationChannels);
@@ -116,7 +137,7 @@ public abstract class MetaStores {
         producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
     }
 
-    public stopStream() {
+    public void stopStream() {
         if (streams != null) {
             streams.close();
         }

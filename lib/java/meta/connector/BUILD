@@ -9,6 +9,8 @@ custom_java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//visibility:public"],
     deps = [
+        "//:jackson",
+        "//:lombok",
         "//backend/model/channel",
         "//backend/model/message",
         "//backend/model/metadata",

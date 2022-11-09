@@ -11,7 +11,8 @@ public enum EventType {
     CHANNEL_UPDATED("channel.updated"),
     TAG_UPDATED("tag.updated"),
     METADATA_ITEM("metadata.item"),
-    METADATA_UPDATED("metadata.updated");
+    METADATA_UPDATED("metadata.updated"),
+    COMPONENTS_UPDATED("components.updated");
 
     private final String eventType;
 

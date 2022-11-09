@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = ConversationUpdated.class, name = "conversation.updated"),
         @JsonSubTypes.Type(value = MetadataUpdated.class, name = "metadata.updated"),
         @JsonSubTypes.Type(value = ChannelUpdated.class, name = "channel.updated"),
-        @JsonSubTypes.Type(value = TagEvent.class, name = "tag.updated")
+        @JsonSubTypes.Type(value = TagEvent.class, name = "tag.updated"),
+        @JsonSubTypes.Type(value = ComponentsUpdated.class, name = "components.updated")
 })
 public abstract class Event {
     @JsonIgnore

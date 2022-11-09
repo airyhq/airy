@@ -35,6 +35,7 @@ import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 public abstract class MetaStores {
 
+    protected final String appId;
     protected final KafkaStreamsWrapper streams;
     protected final String channelsStore = "channels-store";
     protected final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
@@ -42,6 +43,17 @@ public abstract class MetaStores {
     protected final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     protected final KafkaProducer<String, SpecificRecordBase> producer;
     protected final MetaConnector connector;
+
+    MetaStores(
+            String appId,
+            KafkaStreamsWrapper streams,
+            KafkaProducer<String, SpecificRecordBase> producer,
+            MetaConnector connector) {
+        this.appId = appId;
+        this.streams = streams;
+        this.producer = producer;
+        this.connector = connector;
+    }
 
     public void startStream(String source) {
         final StreamsBuilder builder = new StreamsBuilder();

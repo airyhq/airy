@@ -93,7 +93,7 @@ utility. You can find the kubeconfig of your Airy Core instance in
 After the installation process, you can verify that all the pods are running with
 
 ```
-kubectl get pods --kubeconfig .terraform/kube.conf
+kubectl get pods --kubeconfig ./terraform/kube.conf
 ```
 
 #### Setup your DNS

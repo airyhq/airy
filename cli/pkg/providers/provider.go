@@ -24,7 +24,6 @@ type Provider interface {
 	GetOverrides() template.Variables
 	CheckEnvironment() error
 	PreInstallation(workspace string) (string, error)
-	PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error
 }
 
 func MustGet(providerName ProviderName, w io.Writer, analytics *console.AiryAnalytics) Provider {

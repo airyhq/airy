@@ -7,7 +7,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cli/pkg/console",
-        "//cli/pkg/kube",
         "//cli/pkg/workspace",
         "//cli/pkg/workspace/template",
         "//lib/go/tools",

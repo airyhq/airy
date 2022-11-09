@@ -19,6 +19,7 @@ export enum Source {
   frontendInbox = 'frontend-inbox',
   ibmWatsonAssistant = 'ibmWatsonAssistant',
   amazons3 = 'amazons3',
+  amazonLexV2 = 'amazonLexV2',
 }
 
 export const prettifySource = (source: string) =>

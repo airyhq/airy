@@ -2,13 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "gcp",
-    srcs = [
-        "gcp.go",
-        "files.go",
-    ],
-    embedsrcs = [
-        "kubeConfigTemplate.yaml",
-    ],
+    srcs = ["gcp.go"],
     importpath = "cli/pkg/providers/gcp",
     visibility = ["//visibility:public"],
     deps = [

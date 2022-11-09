@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-helper-scripts
+data:
+  wait-for-service-url.sh: |
+    #!/bin/sh
+    url=${SERVICE_URL}
+    delay=${2:-10}
+    service=$(echo ${url} | cut -d ":" -f1)
+    port=$(echo ${url} | cut -d ":" -f2)
+
+    while ! nc -z ${service} ${port} >/dev/null 2>&1; do sleep ${delay}; echo Waiting for service ${service} to start...; done
+
+  wait-for-minimum-kafkas.sh: |
+    #!/bin/sh
+    kafka_brokers=${KAFKA_BROKERS:-kafka:9092}
+    replicas=${REPLICAS:-1}
+    delay=${1:-10}
+    minimum_kafkas=0
+    kafkas=$(echo ${kafka_brokers} | tr "," " ")
+
+    while [ "${minimum_kafkas}" -lt "${replicas}" ]; do
+        minimum_kafkas=0
+        for kafka in ${kafkas}; do
+            service=$(echo ${kafka} | cut -d ":" -f1)
+            port=$(echo ${kafka} | cut -d ":" -f2)
+            if $(nc -w 1 -z ${service} ${port} 2>/dev/null); then
+                minimum_kafkas=$((minimum_kafkas+1))
+            fi
+        done
+        echo Available brokers: ${minimum_kafkas}, required brokers: ${replicas}
+        if [ "$minimum_kafkas" -lt "$replicas" ]; then
+            sleep ${delay}
+        fi
+    done

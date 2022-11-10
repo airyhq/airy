@@ -88,7 +88,7 @@ with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line
 utility. You can find the kubeconfig of your Airy Core instance in
 `WORKSPACE/terraform/kube.conf`.
 
-## Verification
+## Verify
 
 After the installation process, you can verify that all the pods are running with:
 

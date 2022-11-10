@@ -1329,3 +1329,4 @@ You can download the Airy CLI for your operating system from the following links
 #### Upgrade notes
 
 In the `airy.yaml` file, `host` is moved from the `kubernetes` section, into the `ingress` section.
+

@@ -102,3 +102,25 @@ Includes the full and current state of a metadata object given a namespace-ident
   }
 }
 ```
+
+### `components.updated`
+
+Gives real-time updates on components events.
+
+Includes the full and current state of a component given a namespace-identifier pair.
+
+**Sample payload**
+
+```json5
+{
+  "type": "components.updated",
+
+  "payload": {
+    "subject": "component name",
+    "identifier": "component name ?",
+    "update": {
+      "status": "pending | uninstalled | installed"
+    }
+  }
+}
+```

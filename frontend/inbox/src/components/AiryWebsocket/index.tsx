@@ -17,9 +17,9 @@ type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof co
 
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 
-const mapStateToProps = (state: StateModel) => ({
-  conversations: allConversations(state),
-});
+// const mapStateToProps = (state: StateModel) => ({
+//   conversations: allConversations(state),
+// });
 
 const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
@@ -37,21 +37,21 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
-  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
+  const {children, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
-  const onMessage = (conversationId: string, message: Message) => {
-    if (conversations[conversationId]) {
-      addMessages(conversationId, [message]);
-    } else {
-      getConversationInfo(conversationId).then(() => {
-        addMessages(conversationId, [message]);
-      });
-    }
-  };
+  // const onMessage = (conversationId: string, message: Message) => {
+  //   if (conversations[conversationId]) {
+  //     addMessages(conversationId, [message]);
+  //   } else {
+  //     getConversationInfo(conversationId).then(() => {
+  //       addMessages(conversationId, [message]);
+  //     });
+  //   }
+  // };
 
   const refreshSocket = () => {
     if (webSocketClient) {

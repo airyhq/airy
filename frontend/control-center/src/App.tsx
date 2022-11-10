@@ -16,6 +16,7 @@ import Status from './pages/Status';
 import Inbox from './pages/Inbox';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
+import AiryWebSocket from '../../inbox/src/components/AiryWebsocket';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -32,35 +33,37 @@ const App = (props: ConnectedProps<typeof connector>) => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <TopBar isAdmin={true} />
-        <Sidebar />
-        <Routes>
-          <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
+    <AiryWebSocket>
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <TopBar isAdmin={true} />
+          <Sidebar />
+          <Routes>
+            <Route path={ROOT_ROUTE} element={<Navigate to={STATUS_ROUTE} replace />} />
 
-          <Route path={CONNECTORS_ROUTE} element={<Connectors />} />
+            <Route path={CONNECTORS_ROUTE} element={<Connectors />} />
 
-          <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
-            <Route path={`connected`} element={<ConnectorConfig />} />
-            <Route path={`new`} element={<ConnectorConfig />} />
-            <Route path={`configure`} element={<ConnectorConfig />} />
-            <Route path={`:channelId`} element={<ConnectorConfig />} />
-          </Route>
+            <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
+              <Route path={`connected`} element={<ConnectorConfig />} />
+              <Route path={`new`} element={<ConnectorConfig />} />
+              <Route path={`configure`} element={<ConnectorConfig />} />
+              <Route path={`:channelId`} element={<ConnectorConfig />} />
+            </Route>
 
-          <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>
-            <Route path={`:componentName`} element={<CatalogProductPage />} />
-            <Route index element={<Catalog />} />
-          </Route>
+            <Route path={`${CATALOG_ROUTE}/*`} element={<CatalogOutlet />}>
+              <Route path={`:componentName`} element={<CatalogProductPage />} />
+              <Route index element={<Catalog />} />
+            </Route>
 
-          <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />
+            <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />
 
-          <Route element={<NotFound />} />
-          <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
-          <Route path={`${STATUS_ROUTE}`} element={<Status />} />
-        </Routes>
+            <Route element={<NotFound />} />
+            <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
+            <Route path={`${STATUS_ROUTE}`} element={<Status />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </AiryWebSocket>
   );
 };
 

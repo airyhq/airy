@@ -4,11 +4,11 @@ import co.airy.kafka.schema.ApplicationCommunication;
 
 import java.util.Map;
 
-public class ApplicationCommunicationComponents extends ApplicationCommunication {
+public class ApplicationCommunicationComponentsUpdate extends ApplicationCommunication {
 
     @Override
     public String dataset() {
-        return "metadata";
+        return "update";
     }
 
     @Override

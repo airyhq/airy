@@ -88,40 +88,25 @@ with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line
 utility. You can find the kubeconfig of your Airy Core instance in
 `WORKSPACE/terraform/kube.conf`.
 
-### Verification
+## Verification
 
-After the installation process, you can verify that all the pods are running with
+After the installation process, you can verify that all the pods are running with:
 
 ```
-kubectl get pods --kubeconfig ./terraform/kube.conf
+export KUBECONFIG=./terraform/kube.conf
+kubectl get pods
 ```
 
-#### Setup your DNS
-
-You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
-
-```sh
-kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
-```
-
-#### Print HTTPS endpoint
-
-At this point, the frontend and the API services of `Airy Core` should be accessible through HTTPS on the specific hostname:
-
-```sh
-airy api endpoint
-```
-
-### HTTPS using Let's Encrypt
+## HTTPS using Let's Encrypt
 
 You can customize your installation of `Airy Core` to install an ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
 
-#### Customize your Airy Core installation
+### Setup your DNS
 
-To customize your Airy Core installation, you need to create an initial config file using the following command
+You should create an A DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
 
 ```sh
-airy create --provider gcp --init-only
+kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].ip}{"\n"}'
 ```
 
 Then edit your `airy.yaml` file and add the following configuration
@@ -138,26 +123,7 @@ ingress-controller:
 
 The `ingress.host` value should be set to your desired hostname. Configure the e-mail address you want to use for your Let's Encrypt registration under `ingress.letsencryptEmail`.
 
-After setting these parameters, create your `Airy Core` instance with the following option:
-
-```sh
-airy create --provider gcp
-```
-
-:::note
-In case you have created your Airy Core instance without Let's Encrypt and want to add it later, modify your `airy.yaml` file accordingly and continue with the process from the next section.
-:::
-
-#### Setup your DNS
-
-You should create a CNAME DNS record for the hostname that you set under `ingress.host` in the previous step to point to the hostname of the LoadBalancer, created by GCP for the ingress service:
-
-```sh
-export KUBECONFIG="PATH/TO/DIR/kube.conf"
-kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
-```
-
-#### Run airy upgrade
+### Upgrade the instance
 
 If the ingress controller is started before the DNS record is added, the initial Let's Encrypt requests will fail and then all the following registration attempts will be blocked and throttled. That is why the generation of the Let's Encrypt certificates is disabled by default. In order to complete the setup, you must run the upgrade command.
 
@@ -176,6 +142,20 @@ To get the public URL of your GCP Airy Core installation run:
 
 ```sh
 airy api endpoint
+```
+
+## Customize your Airy Core installation
+
+To customize your Airy Core installation, you can create an initial config file using the following command:
+
+```sh
+airy create --provider gcp --init-only
+```
+
+Then edit the `airy.yaml` file to your prefferences before deploying Airy with:
+
+```sh
+airy create --provider gcp
 ```
 
 ## Next steps

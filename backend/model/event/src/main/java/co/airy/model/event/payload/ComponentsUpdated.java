@@ -44,8 +44,8 @@ public class ComponentsUpdated extends Event implements Serializable {
         final Subject subject = getSubject(someMetadata);
         return new ComponentsUpdated(
             ComponentsUpdatedEventPayload.builder()
-                        .subject(subject.getNamespace())
-                        .identifier(subject.getIdentifier())
+                        .subject("component")
+                        .identifier("component")
                         .update(getMetadataPayload(metadataMap))
                         .build(),
                 metadataMap.getUpdatedAt()

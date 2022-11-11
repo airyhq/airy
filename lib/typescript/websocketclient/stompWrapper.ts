@@ -51,6 +51,7 @@ export class StompWrapper {
     if (!this.stompClient || !this.stompClient.connected) {
       return false;
     }
+    console.log('JSON.stringify(body)', JSON.stringify(body));
     this.stompClient.publish({
       destination: queue,
       body: JSON.stringify(body),

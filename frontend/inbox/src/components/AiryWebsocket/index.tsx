@@ -18,10 +18,10 @@ type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof co
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 let mapStateToProps;
 
-if(window.location.pathname.includes("inbox")){
+if (window.location.pathname.includes('inbox')) {
   mapStateToProps = (state: StateModel) => ({
     conversations: allConversations(state),
-});
+  });
 } else {
   mapStateToProps = null;
 }
@@ -37,17 +37,18 @@ const mapDispatchToProps = dispatch => ({
         deep: true,
         stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
       })
-    )
+    );
   },
   onTag: (tag: Tag) => {
     dispatch(upsertTagAction(tag));
   },
+  onComponentsUpdate: update => console.log('update', update),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const AiryWebSocket: any = props => {
-  const {children,  getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
+  const {children, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const onMessage = (conversationId: string, message: Message) => {
@@ -59,6 +60,8 @@ const AiryWebSocket: any = props => {
       });
     }
   };
+
+  const onComponentsUpdate = update => console.log('update', update);
 
   const refreshSocket = () => {
     if (webSocketClient) {
@@ -72,6 +75,7 @@ const AiryWebSocket: any = props => {
         onChannel,
         onMetadata,
         onTag,
+        onComponentsUpdate,
       })
     );
   };

@@ -22,7 +22,11 @@ if [[ ! ${REPLY} =~ ^[yY]$ ]]; then
   exit 1
 fi
 
-cd "airy-core" 2>/dev/null ||  ( echo "Terraform directory \"airy-core\" doesn't exist"; exit 1)
+cd "${PROVIDER}" 2>/dev/null || ( echo "Terraform directory ${PROVIDER} doesn't exist"; exit 1)
+terraform init
+terraform apply -auto-approve
+
+cd "../airy-core" 2>/dev/null ||  ( echo "Terraform directory \"airy-core\" doesn't exist"; exit 1)
 terraform init
 terraform destroy -auto-approve
 

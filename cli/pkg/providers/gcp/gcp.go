@@ -1,9 +1,10 @@
-package aws
+package gcp
 
 import (
 	"cli/pkg/console"
+
 	"cli/pkg/workspace"
-	tmpl "cli/pkg/workspace/template"
+	"cli/pkg/workspace/template"
 	"io"
 	"os"
 	"os/exec"
@@ -27,20 +28,19 @@ func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 	}
 }
 
-func (p *provider) GetOverrides() tmpl.Variables {
-	return tmpl.Variables{
-		LoadbalancerAnnotations: map[string]string{"service.beta.kubernetes.io/aws-load-balancer-type": "nlb"},
-	}
+func (p *provider) GetOverrides() template.Variables {
+	return template.Variables{}
 }
+
 func (p *provider) CheckEnvironment() error {
-	return workspace.CheckBinaries([]string{"terraform", "aws"})
+	return workspace.CheckBinaries([]string{"terraform", "gcloud"})
 }
 func (p *provider) PreInstallation(workspacePath string) (string, error) {
 	remoteUrl := "github.com/airyhq/airy/infrastructure/terraform/install"
 	installDir := workspacePath + "/terraform"
-	installFlags := strings.Join([]string{"PROVIDER=aws-eks", "WORKSPACE=" + workspacePath}, "\n")
+	installFlags := strings.Join([]string{"PROVIDER=gcp-gke", "WORKSPACE=" + workspacePath}, "\n")
 
-	var gitGetter = &getter.Client{
+	gitGetter := &getter.Client{
 		Src: remoteUrl,
 		Dst: installDir,
 		Dir: true,
@@ -67,7 +67,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	p.analytics.Track(analytics.Identify{
 		AnonymousId: id,
 		Traits: analytics.NewTraits().
-			Set("provider", "AWS"),
+			Set("provider", "GCP"),
 	})
 	cmd := exec.Command("/bin/bash", "install.sh")
 	cmd.Dir = installPath

@@ -1,6 +1,6 @@
 export enum Source {
   airyContacts = 'airyContacts',
-  airyWebhooks = 'airyWebhooks',
+  airyWebhooks = 'webhooks',
   facebook = 'facebook',
   google = 'google',
   chatPlugin = 'chatplugin',

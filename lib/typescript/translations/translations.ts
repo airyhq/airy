@@ -448,7 +448,7 @@ const resources = {
       rasaDescription: 'Open source conversational AI.',
 
       //webhooks
-      webhooksDescription: 'Get notified when events happen.',
+      airyWebhooksDescription: 'Get notified when events happen.',
 
       //amelia
       ameliaDescription: 'An intelligent cognitive conversational chatbot.',
@@ -946,7 +946,7 @@ const resources = {
       rasaDescription: 'Open-Source-Gesprächs-KI.',
 
       //webhooks
-      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+      airyWebhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
 
       //amelia
       ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
@@ -1569,7 +1569,7 @@ const resources = {
       rasaDescription: 'IA conversationnelle open source.',
 
       //webhooks
-      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+      airyWebhooksDescription: 'Soyez averti lorsque des événements se produisent.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
@@ -2131,7 +2131,7 @@ const resources = {
       rasaDescription: 'IA conversacional Open Source.',
 
       //webhooks
-      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+      airyWebhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',

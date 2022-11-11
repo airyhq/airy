@@ -25,7 +25,7 @@ const connector = connect(mapStateToProps);
 
 const Sidebar = (props: SideBarProps) => {
   const {version, components} = props;
-  const componentInfo = useCurrentComponentForSource(Source.webhooks);
+  const componentInfo = useCurrentComponentForSource(Source.airyWebhooks);
 
   const webhooksEnabled = componentInfo.installationStatus === InstallationStatus.installed;
   const inboxEnabled = components[Source.frontendInbox]?.enabled || false;

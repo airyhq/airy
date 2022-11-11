@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {Connector, InstallationStatus, Source} from 'model';
+import {airyProduct, Connector, InstallationStatus} from 'model';
 import InfoCard from './InfoCard';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
@@ -24,11 +24,11 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const installedConnectors = Object.values(connectors).filter(
     (connector: Connector) =>
       connector.installationStatus === InstallationStatus.installed &&
-      connector.source !== Source.webhooks &&
+      connector.source !== airyProduct &&
       connector.price
   );
   const hasAvailableConnectors =
-    Object.values(connectors).filter((connector: Connector) => connector.source !== Source.webhooks && connector.price)
+    Object.values(connectors).filter((connector: Connector) => connector.source !== airyProduct && connector.price)
       .length > 0;
 
   const hasInstalledComponents = installedConnectors.length > 0;

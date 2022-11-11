@@ -20,17 +20,20 @@ export class WebSocketClient {
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
+  constructor(apiUrl: string, callbackMap: any = {}) {
     this.callbackMap = callbackMap;
     const url = new URL(apiUrl);
     // Infer websocket tls based on api url protocol
     const protocol = getProtocol(url);
     this.apiUrlConfig = `${protocol}//${url.host}/ws.communication`;
 
+    console.log('this.apiUrlConfig', this.apiUrlConfig);
+
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,
       {
         '/events': item => {
+          console.log('event item', item);
           this.onEvent(item.body);
         },
       },
@@ -42,7 +45,9 @@ export class WebSocketClient {
   destroyConnection = () => this.stompWrapper.destroyConnection();
 
   onEvent = (body: string) => {
-    const json = JSON.parse(body) as EventPayload;
+    const json = JSON.parse(body) as any;
+    console.log('json', json);
+
     switch (json.type) {
       case 'channel.updated':
         this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
@@ -60,11 +65,15 @@ export class WebSocketClient {
         });
         break;
       case 'metadata.updated':
+        console.log('json.payload', json.payload);
         this.callbackMap.onMetadata?.(json.payload);
         break;
       case 'tag.updated':
         this.callbackMap.onTag?.(json.payload);
         break;
+      case 'components.updated':
+        console.log('COMPONENTS.UPDATED');
+        console.log('json.payload', json.payload);
       default:
         console.error('Unknown /events payload', json);
     }

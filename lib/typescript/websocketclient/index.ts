@@ -1,5 +1,6 @@
 import {StompWrapper} from './stompWrapper';
 import {Message, Channel, MetadataEvent, Tag} from 'model';
+import {EventPayload} from './payload';
 import camelcaseKeys from 'camelcase-keys';
 
 type CallbackMap = {
@@ -20,7 +21,7 @@ export class WebSocketClient {
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(apiUrl: string, callbackMap: any = {}) {
+  constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
     this.callbackMap = callbackMap;
     const url = new URL(apiUrl);
     // Infer websocket tls based on api url protocol
@@ -43,7 +44,7 @@ export class WebSocketClient {
   destroyConnection = () => this.stompWrapper.destroyConnection();
 
   onEvent = (body: string) => {
-    const json = JSON.parse(body) as any;
+    const json = JSON.parse(body) as EventPayload;
     console.log('json', json);
 
     switch (json.type) {

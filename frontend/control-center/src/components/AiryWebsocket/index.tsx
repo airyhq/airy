@@ -9,7 +9,7 @@ type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof co
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 
 const mapDispatchToProps = () => ({
-  onComponentsUpdate: update => console.log('update', update),
+  onComponentUpdate: update => console.log('update', update),
 });
 
 const connector = connect(null, mapDispatchToProps);
@@ -18,7 +18,7 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
   const {children} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
-  const onComponentsUpdate = update => console.log('update', update);
+  const onComponentUpdate = update => console.log('update', update);
 
   const refreshSocket = () => {
     if (webSocketClient) {
@@ -26,7 +26,7 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     }
     setWebSocketClient(
       new WebSocketClient(env.API_HOST, {
-        onComponentsUpdate,
+        onComponentUpdate,
       })
     );
   };

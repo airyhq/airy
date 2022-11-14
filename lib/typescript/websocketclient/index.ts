@@ -32,7 +32,6 @@ export class WebSocketClient {
       this.apiUrlConfig,
       {
         '/events': item => {
-          console.log('event item', item);
           this.onEvent(item.body);
         },
       },
@@ -45,7 +44,6 @@ export class WebSocketClient {
 
   onEvent = (body: string) => {
     const json = JSON.parse(body) as EventPayload;
-    console.log('json', json);
 
     switch (json.type) {
       case 'channel.updated':

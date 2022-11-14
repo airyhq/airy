@@ -12,7 +12,7 @@ public enum EventType {
     TAG_UPDATED("tag.updated"),
     METADATA_ITEM("metadata.item"),
     METADATA_UPDATED("metadata.updated"),
-    COMPONENTS_UPDATED("components.updated");
+    COMPONENT_UPDATED("component.updated");
 
     private final String eventType;
 

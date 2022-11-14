@@ -105,7 +105,7 @@ Includes the full and current state of a metadata object given a namespace-ident
 
 ### `component.updated`
 
-This event sends real-time updates on components events. It includes the current installation status of a component.
+Includes the current status of a component
 
 **Sample payload**
 
@@ -114,11 +114,9 @@ This event sends real-time updates on components events. It includes the current
   "type": "component.updated",
   "payload": {
     "subject": "component",
-    //identifier: component name
-    "identifier": "sources-facebook",
+    "identifier": "component name",
     "metadata": {
-      //installationStatus: pending | uninstalled | installed
-      "installationStatus": "installed"
+      "installationStatus": "pending | uninstalled | installed"
     }
   }
 }

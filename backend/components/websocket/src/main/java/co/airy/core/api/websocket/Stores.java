@@ -58,7 +58,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
                 .toStream()
-                .peek((identifier, metadataMap) -> webSocketController.onComponentsUpdate(metadataMap));
+                .peek((identifier, metadataMap) -> webSocketController.onComponentUpdate(metadataMap));
 
         streams.start(builder.build(), appId);
     }

@@ -26,7 +26,7 @@ public class ComponentUpdated extends Event implements Serializable {
 
     @Override
     public EventType getTypeId() {
-        return EventType.COMPONENTS_UPDATED;
+        return EventType.COMPONENT_UPDATED;
     }
 
     @Data

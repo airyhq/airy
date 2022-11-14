@@ -9,6 +9,7 @@ type CallbackMap = {
   onChannel?: (channel: Channel) => void;
   onTag?: (tag: Tag) => void;
   onError?: () => void;
+  onComponentUpdate?: (update) => void;
 };
 
 // https: -> wss: and http: -> ws:
@@ -26,8 +27,6 @@ export class WebSocketClient {
     // Infer websocket tls based on api url protocol
     const protocol = getProtocol(url);
     this.apiUrlConfig = `${protocol}//${url.host}/ws.communication`;
-
-    console.log('this.apiUrlConfig', this.apiUrlConfig);
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,
@@ -74,6 +73,8 @@ export class WebSocketClient {
       case 'components.updated':
         console.log('COMPONENTS.UPDATED');
         console.log('json.payload', json.payload);
+        this.callbackMap.onComponentUpdate?.(json.payload);
+        break;
       default:
         console.error('Unknown /events payload', json);
     }

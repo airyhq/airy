@@ -113,13 +113,14 @@ Includes the full and current state of a component given a namespace-identifier 
 
 ```json5
 {
-  "type": "components.updated",
-
+  "type": "component.updated",
   "payload": {
-    "subject": "component name",
-    "identifier": "component name ?",
-    "update": {
-      "status": "pending | uninstalled | installed"
+    "subject": "component",
+    //component name
+    "identifier": "sources-facebook",
+    "metadata": {
+      //installationStatus: pending | uninstalled | installed
+      "installationStatus": "installed"
     }
   }
 }

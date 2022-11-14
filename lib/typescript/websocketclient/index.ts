@@ -1,6 +1,5 @@
 import {StompWrapper} from './stompWrapper';
 import {Message, Channel, MetadataEvent, Tag} from 'model';
-import {EventPayload} from './payload';
 import camelcaseKeys from 'camelcase-keys';
 
 type CallbackMap = {
@@ -9,7 +8,7 @@ type CallbackMap = {
   onChannel?: (channel: Channel) => void;
   onTag?: (tag: Tag) => void;
   onError?: () => void;
-  onComponentUpdate?: (update) => void;
+  onComponentUpdate?: (update: MetadataEvent) => void;
 };
 
 // https: -> wss: and http: -> ws:
@@ -64,15 +63,12 @@ export class WebSocketClient {
         });
         break;
       case 'metadata.updated':
-        console.log('json.payload', json.payload);
         this.callbackMap.onMetadata?.(json.payload);
         break;
       case 'tag.updated':
         this.callbackMap.onTag?.(json.payload);
         break;
-      case 'components.updated':
-        console.log('COMPONENTS.UPDATED');
-        console.log('json.payload', json.payload);
+      case 'component.updated':
         this.callbackMap.onComponentUpdate?.(json.payload);
         break;
       default:

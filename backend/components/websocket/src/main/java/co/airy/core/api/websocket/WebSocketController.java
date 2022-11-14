@@ -8,7 +8,7 @@ import co.airy.model.event.payload.ChannelUpdated;
 import co.airy.model.event.payload.MessageCreated;
 import co.airy.model.event.payload.MetadataUpdated;
 import co.airy.model.event.payload.TagEvent;
-import co.airy.model.event.payload.ComponentsUpdated;
+import co.airy.model.event.payload.ComponentUpdated;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -48,10 +48,10 @@ public class WebSocketController {
         messagingTemplate.convertAndSend(QUEUE_EVENTS, TagEvent.fromTag(tag));
     }
 
-    public void onComponentsUpdate(MetadataMap componentsUpdateMap) {
-        if (componentsUpdateMap.isEmpty()) {
+    public void onComponentUpdate(MetadataMap componentUpdateMap) {
+        if (componentUpdateMap.isEmpty()) {
             return;
         }
-        messagingTemplate.convertAndSend(QUEUE_EVENTS, ComponentsUpdated.fromComponentsUpdateMap(componentsUpdateMap));
+        messagingTemplate.convertAndSend(QUEUE_EVENTS, ComponentUpdated.fromComponentUpdateMap(componentUpdateMap));
     }
 }

@@ -1,7 +1,13 @@
 import {DeliveryState, Metadata, MetadataEvent, Source, Tag} from 'model';
 
 interface Event {
-  type: 'message.created' | 'message.updated' | 'channel.updated' | 'metadata.updated' | 'tag.updated';
+  type:
+    | 'message.created'
+    | 'message.updated'
+    | 'channel.updated'
+    | 'metadata.updated'
+    | 'tag.updated'
+    | 'component.updated';
 }
 
 export interface MessageCreatedPayload extends Event {
@@ -63,6 +69,15 @@ export interface MetadataUpdatedPayload extends Event {
   payload: MetadataEvent;
 }
 
+interface ComponentUpdate {
+  installationStatus: 'installed' | 'uninstalled' | 'pending';
+}
+
+export interface ComponentUpdatedPayload extends Event {
+  type: 'component.updated';
+  payload: MetadataEvent<ComponentUpdate>;
+}
+
 export interface TagUpdatedPayload extends Event {
   type: 'tag.updated';
   payload: Tag;
@@ -73,4 +88,5 @@ export type EventPayload =
   | MessageUpdatedPayload
   | ChannelUpdatedPayload
   | MetadataUpdatedPayload
-  | TagUpdatedPayload;
+  | TagUpdatedPayload
+  | ComponentUpdatedPayload;

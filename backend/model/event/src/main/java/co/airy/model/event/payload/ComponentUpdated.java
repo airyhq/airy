@@ -20,8 +20,8 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ComponentsUpdated extends Event implements Serializable {
-    private ComponentsUpdatedEventPayload payload;
+public class ComponentUpdated extends Event implements Serializable {
+    private ComponentUpdatedEventPayload payload;
     private Long timestamp;
 
     @Override
@@ -33,17 +33,17 @@ public class ComponentsUpdated extends Event implements Serializable {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ComponentsUpdatedEventPayload {
+    public static class ComponentUpdatedEventPayload {
         private String subject;
         private String identifier;
         private JsonNode metadata;
     }
 
-    public static ComponentsUpdated fromComponentsUpdateMap(MetadataMap metadataMap) {
+    public static ComponentUpdated fromComponentUpdateMap(MetadataMap metadataMap) {
         final Metadata someMetadata = metadataMap.values().iterator().next();
         final Subject subject = getSubject(someMetadata);
-        return new ComponentsUpdated(
-                ComponentsUpdatedEventPayload.builder()
+        return new ComponentUpdated(
+                ComponentUpdatedEventPayload.builder()
                         .subject(subject.getNamespace())
                         .identifier(subject.getIdentifier())
                         .metadata(getMetadataPayload(metadataMap))

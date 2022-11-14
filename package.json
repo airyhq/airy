@@ -70,7 +70,7 @@
     "babel-loader": "^8.2.5",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
-    "cypress": "10.10.0",
+    "cypress": "11.0.1",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.31.10",

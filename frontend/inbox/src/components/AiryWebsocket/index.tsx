@@ -16,43 +16,35 @@ import {upsertTagAction} from '../../actions';
 type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof connector>;
 
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
-let mapStateToProps;
 
-if (window.location.pathname.includes('inbox')) {
-  mapStateToProps = (state: StateModel) => ({
-    conversations: allConversations(state),
-  });
-} else {
-  mapStateToProps = null;
-}
+const mapStateToProps = (state: StateModel) => ({
+  conversations: allConversations(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
   onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
   getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-  onMetadata: (metadataEvent: MetadataEvent) => {
-    console.log('metadataEvent', metadataEvent);
-    return dispatch(
+  onMetadata: (metadataEvent: MetadataEvent) =>
+    dispatch(
       camelcaseKeys(setMetadataAction(metadataEvent), {
         deep: true,
         stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
       })
-    );
-  },
+    ),
   onTag: (tag: Tag) => {
     dispatch(upsertTagAction(tag));
   },
-  onComponentsUpdate: update => console.log('update', update),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const AiryWebSocket: any = props => {
-  const {children, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
+const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
+  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const onMessage = (conversationId: string, message: Message) => {
-    if (props?.conversations && props.conversations[conversationId]) {
+    if (conversations[conversationId]) {
       addMessages(conversationId, [message]);
     } else {
       getConversationInfo(conversationId).then(() => {
@@ -60,8 +52,6 @@ const AiryWebSocket: any = props => {
       });
     }
   };
-
-  const onComponentsUpdate = update => console.log('update', update);
 
   const refreshSocket = () => {
     if (webSocketClient) {
@@ -75,7 +65,6 @@ const AiryWebSocket: any = props => {
         onChannel,
         onMetadata,
         onTag,
-        onComponentsUpdate,
       })
     );
   };

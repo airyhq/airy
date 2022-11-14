@@ -16,7 +16,7 @@ import Status from './pages/Status';
 import Inbox from './pages/Inbox';
 import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
-import AiryWebSocket from '../../inbox/src/components/AiryWebsocket';
+import AiryWebSocket from './components/AiryWebsocket';
 
 const mapDispatchToProps = {
   getClientConfig,

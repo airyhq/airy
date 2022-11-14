@@ -36,19 +36,18 @@ public class ComponentsUpdated extends Event implements Serializable {
     public static class ComponentsUpdatedEventPayload {
         private String subject;
         private String identifier;
-        private JsonNode update;
+        private JsonNode metadata;
     }
 
-    public static  ComponentsUpdated fromComponentsUpdateMap(MetadataMap metadataMap) {
+    public static ComponentsUpdated fromComponentsUpdateMap(MetadataMap metadataMap) {
         final Metadata someMetadata = metadataMap.values().iterator().next();
         final Subject subject = getSubject(someMetadata);
         return new ComponentsUpdated(
-            ComponentsUpdatedEventPayload.builder()
-                        .subject("component")
-                        .identifier("component")
-                        .update(getMetadataPayload(metadataMap))
+                ComponentsUpdatedEventPayload.builder()
+                        .subject(subject.getNamespace())
+                        .identifier(subject.getIdentifier())
+                        .metadata(getMetadataPayload(metadataMap))
                         .build(),
-                metadataMap.getUpdatedAt()
-        );
+                metadataMap.getUpdatedAt());
     }
 }

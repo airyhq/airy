@@ -43,6 +43,13 @@ spec:
                 name: unread-counter
                 port:
                   number: 80
+          - path: /conversations.mark-read
+            pathType: Prefix
+            backend:
+              service:
+                name: unread-counter
+                port:
+                  number: 80
           - path: /contacts
             pathType: Prefix
             backend:

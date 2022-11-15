@@ -5,7 +5,7 @@ import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFill
 import {ReactComponent as UncheckedIcon} from 'assets/images/icons/uncheckIcon.svg';
 import {ReactComponent as ArrowRight} from 'assets/images/icons/arrowRight.svg';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {Source, airyProduct} from 'model';
+import {Source} from 'model';
 import {SettingsModal, Button, Toggle, Tooltip} from 'components';
 import {connect, ConnectedProps, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -44,7 +44,14 @@ const ItemInfo = (props: ComponentInfoProps) => {
     let isConfigurable = false;
 
     Object.entries(catalogList).forEach(elem => {
-      if (elem[1] && elem[1].source && elem[1].source === source && elem[1].source !== airyProduct)
+      if (
+        elem[1] &&
+        elem[1].source &&
+        elem[1].source === source &&
+        elem[1].source !== Source.airyContacts &&
+        elem[1].source !== Source.airyMobile &&
+        elem[1].source !== Source.airyWebhooks
+      )
         isConfigurable = true;
     });
 

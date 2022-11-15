@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {airyProduct, Connector, InstallationStatus} from 'model';
+import {Connector, InstallationStatus, Source} from 'model';
 import InfoCard from './InfoCard';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
@@ -24,12 +24,19 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   const installedConnectors = Object.values(connectors).filter(
     (connector: Connector) =>
       connector.installationStatus === InstallationStatus.installed &&
-      connector.source !== airyProduct &&
+      connector.source !== Source.airyContacts &&
+      connector.source !== Source.airyWebhooks &&
+      connector.source !== Source.airyMobile &&
       connector.price
   );
   const hasAvailableConnectors =
-    Object.values(connectors).filter((connector: Connector) => connector.source !== airyProduct && connector.price)
-      .length > 0;
+    Object.values(connectors).filter(
+      (connector: Connector) =>
+        connector.source !== Source.airyContacts &&
+        connector.source !== Source.airyMobile &&
+        connector.source !== Source.airyWebhooks &&
+        connector.price
+    ).length > 0;
 
   const hasInstalledComponents = installedConnectors.length > 0;
   const pageTitle = 'Connectors';

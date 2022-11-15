@@ -1,5 +1,6 @@
 export enum Source {
   airyContacts = 'airyContacts',
+  airyMobile = 'mobile',
   airyWebhooks = 'webhooks',
   facebook = 'facebook',
   google = 'google',
@@ -15,15 +16,12 @@ export enum Source {
   cognigy = 'cognigy',
   rasa = 'rasa',
   amelia = 'amelia',
-  mobile = 'mobile',
   whatsapp = 'whatsapp',
   frontendInbox = 'frontend-inbox',
   ibmWatsonAssistant = 'ibmWatsonAssistant',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
 }
-
-export const airyProduct = Source.airyContacts && Source.airyWebhooks;
 
 export const prettifySource = (source: string) =>
   source

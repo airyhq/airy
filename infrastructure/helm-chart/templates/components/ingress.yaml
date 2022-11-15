@@ -36,13 +36,6 @@ spec:
                 name: api-communication
                 port:
                   number: 80
-          - path: /conversations.markRead
-            pathType: Prefix
-            backend:
-              service:
-                name: unread-counter
-                port:
-                  number: 80
           - path: /conversations.mark-read
             pathType: Prefix
             backend:

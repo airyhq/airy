@@ -36,13 +36,13 @@ link='/getting-started/installation/introduction'
 
 The Quickstart guide explains setting up and using the Chatplugin source which is enabled by default.
 
-To enable and use other sources, please refer to our [Sources documentation](/sources/introduction).
+To enable and use other sources, please refer to our [Sources documentation](/connectors/sources/introduction).
 
 :::
 
 ## Step 1: How to setup your first source
 
-The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a
+The [Airy Live Chat Plugin](/connectors/sources/chatplugin/overview.md) source is well suited for a
 first integration because it does not require any configuration.
 
 ```shell script
@@ -75,7 +75,7 @@ You can now type a message in the text box and send it 🎉
 
 To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
-created. It should return the message you have just sent.
+created. It should return the message you have just sent. Make sure that you have the `jq` binary installed.
 
 ```shell script
 curl -XPOST http://localhost/conversations.list | jq .
@@ -85,13 +85,17 @@ curl -XPOST http://localhost/conversations.list | jq .
 
 ## Step 4: Consume directly from Apache Kafka
 
-You can also consume the messages directly from the Kafka
-`application.communication.messages` topic:
+Get a shell to the running `kafka-0` container:
 
-```shell script
+```bash
 kubectl exec -it kafka-0 -- /bin/bash
+```
+
+Then you can consume the events of the `application.communication.messages` topic directly from the `kafka-0` container shell:
+
+```bash
 kafka-console-consumer.sh \
---bootstrap-server kafka:9092 \
+--bootstrap-server localhost:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```

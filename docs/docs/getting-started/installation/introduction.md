@@ -11,6 +11,7 @@ import TerraformSVG from "@site/static/icons/terraform.svg";
 import Minikube from "@site/static/icons/minikube.svg";
 import RocketSVG from "@site/static/icons/rocket.svg";
 import HelmSVG from "@site/static/icons/helm.svg";
+import GcpSVG from "@site/static/icons/gcp.svg";
 
 <TLDR>
 
@@ -60,6 +61,12 @@ icon={<AwsSVG />}
 title='Production ready environment with AWS'
 description='Step by step guide to run Airy Core on AWS'
 link='getting-started/installation/aws'
+/>
+<ButtonBox
+icon={<GcpSVG />}
+title='Production ready environment with GCP'
+description='Step by step guide to run Airy Core on GCP'
+link='getting-started/installation/gcp'
 />
 <ButtonBox
 icon={<TerraformSVG />}

@@ -21,7 +21,7 @@ public class UnreadCounterController {
         this.stores = stores;
     }
 
-    @PostMapping({"/conversations.markRead", "/conversations.mark-read"})
+    @PostMapping("/conversations.mark-read")
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid MarkReadRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final ReadReceipt readReceipt = ReadReceipt.newBuilder()

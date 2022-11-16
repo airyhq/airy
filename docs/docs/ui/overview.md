@@ -14,7 +14,7 @@ import TLDR from "@site/src/components/TLDR";
 Not every message can be handled by code, which is why Airy comes with different UIs ready for you and your team to use.
 </TLDR>
 
-While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI offers all of the interfaces you need internally for a messaging platform.
+While the [Chat Plugin](connectors/sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI offers all of the interfaces you need internally for a messaging platform.
 
 Airy UI comes with two open-source, customizable separate UIs: the [Inbox](inbox/introduction) and the [Control Center](control-center/introduction). Both can be accessed through a common landing page (see screenshot below).
 

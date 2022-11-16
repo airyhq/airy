@@ -1,0 +1,158 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta1
+{{- end }}
+kind: StatefulSet
+metadata:
+  name: {{ template "cp-zookeeper.fullname" . }}
+  labels:
+    app: {{ template "cp-zookeeper.name" . }}
+    chart: {{ template "cp-zookeeper.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-zookeeper.name" . }}
+      release: {{ .Release.Name }}
+  {{- end }}
+  serviceName: {{ template "cp-zookeeper.fullname" . }}-headless
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  replicas: {{ default 3 .Values.servers }}
+  updateStrategy:
+    type: {{ .Values.updateStrategy }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-zookeeper.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - {{ template "cp-zookeeper.name" . }}
+                  - key: "release"
+                    operator: In
+                    values:
+                    - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+      initContainers:
+      - name: fix-permissions
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - "chown -R 1000 /var/lib/zookeeper/"
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper/data
+        - name: datalogdir
+          mountPath: /var/lib/zookeeper/log
+      containers:
+      - name: {{ template "cp-zookeeper.name" . }}-server
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        ports:
+        - containerPort: {{ .Values.clientPort }}
+          name: client
+        - containerPort: {{ .Values.serverPort }}
+          name: server
+        - containerPort: {{ .Values.leaderElectionPort }}
+          name: leader-election
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name : KAFKA_HEAP_OPTS
+          value: "{{ .Values.heapOptions }}"
+        - name : ZOOKEEPER_TICK_TIME
+          value: "{{ .Values.tickTime }}"
+        - name : ZOOKEEPER_SYNC_LIMIT
+          value: "{{ .Values.syncLimit }}"
+        - name : ZOOKEEPER_INIT_LIMIT
+          value: "{{ .Values.initLimit }}"
+        - name : ZOOKEEPER_MAX_CLIENT_CNXNS
+          value: "{{ .Values.maxClientCnxns }}"
+        - name : ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT
+          value: "{{ .Values.autoPurgeSnapRetainCount}}"
+        - name : ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL
+          value: "{{ .Values.autoPurgePurgeInterval}}"
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "{{ .Values.clientPort }}"
+        - name : ZOOKEEPER_SERVERS
+          value: {{ template "cp-zookeeper.serverlist" . }}
+        # ZOOKEEPER_SERVER_ID is required just to pass cp-zookeeper ensure script for env check,
+        # the value(metadata.mame) is not used and will be overwritten in command part
+        - name: ZOOKEEPER_SERVER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        args: ["zookeeper-server-start.sh", "/etc/kafka/zookeeper.properties"]
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper/data
+        - name: datalogdir
+          mountPath: /var/lib/zookeeper/log
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{ if not .Values.persistence.enabled }}
+      - name: datadir
+        emptyDir: {}
+      - name: datalogdir
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.dataDirSize }}"
+      {{- if .Values.persistence.dataDirStorageClass }}
+      {{- if (eq "-" .Values.persistence.dataDirStorageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.persistence.dataDirStorageClass }}"
+      {{- end }}
+      {{- end }}
+  - metadata:
+      name: datalogdir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.dataLogDirSize }}"
+      {{- if .Values.persistence.dataLogDirStorageClass }}
+      {{- if (eq "-" .Values.persistence.dataLogDirStorageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.persistence.dataLogDirStorageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}

@@ -7,7 +7,7 @@ export const getConnectedRouteForComponent = (
   hasConnectedChannels?: boolean,
   configured?: boolean
 ) => {
-  if (source === Source.webhooks) return WEBHOOKS_ROUTE;
+  if (source === Source.airyWebhooks) return WEBHOOKS_ROUTE;
 
   if ((!configured || !isChannel) && source !== Source.chatPlugin) return `${CONNECTORS_ROUTE}/${source}/configure`;
 
@@ -19,7 +19,7 @@ export const getConnectedRouteForComponent = (
 };
 
 export const getNewChannelRouteForComponent = (source: Source, isChannel?: boolean, configured?: boolean) => {
-  if (source === Source.webhooks) return WEBHOOKS_ROUTE;
+  if (source === Source.airyWebhooks) return WEBHOOKS_ROUTE;
 
   if ((!configured || !isChannel) && source !== Source.chatPlugin) return `${CONNECTORS_ROUTE}/${source}/configure`;
 

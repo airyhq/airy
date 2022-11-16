@@ -9,7 +9,11 @@ const INSTALL_COMPONENT = '@@catalog/INSTALL_COMPONENT';
 const UNINSTALL_COMPONENT = '@@catalog/UNINSTALL_COMPONENT';
 const UPDATE_INSTALLATION_STATUS = '@@catalog/UPDATE_INSTALLATION_STATUS';
 
-type ComponentInstallationStatus = {status: 'installed' | 'pending' | 'uninstalled'};
+type ComponentInstallationStatusPayload = {
+  subject: 'component';
+  identifier: string;
+  metadata: {installationStatus: 'installed' | 'pending' | 'uninstalled'};
+};
 
 export const listComponentsAction = createAction(
   LIST_COMPONENT,
@@ -28,8 +32,8 @@ export const uninstallComponentAction = createAction(
 
 export const updateComponentInstallationStatusAction = createAction(
   UPDATE_INSTALLATION_STATUS,
-  (installationStatus: ComponentInstallationStatus) => installationStatus
-)<ComponentInstallationStatus>();
+  (update: ComponentInstallationStatusPayload) => update
+)<ComponentInstallationStatusPayload>();
 
 export const listComponents = () => (dispatch: Dispatch<any>) => {
   return HttpClientInstance.listComponents().then(response => {
@@ -55,6 +59,6 @@ export const uninstallComponent =
   };
 
 export const updateComponentStatus =
-  (installationStatusPayload: ComponentInstallationStatus) => (dispatch: Dispatch<any>) => {
+  (installationStatusPayload: ComponentInstallationStatusPayload) => (dispatch: Dispatch<any>) => {
     return dispatch(updateComponentInstallationStatusAction(installationStatusPayload));
   };

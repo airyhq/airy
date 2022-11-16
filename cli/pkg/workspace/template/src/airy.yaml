@@ -2,6 +2,7 @@
 global:
   host: {{ .Host }}
 {{- end }}
+{{- if (or .NgrokEnabled .Https .LoadbalancerAnnotations) }}
 ingress-controller:
 {{- if .NgrokEnabled }}
   ngrokEnabled: {{ .NgrokEnabled }}
@@ -15,6 +16,7 @@ ingress-controller:
     {{ $k }}: {{ $v }}
   {{- end }}
   {{- end }}
+{{- end }}
 {{- if .TrackingDisabled }}
 tools:
   segment:

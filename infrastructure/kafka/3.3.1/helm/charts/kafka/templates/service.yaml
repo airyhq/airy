@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kafka.fullname" . }}
+  labels:
+    app: {{ template "kafka.name" . }}
+    chart: {{ template "kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - port: {{ .Values.port }}
+      name: broker
+  selector:
+    app: {{ template "kafka.name" . }}
+    release: {{ .Release.Name }}
+---
+{{- $brokers := .Values.brokers | int }}
+{{- $firstControllerPort := .Values.firstControllerPort }}
+{{- range $k, $v := until ($brokers|int) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-{{ $k }}
+  labels:
+    app: kafka-controller
+spec:
+  type: NodePort
+  ports:
+  - port: {{ add ($firstControllerPort|int) $k }}
+    protocol: TCP
+  selector:
+    statefulset.kubernetes.io/pod-name: kafka-{{ $k }}
+---
+{{- end }}
+{{- if .Values.sasl }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kafka.fullname" . }}-external
+  labels:
+    app: {{ template "kafka.name" . }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.saslPort }}
+      name: broker
+  selector:
+    app: {{ template "kafka.name" . }}
+---
+{{- end }}
+{{- if .Values.prometheus.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kafka.prometheus.name" . }}
+  labels:
+    app: {{ template "kafka.prometheus.name" . }}
+    chart: {{ template "kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    core.airy.co/prometheus: {{ template "kafka.name" . }}
+spec:
+  ports:
+    - port: {{ .Values.prometheus.exporterPort }}
+      name: prometheus
+  selector:
+    app: {{ template "kafka.prometheus.name" . }}
+    release: {{ .Release.Name }}
+{{ end }}

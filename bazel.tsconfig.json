@@ -16,6 +16,7 @@
     "preserveConstEnums": true,
     "isolatedModules": false,
     "module": "commonjs",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "jsx": "react",
     "paths": {

@@ -11,12 +11,9 @@ go_library(
     },
     deps = [
         "//cli/pkg/console",
-        "//cli/pkg/helm",
         "//cli/pkg/providers",
         "//cli/pkg/workspace",
-        "//lib/go/k8s",
         "@com_github_spf13_cobra//:cobra",
-        "@com_github_spf13_viper//:viper",
         "@com_github_twinproduction_go_color//:go-color",
         "@in_gopkg_segmentio_analytics_go_v3//:analytics-go_v3",
     ],

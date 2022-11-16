@@ -9,6 +9,7 @@ module.exports = {
             'getting-started/installation/introduction',
             'getting-started/installation/minikube',
             'getting-started/installation/aws',
+            'getting-started/installation/gcp',
             'getting-started/installation/terraform',
             'getting-started/installation/helm',
             'getting-started/installation/configuration',

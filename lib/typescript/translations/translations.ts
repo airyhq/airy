@@ -386,6 +386,9 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
 
+      //Amazon Lex V2
+      amazonLexV2Description: 'A web service for building conversational interface for apps using voice and text.',
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
 
@@ -445,7 +448,7 @@ const resources = {
       rasaDescription: 'Open source conversational AI.',
 
       //webhooks
-      webhooksDescription: 'Get notified when events happen.',
+      airyWebhooksDescription: 'Get notified when events happen.',
 
       //amelia
       ameliaDescription: 'An intelligent cognitive conversational chatbot.',
@@ -482,6 +485,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration successful updated',
       failedConfiguration: 'Applying configuration failed',
       updateFailedConfiguration: 'Updating configuration failed',
+      tooltipInstallingQueue: 'Please wait for other connectors to be installed/uninstalled',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -942,7 +946,7 @@ const resources = {
       rasaDescription: 'Open-Source-Gesprächs-KI.',
 
       //webhooks
-      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+      airyWebhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
 
       //amelia
       ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
@@ -1047,6 +1051,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
       failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
       updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
+      tooltipInstallingQueue: 'Bitte warten Sie, bis andere Connector installiert/deinstalliert sind',
 
       //Request Access
 
@@ -1564,7 +1569,7 @@ const resources = {
       rasaDescription: 'IA conversationnelle open source.',
 
       //webhooks
-      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+      airyWebhooksDescription: 'Soyez averti lorsque des événements se produisent.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
@@ -1601,6 +1606,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
       failedConfiguration: 'La configuration a échoué',
       updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
+      tooltipInstallingQueue: `Veuillez attendre que d'autres connecteurs soient installés/désinstallés.`,
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -2125,7 +2131,7 @@ const resources = {
       rasaDescription: 'IA conversacional Open Source.',
 
       //webhooks
-      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+      airyWebhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',
@@ -2162,6 +2168,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
       failedConfiguration: 'Fallo en la aplicación de la configuración',
       updateFailedConfiguration: 'Fallo en la actualización de la configuración',
+      tooltipInstallingQueue: 'Espere a que se instalen/desinstalen otros conectores',
 
       //Request Access
       comingSoon: 'Próximamente',

@@ -44,7 +44,14 @@ const ItemInfo = (props: ComponentInfoProps) => {
     let isConfigurable = false;
 
     Object.entries(catalogList).forEach(elem => {
-      if (elem[1] && elem[1].source && elem[1].source === source && elem[1].source !== Source.webhooks)
+      if (
+        elem[1] &&
+        elem[1].source &&
+        elem[1].source === source &&
+        elem[1].source !== Source.airyContacts &&
+        elem[1].source !== Source.airyMobile &&
+        elem[1].source !== Source.airyWebhooks
+      )
         isConfigurable = true;
     });
 

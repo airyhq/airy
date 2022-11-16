@@ -35,6 +35,15 @@ export default function connectorsReducer(state = defaultState, action: Action):
         },
       };
     }
+    case getType(actions.updateComponentAction): {
+      return {
+        ...state,
+        [action.payload.name]: {
+          ...state[action.payload.name],
+          installationStatus: 'pending',
+        },
+      };
+    }
     default:
       return state;
   }

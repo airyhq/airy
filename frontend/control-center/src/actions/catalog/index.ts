@@ -7,6 +7,9 @@ import {Components} from 'model';
 const LIST_COMPONENT = '@@catalog/LIST_COMPONENT';
 const INSTALL_COMPONENT = '@@catalog/INSTALL_COMPONENT';
 const UNINSTALL_COMPONENT = '@@catalog/UNINSTALL_COMPONENT';
+const UPDATE_COMPONENT_STATUS = '@@catalog/UPDATE_COMPONENT_STATUS';
+
+type InstallationStatus = "pending" | "installed" | "uninstalled";
 
 export const listComponentsAction = createAction(
   LIST_COMPONENT,
@@ -22,6 +25,11 @@ export const uninstallComponentAction = createAction(
   UNINSTALL_COMPONENT,
   (uninstalledComponent: InstallUninstallComponentRequestPayload) => uninstalledComponent
 )<InstallUninstallComponentRequestPayload>();
+
+export const updateComponentStatus = createAction(
+  UPDATE_COMPONENT_STATUS,
+  (installationStatus: InstallationStatus) => installationStatus
+)<InstallationStatus>();
 
 export const listComponents = () => (dispatch: Dispatch<any>) => {
   return HttpClientInstance.listComponents().then(response => {

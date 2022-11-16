@@ -7,6 +7,9 @@ import {Components} from 'model';
 const LIST_COMPONENT = '@@catalog/LIST_COMPONENT';
 const INSTALL_COMPONENT = '@@catalog/INSTALL_COMPONENT';
 const UNINSTALL_COMPONENT = '@@catalog/UNINSTALL_COMPONENT';
+const UPDATE_INSTALLATION_STATUS = '@@catalog/UPDATE_INSTALLATION_STATUS';
+
+type ComponentInstallationStatus = {status: 'installed' | 'pending' | 'uninstalled'};
 
 export const listComponentsAction = createAction(
   LIST_COMPONENT,
@@ -22,6 +25,11 @@ export const uninstallComponentAction = createAction(
   UNINSTALL_COMPONENT,
   (uninstalledComponent: InstallUninstallComponentRequestPayload) => uninstalledComponent
 )<InstallUninstallComponentRequestPayload>();
+
+export const updateComponentInstallationStatusAction = createAction(
+  UPDATE_INSTALLATION_STATUS,
+  (installationStatus: ComponentInstallationStatus) => installationStatus
+)<ComponentInstallationStatus>();
 
 export const listComponents = () => (dispatch: Dispatch<any>) => {
   return HttpClientInstance.listComponents().then(response => {
@@ -44,4 +52,9 @@ export const uninstallComponent =
       dispatch(uninstallComponentAction(uninstallComponentRequestPayload));
       return Promise.resolve(true);
     });
+  };
+
+export const updateComponentStatus =
+  (installationStatusPayload: ComponentInstallationStatus) => (dispatch: Dispatch<any>) => {
+    return dispatch(updateComponentInstallationStatusAction(installationStatusPayload));
   };

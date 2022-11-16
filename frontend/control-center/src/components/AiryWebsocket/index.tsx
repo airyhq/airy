@@ -8,11 +8,12 @@ type AiryWebSocketProps = {children: React.ReactNode} & ConnectedProps<typeof co
 
 export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 
-const mapDispatchToProps = () => ({
-  onComponentUpdate: update => console.log('update', update),
+const mapDispatchToProps = () => dispatch => ({
+  onComponentUpdate: update => console.log(update);
 });
 
 const connector = connect(null, mapDispatchToProps);
+
 
 const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
   const {children} = props;

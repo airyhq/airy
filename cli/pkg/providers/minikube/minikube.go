@@ -85,7 +85,3 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	}
 	return nil
 }
-
-func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
-	return nil
-}

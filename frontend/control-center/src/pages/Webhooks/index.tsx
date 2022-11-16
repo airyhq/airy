@@ -13,6 +13,7 @@ import styles from './index.module.scss';
 import SubscriptionModal from './SubscriptionModal';
 import WebhooksListItem from './WebhooksListItem';
 import {NotificationModel} from 'model';
+import {AiryLoader} from 'components/loaders/AiryLoader';
 
 type WebhooksProps = {} & ConnectedProps<typeof connector>;
 
@@ -34,6 +35,7 @@ const Webhooks = (props: WebhooksProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
+  const [dataFetched, setDataFetched] = useState(false);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -42,9 +44,13 @@ const Webhooks = (props: WebhooksProps) => {
 
   useEffect(() => {
     webhooks.length === 0 &&
-      listWebhooks().catch((error: Error) => {
-        console.error(error);
-      });
+      listWebhooks()
+        .then(() => {
+          setDataFetched(true);
+        })
+        .catch((error: Error) => {
+          console.error(error);
+        });
   }, [webhooks]);
 
   const handleNotification = (show: boolean, error: boolean) => {
@@ -115,27 +121,23 @@ const Webhooks = (props: WebhooksProps) => {
           />
         </SettingsModal>
       )}
-      {webhooks.length === 0 ? (
-        <EmptyState setNewWebhook={handleNewWebhook} />
-      ) : (
-        <>
-          {notification?.show && (
-            <NotificationComponent
-              show={notification.show}
-              successful={notification.successful}
-              text={notification.text}
-              setShowFalse={setNotification}
-            />
-          )}
-          <div className={styles.webhooksWrapper}>
-            <div className={styles.webhooksHeadline}>
-              <div className={styles.headlineContainer}>
-                <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
-                <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, minWidth: '176px', height: '40px'}}>
-                  {t('subscribeWebhook')}
-                </Button>
-              </div>
-            </div>
+      <div className={styles.webhooksWrapper}>
+        <div className={styles.webhooksHeadline}>
+          <div className={styles.headlineContainer}>
+            <h1 className={styles.webhooksHeadlineText}>Webhooks</h1>
+            {webhooks.length > 0 && (
+              <Button onClick={() => setNewWebhook(true)} style={{fontSize: 16, minWidth: '176px', height: '40px'}}>
+                {t('subscribeWebhook')}
+              </Button>
+            )}
+          </div>
+        </div>
+        {webhooks.length === 0 && !dataFetched ? (
+          <AiryLoader height={240} width={240} position="relative" />
+        ) : webhooks.length === 0 ? (
+          <EmptyState setNewWebhook={handleNewWebhook} />
+        ) : (
+          <>
             <div className={styles.listHeader}>
               <h2>URL</h2>
               <h2>Name</h2>
@@ -154,9 +156,17 @@ const Webhooks = (props: WebhooksProps) => {
                   />
                 ))}
             </div>
-          </div>
-        </>
-      )}
+            {notification?.show && (
+              <NotificationComponent
+                show={notification.show}
+                successful={notification.successful}
+                text={notification.text}
+                setShowFalse={setNotification}
+              />
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };

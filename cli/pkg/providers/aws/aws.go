@@ -55,10 +55,6 @@ func (p *provider) PreInstallation(workspacePath string) (string, error) {
 	return installDir, nil
 }
 
-func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
-	return nil
-}
-
 type KubeConfig struct {
 	ClusterName     string
 	EndpointUrl     string

@@ -1,6 +1,6 @@
 name: sources-whatsapp
 mandatory: false
-enabled: true
+enabled: false
 connector:
   image: sources/whatsapp-connector
   resources: {}

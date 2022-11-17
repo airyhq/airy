@@ -448,7 +448,7 @@ const resources = {
       rasaDescription: 'Open source conversational AI.',
 
       //webhooks
-      airyWebhooksDescription: 'Get notified when events happen.',
+      webhooksDescription: 'Get notified when events happen.',
 
       //amelia
       ameliaDescription: 'An intelligent cognitive conversational chatbot.',
@@ -922,7 +922,7 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'URL ohne Trailing Slashes (Beispiel: https://123.ngrok.io)',
+      inputTooltipRasaRasaWebhookUrl: 'URL ohne Trailing Slashes (Beispiel: https://123.ngrok.io)',
       rasaPlaceholder: 'https://<Betreiber>',
 
       //WhatsApp Business Cloud
@@ -946,7 +946,7 @@ const resources = {
       rasaDescription: 'Open-Source-Gesprächs-KI.',
 
       //webhooks
-      airyWebhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
 
       //amelia
       ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
@@ -1569,7 +1569,7 @@ const resources = {
       rasaDescription: 'IA conversationnelle open source.',
 
       //webhooks
-      airyWebhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
@@ -1625,7 +1625,7 @@ const resources = {
       send: 'Envoyer',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'https://<hôte> (example: https://123.ngrok.io)',
+      inputTooltipRasaRasaWebhookUrl: 'https://<hôte> (example: https://123.ngrok.io)',
       rasaPlaceholder: 'https://<hôte>',
 
       //Whatsapp Business Cloud
@@ -2131,7 +2131,7 @@ const resources = {
       rasaDescription: 'IA conversacional Open Source.',
 
       //webhooks
-      airyWebhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',
@@ -2187,7 +2187,7 @@ const resources = {
       send: 'Enviar',
 
       //Rasa
-      inputTooltipRasaRasaRestWebhookUrl: 'URL (ejemplo: https://123.ngrok.io)',
+      inputTooltipRasaRasaWebhookUrl: 'URL (ejemplo: https://123.ngrok.io)',
       rasaPlaceholder: 'https://<host>',
 
       //Whatsapp Business Cloud

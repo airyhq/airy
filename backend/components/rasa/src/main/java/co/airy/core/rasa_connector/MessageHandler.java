@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
+import static co.airy.sources_parser.SourcesParser;
+
 
 import java.time.Instant;
 import java.util.Map;
@@ -40,46 +42,10 @@ public class MessageHandler {
                 .build();
     }
 
+   
+
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
-        final String text = response.getText();
-        if (text == null) {
-            return null;
-        }
-
-        final ObjectNode node = getNode();
-        switch (source) {
-            case "google": {
-                final ObjectNode representative = getNode();
-                representative.put("representativeType", "BOT");
-                node.set("representative", representative);
-                node.put("text", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "viber": {
-                node.put("text", text);
-                node.put("type", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "chatplugin":
-            case "instagram":
-            case "facebook": {
-                node.put("text", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "twilio.sms":
-            case "twilio.whatsapp": {
-                node.put("Body", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "whatsapp": {
-                node.put("Body", text);
-                return mapper.writeValueAsString(node);
-            }
-
-            default: {
-                return null;
-            }
-        }
+        return SourcesParser.getSourceMapper(source, response);
     }
 
     private ObjectNode getNode() {

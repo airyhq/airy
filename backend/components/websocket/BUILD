@@ -13,6 +13,7 @@ app_deps = [
     "//backend/model/metadata",
     "//backend/model/tag",
     "//lib/java/date",
+    "//lib/java/kafka/schema:ops-application-components",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",

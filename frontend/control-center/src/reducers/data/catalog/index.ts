@@ -35,6 +35,15 @@ export default function connectorsReducer(state = defaultState, action: Action):
         },
       };
     }
+    case getType(actions.updateComponentInstallationStatusAction): {
+      return {
+        ...state,
+        [action.payload.identifier]: {
+          ...state[action.payload.identifier],
+          installationStatus: action.payload.metadata.installationStatus,
+        },
+      };
+    }
     default:
       return state;
   }

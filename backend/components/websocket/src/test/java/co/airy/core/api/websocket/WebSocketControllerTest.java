@@ -11,6 +11,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
+import co.airy.kafka.schema.ops.OpsApplicationComponents;
+
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.event.payload.ChannelUpdated;
@@ -69,6 +71,7 @@ public class WebSocketControllerTest {
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
+    private static final OpsApplicationComponents opsApplicationComponents = new OpsApplicationComponents();
 
     @Value("${local.server.port}")
     private int port;
@@ -82,7 +85,8 @@ public class WebSocketControllerTest {
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
-                applicationCommunicationTags
+                applicationCommunicationTags,
+                opsApplicationComponents
         );
         kafkaTestHelper.beforeAll();
     }

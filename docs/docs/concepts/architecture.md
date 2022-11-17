@@ -16,7 +16,7 @@ The `backend` system is a streaming platform. Its role is to:
 - Manage authentication and authorization features.
 
 The `frontend` system contains Inbox and Control Center web applications and the JavaScript integration
-of the [Chat Plugin](sources/chatplugin/overview.md).
+of the [Chat Plugin](connectors/sources/chatplugin/overview.md).
 
 All of these functionalities are packaged in entities called `Airy Components`. Components are part of a `repository`. By default, the `airy-core` repository is added to an `Airy Core` installation. The conversational platform can further be extended with additional repositories and third party components.
 

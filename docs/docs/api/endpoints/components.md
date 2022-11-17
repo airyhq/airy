@@ -125,14 +125,32 @@ List all the components, both installed and not installed.
 {
   "components": [
     {
-      "name": "sources-facebook",
+      "availableFor": "Open-source, Enterprise, Managed cloud",
+      "category": "Conversation Source",
+      "configurationValues": "{ \"saFile\": \"string\", \"partnerKey\": \"string\"}",
+      "description": "<div>...</div>",
+      "displayName": "Google Business Messages",
+      "docs": "https://airy.co/docs/core/sources/google",
+      "installationStatus": "uninstalled|pending|installed",
+      "isChannel": "true",
+      "name": "sources-google",
+      "price": "Free",
       "repository": "airy-core",
-      "installed": true
+      "source": "google"
     },
     {
-      "name": "sources-google",
+      "availableFor": "Open-source, Enterprise, Managed cloud",
+      "category": "Conversation Source",
+      "configurationValues": "{ \"appId\": \"string\", \"appSecret\": \"string\", \"webhookSecret\": \"string\"}",
+      "description": "<div>...</div>",
+      "displayName": "Facebook Messenger",
+      "docs": "https://airy.co/docs/core/sources/facebook",
+      "installationStatus": "uninstalled|pending|installed",
+      "isChannel": "true",
+      "name": "sources-facebook",
+      "price": "Free",
       "repository": "airy-core",
-      "installed": false
+      "source": "facebook"
     }
   ]
 }

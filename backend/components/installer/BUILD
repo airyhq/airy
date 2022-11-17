@@ -5,9 +5,11 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
+    "//backend/model/component",
     "//backend/model/metadata",
     "//lib/java/spring/web:spring-web",
-    "//lib/java/spring/async:spring-async",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/kafka/schema:ops-application-components",
     "//:springboot_actuator",
     "//:k8s_client",
     "@maven//:org_eclipse_jgit_org_eclipse_jgit",

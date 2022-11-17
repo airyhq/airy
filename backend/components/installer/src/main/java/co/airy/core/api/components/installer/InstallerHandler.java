@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import co.airy.core.api.components.installer.model.Component;
 import co.airy.core.api.components.installer.model.ComponentDetails;
+import co.airy.core.api.components.installer.model.InstallationStatus;
 import co.airy.core.api.components.installer.model.Repository;
 import co.airy.log.AiryLoggerFactory;
 
@@ -54,6 +55,11 @@ public class InstallerHandler {
     }
 
     public void installComponent(String componentName) throws Exception {
+        if (installerHandlerCacheManager.isInstalled(componentName)) {
+            log.info(String.format("component %s is already or in the process of installation", componentName));
+            return;
+        }
+
         final CoreV1Api api = new CoreV1Api(apiClient);
         final Map<String, String> coreConfig = getConfigMap(api, "core-config");
         final String globals = coreConfig.get("global.yaml");
@@ -64,16 +70,23 @@ public class InstallerHandler {
 
 
         final String jobName = String.format("helm-install-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd);
-        installerHandlerCacheManager.resetCacheAfterJob(jobName);
+        helmJobHandler.launchHelmJob(jobName, cmd, Map.of("helm", "install", "component", componentName));
+        installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
+        installerHandlerCacheManager.resetCacheAfterJob();
     }
 
     public void uninstallComponent(String componentName) throws Exception {
+        if (installerHandlerCacheManager.isUninstalled(componentName)) {
+            log.info(String.format("component %s is already or in the process of uninstallation", componentName));
+            return;
+        }
+
         final List<String> cmd = getUninstallCommand(componentName);
 
         final String jobName = String.format("helm-uninstall-%s", componentName);
-        helmJobHandler.launchHelmJob(jobName, cmd);
-        installerHandlerCacheManager.resetCacheAfterJob(jobName);
+        helmJobHandler.launchHelmJob(jobName, cmd, Map.of("helm", "uninstall", "component", componentName));
+        installerHandlerCacheManager.changeInstallationStatus(componentName, InstallationStatus.pending);
+        installerHandlerCacheManager.resetCacheAfterJob();
     }
 
     private Component getComponentFromName(
@@ -82,9 +95,6 @@ public class InstallerHandler {
             String version) throws Exception {
 
         ComponentDetails componentDetails = catalogHandler.getComponentByName(componentName);
-        if (componentDetails.isInstalled()) {
-            throw new Exception("Already installed");
-        }
 
         final Repository repo = repositories.get(componentDetails.getRepository());
         if (repo == null) {

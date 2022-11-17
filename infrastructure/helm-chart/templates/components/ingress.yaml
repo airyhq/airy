@@ -36,7 +36,7 @@ spec:
                 name: api-communication
                 port:
                   number: 80
-          - path: /conversations.markRead
+          - path: /conversations.mark-read
             pathType: Prefix
             backend:
               service:

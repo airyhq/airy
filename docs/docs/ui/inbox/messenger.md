@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Airy’s Inbox features a messenger that centralizes all your conversations and supports [many types of content in messages](#message-types) such as text, image, video, voice recording, template and more.
 
-You can view, interact with, and manage multiple conversations, regardless of whether they come via the [Airy Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source. [Search and filter](#search-and-filter) through your conversations and use [tags](tags) to customize your workflow.
+You can view, interact with, and manage multiple conversations, regardless of whether they come via the [Airy Live Chat Plugin](connectors/sources/chatplugin/overview.md), [Facebook Messenger](connectors/sources/facebook.md), [Google’s Business Messages](connectors/sources/google.md), [SMS](connectors/sources/sms-twilio.md), [WhatsApp](connectors/sources/whatsapp-twilio.md) or a custom source. [Search and filter](#search-and-filter) through your conversations and use [tags](tags) to customize your workflow.
 
 <img alt="Inbox Messenger Demo" src={useBaseUrl('img/ui/inboxMessenger.png')} />
 
@@ -132,7 +132,7 @@ This enables you and your team to interact with your website visitors in a riche
 icon={<AiryBubbleSVG />}
 title='Airy Live Chat Plugin'
 description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
-link='sources/chatplugin/overview'
+link='connectors/sources/chatplugin/overview'
 />
 <br/>
 

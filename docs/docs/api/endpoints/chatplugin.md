@@ -3,7 +3,7 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-Refer to our [Chat Plugin overview](sources/chatplugin/overview.md) document for
+Refer to our [Chat Plugin overview](connectors/sources/chatplugin/overview.md) document for
 more information.
 
 The HTTP API adheres to standards laid out in the [core

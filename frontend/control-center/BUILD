@@ -30,6 +30,8 @@ ts_web_library(
         "@npm//@types/lodash-es",
         "@npm//@types/dom-mediacapture-record",
         "@npm//lodash-es",
+        "@npm//react-lottie",
+        "@npm//@types/react-lottie",
         "@npm//react",
         "@npm//react-router-dom",
         "@npm//redux",

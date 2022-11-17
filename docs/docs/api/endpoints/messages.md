@@ -65,7 +65,7 @@ are sorted from oldest to latest.
 
 Sends a message to a conversation and returns a payload. Whatever is put on the
 `message` field will be forwarded "as-is" to the source's message endpoint. Therefore,
-the payload will look differently for each source. Refer to each [source's documentation](/sources/introduction)
+the payload will look differently for each source. Refer to each [source's documentation](/connectors/sources/introduction)
 to see learn how to send text, media, and many more message types.
 
 **Sample request**

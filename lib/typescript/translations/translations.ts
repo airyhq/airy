@@ -356,9 +356,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Your Salesforce Security Token',
 
       //Rasa
-      inputTooltipRasaWebhookUrl: 'Example: http://webhooks.rasa',
-      inputTooltipRasaApiHost: 'Your Rasa Api Host',
-      inputTooltipRasaToken: 'Your Rasa Token',
+      inputTooltipRasaRasaWebhookUrl: 'URL without trailing slash (example: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<host>',
 
       //Facebook Messenger
       connectMessenger: 'Connect Messenger',
@@ -386,6 +385,9 @@ const resources = {
 
       //IBM Watson Assistant
       ibmDescription: 'IBM Watson Assistant uses artificial intelligence that understands customers.',
+
+      //Amazon Lex V2
+      amazonLexV2Description: 'A web service for building conversational interface for apps using voice and text.',
 
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) is an object storage service.',
@@ -436,11 +438,17 @@ const resources = {
       inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpoint URL',
       inputTooltipCognigyCognigyUserId: 'User ID',
 
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'Conversational AI For Business',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API key',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistant Id',
+
       //Rasa
       rasaDescription: 'Open source conversational AI.',
 
       //webhooks
-      webhooksDescription: 'Get notified when events happen.',
+      airyWebhooksDescription: 'Get notified when events happen.',
 
       //amelia
       ameliaDescription: 'An intelligent cognitive conversational chatbot.',
@@ -477,6 +485,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration successful updated',
       failedConfiguration: 'Applying configuration failed',
       updateFailedConfiguration: 'Updating configuration failed',
+      tooltipInstallingQueue: 'Please wait for other connectors to be installed/uninstalled',
 
       //Request Access
       comingSoon: 'Coming Soon',
@@ -913,9 +922,8 @@ const resources = {
       inputTooltipSalesforceSecurityToken: 'Ihr Salesforce-Sicherheitstoken',
 
       //Rasa
-      inputTooltipRasaWebhookUrl: 'Beispiel: http://webhooks.rasa',
-      inputTooltipRasaApiHost: 'Ihr Rasa Api Host',
-      inputTooltipRasaToken: 'Ihr Rasa-Token',
+      inputTooltipRasaRasaRestWebhookUrl: 'URL ohne Trailing Slashes (Beispiel: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<Betreiber>',
 
       //WhatsApp Business Cloud
       whatsappDescription: 'Weltweite Chat-App Nr. 1',
@@ -928,11 +936,17 @@ const resources = {
       inputTooltipCognigyCognigyRestEndpointURL: 'REST Endpunkt-URL',
       inputTooltipCognigyCognigyUserId: 'Benutzer-ID',
 
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'Konversations-KI für Unternehmen',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'Ihre URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API-Schlüssel',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistenten-ID',
+
       //Rasa
       rasaDescription: 'Open-Source-Gesprächs-KI.',
 
       //webhooks
-      webhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
+      airyWebhooksDescription: 'Lassen Sie sich benachrichtigen, wenn Ereignisse eintreten.',
 
       //amelia
       ameliaDescription: 'Ein intelligenter kognitiver Konversations-Chatbot.',
@@ -975,6 +989,9 @@ const resources = {
 
       //IBM Watson Assistant
       ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
+
+      //Amazon Lex V2
+      amazonLexV2Description: 'Ein Webdienst zur Erstellung von Konversationsschnittstellen',
 
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
@@ -1034,6 +1051,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Konfiguration erfolgreich aktualisiert',
       failedConfiguration: 'Anwenden der Konfiguration fehlgeschlagen',
       updateFailedConfiguration: 'Aktualisierung der Konfiguration fehlgeschlagen',
+      tooltipInstallingQueue: 'Bitte warten Sie, bis andere Connector installiert/deinstalliert sind',
 
       //Request Access
 
@@ -1200,7 +1218,7 @@ const resources = {
       //Status
       all: 'Tous',
       open: 'Ouvert',
-      openCatalog: 'Ouvert',
+      openCatalog: 'Ouvrir',
       closed: 'Fermé',
 
       //Message
@@ -1490,6 +1508,9 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: `L'assistant IBM Watson utilise une intelligence artificielle qui comprend les clients.`,
 
+      //Amazon Lex V2
+      amazonLexV2Description: 'Un service web pour construire une interface conversationnelle.',
+
       //Amazon S3
       amazons3Description: `Amazon Simple Storage Service (Amazon S3) est un service de stockage d'objets.`,
 
@@ -1538,11 +1559,17 @@ const resources = {
       inputTooltipCognigyCognigyRestEndpointURL: 'URL Endpoint REST',
       inputTooltipCognigyCognigyUserId: "ID d'utilisateur",
 
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: "L'IA conversationnelle pour les entreprises",
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clé API',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: "ID de l'assistant",
+
       //Rasa
       rasaDescription: 'IA conversationnelle open source.',
 
       //webhooks
-      webhooksDescription: 'Soyez averti lorsque des événements se produisent.',
+      airyWebhooksDescription: 'Soyez averti lorsque des événements se produisent.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversationnel cognitif intelligent.',
@@ -1579,6 +1606,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuration mise à jour avec succès',
       failedConfiguration: 'La configuration a échoué',
       updateFailedConfiguration: 'Échec de la mise à jour de la configuration',
+      tooltipInstallingQueue: `Veuillez attendre que d'autres connecteurs soient installés/désinstallés.`,
 
       //Request Access
       comingSoon: 'Prochainement',
@@ -1597,12 +1625,8 @@ const resources = {
       send: 'Envoyer',
 
       //Rasa
-      rasaWebhookPlaceholder: 'URL Webhook de Rasa',
-      rasaWebhookTooltip: 'Exemple : http://webhooks.rasa',
-      rasaApihostPlaceholder: `Hôte de l'API Rasa`,
-      rasaApihostTooltip: `Hôte de l'API Rasa`,
-      rasaTokenPlaceholder: 'Token Rasa',
-      rasaTokenTooltip: 'Token Rasa',
+      inputTooltipRasaRasaRestWebhookUrl: 'https://<hôte> (example: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<hôte>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Votre App ID',
@@ -2045,6 +2069,9 @@ const resources = {
       //IBM Watson Assistant
       ibmDescription: 'El Asistente Watson de IBM utiliza inteligencia artificial que entiende a los clientes.',
 
+      //Amazon Lex V2
+      amazonLexV2Description: 'Un servicio web para construir una interfaz conversacional.',
+
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos.',
 
@@ -2090,15 +2117,21 @@ const resources = {
       whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
       //Cognigy.AI
-      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
+      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional',
       inputTooltipCognigyCognigyRestEndpointURL: 'URL del Endpoint REST',
       inputTooltipCognigyCognigyUserId: 'ID de usuario',
+
+      //IBM Watson Assistant
+      ibmWatsonAssistantDescription: 'IA conversacional para las empresas',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clave API',
+      inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'ID del asistente',
 
       //Rasa
       rasaDescription: 'IA conversacional Open Source.',
 
       //webhooks
-      webhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
+      airyWebhooksDescription: 'Reciba notificaciones cuando ocurran eventos.',
 
       //amelia
       ameliaDescription: 'Un chatbot conversacional cognitivo inteligente.',
@@ -2135,6 +2168,7 @@ const resources = {
       updateSuccessfulConfiguration: 'Configuración actualizada con éxito',
       failedConfiguration: 'Fallo en la aplicación de la configuración',
       updateFailedConfiguration: 'Fallo en la actualización de la configuración',
+      tooltipInstallingQueue: 'Espere a que se instalen/desinstalen otros conectores',
 
       //Request Access
       comingSoon: 'Próximamente',
@@ -2153,12 +2187,8 @@ const resources = {
       send: 'Enviar',
 
       //Rasa
-      rasaWebhookPlaceholder: 'Su Url de Rasa Webhook',
-      rasaWebhookTooltip: 'Ejemplo: http://webhooks.rasa',
-      rasaApihostPlaceholder: 'Su anfitrión Rasa Api',
-      rasaApihostTooltip: 'Su anfitrión Rasa Api',
-      rasaTokenPlaceholder: 'Su ficha Rasa',
-      rasaTokenTooltip: 'Su ficha Rasa',
+      inputTooltipRasaRasaRestWebhookUrl: 'URL (ejemplo: https://123.ngrok.io)',
+      rasaPlaceholder: 'https://<host>',
 
       //Whatsapp Business Cloud
       whatsappBusinessCloudAppIdPlaceholder: 'Su App ID',

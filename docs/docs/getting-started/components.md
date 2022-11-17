@@ -11,7 +11,6 @@ import SpeechBalloonSVG from "@site/static/icons/speechBalloon.svg";
 import HighVoltageSVG from "@site/static/icons/highVoltage.svg";
 import ElectricPlugSVG from "@site/static/icons/electricPlug.svg";
 import FishingPoleSVG from "@site/static/icons/fishingPole.svg";
-import GearSVG from "@site/static/icons/gear.svg";
 import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
@@ -36,9 +35,9 @@ Airy Core contains the following components:
 <ButtonBox
     icon={<SpeechBalloonSVG />}
     iconInvertible={true}
-    title='Connectors for all conversational sources'
-    description="Connect anything from our free open-source live chat plugin, Facebook Messenger, Google's Business Messages to your Airy Core. This is all possible through an ingestion platform that heavily relies on Apache Kafka to process incoming webhook data from different sources. We make sense of the data and reshape it into source independent contacts, conversations, and messages."
-    link='/sources/introduction'
+    title='Connectors'
+    description="Connect anything to your Airy Core - from our Open-Source Airy Live Chat Plugin to Facebook Messenger, Instagram, Google's Business Messages, IBM Watson Assistant, and more. This is all possible through an ingestion platform that heavily relies on Apache Kafka to process incoming webhook data from different sources. We make sense of the data and reshape it into source independent contacts, conversations, and messages."
+    link='/connectors/sources/introduction'
 />
 <ButtonBox
     icon={<HighVoltageSVG />}
@@ -67,13 +66,6 @@ Airy Core contains the following components:
     title='UI: From an inbox to dashboards'
     description="Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use."
     link='/ui/inbox/introduction'
-/>
-<ButtonBox
-    icon={<GearSVG />}
-    iconInvertible={true}
-    title='Integrations'
-    description="Pre-made integrations into popular conversational tools, for example NLP tools like Rasa"
-    link='/integrations/rasa-assistant'
 />
 </ButtonBoxList>
 

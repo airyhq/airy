@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kafka.fullname" . }}
+  labels:
+    app: {{ template "kafka.name" . }}
+    chart: {{ template "kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - port: {{ .Values.port }}
+      name: broker
+  selector:
+    app: {{ template "kafka.name" . }}
+    release: {{ .Release.Name }}
+---
+{{- if .Values.prometheus.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kafka.prometheus.name" . }}
+  labels:
+    app: {{ template "kafka.prometheus.name" . }}
+    chart: {{ template "kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    core.airy.co/prometheus: {{ template "kafka.name" . }}
+spec:
+  ports:
+    - port: {{ .Values.prometheus.exporterPort }}
+      name: prometheus
+  selector:
+    app: {{ template "kafka.prometheus.name" . }}
+    release: {{ .Release.Name }}
+{{ end }}

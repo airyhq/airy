@@ -5,6 +5,9 @@ custom_java_library(
     name = "sources-parser",
     srcs = glob(["src/main/java/co/airy/sources-parser/**/*.java"]),
     visibility = ["//visibility:public"],
+    deps = [
+        "//:jackson",
+    ],
 )
 
 check_pkg(name = "buildifier")

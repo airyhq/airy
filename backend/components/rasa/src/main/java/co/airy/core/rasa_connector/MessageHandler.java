@@ -4,11 +4,8 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.rasa_connector.models.MessageSendResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import static co.airy.sources_parser.SourcesParser;
+import co.airy.sources_parser.SourcesParser;
 
 
 import java.time.Instant;
@@ -17,7 +14,6 @@ import java.util.UUID;
 
 @Service
 public class MessageHandler {
-    private final ObjectMapper mapper = new ObjectMapper();
 
     MessageHandler() {
     }
@@ -45,11 +41,11 @@ public class MessageHandler {
    
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
-        return SourcesParser.getSourceMapper(source, response);
+        final String text = response.getText();
+        if (text == null) {
+            return null;
+        }
+        return SourcesParser.getSourceMapper(source, text);
     }
 
-    private ObjectNode getNode() {
-        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
-        return jsonNodeFactory.objectNode();
-    }
 }

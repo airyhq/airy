@@ -8,6 +8,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
+import co.airy.kafka.schema.ops.OpsApplicationComponents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KeyValue;
@@ -52,6 +53,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
                 .toStream()
                 .peek((identifier, metadataMap) -> webSocketController.onMetadata(metadataMap));
+
+        builder.<String, Metadata>table(new OpsApplicationComponents().name())
+                .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
+                .toStream()
+                .peek((identifier, metadataMap) -> webSocketController.onComponentUpdate(metadataMap));
 
         streams.start(builder.build(), appId);
     }

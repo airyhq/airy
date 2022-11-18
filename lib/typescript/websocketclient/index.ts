@@ -9,6 +9,7 @@ type CallbackMap = {
   onChannel?: (channel: Channel) => void;
   onTag?: (tag: Tag) => void;
   onError?: () => void;
+  onComponentUpdate?: (update: MetadataEvent) => void;
 };
 
 // https: -> wss: and http: -> ws:
@@ -43,6 +44,7 @@ export class WebSocketClient {
 
   onEvent = (body: string) => {
     const json = JSON.parse(body) as EventPayload;
+
     switch (json.type) {
       case 'channel.updated':
         this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
@@ -64,6 +66,9 @@ export class WebSocketClient {
         break;
       case 'tag.updated':
         this.callbackMap.onTag?.(json.payload);
+        break;
+      case 'component.updated':
+        this.callbackMap.onComponentUpdate?.(json.payload);
         break;
       default:
         console.error('Unknown /events payload', json);

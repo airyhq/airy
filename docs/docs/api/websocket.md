@@ -102,3 +102,22 @@ Includes the full and current state of a metadata object given a namespace-ident
   }
 }
 ```
+
+### `component.updated`
+
+Includes the current status of a component
+
+**Sample payload**
+
+```json5
+{
+  "type": "component.updated",
+  "payload": {
+    "subject": "component",
+    "identifier": "component name",
+    "metadata": {
+      "installationStatus": "pending | uninstalled | installed"
+    }
+  }
+}
+```

@@ -3,6 +3,9 @@ package co.airy.core.rasa_connector;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.rasa_connector.models.MessageSendResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 import co.airy.sources_parser.SourcesParser;
@@ -42,10 +45,30 @@ public class MessageHandler {
 
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
         final String text = response.getText();
-        if (text == null) {
+        final String image = response.getImage();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode rootNode = mapper.createObjectNode();
+        ObjectNode childNode1 = mapper.createObjectNode();
+        ObjectNode childNode2 = mapper.createObjectNode();
+
+        if (text == null && image == null) {
             return null;
         }
-        return SourcesParser.mapContent(source, text, null);
+
+        if(image != null){
+            childNode1.put("type", "image");
+            childNode2.put("url", image);
+            childNode1.put("payload", childNode2);
+            rootNode.put("attachment", childNode1);
+            JsonNode imageJsonNode = mapper.convertValue(rootNode, JsonNode.class);
+
+            return SourcesParser.mapContent(source, text, imageJsonNode);
+        } else {
+            return SourcesParser.mapContent(source, text, null);
+        }
+
+       
     }
 
 }

@@ -11,10 +11,6 @@ public class SourcesParser {
     private static final ObjectMapper sourceMapper = new ObjectMapper();
 
     public static String mapContent(String source, String text, JsonNode data) throws JsonProcessingException {
-
-        if (text == null) {
-            return null;
-        }
     
         final ObjectNode node = getNode();
         switch (source) {

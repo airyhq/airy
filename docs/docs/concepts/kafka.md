@@ -9,7 +9,7 @@ Airy Core.
 ## Topic naming conventions
 
 Inspired by [this
-article](https://riccomini.name/how-paint-bike-shed-kafka-topic-naming-conventions),
+article](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions),
 our naming conventions follow these rules:
 
 - A topic has a three-part name: `<kind>.<domain>.<dataset>`

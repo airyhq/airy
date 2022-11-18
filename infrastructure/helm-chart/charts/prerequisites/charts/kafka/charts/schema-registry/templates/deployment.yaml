@@ -6,6 +6,8 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: schema-registry
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: schema-registry
     release: {{ .Release.Name }}

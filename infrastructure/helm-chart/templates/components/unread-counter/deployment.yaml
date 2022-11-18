@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "{{ .Values.components.api.unread_counter.name }}"
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: "{{ .Values.components.api.unread_counter.name }}"
     type: api

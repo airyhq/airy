@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-google-connector
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-google-connector
     type: sources
@@ -76,6 +78,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-google-events-router
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-google-events-router
     type: sources

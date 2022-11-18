@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-connector
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-facebook-connector
     type: sources
@@ -81,6 +83,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-events-router
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-facebook-events-router
     type: sources

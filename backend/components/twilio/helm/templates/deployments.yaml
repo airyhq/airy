@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-twilio-connector
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-twilio-connector
     type: sources
@@ -76,6 +78,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-twilio-events-router
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-twilio-events-router
     type: sources

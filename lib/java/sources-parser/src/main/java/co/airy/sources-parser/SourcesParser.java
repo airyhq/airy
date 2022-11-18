@@ -33,7 +33,6 @@ public class SourcesParser {
             case "chatplugin":
             case "instagram":
             case "facebook": {
-                System.out.println("LIB" + text);
                 node.put("text", text);
                 if(data != null){
                 node.put("message", data);

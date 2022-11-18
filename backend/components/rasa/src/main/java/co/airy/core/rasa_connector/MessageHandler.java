@@ -45,7 +45,7 @@ public class MessageHandler {
         if (text == null) {
             return null;
         }
-        return SourcesParser.getSourceMapper(source, text);
+        return SourcesParser.mapContent(source, text, null);
     }
 
 }

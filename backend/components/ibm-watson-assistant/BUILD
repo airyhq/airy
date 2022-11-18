@@ -15,6 +15,7 @@ app_deps = [
     "//backend/model/metadata",
     "//:feign",
     "//lib/java/log",
+    "//lib/java/sources-parser",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/core:spring-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class SourcesParser {
     private static final ObjectMapper sourceMapper = new ObjectMapper();
 
-    public static String getSourceMapper(String source, String text) throws JsonProcessingException {
+    public static String mapContent(String source, String text, JsonNode data) throws JsonProcessingException {
 
         if (text == null) {
             return null;
@@ -33,7 +33,11 @@ public class SourcesParser {
             case "chatplugin":
             case "instagram":
             case "facebook": {
+                System.out.println("LIB" + text);
                 node.put("text", text);
+                if(data != null){
+                node.put("message", data);
+                }
                 return sourceMapper.writeValueAsString(node);
             }
             case "twilio.sms":

@@ -30,7 +30,7 @@ public class SourcesParser {
             case "instagram":
             case "facebook": {
                 node.put("text", text);
-                if(data != null){
+                if(data != null && !data.isEmpty()){
                 node.put("message", data);
                 }
                 return sourceMapper.writeValueAsString(node);

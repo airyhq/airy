@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: webhook-consumer
   annotations:
-  "helm.sh/hook-weight": "4"
+    "helm.sh/hook-weight": "4"
   labels:
     app: webhook-consumer
     type: webhook
@@ -87,6 +87,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webhook-publisher
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: webhook-publisher
     type: webhook

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: sources-viber-connector
   annotations:
-  "helm.sh/hook-weight": "4"
+    "helm.sh/hook-weight": "4"
   labels:
     app: sources-viber-connector
     type: sources

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.components.api.components.installer.name }}
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: {{ .Values.components.api.components.installer.name }}
     core.airy.co/managed: "true"

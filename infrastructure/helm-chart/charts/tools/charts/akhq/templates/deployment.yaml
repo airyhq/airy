@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   name: akhq
   namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: akhq
     type: enterprise

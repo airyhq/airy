@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "{{ .Values.components.api.communication.name }}"
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: "{{ .Values.components.api.communication.name }}"
     type: api

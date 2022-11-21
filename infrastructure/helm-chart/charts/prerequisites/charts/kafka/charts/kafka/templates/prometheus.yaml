@@ -7,6 +7,8 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "kafka.prometheus.name" . }}
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: {{ template "kafka.prometheus.name" . }}
     chart: {{ template "kafka.chart" . }}

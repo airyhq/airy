@@ -7,6 +7,8 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "kafka-connect.fullname" . }}
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: {{ template "kafka-connect.name" . }}
     chart: {{ template "kafka-connect.chart" . }}

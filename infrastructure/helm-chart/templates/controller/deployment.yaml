@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: airy-controller
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: airy-controller
 spec:

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "{{ .Values.components.frontend.control_center.name }}"
+  annotations:
+    "helm.sh/hook-weight": "4"
   labels:
     app: "{{ .Values.components.frontend.control_center.name }}"
     type: frontend

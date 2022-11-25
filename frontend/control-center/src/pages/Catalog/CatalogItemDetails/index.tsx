@@ -176,7 +176,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
     return (
       <section className={styles.componentDescription} ref={bodyContentDescription}>
-        <h1>{t('Description')}</h1>
+        <h1>{t('description')}</h1>
       </section>
     );
   };

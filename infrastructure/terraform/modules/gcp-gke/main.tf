@@ -24,7 +24,7 @@ resource "google_container_node_pool" "gke_core_nodes" {
   node_locations = var.gke_node_locations
 
   node_config {
-    preemptible  = true
+    preemptible  = false
     machine_type = var.gke_instance_type
 
     oauth_scopes = [

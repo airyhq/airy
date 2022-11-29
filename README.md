@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://global-uploads.webflow.com/5e9d5014fb5d85233d05fa23/5ea6ab4327484b79bdb4cea4_airy_primary_rgb.svg" alt="Airy-logo" width="240">
   <div align="center">The open source, fully-featured, production ready</div>
-  <div align="center">Conversational Platform</div>
+  <div align="center">Data Platform</div>
 </p>
 
 # Airy Core
@@ -15,10 +15,9 @@
 
 ---
 
-![Airy_Explainer_Highlevel_Readme](https://user-images.githubusercontent.com/124274/113720584-18a8d500-96ef-11eb-97c3-362eebd6253d.jpeg)
+![Airy_Explainer_Highlevel_Readme](https://airy.co/docs/core/img/getting-started/introduction-light.png)
 
-Airy Core is an open source, fully-featured, production ready conversational
-platform. With Airy you can process conversational data from a variety of
+Airy Core is an is an open-source streaming app framework to train ML models and supply them with historical and real-time data. With Airy you can process data from a variety of
 sources:
 
 - **Facebook**
@@ -27,26 +26,25 @@ sources:
 - **SMS**
 - **Website Chat Plugins, like our own open source Live Chat**
 - **Twilio**
-- **Your own conversational channels**
+- **Any source you want with Custom Connectors**
 
 You can then use Airy to:
 
-- **Unify your messaging channels**
-- **Stream your conversational data wherever you want**
-- **Integrate with different NLP frameworks**
-- **Mediate open requests with Agents via our messaging UI**
-- **Analyze your conversations**
+- **Join historical and real-time data in the stream to create smarter ML and AI applications.**
+- **Build real-time data pipelines and make real-time data universally accessible with our open-source streaming app framework.**
+- **Standardize complex data ingestion and consume data directly from Kafka. Stream it directly to standard and customized applications, using pre-built, easily configured connectors.**
+- **Significantly simplify deployment and reduce development times and increase the robustness of your infrastructure and apps.**
 
 Since Airy's infrastructure is built around Apache Kafka, it can process a large
-amount of conversations and messages simultaneously and stream the relevant
-conversational data to wherever you need it.
+amount of events simultaneously and stream the relevant
+real-time and historical data to wherever you need it.
 
 ---
 
 ## About Airy
 
 - **What does Airy do? 🚀**
-  [Learn more on our Website](https://airy.co/developers)
+  [Learn more on our Website](https://airy.co/)
 
 - **I'm new to Airy 😄**
   [Get Started with Airy](https://airy.co/docs/core/)

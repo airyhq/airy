@@ -106,7 +106,7 @@ class EventsRouterTest {
                     .setId(channelId)
                     .setConnectionState(ChannelConnectionState.CONNECTED)
                     .setSourceChannelId(pageId)
-                    .setSource("facebook")
+                    .setSource("instagram")
                     .setToken("")
                     .build()));
 
@@ -152,7 +152,7 @@ class EventsRouterTest {
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSourceChannelId(pageId)
-                .setSource("facebook")
+                .setSource("instagram")
                 .build()));
 
         TimeUnit.SECONDS.sleep(5);

@@ -86,7 +86,7 @@ public class ChannelsController {
         final String token = payload.getPageToken();
         final String pageId = payload.getPageId();
 
-        final String channelId = UUIDv5.fromNamespaceAndName("facebook", pageId).toString();
+        final String channelId = UUIDv5.fromNamespaceAndName("instagram", pageId).toString();
 
         try {
             final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
@@ -99,7 +99,7 @@ public class ChannelsController {
                             Channel.newBuilder()
                                     .setId(channelId)
                                     .setConnectionState(ChannelConnectionState.CONNECTED)
-                                    .setSource("facebook")
+                                    .setSource("instagram")
                                     .setSourceChannelId(pageId)
                                     .setToken(longLivingUserToken)
                                     .build()

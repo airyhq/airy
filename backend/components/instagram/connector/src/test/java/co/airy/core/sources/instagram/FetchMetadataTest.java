@@ -108,7 +108,7 @@ class FetchMetadataTest {
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setToken(token)
                         .setSourceChannelId("ps-id")
-                        .setSource("facebook")
+                        .setSource("instagram")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()
@@ -116,7 +116,7 @@ class FetchMetadataTest {
                 new ProducerRecord<>(applicationCommunicationMessages.name(), "other-message-id",
                         Message.newBuilder()
                                 .setId("other-message-id")
-                                .setSource("facebook")
+                                .setSource("instagram")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
                                 .setDeliveryState(DeliveryState.DELIVERED)

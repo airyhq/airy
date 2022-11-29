@@ -1,0 +1,72 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.itemSearchContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.item {
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.itemActive {
+    background-color: red;
+    height: 2px;
+    width: 200px;
+}
+
+.itemInactive {
+    background-color: white;
+    height: 2px;
+    width: 200px;
+}
+
+.searchField {
+    width: 300px;
+    background: var(--color-background-white);
+    border: 1px solid var(--color-airy-blue);
+    border-radius: 4px;
+    height: 32px;
+  
+    svg {
+      color: black;
+      &:hover {
+        cursor: pointer;
+    }
+    }
+
+
+  }
+
+.animateIn {
+    animation: searchfieldAnimIn 300ms ease;
+  }
+  
+  .animateOut {
+    animation: searchfieldAnimOut 300ms forwards;
+  }

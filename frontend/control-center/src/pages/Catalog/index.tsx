@@ -12,6 +12,7 @@ import {FilterTypes} from './CatalogSearchBar/FilterCatalogModal/FilterCatalogMo
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import {getMergedConnectors} from '../../selectors';
 import {NotificationComponent} from 'components';
+import {FilterBar} from 'components/general/FilterBar';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -150,9 +151,19 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.catalogWrapper}>
         <div className={styles.headlineSearchBarContainer}>
           <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
-          {catalogList.length > 0 && (
+          <p className={styles.catalogDescription}>{t('catalogDescription')}</p>
+          <FilterBar
+            setQuery={setQuery}
+            items={[
+              {name: 'All', setFilter: setCurrentFilter, filter: FilterTypes.all},
+              {name: 'Installed', setFilter: setCurrentFilter, filter: FilterTypes.installed},
+              {name: 'Not Installed', setFilter: setCurrentFilter, filter: FilterTypes.notInstalled},
+              {name: 'Coming Soon', setFilter: setCurrentFilter, filter: FilterTypes.comingSoon},
+            ]}
+          />
+          {/* {catalogList.length > 0 && (
             <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
-          )}
+          )} */}
         </div>
         {catalogList.length > 0 ? (
           <section className={styles.catalogListContainer}>

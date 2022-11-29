@@ -27,7 +27,7 @@ bazel build //...
 and build a specific project like so:
 
 ```sh
-bazel build //backend/api/communication:all
+bazel build //backend/components/communication:all
 ```
 
 ### Test
@@ -41,7 +41,7 @@ bazel test //...
 You can also run tests of a specific project like so:
 
 ```sh
-bazel test //backend/conversations/api/communication:all
+bazel test //backend/components/communication:all
 ```
 
 ### Lint
@@ -117,10 +117,10 @@ dig deeper into projects. Here are a few examples:
 
 ```sh
 # show all deps of a given project
-bazel query "deps(//backend/api/conversations:all)" --output label
+bazel query "deps(//backend/components/communication:all)" --output label
 
 # show the available tests of a given project
-bazel query "tests(//backend/api/conversations:all)" --output label
+bazel query "tests(//backend/components/communication:all)" --output label
 
 # show all the packages under a specific path
 bazel query "backend/..." --output package
@@ -159,7 +159,7 @@ Next, create an image with bazel, which will automatically load the image into
 Minikube's registry. For example:
 
 ```sh
-bazel run //backend/api/communication:image
+bazel run //backend/components/communication:image
 ```
 
 You can verify this action with `docker images` and you can restore the shell

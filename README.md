@@ -67,21 +67,15 @@ real-time and historical data to wherever you need it.
 
 ![Airy_Explainer_Components_Readme (1)](https://user-images.githubusercontent.com/12533283/112460661-6de3fe80-8d5f-11eb-8274-8446fbfcf5c8.png)
 
-Airy Core contains the following components:
+Airy Core comes with all the components you need to stream historical and real-time data.
 
-- 💬 Connectors for all [conversational sources](https://airy.co/docs/core/sources/introduction)
+- 💬 Pre-built and easily configurable [connectors](https://airy.co/docs/core/sources/introduction)
 
-Connect anything from our free open-source [live chat
-plugin](https://airy.co/docs/core/sources/chat-plugin) to Facebook
-Messenger & Google's Business Messages to your Airy Core. This is
-all possible through an ingestion platform that heavily relies on [Apache
-Kafka](https://kafka.apache.org) to process incoming webhook data from different
-sources. We make sense of the data and reshape it into source independent
-contacts, conversations, and messages.
+By ingesting all real-time events and continuously processing, aggregating and joining them in the stream, development time can be significantly reduced. Through integrations with pre-built and easily configured connectors, events are consumed from any source, including business systems such as ERP/CRM, conversational sources, third party APIs. Airy also comes with an SDK to build custom connectors to any source.
 
 - ⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data
 
-An [API](https://airy.co/docs/core/api/introduction) to access conversational
+An [API](https://airy.co/docs/core/api/introduction) to access
 data with blazing fast HTTP endpoints.
 
 - 🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications
@@ -89,16 +83,14 @@ data with blazing fast HTTP endpoints.
 A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
 clients to receive near real-time updates about data flowing through the system.
 
-- 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations
+- 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and create actionable workflows
 
-A webhook integration server that allows its users to programmatically
-participate in conversations by sending messages (the webhook integration
+A webhook integration server that allows its users to create actionable workflows (the webhook integration
 exposes events users can "listen" to and react programmatically.)
 
-- 💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)
+- 💎[UI: From a control center to dashboards](https://airy.co/docs/core/apps/ui/introduction)
 
-Not every message can be handled by code, this is why Airy comes with different
-UIs ready for you and your teams to use.
+No-code interfaces to manage and control Airy, your connectors and your streams.
 
 ## How to contribute
 

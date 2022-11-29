@@ -23,7 +23,7 @@ Airy Core is an is an **open-source** **streaming** **app framework** to train M
 
 </TLDR>
 
-<Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-dark.png"/>
+<Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-light.png"/>
 
 <h3>Get Airy up and running with one command</h3>
 

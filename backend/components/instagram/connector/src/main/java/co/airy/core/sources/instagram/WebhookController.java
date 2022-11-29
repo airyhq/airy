@@ -1,6 +1,6 @@
 package co.airy.core.sources.instagram;
 
-import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceInstagramEvents;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -25,7 +25,7 @@ import static co.airy.crypto.Signature.getSha1;
 
 @RestController
 public class WebhookController implements DisposableBean {
-    private final String sourceFacebookEvents = new SourceFacebookEvents().name();
+    private final String sourceFacebookEvents = new SourceInstagramEvents().name();
     private final String webhookSecret;
     private final String appSecret;
 

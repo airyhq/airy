@@ -7,7 +7,7 @@ import co.airy.core.sources.instagram.dto.Event;
 import co.airy.core.sources.instagram.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceInstagramEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
@@ -78,7 +78,7 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
                 .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
-        builder.<String, String>stream(new SourceFacebookEvents().name())
+        builder.<String, String>stream(new SourceInstagramEvents().name())
                 .flatMap((key, event) -> {
                     WebhookEvent webhookEvent;
                     try {

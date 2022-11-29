@@ -8,7 +8,7 @@ import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceInstagramEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.metadata.MetadataKeys;
@@ -53,7 +53,7 @@ class EventsRouterTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper kafkaTestHelper;
 
-    private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
+    private static final Topic sourceInstagramEvents = new SourceInstagramEvents();
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -64,7 +64,7 @@ class EventsRouterTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                sourceFacebookEvents,
+                sourceInstagramEvents,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages,
                 applicationCommunicationMetadata
@@ -120,7 +120,7 @@ class EventsRouterTest {
                 messagesPerContact.put(conversationId, messages);
 
                 for (int j = 0; j < messages; j++) {
-                    facebookMessageRecords.add(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), webhookPayload));
+                    facebookMessageRecords.add(new ProducerRecord<>(sourceInstagramEvents.name(), UUID.randomUUID().toString(), webhookPayload));
                 }
                 totalMessages = totalMessages + messages;
             }
@@ -163,8 +163,8 @@ class EventsRouterTest {
         final String reactionPayload = "{\"object\":\"page\",\"entry\":[{\"time\":1627396558404,\"id\":\"%s\",\"messaging\":[{\"sender\":{\"id\":\"4383398935030571\"}," +
                 "\"recipient\":{\"id\":\"%s\"},\"timestamp\":1627396557502,\"reaction\":{\"mid\":\"mid\",\"action\":\"react\",\"reaction\":\"love\",\"emoji\":\"\\\\u{2764}\\\\u{FE0F}\"}}]}]}";
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, pageId, pageId)));
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), String.format(reactionPayload, pageId, pageId)));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceInstagramEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, pageId, pageId)));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceInstagramEvents.name(), UUID.randomUUID().toString(), String.format(reactionPayload, pageId, pageId)));
 
         List<Message> messages = kafkaTestHelper.consumeValues(1, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(1));

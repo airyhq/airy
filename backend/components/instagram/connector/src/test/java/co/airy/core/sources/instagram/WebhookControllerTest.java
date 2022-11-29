@@ -1,7 +1,7 @@
 package co.airy.core.sources.instagram;
 
 import co.airy.kafka.schema.Topic;
-import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceInstagramEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -39,7 +39,7 @@ class WebhookControllerTest {
 
     private static KafkaTestHelper kafkaTestHelper;
 
-    private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
+    private static final Topic sourceInstagramEvents = new SourceInstagramEvents();
 
     @Autowired
     private MockMvc mvc;
@@ -52,7 +52,7 @@ class WebhookControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceFacebookEvents);
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceInstagramEvents);
 
         kafkaTestHelper.beforeAll();
     }
@@ -81,7 +81,7 @@ class WebhookControllerTest {
                 .header("x-hub-signature", "sha1=" + signature)
                 .content(payload)).andExpect(status().isOk());
 
-        List<String> records = kafkaTestHelper.consumeValues(1, sourceFacebookEvents.name());
+        List<String> records = kafkaTestHelper.consumeValues(1, sourceInstagramEvents.name());
 
         assertThat(records, hasSize(1));
         assertEquals(payload, records.get(0));

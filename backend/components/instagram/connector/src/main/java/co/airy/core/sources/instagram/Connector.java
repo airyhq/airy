@@ -1,16 +1,16 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.instagram;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.core.sources.facebook.api.Api;
-import co.airy.core.sources.facebook.api.ApiException;
-import co.airy.core.sources.facebook.api.Mapper;
-import co.airy.core.sources.facebook.api.model.SendMessagePayload;
-import co.airy.core.sources.facebook.api.model.SendMessageResponse;
-import co.airy.core.sources.facebook.api.model.UserProfile;
-import co.airy.core.sources.facebook.dto.Conversation;
-import co.airy.core.sources.facebook.dto.SendMessageRequest;
+import co.airy.core.sources.instagram.api.Api;
+import co.airy.core.sources.instagram.api.ApiException;
+import co.airy.core.sources.instagram.api.Mapper;
+import co.airy.core.sources.instagram.api.model.SendMessagePayload;
+import co.airy.core.sources.instagram.api.model.SendMessageResponse;
+import co.airy.core.sources.instagram.api.model.UserProfile;
+import co.airy.core.sources.instagram.dto.Conversation;
+import co.airy.core.sources.instagram.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;

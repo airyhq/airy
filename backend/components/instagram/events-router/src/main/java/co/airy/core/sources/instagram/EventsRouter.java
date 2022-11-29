@@ -1,10 +1,10 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.instagram;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
-import co.airy.core.sources.facebook.dto.Event;
-import co.airy.core.sources.facebook.model.WebhookEvent;
+import co.airy.core.sources.instagram.dto.Event;
+import co.airy.core.sources.instagram.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
@@ -58,7 +58,7 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
         this.kafkaProducer = kafkaProducer;
     }
 
-    private static final String appId = "sources.facebook.EventsRouter";
+    private static final String appId = "sources.instagram.EventsRouter";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();

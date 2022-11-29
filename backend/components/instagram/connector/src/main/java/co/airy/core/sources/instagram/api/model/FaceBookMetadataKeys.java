@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.api.model;
+package co.airy.core.sources.instagram.api.model;
 
 
 public class FaceBookMetadataKeys {

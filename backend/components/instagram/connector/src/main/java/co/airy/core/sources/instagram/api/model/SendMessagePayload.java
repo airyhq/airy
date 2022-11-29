@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.api.model;
+package co.airy.core.sources.instagram.api.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;

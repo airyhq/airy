@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.dto;
+package co.airy.core.sources.instagram.dto;
 
 import co.airy.avro.communication.Channel;
 import co.airy.uuid.UUIDv5;

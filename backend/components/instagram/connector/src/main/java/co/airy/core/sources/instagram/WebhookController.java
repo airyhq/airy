@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.instagram;
 
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import org.apache.kafka.clients.producer.KafkaProducer;

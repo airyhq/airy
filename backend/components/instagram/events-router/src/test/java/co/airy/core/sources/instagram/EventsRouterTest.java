@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.instagram;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;

@@ -1,14 +1,14 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.instagram;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
-import co.airy.core.sources.facebook.api.Api;
-import co.airy.core.sources.facebook.api.model.FaceBookMetadataKeys;
-import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
-import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
-import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
-import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
+import co.airy.core.sources.instagram.api.Api;
+import co.airy.core.sources.instagram.api.model.FaceBookMetadataKeys;
+import co.airy.core.sources.instagram.api.model.PageWithConnectInfo;
+import co.airy.core.sources.instagram.payload.ConnectInstagramRequestPayload;
+import co.airy.core.sources.instagram.payload.ConnectPageRequestPayload;
+import co.airy.core.sources.instagram.payload.ExploreRequestPayload;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;

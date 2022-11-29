@@ -1,13 +1,13 @@
-package co.airy.core.sources.facebook.api;
+package co.airy.core.sources.instagram.api;
 
-import co.airy.core.sources.facebook.api.model.InstagramProfile;
-import co.airy.core.sources.facebook.api.model.LongLivingUserAccessToken;
-import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
-import co.airy.core.sources.facebook.api.model.Pages;
-import co.airy.core.sources.facebook.api.model.Participants;
-import co.airy.core.sources.facebook.api.model.SendMessagePayload;
-import co.airy.core.sources.facebook.api.model.SendMessageResponse;
-import co.airy.core.sources.facebook.api.model.UserProfile;
+import co.airy.core.sources.instagram.api.model.InstagramProfile;
+import co.airy.core.sources.instagram.api.model.LongLivingUserAccessToken;
+import co.airy.core.sources.instagram.api.model.PageWithConnectInfo;
+import co.airy.core.sources.instagram.api.model.Pages;
+import co.airy.core.sources.instagram.api.model.Participants;
+import co.airy.core.sources.instagram.api.model.SendMessagePayload;
+import co.airy.core.sources.instagram.api.model.SendMessageResponse;
+import co.airy.core.sources.instagram.api.model.UserProfile;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;

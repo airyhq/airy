@@ -1,8 +1,8 @@
-package co.airy.core.sources.facebook.api;
+package co.airy.core.sources.instagram.api;
 
 import co.airy.avro.communication.Message;
-import co.airy.core.sources.facebook.api.model.SendMessagePayload;
-import co.airy.core.sources.facebook.dto.SendMessageRequest;
+import co.airy.core.sources.instagram.api.model.SendMessagePayload;
+import co.airy.core.sources.instagram.dto.SendMessageRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

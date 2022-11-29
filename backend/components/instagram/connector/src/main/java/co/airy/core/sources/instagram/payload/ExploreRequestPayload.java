@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.payload;
+package co.airy.core.sources.instagram.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

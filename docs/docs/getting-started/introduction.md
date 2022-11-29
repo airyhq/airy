@@ -19,12 +19,11 @@ import AiryBubbleSVG from "@site/static/icons/airyBubble.svg";
 
 <TLDR>
 
-Airy Core is an **open-source**, **fully-featured**, **production-ready**
-conversational platform.
+Airy Core is an is an **open-source** **streaming** **app framework** to train ML models and supply them with historical and real-time data.
 
 </TLDR>
 
-<Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-dark.png"/>
+<Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-light.png"/>
 
 <h3>Get Airy up and running with one command</h3>
 
@@ -38,26 +37,25 @@ airy create --provider=aws
 
 ## What Airy is used for
 
-With Airy Core you can process conversational data from a variety of sources:
+With Airy Core you can process data from a variety of sources:
 
 - Facebook Messenger
 - WhatsApp Business API
 - Google's Business Messages
 - SMS
 - Website Chat Plugins
-- Your own conversational channels
+- Any source you want with Custom Connectors
 
 You can then use Airy Core to:
 
-- Unify your messaging channels
-- Stream your conversational data wherever you want
-- Integrate with different NLP frameworks
-- Mediate open requests with Agents via our messaging UI
-- Analyze your conversations
+- Join historical and real-time data in the stream to create smarter ML and AI applications.
+- Build real-time data pipelines and make real-time data universally accessible with our open-source streaming app framework.
+- Standardize complex data ingestion and consume data directly from Kafka. Stream it directly to standard and customized applications, using pre-built, easily configured connectors.
+- Significantly simplify deployment and reduce development times and increase the robustness of your infrastructure and apps.
 
-Since Airy's infrastructure is built around Apache Kafka, it can process a large
-amount of conversations and messages simultaneously and stream the relevant
-conversational data to wherever you need it.
+Since Airy's infrastructure is built around Apache Kafka,
+it can process a large amount of events simultaneously and stream the relevant real-time
+and historical data to wherever you need it.
 
 ## Next steps
 
@@ -65,7 +63,7 @@ conversational data to wherever you need it.
 <ButtonBox
     icon={<AiryBubbleSVG />}
     title="What are Airy's components?"
-    description="Learn about Airy's messaging platform and components"
+    description="Learn about Airy's app framework and components"
     link='getting-started/components'
 />
 <ButtonBox

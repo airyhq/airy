@@ -124,21 +124,21 @@ const ItemInfo = (props: ComponentInfoProps) => {
                 tooltipContent={t('enabled')}
                 direction="right"
               />
-            ) : isNotHealthy ? (
+            ) : isDisabled || needsConfig ? (
               <Tooltip
-                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
+                hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
                 hoverElementHeight={20}
                 hoverElementWidth={20}
-                tooltipContent={t('notHealthy')}
+                tooltipContent={t('disabled')}
                 direction="right"
               />
             ) : (
-              isDisabled && (
+              isNotHealthy && (
                 <Tooltip
-                  hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.disabledHealthy}`} />}
+                  hoverElement={<UncheckedIcon className={`${styles.icons} ${styles.unhealthy}`} />}
                   hoverElementHeight={20}
                   hoverElementWidth={20}
-                  tooltipContent={t('disabled')}
+                  tooltipContent={t('notHealthy')}
                   direction="right"
                 />
               )

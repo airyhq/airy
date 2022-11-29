@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://global-uploads.webflow.com/5e9d5014fb5d85233d05fa23/5ea6ab4327484b79bdb4cea4_airy_primary_rgb.svg" alt="Airy-logo" width="240">
   <div align="center">The open source, fully-featured, production ready</div>
-  <div align="center">Conversational Platform</div>
+  <div align="center">Data Platform</div>
 </p>
 
 # Airy Core
@@ -15,10 +15,9 @@
 
 ---
 
-![Airy_Explainer_Highlevel_Readme](https://user-images.githubusercontent.com/124274/113720584-18a8d500-96ef-11eb-97c3-362eebd6253d.jpeg)
+![Airy_Explainer_Highlevel_Readme](https://airy.co/docs/core/img/getting-started/introduction-light.png)
 
-Airy Core is an open source, fully-featured, production ready conversational
-platform. With Airy you can process conversational data from a variety of
+Airy Core is an is an open-source streaming app framework to train ML models and supply them with historical and real-time data. With Airy you can process data from a variety of
 sources:
 
 - **Facebook**
@@ -27,26 +26,25 @@ sources:
 - **SMS**
 - **Website Chat Plugins, like our own open source Live Chat**
 - **Twilio**
-- **Your own conversational channels**
+- **Any source you want with Custom Connectors**
 
 You can then use Airy to:
 
-- **Unify your messaging channels**
-- **Stream your conversational data wherever you want**
-- **Integrate with different NLP frameworks**
-- **Mediate open requests with Agents via our messaging UI**
-- **Analyze your conversations**
+- **Join historical and real-time data in the stream to create smarter ML and AI applications.**
+- **Build real-time data pipelines and make real-time data universally accessible with our open-source streaming app framework.**
+- **Standardize complex data ingestion and consume data directly from Kafka. Stream it directly to standard and customized applications, using pre-built, easily configured connectors.**
+- **Significantly simplify deployment and reduce development times and increase the robustness of your infrastructure and apps.**
 
 Since Airy's infrastructure is built around Apache Kafka, it can process a large
-amount of conversations and messages simultaneously and stream the relevant
-conversational data to wherever you need it.
+amount of events simultaneously and stream the relevant
+real-time and historical data to wherever you need it.
 
 ---
 
 ## About Airy
 
 - **What does Airy do? 🚀**
-  [Learn more on our Website](https://airy.co/developers)
+  [Learn more on our Website](https://airy.co/)
 
 - **I'm new to Airy 😄**
   [Get Started with Airy](https://airy.co/docs/core/)
@@ -69,21 +67,15 @@ conversational data to wherever you need it.
 
 ![Airy_Explainer_Components_Readme (1)](https://user-images.githubusercontent.com/12533283/112460661-6de3fe80-8d5f-11eb-8274-8446fbfcf5c8.png)
 
-Airy Core contains the following components:
+Airy Core comes with all the components you need to stream historical and real-time data.
 
-- 💬 Connectors for all [conversational sources](https://airy.co/docs/core/sources/introduction)
+- 💬 Pre-built and easily configurable [connectors](https://airy.co/docs/core/sources/introduction)
 
-Connect anything from our free open-source [live chat
-plugin](https://airy.co/docs/core/sources/chat-plugin) to Facebook
-Messenger & Google's Business Messages to your Airy Core. This is
-all possible through an ingestion platform that heavily relies on [Apache
-Kafka](https://kafka.apache.org) to process incoming webhook data from different
-sources. We make sense of the data and reshape it into source independent
-contacts, conversations, and messages.
+By ingesting all real-time events and continuously processing, aggregating and joining them in the stream, development time can be significantly reduced. Through integrations with pre-built and easily configured connectors, events are consumed from any source, including business systems such as ERP/CRM, conversational sources, third party APIs. Airy also comes with an SDK to build custom connectors to any source.
 
 - ⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data
 
-An [API](https://airy.co/docs/core/api/introduction) to access conversational
+An [API](https://airy.co/docs/core/api/introduction) to access
 data with blazing fast HTTP endpoints.
 
 - 🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications
@@ -91,16 +83,14 @@ data with blazing fast HTTP endpoints.
 A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
 clients to receive near real-time updates about data flowing through the system.
 
-- 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations
+- 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and create actionable workflows
 
-A webhook integration server that allows its users to programmatically
-participate in conversations by sending messages (the webhook integration
+A webhook integration server that allows its users to create actionable workflows (the webhook integration
 exposes events users can "listen" to and react programmatically.)
 
-- 💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)
+- 💎[UI: From a control center to dashboards](https://airy.co/docs/core/apps/ui/introduction)
 
-Not every message can be handled by code, this is why Airy comes with different
-UIs ready for you and your teams to use.
+No-code interfaces to manage and control Airy, your connectors and your streams.
 
 ## How to contribute
 

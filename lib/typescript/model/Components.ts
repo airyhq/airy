@@ -14,6 +14,9 @@ export interface ComponentInfo {
   name: string;
   availableFor: string;
   description: string;
+  descriptionDE: string;
+  descriptionFR: string;
+  descriptionES: string;
   category: string;
   price: string;
   docs: string;

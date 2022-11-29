@@ -521,6 +521,7 @@ const resources = {
       searchByNamePlaceholder: 'Search by name',
       searchByType: 'Search by type',
       noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
+      description: 'Description',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -1088,6 +1089,7 @@ const resources = {
       searchByNamePlaceholder: 'Suche nach Name',
       searchByType: 'Suche nach Typ',
       noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
+      description: 'Beschreibung',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1646,6 +1648,7 @@ const resources = {
       searchByNamePlaceholder: 'Recherche par nom',
       searchByType: 'Recherche par type',
       noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
+      description: 'Description',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -2208,6 +2211,7 @@ const resources = {
       searchByNamePlaceholder: 'Buscar por nombre',
       searchByType: 'Buscar por tipo',
       noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
+      description: 'Descripción',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

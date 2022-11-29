@@ -15,7 +15,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-Airy Core comes with all the components you need for a fully-featured conversational platform.
+Airy Core comes with all the components you need to stream historical and real-time data.
 
 </TLDR>
 
@@ -36,7 +36,7 @@ Airy Core contains the following components:
     icon={<SpeechBalloonSVG />}
     iconInvertible={true}
     title='Connectors'
-    description="Connect anything to your Airy Core - from our Open-Source Airy Live Chat Plugin to Facebook Messenger, Instagram, Google's Business Messages, IBM Watson Assistant, and more. This is all possible through an ingestion platform that heavily relies on Apache Kafka to process incoming webhook data from different sources. We make sense of the data and reshape it into source independent contacts, conversations, and messages."
+    description="By ingesting all real-time events and continuously processing, aggregating and joining them in the stream, development time can be significantly reduced. Through integrations with pre-built and easily configured connectors, events are consumed from any source, including business systems such as ERP/CRM, conversational sources, third party APIs. Airy also comes with an SDK to build custom connectors to any source."
     link='/connectors/sources/introduction'
 />
 <ButtonBox
@@ -63,8 +63,8 @@ Airy Core contains the following components:
 <ButtonBox
     icon={<DiamondSVG />}
     iconInvertible={true}
-    title='UI: From an inbox to dashboards'
-    description="Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use."
+    title='UI: From a control center to dashboards'
+    description="No-code interfaces to manage and control Airy, your connectors and your streams."
     link='/ui/inbox/introduction'
 />
 </ButtonBoxList>

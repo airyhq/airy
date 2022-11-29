@@ -2,10 +2,10 @@ name: sources-facebook
 mandatory: false
 enabled: false
 connector:
-  image: sources/facebook-connector
+  image: sources/instagram-connector
   resources: {}
 eventsRouter:
-  image: sources/facebook-events-router
+  image: sources/instagram-events-router
   resources: {}
 global:
   containerRegistry: ghcr.io/airyhq

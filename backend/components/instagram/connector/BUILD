@@ -17,7 +17,7 @@ app_deps = [
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "//lib/java/kafka/schema:source-facebook-events",
+    "//lib/java/kafka/schema:source-instagram-events",
 ]
 
 springboot(
@@ -44,7 +44,7 @@ springboot(
 
 container_release(
     registry = "ghcr.io/airyhq/sources",
-    repository = "facebook-connector",
+    repository = "instagram-connector",
 )
 
 check_pkg(name = "buildifier")

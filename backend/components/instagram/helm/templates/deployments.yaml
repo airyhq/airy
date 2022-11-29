@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-connector
+  name: sources-instagram-connector
   labels:
-    app: sources-facebook-connector
+    app: sources-instagram-connector
     type: sources
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
@@ -12,7 +12,7 @@ spec:
   replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
   selector:
     matchLabels:
-      app: sources-facebook-connector
+      app: sources-instagram-connector
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-connector
+        app: sources-instagram-connector
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
@@ -80,9 +80,9 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-events-router
+  name: sources-instagram-events-router
   labels:
-    app: sources-facebook-events-router
+    app: sources-instagram-events-router
     type: sources
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
@@ -91,7 +91,7 @@ spec:
   replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
   selector:
     matchLabels:
-      app: sources-facebook-events-router
+      app: sources-instagram-events-router
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -100,7 +100,7 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-events-router
+        app: sources-instagram-events-router
         WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
@@ -117,7 +117,7 @@ spec:
               name: "{{ .Values.name }}"
               key: appId
         - name: SERVICE_NAME
-          value: facebook-events-router
+          value: instagram-events-router
         livenessProbe:
           tcpSocket:
             port: 6000

@@ -11,7 +11,7 @@ app_deps = [
     "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/log",
-    "//lib/java/kafka/schema:source-facebook-events",
+    "//lib/java/kafka/schema:source-instagram-events",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
 ]
@@ -39,7 +39,7 @@ springboot(
 
 container_release(
     registry = "ghcr.io/airyhq/sources",
-    repository = "facebook-events-router",
+    repository = "instagram-events-router",
 )
 
 check_pkg(name = "buildifier")

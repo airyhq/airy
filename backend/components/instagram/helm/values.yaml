@@ -1,0 +1,13 @@
+name: sources-facebook
+mandatory: false
+enabled: false
+connector:
+  image: sources/facebook-connector
+  resources: {}
+eventsRouter:
+  image: sources/facebook-events-router
+  resources: {}
+global:
+  containerRegistry: ghcr.io/airyhq
+  busyboxImage: ghcr.io/airyhq/infrastructure/busybox:latest
+  workerType:

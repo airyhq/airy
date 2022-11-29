@@ -48,7 +48,7 @@ With Airy Core you can process data from a variety of sources:
 
 You can then use Airy Core to:
 
-- Join historical and real-time data in the stream to create smarter ML and AI applications. 
+- Join historical and real-time data in the stream to create smarter ML and AI applications.
 - Build real-time data pipelines and make real-time data universally accessible with our open-source streaming app framework.
 - Standardize complex data ingestion and consume data directly from Kafka. Stream it directly to standard and customized applications, using pre-built, easily configured connectors.
 - Significantly simplify deployment and reduce development times and increase the robustness of your infrastructure and apps.

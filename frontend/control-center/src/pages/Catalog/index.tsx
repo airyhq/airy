@@ -7,11 +7,10 @@ import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} fr
 import CatalogCard, {ObservationInstallStatus} from './CatalogCard';
 import styles from './index.module.scss';
 import {listComponents} from '../../actions';
-import {CatalogSearchBar} from './CatalogSearchBar/CatalogSearchBar';
 import {FilterTypes} from './CatalogSearchBar/FilterCatalogModal/FilterCatalogModal';
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import {getMergedConnectors} from '../../selectors';
-import {NotificationComponent} from 'components';
+import {ContentWrapper, NotificationComponent} from 'components';
 import {FilterBar} from 'components/general/FilterBar';
 
 const mapStateToProps = (state: StateModel) => {
@@ -146,53 +145,72 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     }
   }, [catalogList, currentFilter, query]);
 
-  return (
-    <>
-      <section className={styles.catalogWrapper}>
-        <div className={styles.headlineSearchBarContainer}>
+  const HeaderContent = () => {
+    return (
+      <section className={styles.headlineSearchBarContainer}>
+        <div>
           <h1 className={styles.catalogHeadlineText}>{catalogPageTitle}</h1>
           <p className={styles.catalogDescription}>{t('catalogDescription')}</p>
-          <FilterBar
-            setQuery={setQuery}
-            items={[
-              {name: 'All', setFilter: setCurrentFilter, filter: FilterTypes.all},
-              {name: 'Installed', setFilter: setCurrentFilter, filter: FilterTypes.installed},
-              {name: 'Not Installed', setFilter: setCurrentFilter, filter: FilterTypes.notInstalled},
-              {name: 'Coming Soon', setFilter: setCurrentFilter, filter: FilterTypes.comingSoon},
-            ]}
-          />
-          {/* {catalogList.length > 0 && (
-            <CatalogSearchBar setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} setQuery={setQuery} />
-          )} */}
         </div>
-        {catalogList.length > 0 ? (
-          <section className={styles.catalogListContainer}>
-            {orderedCatalogList && orderedCatalogList.length > 0 ? (
-              orderedCatalogList.map((infoItem: ComponentInfo) => {
-                if (infoItem?.name && infoItem?.displayName) {
-                  return (
-                    <CatalogCard
-                      componentInfo={infoItem}
-                      key={infoItem.displayName}
-                      setObserveInstallStatus={setObserveInstallStatus}
-                      showConfigureModal={showConfigureModal}
-                      installStatus={infoItem.installationStatus}
-                      blockInstalling={blockInstalling}
-                    />
-                  );
-                }
-              })
-            ) : (
-              <div className={styles.notFoundContainer}>
-                <h1>{t('nothingFound')}</h1>
-                <span>{t('noMatchingCatalogs')}</span>
-              </div>
-            )}
-          </section>
-        ) : (
-          <AiryLoader height={240} width={240} position="relative" top={220} />
-        )}
       </section>
+    );
+  };
+
+  const handleQuery = (query: string) => {
+    setQuery(query);
+  };
+
+  return (
+    <>
+      <ContentWrapper
+        header={<HeaderContent />}
+        transparent
+        isSideColumn={false}
+        content={
+          <>
+            <FilterBar
+              currentFilter={currentFilter}
+              setQuery={handleQuery}
+              items={[
+                {name: t('all'), setFilter: setCurrentFilter, filter: FilterTypes.all},
+                {name: t('installed'), setFilter: setCurrentFilter, filter: FilterTypes.installed},
+                {name: t('notInstalled'), setFilter: setCurrentFilter, filter: FilterTypes.notInstalled},
+                {name: t('comingSoon'), setFilter: setCurrentFilter, filter: FilterTypes.comingSoon},
+              ]}
+            />
+            <section className={styles.catalogWrapper}>
+              {catalogList.length > 0 ? (
+                <section className={styles.catalogListContainer}>
+                  {orderedCatalogList && orderedCatalogList.length > 0 ? (
+                    orderedCatalogList.map((infoItem: ComponentInfo) => {
+                      if (infoItem?.name && infoItem?.displayName) {
+                        return (
+                          <CatalogCard
+                            componentInfo={infoItem}
+                            key={infoItem.displayName}
+                            setObserveInstallStatus={setObserveInstallStatus}
+                            showConfigureModal={showConfigureModal}
+                            installStatus={infoItem.installationStatus}
+                            blockInstalling={blockInstalling}
+                          />
+                        );
+                      }
+                    })
+                  ) : (
+                    <div className={styles.notFoundContainer}>
+                      <h1>{t('nothingFound')}</h1>
+                      <span>{t('noMatchingCatalogs')}</span>
+                    </div>
+                  )}
+                </section>
+              ) : (
+                <AiryLoader height={240} width={240} position="relative" top={220} />
+              )}
+            </section>
+          </>
+        }
+      />
+
       {notification?.show && (
         <NotificationComponent
           type={notification.info ? 'sticky' : 'fade'}

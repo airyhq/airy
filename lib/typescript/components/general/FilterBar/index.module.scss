@@ -2,71 +2,76 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/animations.scss';
 
-.container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 40px;
-    width: 100%;
-    margin-bottom: 18px;
-}
-
 .itemSearchContainer {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-background-white);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .itemsContainer {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .item {
-    white-space: nowrap;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    &:hover {
-        cursor: pointer;
-    }
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 200px;
+  color: var(--color-text-contrast);
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .itemActive {
-    background-color: red;
-    height: 2px;
-    width: 200px;
+  position: relative;
+  top: 9.5px;
+  z-index: 10;
+  background-color: var(--color-airy-blue);
+  height: 5px;
+  width: 200px;
 }
 
-.itemInactive {
-    background-color: white;
-    height: 2px;
-    width: 200px;
+.line {
+  height: 1px;
+  width: 100%;
+  background: var(--color-dark-elements-gray);
+  margin-top: -3.5px;
+}
+
+.searchIcon {
+  margin-right: 24px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .searchField {
-    width: 300px;
-    background: var(--color-background-white);
-    border: 1px solid var(--color-airy-blue);
-    border-radius: 4px;
-    height: 32px;
-  
-    svg {
-      color: black;
-      &:hover {
-        cursor: pointer;
-    }
-    }
+  width: 300px;
+  background: var(--color-background-white);
+  border: 1px solid var(--color-airy-blue);
+  border-radius: 4px;
+  height: 32px;
+  margin-right: 24px;
 
-
+  svg {
+    color: black;
   }
+}
 
 .animateIn {
-    animation: searchfieldAnimIn 300ms ease;
-  }
-  
-  .animateOut {
-    animation: searchfieldAnimOut 300ms forwards;
-  }
+  animation: searchfieldAnimIn 300ms ease;
+}
+
+.animateOut {
+  animation: searchfieldAnimOut 300ms forwards;
+}

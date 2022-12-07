@@ -1,11 +1,11 @@
-import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useState} from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
-import {CatalogSearchBar} from '../../../../../frontend/control-center/src/pages/Catalog/CatalogSearchBar/CatalogSearchBar';
 import {ListenOutsideClick} from '../ListenOutsideClick';
 import {SearchField} from 'components/inputs';
 import {useTranslation} from 'react-i18next';
 import {useAnimation} from 'render';
+import {Tooltip} from 'components/tooltip';
 
 export enum FilterTypes {
   all = 'all',
@@ -15,7 +15,8 @@ export enum FilterTypes {
 }
 
 type FilterBarProps = {
-  setQuery: Dispatch<SetStateAction<string>>;
+  currentFilter: FilterTypes;
+  setQuery?: (query: string) => void;
   items: {
     name: string;
     filter: FilterTypes;
@@ -24,16 +25,11 @@ type FilterBarProps = {
 };
 
 export const FilterBar = (props: FilterBarProps) => {
-  const {items} = props;
+  const {items, currentFilter} = props;
   const {t} = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<FilterTypes>(FilterTypes.all);
   const [showSearchField, setShowingSearchField] = useState(false);
   const [animationActionSearchfield, setAnimationActionSearchfield] = useState(false);
   const [query, setQuery] = useState('');
-
-  useEffect(() => {
-    props.setQuery(query);
-  }, [query]);
 
   const showSearchFieldToggle = useCallback(() => {
     useAnimation(showSearchField, setShowingSearchField, setAnimationActionSearchfield, 300);
@@ -45,22 +41,33 @@ export const FilterBar = (props: FilterBarProps) => {
     return (
       <div className={styles.itemsContainer}>
         {items.map(item => (
-          <div
+          <Tooltip
             key={item.filter}
-            onClick={() => {
-              setActiveFilter(item.filter);
-              item.setFilter(item.filter);
-            }}>
-            <div className={styles.item}>{item.name}</div>
-            <div className={activeFilter === item.filter ? styles.itemActive : styles.itemInactive} />
-          </div>
+            right={item.filter === FilterTypes.all && 115}
+            hoverElement={
+              <div
+                key={item.filter}
+                onClick={() => {
+                  item.setFilter(item.filter);
+                  localStorage.setItem('catalogCurrentTypeFilter', item.filter);
+                }}
+              >
+                <div className={styles.item}>{item.name}</div>
+                <div className={currentFilter === item.filter ? styles.itemActive : undefined} />
+              </div>
+            }
+            hoverElementWidth={200}
+            hoverElementHeight={30}
+            tooltipContent={t(`${item.filter}CatalogFilter`)}
+            direction={item.filter === FilterTypes.all ? 'topRight' : 'top'}
+          />
         ))}
       </div>
     );
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <div className={styles.itemSearchContainer}>
         <Items />
         {showSearchField ? (
@@ -72,14 +79,24 @@ export const FilterBar = (props: FilterBarProps) => {
               placeholder={t('searchByNamePlaceholder')}
               value={query}
               setValue={(value: string) => {
-                setQuery(value), props.setQuery(value);
+                setQuery(value);
+                props.setQuery(value);
               }}
             />
           </ListenOutsideClick>
         ) : (
-          <SearchIcon height={20} width={20} className={styles.searchIcon} onClick={showSearchFieldToggle} />
+          <Tooltip
+            hoverElement={
+              <SearchIcon height={20} width={20} className={styles.searchIcon} onClick={showSearchFieldToggle} />
+            }
+            hoverElementWidth={20}
+            hoverElementHeight={20}
+            tooltipContent={t('searchComponent')}
+            direction={'topLeft'}
+          />
         )}
       </div>
+      <div className={styles.line} />
     </div>
   );
 };

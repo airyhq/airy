@@ -206,7 +206,7 @@ const CatalogCard = (props: CatalogCardProps) => {
           installing={installStatus === InstallationStatus.pending || isPending}
           borderRadius={10}
           marginRight={28}
-          marginBottom={36}
+          marginBottom={28}
         >
           <article className={styles.catalogCard} onClick={handleCardClick} ref={componentCard}>
             <section className={styles.cardLogoTitleContainer}>

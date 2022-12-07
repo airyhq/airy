@@ -23,6 +23,8 @@
 }
 
 .componentDescription {
+  height: 100%;
+  overflow-y: scroll;
   padding-left: 30px;
   padding-bottom: 30px;
 

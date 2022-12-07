@@ -63,7 +63,7 @@
   background: var(--color-tooltip-gray);
   border-radius: 4px;
   padding: 4px 6px;
-  color: var(--color-text-contrast);
+  color: var(--color-tooltip-text-gray);
   position: relative;
   z-index: 4;
 }
@@ -101,28 +101,28 @@
   display: flex;
   line-height: 14px;
   white-space: nowrap;
-  bottom: 32px;
+  bottom: 38px;
 }
 
 .hoverElement:hover ~ .tooltipContent.topRight {
   display: flex;
   line-height: 14px;
   white-space: nowrap;
-  bottom: 32px;
+  bottom: 38px;
 }
 
 .hoverElement:hover ~ .tooltipContent.bottomLeft {
   display: flex;
   line-height: 14px;
   white-space: nowrap;
-  top: 32px;
+  top: 38px;
 }
 
 .hoverElement:hover ~ .tooltipContent.bottomRight {
   display: flex;
   line-height: 14px;
   white-space: nowrap;
-  top: 32px;
+  top: 38px;
 }
 
 .hoverElement ~ .tooltipContent.top::after {

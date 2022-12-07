@@ -5,13 +5,14 @@ type ContentWrapperProps = {
   transparent: boolean;
   content: React.ReactNode;
   header?: React.ReactNode;
+  bar?: React.ReactNode;
   variantHeight?: 'medium' | 'big' | 'large';
   isSideColumn?: boolean;
   sideColumnContent?: React.ReactNode;
 };
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-  const {transparent, content, header, variantHeight, isSideColumn, sideColumnContent} = props;
+  const {transparent, content, header, bar, variantHeight, isSideColumn, sideColumnContent} = props;
 
   return (
     <>
@@ -23,11 +24,14 @@ export const ContentWrapper = (props: ContentWrapperProps) => {
                 ? styles.headerMedium
                 : variantHeight === 'big'
                 ? styles.headerBig
-                : styles.headerLarge
+                : variantHeight === 'large'
+                ? styles.headerBig
+                : {}
             }`}
           >
             {header}
           </div>
+          {bar}
           <section className={styles.sideColumn}>{sideColumnContent}</section>
           <div className={`${styles.transparentContent} ${isSideColumn ? styles.leftOffset : ''}`}>{content}</div>
         </div>

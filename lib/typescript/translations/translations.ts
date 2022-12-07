@@ -2238,7 +2238,7 @@ const resources = {
       allCatalogFilter: `Vista de todos los componentes de Airy: Instalados, Próximamente y ya instalados`,
       installedCatalogFilter: `Vista de los componentes 'Instalados'`,
       notInstalledCatalogFilter: 'Vista de los componentes disponibles para instalar',
-      comingSoonCatalogFilter: `Vista de los componentes "En desarrollo'`,
+      comingSoonCatalogFilter: `Vista de los componentes 'En desarrollo'`,
       searchComponent: 'Buscar un componente por su nombre',
 
       //NotFound

@@ -55,13 +55,13 @@ export const Tooltip = (props: TooltipProps) => {
       <span
         className={`${styles.tooltipContent} ${styles[direction]}`}
         style={
-          top
+          top && !position
             ? {top: `${top}px`}
-            : right
+            : right && !position
             ? {right: `${right}px`}
-            : bottom
+            : bottom && !position
             ? {bottom: `${bottom}px`}
-            : left
+            : left && !position
             ? {left: `${left}px`}
             : position === 'absolute'
             ? {position: 'absolute', top: `${top}px`, right: `${right}px`, bottom: `${bottom}px`, left: `${left}px`}

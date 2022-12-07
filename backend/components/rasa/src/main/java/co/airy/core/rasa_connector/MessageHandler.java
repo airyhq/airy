@@ -3,11 +3,13 @@ package co.airy.core.rasa_connector;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.rasa_connector.models.MessageSendResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
+import co.airy.sources_parser.SourcesParser;
+
 
 import java.time.Instant;
 import java.util.Map;
@@ -15,7 +17,6 @@ import java.util.UUID;
 
 @Service
 public class MessageHandler {
-    private final ObjectMapper mapper = new ObjectMapper();
 
     MessageHandler() {
     }
@@ -40,50 +41,34 @@ public class MessageHandler {
                 .build();
     }
 
+   
+
     public String getContent(String source, MessageSendResponse response) throws JsonProcessingException {
         final String text = response.getText();
-        if (text == null) {
+        final String image = response.getImage();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode rootNode = mapper.createObjectNode();
+        ObjectNode childNode1 = mapper.createObjectNode();
+        ObjectNode childNode2 = mapper.createObjectNode();
+
+        if (text == null && image == null) {
             return null;
         }
 
-        final ObjectNode node = getNode();
-        switch (source) {
-            case "google": {
-                final ObjectNode representative = getNode();
-                representative.put("representativeType", "BOT");
-                node.set("representative", representative);
-                node.put("text", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "viber": {
-                node.put("text", text);
-                node.put("type", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "chatplugin":
-            case "instagram":
-            case "facebook": {
-                node.put("text", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "twilio.sms":
-            case "twilio.whatsapp": {
-                node.put("Body", text);
-                return mapper.writeValueAsString(node);
-            }
-            case "whatsapp": {
-                node.put("Body", text);
-                return mapper.writeValueAsString(node);
-            }
+        if(image != null){
+            childNode1.put("type", "image");
+            childNode2.put("url", image);
+            childNode1.put("payload", childNode2);
+            rootNode.put("attachment", childNode1);
+            JsonNode imageJsonNode = mapper.convertValue(rootNode, JsonNode.class);
 
-            default: {
-                return null;
-            }
+            return SourcesParser.mapContent(source, text, imageJsonNode);
+        } else {
+            return SourcesParser.mapContent(source, text, null);
         }
+
+       
     }
 
-    private ObjectNode getNode() {
-        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
-        return jsonNodeFactory.objectNode();
-    }
 }

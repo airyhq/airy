@@ -34,7 +34,7 @@ metadata:
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "11"
-    "helm.sh/hook-delete-policy": "hook-succeeded, hook-failed"
+    "helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"
   labels:
     core.airy.co/managed: "true"
 spec:

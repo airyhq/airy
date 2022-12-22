@@ -399,3 +399,22 @@ where `VERSION_NUMBER` is a previous revision number of the `airy` helm chart.
 
 If you need further help, refer to our [Troubleshooting section](/getting-started/troubleshooting).
 :::
+
+## Uninstall
+
+For uninstalling your `Airy Core` instance using helm, run the following command:
+
+```
+helm uninstall airy
+```
+
+Uninstalling the Helm chart will not remove the data which is stored in Kafka. To remove all the volumes associated with `Airy Core` run the following commands:
+
+```
+kubectl delete pvc data-beanstalkd-0
+kubectl delete pvc datadir-0-kafka-0
+kubectl delete pvc datadir-zookeeper-0
+kubectl delete pvc datalogdir-zookeeper-0
+```
+
+After this you also need to remove or destroy the created Kubernetes cluster, if one was created particularly for running the Airy platform.

@@ -16,7 +16,7 @@ import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
 import Popup from '../QuickFilter/Popup';
 import {formatConversationCount} from '../../../services/format/numbers';
 import {useTranslation} from 'react-i18next';
-import {useAnimation} from 'render';
+import {useAnimation} from 'components';
 
 const mapDispatchToProps = {
   setSearch,

@@ -3,7 +3,7 @@ data "http" "core_version" {
 }
 
 locals {
-  core_version = var.core_version != "" ? var.core_version : trimspace(data.http.core_version.body)
+  core_version = var.core_version != "" ? var.core_version : trimspace(data.http.core_version.response_body)
 }
 
 resource "helm_release" "airy_core" {

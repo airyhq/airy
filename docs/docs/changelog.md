@@ -3,41 +3,91 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.53.0
+
+#### 🚀 Features
+
+- [[#3890](https://github.com/airyhq/airy/issues/3890)] Abstract sources parser for connectors in backend  [[#3956](https://github.com/airyhq/airy/pull/3956)]
+- [[#3841](https://github.com/airyhq/airy/issues/3841)] Add translations catalog components [[#3972](https://github.com/airyhq/airy/pull/3972)]
+- [[#3919](https://github.com/airyhq/airy/issues/3919)] Component Websocket update  [[#3930](https://github.com/airyhq/airy/pull/3930)]
+
+#### 🐛 Bug Fixes
+
+- [[#3995](https://github.com/airyhq/airy/issues/3995)] Fix resources for installer [[#3999](https://github.com/airyhq/airy/pull/3999)]
+- [[#3997](https://github.com/airyhq/airy/issues/3997)] Fixed navigation chatplugin [[#3998](https://github.com/airyhq/airy/pull/3998)]
+- [[#3995](https://github.com/airyhq/airy/issues/3995)] Add init container to the installer [[#3996](https://github.com/airyhq/airy/pull/3996)]
+- [[#3988](https://github.com/airyhq/airy/issues/3988)] Fix deprecated TF parameter [[#3989](https://github.com/airyhq/airy/pull/3989)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Fix pushing local images to Minikube [[#3981](https://github.com/airyhq/airy/pull/3981)]
+- [[#3969](https://github.com/airyhq/airy/issues/3969)] Fixed health status icon [[#3971](https://github.com/airyhq/airy/pull/3971)]
+- [[#3957](https://github.com/airyhq/airy/issues/3957)] Disable Preemptible nodes in GCP [[#3958](https://github.com/airyhq/airy/pull/3958)]
+
+#### 📚 Documentation
+
+- [[#3475](https://github.com/airyhq/airy/issues/3475)] Updated Status and Catalog docs [[#3994](https://github.com/airyhq/airy/pull/3994)]
+- [[#3966](https://github.com/airyhq/airy/issues/3966)] Update Catalog Images [[#3990](https://github.com/airyhq/airy/pull/3990)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Fix broken link in the docs [[#3978](https://github.com/airyhq/airy/pull/3978)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Update docs on Airy Core [[#3975](https://github.com/airyhq/airy/pull/3975)]
+- [[#3960](https://github.com/airyhq/airy/issues/3960)] Updated kafka topic link [[#3961](https://github.com/airyhq/airy/pull/3961)]
+
+#### 🧰 Maintenance
+
+- Bump decode-uri-component from 0.2.0 to 0.2.2 in /docs [[#3982](https://github.com/airyhq/airy/pull/3982)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.53.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.53.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.53.0/windows/amd64/airy.exe)
+
 ## 0.52.0
 
 #### Changes
 
+- [[#3935](https://github.com/airyhq/airy/issues/3935)] Enhance catalog filter [[#3983](https://github.com/airyhq/airy/pull/3983)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Readme Components Section - the data version [[#3977](https://github.com/airyhq/airy/pull/3977)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Updated Readme to reflect Data Launch [[#3976](https://github.com/airyhq/airy/pull/3976)]
 - [[#3943](https://github.com/airyhq/airy/issues/3943)] Fix of the gcp-gke terraform modules output file [[#3944](https://github.com/airyhq/airy/pull/3944)]
 - Revert "[[#3878](https://github.com/airyhq/airy/issues/3878)] Adding Loading indicators to control-center" [[#3916](https://github.com/airyhq/airy/pull/3916)]
 
 #### 🚀 Features
 
+- [[#3890](https://github.com/airyhq/airy/issues/3890)] abstract sources parser for connectors in backend  [[#3956](https://github.com/airyhq/airy/pull/3956)]
+- [[#3841](https://github.com/airyhq/airy/issues/3841)] Add translations catalog components [[#3972](https://github.com/airyhq/airy/pull/3972)]
+- [[#3919](https://github.com/airyhq/airy/issues/3919)] component Websocket update  [[#3930](https://github.com/airyhq/airy/pull/3930)]
 - [[#3927](https://github.com/airyhq/airy/issues/3927)] Added airy contacts to catalog [[#3932](https://github.com/airyhq/airy/pull/3932)]
 - [[#3764](https://github.com/airyhq/airy/issues/3764)] Kafka 3.3.1 docker image and helm chart [[#3882](https://github.com/airyhq/airy/pull/3882)]
 - [[#3878](https://github.com/airyhq/airy/issues/3878)] Adding Loading indicators to control-center [[#3922](https://github.com/airyhq/airy/pull/3922)]
-- [[#3901](https://github.com/airyhq/airy/issues/3901)] Create kafka topic for components events [[#3914](https://github.com/airyhq/airy/pull/3914)]
+- [[#3901](https://github.com/airyhq/airy/issues/3901)] [[#3900](https://github.com/airyhq/airy/issues/3900)] Create kafka topic for components events [[#3914](https://github.com/airyhq/airy/pull/3914)]
 - [[#3878](https://github.com/airyhq/airy/issues/3878)] Adding Loading indicators to control-center [[#3906](https://github.com/airyhq/airy/pull/3906)]
 
 #### 🐛 Bug Fixes
 
-- [[#3941](https://github.com/airyhq/airy/issues/3941)] add ingress rule for /conversations.mark-read [[#3942](https://github.com/airyhq/airy/pull/3942)]
+- [[#3941](https://github.com/airyhq/airy/issues/3941)] Add ingress rule for /conversations.mark-read [[#3942](https://github.com/airyhq/airy/pull/3942)]
 - [[#3939](https://github.com/airyhq/airy/issues/3939)] Fix showing airy products in connectors [[#3940](https://github.com/airyhq/airy/pull/3940)]
 - [[#3923](https://github.com/airyhq/airy/issues/3923)] Use auth-provider in GCP kubeconfig file [[#3924](https://github.com/airyhq/airy/pull/3924)]
-- [[#3907](https://github.com/airyhq/airy/issues/3907)] fixed input disable [[#3913](https://github.com/airyhq/airy/pull/3913)]
-- [[#3909](https://github.com/airyhq/airy/issues/3909)] rasa control center fix [[#3911](https://github.com/airyhq/airy/pull/3911)]
-- [[#3886](https://github.com/airyhq/airy/issues/3886)] fixed status page error [[#3903](https://github.com/airyhq/airy/pull/3903)]
-- [[#3894](https://github.com/airyhq/airy/issues/3894)] fixes for ibm watson assistant [[#3898](https://github.com/airyhq/airy/pull/3898)]
+- [[#3907](https://github.com/airyhq/airy/issues/3907)] Fixed input disable [[#3913](https://github.com/airyhq/airy/pull/3913)]
+- [[#3909](https://github.com/airyhq/airy/issues/3909)] Rasa control center fix [[#3911](https://github.com/airyhq/airy/pull/3911)]
+- [[#3886](https://github.com/airyhq/airy/issues/3886)] Fixed status page error [[#3903](https://github.com/airyhq/airy/pull/3903)]Cli
+- [[#3894](https://github.com/airyhq/airy/issues/3894)] Fixes for IBM Watson assistant [[#3898](https://github.com/airyhq/airy/pull/3898)]
 
 #### 📚 Documentation
 
+- [[#3475](https://github.com/airyhq/airy/issues/3475)] Updated Status and Catalog docs [[#3994](https://github.com/airyhq/airy/pull/3994)]
+- [[#3966](https://github.com/airyhq/airy/issues/3966)] Update Catalog Images [[#3990](https://github.com/airyhq/airy/pull/3990)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Fix broken link in the docs [[#3978](https://github.com/airyhq/airy/pull/3978)]
+- [[#3974](https://github.com/airyhq/airy/issues/3974)] Update docs on Airy Core [[#3975](https://github.com/airyhq/airy/pull/3975)]
+- [[#3960](https://github.com/airyhq/airy/issues/3960)] Updated kafka topic link [[#3961](https://github.com/airyhq/airy/pull/3961)]
 - [[#3949](https://github.com/airyhq/airy/issues/3949)] Updated conversation.list docs [[#3950](https://github.com/airyhq/airy/pull/3950)]
 - [[#2456](https://github.com/airyhq/airy/issues/2456)] Documentation update in quickstart - consume from Kafka [[#3938](https://github.com/airyhq/airy/pull/3938)]
-- [[#3646](https://github.com/airyhq/airy/issues/3646)] update airy cli for gcp provider [[#3904](https://github.com/airyhq/airy/pull/3904)]
-- [[#3905](https://github.com/airyhq/airy/issues/3905)] rasa docs update [[#3912](https://github.com/airyhq/airy/pull/3912)]
-- [[#3819](https://github.com/airyhq/airy/issues/3819)] docs for ibm watson assistant [[#3889](https://github.com/airyhq/airy/pull/3889)]
+- [[#3646](https://github.com/airyhq/airy/issues/3646)] Update airy cli for gcp provider [[#3904](https://github.com/airyhq/airy/pull/3904)]
+- [[#3905](https://github.com/airyhq/airy/issues/3905)] Rasa docs update [[#3912](https://github.com/airyhq/airy/pull/3912)]
+- [[#3819](https://github.com/airyhq/airy/issues/3819)] Docs for ibm watson assistant [[#3889](https://github.com/airyhq/airy/pull/3889)]
 
 #### 🧰 Maintenance
 
+- Bump decode-uri-component from 0.2.0 to 0.2.2 in /docs [[#3982](https://github.com/airyhq/airy/pull/3982)]
 - Bump jest-environment-jsdom from 29.2.0 to 29.2.2 [[#3896](https://github.com/airyhq/airy/pull/3896)]
 
 #### Airy CLI
@@ -1334,32 +1384,4 @@ This release has breaking changes in the structure of the airy.yaml file. When u
   from the version of the CLI and the - namespace is used from the workspace
   file cli.yaml
 - Rename the `ingress:` section to `ingress-controller:`
-
-## 0.32.0
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#2443](https://github.com/airyhq/airy/issues/2443)] Allow for compatability with mobile login flows [[#2444](https://github.com/airyhq/airy/pull/2444)]
-- [[#2423](https://github.com/airyhq/airy/issues/2423)] track core installation [[#2430](https://github.com/airyhq/airy/pull/2430)]
-
-#### 🐛 Bug Fixes
-
-- [[#2390](https://github.com/airyhq/airy/issues/2390)] Remove unnecessary annotations [[#2452](https://github.com/airyhq/airy/pull/2452)]
-- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix instagram echo ingestion [[#2451](https://github.com/airyhq/airy/pull/2451)]
-
-#### 🧰 Maintenance
-
-- Bump webpack from 5.51.1 to 5.54.0 [[#2440](https://github.com/airyhq/airy/pull/2440)]
-- Bump core-js from 3.17.2 to 3.18.1 [[#2438](https://github.com/airyhq/airy/pull/2438)]
-- Bump @typescript-eslint/parser from 4.31.0 to 4.31.2 [[#2439](https://github.com/airyhq/airy/pull/2439)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.32.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.32.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.32.0/windows/amd64/airy.exe)
 

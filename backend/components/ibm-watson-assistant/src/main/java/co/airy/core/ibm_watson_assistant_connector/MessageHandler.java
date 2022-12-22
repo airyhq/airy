@@ -4,11 +4,10 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.ibm_watson_assistant.models.MessageSendResponse;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.sources_parser.SourcesParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 
@@ -54,51 +53,17 @@ public class MessageHandler {
                 text = nestedNode.get("text").textValue();
             }
 
-            if (text != "") {
-                final ObjectNode node = getNode();
-                switch (source) {
-                    case "google": {
-                        final ObjectNode representative = getNode();
-                        representative.put("representativeType", "BOT");
-                        node.set("representative", representative);
-                        node.put("text", text);
-                        return mapper.writeValueAsString(node);
-                    }
-                    case "viber": {
-                        node.put("text", text);
-                        node.put("type", "text");
-                        return mapper.writeValueAsString(node);
-                    }
-                    case "chatplugin":
-                    case "instagram":
-                    case "facebook": {
-                        node.put("text", text);
-                        return mapper.writeValueAsString(node);
-                    }
-                    case "twilio.sms":
-                    case "twilio.whatsapp": {
-                        node.put("Body", text);
-                        return mapper.writeValueAsString(node);
-                    }
-                    case "whatsapp": {
-                        node.put("Body", text);
-                        return mapper.writeValueAsString(node);
-                    }
-
-                    default: {
-                        return null;
-                    }
-                }
+            if (text == null) {
+                return null;
             }
+
+            return SourcesParser.mapContent(source, text, null);
+
+            
         } catch (Exception e) {
             log.error(String.format("could not find the text node in the response %s %s", response.toString(), e));
         }
 
         return null;
-    }
-
-    private ObjectNode getNode() {
-        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
-        return jsonNodeFactory.objectNode();
     }
 }

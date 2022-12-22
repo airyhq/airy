@@ -56,7 +56,7 @@ Airy will use these to generate long-lived access tokens and fetch conversation 
 
 ## Step 2: Install the Whatsapp cloud source
 
-Here we assume that you already have a running Airy core instance ([get started](getting-started/installation/introduction)).
+Here we assume that you already have a running Airy core instance ([get started](/getting-started/installation/introduction)).
 Now in order to use this source you have to first install it either by navigating to the [control center](/ui/control-center/connectors) or by directly calling the components installation API like so:
 
 `POST /components.install`

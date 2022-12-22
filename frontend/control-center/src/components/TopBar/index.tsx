@@ -14,7 +14,7 @@ import {ReactComponent as FlagFrance} from 'assets/images/icons/flagFrance.svg';
 import {ReactComponent as FlagSpain} from 'assets/images/icons/flagSpain.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
-import {useAnimation} from 'render';
+import {useAnimation} from 'components';
 import {useTranslation} from 'react-i18next';
 import i18next from 'i18next';
 import {Language, Source} from 'model';

@@ -27,7 +27,7 @@ bazel build //...
 and build a specific project like so:
 
 ```sh
-bazel build //backend/api/communication:all
+bazel build //backend/components/communication:all
 ```
 
 ### Test
@@ -41,7 +41,7 @@ bazel test //...
 You can also run tests of a specific project like so:
 
 ```sh
-bazel test //backend/conversations/api/communication:all
+bazel test //backend/components/communication:all
 ```
 
 ### Lint
@@ -117,10 +117,10 @@ dig deeper into projects. Here are a few examples:
 
 ```sh
 # show all deps of a given project
-bazel query "deps(//backend/api/conversations:all)" --output label
+bazel query "deps(//backend/components/communication:all)" --output label
 
 # show the available tests of a given project
-bazel query "tests(//backend/api/conversations:all)" --output label
+bazel query "tests(//backend/components/communication:all)" --output label
 
 # show all the packages under a specific path
 bazel query "backend/..." --output package
@@ -145,6 +145,23 @@ to install it locally.
 You can test your images locally at runtime if you have a local instance of Airy
 Core running in Minikube.
 
+#### Setup Minikube
+
+In order to be able to push to the local `docker registry`, you must create Minikube
+with the `docker` driver instead of the default `containerd`.
+
+```
+minikube -p airy-core start --driver=docker --cpus=4 --memory=7168 --container-runtime=docker --ports=80:80 --extra-config=apiserver.service-node-port-range=1-65535
+```
+
+Then you can deploy Airy using the main helm chart:
+
+```
+helm repo add airy https://helm.airy.co
+helm repo update
+helm install airy airy/airy --timeout 10m --set global.host=localhost --set ingress-controller.ngrokEnabled=true
+```
+
 #### Publish image to minikube's registry
 
 In order for the Airy Core cluster to have access to a newly built image, you need
@@ -159,7 +176,7 @@ Next, create an image with bazel, which will automatically load the image into
 Minikube's registry. For example:
 
 ```sh
-bazel run //backend/api/communication:image
+bazel run //backend/components/communication:image
 ```
 
 You can verify this action with `docker images` and you can restore the shell
@@ -172,7 +189,7 @@ Next, you will want to run this image in the Airy Core cluster. For this example
 that means you need to:
 
 ```sh
-kubectl patch deployment api-communication -p '{"spec":{"template":{"spec":{"containers":[{"name":"app","image":"bazel/backend/api/communication:image","imagePullPolicy":"Never"}]}}}}'
+kubectl patch deployment api-communication -p '{"spec":{"template":{"spec":{"containers":[{"name":"app","image":"bazel/backend/components/communication:image","imagePullPolicy":"Never"}]}}}}'
 ```
 
 Once this is done, the image will be up and running in your local cluster.

@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {installComponent, listComponents, uninstallComponent} from '../../../actions/catalog';
 import {StateModel} from '../../../reducers';
-import {ComponentInfo, ConnectorPrice, InstallationStatus, Modal, ModalType, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, Language, Modal, ModalType, NotificationModel} from 'model';
 import {ContentWrapper, Button, LinkButton, SettingsModal, NotificationComponent, SmartButton} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {availabilityFormatted} from '../CatalogCard';
@@ -39,7 +39,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
   const location = useLocation();
   const locationState = location.state as LocationState;
   const {componentInfo} = locationState;
-
+  const currentLanguage = localStorage.getItem('language');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNotifyMeModalVisible, setIsNotifyMeModalVisible] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
@@ -157,13 +157,26 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
 
     useEffect(() => {
       if (bodyContentDescription && bodyContentDescription?.current) {
-        parseContent(componentInfo.description);
+        switch (currentLanguage) {
+          case Language.english:
+            parseContent(componentInfo.description);
+            break;
+          case Language.german:
+            parseContent(componentInfo.descriptionDE);
+            break;
+          case Language.french:
+            parseContent(componentInfo.descriptionFR);
+            break;
+          case Language.spanish:
+            parseContent(componentInfo.descriptionES);
+            break;
+        }
       }
     }, [bodyContentDescription]);
 
     return (
       <section className={styles.componentDescription} ref={bodyContentDescription}>
-        <h1>{t('Description')}</h1>
+        <h1>{t('description')}</h1>
       </section>
     );
   };

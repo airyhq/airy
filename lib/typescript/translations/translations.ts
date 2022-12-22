@@ -522,6 +522,13 @@ const resources = {
       searchByType: 'Search by type',
       noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
       description: 'Description',
+      catalogDescription:
+        'Airy supports all the components below to be Installed to your Airy instance in just one click!',
+      allCatalogFilter: 'View for all Airy components: Installed, Coming Soon, and already installed',
+      installedCatalogFilter: `View of 'Installed' components`,
+      notInstalledCatalogFilter: 'View of available components to be Installed',
+      comingSoonCatalogFilter: `View of 'In developement' components`,
+      searchComponent: 'Search a component by name',
 
       //NotFound
       notFound: `Oops! We couldn't find that here.`,
@@ -1090,6 +1097,13 @@ const resources = {
       searchByType: 'Suche nach Typ',
       noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
       description: 'Beschreibung',
+      catalogDescription:
+        'Airy unterstützt alle unten aufgeführten Komponenten, die mit nur einem Klick in Ihrer Airy-Instanz installiert werden können!',
+      allCatalogFilter: 'Ansicht für alle Airy-Komponenten: Installiert, Demnächst, und bereits installiert',
+      installedCatalogFilter: `Ansicht der 'installierten' Komponenten`,
+      notInstalledCatalogFilter: 'Ansicht der verfügbaren zu installierenden Komponenten',
+      comingSoonCatalogFilter: `Ansicht der 'In Entwicklung befindlichen' Komponenten`,
+      searchComponent: 'Eine Komponente nach Namen suchen',
 
       //NotFound
       notFound: 'Huch! Das konnten wir hier nicht finden.',
@@ -1649,6 +1663,13 @@ const resources = {
       searchByType: 'Recherche par type',
       noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
       description: 'Description',
+      catalogDescription:
+        'Airy supporte tous les composants ci-dessous qui peuvent être installés sur votre instance Airy en un seul clic!',
+      allCatalogFilter: `Vue pour tous les composants d'Airy : Installés, à venir, et déjà installés`,
+      installedCatalogFilter: `Vue des composants 'installés'`,
+      notInstalledCatalogFilter: 'Vue des composants disponibles pour être installés',
+      comingSoonCatalogFilter: `Vue des composants 'En développement'`,
+      searchComponent: 'Rechercher un composant par son nom',
 
       //NotFound
       notFound: 'Oups! Page non trouvée.',
@@ -2212,6 +2233,13 @@ const resources = {
       searchByType: 'Buscar por tipo',
       noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
       description: 'Descripción',
+      catalogDescription:
+        'Airy admite todos los componentes que se indican a continuación para ser instalados en su instancia de Airy en un solo clic!',
+      allCatalogFilter: `Vista de todos los componentes de Airy: Instalados, Próximamente y ya instalados`,
+      installedCatalogFilter: `Vista de los componentes 'Instalados'`,
+      notInstalledCatalogFilter: 'Vista de los componentes disponibles para instalar',
+      comingSoonCatalogFilter: `Vista de los componentes 'En desarrollo'`,
+      searchComponent: 'Buscar un componente por su nombre',
 
       //NotFound
       notFound: '¡Uy! No pudimos encontrarlo aquí.',

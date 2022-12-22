@@ -5,7 +5,7 @@ import styles from './CatalogSearchBar.module.scss';
 import {ListenOutsideClick, SearchField} from 'components';
 import {useTranslation} from 'react-i18next';
 import {FilterCatalogModal, FilterTypes} from './FilterCatalogModal/FilterCatalogModal';
-import {useAnimation} from 'render';
+import {useAnimation} from 'components';
 
 type CatalogSearchBarProps = {
   currentFilter: FilterTypes;

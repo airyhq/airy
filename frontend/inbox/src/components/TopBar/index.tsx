@@ -16,7 +16,7 @@ import {ReactComponent as FlagSpain} from 'assets/images/icons/flagSpain.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/logo/airyLogo.svg';
 import styles from './index.module.scss';
 import {env} from '../../env';
-import {useAnimation} from 'render';
+import {useAnimation} from 'components';
 import {useTranslation} from 'react-i18next';
 import {Language} from 'model/Config';
 import i18next from 'i18next';

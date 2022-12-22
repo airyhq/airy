@@ -14,6 +14,7 @@ type TooltipProps = {
   bottom?: number;
   left?: number;
   navigateTo?: string;
+  delay?: number; //in ms
 };
 
 export const Tooltip = (props: TooltipProps) => {
@@ -29,6 +30,7 @@ export const Tooltip = (props: TooltipProps) => {
     right,
     bottom,
     left,
+    delay,
   } = props;
   const navigate = useNavigate();
   const leftDirection = direction === 'bottomLeft' || direction === 'topLeft';
@@ -55,15 +57,67 @@ export const Tooltip = (props: TooltipProps) => {
       <span
         className={`${styles.tooltipContent} ${styles[direction]}`}
         style={
-          position === 'absolute'
-            ? {position: 'absolute', top: `${top}px`, right: `${right}px`, bottom: `${bottom}px`, left: `${left}px`}
+          top && !position
+            ? {
+                top: `${top}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
+            : right && !position
+            ? {
+                right: `${right}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
+            : bottom && !position
+            ? {
+                bottom: `${bottom}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
+            : left && !position
+            ? {
+                left: `${left}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
+            : position === 'absolute'
+            ? {
+                position: 'absolute',
+                top: `${top}px`,
+                right: `${right}px`,
+                bottom: `${bottom}px`,
+                left: `${left}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
             : position === 'relative'
-            ? {position: 'relative'}
+            ? {
+                position: 'relative',
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
             : leftDirection
-            ? {left: `${margin}px`}
+            ? {
+                left: `${margin}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
             : rightDirection
-            ? {right: `${margin}px`}
-            : {}
+            ? {
+                right: `${margin}px`,
+                transition: `opacity ${delay}ms`,
+                transitionDelay: `${delay}ms`,
+                transitionDuration: `${delay}ms`,
+              }
+            : {transition: `opacity ${delay}ms`, transitionDelay: `${delay}ms`, transitionDuration: `${delay}ms`}
         }
       >
         {tooltipContent}

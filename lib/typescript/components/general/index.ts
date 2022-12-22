@@ -5,3 +5,4 @@ export * from './AudioClip';
 export * from './ConnectorAvatar';
 export * from './Pagination';
 export * from './TabsPanel';
+export * from './FilterBar';

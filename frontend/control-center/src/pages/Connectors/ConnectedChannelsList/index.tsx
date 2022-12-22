@@ -22,7 +22,7 @@ import {
 } from 'handles';
 import ChannelsListItem from './ChannelsListItem';
 import {Pagination} from 'components';
-import {useAnimation} from 'render/services/useAnimation';
+import {useAnimation} from 'components';
 import {useTranslation} from 'react-i18next';
 import {ConnectChannelModal} from '../ConnectChannelModal/ConnectChannelModal';
 

@@ -1,13 +1,13 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
 
 .catalogWrapper {
   background: var(--color-background-white);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  padding: 32px;
-  margin: 88px 1.5em 0 191px;
-  height: calc(100vh - 88px);
+  padding: 28px;
+  height: calc(100%);
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
@@ -16,18 +16,25 @@
 .headlineSearchBarContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px 18px;
 }
 
 .catalogListContainer {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 28px;
 }
 
 .catalogHeadlineText {
   @include font-xl;
   font-weight: 900;
-  margin-bottom: 15px;
+  color: var(--color-text-contrast);
+}
+
+.catalogDescription {
+  @include font-base;
   color: var(--color-text-contrast);
 }
 

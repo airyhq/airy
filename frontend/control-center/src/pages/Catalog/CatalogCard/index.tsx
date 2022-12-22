@@ -7,12 +7,15 @@ import {installComponent} from '../../../actions/catalog';
 import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, Tooltip} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
-import {getCatalogProductRouteForComponent, getConnectedRouteForComponent} from '../../../services';
+import {
+  getCatalogProductRouteForComponent,
+  getConnectedRouteForComponent,
+  getNewChannelRouteForComponent,
+} from '../../../services';
 import {DescriptionComponent, getDescriptionSourceName} from '../../../components/Description';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmarkFilled.svg';
 import styles from './index.module.scss';
 import NotifyMeModal from '../NotifyMeModal';
-import {CONNECTORS_ROUTE} from '../../../routes/routes';
 import {getMergedConnectors} from '../../../selectors';
 import {InstallerLoader} from 'components/loaders/InstallerLoader';
 
@@ -67,7 +70,7 @@ const CatalogCard = (props: CatalogCardProps) => {
   const componentCard = useRef(null);
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const navigateConfigure = `${CONNECTORS_ROUTE}/${componentInfo?.source}/configure`;
+  const navigateConfigure = getNewChannelRouteForComponent(componentInfo?.source);
 
   //Commented until backend is ready for this!!!
   // const notifiedEmail = t('infoNotifyMe') + ` ${notified}`;

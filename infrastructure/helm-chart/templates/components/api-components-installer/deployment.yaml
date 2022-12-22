@@ -23,66 +23,83 @@ spec:
         app: {{ .Values.components.api.components.installer.name }}
     spec:
       containers:
-        - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.components.installer.image }}:{{ default .Chart.Version }}"
-          imagePullPolicy: Always
-          args:
-            - "-Djdk.tls.client.protocols=TLSv1.2"
-            - "-jar"
-            - "app_springboot.jar"
-            - "-XshowSettings:vm"
-            - "-XX:MaxRAMPercentage=70"
-            - "-XX:-UseCompressedOops"
-            - "-Dsun.net.inetaddr.ttl=0"
-          envFrom:
-            - configMapRef:
-                name: security
-            - configMapRef:
-                name: kafka-config
-          env:
-            - name: SERVICE_NAME
-              value: {{ .Values.components.api.components.installer.name }}
-            - name: KUBERNETES_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: CATALOG_URI
-              value: "https://github.com/airyhq/catalog.git"
-            - name: CATALOG_DIRECTORY
-              value: "/repo"
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: REQUESTED_CPU
-              valueFrom:
-                resourceFieldRef:
-                  containerName: app
-                  resource: requests.cpu
-            - name: LIMIT_CPU
-              valueFrom:
-                resourceFieldRef:
-                  containerName: app
-                  resource: limits.cpu
-            - name: LIMIT_MEMORY
-              valueFrom:
-                resourceFieldRef:
-                  containerName: app
-                  resource: limits.memory
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              httpHeaders:
-                - name: Health-Check
-                  value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.components.api.components.installer.image }}:{{ default .Chart.Version }}"
+        imagePullPolicy: Always
+        args:
+          - "-Djdk.tls.client.protocols=TLSv1.2"
+          - "-jar"
+          - "app_springboot.jar"
+          - "-XshowSettings:vm"
+          - "-XX:MaxRAMPercentage=70"
+          - "-XX:-UseCompressedOops"
+          - "-Dsun.net.inetaddr.ttl=0"
+        envFrom:
+          - configMapRef:
+              name: security
+          - configMapRef:
+              name: kafka-config
+        env:
+          - name: SERVICE_NAME
+            value: {{ .Values.components.api.components.installer.name }}
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: CATALOG_URI
+            value: "https://github.com/airyhq/catalog.git"
+          - name: CATALOG_DIRECTORY
+            value: "/repo"
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: REQUESTED_CPU
+            valueFrom:
+              resourceFieldRef:
+                containerName: app
+                resource: requests.cpu
+          - name: LIMIT_CPU
+            valueFrom:
+              resourceFieldRef:
+                containerName: app
+                resource: limits.cpu
+          - name: LIMIT_MEMORY
+            valueFrom:
+              resourceFieldRef:
+                containerName: app
+                resource: limits.memory
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+        resources:
+{{ toYaml .Values.components.api.components.installer | indent 10 }}
+      initContainers:
+      - name: wait
+        image: "{{ .Values.global.busyboxImage }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        envFrom:
+          - configMapRef:
+              name: kafka-config
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
       serviceAccountName: {{ .Values.serviceAccount }}
       volumes:
         - name: {{ .Values.components.api.components.installer.name }}
           configMap:
             name: {{ .Values.components.api.components.installer.name }}
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+

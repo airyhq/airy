@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import ContactDetails from '../../../components/ContactDetails';
-import {useAnimation} from 'render';
+import {useAnimation} from 'components';
 import {Contact} from 'model';
 import {Avatar} from 'components/message/Avatar';
 import {Input} from 'components/inputs/Input';

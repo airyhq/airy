@@ -4,8 +4,8 @@ import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ListenOutsideClick} from '../ListenOutsideClick';
 import {SearchField} from 'components/inputs';
 import {useTranslation} from 'react-i18next';
-import {useAnimation} from 'render';
 import {Tooltip} from 'components/tooltip';
+import {useAnimation} from 'components/services/useAnimation';
 
 export enum FilterTypes {
   all = 'all',
@@ -44,6 +44,7 @@ export const FilterBar = (props: FilterBarProps) => {
           <Tooltip
             key={item.filter}
             right={item.filter === FilterTypes.all && 115}
+            delay={1500}
             hoverElement={
               <div
                 key={item.filter}

@@ -6,3 +6,4 @@ export * from './loaders';
 export * from './message';
 export * from './tooltip';
 export * from './wrapper/ContentWrapper';
+export * from './services/useAnimation';

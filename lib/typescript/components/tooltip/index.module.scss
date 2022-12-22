@@ -59,13 +59,15 @@
 
 .tooltipContent {
   @include font-s-bold;
-  display: none;
+  display: flex;
   background: var(--color-tooltip-gray);
   border-radius: 4px;
   padding: 4px 6px;
   color: var(--color-tooltip-text-gray);
   position: relative;
   z-index: 4;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hoverElement:hover ~ .tooltipContent.top {
@@ -74,6 +76,9 @@
   line-height: 14px;
   white-space: nowrap;
   margin-bottom: 12px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.right {
@@ -81,6 +86,9 @@
   line-height: 14px;
   white-space: nowrap;
   margin-left: 12px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.bottom {
@@ -88,6 +96,9 @@
   line-height: 14px;
   white-space: nowrap;
   margin-top: 12px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.left {
@@ -95,6 +106,9 @@
   line-height: 14px;
   white-space: nowrap;
   margin-right: 12px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.topLeft {
@@ -102,6 +116,9 @@
   line-height: 14px;
   white-space: nowrap;
   bottom: 38px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.topRight {
@@ -109,6 +126,9 @@
   line-height: 14px;
   white-space: nowrap;
   bottom: 38px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.bottomLeft {
@@ -116,6 +136,9 @@
   line-height: 14px;
   white-space: nowrap;
   top: 38px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 150ms;
+  visibility: visible;
 }
 
 .hoverElement:hover ~ .tooltipContent.bottomRight {
@@ -123,6 +146,9 @@
   line-height: 14px;
   white-space: nowrap;
   top: 38px;
+  opacity: 1;
+  transition: opacity 150ms ease-in 200ms;
+  visibility: visible;
 }
 
 .hoverElement ~ .tooltipContent.top::after {

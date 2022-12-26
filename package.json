@@ -42,7 +42,7 @@
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.19.3",
+    "@babel/core": "7.20.7",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.19.4",
     "@babel/plugin-transform-spread": "^7.19.0",

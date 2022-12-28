@@ -26,12 +26,7 @@ resource "google_container_node_pool" "gke_core_nodes" {
   node_config {
     preemptible  = false
     machine_type = var.gke_instance_type
-
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-    ]
-
+    oauth_scopes = var.gke_oauth_scopes
     tags = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
@@ -40,7 +35,6 @@ resource "google_container_node_pool" "gke_core_nodes" {
       env = var.project_id
     }
   }
-
   depends_on = [resource.google_container_cluster.gke_core]
 }
 
@@ -51,11 +45,9 @@ resource "null_resource" "kubeconfig_file" {
     cluster_name    = var.gke_name
     kubeconfig_path = var.kubeconfig_output_path
   }
-
   depends_on = [
     resource.google_container_cluster.gke_core
   ]
-
   provisioner "local-exec" {
     command = "KUBECONFIG=${self.triggers.kubeconfig_path} gcloud container clusters get-credentials ${self.triggers.cluster_name} --region ${self.triggers.region} --project ${self.triggers.project_id}"
   }

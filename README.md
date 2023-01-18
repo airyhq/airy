@@ -69,7 +69,7 @@ real-time and historical data to wherever you need it.
 
 Airy Core comes with all the components you need to stream historical and real-time data.
 
-- 💬 Pre-built and easily configurable [connectors](https://airy.co/docs/core/sources/introduction)
+- 💬 Pre-built and easily configurable [connectors](https://airy.co/docs/core/connectors/sources/introduction)
 
 By ingesting all real-time events and continuously processing, aggregating and joining them in the stream, development time can be significantly reduced. Through integrations with pre-built and easily configured connectors, events are consumed from any source, including business systems such as ERP/CRM, conversational sources, third party APIs. Airy also comes with an SDK to build custom connectors to any source.
 
@@ -88,7 +88,7 @@ clients to receive near real-time updates about data flowing through the system.
 A webhook integration server that allows its users to create actionable workflows (the webhook integration
 exposes events users can "listen" to and react programmatically.)
 
-- 💎[UI: From a control center to dashboards](https://airy.co/docs/core/apps/ui/introduction)
+- 💎[UI](https://airy.co/docs/core/ui/overview) to access the data and the control center through a browser
 
 No-code interfaces to manage and control Airy, your connectors and your streams.
 

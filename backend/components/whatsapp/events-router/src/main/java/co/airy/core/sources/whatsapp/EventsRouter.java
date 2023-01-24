@@ -93,7 +93,7 @@ public class EventsRouter implements HealthIndicator, DisposableBean, Applicatio
 
                                 return changes.stream().map(change -> {
                                     try {
-                                        final String sourceChannelId = change.getValue().getMetadata().getPhoneNumberId();
+                                        final String sourceChannelId = change.getValue().getPhoneNumberId();
                                         return KeyValue.pair(sourceChannelId, Event.builder().payload(change).build()
                                         );
                                     } catch (Exception e) {

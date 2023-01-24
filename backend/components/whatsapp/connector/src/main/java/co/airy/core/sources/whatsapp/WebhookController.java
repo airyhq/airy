@@ -1,11 +1,13 @@
 package co.airy.core.sources.whatsapp;
 
 import co.airy.kafka.schema.source.SourceWhatsappEvents;
+import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,13 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-import static co.airy.crypto.Signature.getSha1;
+import static co.airy.crypto.Signature.getHmac;
 
 @RestController
 public class WebhookController implements DisposableBean {
+    private static final Logger log = AiryLoggerFactory.getLogger(WebhookController.class);
     private final String sourceWhatsappEvents = new SourceWhatsappEvents().name();
     private final String webhookSecret;
     private final String appSecret;
@@ -58,7 +62,9 @@ public class WebhookController implements DisposableBean {
     }
 
     @PostMapping("/whatsapp")
-    ResponseEntity<Void> accept(@RequestBody String event, @RequestHeader("x-hub-signature") String signature) {
+    ResponseEntity<Void> accept(@RequestBody String event, @RequestHeader("x-hub-signature") String signature, @RequestHeader Map<String, String> headers) {
+        log.info("Received event from WhatsApp: {}", event);
+        log.info("headers {}", headers);
         if (!isSignatureValid(event, signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -82,7 +88,7 @@ public class WebhookController implements DisposableBean {
             return false;
         }
         final String givenSha = splits[1];
-        final String expectedSha = getSha1(payload + appSecret);
+        final String expectedSha = getHmac(appSecret, payload);
         return expectedSha.equals(givenSha);
     }
 

@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static co.airy.crypto.Signature.getSha1;
+import static co.airy.crypto.Signature.getHmac;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,8 +73,8 @@ class WebhookControllerTest {
                 .header("x-hub-signature", "sha1=something")
                 .content("payload")).andExpect(status().isForbidden());
 
-        final String payload = "some payload";
-        final String signature = getSha1(payload + appSecret);
+        final String payload = "payload";
+        final String signature = getHmac(appSecret, payload);
 
         mvc.perform(post("/whatsapp")
                 .header("x-hub-signature", "sha1=" + signature)

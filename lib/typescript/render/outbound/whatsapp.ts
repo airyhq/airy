@@ -1,12 +1,12 @@
 import {OutboundMapper} from './mapper';
 
 export class WhatsAppMapper extends OutboundMapper {
-  getTextPayload(text: string): {text: {preview_url: boolean, body: string}} {
+  getTextPayload(text: string): {text: {preview_url: boolean; body: string}} {
     return {
-      text: {      
-        "preview_url": false,
-        "body": text
-      }
+      text: {
+        preview_url: false,
+        body: text,
+      },
     };
   }
 

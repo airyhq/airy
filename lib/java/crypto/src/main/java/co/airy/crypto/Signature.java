@@ -50,4 +50,14 @@ public class Signature {
             throw new RuntimeException(e);
         }
     }
+
+    public static String getHmac(String key, String content) {
+        try {
+            Mac hmac = Mac.getInstance("HmacSHA1");
+            hmac.init(new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA1"));
+            return byteToHex(hmac.doFinal(content.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,0 +1,4 @@
+version: 15.1
+port: 5432
+storage: "5Gi"
+resources:

@@ -1,0 +1,5 @@
+apiVersion: v2
+appVersion: "1.0"
+description: AKHQ tool for Apache Kafka
+name: redis
+version: 7.0.8

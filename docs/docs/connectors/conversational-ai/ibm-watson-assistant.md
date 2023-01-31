@@ -40,7 +40,13 @@ Once that you have an [IBM Cloud](https://www.ibm.com/cloud) account with a runn
 
 - Find your [IBM Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) instance's `URL` and `apiKey` on the IBM Watson Assistant service page. To access this service page: select `ressource list` from your dashboard, select the `AI / Machine Learning` category, and then select your assistant. Note down these credentials.
 
-- Next, on your IBM Watson Assistant service page, click on the button `Launch Assistant`: this opens the assistant page. On your assistant page, click on the `settings` button on the left sidebar, at the bottom. This opens the settings page: note the `Assistant ID`.
+<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai-connectors/ibmWatsonAssistant/credentialsibmwatson.jpg')} /></center>
+<br />
+
+- Next, on your IBM Watson Assistant service page, click on the button `Launch Assistant`: this opens the assistant page. On your assistant page, click on the `settings` button on the left sidebar, at the bottom. This opens the settings page, and under the section `Environments` you can choose between the draft and live `Environment ID` / `Assistant ID`.
+
+<center><img alt="Airy connection with IBM Watson Assistant " src={useBaseUrl('img/conversational-ai-connectors/ibmWatsonAssistant/enviromentsibmwatson.jpg')} /></center>
+<br />
 
 <SuccessBox>
 

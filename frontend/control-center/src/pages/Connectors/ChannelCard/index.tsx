@@ -23,6 +23,7 @@ export const ChannelCard = (props: ChannelCardProps) => {
   const route = getConnectedRouteForComponent(
     componentInfo.source,
     componentInfo.isChannel,
+    componentInfo.isApp,
     componentInfo.connectedChannels > 0,
     componentInfo.isConfigured
   );

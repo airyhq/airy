@@ -98,12 +98,17 @@
   }
 }
 
+.description {
+  height: 50px;
+  overflow: hidden;
+}
+
 .availability {
   display: flex;
   align-items: center;
   color: var(--color-airy-blue);
   @include font-s;
-  margin-top: 16px;
+  margin-top: 6px;
   svg {
     fill: var(--color-airy-blue);
     width: 14px;

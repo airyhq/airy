@@ -149,7 +149,13 @@ const CatalogCard = (props: CatalogCardProps) => {
           type="submit"
           onClick={() =>
             navigate(
-              getConnectedRouteForComponent(componentInfo?.source, isChannel, hasConnectedChannels, isConfigured)
+              getConnectedRouteForComponent(
+                componentInfo?.source,
+                isChannel,
+                componentInfo.isApp,
+                hasConnectedChannels,
+                isConfigured
+              )
             )
           }
           buttonRef={installButtonCard}
@@ -227,8 +233,8 @@ const CatalogCard = (props: CatalogCardProps) => {
             </section>
             <div className={styles.descriptionInfo}>
               {componentInfo.name && (
-                <p>
-                  <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
+                <p className={styles.description}>
+                  <DescriptionComponent source={getDescriptionSourceName(componentInfo.source)} />
                 </p>
               )}
 

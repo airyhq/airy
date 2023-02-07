@@ -5,7 +5,15 @@ import Sidebar from './components/Sidebar';
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
 import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
-import {INBOX_ROUTE, CATALOG_ROUTE, CONNECTORS_ROUTE, ROOT_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from './routes/routes';
+import {
+  INBOX_ROUTE,
+  CATALOG_ROUTE,
+  CONNECTORS_ROUTE,
+  ROOT_ROUTE,
+  STATUS_ROUTE,
+  WEBHOOKS_ROUTE,
+  APPS_ROUTE,
+} from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
 import Catalog from './pages/Catalog';
@@ -18,6 +26,7 @@ import ConnectorConfig from './pages/Connectors/ConnectorConfig';
 import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 import AiryWebSocket from './components/AiryWebsocket';
 import {getConnectorsConfiguration, listChannels, listComponents} from './actions';
+import Apps from './pages/Apps';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -64,6 +73,15 @@ const App = (props: ConnectedProps<typeof connector>) => {
             <Route path={CONNECTORS_ROUTE} element={<Connectors />} />
 
             <Route path={`${CONNECTORS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
+              <Route path={`connected`} element={<ConnectorConfig />} />
+              <Route path={`new`} element={<ConnectorConfig />} />
+              <Route path={`configure`} element={<ConnectorConfig />} />
+              <Route path={`:channelId`} element={<ConnectorConfig />} />
+            </Route>
+
+            <Route path={APPS_ROUTE} element={<Apps />} />
+
+            <Route path={`${APPS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
               <Route path={`connected`} element={<ConnectorConfig />} />
               <Route path={`new`} element={<ConnectorConfig />} />
               <Route path={`configure`} element={<ConnectorConfig />} />

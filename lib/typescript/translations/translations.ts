@@ -456,6 +456,17 @@ const resources = {
       //mobile
       mobileDescription: 'An Airy mobile app for your Inbox.',
 
+      //postgres
+      postgresDescription: 'PostgreSQL is a free and open-source relational database management system.',
+
+      //redis
+      redisDescription:
+        'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
+
+      //webhook
+      webhooksDescription:
+        'The webhook enables you participate in conversations by reacting to messages. The webhook enables you participate in conversations by reacting to messages.',
+
       //viber
       viberDescription: 'The messaging app connecting over a billion people worldwide.',
 
@@ -961,6 +972,16 @@ const resources = {
 
       //mobile
       mobileDescription: 'Eine mobile Airy-App für Ihren Posteingang.',
+
+      //postgres
+      postgresDescription: 'PostgreSQL is a free and open-source relational database management system.',
+
+      //redis
+      redisDescription:
+        'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
+
+      //webhook
+      webhooksDescription: 'The webhook enables you participate in conversations by reacting to messages.',
 
       //viber
       viberDescription: 'Die Messaging-App, die über eine Milliarde Menschen weltweit verbindet.',
@@ -1593,6 +1614,17 @@ const resources = {
       //mobile
       mobileDescription: 'Une application mobile Airy pour votre boîte de réception.',
 
+      //postgres
+      postgresDescription:
+        'PostgreSQL est un système de gestion de bases de données relationnelles gratuit et open-source.',
+
+      //redis
+      redisDescription:
+        'Redis est un entrepôt de structures de données en mémoire à code source ouvert, utilisé comme base de données, cache et courtier en messages.',
+
+      //webhook
+      webhooksDescription: 'Le webhook vous permet de participer aux conversations en réagissant aux messages.',
+
       //viber
       viberDescription: "L'application de messagerie connectant plus d'un milliard de personnes dans le monde.",
 
@@ -2162,6 +2194,17 @@ const resources = {
 
       //mobile
       mobileDescription: 'Una aplicación móvil Airy para su bandeja de entrada.',
+
+      //postgres
+      postgresDescription:
+        'PostgreSQL es un sistema de gestión de bases de datos relacionales gratuito y de código abierto.',
+
+      //redis
+      redisDescription:
+        'Redis es un almacén de estructuras de datos en memoria de código abierto, utilizado como base de datos, caché y corredor de mensajes.',
+
+      //webhook
+      webhooksDescription: 'El webhook permite participar en conversaciones reaccionando a los mensajes.',
 
       //viber
       viberDescription: 'La aplicación de mensajería que conecta a más de mil millones de personas en todo el mundo.',

@@ -24,7 +24,11 @@ const connector = connect(null, mapDispatchToProps);
 const InfoCard = (props: InfoCardProps) => {
   const {componentInfo, componentStatus} = props;
   const navigate = useNavigate();
-  const CONFIGURATION_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
+  const CONFIGURATION_ROUTE = getNewChannelRouteForComponent(
+    componentInfo.source,
+    componentInfo.isChannel,
+    componentInfo.isApp
+  );
 
   const handleCardClick = () => {
     navigate(CONFIGURATION_ROUTE);

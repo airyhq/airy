@@ -5,9 +5,17 @@ import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../reducers';
 import {useCurrentComponentForSource} from '../../selectors';
 import {InstallationStatus, Source} from 'model';
-import {CATALOG_ROUTE, CONNECTORS_ROUTE, INBOX_ROUTE, STATUS_ROUTE, WEBHOOKS_ROUTE} from '../../routes/routes';
+import {
+  CATALOG_ROUTE,
+  CONNECTORS_ROUTE,
+  APPS_ROUTE,
+  INBOX_ROUTE,
+  STATUS_ROUTE,
+  WEBHOOKS_ROUTE,
+} from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
+import {ReactComponent as AppsIcon} from 'assets/images/icons/add-item-alt.svg';
 import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg';
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
 import {ReactComponent as StatusIcon} from 'assets/images/icons/statusIcon.svg';
@@ -48,6 +56,12 @@ const Sidebar = (props: SideBarProps) => {
           <Link to={CONNECTORS_ROUTE} className={`${styles.link} ${isActive(CONNECTORS_ROUTE) ? styles.active : ''}`}>
             <ConnectorsIcon width={20} height={20} />
             <span className={styles.iconText}>Connectors</span>
+          </Link>
+        </div>
+        <div className={`${styles.align} ${isActive(APPS_ROUTE) ? styles.active : ''}`}>
+          <Link to={APPS_ROUTE} className={`${styles.link} ${isActive(APPS_ROUTE) ? styles.active : ''}`}>
+            <AppsIcon width={20} height={20} />
+            <span className={styles.iconText}>Apps</span>
           </Link>
         </div>
         <div className={`${styles.align} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>

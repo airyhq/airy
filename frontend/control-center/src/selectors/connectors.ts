@@ -1,6 +1,6 @@
 import {StateModel} from '../reducers';
 import {useSelector} from 'react-redux';
-import {Channel, Connector, ConnectorName, ConnectorsModel, InstallationStatus, Source} from 'model';
+import {Channel, Connector, ConnectorName, ConnectorsModel, InstallationStatus, isApp, Source, SourceApps} from 'model';
 import {createSelector} from 'reselect';
 import {merge} from 'lodash-es';
 import {allChannelsConnected} from './channels';
@@ -36,6 +36,7 @@ export const getMergedConnectors = createSelector(
       const source = catalog[1].source;
       const name = catalog[0];
       const displayName = catalog[1].displayName;
+      const isApp = catalog[1].isApp;
 
       structuredCatalog = {
         name: name,
@@ -45,10 +46,21 @@ export const getMergedConnectors = createSelector(
         isHealthy: !isInstalled && false,
         isEnabled: !isInstalled && false,
         isChannel: isChannel,
+        isApp: isApp,
         price: price,
         source: source,
         connectedChannels: connectedChannels,
       };
+
+      if (isApp) {
+        structuredCatalog = {
+          ...structuredCatalog,
+          isConfigured: true,
+          isHealthy: true,
+          isEnabled: true,
+        };
+      }
+
       catalogList[structuredCatalog.name] = structuredCatalog;
     });
 

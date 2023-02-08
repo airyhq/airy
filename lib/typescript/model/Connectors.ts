@@ -51,6 +51,7 @@ export type Connector = {
   price?: string;
   source?: Source;
   isApp?: boolean;
+  internalUI?: string;
 };
 
 export type ConnectorsModel = {

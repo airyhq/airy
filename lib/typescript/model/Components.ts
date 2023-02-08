@@ -25,6 +25,7 @@ export interface ComponentInfo {
   isChannel?: string;
   configurationValues?: string;
   isApp?: boolean;
+  internalUI?: string;
 }
 
 export enum ComponentStatus {

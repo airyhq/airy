@@ -37,6 +37,13 @@ const InfoCard = (props: InfoCardProps) => {
   return (
     <div onClick={handleCardClick} className={styles.container}>
       <div className={styles.infoCard}>
+        {componentInfo.internalUI && (
+          <div className={styles.externalLink}>
+            <a href={componentInfo.internalUI} target="_blank" rel="noreferrer">
+              Open
+            </a>
+          </div>
+        )}
         <div className={styles.channelLogoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}
           {componentInfo.displayName}

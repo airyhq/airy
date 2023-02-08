@@ -37,6 +37,7 @@ export const getMergedConnectors = createSelector(
       const name = catalog[0];
       const displayName = catalog[1].displayName;
       const isApp = catalog[1].isApp;
+      const internalUI = catalog[1].internalUI;
 
       structuredCatalog = {
         name: name,
@@ -47,6 +48,7 @@ export const getMergedConnectors = createSelector(
         isEnabled: !isInstalled && false,
         isChannel: isChannel,
         isApp: isApp,
+        internalUI: internalUI,
         price: price,
         source: source,
         connectedChannels: connectedChannels,

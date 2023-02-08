@@ -1,6 +1,6 @@
 import {StateModel} from '../reducers';
 import {useSelector} from 'react-redux';
-import {Channel, Connector, ConnectorName, ConnectorsModel, InstallationStatus, isApp, Source, SourceApps} from 'model';
+import {Channel, Connector, ConnectorName, ConnectorsModel, InstallationStatus, Source} from 'model';
 import {createSelector} from 'reselect';
 import {merge} from 'lodash-es';
 import {allChannelsConnected} from './channels';

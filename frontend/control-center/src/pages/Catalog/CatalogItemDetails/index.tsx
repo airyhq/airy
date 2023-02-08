@@ -138,7 +138,7 @@ const CatalogItemDetails = (props: ConnectedProps<typeof connector>) => {
       <section className={styles.heading}>
         <h1>{componentInfo?.displayName}</h1>
         <p>
-          <DescriptionComponent description={`${getDescriptionSourceName(componentInfo.source)}Description`} />
+          <DescriptionComponent source={getDescriptionSourceName(componentInfo.source)} />
         </p>
       </section>
     );

@@ -2,6 +2,8 @@ export const ROOT_ROUTE = '/';
 
 export const CONNECTORS_ROUTE = '/connectors';
 
+export const APPS_ROUTE = '/apps';
+
 export const CATALOG_ROUTE = '/catalog';
 
 export const INBOX_ROUTE = '/inbox';

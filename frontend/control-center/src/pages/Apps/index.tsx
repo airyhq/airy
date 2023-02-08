@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Connector, InstallationStatus, Source} from 'model';
-import InfoCard from './InfoCard';
+import InfoCard from '../Connectors/InfoCard';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
-import {EmptyStateConnectors} from './EmptyStateConnectors';
-import {ChannelCard} from './ChannelCard';
+import {EmptyStateConnectors} from '../Connectors/EmptyStateConnectors';
+import {ChannelCard} from '../Connectors/ChannelCard';
 import {getComponentStatus} from '../../services';
 import styles from './index.module.scss';
 import {getMergedConnectors} from '../../selectors';
@@ -13,24 +13,24 @@ import {AiryLoader} from 'components/loaders/AiryLoader';
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    connectors: Object.values(getMergedConnectors(state)).filter((component: Connector) => component.isApp !== true),
+    apps: Object.values(getMergedConnectors(state)).filter((component: Connector) => component.isApp === true),
   };
 };
 
 const connector = connect(mapStateToProps, null);
 
-const Connectors = (props: ConnectedProps<typeof connector>) => {
-  const {connectors} = props;
-  const installedConnectors = Object.values(connectors).filter(
-    (connector: Connector) =>
-      connector.installationStatus === InstallationStatus.installed &&
-      connector.source !== Source.airyContacts &&
-      connector.source !== Source.airyWebhooks &&
-      connector.source !== Source.airyMobile &&
-      connector.price
+const Apps = (props: ConnectedProps<typeof connector>) => {
+  const {apps} = props;
+  const installedApps = Object.values(apps).filter(
+    (app: Connector) =>
+      app.installationStatus === InstallationStatus.installed &&
+      app.source !== Source.airyContacts &&
+      app.source !== Source.airyWebhooks &&
+      app.source !== Source.airyMobile &&
+      app.price
   );
   const hasAvailableConnectors =
-    Object.values(connectors).filter(
+    Object.values(apps).filter(
       (connector: Connector) =>
         connector.source !== Source.airyContacts &&
         connector.source !== Source.airyMobile &&
@@ -38,8 +38,8 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         connector.price
     ).length > 0;
 
-  const hasInstalledComponents = installedConnectors.length > 0;
-  const pageTitle = 'Connectors';
+  const hasInstalledComponents = installedApps.length > 0;
+  const pageTitle = 'Apps';
   const sortByName = (a: Connector, b: Connector) => a?.displayName?.localeCompare(b?.displayName);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
     <div className={styles.channelsWrapper}>
       <div className={styles.channelsHeadline}>
         <div>
-          <h1 className={styles.channelsHeadlineText}>Connectors</h1>
+          <h1 className={styles.channelsHeadlineText}>Apps</h1>
         </div>
       </div>
       <div className={styles.wrapper}>
@@ -60,32 +60,32 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
           <EmptyStateConnectors />
         ) : (
           <>
-            {installedConnectors.sort(sortByName).map((connector: Connector) => {
-              if (connector.isChannel) {
+            {installedApps.sort(sortByName).map((app: Connector) => {
+              if (app.isChannel) {
                 return (
                   <ChannelCard
                     key={connector.name}
-                    componentInfo={connector}
+                    componentInfo={app}
                     componentStatus={getComponentStatus(
-                      connector.isHealthy,
-                      connector.installationStatus === InstallationStatus.installed,
-                      connector.isConfigured,
-                      connector.isEnabled
+                      app.isHealthy,
+                      app.installationStatus === InstallationStatus.installed,
+                      app.isConfigured,
+                      app.isEnabled
                     )}
-                    channelsToShow={connector.connectedChannels}
+                    channelsToShow={app.connectedChannels}
                   />
                 );
               }
-              if (!connector.isChannel) {
+              if (!app.isChannel) {
                 return (
                   <InfoCard
-                    key={connector.name}
-                    componentInfo={connector}
+                    key={app.name}
+                    componentInfo={app}
                     componentStatus={getComponentStatus(
-                      connector.isHealthy,
-                      connector.installationStatus === InstallationStatus.installed,
-                      connector.isConfigured,
-                      connector.isEnabled
+                      app.isHealthy,
+                      app.installationStatus === InstallationStatus.installed,
+                      app.isConfigured,
+                      app.isEnabled
                     )}
                   />
                 );
@@ -98,4 +98,4 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
   );
 };
 
-export default connector(Connectors);
+export default connector(Apps);

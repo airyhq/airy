@@ -24,7 +24,11 @@ const connector = connect(null, mapDispatchToProps);
 const InfoCard = (props: InfoCardProps) => {
   const {componentInfo, componentStatus} = props;
   const navigate = useNavigate();
-  const CONFIGURATION_ROUTE = getNewChannelRouteForComponent(componentInfo.source);
+  const CONFIGURATION_ROUTE = getNewChannelRouteForComponent(
+    componentInfo.source,
+    componentInfo.isChannel,
+    componentInfo.isApp
+  );
 
   const handleCardClick = () => {
     navigate(CONFIGURATION_ROUTE);
@@ -33,6 +37,13 @@ const InfoCard = (props: InfoCardProps) => {
   return (
     <div onClick={handleCardClick} className={styles.container}>
       <div className={styles.infoCard}>
+        {componentInfo.internalUI && (
+          <div className={styles.externalLink}>
+            <a href={componentInfo.internalUI} target="_blank" rel="noreferrer">
+              Open
+            </a>
+          </div>
+        )}
         <div className={styles.channelLogoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}
           {componentInfo.displayName}

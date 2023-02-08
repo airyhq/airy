@@ -58,7 +58,8 @@ const ConnectorConfig = (props: ConnectedProps<typeof connector>) => {
   const navigateConnected = `${CONNECTORS_ROUTE}/${source}/connected`;
   const navigateConfigure = `${CONNECTORS_ROUTE}/${source}/configure`;
   const navigateChannelId = `${CONNECTORS_ROUTE}/${source}/${channelId || previousPath}`;
-  const notConfigured = previousPath === 'connectors' || previousPath === 'status' || previousPath === 'catalog';
+  const notConfigured =
+    previousPath === 'connectors' || previousPath === 'status' || previousPath === 'catalog' || previousPath === 'apps';
   const hasConnectedChannels = connectors[connectorInfo?.name]?.connectedChannels > 0;
   const isChannel = connectors[connectorInfo?.name]?.isChannel;
   const isConfigured = connectors[connectorInfo?.name]?.isConfigured;

@@ -50,6 +50,8 @@ export type Connector = {
   connectedChannels?: number;
   price?: string;
   source?: Source;
+  isApp?: boolean;
+  internalUI?: string;
 };
 
 export type ConnectorsModel = {

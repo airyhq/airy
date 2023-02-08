@@ -19,9 +19,28 @@ export enum Source {
   whatsapp = 'whatsapp',
   frontendInbox = 'frontend-inbox',
   ibmWatsonAssistant = 'ibmWatsonAssistant',
+  redis = 'redis',
+  postgresql = 'postgresql',
+  feast = 'feast',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
 }
+
+export enum SourceApps {
+  redis = 'redis',
+  postgresql = 'postgresql',
+  feast = 'feast',
+}
+
+export const isApp = (source: string): boolean => {
+  switch (source) {
+    case SourceApps.postgresql:
+    case SourceApps.redis:
+    case SourceApps.feast:
+      return true;
+  }
+  return false;
+};
 
 export const prettifySource = (source: string) =>
   source

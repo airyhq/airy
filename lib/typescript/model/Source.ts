@@ -20,20 +20,23 @@ export enum Source {
   frontendInbox = 'frontend-inbox',
   ibmWatsonAssistant = 'ibmWatsonAssistant',
   redis = 'redis',
-  postgres = 'postgres',
+  postgresql = 'postgresql',
+  feast = 'feast',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
 }
 
 export enum SourceApps {
   redis = 'redis',
-  postgres = 'postgres',
+  postgresql = 'postgresql',
+  feast = 'feast',
 }
 
 export const isApp = (source: string): boolean => {
   switch (source) {
-    case SourceApps.postgres:
+    case SourceApps.postgresql:
     case SourceApps.redis:
+    case SourceApps.feast:
       return true;
   }
   return false;

@@ -463,6 +463,9 @@ const resources = {
       redisDescription:
         'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
 
+      //feast
+      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+
       //webhook
       webhooksDescription:
         'The webhook enables you participate in conversations by reacting to messages. The webhook enables you participate in conversations by reacting to messages.',
@@ -979,6 +982,9 @@ const resources = {
       //redis
       redisDescription:
         'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
+
+      //feast
+      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
 
       //webhook
       webhooksDescription: 'The webhook enables you participate in conversations by reacting to messages.',
@@ -1622,6 +1628,9 @@ const resources = {
       redisDescription:
         'Redis est un entrepôt de structures de données en mémoire à code source ouvert, utilisé comme base de données, cache et courtier en messages.',
 
+      //feast
+      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+
       //webhook
       webhooksDescription: 'Le webhook vous permet de participer aux conversations en réagissant aux messages.',
 
@@ -2202,6 +2211,9 @@ const resources = {
       //redis
       redisDescription:
         'Redis es un almacén de estructuras de datos en memoria de código abierto, utilizado como base de datos, caché y corredor de mensajes.',
+
+      //feast
+      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
 
       //webhook
       webhooksDescription: 'El webhook permite participar en conversaciones reaccionando a los mensajes.',

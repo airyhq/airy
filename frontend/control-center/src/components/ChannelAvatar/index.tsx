@@ -18,6 +18,7 @@ import {ReactComponent as AmazonLexV2Avatar} from 'assets/images/icons/amazonLex
 import {ReactComponent as IbmWatsonAssistantAvatar} from 'assets/images/icons/ibmWatsonAssistantLogo.svg';
 import {ReactComponent as RedisAvatar} from 'assets/images/icons/redisLogo.svg';
 import {ReactComponent as PostgresAvatar} from 'assets/images/icons/postgresLogo.svg';
+import {ReactComponent as FeastAvatar} from 'assets/images/icons/feastLogo.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -91,9 +92,12 @@ export const getChannelAvatar = (source: string) => {
     case Source.redis:
     case 'Redis':
       return <RedisAvatar />;
-    case Source.postgres:
+    case Source.postgresql:
     case 'PostgreSQL':
       return <PostgresAvatar />;
+    case Source.feast:
+    case 'Feast':
+      return <FeastAvatar />;
 
     default:
       return <AiryAvatar />;

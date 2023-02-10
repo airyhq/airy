@@ -13,7 +13,7 @@ import {
   STATUS_ROUTE,
   WEBHOOKS_ROUTE,
   APPS_ROUTE,
-  FEAST_ROUTE
+  FEAST_ROUTE,
 } from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';

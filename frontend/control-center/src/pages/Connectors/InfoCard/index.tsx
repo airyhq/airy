@@ -8,6 +8,8 @@ import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {getNewChannelRouteForComponent} from '../../../services';
 import styles from './index.module.scss';
 import {Connector} from 'model';
+import { Button } from 'components/cta/Button';
+import { FEAST_ROUTE } from '../../../routes/routes';
 
 type InfoCardProps = {
   componentInfo: Connector;
@@ -37,16 +39,19 @@ const InfoCard = (props: InfoCardProps) => {
   return (
     <div onClick={handleCardClick} className={styles.container}>
       <div className={styles.infoCard}>
-        {componentInfo.internalUI && (
+        {componentInfo.internalUI && 
           <div className={styles.externalLink}>
-            <a href={componentInfo.internalUI} target="_blank" rel="noreferrer">
+            <Button styleVariant="small" onClick={event => {
+              event.stopPropagation()
+              navigate(FEAST_ROUTE)}
+              }>
               Open
-            </a>
+            </Button>            
           </div>
-        )}
+        }
         <div className={styles.channelLogoTitleContainer}>
           {getChannelAvatar(componentInfo.source)}
-          {componentInfo.displayName}
+          {componentInfo.displayName} 
         </div>
         {componentStatus && (
           <ConfigStatusButton componentStatus={componentStatus} configurationRoute={CONFIGURATION_ROUTE} />

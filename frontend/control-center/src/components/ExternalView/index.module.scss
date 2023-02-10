@@ -1,0 +1,21 @@
+.container {
+  text-align: center;
+  flex-grow: 1;
+  font-family: 'Lato', sans-serif;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: visible;
+  background: var(--color-background-white);
+  padding: 24px;
+  margin: 88px 1.5em 5em 11.95em;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: visible;
+  min-height: calc(100vh - 170px);
+  iframe {
+    border: 2px solid var(--color-background-gray);
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+  }
+}

@@ -13,6 +13,7 @@ import {
   STATUS_ROUTE,
   WEBHOOKS_ROUTE,
   APPS_ROUTE,
+  FEAST_ROUTE,
 } from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
@@ -27,6 +28,8 @@ import CatalogProductPage from './pages/Catalog/CatalogItemDetails';
 import AiryWebSocket from './components/AiryWebsocket';
 import {getConnectorsConfiguration, listChannels, listComponents} from './actions';
 import Apps from './pages/Apps';
+import ExternalView from './components/ExternalView';
+import {getAppExternalURL} from './services/getAppExternalURL';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -80,6 +83,7 @@ const App = (props: ConnectedProps<typeof connector>) => {
             </Route>
 
             <Route path={APPS_ROUTE} element={<Apps />} />
+            <Route path={FEAST_ROUTE} element={<ExternalView url={getAppExternalURL(FEAST_ROUTE)} />} />
 
             <Route path={`${APPS_ROUTE}/:source/*`} element={<ConnectorsOutlet />}>
               <Route path={`connected`} element={<ConnectorConfig />} />

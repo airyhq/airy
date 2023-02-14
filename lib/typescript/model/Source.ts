@@ -24,6 +24,7 @@ export enum Source {
   feast = 'feast',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
+  integrationSourceApi = 'integrationSourceApi',
 }
 
 export enum SourceApps {

@@ -75,6 +75,26 @@
       font-weight: bold;
     }
   }
+
+  .category {
+    display: inline;
+    button {
+      margin: 0;
+      padding: 0 4px 0 0;
+    }
+  }
+
+  button {
+    @include font-s;
+    color: var(--color-text-gray);
+    background: none;
+    text-decoration: none;
+    border: none;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 }
 
 .descriptionInfo {
@@ -163,6 +183,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  button {
+    &:hover {
+      background: var(--color-airy-blue);
+      color: white;
+      cursor: pointer;
+    }
+  }
 }
 
 .soonTag {

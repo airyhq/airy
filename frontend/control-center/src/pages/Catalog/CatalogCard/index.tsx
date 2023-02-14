@@ -31,6 +31,7 @@ type CatalogCardProps = {
   showConfigureModal: string;
   blockInstalling: boolean;
   installStatus: InstallationStatus;
+  setAttributeFilter: Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
@@ -51,6 +52,7 @@ const CatalogCard = (props: CatalogCardProps) => {
     componentInfo,
     installComponent,
     setObserveInstallStatus,
+    setAttributeFilter,
     showConfigureModal,
     blockInstalling,
     installStatus,
@@ -227,7 +229,25 @@ const CatalogCard = (props: CatalogCardProps) => {
                 <h1>{componentInfo.displayName}</h1>
                 <p>
                   {' '}
-                  <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
+                  <span className={styles.bolded}>{t('categories')}: </span>
+                  <div className={styles.category}>
+                    {componentInfo.category.split(', ').map((key: string, index: number) => {
+                      let attribute = key;
+                      if (componentInfo.category.split(', ').length - 1 !== index) {
+                        attribute = ' ' + attribute + ',';
+                      }
+                      return (
+                        <button
+                          onClick={e => {
+                            e.stopPropagation();
+                            setAttributeFilter(key);
+                          }}
+                        >
+                          {attribute}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </p>
               </div>
             </section>
@@ -246,7 +266,15 @@ const CatalogCard = (props: CatalogCardProps) => {
                 <div>
                   {componentInfo?.availableFor &&
                     availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-                      <button key={service}>{service}</button>
+                      <button
+                        key={service}
+                        onClick={e => {
+                          e.stopPropagation();
+                          setAttributeFilter(service);
+                        }}
+                      >
+                        {service}
+                      </button>
                     ))}
                 </div>
                 {/* Commented until backend is ready for this!!!

@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
-import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, isAiryComponent, NotificationModel, Source} from 'model';
 import {Button, NotificationComponent, SettingsModal, Tooltip} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {
@@ -231,11 +231,7 @@ const CatalogCard = (props: CatalogCardProps) => {
                   {' '}
                   <span className={styles.bolded}>{t('categories')}: </span>
                   <div className={styles.category}>
-                    {componentInfo.category.split(', ').map((key: string, index: number) => {
-                      let attribute = key;
-                      if (componentInfo.category.split(', ').length - 1 !== index) {
-                        attribute = ' ' + attribute + ',';
-                      }
+                    {componentInfo.category.split(', ').map((key: string) => {
                       return (
                         <button
                           onClick={e => {
@@ -243,13 +239,30 @@ const CatalogCard = (props: CatalogCardProps) => {
                             setAttributeFilter(key);
                           }}
                         >
-                          {attribute}
+                          {key}
                         </button>
                       );
                     })}
                   </div>
                 </p>
               </div>
+              {componentInfo.isApp ? (
+                <div className={styles.typeComponentApp}>
+                  <p>APP</p>
+                </div>
+              ) : (
+                <>
+                  {isAiryComponent(componentInfo.source) ? (
+                    <div className={styles.typeComponent}>
+                      <p>COMPONENT</p>
+                    </div>
+                  ) : (
+                    <div className={styles.typeComponentConnector}>
+                      <p>CONNECTOR</p>
+                    </div>
+                  )}
+                </>
+              )}
             </section>
             <div className={styles.descriptionInfo}>
               {componentInfo.name && (

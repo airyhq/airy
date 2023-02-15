@@ -464,14 +464,12 @@ const resources = {
         'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
 
       //feast
-      feastDescription:
-        'With the Source HTTP API you can build your own Airy messaging source in no time.',
+      feastDescription: 'With the Source HTTP API you can build your own Airy messaging source in no time.',
 
       //sourceAPI
       integrationSourceApiDescription:
         'With the Source HTTP API you can build your own Airy messaging source in no time.',
 
-      
       //webhook
       webhooksDescription:
         'The webhook allows you to subscribe to different kinds of events to receive callbacks at a URL endpoint.',
@@ -990,8 +988,7 @@ const resources = {
         'Redis ist ein quelloffener In-Memory-Datenstrukturspeicher, der als Datenbank, Cache und Nachrichtenbroker eingesetzt wird.',
 
       //feast
-      feastDescription:
-        'Feast ist ein durchgängiger Open-Source-Feature-Store für maschinelles Lernen.',
+      feastDescription: 'Feast ist ein durchgängiger Open-Source-Feature-Store für maschinelles Lernen.',
 
       //sourceAPI
       integrationSourceApiDescription:
@@ -1648,7 +1645,8 @@ const resources = {
         "Avec l'API HTTP Source, vous pouvez créer votre propre source de messagerie Airy en un rien de temps.",
 
       //webhook
-      webhooksDescription: "Le webhook vous permet de vous abonner à différents types d'événements pour recevoir des rappels à un point de terminaison URL.",
+      webhooksDescription:
+        "Le webhook vous permet de vous abonner à différents types d'événements pour recevoir des rappels à un point de terminaison URL.",
 
       //viber
       viberDescription: "L'application de messagerie connectant plus d'un milliard de personnes dans le monde.",
@@ -2229,15 +2227,15 @@ const resources = {
         'Redis es un almacén de estructuras de datos en memoria de código abierto, utilizado como base de datos, caché y corredor de mensajes.',
 
       //feast
-      feastDescription:
-        'Feast es un almacén de funciones de código abierto integral para el aprendizaje automático.',
+      feastDescription: 'Feast es un almacén de funciones de código abierto integral para el aprendizaje automático.',
 
       //sourceAPI
       integrationSourceApiDescription:
         'Con la Source API HTTP puedes crear tu propio source en un abrir y cerrar de ojos.',
 
       //webhook
-      webhooksDescription: 'El webhook le permite suscribirse a diferentes tipos de eventos para recibir llamadas de retorno en un punto final URL.',
+      webhooksDescription:
+        'El webhook le permite suscribirse a diferentes tipos de eventos para recibir llamadas de retorno en un punto final URL.',
 
       //viber
       viberDescription: 'La aplicación de mensajería que conecta a más de mil millones de personas en todo el mundo.',

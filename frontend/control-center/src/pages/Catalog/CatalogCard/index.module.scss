@@ -51,9 +51,41 @@
 
     svg {
       height: 55px;
-      max-width: 85px;
+      width: 55px;
       fill: var(--color-text-contrast);
     }
+  }
+}
+
+.typeComponent {
+  display: flex;
+  flex: auto;
+  margin-top: -6px;
+  margin-right: -4px;
+  margin-left: 4px;
+  flex-direction: row-reverse;
+
+  p {
+    @include font-xs;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: lightgray;
+    padding: 2px 8px 2px 8px;
+  }
+}
+
+.typeComponentApp {
+  @extend .typeComponent;
+  p {
+    background-color: lightgreen;
+  }
+}
+
+.typeComponentConnector {
+  @extend .typeComponent;
+  p {
+    background-color: lightblue;
   }
 }
 
@@ -70,6 +102,8 @@
     @include font-s;
     margin: 10px 0 0 0;
     color: var(--color-text-gray);
+    overflow: visible;
+    width: 138%;
 
     span {
       font-weight: bold;
@@ -79,26 +113,30 @@
   .category {
     display: inline;
     button {
+      font-size: 10px;
       margin: 0;
-      padding: 0 4px 0 0;
+      padding: 1px 4px 1px 4px;
+      margin: 0px 2px 1px 0;
     }
   }
 
   button {
-    @include font-s;
+    @include font-xs;
     color: var(--color-text-gray);
     background: none;
     text-decoration: none;
-    border: none;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 20px;
     &:hover {
-      text-decoration: underline;
+      background: var(--color-text-gray);
+      color: white;
       cursor: pointer;
     }
   }
 }
 
 .descriptionInfo {
-  height: 50%;
+  height: 46%;
   margin-top: 10px;
 
   p {
@@ -112,7 +150,7 @@
     border-radius: 20px;
     background: transparent;
     color: var(--color-airy-blue);
-    padding: 5px;
+    padding: 3px 4px 3px 4px;
     margin-right: 5px;
     margin-top: 8px;
   }
@@ -184,6 +222,8 @@
   align-items: center;
   justify-content: space-between;
   button {
+    color: var(--color-hover-blue);
+    border: 1px solid var(--color-hover-blue);
     &:hover {
       background: var(--color-airy-blue);
       color: white;

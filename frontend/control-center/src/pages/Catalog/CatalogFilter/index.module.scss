@@ -5,6 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 12px;
+  z-index: 10;
 }
 
 .attribute {
@@ -16,7 +17,7 @@
   background-color: var(--color-airy-blue);
   color: white;
   border-radius: 20px;
-  border: 1px solid var(--color-dark-elements-gray);
+  border: 1px solid var(--color-airy-blue);
   outline: 2px solid transparent;
 
   svg {

@@ -163,8 +163,8 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   };
 
   const setAttributeFilter = (option: string) => {
-    if (catalogAttributeFilter.includes(option)) {
-      setCatalogAttributeFilter([...catalogAttributeFilter.filter(attribute => attribute != option)]);
+    if (catalogAttributeFilter.includes(option.trim())) {
+      setCatalogAttributeFilter([...catalogAttributeFilter.filter(attribute => attribute.trim() != option.trim())]);
     } else {
       setCatalogAttributeFilter([...catalogAttributeFilter, option.trim()]);
     }

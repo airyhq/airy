@@ -43,6 +43,17 @@ export const isApp = (source: string): boolean => {
   return false;
 };
 
+export const isAiryComponent = (source: string): boolean => {
+  switch (source) {
+    case Source.airyContacts:
+    case Source.airyMobile:
+    case Source.airyWebhooks:
+    case Source.integrationSourceApi:
+      return true;
+  }
+  return false;
+};
+
 export const prettifySource = (source: string) =>
   source
     .split('.')

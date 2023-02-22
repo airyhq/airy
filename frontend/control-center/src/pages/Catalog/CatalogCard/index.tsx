@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
-import {ComponentInfo, ConnectorPrice, InstallationStatus, isAiryComponent, NotificationModel, Source} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, isAiryComponent, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, Tooltip} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {

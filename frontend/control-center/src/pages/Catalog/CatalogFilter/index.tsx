@@ -1,5 +1,4 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import styles from './index.module.scss';
 
 type CatalogFilterProps = {
@@ -8,7 +7,7 @@ type CatalogFilterProps = {
 };
 
 export const CatalogFilter = (props: CatalogFilterProps) => {
-  const {catalogAttributeFilter, setAttributeFilter} = props;
+  const {catalogAttributeFilter} = props;
 
   return (
     <>

@@ -70,7 +70,7 @@
     font-size: 8px;
     font-weight: bold;
     border-radius: 4px;
-    background-color: lightgray;
+    background-color: var(--color-type-component);
     padding: 2px 8px 2px 8px;
   }
 }
@@ -78,14 +78,14 @@
 .typeComponentApp {
   @extend .typeComponent;
   p {
-    background-color: lightgreen;
+    background-color: var(--color-type-component-app);
   }
 }
 
 .typeComponentConnector {
   @extend .typeComponent;
   p {
-    background-color: lightblue;
+    background-color: var(--color-type-component-connector);
   }
 }
 
@@ -112,12 +112,8 @@
 
   .category {
     display: inline;
-    button {
-      font-size: 10px;
-      margin: 0;
-      padding: 1px 4px 1px 4px;
-      margin: 0px 2px 1px 0;
-    }
+    font-size: 12px;
+    margin: 0px 2px 1px 0;
   }
 
   button {
@@ -141,6 +137,7 @@
 
   p {
     width: 98%;
+    height: 65px;
     color: var(--color-text-contrast);
   }
 
@@ -161,16 +158,38 @@
   overflow: hidden;
 }
 
+.availabilityContainer {
+  height: 20px;
+  p {
+    width: 115px;
+    height: 12px;
+    font-size: 12px;
+  }
+  div {
+    @include font-xs;
+    display: flex;
+    flex-direction: row;
+    font-size: 11.5px;
+    padding: 1px 2px 1px 0;
+    margin-top: 2px;
+    height: 16px;
+    color: var(--color-airy-blue);
+    min-width: fit-content;
+    place-self: center;
+  }
+}
+
 .availability {
   display: flex;
   align-items: center;
   color: var(--color-airy-blue);
   @include font-s;
   margin-top: 6px;
+  height: 16px;
   svg {
     fill: var(--color-airy-blue);
     width: 14px;
-    margin-right: 5px;
+    margin-right: 3px;
     display: flex;
     align-items: center;
   }
@@ -230,6 +249,10 @@
       cursor: pointer;
     }
   }
+}
+
+.availableList {
+  display: flex;
 }
 
 .soonTag {

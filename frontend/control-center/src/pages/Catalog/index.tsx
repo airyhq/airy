@@ -176,7 +176,9 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
       let fullfillsFilter = true;
       for (const attribute of catalogAttributeFilter) {
         if (
+          item.category &&
           item.category.split(', ').includes(attribute) === false &&
+          item.availableFor &&
           item.availableFor.split(', ').includes(attribute) === false
         ) {
           fullfillsFilter = false;
@@ -204,6 +206,8 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                 {name: t('notInstalled'), setFilter: setCurrentFilter, filter: FilterTypes.notInstalled},
                 {name: t('comingSoon'), setFilter: setCurrentFilter, filter: FilterTypes.comingSoon},
               ]}
+              setAttributeFilter={setAttributeFilter}
+              catalogAttributeFilter={catalogAttributeFilter}
             />
             <section className={styles.catalogWrapper}>
               <CatalogFilter catalogAttributeFilter={catalogAttributeFilter} setAttributeFilter={setAttributeFilter} />
@@ -233,7 +237,16 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                   )}
                 </section>
               ) : (
-                <AiryLoader height={240} width={240} position="relative" top={220} />
+                <>
+                  {orderedCatalogList.length ? (
+                    <div className={styles.notFoundContainer}>
+                      <h1>{t('nothingFound')}</h1>
+                      <span>{t('noMatchingCatalogsFilter')}</span>
+                    </div>
+                  ) : (
+                    <AiryLoader height={240} width={240} position="relative" top={220} />
+                  )}
+                </>
               )}
             </section>
           </>

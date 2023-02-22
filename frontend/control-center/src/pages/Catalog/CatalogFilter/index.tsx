@@ -15,12 +15,7 @@ export const CatalogFilter = (props: CatalogFilterProps) => {
       {catalogAttributeFilter && catalogAttributeFilter.length > 0 && (
         <div className={styles.filterContainer}>
           {catalogAttributeFilter.map((attribute: string) => {
-            return (
-              <div className={styles.attribute}>
-                {attribute}
-                <CloseIcon onClick={() => setAttributeFilter(attribute)} title="Remove attribute" />
-              </div>
-            );
+            return <div className={styles.attribute}>{attribute}</div>;
           })}
         </div>
       )}

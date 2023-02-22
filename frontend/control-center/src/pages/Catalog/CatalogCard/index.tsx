@@ -231,17 +231,11 @@ const CatalogCard = (props: CatalogCardProps) => {
                   {' '}
                   <span className={styles.bolded}>{t('categories')}: </span>
                   <div className={styles.category}>
-                    {componentInfo.category.split(', ').map((key: string) => {
-                      return (
-                        <button
-                          onClick={e => {
-                            e.stopPropagation();
-                            setAttributeFilter(key);
-                          }}
-                        >
-                          {key}
-                        </button>
-                      );
+                    {componentInfo.category.split(', ').map((key: string, index: number) => {
+                      if (index < componentInfo.category.split(', ').length - 1) {
+                        return <>{key + ', '}</>;
+                      }
+                      return <>{key}</>;
                     })}
                   </div>
                 </p>
@@ -270,31 +264,21 @@ const CatalogCard = (props: CatalogCardProps) => {
                   <DescriptionComponent source={getDescriptionSourceName(componentInfo.source)} />
                 </p>
               )}
-
-              <p className={`${styles.availability} ${styles.bolded}`}>
-                <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
-                {t('availableFor')}:
-              </p>
-              <div className={styles.availableForSoonContainer}>
+              <div></div>
+              <div className={styles.availabilityContainer}>
+                <p className={`${styles.availability} ${styles.bolded}`}>
+                  <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
+                  {t('availableFor')}:
+                </p>
                 <div>
                   {componentInfo?.availableFor &&
-                    availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-                      <button
-                        key={service}
-                        onClick={e => {
-                          e.stopPropagation();
-                          setAttributeFilter(service);
-                        }}
-                      >
-                        {service}
-                      </button>
-                    ))}
+                    availabilityFormatted(componentInfo.availableFor).map((service: string, index: number) => {
+                      if (index === availabilityFormatted(componentInfo.availableFor).length - 1) {
+                        return <div>{service}</div>;
+                      }
+                      return <div>{service + ', '} </div>;
+                    })}
                 </div>
-                {/* Commented until backend is ready for this!!!
-
-             {componentInfo?.price === ConnectorPrice.requestAccess && (
-              <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
-            )} */}
               </div>
             </div>
 

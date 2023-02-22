@@ -539,6 +539,7 @@ const resources = {
       searchByNamePlaceholder: 'Search by name',
       searchByType: 'Search by type',
       noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
+      noMatchingCatalogsFilter: 'We could not find items matching your criterias.',
       description: 'Description',
       catalogDescription:
         'Airy supports all the components below to be Installed to your Airy instance in just one click!',
@@ -1131,6 +1132,7 @@ const resources = {
       searchByNamePlaceholder: 'Suche nach Name',
       searchByType: 'Suche nach Typ',
       noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
+      noMatchingCatalogsFilter: 'Wir konnten keine Elemente finden, die Ihren Kriterien entsprechen.',
       description: 'Beschreibung',
       catalogDescription:
         'Airy unterstützt alle unten aufgeführten Komponenten, die mit nur einem Klick in Ihrer Airy-Instanz installiert werden können!',
@@ -1717,6 +1719,7 @@ const resources = {
       searchByNamePlaceholder: 'Recherche par nom',
       searchByType: 'Recherche par type',
       noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
+      noMatchingCatalogsFilter: 'Aucun résultat pour ces critères de recherche.',
       description: 'Description',
       catalogDescription:
         'Airy supporte tous les composants ci-dessous qui peuvent être installés sur votre instance Airy en un seul clic!',
@@ -2298,7 +2301,7 @@ const resources = {
 
       //Catalog
       categories: 'Categorías',
-      availableFor: 'Disponible para',
+      availableFor: 'Disponible en',
       price: 'Precio',
       Free: 'Gratis',
       Paid: 'Premium',
@@ -2306,6 +2309,7 @@ const resources = {
       searchByNamePlaceholder: 'Buscar por nombre',
       searchByType: 'Buscar por tipo',
       noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
+      noMatchingCatalogsFilter: 'No hemos podido encontrar elementos que coincidan con sus criterios.',
       description: 'Descripción',
       catalogDescription:
         'Airy admite todos los componentes que se indican a continuación para ser instalados en su instancia de Airy en un solo clic!',

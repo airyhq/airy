@@ -6,6 +6,7 @@ import {SearchField} from 'components/inputs';
 import {useTranslation} from 'react-i18next';
 import {Tooltip} from 'components/tooltip';
 import {useAnimation} from 'components/services/useAnimation';
+import {FilterDropdown} from './FilterDropdown';
 
 export enum FilterTypes {
   all = 'all',
@@ -22,10 +23,12 @@ type FilterBarProps = {
     filter: FilterTypes;
     setFilter: Dispatch<SetStateAction<FilterTypes>>;
   }[];
+  catalogAttributeFilter: string[];
+  setAttributeFilter: Dispatch<SetStateAction<string>>;
 };
 
 export const FilterBar = (props: FilterBarProps) => {
-  const {items, currentFilter} = props;
+  const {items, currentFilter, catalogAttributeFilter, setAttributeFilter} = props;
   const {t} = useTranslation();
   const [showSearchField, setShowingSearchField] = useState(false);
   const [animationActionSearchfield, setAnimationActionSearchfield] = useState(false);
@@ -71,6 +74,17 @@ export const FilterBar = (props: FilterBarProps) => {
     <div>
       <div className={styles.itemSearchContainer}>
         <Items />
+        <div className={styles.filterContainer}>
+          <div className={styles.filterDropdown}>
+            <FilterDropdown
+              text={'Filter'}
+              catalogAttributeFilter={catalogAttributeFilter}
+              onClick={(option: string) => {
+                setAttributeFilter(option);
+              }}
+            />
+          </div>
+        </div>
         {showSearchField ? (
           <ListenOutsideClick onOuterClick={showSearchFieldToggle}>
             <SearchField

@@ -1,0 +1,143 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.component {
+  width: 100%;
+}
+
+.button {
+  @include font-base;
+  line-height: 16px;
+  color: var(--color-text-contrast);
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid var(--color-dark-elements-gray);
+  cursor: pointer;
+  padding: 6px 8px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: normal;
+  background: transparent;
+  margin: 0 0;
+
+  &:hover {
+    background: transparent;
+    color: var(--color-text-contrast);
+  }
+
+  &:active {
+    background: var(--color-background-gray);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-text-gray) !important;
+    background-color: var(--color-light-gray) !important;
+    border: none;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border: 1px solid var(--color-text-contrast);
+  border-radius: 4px;
+  svg {
+    display: none;
+    fill: var(--color-soft-green);
+  }
+}
+
+.checkmarkChecked {
+  @extend .checkmark;
+  background-color: var(--color-airy-blue);
+  border: 1px solid var(--color-airy-blue);
+  svg {
+    height: 14px;
+    width: 14px;
+    display: block;
+    fill: white;
+  }
+}
+
+.chevron {
+  width: 16px;
+  margin: 6px 8px 4px 16px;
+  fill: var(--color-text-gray);
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.dropDownWrapper {
+  position: relative;
+}
+
+.dropDown {
+  position: absolute;
+  margin-top: 4px;
+  overflow: visible;
+  background: var(--color-background-white);
+  color: var(--color-text-contrast);
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  align-self: flex-start;
+  z-index: 1;
+  max-height: 250px;
+  overflow-y: scroll;
+  min-width: 48px;
+}
+
+.item {
+  @include font-base;
+  display: flex;
+  border: 0 solid var(--color-background-white);
+  box-shadow: 0 0 0 0 var(--color-background-white);
+  color: var(--color-text-contrast);
+  padding: 8px 8px;
+  cursor: pointer;
+  align-self: flex-start;
+  width: 100%;
+  justify-content: flex-start;
+  background: transparent;
+  align-items: center;
+  place-content: space-between;
+  &:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+  &:focus {
+    outline: none !important;
+  }
+  &:hover {
+    background: var(--color-background-gray);
+    outline: none !important;
+  }
+}
+
+.itemSpacing {
+  @extend .item;
+  border-bottom: dotted;
+  margin-bottom: 15px;
+  &:hover {
+    background: transparent;
+  }
+}

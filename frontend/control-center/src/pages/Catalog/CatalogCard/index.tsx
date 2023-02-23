@@ -52,7 +52,6 @@ const CatalogCard = (props: CatalogCardProps) => {
     componentInfo,
     installComponent,
     setObserveInstallStatus,
-    setAttributeFilter,
     showConfigureModal,
     blockInstalling,
     installStatus,
@@ -274,9 +273,9 @@ const CatalogCard = (props: CatalogCardProps) => {
                   {componentInfo?.availableFor &&
                     availabilityFormatted(componentInfo.availableFor).map((service: string, index: number) => {
                       if (index === availabilityFormatted(componentInfo.availableFor).length - 1) {
-                        return <div>{service}</div>;
+                        return <div key={service}>{service}</div>;
                       }
-                      return <div>{service + ', '} </div>;
+                      return <div key={service}>{service + ', '} </div>;
                     })}
                 </div>
               </div>

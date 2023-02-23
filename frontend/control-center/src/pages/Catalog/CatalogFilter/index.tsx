@@ -14,7 +14,11 @@ export const CatalogFilter = (props: CatalogFilterProps) => {
       {catalogAttributeFilter && catalogAttributeFilter.length > 0 && (
         <div className={styles.filterContainer}>
           {catalogAttributeFilter.map((attribute: string) => {
-            return <div className={styles.attribute}>{attribute}</div>;
+            return (
+              <div className={styles.attribute} key={attribute}>
+                {attribute}
+              </div>
+            );
           })}
         </div>
       )}

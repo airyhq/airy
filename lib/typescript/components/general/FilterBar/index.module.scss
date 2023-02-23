@@ -48,6 +48,18 @@
   margin-top: -3.5px;
 }
 
+.filterContainer {
+  display: flex;
+  flex: auto;
+  flex-flow: row-reverse;
+  margin-right: 40px;
+  z-index: 10;
+}
+
+.filterDropdown {
+  width: 200px;
+}
+
 .searchIcon {
   margin-right: 24px;
   &:hover {

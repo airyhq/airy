@@ -1,0 +1,31 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  z-index: 10;
+}
+
+.attribute {
+  @include font-s;
+  font-weight: 600;
+  padding: 4px 8px 4px 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  background-color: var(--color-airy-blue);
+  color: white;
+  border-radius: 20px;
+  border: 1px solid var(--color-airy-blue);
+  outline: 2px solid transparent;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    margin: 0 8px 0 8px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

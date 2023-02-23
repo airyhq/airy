@@ -27,6 +27,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
       connector.source !== Source.airyContacts &&
       connector.source !== Source.airyWebhooks &&
       connector.source !== Source.airyMobile &&
+      connector.source !== Source.integrationSourceApi &&
       connector.price
   );
   const hasAvailableConnectors =
@@ -35,6 +36,7 @@ const Connectors = (props: ConnectedProps<typeof connector>) => {
         connector.source !== Source.airyContacts &&
         connector.source !== Source.airyMobile &&
         connector.source !== Source.airyWebhooks &&
+        connector.source !== Source.integrationSourceApi &&
         connector.price
     ).length > 0;
 

@@ -323,7 +323,7 @@ const resources = {
       inputTooltipZendeskToken: 'A Zendesk API token associated to your user',
 
       //Dialogflow
-      dialogflowDescription: 'Conversational AI with virtual agents',
+      dialogflowDescription: 'Conversational AI with virtual agents.',
       projectID: 'Project ID',
       AddProjectId: 'Add the project id',
       GoogleApplicationCredentials: 'Google Application Credentials',
@@ -439,7 +439,7 @@ const resources = {
       inputTooltipCognigyCognigyUserId: 'User ID',
 
       //IBM Watson Assistant
-      ibmWatsonAssistantDescription: 'Conversational AI For Business',
+      ibmWatsonAssistantDescription: 'Conversational AI For Business.',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API key',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistant Id',
@@ -457,18 +457,22 @@ const resources = {
       mobileDescription: 'An Airy mobile app for your Inbox.',
 
       //postgres
-      postgresDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      postgresqlDescription: 'PostgreSQL is a free and open-source relational database management system.',
 
       //redis
       redisDescription:
         'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
 
       //feast
-      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      feastDescription: 'With the Source HTTP API you can build your own Airy messaging source in no time.',
+
+      //sourceAPI
+      integrationSourceApiDescription:
+        'With the Source HTTP API you can build your own Airy messaging source in no time.',
 
       //webhook
       webhooksDescription:
-        'The webhook enables you participate in conversations by reacting to messages. The webhook enables you participate in conversations by reacting to messages.',
+        'The webhook allows you to subscribe to different kinds of events to receive callbacks at a URL endpoint.',
 
       //viber
       viberDescription: 'The messaging app connecting over a billion people worldwide.',
@@ -535,6 +539,7 @@ const resources = {
       searchByNamePlaceholder: 'Search by name',
       searchByType: 'Search by type',
       noMatchingCatalogs: 'We could not find a catalog matching your criterias.',
+      noMatchingCatalogsFilter: 'We could not find items matching your criterias.',
       description: 'Description',
       catalogDescription:
         'Airy supports all the components below to be Installed to your Airy instance in just one click!',
@@ -744,17 +749,17 @@ const resources = {
       toConfigure: 'Konfigurieren',
       configure: 'Konfigurieren',
       chatpluginTitle: 'Chat Plugin',
-      chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse',
+      chatpluginDescription: 'Der beste Browser-Messenger seiner Klasse.',
       facebookTitle: 'Facebook Messenger',
-      facebookDescription: 'Mehrere Facebook-Seiten verbinden',
+      facebookDescription: 'Mehrere Facebook-Seiten verbinden.',
       googleTitle: 'Google Business Messages',
-      googleDescription: 'Seien Sie dabei, wenn Menschen suchen',
+      googleDescription: 'Seien Sie dabei, wenn Menschen suchen.',
       instagramTitle: 'Instagram',
       instagramDescription: 'Mehrere Instagram-Seiten verbinden',
       twilioSmsTitle: 'SMS',
-      twiliosmsDescription: 'SMS-Versand mit Leichtigkeit',
+      twiliosmsDescription: 'SMS-Versand mit Leichtigkeit.',
       twilioWhatsappTitle: 'WhatsApp',
-      twilioWhatsappDescription: 'Weltweite Chat-App Nr. 1',
+      twilioWhatsappDescription: 'Weltweite Chat-App Nr. 1.',
       channel: 'Kanal',
       channels: 'Kanäle',
       addChannel: 'Kanal hinzufügen',
@@ -908,7 +913,7 @@ const resources = {
       inputTooltipZendeskToken: 'Ihr Zendesk-API-Token',
 
       //Dialogflow
-      dialogflowDescription: 'Conversational AI mit virtuellen Agenten',
+      dialogflowDescription: 'Conversational AI mit virtuellen Agenten.',
       projectID: 'Projekt-ID',
       AddProjectId: 'Projekt-ID hinzufügen',
       GoogleApplicationCredentials: 'Google Application Credentials',
@@ -951,7 +956,7 @@ const resources = {
       rasaPlaceholder: 'https://<Betreiber>',
 
       //WhatsApp Business Cloud
-      whatsappDescription: 'Weltweite Chat-App Nr. 1',
+      whatsappDescription: 'Weltweite Chat-App Nr. 1.',
       whatsappPhoneNumberId: 'Telefonnummer Id',
       whatsappPhoneNumberIdPlaceholder: 'Telefonnummer Id hinzufügen',
       whatsappPhoneNumberIdTooltip: 'Telefonnummer Id hinzufügen',
@@ -962,7 +967,7 @@ const resources = {
       inputTooltipCognigyCognigyUserId: 'Benutzer-ID',
 
       //IBM Watson Assistant
-      ibmWatsonAssistantDescription: 'Konversations-KI für Unternehmen',
+      ibmWatsonAssistantDescription: 'Konversations-KI für Unternehmen.',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'Ihre URL',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'API-Schlüssel',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'Assistenten-ID',
@@ -980,17 +985,21 @@ const resources = {
       mobileDescription: 'Eine mobile Airy-App für Ihren Posteingang.',
 
       //postgres
-      postgresDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      postgresqlDescription: 'PostgreSQL ist ein freies und quelloffenes relationales Datenbankmanagementsystem.',
 
       //redis
       redisDescription:
-        'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
+        'Redis ist ein quelloffener In-Memory-Datenstrukturspeicher, der als Datenbank, Cache und Nachrichtenbroker eingesetzt wird.',
 
       //feast
-      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      feastDescription: 'Feast ist ein durchgängiger Open-Source-Feature-Store für maschinelles Lernen.',
+
+      //sourceAPI
+      integrationSourceApiDescription:
+        'Mit der Source-HTTP-API können Sie im Handumdrehen Ihre eigene Airy-Messaging-Quelle erstellen.',
 
       //webhook
-      webhooksDescription: 'The webhook enables you participate in conversations by reacting to messages.',
+      webhooksDescription: 'Webhooks ermöglichen das Abonnieren von Benachrichtigungen an einem HTTP-Endpunkt.',
 
       //viber
       viberDescription: 'Die Messaging-App, die über eine Milliarde Menschen weltweit verbindet.',
@@ -1029,7 +1038,7 @@ const resources = {
       ibmDescription: 'IBM Watson Assistant verwendet künstliche Intelligenz, die den Kunden versteht.',
 
       //Amazon Lex V2
-      amazonLexV2Description: 'Ein Webdienst zur Erstellung von Konversationsschnittstellen',
+      amazonLexV2Description: 'Ein Webdienst zur Erstellung von Konversationsschnittstellen.',
 
       //Amazon S3
       amazons3Description: 'Amazon Simple Storage Service (Amazon S3) ist ein Objektspeicherdienst.',
@@ -1126,6 +1135,7 @@ const resources = {
       searchByNamePlaceholder: 'Suche nach Name',
       searchByType: 'Suche nach Typ',
       noMatchingCatalogs: 'Wir konnten keinen Catalog finden, der Ihren Kriterien entspricht.',
+      noMatchingCatalogsFilter: 'Wir konnten keine Elemente finden, die Ihren Kriterien entsprechen.',
       description: 'Beschreibung',
       catalogDescription:
         'Airy unterstützt alle unten aufgeführten Komponenten, die mit nur einem Klick in Ihrer Airy-Instanz installiert werden können!',
@@ -1327,17 +1337,17 @@ const resources = {
       toConfigure: 'Configuration',
       configure: 'Configurer',
       chatpluginTitle: 'Chat Plugin',
-      chatpluginDescription: 'Le meilleur chat de messagerie instantanée',
+      chatpluginDescription: 'Le meilleur chat de messagerie instantanée:',
       facebookTitle: 'Facebook Messenger',
-      facebookDescription: 'Connecter plusieurs pages Facebook',
+      facebookDescription: 'Connecter plusieurs pages Facebook.',
       googleTitle: 'Google Business Messages',
-      googleDescription: 'Soyez présent lorsque les gens font des recherches',
+      googleDescription: 'Soyez présent lorsque les gens font des recherches.',
       instagramTitle: 'Instagram',
       instagramDescription: 'Connecter plusieurs pages Instagram',
       twilioSmsTitle: 'SMS',
-      twiliosmsDescription: 'Envoyez des SMS en toute simplicité',
+      twiliosmsDescription: 'Envoyez des SMS en toute simplicité.',
       twilioWhatsappTitle: 'WhatsApp',
-      twilioWhatsappDescription: 'Première application de chat au monde',
+      twilioWhatsappDescription: 'Première application de chat au monde.',
       channel: 'canal',
       channels: 'canaux',
       addChannel: 'Ajouter un canal',
@@ -1475,7 +1485,7 @@ const resources = {
       inputTooltipZendeskToken: 'Un token API Zendesk associée à ton utilisateur',
 
       //Dialogflow
-      dialogflowDescription: "Des conversations d'IA avec des agents virtuels",
+      dialogflowDescription: "Des conversations d'IA avec des agents virtuels.",
       projectID: 'ID du project',
       AddProjectId: "Ajouter l'ID du project",
       GoogleApplicationCredentials: 'références de votre app Google',
@@ -1598,7 +1608,7 @@ const resources = {
       updateWhatsappNumber: 'Mise à jour du numéro Whatsapp',
 
       //WhatsApp Business Cloud
-      whatsappDescription: 'Première application de chat au monde',
+      whatsappDescription: 'Première application de chat au monde.',
       whatsappPhoneNumberId: 'Numéro de téléphone',
       whatsappPhoneNumberIdPlaceholder: 'Ajoutez votre numéro de téléphone',
       whatsappPhoneNumberIdTooltip: 'Ajoutez votre numéro de téléphone',
@@ -1609,7 +1619,7 @@ const resources = {
       inputTooltipCognigyCognigyUserId: "ID d'utilisateur",
 
       //IBM Watson Assistant
-      ibmWatsonAssistantDescription: "L'IA conversationnelle pour les entreprises",
+      ibmWatsonAssistantDescription: "L'IA conversationnelle pour les entreprises.",
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clé API',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: "ID de l'assistant",
@@ -1627,7 +1637,7 @@ const resources = {
       mobileDescription: 'Une application mobile Airy pour votre boîte de réception.',
 
       //postgres
-      postgresDescription:
+      postgresqlDescription:
         'PostgreSQL est un système de gestion de bases de données relationnelles gratuit et open-source.',
 
       //redis
@@ -1635,10 +1645,16 @@ const resources = {
         'Redis est un entrepôt de structures de données en mémoire à code source ouvert, utilisé comme base de données, cache et courtier en messages.',
 
       //feast
-      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      feastDescription:
+        "Feast est un magasin de fonctionnalités open source de bout en bout pour l'apprentissage automatique.",
+
+      //sourceAPI
+      integrationSourceApiDescription:
+        "Avec l'API HTTP Source, vous pouvez créer votre propre source de messagerie Airy en un rien de temps.",
 
       //webhook
-      webhooksDescription: 'Le webhook vous permet de participer aux conversations en réagissant aux messages.',
+      webhooksDescription:
+        "Le webhook vous permet de vous abonner à différents types d'événements pour recevoir des rappels à un point de terminaison URL.",
 
       //viber
       viberDescription: "L'application de messagerie connectant plus d'un milliard de personnes dans le monde.",
@@ -1647,7 +1663,7 @@ const resources = {
       frontendinboxDescription: 'Une boîte de réception pour afficher et organiser toutes vos conversations.',
 
       //AiryContacts
-      airyContactsDescription: 'Un outil de gestion de contacts pour des conversations personnalisées',
+      airyContactsDescription: 'Un outil de gestion de contacts pour des conversations personnalisées.',
 
       //Connectors
       connectors: 'Connecteurs',
@@ -1709,6 +1725,7 @@ const resources = {
       searchByNamePlaceholder: 'Recherche par nom',
       searchByType: 'Recherche par type',
       noMatchingCatalogs: 'Aucun résultat pour ces critères de recherche.',
+      noMatchingCatalogsFilter: 'Aucun résultat pour ces critères de recherche.',
       description: 'Description',
       catalogDescription:
         'Airy supporte tous les composants ci-dessous qui peuvent être installés sur votre instance Airy en un seul clic!',
@@ -1914,17 +1931,17 @@ const resources = {
       toConfigure: 'Configurar',
       configure: 'Configurar',
       chatpluginTitle: 'Chat Plugin',
-      chatpluginDescription: 'El mejor navegador de su clase',
+      chatpluginDescription: 'El mejor navegador de su clase.',
       facebookTitle: 'Facebook Messenger',
-      facebookDescription: 'Conectar varias páginas de Facebook',
+      facebookDescription: 'Conectar varias páginas de Facebook.',
       googleTitle: 'Google Business Messages',
-      googleDescription: 'Esté presente cuando la gente busque',
+      googleDescription: 'Esté presente cuando la gente busque.',
       instagramTitle: 'Instagram',
       instagramDescription: 'Conectar varias páginas de Instagram',
       twilioSmsTitle: 'SMS',
-      twiliosmsDescription: 'Envío de SMS con facilidad',
+      twiliosmsDescription: 'Envío de SMS con facilidad.',
       twilioWhatsappTitle: 'WhatsApp',
-      twilioWhatsappDescription: 'La aplicación de mensajería número 1 del mundo',
+      twilioWhatsappDescription: 'La aplicación de mensajería número 1 del mundo.',
       channel: 'canal',
       channels: 'canales',
       addChannel: 'Añadir canal',
@@ -2079,7 +2096,7 @@ const resources = {
       inputTooltipZendeskToken: 'Un token de API Zendesk asociado a tu usuario',
 
       //Dialogflow
-      dialogflowDescription: 'IA conversacional con agentes virtuales',
+      dialogflowDescription: 'IA conversacional con agentes virtuales.',
       projectID: 'ID del proyecto',
       AddProjectId: 'Añadir el ID del proyecto',
       GoogleApplicationCredentials: 'Google Application Credentials',
@@ -2185,18 +2202,18 @@ const resources = {
       updateWhatsappNumber: 'Actualizar el número de Whatsapp',
 
       //WhatsApp Business Cloud
-      whatsappDescription: 'La aplicación de mensajería número 1 del mundo',
+      whatsappDescription: 'La aplicación de mensajería número 1 del mundo.',
       whatsappPhoneNumberId: 'Número de teléfono Id',
       whatsappPhoneNumberIdPlaceholder: 'Añada su número de teléfono',
       whatsappPhoneNumberIdTooltip: 'Añada su número de teléfono',
 
       //Cognigy.AI
-      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional',
+      cognigyDescription: 'Una interfaz de usuario de código bajo para IA conversacional.',
       inputTooltipCognigyCognigyRestEndpointURL: 'URL del Endpoint REST',
       inputTooltipCognigyCognigyUserId: 'ID de usuario',
 
       //IBM Watson Assistant
-      ibmWatsonAssistantDescription: 'IA conversacional para las empresas',
+      ibmWatsonAssistantDescription: 'IA conversacional para las empresas.',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantURL: 'URL',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantApiKey: 'clave API',
       inputTooltipIbmWatsonAssistantIbmWatsonAssistantAssistantId: 'ID del asistente',
@@ -2214,7 +2231,7 @@ const resources = {
       mobileDescription: 'Una aplicación móvil Airy para su bandeja de entrada.',
 
       //postgres
-      postgresDescription:
+      postgresqlDescription:
         'PostgreSQL es un sistema de gestión de bases de datos relacionales gratuito y de código abierto.',
 
       //redis
@@ -2222,10 +2239,15 @@ const resources = {
         'Redis es un almacén de estructuras de datos en memoria de código abierto, utilizado como base de datos, caché y corredor de mensajes.',
 
       //feast
-      feastDescription: 'PostgreSQL is a free and open-source relational database management system.',
+      feastDescription: 'Feast es un almacén de funciones de código abierto integral para el aprendizaje automático.',
+
+      //sourceAPI
+      integrationSourceApiDescription:
+        'Con la Source API HTTP puedes crear tu propio source en un abrir y cerrar de ojos.',
 
       //webhook
-      webhooksDescription: 'El webhook permite participar en conversaciones reaccionando a los mensajes.',
+      webhooksDescription:
+        'El webhook le permite suscribirse a diferentes tipos de eventos para recibir llamadas de retorno en un punto final URL.',
 
       //viber
       viberDescription: 'La aplicación de mensajería que conecta a más de mil millones de personas en todo el mundo.',
@@ -2288,7 +2310,7 @@ const resources = {
 
       //Catalog
       categories: 'Categorías',
-      availableFor: 'Disponible para',
+      availableFor: 'Disponible en',
       price: 'Precio',
       Free: 'Gratis',
       Paid: 'Premium',
@@ -2296,6 +2318,7 @@ const resources = {
       searchByNamePlaceholder: 'Buscar por nombre',
       searchByType: 'Buscar por tipo',
       noMatchingCatalogs: 'No hemos podido encontrar un catálogo que coincida con sus criterios.',
+      noMatchingCatalogsFilter: 'No hemos podido encontrar elementos que coincidan con sus criterios.',
       description: 'Descripción',
       catalogDescription:
         'Airy admite todos los componentes que se indican a continuación para ser instalados en su instancia de Airy en un solo clic!',

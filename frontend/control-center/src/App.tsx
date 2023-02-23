@@ -14,6 +14,7 @@ import {
   WEBHOOKS_ROUTE,
   APPS_ROUTE,
   FEAST_ROUTE,
+  STREAMS_ROUTE,
 } from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
@@ -30,6 +31,7 @@ import {getConnectorsConfiguration, listChannels, listComponents} from './action
 import Apps from './pages/Apps';
 import ExternalView from './components/ExternalView';
 import {getAppExternalURL} from './services/getAppExternalURL';
+import Streams from './pages/Streams';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -96,6 +98,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
               <Route path={`:componentName`} element={<CatalogProductPage />} />
               <Route index element={<Catalog />} />
             </Route>
+
+            <Route path={`${STREAMS_ROUTE}/*`} element={<Streams />} />
 
             <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />
 

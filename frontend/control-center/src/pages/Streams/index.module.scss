@@ -1,0 +1,137 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.statusWrapper {
+  width: 100%;
+  height: calc(100vh - 88px);
+  padding: 28px 18px;
+  margin: 88px 1.5em 0 191px;
+  background: var(--color-blue-white);
+  color: var(--color-text-contrast);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.statusWrapper h1 {
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);
+  margin-bottom: 14px;
+}
+
+.statusLastRefreshContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 16px;
+
+  span {
+    @include font-s;
+    color: var(--color-text-contrast);
+  }
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-elements-blue);
+  border: 1px solide var(--color-elements-blue);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+
+  h2 {
+    @include font-base;
+    color: white;
+    font-weight: bold;
+  }
+
+  h2:first-of-type {
+    width: 40%;
+    padding-left: 6%;
+  }
+}
+
+.listHeader h2:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
+
+.listHeader h2:nth-child(3) {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+}
+
+.listHeaderButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+
+  h2:first-of-type {
+    width: 90%;
+    text-align: center;
+  }
+
+  button {
+    margin-right: 20px;
+  }
+}
+
+.refreshButton {
+  transition: 0.5s;
+  border: none;
+  outline: none;
+  height: 20px;
+  width: 20px;
+  padding: 0px;
+  background: transparent;
+  cursor: pointer;
+  svg {
+    fill: white;
+  }
+}
+
+@keyframes spinAnimationRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes spinAnimationOutRefresh {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+.spinAnimationIn {
+  height: 20px;
+  width: 20px;
+  animation: spinAnimationRefresh 1500ms ease;
+}
+
+.spinAnimationOut {
+  height: 20px;
+  width: 20px;
+  animation: spinAnimationOutRefresh 1500ms ease;
+}
+
+.listItems section:last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}

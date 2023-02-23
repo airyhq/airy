@@ -13,3 +13,5 @@ export const STATUS_ROUTE = '/status';
 export const WEBHOOKS_ROUTE = '/webhooks';
 
 export const FEAST_ROUTE = '/feast';
+
+export const STREAMS_ROUTE = '/streams';

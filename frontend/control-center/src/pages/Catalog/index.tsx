@@ -12,6 +12,7 @@ import {AiryLoader} from 'components/loaders/AiryLoader';
 import {getMergedConnectors} from '../../selectors';
 import {ContentWrapper, NotificationComponent} from 'components';
 import {FilterBar} from 'components/general/FilterBar';
+import {CatalogFilter} from './CatalogFilter';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -38,6 +39,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
   const [currentFilter, setCurrentFilter] = useState(
     (localStorage.getItem('catalogCurrentTypeFilter') as FilterTypes) || FilterTypes.all
   );
+  const [catalogAttributeFilter, setCatalogAttributeFilter] = useState<string[]>([]);
   const [query, setQuery] = useState('');
   const sortByName = (a: ComponentInfo, b: ComponentInfo) => a?.displayName?.localeCompare(b?.displayName);
 
@@ -160,6 +162,33 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
     setQuery(query);
   };
 
+  const setAttributeFilter = (option: string) => {
+    if (catalogAttributeFilter.includes(option.trim())) {
+      setCatalogAttributeFilter([...catalogAttributeFilter.filter(attribute => attribute.trim() != option.trim())]);
+    } else {
+      setCatalogAttributeFilter([...catalogAttributeFilter, option.trim()]);
+    }
+  };
+
+  const filterByAttributes = (originalList: ComponentInfo[]): ComponentInfo[] => {
+    return originalList.filter((item: ComponentInfo) => {
+      if (!catalogAttributeFilter.length) return item;
+      let fullfillsFilter = true;
+      for (const attribute of catalogAttributeFilter) {
+        if (
+          item.category &&
+          item.category.split(', ').includes(attribute) === false &&
+          item.availableFor &&
+          item.availableFor.split(', ').includes(attribute) === false
+        ) {
+          fullfillsFilter = false;
+          break;
+        }
+      }
+      if (fullfillsFilter) return item;
+    });
+  };
+
   return (
     <>
       <ContentWrapper
@@ -177,12 +206,15 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                 {name: t('notInstalled'), setFilter: setCurrentFilter, filter: FilterTypes.notInstalled},
                 {name: t('comingSoon'), setFilter: setCurrentFilter, filter: FilterTypes.comingSoon},
               ]}
+              setAttributeFilter={setAttributeFilter}
+              catalogAttributeFilter={catalogAttributeFilter}
             />
             <section className={styles.catalogWrapper}>
-              {catalogList.length > 0 ? (
+              <CatalogFilter catalogAttributeFilter={catalogAttributeFilter} setAttributeFilter={setAttributeFilter} />
+              {filterByAttributes(catalogList).length > 0 ? (
                 <section className={styles.catalogListContainer}>
-                  {orderedCatalogList && orderedCatalogList.length > 0 ? (
-                    orderedCatalogList.map((infoItem: ComponentInfo) => {
+                  {filterByAttributes(orderedCatalogList) && filterByAttributes(orderedCatalogList).length > 0 ? (
+                    filterByAttributes(orderedCatalogList).map((infoItem: ComponentInfo) => {
                       if (infoItem?.name && infoItem?.displayName) {
                         return (
                           <CatalogCard
@@ -192,6 +224,7 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                             showConfigureModal={showConfigureModal}
                             installStatus={infoItem.installationStatus}
                             blockInstalling={blockInstalling}
+                            setAttributeFilter={setAttributeFilter}
                           />
                         );
                       }
@@ -204,7 +237,16 @@ const Catalog = (props: ConnectedProps<typeof connector>) => {
                   )}
                 </section>
               ) : (
-                <AiryLoader height={240} width={240} position="relative" top={220} />
+                <>
+                  {orderedCatalogList.length ? (
+                    <div className={styles.notFoundContainer}>
+                      <h1>{t('nothingFound')}</h1>
+                      <span>{t('noMatchingCatalogsFilter')}</span>
+                    </div>
+                  ) : (
+                    <AiryLoader height={240} width={240} position="relative" top={220} />
+                  )}
+                </>
               )}
             </section>
           </>

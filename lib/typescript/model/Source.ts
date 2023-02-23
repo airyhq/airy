@@ -24,6 +24,7 @@ export enum Source {
   feast = 'feast',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
+  integrationSourceApi = 'integrationSourceApi',
 }
 
 export enum SourceApps {
@@ -37,6 +38,17 @@ export const isApp = (source: string): boolean => {
     case SourceApps.postgresql:
     case SourceApps.redis:
     case SourceApps.feast:
+      return true;
+  }
+  return false;
+};
+
+export const isAiryComponent = (source: string): boolean => {
+  switch (source) {
+    case Source.airyContacts:
+    case Source.airyMobile:
+    case Source.airyWebhooks:
+    case Source.integrationSourceApi:
       return true;
   }
   return false;

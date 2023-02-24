@@ -8,12 +8,20 @@ const defaultState = {
   topics: [],
 };
 
+const transformTopics = (topics: string[]): string[] => {
+  let newTopicsList = [];
+  topics.forEach((topic: string) => {
+    newTopicsList.push(topic.replace('-value', ''));
+  });
+  return newTopicsList;
+};
+
 export default function configReducer(state = defaultState, action: Action): Streams {
   switch (action.type) {
     case getType(actions.setTopicsAction):
       return {
         ...state,
-        topics: action.payload,
+        topics: transformTopics(action.payload),
       };
     default:
       return state;

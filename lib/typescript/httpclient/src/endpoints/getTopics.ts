@@ -1,4 +1,5 @@
 export const getTopicsDef = {
-  endpoint: 'subjects/',
+  endpoint: 'subjects',
+  headers: {allowCredentials: 'true', allowedHeaders: '*'},
   mapResponse: response => response,
 };

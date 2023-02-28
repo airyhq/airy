@@ -10,7 +10,7 @@ const defaultState = {
 };
 
 const transformTopics = (topics: string[]): string[] => {
-  let newTopicsList = [];
+  const newTopicsList = [];
   topics.forEach((topic: string) => {
     newTopicsList.push(trimTopicName(topic));
   });

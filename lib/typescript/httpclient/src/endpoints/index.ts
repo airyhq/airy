@@ -42,4 +42,3 @@ export * from './getComponents';
 export * from './installComponent';
 export * from './uninstallComponent';
 export * from './listComponents';
-export * from './getTopics';

@@ -8,6 +8,7 @@ import styles from './index.module.scss';
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import {StateModel} from '../../reducers';
 import {getTopics} from '../../actions';
+import TopicItem from './TopicItem';
 
 const mapDispatchToProps = {
   getTopics,
@@ -15,7 +16,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    streams: Object.entries(state.data.streams.topics),
+    streams: state.data.streams.topics,
   };
 };
 
@@ -62,9 +63,8 @@ const Streams = (props: ConnectedProps<typeof connector>) => {
       {Object.entries(streams).length > 0 ? (
         <>
           <div className={styles.listHeader}>
-            <h2>{t('componentName')}</h2>
-            <h2>{t('healthStatus')}</h2>
-            <h2>{t('enabled')}</h2>
+            <h2>{t('topicsName')}</h2>
+            <h2>{t('schemaRegistryName')}</h2>
             <button onClick={handleRefresh} className={styles.refreshButton}>
               <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
                 <RefreshIcon />
@@ -73,7 +73,7 @@ const Streams = (props: ConnectedProps<typeof connector>) => {
           </div>
           <div className={styles.listItems}>
             {streams.map(component => {
-              return <div>{component[1]}</div>;
+              return <TopicItem topicName={component} />;
             })}
           </div>
         </>

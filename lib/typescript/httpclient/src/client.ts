@@ -79,7 +79,6 @@ import {
   uninstallComponentDef,
   componentsListDef,
   connectViberChannelDef,
-  getTopicsDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -280,8 +279,6 @@ export class HttpClient {
   public uninstallComponent = this.getRequest<InstallUninstallComponentRequestPayload>(uninstallComponentDef);
 
   public listComponents = this.getRequest<void, Components>(componentsListDef);
-
-  public getTopics = this.getRequest<void, string[]>(getTopicsDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

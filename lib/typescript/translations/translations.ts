@@ -565,6 +565,8 @@ const resources = {
 
       //Streams
       streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: 'Error occurred',
@@ -1161,6 +1163,8 @@ const resources = {
 
       //Streams
       streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: 'Fehler aufgetreten',
@@ -1751,6 +1755,8 @@ const resources = {
 
       //Streams
       streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: `Une erreur s'est produite`,
@@ -2344,6 +2350,8 @@ const resources = {
 
       //Streams
       streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: 'Se ha producido un error',

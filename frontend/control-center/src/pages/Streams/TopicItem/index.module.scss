@@ -1,0 +1,148 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-white);
+  border-left: 1px solid var(--color-light-gray);
+  border-right: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-light-gray);
+  transition: height 0.4s ease;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 25px 0;
+  height: 50px;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  width: 70%;
+
+  button {
+    width: 30px;
+    margin-left: 4%;
+    margin-right: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  svg {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.arrowDownIcon {
+  width: 15px;
+  display: flex;
+  align-items: center;
+  margin: 0px 40px;
+}
+
+.arrowDownIconOpen {
+  transition: 300ms ease;
+  margin-bottom: 0;
+  transform: rotate(90deg);
+}
+
+.arrowDownIconClose {
+  transition: 300ms ease;
+  margin-bottom: 0;
+  transform: rotate(0deg);
+}
+
+.componentName {
+  margin-left: 10px;
+  @include font-base;
+  color: var(--color-text-gray);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.serviceName {
+  margin-left: 10%;
+  @include font-s;
+  color: var(--color-text-gray);
+  animation: fadeIn ease 0.6s;
+}
+
+.schemaRegistry {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+
+.icons {
+  width: 20px;
+  height: 20px;
+}
+
+.installedNotConfigured {
+  fill: var(--color-not-configured-orange);
+}
+
+.disabledHealthy {
+  fill: var(--color-disable-status-config);
+}
+
+.unhealthy {
+  fill: var(--color-red-alert);
+}
+
+.blankSpace {
+  width: 60px;
+}
+
+.enableModalContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer {
+  @include font-l;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enableModalContainer div {
+  @include font-xl;
+}
+
+.popUpSubtitle {
+  color: var(--color-text-contrast);
+  text-align: center;
+  width: 80%;
+}
+
+.enableModalContainer p {
+  @include font-l;
+  margin-bottom: 30px;
+}
+
+.runningHealthy {
+  fill: var(--color-soft-green);
+}

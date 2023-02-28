@@ -6,14 +6,19 @@ type Action = ActionType<typeof actions>;
 
 const defaultState = {
   topics: [],
+  schemas: {},
 };
 
 const transformTopics = (topics: string[]): string[] => {
   let newTopicsList = [];
   topics.forEach((topic: string) => {
-    newTopicsList.push(topic.replace('-value', ''));
+    newTopicsList.push(trimTopicName(topic));
   });
   return newTopicsList;
+};
+
+const trimTopicName = (name: string): string => {
+  return name.replace('-value', '');
 };
 
 export default function configReducer(state = defaultState, action: Action): Streams {
@@ -22,6 +27,15 @@ export default function configReducer(state = defaultState, action: Action): Str
       return {
         ...state,
         topics: transformTopics(action.payload),
+      };
+    case getType(actions.setCurrentTopicInfoAction):
+      const topicName = trimTopicName(action.payload['subject']);
+      return {
+        ...state,
+        schemas: {
+          ...state.schemas,
+          [topicName]: action.payload,
+        },
       };
     default:
       return state;

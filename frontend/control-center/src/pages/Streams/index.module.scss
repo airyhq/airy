@@ -54,20 +54,14 @@
   }
 
   h2:first-of-type {
-    width: 40%;
+    width: 70%;
     padding-left: 6%;
   }
 }
 
 .listHeader h2:nth-child(2) {
-  width: 35%;
+  width: 25%;
   text-align: center;
-}
-
-.listHeader h2:nth-child(3) {
-  width: 20%;
-  display: flex;
-  justify-content: center;
 }
 
 .listHeaderButtonContainer {

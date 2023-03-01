@@ -15,7 +15,6 @@ const TopicInfo = (props: TopicInfoProps) => {
         <div className={styles.blankSpace} />
         <p className={`${styles.componentName}`}>{topicName}</p>
       </div>
-      <div className={styles.schemaRegistry}>Edit</div>
     </div>
   );
 };

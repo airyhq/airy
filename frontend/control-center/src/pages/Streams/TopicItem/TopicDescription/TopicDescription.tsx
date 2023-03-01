@@ -4,6 +4,8 @@ import {getTopicInfo} from '../../../../actions';
 import {StateModel} from 'frontend/control-center/src/reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
+import {Button} from 'components';
+import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getTopicInfo,
@@ -36,23 +38,55 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   }, []);
 
   useEffect(() => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : ''));
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : undefined));
   }, [schemas]);
 
   const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : ''));
+  const [isEditMode, setIsEditMode] = useState(false);
+  const {t} = useTranslation();
+
+  const resetCode = () => {
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : undefined));
+  };
+
+  let hasBeenModified = false;
+  if (schemas[topicName]) {
+    hasBeenModified = formatJSON(schemas[topicName].schema) !== code;
+  }
 
   return (
     <div className={styles.container} onClick={e => e.stopPropagation()}>
+      <div className={styles.buttonsContainer}>
+        <Button
+          onClick={() => setIsEditMode(!isEditMode)}
+          styleVariant="normal"
+          style={{padding: '16px', width: '60px', height: '30px', fontSize: 16}}
+        >
+          {isEditMode ? t('save') : t('edit')}
+        </Button>
+        {hasBeenModified && (
+          <Button
+            onClick={() => resetCode()}
+            styleVariant="normal"
+            style={{padding: '16px', width: '60px', height: '30px', fontSize: 16, marginLeft: 8}}
+          >
+            {t('reset')}
+          </Button>
+        )}
+      </div>
       <CodeEditor
         value={code}
+        readOnly={!isEditMode}
         language="json5"
-        placeholder="Please enter Schema code."
-        onChange={evn => setCode(evn.target.value)}
+        placeholder="Insert Schema..."
+        onChange={evn => {
+          if (isEditMode) setCode(evn.target.value);
+        }}
         padding={15}
         style={{
           height: '100%',
           fontSize: 12,
-          backgroundColor: '#f5f5f5',
+          lineHeight: '20px',
           fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
         }}
       />

@@ -9,6 +9,7 @@ import {AiryLoader} from 'components/loaders/AiryLoader';
 import {StateModel} from '../../reducers';
 import {getTopics} from '../../actions';
 import TopicItem from './TopicItem';
+import {getValidTopics} from '../../selectors';
 
 const mapDispatchToProps = {
   getTopics,
@@ -16,7 +17,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    streams: state.data.streams.topics,
+    streams: getValidTopics(state),
   };
 };
 
@@ -64,7 +65,6 @@ const Streams = (props: ConnectedProps<typeof connector>) => {
         <>
           <div className={styles.listHeader}>
             <h2>{t('topicsName')}</h2>
-            <h2>{t('schemaRegistryName')}</h2>
             <button onClick={handleRefresh} className={styles.refreshButton}>
               <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
                 <RefreshIcon />

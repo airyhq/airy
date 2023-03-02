@@ -55,7 +55,11 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   }
 
   return (
-    <div className={styles.container} onClick={e => e.stopPropagation()}>
+    <div
+      className={styles.container}
+      style={!isEditMode && {backgroundColor: '#fff000'}}
+      onClick={e => e.stopPropagation()}
+    >
       <div className={styles.buttonsContainer}>
         <Button
           onClick={() => setIsEditMode(!isEditMode)}
@@ -88,6 +92,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
           fontSize: 12,
           lineHeight: '20px',
           fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+          ...(!isEditMode && {backgroundColor: '#fff000'}),
         }}
       />
     </div>

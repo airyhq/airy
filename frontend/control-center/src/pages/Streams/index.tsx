@@ -73,7 +73,7 @@ const Streams = (props: ConnectedProps<typeof connector>) => {
           </div>
           <div className={styles.listItems}>
             {streams.map(component => {
-              return <TopicItem topicName={component} />;
+              return <TopicItem key={component} topicName={component} />;
             })}
           </div>
         </>

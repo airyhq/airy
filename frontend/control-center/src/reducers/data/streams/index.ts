@@ -28,7 +28,7 @@ export default function configReducer(state = defaultState, action: Action): Str
         ...state,
         topics: transformTopics(action.payload),
       };
-    case getType(actions.setCurrentTopicInfoAction):
+    case getType(actions.setCurrentTopicInfoAction): {
       const topicName = trimTopicName(action.payload['subject']);
       return {
         ...state,
@@ -37,6 +37,7 @@ export default function configReducer(state = defaultState, action: Action): Str
           [topicName]: action.payload,
         },
       };
+    }
     default:
       return state;
   }

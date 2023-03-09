@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import {getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} from '../../../../actions';
-import {StateModel} from 'frontend/control-center/src/reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {Button, ErrorPopUp} from 'components';
@@ -13,74 +12,71 @@ const mapDispatchToProps = {
   checkCompatibilityOfNewSchema,
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    schemas: state.data.streams.schemas,
-  };
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 type TopicDescriptionProps = {
   topicName: string;
+  code: string;
+  setCode: (code: string) => void;
+  resetCode: () => void;
+  hasBeenModified: boolean;
 } & ConnectedProps<typeof connector>;
 
-const formatJSON = (jsonString: string): string => {
-  if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
-  }
-  return '';
-};
-
 const TopicDescription = (props: TopicDescriptionProps) => {
-  const {topicName, schemas, getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} = props;
+  const {
+    topicName,
+    hasBeenModified,
+    code,
+    setCode,
+    resetCode,
+    getTopicInfo,
+    setTopicSchema,
+    checkCompatibilityOfNewSchema,
+  } = props;
 
   useEffect(() => {
     getTopicInfo(topicName);
   }, []);
 
-  useEffect(() => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
-  }, [schemas]);
-
-  const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
   const [isEditMode, setIsEditMode] = useState(false);
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const {t} = useTranslation();
 
-  const resetCode = () => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
+  const resetCodeAndEndEdition = () => {
+    resetCode();
     setIsEditMode(false);
   };
-
-  let hasBeenModified = false;
-  if (schemas[topicName]) {
-    hasBeenModified = formatJSON(schemas[topicName].schema) !== code;
-  }
 
   return (
     <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
       <div className={styles.buttonsContainer}>
         <Button
           onClick={() => {
-            setIsEditMode(!isEditMode);
-            if (isEditMode && hasBeenModified) {
-              checkCompatibilityOfNewSchema(topicName, code)
-                .then(() => {
-                  setTopicSchema(topicName, code).catch((e: string) => {
+            if (isJSON(code)) {
+              setIsEditMode(!isEditMode);
+              if (isEditMode && hasBeenModified) {
+                checkCompatibilityOfNewSchema(topicName, code)
+                  .then(() => {
+                    setTopicSchema(topicName, code).catch((e: string) => {
+                      setIsEditMode(true);
+                      setErrorMessage(e);
+                      setShowErrorPopUp(true);
+                      setTimeout(() => setShowErrorPopUp(false), 5000);
+                    });
+                  })
+                  .catch((e: string) => {
                     setIsEditMode(true);
                     setErrorMessage(e);
                     setShowErrorPopUp(true);
                     setTimeout(() => setShowErrorPopUp(false), 5000);
                   });
-                })
-                .catch((e: string) => {
-                  setIsEditMode(true);
-                  setErrorMessage(e);
-                  setShowErrorPopUp(true);
-                  setTimeout(() => setShowErrorPopUp(false), 5000);
-                });
+              }
+            } else {
+              setIsEditMode(true);
+              setErrorMessage('JSON Not Valid');
+              setShowErrorPopUp(true);
+              setTimeout(() => setShowErrorPopUp(false), 5000);
             }
           }}
           styleVariant="normal"
@@ -90,7 +86,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
         </Button>
         {hasBeenModified && (
           <Button
-            onClick={() => resetCode()}
+            onClick={() => resetCodeAndEndEdition()}
             styleVariant="normal"
             style={{padding: '16px', width: '60px', height: '30px', fontSize: 16, marginLeft: 8}}
           >
@@ -122,3 +118,11 @@ const TopicDescription = (props: TopicDescriptionProps) => {
 };
 
 export default connector(TopicDescription);
+
+const isJSON = (string: string): boolean => {
+  try {
+    return JSON.parse(string) && !!string;
+  } catch (e) {
+    return false;
+  }
+};

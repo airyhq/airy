@@ -20,17 +20,27 @@ type TopicItemProps = {
 const TopicItem = (props: TopicItemProps) => {
   const {topicName, schemas} = props;
   const [isExpanded, setIsExpanded] = useState(false);
+  const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
 
   const wrapperSection = useRef(null);
   const defaultHeight = 22;
   const basicHeight = 50;
 
   useEffect(() => {
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
+  }, [schemas]);
+
+  useEffect(() => {
     if (wrapperSection && wrapperSection.current) {
       if (isExpanded) {
         let lines = 0;
         if (schemas && schemas[topicName]) {
-          lines = JSON.stringify(JSON.parse(schemas[topicName].schema), null, 4).split('\n').length;
+          if (schemas[topicName].schema !== code) {
+            console.log(code);
+            lines = code.split('\n').length;
+          } else {
+            lines = JSON.stringify(JSON.parse(schemas[topicName].schema), null, 4).split('\n').length;
+          }
         }
         if (lines === 0) {
           wrapperSection.current.style.height = `${200}px`;
@@ -42,18 +52,42 @@ const TopicItem = (props: TopicItemProps) => {
         wrapperSection.current.style.height = `${basicHeight}px`;
       }
     }
-  }, [isExpanded, schemas]);
+  }, [isExpanded, schemas, code]);
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const resetCode = () => {
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
+  };
+
+  let hasBeenModified = false;
+  if (schemas[topicName]) {
+    hasBeenModified = formatJSON(schemas[topicName].schema) !== code;
+  }
+
   return (
     <section className={styles.wrapper} ref={wrapperSection} onClick={toggleExpanded}>
       <TopicInfo topicName={topicName} isExpanded={false} />
-      {isExpanded && <TopicDescription topicName={topicName} />}
+      {isExpanded && (
+        <TopicDescription
+          topicName={topicName}
+          code={code}
+          setCode={setCode}
+          hasBeenModified={hasBeenModified}
+          resetCode={resetCode}
+        />
+      )}
     </section>
   );
 };
 
 export default connector(TopicItem);
+
+const formatJSON = (jsonString: string): string => {
+  if (jsonString) {
+    return JSON.stringify(JSON.parse(jsonString), null, 4);
+  }
+  return '';
+};

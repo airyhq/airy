@@ -18,7 +18,8 @@ const transformTopics = (topics: string[]): string[] => {
 };
 
 const trimTopicName = (name: string): string => {
-  return name.replace('-value', '');
+  if (name) return name.replace('-value', '');
+  return 'Not found';
 };
 
 export default function configReducer(state = defaultState, action: Action): Streams {

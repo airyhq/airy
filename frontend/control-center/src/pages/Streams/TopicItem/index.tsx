@@ -22,19 +22,22 @@ const TopicItem = (props: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const wrapperSection = useRef(null);
-  const defaultHeight = 20;
+  const defaultHeight = 22;
   const basicHeight = 50;
 
   useEffect(() => {
     if (wrapperSection && wrapperSection.current) {
       if (isExpanded) {
         let lines = 0;
-        console.log(schemas);
         if (schemas && schemas[topicName]) {
           lines = JSON.stringify(JSON.parse(schemas[topicName].schema), null, 4).split('\n').length;
         }
-        const val = defaultHeight * 4 + defaultHeight * lines;
-        wrapperSection.current.style.height = `${val}px`;
+        if (lines === 0) {
+          wrapperSection.current.style.height = `${200}px`;
+        } else {
+          const val = basicHeight * 2 + defaultHeight * lines;
+          wrapperSection.current.style.height = `${val}px`;
+        }
       } else {
         wrapperSection.current.style.height = `${basicHeight}px`;
       }

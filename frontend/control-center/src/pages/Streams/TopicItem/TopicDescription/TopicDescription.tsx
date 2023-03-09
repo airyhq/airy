@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import {getTopicInfo} from '../../../../actions';
+import {getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} from '../../../../actions';
 import {StateModel} from 'frontend/control-center/src/reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
-import {Button} from 'components';
+import {Button, ErrorPopUp} from 'components';
 import {useTranslation} from 'react-i18next';
 
 const mapDispatchToProps = {
   getTopicInfo,
+  setTopicSchema,
+  checkCompatibilityOfNewSchema,
 };
 
 const mapStateToProps = (state: StateModel) => {
@@ -31,22 +33,25 @@ const formatJSON = (jsonString: string): string => {
 };
 
 const TopicDescription = (props: TopicDescriptionProps) => {
-  const {topicName, schemas, getTopicInfo} = props;
+  const {topicName, schemas, getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} = props;
 
   useEffect(() => {
     getTopicInfo(topicName);
   }, []);
 
   useEffect(() => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : undefined));
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
   }, [schemas]);
 
-  const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : ''));
+  const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
   const [isEditMode, setIsEditMode] = useState(false);
+  const [showErrorPopUp, setShowErrorPopUp] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const {t} = useTranslation();
 
   const resetCode = () => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : undefined));
+    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
+    setIsEditMode(false);
   };
 
   let hasBeenModified = false;
@@ -55,14 +60,29 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   }
 
   return (
-    <div
-      className={styles.container}
-      style={!isEditMode && {backgroundColor: '#fff000'}}
-      onClick={e => e.stopPropagation()}
-    >
+    <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
       <div className={styles.buttonsContainer}>
         <Button
-          onClick={() => setIsEditMode(!isEditMode)}
+          onClick={() => {
+            setIsEditMode(!isEditMode);
+            if (isEditMode && hasBeenModified) {
+              checkCompatibilityOfNewSchema(topicName, code)
+                .then(() => {
+                  setTopicSchema(topicName, code).catch((e: string) => {
+                    setIsEditMode(true);
+                    setErrorMessage(e);
+                    setShowErrorPopUp(true);
+                    setTimeout(() => setShowErrorPopUp(false), 5000);
+                  });
+                })
+                .catch((e: string) => {
+                  setIsEditMode(true);
+                  setErrorMessage(e);
+                  setShowErrorPopUp(true);
+                  setTimeout(() => setShowErrorPopUp(false), 5000);
+                });
+            }
+          }}
           styleVariant="normal"
           style={{padding: '16px', width: '60px', height: '30px', fontSize: 16}}
         >
@@ -82,7 +102,8 @@ const TopicDescription = (props: TopicDescriptionProps) => {
         value={code}
         readOnly={!isEditMode}
         language="json5"
-        placeholder="Insert Schema..."
+        autoFocus={isEditMode}
+        placeholder=""
         onChange={evn => {
           if (isEditMode) setCode(evn.target.value);
         }}
@@ -92,9 +113,10 @@ const TopicDescription = (props: TopicDescriptionProps) => {
           fontSize: 12,
           lineHeight: '20px',
           fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          ...(!isEditMode && {backgroundColor: '#fff000'}),
+          backgroundColor: 'transparent',
         }}
       />
+      {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}
     </div>
   );
 };

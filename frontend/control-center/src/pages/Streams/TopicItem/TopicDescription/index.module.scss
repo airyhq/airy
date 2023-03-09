@@ -3,12 +3,32 @@
 .container {
   width: 100%;
   height: 100%;
-  div {
-    background-color: var(--color-background-blue);
+  animation: fadeIn ease 1s;
+  z-index: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
+  to {
+    opacity: 1;
+  }
+}
+
+.containerEdit {
+  @extend .container;
+  background-color: var(--color-code-edit);
+}
+
+.containerNoEdit {
+  @extend .container;
+  background-color: var(--color-code-no-edit);
 }
 
 .buttonsContainer {
   display: flex;
   padding: 8px;
+  background-color: transparent;
+  justify-content: flex-end;
 }

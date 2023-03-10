@@ -12,6 +12,7 @@ import {
   INBOX_ROUTE,
   STATUS_ROUTE,
   WEBHOOKS_ROUTE,
+  STREAMS_ROUTE,
 } from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
@@ -20,6 +21,7 @@ import {ReactComponent as CatalogIcon} from 'assets/images/icons/catalogIcon.svg
 import {ReactComponent as WebhooksIcon} from 'assets/images/icons/webhooksIcon.svg';
 import {ReactComponent as StatusIcon} from 'assets/images/icons/statusIcon.svg';
 import {ReactComponent as InboxIcon} from 'assets/images/icons/inboxIcon.svg';
+import {ReactComponent as StreamsIcon} from 'assets/images/icons/kafkaLogo.svg';
 import styles from './index.module.scss';
 
 type SideBarProps = {} & ConnectedProps<typeof connector>;
@@ -68,6 +70,12 @@ const Sidebar = (props: SideBarProps) => {
           <Link to={CATALOG_ROUTE} className={`${styles.link} ${isActive(CATALOG_ROUTE) ? styles.active : ''}`}>
             <CatalogIcon width={18} height={18} />
             <span className={styles.iconText}>Catalog</span>
+          </Link>
+        </div>
+        <div className={`${styles.align} ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}>
+          <Link to={STREAMS_ROUTE} className={`${styles.link} ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}>
+            <StreamsIcon width={18} height={18} />
+            <span className={styles.iconText}>Streams</span>
           </Link>
         </div>
         <div className={showLine ? styles.borderActive : styles.inactive} />

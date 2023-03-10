@@ -563,6 +563,11 @@ const resources = {
       needsConfiguration: 'Needs Configuration',
       disabled: 'Disabled',
 
+      //Streams
+      streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
+
       //Webhooks
       errorOccurred: 'Error occurred',
       successfullySubscribed: 'Successfully Subscribed!',
@@ -1156,6 +1161,11 @@ const resources = {
       needsConfiguration: 'Erfordert Konfiguration',
       disabled: 'Deaktiviert',
 
+      //Streams
+      streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
+
       //Webhooks
       errorOccurred: 'Fehler aufgetreten',
       successfullySubscribed: 'Erfolgreich abonniert!',
@@ -1742,6 +1752,11 @@ const resources = {
       notHealthy: 'Non Sain',
       needsConfiguration: 'Configuration des besoins',
       disabled: 'Désactivé',
+
+      //Streams
+      streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: `Une erreur s'est produite`,
@@ -2332,6 +2347,11 @@ const resources = {
       notHealthy: 'No es Saludable',
       needsConfiguration: 'Configuración de las necesidades',
       disabled: 'Discapacitados',
+
+      //Streams
+      streams: 'Streams',
+      topicsName: 'Topics',
+      schemaRegistryName: 'Schema Registry',
 
       //Webhooks
       errorOccurred: 'Se ha producido un error',

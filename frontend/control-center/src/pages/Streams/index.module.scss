@@ -54,20 +54,15 @@
   }
 
   h2:first-of-type {
-    width: 40%;
-    padding-left: 90px;
+    width: 100%;
+    padding-left: 70px;
+    margin-right: 70px;
   }
 }
 
 .listHeader h2:nth-child(2) {
-  width: 35%;
+  width: 25%;
   text-align: center;
-}
-
-.listHeader h2:nth-child(3) {
-  width: 20%;
-  display: flex;
-  justify-content: center;
 }
 
 .listHeaderButtonContainer {
@@ -94,6 +89,7 @@
   height: 20px;
   width: 20px;
   padding: 0px;
+  margin-right: 50px;
   background: transparent;
   cursor: pointer;
   svg {

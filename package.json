@@ -55,7 +55,7 @@
     "@svgr/plugin-svgo": "^6.5.0",
     "@svgr/webpack": "^6.5.0",
     "@testing-library/dom": "^8.19.0",
-    "@testing-library/react": "13.4.0",
+    "@testing-library/react": "14.0.0",
     "@types/dom-mediacapture-record": "^1.0.13",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "18.11.4",

@@ -1,10 +1,12 @@
 replicaCount: 1
 containerRegistry: ghcr.io/airyhq
 image: infrastructure/schema-registry
-imageTag: 2.0.1
+imageTag: 3.4.5
 imagePullPolicy: Always
 servicePort: 8081
+restPort: 8082
 kafka:
   bootstrapServers: kafka-headless:9092
   minBrokers: 1
 resources: {}
+restEnabled: false

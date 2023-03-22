@@ -21,6 +21,7 @@ provisioning:
     image: ghcr.io/airyhq/infrastructure/kafka
     imageTag: 3.2.0
     namespaceTopics: false
+    partitions: 10
 tools:
   segment:
     enabled: true

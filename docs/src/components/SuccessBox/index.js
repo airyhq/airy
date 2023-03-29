@@ -1,9 +1,9 @@
 import React from 'react';
-import useThemeContext from '@theme/hooks/useThemeContext';
+import {useColorMode} from '@docusaurus/theme-common';
 import styles from './styles.module.css';
 
 const SuccessBox = ({children}) => {
-  const {isDarkTheme} = useThemeContext();
+  const {isDarkTheme} = useColorMode();
   return <div className={`${isDarkTheme ? styles.successBoxDark : styles.successBoxLight}`}>{children}</div>;
 };
 

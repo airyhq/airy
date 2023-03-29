@@ -10,16 +10,18 @@ module.exports = {
   themeConfig: {
     algolia: {
       apiKey: '768788b65303eb29ca1f195847ed1e78',
+      appId: 'airy',
       indexName: 'airy',
-    },
-    googleAnalytics: {
-      trackingID: 'UA-74312428-5',
-    },
-    hideableSidebar: true,
+    },        
     prism: {
       theme: require('./src/plugins/prism_themes/github'),
       darkTheme: require('./src/plugins/prism_themes/monokai'),
       additionalLanguages: ['json5'],
+    },
+    docs: {
+      sidebar: {
+        hideable: true,
+      }
     },
     navbar: {
       logo: {
@@ -110,6 +112,9 @@ module.exports = {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateTime: true,
+        },
+        googleAnalytics: {
+          trackingID: 'UA-74312428-5',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

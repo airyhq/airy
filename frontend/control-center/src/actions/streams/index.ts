@@ -30,6 +30,19 @@ export const setTopicSchema = (topicName: string, schema: string) => async () =>
   });
 };
 
+export const createTopic = (topicName: string, schema: string) => async () => {
+  const body = {
+    value_schema: JSON.stringify({...JSON.parse(schema)}),
+    records: [createInitRecordForTopic(schema)],
+  };
+  return postDataV2(`topics/${topicName}`, body).then(response => {
+    console.log(response);
+    if (response.value_schema_id) return Promise.resolve(true);
+    if (response.message) return Promise.reject(response.message);
+    return Promise.reject('Unknown Error');
+  });
+};
+
 export const checkCompatibilityOfNewSchema = (topicName: string, schema: string) => async () => {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
@@ -69,6 +82,22 @@ async function postData(url: string, body: any) {
   }
 }
 
+async function postDataV2(url: string, body: any) {
+  const response = await fetch(apiHostUrl + '/' + url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/vnd.kafka.avro.v2+json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  try {
+    return await response.json();
+  } catch {
+    return;
+  }
+}
+
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
 
 export const setCurrentTopicInfoAction = createAction(
@@ -80,3 +109,23 @@ export const setCurrentTopicInfoAction = createAction(
   subject: string;
   version: number;
 }>();
+
+const createInitRecordForTopic = (schema: string): {} => {
+  const jsonValueRecord = {};
+  const jsonSchema = JSON.parse(schema);
+  if (jsonSchema['fields']) {
+    for (const param of jsonSchema['fields']) {
+      if (param['type'] === 'string') {
+        jsonValueRecord[param['name']] = param['name'] + '0';
+      }
+      if (param['type'] === 'boolean') {
+        jsonValueRecord[param['name']] = false;
+      }
+      if (param['type'] === 'long') {
+        jsonValueRecord[param['name']] = 123456;
+      }
+    }
+  }
+
+  return {value: {...jsonValueRecord}};
+};

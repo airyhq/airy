@@ -15,10 +15,13 @@ const connector = connect(mapStateToProps, null);
 
 type TopicItemProps = {
   topicName: string;
+  isJoinSelectionEnabled: boolean;
+  selectedTopics: string[];
+  addTopicsToSelection: (topicName: string) => void;
 } & ConnectedProps<typeof connector>;
 
 const TopicItem = (props: TopicItemProps) => {
-  const {topicName, schemas} = props;
+  const {topicName, schemas, isJoinSelectionEnabled, selectedTopics, addTopicsToSelection} = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
 
@@ -36,7 +39,6 @@ const TopicItem = (props: TopicItemProps) => {
         let lines = 0;
         if (schemas && schemas[topicName]) {
           if (schemas[topicName].schema !== code) {
-            console.log(code);
             lines = code.split('\n').length;
           } else {
             lines = JSON.stringify(JSON.parse(schemas[topicName].schema), null, 4).split('\n').length;
@@ -69,7 +71,14 @@ const TopicItem = (props: TopicItemProps) => {
 
   return (
     <section className={styles.wrapper} ref={wrapperSection} onClick={toggleExpanded}>
-      <TopicInfo topicName={topicName} isExpanded={false} />
+      <TopicInfo
+        topicName={topicName}
+        isExpanded={false}
+        isJoinSelectionEnabled={isJoinSelectionEnabled}
+        selectedTopics={selectedTopics}
+        addTopicsToSelection={addTopicsToSelection}
+        isSelected={selectedTopics.includes(topicName)}
+      />
       {isExpanded && (
         <TopicDescription
           topicName={topicName}

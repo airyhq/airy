@@ -60,9 +60,18 @@
   }
 }
 
-.listHeader h2:nth-child(2) {
-  width: 25%;
+.listHeaderButton {
+  width: 50px;
+  height: 26px;
+  margin-right: 16px;
   text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.listHeaderButtonConfirm {
+  @extend .listHeaderButton;
+  width: 75px;
 }
 
 .listHeaderButtonContainer {
@@ -89,7 +98,7 @@
   height: 20px;
   width: 20px;
   padding: 0px;
-  margin-right: 50px;
+  margin-right: 16px;
   background: transparent;
   cursor: pointer;
   svg {

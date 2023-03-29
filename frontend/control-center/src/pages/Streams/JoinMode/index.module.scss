@@ -1,0 +1,78 @@
+.titleArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.container {
+  width: 100%;
+  border-radius: 10px;
+  color: var(--color-text-contrast);
+}
+
+.codeArea {
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+  button {
+    margin: 8px;
+  }
+  p {
+    height: 60px;
+    text-align: center;
+    padding-top: 16px;
+    font-weight: 600;
+  }
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.code {
+  background: var(--color-code-no-edit);
+  width: 50%;
+}
+
+.createTopicButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 20%;
+  button {
+    margin-left: 0;
+  }
+  label {
+    margin-bottom: 32px;
+  }
+}
+
+.suggestionsContainer {
+  background: white;
+  color: black;
+  position: absolute;
+  margin-top: 62px;
+  width: 186px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.suggestion {
+  padding: 4px 8px;
+  cursor: pointer;
+  &:hover {
+    background: lightgray;
+  }
+}
+
+.mergeText {
+  font-size: 12px;
+  height: 50px !important;
+  margin: 20vh 4px 0px 4px;
+  padding: 0;
+  line-height: 14px;
+  font-weight: 500;
+  cursor: default;
+}

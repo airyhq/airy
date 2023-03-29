@@ -1,87 +1,64 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
-
-import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg';
 import {setPageTitle} from '../../services/pageTitle';
-import {useTranslation} from 'react-i18next';
 import styles from './index.module.scss';
-import {AiryLoader} from 'components/loaders/AiryLoader';
-import {StateModel} from '../../reducers';
-import {getTopics} from '../../actions';
-import TopicItem from './TopicItem';
-import {getValidTopics} from '../../selectors';
+import JoinMode from './JoinMode';
+import ListMode from './ListMode/ListMode';
 
-const mapDispatchToProps = {
-  getTopics,
-};
+export enum StreamModes {
+  list = 'list',
+  select = 'select',
+  join = 'join',
+}
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    streams: getValidTopics(state),
-  };
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-const Streams = (props: ConnectedProps<typeof connector>) => {
-  const {streams, getTopics} = props;
-  const [spinAnim, setSpinAnim] = useState(true);
-  const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
-  const {t} = useTranslation();
+const Streams = () => {
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [mode, setMode] = useState<StreamModes>(StreamModes.list);
 
   useEffect(() => {
     setPageTitle('Streams');
-    getTopics()
-      .then(() => {
-        setLastRefresh(new Date().toLocaleString());
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
   }, []);
 
-  const handleRefresh = () => {
-    props
-      .getTopics()
-      .then(() => {
-        setLastRefresh(new Date().toLocaleString());
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
-    setSpinAnim(!spinAnim);
+  const addTopicsToSelection = (topicName: string) => {
+    if (selectedTopics.includes(topicName)) {
+      setSelectedTopics(selectedTopics.filter((topic: string) => topic !== topicName));
+    } else {
+      setSelectedTopics([...selectedTopics, topicName]);
+    }
+  };
+
+  const getViewMode = () => {
+    switch (mode) {
+      case StreamModes.list:
+      case StreamModes.select:
+        return (
+          <ListMode
+            selectedTopics={selectedTopics}
+            addTopicsToSelection={addTopicsToSelection}
+            setSelectedTopics={setSelectedTopics}
+            mode={mode}
+            setMode={setMode}
+          />
+        );
+      case StreamModes.join:
+        return <JoinMode selectedTopics={selectedTopics} setMode={setMode} />;
+      default:
+        return (
+          <ListMode
+            selectedTopics={selectedTopics}
+            addTopicsToSelection={addTopicsToSelection}
+            setSelectedTopics={setSelectedTopics}
+            mode={mode}
+            setMode={setMode}
+          />
+        );
+    }
   };
 
   return (
-    <section className={styles.statusWrapper}>
-      <div className={styles.statusLastRefreshContainer}>
-        <h1>{t('streams')}</h1>
-        <span>
-          Last Refresh: <br />
-          {lastRefresh}
-        </span>
-      </div>
-      {Object.entries(streams).length > 0 ? (
-        <>
-          <div className={styles.listHeader}>
-            <h2>{t('topicsName')}</h2>
-            <button onClick={handleRefresh} className={styles.refreshButton}>
-              <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
-                <RefreshIcon />
-              </div>
-            </button>
-          </div>
-          <div className={styles.listItems}>
-            {streams.map(component => {
-              return <TopicItem key={component} topicName={component} />;
-            })}
-          </div>
-        </>
-      ) : (
-        <AiryLoader height={240} width={240} position="relative" />
-      )}
-    </section>
+    <>
+      <section className={styles.statusWrapper}>{getViewMode()}</section>
+    </>
   );
 };
 
-export default connector(Streams);
+export default Streams;

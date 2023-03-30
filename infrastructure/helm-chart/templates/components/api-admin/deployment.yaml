@@ -42,6 +42,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: KAFKA_REST_UPSTREAM_HOST
+          value: "schema-registry"
+        - name: KAFKA_REST_UPSTREAM_PORT
+          value: "8082"
         - name: KUBERNETES_APP
           valueFrom:
             fieldRef:

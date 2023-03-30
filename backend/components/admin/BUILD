@@ -25,6 +25,7 @@ app_deps = [
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/tracking:tracking",
+    "@maven//:org_springframework_retry_spring_retry",
 ]
 
 springboot(

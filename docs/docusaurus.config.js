@@ -10,9 +10,9 @@ module.exports = {
   themeConfig: {
     algolia: {
       apiKey: '768788b65303eb29ca1f195847ed1e78',
-      appId: 'airy',
+      appId: 'BH4D9OD16A',
       indexName: 'airy',
-    },        
+    },
     prism: {
       theme: require('./src/plugins/prism_themes/github'),
       darkTheme: require('./src/plugins/prism_themes/monokai'),
@@ -21,7 +21,7 @@ module.exports = {
     docs: {
       sidebar: {
         hideable: true,
-      }
+      },
     },
     navbar: {
       logo: {

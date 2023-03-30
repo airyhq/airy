@@ -43,9 +43,10 @@ public class RegistryProxy {
         String requestUrl = request.getRequestURI();
 
         URI uri = UriComponentsBuilder.newInstance()
+                .scheme("http")
                 .host(upstreamHost)
                 .port(upstreamPort)
-                .path(requestUrl)
+                .path(requestUrl.replace("/kafka", ""))
                 .query(request.getQueryString())
                 .build(true).toUri();
 

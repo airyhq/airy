@@ -11,3 +11,15 @@ export interface Schema {
   subject: string;
   version: number;
 }
+
+export interface SchemaField {
+  name: string;
+  default?: string | null;
+  type?:
+    | {
+        name?: string;
+        type?: string;
+        symbols?: string[];
+      }
+    | any[];
+}

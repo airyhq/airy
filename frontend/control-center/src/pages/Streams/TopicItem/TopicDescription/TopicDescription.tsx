@@ -39,6 +39,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   }, []);
 
   const [isEditMode, setIsEditMode] = useState(false);
+  const [firstTabSelected, setFirstTabSelected] = useState(true);
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const {t} = useTranslation();
@@ -48,52 +49,8 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     setIsEditMode(false);
   };
 
-  return (
-    <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
-      <div className={styles.buttonsContainer}>
-        <Button
-          onClick={() => {
-            if (isJSON(code)) {
-              setIsEditMode(!isEditMode);
-              if (isEditMode && hasBeenModified) {
-                checkCompatibilityOfNewSchema(topicName, code)
-                  .then(() => {
-                    setTopicSchema(topicName, code).catch((e: string) => {
-                      setIsEditMode(true);
-                      setErrorMessage(e);
-                      setShowErrorPopUp(true);
-                      setTimeout(() => setShowErrorPopUp(false), 5000);
-                    });
-                  })
-                  .catch((e: string) => {
-                    setIsEditMode(true);
-                    setErrorMessage(e);
-                    setShowErrorPopUp(true);
-                    setTimeout(() => setShowErrorPopUp(false), 5000);
-                  });
-              }
-            } else {
-              setIsEditMode(true);
-              setErrorMessage('JSON Not Valid');
-              setShowErrorPopUp(true);
-              setTimeout(() => setShowErrorPopUp(false), 5000);
-            }
-          }}
-          styleVariant="normal"
-          style={{padding: '16px', width: '60px', height: '30px', fontSize: 16}}
-        >
-          {isEditMode ? t('save') : t('edit')}
-        </Button>
-        {hasBeenModified && (
-          <Button
-            onClick={() => resetCodeAndEndEdition()}
-            styleVariant="normal"
-            style={{padding: '16px', width: '60px', height: '30px', fontSize: 16, marginLeft: 8}}
-          >
-            {t('reset')}
-          </Button>
-        )}
-      </div>
+  const SchemaSection = () => {
+    return (
       <CodeEditor
         value={code}
         readOnly={!isEditMode}
@@ -112,6 +69,82 @@ const TopicDescription = (props: TopicDescriptionProps) => {
           backgroundColor: 'transparent',
         }}
       />
+    );
+  };
+
+  const MessageSection = () => {
+    return <div>Last Message</div>;
+  };
+
+  return (
+    <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
+      <div className={styles.buttonsContainer}>
+        <div className={styles.leftButtonsContainer}>
+          <button
+            className={`${!firstTabSelected ? styles.tabNotSelected : ''}`}
+            onClick={() => {
+              setFirstTabSelected(true);
+            }}
+          >
+            Schema
+          </button>
+          <button
+            className={`${firstTabSelected ? styles.tabNotSelected : ''}`}
+            onClick={() => {
+              setFirstTabSelected(false);
+            }}
+          >
+            Last Message
+          </button>
+        </div>
+        {firstTabSelected && (
+          <div className={styles.rightButtonsContainer}>
+            <Button
+              onClick={() => {
+                if (isJSON(code)) {
+                  setIsEditMode(!isEditMode);
+                  if (isEditMode && hasBeenModified) {
+                    checkCompatibilityOfNewSchema(topicName, code)
+                      .then(() => {
+                        setTopicSchema(topicName, code).catch((e: string) => {
+                          setIsEditMode(true);
+                          setErrorMessage(e);
+                          setShowErrorPopUp(true);
+                          setTimeout(() => setShowErrorPopUp(false), 5000);
+                        });
+                      })
+                      .catch((e: string) => {
+                        setIsEditMode(true);
+                        setErrorMessage(e);
+                        setShowErrorPopUp(true);
+                        setTimeout(() => setShowErrorPopUp(false), 5000);
+                      });
+                  }
+                } else {
+                  setIsEditMode(true);
+                  setErrorMessage('JSON Not Valid');
+                  setShowErrorPopUp(true);
+                  setTimeout(() => setShowErrorPopUp(false), 5000);
+                }
+              }}
+              styleVariant="normal"
+              style={{padding: '16px', width: '60px', height: '30px', fontSize: 16}}
+            >
+              {isEditMode ? t('save') : t('edit')}
+            </Button>
+            {hasBeenModified && (
+              <Button
+                onClick={() => resetCodeAndEndEdition()}
+                styleVariant="normal"
+                style={{padding: '16px', width: '60px', height: '30px', fontSize: 16, marginLeft: 8}}
+              >
+                {t('reset')}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      {firstTabSelected ? <SchemaSection /> : <MessageSection />}
       {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}
     </div>
   );

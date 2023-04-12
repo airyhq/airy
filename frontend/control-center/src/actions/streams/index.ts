@@ -1,5 +1,5 @@
 import _typesafe, {createAction} from 'typesafe-actions';
-import {apiHostUrl} from '../../httpClient';
+import {apiHostUrl, HttpClientInstance} from '../../httpClient';
 import {Dispatch} from 'react';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
@@ -32,11 +32,13 @@ export const setTopicSchema = (topicName: string, schema: string) => async () =>
 
 export const createTopic = (topicName: string, schema: string) => async () => {
   const body = {
-    value_schema: JSON.stringify({...JSON.parse(schema)}),
-    records: [createInitRecordForTopic(schema)],
+    payload: {
+      value_schema: JSON.stringify({...JSON.parse(schema)}),
+      records: [createInitRecordForTopic(schema)],
+    },
+    topicName,
   };
-  return postDataV2(`topics/${topicName}`, body).then(response => {
-    console.log(response);
+  return HttpClientInstance.createTopic(body).then((response: any) => {
     if (response.value_schema_id) return Promise.resolve(true);
     if (response.message) return Promise.reject(response.message);
     return Promise.reject('Unknown Error');
@@ -71,22 +73,6 @@ async function postData(url: string, body: any) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/vnd.schemaregistry.v1+json',
-    },
-    body: JSON.stringify(body),
-  });
-
-  try {
-    return await response.json();
-  } catch {
-    return;
-  }
-}
-
-async function postDataV2(url: string, body: any) {
-  const response = await fetch(apiHostUrl + '/' + url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/vnd.kafka.avro.v2+json',
     },
     body: JSON.stringify(body),
   });

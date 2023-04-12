@@ -70,7 +70,7 @@ const TopicItem = (props: TopicItemProps) => {
   }
 
   return (
-    <section className={styles.wrapper} ref={wrapperSection} onClick={toggleExpanded}>
+    <section className={styles.wrapper} ref={wrapperSection}>
       <TopicInfo
         topicName={topicName}
         isExpanded={false}
@@ -78,6 +78,7 @@ const TopicItem = (props: TopicItemProps) => {
         selectedTopics={selectedTopics}
         addTopicsToSelection={addTopicsToSelection}
         isSelected={selectedTopics.includes(topicName)}
+        toggleExpanded={toggleExpanded}
       />
       {isExpanded && (
         <TopicDescription

@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import {Button, ErrorPopUp} from 'components';
+import {Button, Tooltip} from 'components';
 import {useTranslation} from 'react-i18next';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
 import {StreamModes} from '..';
 import styles from './index.module.scss';
-
-import {merge} from 'lodash-es';
+import {SchemaField} from 'model/Streams';
 
 type PhaseOneProps = {
   nameA: string;
   nameB: string;
   schemas: {};
-  setFinalCode: (code: string) => void;
+  fieldsSelected: SchemaField[];
+  setFieldsSelected: (fields: SchemaField[]) => void;
   setPhase: (phase: number) => void;
   setMode: (mode: StreamModes) => void;
 };
 
 export const PhaseOne = (props: PhaseOneProps) => {
-  const {nameA, nameB, schemas, setFinalCode, setPhase, setMode} = props;
+  const {nameA, nameB, schemas, fieldsSelected, setFieldsSelected, setPhase, setMode} = props;
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -31,126 +31,155 @@ export const PhaseOne = (props: PhaseOneProps) => {
   const [codeA, setCodeA] = useState(formatJSON(schemas[nameA] ? schemas[nameA].schema : '{}'));
   const [codeB, setCodeB] = useState(formatJSON(schemas[nameB] ? schemas[nameB].schema : '{}'));
   const [inverted, setInverted] = useState(false);
-  const [showErrorPopUp, setShowErrorPopUp] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+
+  const selectField = (field: SchemaField) => {
+    if (isSelected(field)) {
+      setFieldsSelected([...fieldsSelected.filter((tempField: SchemaField) => tempField.name !== field.name)]);
+    } else {
+      setFieldsSelected([...fieldsSelected, field]);
+    }
+  };
+
+  const isSelected = (field: {name: string}) => {
+    return !!fieldsSelected.filter(tempField => tempField.name === field.name).length;
+  };
 
   return (
     <>
       <div className={styles.container}>
+        <div style={{placeItems: 'flex-end', display: 'flex', flexDirection: 'column', marginTop: '-32px'}}>
+          <Button
+            styleVariant="small"
+            type="button"
+            onClick={() => {
+              setPhase(2);
+            }}
+            disabled={!fieldsSelected.length}
+          >
+            JOIN
+          </Button>
+          <Button
+            styleVariant="link"
+            type="button"
+            onClick={() => {
+              setMode(StreamModes.select);
+            }}
+            style={{
+              backgroundColor: 'transparent',
+              padding: '0',
+              width: '68px',
+              justifyContent: 'center',
+              margin: '2px 0 0 0',
+            }}
+          >
+            {t('cancel')}
+          </Button>
+        </div>
         <div className={styles.codeArea}>
           <div className={styles.code}>
             <p>{!inverted ? nameA : nameB}</p>
-            <CodeEditor
-              value={!inverted ? codeA : codeB}
-              language="json5"
-              placeholder=""
-              onChange={evn => {
-                if (!inverted) {
-                  setCodeA(evn.target.value);
-                } else {
-                  setCodeB(evn.target.value);
-                }
-              }}
-              padding={15}
-              style={{
-                height: '100%',
-                fontSize: 12,
-                lineHeight: '20px',
-                fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                backgroundColor: 'transparent',
-                border: '1px solid gray',
-                borderRadius: '10px',
-              }}
-            />
+            <div>
+              {getValuesFromSchema(!inverted ? codeA : codeB).map(value => {
+                return (
+                  <div key={value} className={styles.valueContainer}>
+                    <div className={styles.valuesTitle}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected(value)}
+                        onChange={() => {
+                          selectField(value);
+                        }}
+                      />
+                      <div>{value.name}</div>
+                    </div>
+                    <CodeEditor
+                      value={formatJSON(JSON.stringify(value))}
+                      language="json5"
+                      placeholder=""
+                      padding={15}
+                      disabled={true}
+                      style={{
+                        height: '100%',
+                        fontSize: 12,
+                        lineHeight: '20px',
+                        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                        backgroundColor: 'transparent',
+                        border: '1px solid gray',
+                        borderRadius: '10px',
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div style={{marginTop: '-12px', display: 'flex', flexDirection: 'column'}}>
-            <Button
-              styleVariant="small"
-              type="button"
-              onClick={() => {
-                try {
-                  const jsonA = JSON.parse(codeA);
-                  const jsonB = JSON.parse(codeB);
-                  if (!inverted) {
-                    setFinalCode(formatJSON(JSON.stringify(merge(jsonB, jsonA))));
-                  } else {
-                    setFinalCode(formatJSON(JSON.stringify(merge(jsonA, jsonB))));
-                  }
-                  setPhase(2);
-                } catch (e) {
-                  setErrorMessage(`JSON Not Valid: ${e.message}`);
-                  setShowErrorPopUp(true);
-                  setTimeout(() => {
-                    setShowErrorPopUp(false);
-                  }, 5000);
-                }
-              }}
-            >
-              JOIN
-            </Button>
-            <Button
-              styleVariant="link"
-              type="button"
-              onClick={() => {
-                setMode(StreamModes.select);
-              }}
-              style={{
-                backgroundColor: 'transparent',
-                padding: '0',
-                width: '68px',
-                justifyContent: 'center',
-                marginTop: '0',
-              }}
-            >
-              {t('cancel')}
-            </Button>
-            <p className={styles.mergeText}>Merge Priority</p>
-            <Button
-              styleVariant="small"
-              type="button"
-              onClick={() => {
-                setInverted(!inverted);
-              }}
-              style={{
-                padding: '0',
-                width: '68px',
-                justifyContent: 'center',
-                marginTop: '0',
-              }}
-            >
-              <ArrowRightIcon className={styles.arrowIcon} />
-              <ArrowRightIcon className={styles.arrowIcon} />
-              <ArrowRightIcon className={styles.arrowIcon} />
-            </Button>
+          <div style={{marginTop: '12px', display: 'flex', flexDirection: 'column'}}>
+            <Tooltip
+              hoverElement={
+                <Button
+                  styleVariant="small"
+                  type="button"
+                  onClick={() => {
+                    setInverted(!inverted);
+                  }}
+                  style={{
+                    padding: '0',
+                    margin: ' 0 0 0 8px',
+                    width: '68px',
+                    justifyContent: 'center',
+                    marginTop: '0',
+                  }}
+                >
+                  <ArrowRightIcon className={styles.arrowIcon} />
+                  <ArrowRightIcon className={styles.arrowIcon} />
+                  <ArrowRightIcon className={styles.arrowIcon} />
+                </Button>
+              }
+              hoverElementHeight={30}
+              hoverElementWidth={82}
+              tooltipContent="Merge Priority"
+              direction="right"
+            />
           </div>
           <div className={styles.code}>
             <p>{!inverted ? nameB : nameA}</p>
-            <CodeEditor
-              value={!inverted ? codeB : codeA}
-              language="json5"
-              placeholder=""
-              onChange={evn => {
-                if (!inverted) {
-                  setCodeB(evn.target.value);
-                } else {
-                  setCodeA(evn.target.value);
-                }
-              }}
-              padding={15}
-              style={{
-                height: '100%',
-                fontSize: 12,
-                lineHeight: '20px',
-                fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                backgroundColor: 'transparent',
-                border: '1px solid gray',
-                borderRadius: '10px',
-              }}
-            />
+            <div>
+              {getValuesFromSchema(!inverted ? codeB : codeA).map(value => {
+                return (
+                  <div key={value} className={styles.valueContainer}>
+                    <div className={styles.valuesTitle}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected(value)}
+                        onChange={() => {
+                          selectField(value);
+                        }}
+                      />
+                      <div>{value.name}</div>
+                    </div>
+                    <CodeEditor
+                      value={formatJSON(JSON.stringify(value))}
+                      language="json5"
+                      placeholder=""
+                      padding={15}
+                      disabled={true}
+                      style={{
+                        height: '100%',
+                        fontSize: 12,
+                        lineHeight: '20px',
+                        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                        backgroundColor: 'transparent',
+                        border: '1px solid gray',
+                        borderRadius: '10px',
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-      {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}
     </>
   );
 };
@@ -160,4 +189,16 @@ const formatJSON = (jsonString: string): string => {
     return JSON.stringify(JSON.parse(jsonString), null, 4);
   }
   return '';
+};
+
+const getValuesFromSchema = (schema: string) => {
+  let values = [];
+  const schemaJSON = JSON.parse(schema);
+  const fields = schemaJSON['fields'];
+  if (fields) {
+    for (const field of fields) {
+      values.push(field);
+    }
+  }
+  return values;
 };

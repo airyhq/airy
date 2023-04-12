@@ -1,4 +1,5 @@
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .container {
   width: 100%;
@@ -28,7 +29,38 @@
 
 .buttonsContainer {
   display: flex;
-  padding: 8px;
+  padding: 8px 8px 0px 8px;
+  height: 48px;
+  background-color: var(--color-button-gray);
+}
+
+.leftButtonsContainer {
+  display: flex;
+  background-color: transparent;
+  justify-content: flex-start;
+  flex-flow: wrap-reverse;
+  button {
+    @include font-s;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border: none;
+    margin-right: 2px;
+    height: 32px;
+    background-color: var(--color-code-no-edit);
+    color: var(--color-text-contrast);
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.tabNotSelected {
+  opacity: 50%;
+}
+
+.rightButtonsContainer {
+  display: flex;
   background-color: transparent;
   justify-content: flex-end;
+  flex: auto;
+  padding-bottom: 8px;
 }

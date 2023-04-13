@@ -1,5 +1,5 @@
 import React from 'react';
-import useThemeContext from '@theme/hooks/useThemeContext';
+import {useColorMode} from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {withRouter} from 'react-router-dom';
@@ -25,7 +25,7 @@ const ButtonBox = ({
   customizedBackgroundColor,
   customizedHoverColor,
 }) => {
-  const {isDarkTheme} = useThemeContext();
+  const {isDarkTheme} = useColorMode();
 
   if (customizedBackgroundColor) {
     customizedBackgroundColor = isDarkTheme ? adjust(customizedBackgroundColor, -100) : customizedBackgroundColor;

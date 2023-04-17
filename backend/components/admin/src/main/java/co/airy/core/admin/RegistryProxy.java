@@ -51,12 +51,6 @@ public class RegistryProxy {
                 .build(true).toUri();
 
         HttpHeaders headers = new HttpHeaders();
-        Enumeration<String> headerNames = request.getHeaderNames();
-
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            headers.set(headerName, request.getHeader(headerName));
-        }
 
         HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
         try {

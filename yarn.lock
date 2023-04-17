@@ -1836,10 +1836,10 @@
   dependencies:
     "@types/ms" "*"
 
-"@types/dom-mediacapture-record@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/@types/dom-mediacapture-record/-/dom-mediacapture-record-1.0.13.tgz#d13d81f1bd2c473dbc566b98ed774d6741548078"
-  integrity sha512-awMC2n4iRwJ6VWpQDA7dPqJhImeXHsVeEoQKWkdGB2cau+h/6erGoVre5Dk8p/DL1LIiLUcK6MnC3mibiKRRFg==
+"@types/dom-mediacapture-record@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@types/dom-mediacapture-record/-/dom-mediacapture-record-1.0.16.tgz#8a37eaa32c1810519843c6406325bb78618d1daf"
+  integrity sha512-GB4f8Es3aTEUjDT3ojQ8IWUhb6f5tlUoxvVw65ppkImG09QRRys6V6t56uLAynZCD3LisMQDuVObOKnnllDtCQ==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"

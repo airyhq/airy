@@ -7,6 +7,7 @@ type Action = ActionType<typeof actions>;
 const defaultState = {
   topics: [],
   schemas: {},
+  messages: {},
 };
 
 const transformTopics = (topics: string[]): string[] => {
@@ -39,6 +40,14 @@ export default function configReducer(state = defaultState, action: Action): Str
         },
       };
     }
+    case getType(actions.setLastMessage):
+      console.log(action.payload);
+      return {
+        ...state,
+        messages: {
+          key: action.payload,
+        },
+      };
     default:
       return state;
   }

@@ -4,6 +4,7 @@ import {Dispatch} from 'react';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
 const SET_TOPIC_INFO = '@@metadata/SET_TOPICS_INFO';
+const SET_LAST_MESSAGE = '@@metadata/SET_LAST_MESSAGRE';
 
 export const getTopics = () => async (dispatch: Dispatch<any>) => {
   return getData('subjects').then(response => {
@@ -61,6 +62,18 @@ export const checkCompatibilityOfNewSchema = (topicName: string, schema: string)
   });
 };
 
+export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<any>) => {
+  const body = {
+    ksql: `PRINT '${topicName}' FROM BEGINNING LIMIT 1;`,
+    streamsProperties: {},
+  };
+  return postData2('query', body).then(response => {
+    console.log('response: ', response);
+    dispatch(setLastMessage(response));
+    return Promise.resolve(true);
+  });
+};
+
 async function getData(url: string) {
   const response = await fetch(apiHostUrl + '/' + url, {
     method: 'GET',
@@ -84,6 +97,35 @@ async function postData(url: string, body: any) {
   }
 }
 
+async function postData2(url: string, body: any) {
+  const response = await fetch(apiHostUrl + '/' + url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/vnd.ksql.v1+json',
+    },
+    mode: 'no-cors',
+    body: JSON.stringify(body),
+  });
+
+  try {
+    return await response.json();
+  } catch {
+    console.log('to JSON failed.');
+    try {
+      const avroBuffer = 0;
+      const type = avro.parse(response);
+      console.log('type: ', type);
+      const decodedObject = type.fromBuffer(avroBuffer);
+      console.log('decoded: ', decodedObject);
+      const jsonObject = JSON.stringify(decodedObject);
+      console.log('json: ', jsonObject);
+      return await jsonObject;
+    } catch {
+      return;
+    }
+  }
+}
+
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
 
 export const setCurrentTopicInfoAction = createAction(
@@ -95,6 +137,8 @@ export const setCurrentTopicInfoAction = createAction(
   subject: string;
   version: number;
 }>();
+
+export const setLastMessage = createAction(SET_LAST_MESSAGE, (message: {}) => message)<{}>();
 
 const createInitRecordForTopic = (schema: string): {} => {
   const jsonValueRecord = {};

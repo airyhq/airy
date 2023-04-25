@@ -136,13 +136,18 @@ export class HttpClient {
   }
 
   private async doFetchFromBackendForKafkaTopics(url: string, body?: any): Promise<any> {
-    const headers = {};
+    const headers = {
+      Accept: 'application/vnd.schemaregistry.v1+json, application/vnd.schemaregistry+json, application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    };
 
     if (!(body instanceof FormData)) {
       if (!isString(body)) {
         body = JSON.stringify(body);
       }
-      headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';
+      // headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';
+      headers['Content-Type'] =
+        'application/vnd.schemaregistry.v1+json, application/vnd.kafka.avro.v2+json, application/vnd.schemaregistry+json, application/json';
     }
 
     const response = await fetch(`${this.apiUrl}/${url}`, {
@@ -152,8 +157,6 @@ export class HttpClient {
       credentials: 'include',
       body: body,
     });
-
-    console.log('response: ', response);
 
     return this.parseBody(response);
   }

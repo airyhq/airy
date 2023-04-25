@@ -24,10 +24,10 @@ const PhaseTwo = (props: PhaseTwoProps) => {
   const {fieldsSelected, setPhase, createTopic, setMode} = props;
 
   const [aggregationKey, setAggregationKey] = useState('');
-  const [topicName, setTopicName] = useState('');
-  const [schemaName, setSchemaName] = useState('');
-  const [schemaNamespace, setSchemaNamespace] = useState('');
-  const [schemaType, setSchemaType] = useState('');
+  const [topicName, setTopicName] = useState('MyTopic008');
+  const [schemaName, setSchemaName] = useState('example008');
+  const [schemaNamespace, setSchemaNamespace] = useState('com.example.0008');
+  const [schemaType, setSchemaType] = useState('record');
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [suggestions, setSuggestions] = useState([]);

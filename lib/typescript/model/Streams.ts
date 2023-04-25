@@ -3,6 +3,9 @@ export interface Streams {
   schemas: {
     [topicName: string]: Schema;
   };
+  messages: {
+    [topicName: string]: {};
+  };
 }
 
 export interface Schema {

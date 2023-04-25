@@ -97,7 +97,7 @@ No-code interfaces to manage and control Airy, your connectors and your streams.
 We welcome (and love) every form of contribution! Good entry points to the
 project are:
 
-- Our [contributing guide](/docs/docs/guides/contributing.md)
+- Our [contributing guide](/docs/docs/guides/contributing-to-airy.md)
 - Issues with the tag
   [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first

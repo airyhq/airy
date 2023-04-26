@@ -43,7 +43,7 @@ spec:
           - name: KARAPACE_BOOTSTRAP_URI
             value: {{ .Values.kafka.bootstrapServers }}
           - name: KARAPACE_PORT
-            value: {{ .Values.servicePort }}
+            value: "{{ .Values.servicePort }}"
           - name: KARAPACE_LOG_LEVEL
             value: WARNING
           - name: KARAPACE_TOPIC_NAME
@@ -70,7 +70,7 @@ spec:
           - name: KARAPACE_BOOTSTRAP_URI
             value: {{ .Values.kafka.bootstrapServers }}
           - name: KARAPACE_PORT
-            value: {{ .Values.restPort }}
+            value: "{{ .Values.restPort }}"
           - name: KARAPACE_LOG_LEVEL
             value: WARNING
           - name: KARAPACE_HOST

@@ -9,7 +9,7 @@ go_library(
     name = "streams_lib",
     srcs = [
         "auth.go",
-        "components_list.go",
+        "streams_list.go",
         "cors.go",
         "main.go",
     ],
@@ -19,6 +19,8 @@ go_library(
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
         "@io_k8s_klog//:klog",
+        "//lib/go/httpclient",
+        "//lib/go/payloads",
     ],
 )
 

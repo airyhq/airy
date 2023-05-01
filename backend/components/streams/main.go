@@ -32,11 +32,11 @@ func main() {
 	}
 
 	if authEnabled {
-		authMiddleware := MustNewAuthMiddleware("/components|/cluster")
+		authMiddleware := MustNewAuthMiddleware("/streams")
 		r.Use(authMiddleware.Middleware)
 	}
 
-	streamsList := StreamsList{KSqlHost: "ksqldb-server", KSqlPort: "80"}
+	streamsList := StreamsList{KSqlHost: "ksqldb-server", KSqlPort: "80", AuthToken: ""}
 	r.Handle("/streams.list", &streamsList)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

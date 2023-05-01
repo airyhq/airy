@@ -3,6 +3,7 @@ mandatory: false
 enabled: true
 image: api/components/streams
 resources: {}
+servicePort: 8080
 ksqldbHost: ksqldb-server
 ksqldbPort: "80"
 global:

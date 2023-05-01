@@ -38,13 +38,13 @@ spec:
             configMapKeyRef:
               name: security
               key: jwtSecret
+        ports:
+          - name: service
+            containerPort: {{ .Values.servicePort }}
+            protocol: TCP
         livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-            httpHeaders:
-              - name: Health-Check
-                value: health-check
+          tcpSocket:
+            port: {{ .Values.servicePort }}
           initialDelaySeconds: 120
           periodSeconds: 10
           failureThreshold: 3

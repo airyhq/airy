@@ -9,9 +9,10 @@ go_library(
     name = "streams_lib",
     srcs = [
         "auth.go",
-        "streams_list.go",
         "cors.go",
         "main.go",
+        "streams_list.go",
+        "streams_create.go",
     ],
     importpath = "github.com/airyhq/airy/backend/components/streams",
     visibility = ["//visibility:private"],

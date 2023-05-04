@@ -39,5 +39,8 @@ func main() {
 	streamsList := StreamsList{KSqlHost: "ksqldb-server", KSqlPort: "80", AuthToken: ""}
 	r.Handle("/streams.list", &streamsList)
 
+	streamsCreate := StreamsCreate{KSqlHost: "ksqldb-server", KSqlPort: "80", AuthToken: ""}
+	r.Handle("/streams.create", &streamsCreate)
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

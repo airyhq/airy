@@ -6,6 +6,7 @@ type Action = ActionType<typeof actions>;
 
 const defaultState = {
   topics: [],
+  streams: [],
   schemas: {},
   messages: {},
 };
@@ -30,6 +31,11 @@ export default function configReducer(state = defaultState, action: Action): Str
         ...state,
         topics: transformTopics(action.payload),
       };
+    case getType(actions.setStreamsAction):
+      return {
+        ...state,
+        streams: action.payload,
+      };
     case getType(actions.setCurrentTopicInfoAction): {
       const topicName = trimTopicName(action.payload['subject']);
       return {
@@ -41,7 +47,6 @@ export default function configReducer(state = defaultState, action: Action): Str
       };
     }
     case getType(actions.setLastMessage):
-      console.log(action.payload);
       return {
         ...state,
         messages: {

@@ -564,8 +564,10 @@ const resources = {
       disabled: 'Disabled',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
       //Webhooks
@@ -1162,8 +1164,10 @@ const resources = {
       disabled: 'Deaktiviert',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
       //Webhooks
@@ -1754,8 +1758,10 @@ const resources = {
       disabled: 'Désactivé',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
       //Webhooks
@@ -2349,8 +2355,10 @@ const resources = {
       disabled: 'Discapacitados',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
       //Webhooks

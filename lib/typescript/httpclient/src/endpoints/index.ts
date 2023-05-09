@@ -43,3 +43,4 @@ export * from './installComponent';
 export * from './uninstallComponent';
 export * from './listComponents';
 export * from './createTopic';
+export * from './getStreams';

@@ -4,14 +4,16 @@ import {Button, Input, ErrorPopUp} from 'components';
 import {createTopic} from '../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
-import {StreamModes} from '..';
+import {TopicsMode} from '..';
 import {SchemaField} from 'model/Streams';
+import {formatJSON} from '../../../services';
 
 type PhaseTwoProps = {
   fieldsSelected: SchemaField[];
   setFieldsSelected: (fields: SchemaField[]) => void;
   setPhase: (phase: number) => void;
-  setMode: (mode: StreamModes) => void;
+  setMode: (mode: TopicsMode) => void;
+  fromScratch: boolean;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -21,13 +23,13 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const PhaseTwo = (props: PhaseTwoProps) => {
-  const {fieldsSelected, setPhase, createTopic, setMode} = props;
+  const {fieldsSelected, fromScratch, setPhase, createTopic, setMode} = props;
 
   const [aggregationKey, setAggregationKey] = useState('');
-  const [topicName, setTopicName] = useState('MyTopic008');
-  const [schemaName, setSchemaName] = useState('example008');
-  const [schemaNamespace, setSchemaNamespace] = useState('com.example.0008');
-  const [schemaType, setSchemaType] = useState('record');
+  const [topicName, setTopicName] = useState('');
+  const [schemaName, setSchemaName] = useState('');
+  const [schemaNamespace, setSchemaNamespace] = useState('');
+  const [schemaType, setSchemaType] = useState('');
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -173,11 +175,10 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               onClick={() => {
                 createTopic(topicName, finalCode)
                   .then(() => {
-                    setMode(StreamModes.list);
+                    setMode(TopicsMode.list);
                   })
                   .catch(e => {
-                    console.log(e);
-                    setErrorMessage(e.message);
+                    setErrorMessage(e);
                     setShowErrorPopUp(true);
                     setTimeout(() => {
                       setShowErrorPopUp(false);
@@ -191,6 +192,9 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               styleVariant="link"
               type="button"
               onClick={() => {
+                if (fromScratch) {
+                  setMode(TopicsMode.list);
+                }
                 setPhase(1);
               }}
               style={{
@@ -232,20 +236,3 @@ const PhaseTwo = (props: PhaseTwoProps) => {
 };
 
 export default connector(PhaseTwo);
-
-const formatJSON = (jsonString: string): string => {
-  if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
-  }
-  return '';
-};
-
-const getAllFieldNames = (jsonObject: {}): string[] => {
-  let fieldNames = [];
-  if (jsonObject['fields']) {
-    for (const object of jsonObject['fields']) {
-      if (object['name']) fieldNames.push(object['name']);
-    }
-  }
-  return fieldNames;
-};

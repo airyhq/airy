@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import TopicDescription from './TopicDescription/TopicDescription';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
+import {calculateHeightOfCodeString, formatJSON} from '../../../services';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -26,8 +27,8 @@ const TopicItem = (props: TopicItemProps) => {
   const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
 
   const wrapperSection = useRef(null);
-  const defaultHeight = 22;
   const basicHeight = 50;
+  const headerHeight = 32;
 
   useEffect(() => {
     setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
@@ -36,19 +37,16 @@ const TopicItem = (props: TopicItemProps) => {
   useEffect(() => {
     if (wrapperSection && wrapperSection.current) {
       if (isExpanded) {
-        let lines = 0;
         if (schemas && schemas[topicName]) {
           if (schemas[topicName].schema !== code) {
-            lines = code.split('\n').length;
+            wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + headerHeight + basicHeight}px`;
           } else {
-            lines = JSON.stringify(JSON.parse(schemas[topicName].schema), null, 4).split('\n').length;
+            wrapperSection.current.style.height = `${
+              calculateHeightOfCodeString(schemas[topicName].schema) + headerHeight + basicHeight
+            }px`;
           }
-        }
-        if (lines === 0) {
-          wrapperSection.current.style.height = `${200}px`;
         } else {
-          const val = basicHeight * 2 + defaultHeight * lines;
-          wrapperSection.current.style.height = `${val}px`;
+          wrapperSection.current.style.height = `${basicHeight}px`;
         }
       } else {
         wrapperSection.current.style.height = `${basicHeight}px`;
@@ -65,7 +63,7 @@ const TopicItem = (props: TopicItemProps) => {
   };
 
   let hasBeenModified = false;
-  if (schemas[topicName]) {
+  if (schemas[topicName]) {    
     hasBeenModified = formatJSON(schemas[topicName].schema) !== code;
   }
 
@@ -94,10 +92,3 @@ const TopicItem = (props: TopicItemProps) => {
 };
 
 export default connector(TopicItem);
-
-const formatJSON = (jsonString: string): string => {
-  if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
-  }
-  return '';
-};

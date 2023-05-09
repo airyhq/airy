@@ -1,10 +1,19 @@
 import _typesafe, {createAction} from 'typesafe-actions';
 import {apiHostUrl, HttpClientInstance} from '../../httpClient';
 import {Dispatch} from 'react';
+import {Stream} from 'model';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
+const SET_STREAMS = '@@metadata/SET_STREAMS';
 const SET_TOPIC_INFO = '@@metadata/SET_TOPICS_INFO';
 const SET_LAST_MESSAGE = '@@metadata/SET_LAST_MESSAGRE';
+
+export const getStreams = () => (dispatch: Dispatch<any>) => {
+  return HttpClientInstance.getStreams().then((response: Stream[]) => {
+    dispatch(setStreamsAction(response));
+    return Promise.resolve(true);
+  });
+};
 
 export const getTopics = () => async (dispatch: Dispatch<any>) => {
   return getData('subjects').then(response => {
@@ -39,9 +48,12 @@ export const createTopic = (topicName: string, schema: string) => async () => {
     },
     topicName,
   };
-  return HttpClientInstance.createTopic(body).then((response: any) => {
-    if (response.value_schema_id) return Promise.resolve(true);
+  return HttpClientInstance.createTopic(body).then((response: any) => {    
+    if (response.value_schema_id) return Promise.resolve(true);    
     if (response.message) return Promise.reject(response.message);
+    return Promise.reject('Unknown Error');
+  }).catch(e => {    
+    if (e.body && e.body.error) return Promise.reject(e.body.error);
     return Promise.reject('Unknown Error');
   });
 };
@@ -68,7 +80,6 @@ export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<a
     streamsProperties: {},
   };
   return postData2('query', body).then(response => {
-    console.log('response: ', response);
     dispatch(setLastMessage(response));
     return Promise.resolve(true);
   });
@@ -127,6 +138,8 @@ async function postData2(url: string, body: any) {
 }
 
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
+
+export const setStreamsAction = createAction(SET_STREAMS, (streams: Stream[]) => streams)<Stream[]>();
 
 export const setCurrentTopicInfoAction = createAction(
   SET_TOPIC_INFO,

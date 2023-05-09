@@ -1,5 +1,6 @@
 export interface Streams {
   topics: string[];
+  streams: Stream[];
   schemas: {
     [topicName: string]: Schema;
   };
@@ -25,4 +26,9 @@ export interface SchemaField {
         symbols?: string[];
       }
     | any[];
+}
+
+export interface Stream {
+  name: string;
+  topic: string;
 }

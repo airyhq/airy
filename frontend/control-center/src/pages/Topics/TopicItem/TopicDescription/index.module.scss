@@ -29,8 +29,7 @@
 
 .buttonsContainer {
   display: flex;
-  padding: 8px 8px 0px 8px;
-  height: 48px;
+  height: 32px;
   background-color: var(--color-button-gray);
 }
 
@@ -41,11 +40,7 @@
   flex-flow: wrap-reverse;
   button {
     @include font-s;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
     border: none;
-    margin-right: 2px;
-    height: 32px;
     background-color: var(--color-code-no-edit);
     color: var(--color-text-contrast);
     font-weight: 600;

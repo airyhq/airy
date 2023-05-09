@@ -3,9 +3,10 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import {Button, Tooltip} from 'components';
 import {useTranslation} from 'react-i18next';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
-import {StreamModes} from '..';
+import {TopicsMode} from '..';
 import styles from './index.module.scss';
 import {SchemaField} from 'model/Streams';
+import {formatJSON, getValuesFromSchema} from '../../../services';
 
 type PhaseOneProps = {
   nameA: string;
@@ -14,7 +15,7 @@ type PhaseOneProps = {
   fieldsSelected: SchemaField[];
   setFieldsSelected: (fields: SchemaField[]) => void;
   setPhase: (phase: number) => void;
-  setMode: (mode: StreamModes) => void;
+  setMode: (mode: TopicsMode) => void;
 };
 
 export const PhaseOne = (props: PhaseOneProps) => {
@@ -62,7 +63,7 @@ export const PhaseOne = (props: PhaseOneProps) => {
             styleVariant="link"
             type="button"
             onClick={() => {
-              setMode(StreamModes.select);
+              setMode(TopicsMode.list);
             }}
             style={{
               backgroundColor: 'transparent',
@@ -81,7 +82,7 @@ export const PhaseOne = (props: PhaseOneProps) => {
             <div>
               {getValuesFromSchema(!inverted ? codeA : codeB).map(value => {
                 return (
-                  <div key={value} className={styles.valueContainer}>
+                  <div key={value + Math.random().toString()} className={styles.valueContainer}>
                     <div className={styles.valuesTitle}>
                       <input
                         type="checkbox"
@@ -146,7 +147,7 @@ export const PhaseOne = (props: PhaseOneProps) => {
             <div>
               {getValuesFromSchema(!inverted ? codeB : codeA).map(value => {
                 return (
-                  <div key={value} className={styles.valueContainer}>
+                  <div key={value + Math.random().toString()} className={styles.valueContainer}>
                     <div className={styles.valuesTitle}>
                       <input
                         type="checkbox"
@@ -182,23 +183,4 @@ export const PhaseOne = (props: PhaseOneProps) => {
       </div>
     </>
   );
-};
-
-const formatJSON = (jsonString: string): string => {
-  if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
-  }
-  return '';
-};
-
-const getValuesFromSchema = (schema: string) => {
-  let values = [];
-  const schemaJSON = JSON.parse(schema);
-  const fields = schemaJSON['fields'];
-  if (fields) {
-    for (const field of fields) {
-      values.push(field);
-    }
-  }
-  return values;
 };

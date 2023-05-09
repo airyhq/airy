@@ -1,4 +1,4 @@
-import {Tag, Message, Channel, Conversation, Config, Template, Contact, Components} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template, Contact, Components, Webhook, Stream} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -81,10 +81,10 @@ import {
   componentsListDef,
   connectViberChannelDef,
   createTopicDef,
+  getStreamsDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
-import {Webhook} from 'model/Webhook';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -136,18 +136,13 @@ export class HttpClient {
   }
 
   private async doFetchFromBackendForKafkaTopics(url: string, body?: any): Promise<any> {
-    const headers = {
-      Accept: 'application/vnd.schemaregistry.v1+json, application/vnd.schemaregistry+json, application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-    };
+    const headers = {};
 
     if (!(body instanceof FormData)) {
       if (!isString(body)) {
         body = JSON.stringify(body);
       }
-      // headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';
-      headers['Content-Type'] =
-        'application/vnd.schemaregistry.v1+json, application/vnd.kafka.avro.v2+json, application/vnd.schemaregistry+json, application/json';
+       headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';      
     }
 
     const response = await fetch(`${this.apiUrl}/${url}`, {
@@ -309,6 +304,8 @@ export class HttpClient {
   public listComponents = this.getRequest<void, Components>(componentsListDef);
 
   public createTopic = this.getRequestForKafkaTopicsEndpoints<CreateTopicPayload>(createTopicDef);
+
+  public getStreams = this.getRequest<void, Stream[]>(getStreamsDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

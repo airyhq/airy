@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import CodeEditor from '@uiw/react-textarea-code-editor';
+import MonacoEditor from '@uiw/react-monacoeditor';
 import {getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} from '../../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {Button, ErrorPopUp} from 'components';
 import {useTranslation} from 'react-i18next';
+import {calculateHeightOfCodeString, formatJSON, isJSON} from '../../../../services';
 
 const mapDispatchToProps = {
   getTopicInfo,
@@ -38,10 +39,18 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     getTopicInfo(topicName);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('themeChanged', () => {
+      const theme = localStorage.getItem('theme');
+      setEditorMode(theme ? 'vs-dark' : 'vs');
+    });
+  }, []);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [firstTabSelected, setFirstTabSelected] = useState(true);
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [editorMode, setEditorMode] = useState(localStorage.getItem('theme') === 'dark' ? 'vs-dark' : 'vs');
   const {t} = useTranslation();
 
   const resetCodeAndEndEdition = () => {
@@ -50,58 +59,54 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   };
 
   const SchemaSection = () => {
+    let schemaCode = code;
+
     return (
-      <CodeEditor
-        value={code}
-        readOnly={!isEditMode}
-        language="json5"
-        autoFocus={isEditMode}
-        placeholder=""
-        onChange={evn => {
-          if (isEditMode) setCode(evn.target.value);
+      <MonacoEditor
+        height={calculateHeightOfCodeString(code)}
+        language="yaml"
+        value={schemaCode}
+        onChange={value => {
+          if (isEditMode) schemaCode = value;
         }}
-        padding={15}
-        style={{
-          height: '100%',
-          fontSize: 12,
-          lineHeight: '20px',
-          fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          backgroundColor: 'transparent',
+        onBlur={() => {
+          setCode(schemaCode);
+        }}
+        options={{
+          scrollBeyondLastLine: isEditMode,
+          readOnly: !isEditMode,
+          theme: editorMode,
         }}
       />
     );
   };
 
   const MessageSection = () => {
+    const code = formatJSON(
+      JSON.stringify({
+        id: 'ad6b6f6b-7ae7-4607-a30f-0e6b6f7f6140',
+        headers: {},
+        isFromContact: false,
+        deliveryState: 'DELIVERED',
+        senderId: 'auth0:Aitor Algorta',
+        sourceRecipientId: null,
+        conversationId: '9bc34959-2993-41cd-9c49-de7d7bca91de',
+        channelId: '91d30fe3-cf14-4045-9448-aea85549b316',
+        source: 'chatplugin',
+        content: '{"text":"496"}',
+        sentAt: 1635499938550,
+        updatedAt: 1635499938575,
+      })
+    );
     return (
-      <CodeEditor
-        value={formatJSON(
-          JSON.stringify({
-            id: 'ad6b6f6b-7ae7-4607-a30f-0e6b6f7f6140',
-            headers: {},
-            isFromContact: false,
-            deliveryState: 'DELIVERED',
-            senderId: 'auth0:Aitor Algorta',
-            sourceRecipientId: null,
-            conversationId: '9bc34959-2993-41cd-9c49-de7d7bca91de',
-            channelId: '91d30fe3-cf14-4045-9448-aea85549b316',
-            source: 'chatplugin',
-            content: '{"text":"496"}',
-            sentAt: 1635499938550,
-            updatedAt: 1635499938575,
-          })
-        )}
-        readOnly={true}
-        language="json5"
-        autoFocus={isEditMode}
-        placeholder=""
-        padding={15}
-        style={{
-          height: '100%',
-          fontSize: 12,
-          lineHeight: '20px',
-          fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          backgroundColor: 'transparent',
+      <MonacoEditor
+        height={calculateHeightOfCodeString(code)}
+        language="yaml"
+        value={code}
+        options={{
+          scrollBeyondLastLine: false,
+          readOnly: true,
+          theme: editorMode,
         }}
       />
     );
@@ -132,34 +137,36 @@ const TopicDescription = (props: TopicDescriptionProps) => {
           <div className={styles.rightButtonsContainer}>
             <Button
               onClick={() => {
-                if (isJSON(code)) {
-                  setIsEditMode(!isEditMode);
-                  if (isEditMode && hasBeenModified) {
-                    checkCompatibilityOfNewSchema(topicName, code)
-                      .then(() => {
-                        setTopicSchema(topicName, code).catch((e: string) => {
+                setTimeout(() => {
+                  if (isJSON(code)) {
+                    setIsEditMode(!isEditMode);
+                    if (isEditMode && hasBeenModified) {
+                      checkCompatibilityOfNewSchema(topicName, code)
+                        .then(() => {
+                          setTopicSchema(topicName, code).catch((e: string) => {
+                            setIsEditMode(true);
+                            setErrorMessage(e);
+                            setShowErrorPopUp(true);
+                            setTimeout(() => setShowErrorPopUp(false), 5000);
+                          });
+                        })
+                        .catch((e: string) => {
                           setIsEditMode(true);
                           setErrorMessage(e);
                           setShowErrorPopUp(true);
                           setTimeout(() => setShowErrorPopUp(false), 5000);
                         });
-                      })
-                      .catch((e: string) => {
-                        setIsEditMode(true);
-                        setErrorMessage(e);
-                        setShowErrorPopUp(true);
-                        setTimeout(() => setShowErrorPopUp(false), 5000);
-                      });
+                    }
+                  } else {
+                    setIsEditMode(true);
+                    setErrorMessage('JSON Not Valid');
+                    setShowErrorPopUp(true);
+                    setTimeout(() => setShowErrorPopUp(false), 5000);
                   }
-                } else {
-                  setIsEditMode(true);
-                  setErrorMessage('JSON Not Valid');
-                  setShowErrorPopUp(true);
-                  setTimeout(() => setShowErrorPopUp(false), 5000);
-                }
+                }, 200);
               }}
               styleVariant="normal"
-              style={{padding: '16px', width: '60px', height: '30px', fontSize: 16}}
+              style={{padding: '8px', margin: '4px', width: '50px', height: '24px', fontSize: 15}}
             >
               {isEditMode ? t('save') : t('edit')}
             </Button>
@@ -167,7 +174,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
               <Button
                 onClick={() => resetCodeAndEndEdition()}
                 styleVariant="normal"
-                style={{padding: '16px', width: '60px', height: '30px', fontSize: 16, marginLeft: 8}}
+                style={{padding: '8px', margin: '4px', width: '50px', height: '24px', fontSize: 15, marginLeft: 4}}
               >
                 {t('reset')}
               </Button>
@@ -182,18 +189,3 @@ const TopicDescription = (props: TopicDescriptionProps) => {
 };
 
 export default connector(TopicDescription);
-
-const isJSON = (string: string): boolean => {
-  try {
-    return JSON.parse(string) && !!string;
-  } catch (e) {
-    return false;
-  }
-};
-
-const formatJSON = (jsonString: string): string => {
-  if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
-  }
-  return '';
-};

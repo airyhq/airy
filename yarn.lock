@@ -997,6 +997,13 @@
   dependencies:
     regenerator-runtime "^0.13.10"
 
+"@babel/runtime@^7.16.7":
+  version "7.21.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.5.tgz#8492dddda9644ae3bda3b45eabe87382caee7200"
+  integrity sha512-8jI69toZqqcsnqGGqwGS4Qb1VwLOEp4hz+CXPywcvjs60u3B4Pom/U/7rm4W8tMOYEB+E9wgD0mW1l3r8qlI9Q==
+  dependencies:
+    regenerator-runtime "^0.13.11"
+
 "@babel/runtime@^7.18.6":
   version "7.21.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
@@ -2293,6 +2300,14 @@
   dependencies:
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
+
+"@uiw/react-monacoeditor@^3.5.8":
+  version "3.5.8"
+  resolved "https://registry.yarnpkg.com/@uiw/react-monacoeditor/-/react-monacoeditor-3.5.8.tgz#0eabbbf99209ec8fecbb659e6543cd44d4a5a6c3"
+  integrity sha512-NgiAlWx8q2N0fhaRmw29QDNxhMMaQhRs10QarGVpCu8nB5AiXfRgPoo3I5FovE+SfD7bK8MxyDATXFZHAS7d5g==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    monaco-editor "^0.36.0"
 
 "@uiw/react-textarea-code-editor@^2.1.1":
   version "2.1.1"
@@ -6664,6 +6679,11 @@ minimist@^1.2.0, minimist@^1.2.6, minimist@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
   integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
+
+monaco-editor@^0.36.0:
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.36.1.tgz#aad528c815605307473a1634612946921d8079b5"
+  integrity sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==
 
 mri@^1.1.0:
   version "1.2.0"

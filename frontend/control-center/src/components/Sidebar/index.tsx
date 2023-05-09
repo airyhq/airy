@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useMatch} from 'react-router';
 import {connect, ConnectedProps} from 'react-redux';
@@ -13,6 +13,7 @@ import {
   STATUS_ROUTE,
   WEBHOOKS_ROUTE,
   STREAMS_ROUTE,
+  TOPICS_ROUTE,
 } from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
@@ -45,6 +46,11 @@ const Sidebar = (props: SideBarProps) => {
     return useMatch(`${route}/*`);
   };
 
+  const href = window.location.href;
+  const [kafkaSectionOpen, setKafkaSectionOpen] = useState<boolean>(
+    href.includes(TOPICS_ROUTE) || href.includes(STREAMS_ROUTE)
+  );
+
   return (
     <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
@@ -72,9 +78,31 @@ const Sidebar = (props: SideBarProps) => {
             <span className={styles.iconText}>Catalog</span>
           </Link>
         </div>
-        <div className={`${styles.align} ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}>
-          <Link to={STREAMS_ROUTE} className={`${styles.link} ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}>
+        <div className={styles.align} onClick={() => setKafkaSectionOpen(!kafkaSectionOpen)}>
+          <div
+            className={`${styles.link} ${isActive(TOPICS_ROUTE) ? styles.active : ''} ${
+              isActive(STREAMS_ROUTE) ? styles.active : ''
+            }`}
+          >
             <StreamsIcon width={18} height={18} />
+            <span className={styles.iconText}>Kafka</span>
+          </div>
+        </div>
+        <div
+          className={`${styles.subalign} ${isActive(TOPICS_ROUTE) ? styles.active : ''} ${
+            !kafkaSectionOpen ? styles.viewClosed : ''
+          }`}
+        >
+          <Link to={TOPICS_ROUTE} className={`${styles.sublink} ${isActive(TOPICS_ROUTE) ? styles.active : ''}`}>
+            <span className={styles.iconText}>Topics</span>
+          </Link>
+        </div>
+        <div
+          className={`${styles.subalign} ${isActive(STREAMS_ROUTE) ? styles.active : ''} ${
+            !kafkaSectionOpen ? styles.viewClosed : ''
+          }`}
+        >
+          <Link to={STREAMS_ROUTE} className={`${styles.sublink} ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}>
             <span className={styles.iconText}>Streams</span>
           </Link>
         </div>

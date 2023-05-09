@@ -3,7 +3,7 @@ import {getTopicInfo} from '../../../actions';
 import {StateModel} from '../../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {StreamModes} from '..';
+import {TopicsMode} from '..';
 import {PhaseOne} from './PhaseOne';
 import PhaseTwo from './PhaseTwo';
 import styles from './index.module.scss';
@@ -23,11 +23,12 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type TopicInfoProps = {
   selectedTopics: string[];
-  setMode: (mode: StreamModes) => void;
+  setMode: (mode: TopicsMode) => void;
+  fromScratch: boolean;
 } & ConnectedProps<typeof connector>;
 
 const JoinMode = (props: TopicInfoProps) => {
-  const {selectedTopics, schemas, getTopicInfo, setMode} = props;
+  const {selectedTopics, schemas, fromScratch, getTopicInfo, setMode} = props;
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const JoinMode = (props: TopicInfoProps) => {
   }, [selectedTopics]);
 
   const [fieldsSelected, setFieldsSelected] = useState<SchemaField[]>([]);
-  const [phase, setPhase] = useState(1);
+  const [phase, setPhase] = useState(fromScratch ? 2 : 1);
 
   const getPhaseView = () => {
     if (phase === 2)
@@ -48,6 +49,7 @@ const JoinMode = (props: TopicInfoProps) => {
           setFieldsSelected={setFieldsSelected}
           setPhase={setPhase}
           setMode={setMode}
+          fromScratch={fromScratch}
         />
       );
     return (

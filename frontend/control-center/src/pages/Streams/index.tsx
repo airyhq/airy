@@ -1,52 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import {setPageTitle} from '../../services/pageTitle';
 import styles from './index.module.scss';
-import JoinMode from './JoinMode';
+// import JoinMode from './JoinMode';
 import ListMode from './ListMode/ListMode';
 
-export enum StreamModes {
+export enum StreamsModes {
   list = 'list',
   select = 'select',
   join = 'join',
 }
 
 const Streams = () => {
-  const [selectedTopics, setSelectedTopics] = useState([]);
-  const [mode, setMode] = useState<StreamModes>(StreamModes.list);
+  const [selectedStreams, setSelectedStreams] = useState([]);
+  const [mode, setMode] = useState<StreamsModes>(StreamsModes.list);
 
   useEffect(() => {
     setPageTitle('Streams');
   }, []);
 
-  const addTopicsToSelection = (topicName: string) => {
-    if (selectedTopics.includes(topicName)) {
-      setSelectedTopics(selectedTopics.filter((topic: string) => topic !== topicName));
+  const addStreamsToSelection = (topicName: string) => {
+    if (selectedStreams.includes(topicName)) {
+      setSelectedStreams(selectedStreams.filter((topic: string) => topic !== topicName));
     } else {
-      setSelectedTopics([...selectedTopics, topicName]);
+      setSelectedStreams([...selectedStreams, topicName]);
     }
   };
 
   const getViewMode = () => {
     switch (mode) {
-      case StreamModes.list:
-      case StreamModes.select:
+      case StreamsModes.list:
+      case StreamsModes.select:
         return (
           <ListMode
-            selectedTopics={selectedTopics}
-            addTopicsToSelection={addTopicsToSelection}
-            setSelectedTopics={setSelectedTopics}
+            selectedStreams={selectedStreams}
+            addStreamsToSelection={addStreamsToSelection}
+            setSelectedStreams={setSelectedStreams}
             mode={mode}
             setMode={setMode}
           />
         );
-      case StreamModes.join:
-        return <JoinMode selectedTopics={selectedTopics} setMode={setMode} />;
+      //   case StreamsModes.join:
+      //     return <JoinMode selectedTopics={selectedTopics} setMode={setMode} />;
       default:
         return (
           <ListMode
-            selectedTopics={selectedTopics}
-            addTopicsToSelection={addTopicsToSelection}
-            setSelectedTopics={setSelectedTopics}
+            selectedStreams={selectedStreams}
+            addStreamsToSelection={addStreamsToSelection}
+            setSelectedStreams={setSelectedStreams}
             mode={mode}
             setMode={setMode}
           />

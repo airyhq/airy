@@ -40,7 +40,7 @@ const Topics = () => {
               className={styles.popUpItems}
               onClick={() => {
                 setFromScratch(true);
-                setMode(TopicsMode.join);                
+                setMode(TopicsMode.join);
                 setPopupEnabled(false);
               }}
             >
@@ -49,9 +49,9 @@ const Topics = () => {
             </div>
             <div
               className={styles.popUpItems}
-              onClick={() => {       
-                setFromScratch(false);         
-                setMode(TopicsMode.select);                
+              onClick={() => {
+                setFromScratch(false);
+                setMode(TopicsMode.select);
                 setPopupEnabled(false);
               }}
             >
@@ -79,7 +79,7 @@ const Topics = () => {
           />
         );
       case TopicsMode.join:
-        return <JoinMode selectedTopics={selectedTopics} setMode={setMode} fromScratch={fromScratch}/>;
+        return <JoinMode selectedTopics={selectedTopics} setMode={setMode} fromScratch={fromScratch} />;
       default:
         return (
           <ListMode

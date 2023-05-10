@@ -48,14 +48,16 @@ export const createTopic = (topicName: string, schema: string) => async () => {
     },
     topicName,
   };
-  return HttpClientInstance.createTopic(body).then((response: any) => {    
-    if (response.value_schema_id) return Promise.resolve(true);    
-    if (response.message) return Promise.reject(response.message);
-    return Promise.reject('Unknown Error');
-  }).catch(e => {    
-    if (e.body && e.body.error) return Promise.reject(e.body.error);
-    return Promise.reject('Unknown Error');
-  });
+  return HttpClientInstance.createTopic(body)
+    .then((response: any) => {
+      if (response.value_schema_id) return Promise.resolve(true);
+      if (response.message) return Promise.reject(response.message);
+      return Promise.reject('Unknown Error');
+    })
+    .catch(e => {
+      if (e.body && e.body.error) return Promise.reject(e.body.error);
+      return Promise.reject('Unknown Error');
+    });
 };
 
 export const checkCompatibilityOfNewSchema = (topicName: string, schema: string) => async () => {

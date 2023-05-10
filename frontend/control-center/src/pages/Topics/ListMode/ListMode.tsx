@@ -37,6 +37,7 @@ const ListMode = (props: ListModeProps) => {
   const {selectedTopics, setSelectedTopics, addTopicsToSelection, mode, setMode, setPopupEnabled} = props;
   const {topics, getTopics} = props;
   const [spinAnim, setSpinAnim] = useState(true);
+  const [itemSelected, setItemSelected] = useState('');
   const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
   const {t} = useTranslation();
 
@@ -81,7 +82,7 @@ const ListMode = (props: ListModeProps) => {
               styleVariant="green"
               onClick={() => {
                 if (mode === TopicsMode.list) {
-                  setPopupEnabled(true);                  
+                  setPopupEnabled(true);
                 } else {
                   setMode(TopicsMode.join);
                 }
@@ -116,6 +117,8 @@ const ListMode = (props: ListModeProps) => {
                   isJoinSelectionEnabled={mode === TopicsMode.select}
                   selectedTopics={selectedTopics}
                   addTopicsToSelection={addTopicsToSelection}
+                  itemSelected={itemSelected}
+                  setItemSelected={setItemSelected}
                 />
               );
             })}

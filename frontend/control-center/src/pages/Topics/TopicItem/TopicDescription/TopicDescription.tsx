@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {MutableRefObject, useEffect, useState} from 'react';
 import MonacoEditor from '@uiw/react-monacoeditor';
 import {getTopicInfo, setTopicSchema, checkCompatibilityOfNewSchema} from '../../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
@@ -21,6 +21,7 @@ type TopicDescriptionProps = {
   setCode: (code: string) => void;
   resetCode: () => void;
   hasBeenModified: boolean;
+  wrapperSection: MutableRefObject<any>;
 } & ConnectedProps<typeof connector>;
 
 const TopicDescription = (props: TopicDescriptionProps) => {
@@ -33,6 +34,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     getTopicInfo,
     setTopicSchema,
     checkCompatibilityOfNewSchema,
+    wrapperSection,
   } = props;
 
   useEffect(() => {
@@ -52,6 +54,25 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [editorMode, setEditorMode] = useState(localStorage.getItem('theme') === 'dark' ? 'vs-dark' : 'vs');
   const {t} = useTranslation();
+
+  useEffect(() => {
+    if (firstTabSelected) {
+      recalculateContainerHeight(code);
+    } else {
+      recalculateContainerHeight(lastMessageMock);
+    }
+  }, [firstTabSelected, code]);
+
+  const recalculateContainerHeight = (code: string) => {
+    const basicHeight = 50;
+    const headerHeight = 32;
+    if (wrapperSection && wrapperSection.current) {
+      wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + headerHeight + basicHeight}px`;
+    } else {
+      wrapperSection.current.style.height = `${basicHeight}px`;
+    }
+    console.log(wrapperSection.current.style.height);
+  };
 
   const resetCodeAndEndEdition = () => {
     resetCode();
@@ -82,27 +103,11 @@ const TopicDescription = (props: TopicDescriptionProps) => {
   };
 
   const MessageSection = () => {
-    const code = formatJSON(
-      JSON.stringify({
-        id: 'ad6b6f6b-7ae7-4607-a30f-0e6b6f7f6140',
-        headers: {},
-        isFromContact: false,
-        deliveryState: 'DELIVERED',
-        senderId: 'auth0:Aitor Algorta',
-        sourceRecipientId: null,
-        conversationId: '9bc34959-2993-41cd-9c49-de7d7bca91de',
-        channelId: '91d30fe3-cf14-4045-9448-aea85549b316',
-        source: 'chatplugin',
-        content: '{"text":"496"}',
-        sentAt: 1635499938550,
-        updatedAt: 1635499938575,
-      })
-    );
     return (
       <MonacoEditor
-        height={calculateHeightOfCodeString(code)}
+        height={calculateHeightOfCodeString(lastMessageMock)}
         language="yaml"
-        value={code}
+        value={lastMessageMock}
         options={{
           scrollBeyondLastLine: false,
           readOnly: true,
@@ -120,6 +125,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
             className={`${!firstTabSelected ? styles.tabNotSelected : ''}`}
             onClick={() => {
               setFirstTabSelected(true);
+              recalculateContainerHeight(code);
             }}
           >
             Schema
@@ -189,3 +195,20 @@ const TopicDescription = (props: TopicDescriptionProps) => {
 };
 
 export default connector(TopicDescription);
+
+const lastMessageMock = formatJSON(
+  JSON.stringify({
+    id: 'ad6b6f6b-7ae7-4607-a30f-0e6b6f7f6140',
+    headers: {},
+    isFromContact: false,
+    deliveryState: 'DELIVERED',
+    senderId: 'auth0:Aitor Algorta',
+    sourceRecipientId: null,
+    conversationId: '9bc34959-2993-41cd-9c49-de7d7bca91de',
+    channelId: '91d30fe3-cf14-4045-9448-aea85549b316',
+    source: 'chatplugin',
+    content: '{"text":"496"}',
+    sentAt: 1635499938550,
+    updatedAt: 1635499938575,
+  })
+);

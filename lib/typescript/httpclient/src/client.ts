@@ -142,7 +142,7 @@ export class HttpClient {
       if (!isString(body)) {
         body = JSON.stringify(body);
       }
-       headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';      
+      headers['Content-Type'] = 'application/vnd.kafka.avro.v2+json';
     }
 
     const response = await fetch(`${this.apiUrl}/${url}`, {

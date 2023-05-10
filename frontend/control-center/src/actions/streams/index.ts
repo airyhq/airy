@@ -125,14 +125,14 @@ async function postData2(url: string, body: any) {
   } catch {
     console.log('to JSON failed.');
     try {
-      const avroBuffer = 0;
-      const type = avro.parse(response);
-      console.log('type: ', type);
-      const decodedObject = type.fromBuffer(avroBuffer);
-      console.log('decoded: ', decodedObject);
-      const jsonObject = JSON.stringify(decodedObject);
-      console.log('json: ', jsonObject);
-      return await jsonObject;
+      // const avroBuffer = 0;
+      // const type = avro.parse(response);
+      // console.log('type: ', type);
+      // const decodedObject = type.fromBuffer(avroBuffer);
+      // console.log('decoded: ', decodedObject);
+      // const jsonObject = JSON.stringify(decodedObject);
+      // console.log('json: ', jsonObject);
+      // return await jsonObject;
     } catch {
       return;
     }

@@ -129,6 +129,7 @@ const ListMode = (props: ListModeProps) => {
               <StreamItem
                 key="empty"
                 streamName="No data"
+                topic="No data"
                 isJoinSelectionEnabled={mode === StreamsModes.select}
                 selectedStreams={selectedStreams}
                 addStreamsToSelection={addStreamsToSelection}

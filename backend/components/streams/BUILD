@@ -13,6 +13,8 @@ go_library(
         "main.go",
         "streams_list.go",
         "streams_create.go",
+        "streams_delete.go",
+        "streams_info.go",
     ],
     importpath = "github.com/airyhq/airy/backend/components/streams",
     visibility = ["//visibility:private"],

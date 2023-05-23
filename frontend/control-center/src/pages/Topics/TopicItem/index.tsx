@@ -53,14 +53,10 @@ const TopicItem = (props: TopicItemProps) => {
     }
   };
 
-  const resetCode = () => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
+  const getVersion = (): number => {
+    if (schemas[topicName]) return schemas[topicName].version;
+    return 1;
   };
-
-  let hasBeenModified = false;
-  if (schemas[topicName]) {
-    hasBeenModified = formatJSON(schemas[topicName].schema) !== code;
-  }
 
   return (
     <section className={styles.wrapper} ref={wrapperSection}>
@@ -78,9 +74,8 @@ const TopicItem = (props: TopicItemProps) => {
           topicName={topicName}
           code={code}
           setCode={setCode}
-          hasBeenModified={hasBeenModified}
-          resetCode={resetCode}
           wrapperSection={wrapperSection}
+          version={getVersion()}
         />
       )}
     </section>

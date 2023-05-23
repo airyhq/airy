@@ -23,8 +23,12 @@ export const getTopics = () => async (dispatch: Dispatch<any>) => {
 };
 
 export const getTopicInfo = (topicName: string) => async (dispatch: Dispatch<any>) => {
-  return getData(`subjects/${topicName + '-value'}/versions/latest`).then(response => {
-    dispatch(setCurrentTopicInfoAction(response));
+  return getData(`subjects/${topicName}/versions/latest`).then(response => {
+    if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+      return Promise.reject('404 Not Found');
+    } else {
+      dispatch(setCurrentTopicInfoAction(response));
+    }
     return Promise.resolve(true);
   });
 };
@@ -33,8 +37,11 @@ export const setTopicSchema = (topicName: string, schema: string) => async () =>
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return postData(`subjects/${topicName + '-value'}/versions`, body).then(response => {
-    if (response.ok && response.id) return Promise.resolve(true);
+  return postData(`subjects/${topicName}/versions`, body).then(response => {
+    if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+      return Promise.reject('404 Not Found');
+    }
+    if (response.id) return Promise.resolve(true);
     if (response.message) return Promise.reject(response.message);
     return Promise.reject('Unknown Error');
   });
@@ -42,37 +49,48 @@ export const setTopicSchema = (topicName: string, schema: string) => async () =>
 
 export const createTopic = (topicName: string, schema: string) => async () => {
   const body = {
-    payload: {
-      value_schema: JSON.stringify({...JSON.parse(schema)}),
-      records: [createInitRecordForTopic(schema)],
-    },
-    topicName,
+    schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return HttpClientInstance.createTopic(body)
-    .then((response: any) => {
-      if (response.value_schema_id) return Promise.resolve(true);
+  return postData(`subjects/${topicName}/versions`, body)
+    .then(response => {
+      if (response.id) return Promise.resolve(true);
       if (response.message) return Promise.reject(response.message);
       return Promise.reject('Unknown Error');
     })
     .catch(e => {
-      if (e.body && e.body.error) return Promise.reject(e.body.error);
-      return Promise.reject('Unknown Error');
+      return Promise.reject(e);
     });
 };
 
-export const checkCompatibilityOfNewSchema = (topicName: string, schema: string) => async () => {
+export const checkCompatibilityOfNewSchema = (topicName: string, schema: string, version: number) => async () => {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return postData(`compatibility/subjects/${topicName + '-value'}/versions/latest`, body).then(response => {
-    if (response.is_compatible !== undefined) {
-      if (response.is_compatible === true) {
-        return Promise.resolve(true);
+  return postData(`compatibility/subjects/${topicName}/versions/${version}`, body)
+    .then(response => {
+      if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+        return Promise.reject('404 Not Found');
       }
-      return Promise.reject('Schema Not Compatible');
+      if (response.is_compatible !== undefined) {
+        if (response.is_compatible === true) {
+          return Promise.resolve(true);
+        }
+        return Promise.reject('Schema Not Compatible');
+      }
+      if (response.message) return Promise.reject(response.message);
+      return Promise.reject('Unknown Error');
+    })
+    .catch(e => {
+      return Promise.reject(e);
+    });
+};
+
+export const deleteTopic = (topicName: string) => async () => {
+  return deleteData(`subjects/${topicName}`).then(response => {
+    if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+      return Promise.reject('404 Not Found');
     }
-    if (response.message) return Promise.reject(response.message);
-    return Promise.reject('Unknown Error');
+    return Promise.resolve(true);
   });
 };
 
@@ -81,7 +99,7 @@ export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<a
     ksql: `PRINT '${topicName}' FROM BEGINNING LIMIT 1;`,
     streamsProperties: {},
   };
-  return postData2('query', body).then(response => {
+  return postData('query', body).then(response => {
     dispatch(setLastMessage(response));
     return Promise.resolve(true);
   });
@@ -90,6 +108,13 @@ export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<a
 async function getData(url: string) {
   const response = await fetch(apiHostUrl + '/' + url, {
     method: 'GET',
+  });
+  return response.json();
+}
+
+async function deleteData(url: string) {
+  const response = await fetch(apiHostUrl + '/' + url, {
+    method: 'DELETE',
   });
   return response.json();
 }
@@ -103,40 +128,7 @@ async function postData(url: string, body: any) {
     body: JSON.stringify(body),
   });
 
-  try {
-    return await response.json();
-  } catch {
-    return;
-  }
-}
-
-async function postData2(url: string, body: any) {
-  const response = await fetch(apiHostUrl + '/' + url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/vnd.ksql.v1+json',
-    },
-    mode: 'no-cors',
-    body: JSON.stringify(body),
-  });
-
-  try {
-    return await response.json();
-  } catch {
-    console.log('to JSON failed.');
-    try {
-      // const avroBuffer = 0;
-      // const type = avro.parse(response);
-      // console.log('type: ', type);
-      // const decodedObject = type.fromBuffer(avroBuffer);
-      // console.log('decoded: ', decodedObject);
-      // const jsonObject = JSON.stringify(decodedObject);
-      // console.log('json: ', jsonObject);
-      // return await jsonObject;
-    } catch {
-      return;
-    }
-  }
+  return response.json();
 }
 
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
@@ -154,23 +146,3 @@ export const setCurrentTopicInfoAction = createAction(
 }>();
 
 export const setLastMessage = createAction(SET_LAST_MESSAGE, (message: {}) => message)<{}>();
-
-const createInitRecordForTopic = (schema: string): {} => {
-  const jsonValueRecord = {};
-  const jsonSchema = JSON.parse(schema);
-  if (jsonSchema['fields']) {
-    for (const param of jsonSchema['fields']) {
-      if (param['type'] === 'string') {
-        jsonValueRecord[param['name']] = param['name'] + '0';
-      }
-      if (param['type'] === 'boolean') {
-        jsonValueRecord[param['name']] = false;
-      }
-      if (param['type'] === 'long') {
-        jsonValueRecord[param['name']] = 123456;
-      }
-    }
-  }
-
-  return {value: {...jsonValueRecord}};
-};

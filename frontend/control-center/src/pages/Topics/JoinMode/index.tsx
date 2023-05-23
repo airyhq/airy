@@ -33,8 +33,12 @@ const JoinMode = (props: TopicInfoProps) => {
 
   useEffect(() => {
     if (selectedTopics.length === 2) {
-      getTopicInfo(selectedTopics[0]);
-      getTopicInfo(selectedTopics[1]);
+      getTopicInfo(selectedTopics[0]).catch(() => {
+        getTopicInfo(selectedTopics[0] + '-value');
+      });
+      getTopicInfo(selectedTopics[1]).catch(() => {
+        getTopicInfo(selectedTopics[1] + '-value');
+      });
     }
   }, [selectedTopics]);
 

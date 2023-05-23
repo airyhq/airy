@@ -76,7 +76,7 @@
 .info {
   display: flex;
   align-items: center;
-  margin-right: 58px;
+  margin-right: 42px;
 }
 
 .infoComponent {
@@ -129,6 +129,27 @@
 
 .blankSpace {
   width: 60px;
+}
+
+.delete {
+  button {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: -20px;
+  }
+  svg {
+    margin-top: 8px;
+    height: 18px;
+    fill: var(--color-text-gray);
+  }
+  &:hover {
+    svg {
+      fill: var(--color-airy-blue);
+    }
+    cursor: pointer;
+  }
 }
 
 .enableModalContainerWrapper {

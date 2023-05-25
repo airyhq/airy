@@ -8,7 +8,7 @@ import {formatJSON} from '../../../services';
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    schemas: state.data.streams.schemas,
+    streamsInfo: state.data.streams.streamsInfo,
   };
 };
 
@@ -17,80 +17,40 @@ const connector = connect(mapStateToProps, null);
 type StreamItemProps = {
   streamName: string;
   topic: string;
-  isJoinSelectionEnabled: boolean;
-  selectedStreams: string[];
-  addStreamsToSelection: (topicName: string) => void;
+  itemSelected: string;
+  setItemSelected: (item: string) => void;
 } & ConnectedProps<typeof connector>;
 
 const StreamItem = (props: StreamItemProps) => {
-  const {streamName, topic, schemas, isJoinSelectionEnabled, selectedStreams, addStreamsToSelection} = props;
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [code, setCode] = useState(formatJSON(schemas[streamName] ? schemas[streamName].schema : '{}'));
-
+  const {streamName, topic, streamsInfo, itemSelected, setItemSelected} = props;
   const wrapperSection = useRef(null);
-  const defaultHeight = 22;
-  const basicHeight = 50;
 
   useEffect(() => {
-    setCode(formatJSON(schemas[streamName] ? schemas[streamName].schema : '{}'));
-  }, [schemas]);
+    if (itemSelected !== streamName) wrapperSection.current.style.height = `50px`;
+  }, [itemSelected]);
 
-  useEffect(() => {
-    if (wrapperSection && wrapperSection.current) {
-      if (isExpanded) {
-        let lines = 0;
-        if (schemas && schemas[streamName]) {
-          if (schemas[streamName].schema !== code) {
-            lines = code.split('\n').length;
-          } else {
-            lines = JSON.stringify(JSON.parse(schemas[streamName].schema), null, 4).split('\n').length;
-          }
-        }
-        if (lines === 0) {
-          wrapperSection.current.style.height = `${200}px`;
-        } else {
-          const val = basicHeight * 2 + defaultHeight * lines;
-          wrapperSection.current.style.height = `${val}px`;
-        }
-      } else {
-        wrapperSection.current.style.height = `${basicHeight}px`;
-      }
+  const toggleExpanded = (item: string) => {
+    if (itemSelected === streamName) {
+      setItemSelected('');
+    } else {
+      setItemSelected(item);
     }
-  }, [isExpanded, schemas, code]);
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
   };
 
-  const resetCode = () => {
-    setCode(formatJSON(schemas[streamName] ? schemas[streamName].schema : '{}'));
+  const getStreamInfoString = () => {
+    return formatJSON(JSON.stringify(streamsInfo[streamName]));
   };
-
-  let hasBeenModified = false;
-  if (schemas[streamName]) {
-    hasBeenModified = formatJSON(schemas[streamName].schema) !== code;
-  }
 
   return (
     <section className={styles.wrapper} ref={wrapperSection}>
       <StreamInfo
         streamName={streamName}
-        topic={topic}
-        isExpanded={false}
-        isJoinSelectionEnabled={isJoinSelectionEnabled}
-        selectedStreams={selectedStreams}
-        addStreamsToSelection={addStreamsToSelection}
-        isSelected={selectedStreams.includes(streamName)}
+        topicName={topic}
         toggleExpanded={toggleExpanded}
+        itemSelected={itemSelected}
       />
-      {isExpanded && (
-        <StreamDescription
-          streamName={streamName}
-          code={code}
-          setCode={setCode}
-          hasBeenModified={hasBeenModified}
-          resetCode={resetCode}
-        />
+      {itemSelected === streamName && (
+        <StreamDescription streamName={streamName} code={getStreamInfoString()} wrapperSection={wrapperSection} />
       )}
     </section>
   );

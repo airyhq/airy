@@ -4,6 +4,9 @@ export interface Streams {
   schemas: {
     [topicName: string]: Schema;
   };
+  streamsInfo: {
+    [streamName: string]: StreamInfo;
+  };
   messages: {
     [topicName: string]: {};
   };
@@ -31,4 +34,12 @@ export interface SchemaField {
 export interface Stream {
   name: string;
   topic: string;
+}
+
+export interface StreamInfo {
+  '@type': string;
+  statementText: string;
+  sourceDescription: {};
+  streams: any;
+  warnings: string[];
 }

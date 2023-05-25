@@ -34,6 +34,8 @@ import {
   InstallUninstallComponentRequestPayload,
   ConnectViberRequestPayload,
   CreateTopicPayload,
+  GetStreamInfoPayload,
+  DeleteStreamPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -82,6 +84,8 @@ import {
   connectViberChannelDef,
   createTopicDef,
   getStreamsDef,
+  getStreamInfoDef,
+  deleteStreamDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -306,6 +310,10 @@ export class HttpClient {
   public createTopic = this.getRequestForKafkaTopicsEndpoints<CreateTopicPayload>(createTopicDef);
 
   public getStreams = this.getRequest<void, Stream[]>(getStreamsDef);
+
+  public getStreamInfo = this.getRequest<GetStreamInfoPayload>(getStreamInfoDef);
+
+  public deleteStream = this.getRequest<DeleteStreamPayload>(deleteStreamDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

@@ -29,7 +29,7 @@
 .name {
   display: flex;
   align-items: center;
-  width: 50%;
+  width: 60%;
 }
 
 .topic {
@@ -63,16 +63,10 @@
   color: var(--color-text-gray);
 }
 
-.componentTopic {
-  margin-left: 0px;
-  @include font-base;
-  color: var(--color-text-gray);
-}
-
 .info {
   display: flex;
   align-items: center;
-  margin-right: 58px;
+  margin-right: 42px;
 }
 
 .infoComponent {
@@ -125,6 +119,27 @@
 
 .blankSpace {
   width: 60px;
+}
+
+.delete {
+  button {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: -20px;
+  }
+  svg {
+    margin-top: 8px;
+    height: 18px;
+    fill: var(--color-text-gray);
+  }
+  &:hover {
+    svg {
+      fill: var(--color-airy-blue);
+    }
+    cursor: pointer;
+  }
 }
 
 .enableModalContainerWrapper {

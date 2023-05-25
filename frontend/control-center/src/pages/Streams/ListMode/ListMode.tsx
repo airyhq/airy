@@ -23,9 +23,6 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 type ListModeProps = {
-  selectedStreams: string[];
-  addStreamsToSelection: (topicName: string) => void;
-  setSelectedStreams: (topics: string[]) => void;
   mode: StreamsModes;
   setMode: (mode: StreamsModes) => void;
 } & ConnectedProps<typeof connector>;
@@ -33,11 +30,12 @@ type ListModeProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ListMode = (props: ListModeProps) => {
-  const {selectedStreams, setSelectedStreams, addStreamsToSelection, mode, setMode} = props;
+  const {mode, setMode} = props;
   const {streams, getStreams} = props;
   const [spinAnim, setSpinAnim] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date().toLocaleString());
+  const [itemSelected, setItemSelected] = useState('');
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -81,30 +79,14 @@ const ListMode = (props: ListModeProps) => {
             <h2>{t('name')}</h2>
             <h2>{t('topicsName')}</h2>
             <Button
-              className={`${mode === StreamsModes.select ? styles.listHeaderButtonConfirm : styles.listHeaderButton}`}
+              className={styles.listHeaderButton}
               styleVariant="green"
               onClick={() => {
-                if (mode === StreamsModes.list) {
-                  setMode(StreamsModes.select);
-                } else {
-                  setMode(StreamsModes.join);
-                }
+                setMode(StreamsModes.join);
               }}
             >
-              {mode === StreamsModes.select ? t('confirm').toLocaleUpperCase() : 'JOIN'}
+              JOIN
             </Button>
-            {mode === StreamsModes.select && (
-              <Button
-                className={styles.listHeaderButtonConfirm}
-                styleVariant="warning"
-                onClick={() => {
-                  setMode(StreamsModes.list);
-                  setSelectedStreams([]);
-                }}
-              >
-                {t('cancel').toLocaleUpperCase()}
-              </Button>
-            )}
             <button onClick={handleRefresh} className={styles.refreshButton}>
               <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
                 <RefreshIcon />
@@ -119,9 +101,8 @@ const ListMode = (props: ListModeProps) => {
                     key={stream.topic}
                     streamName={stream.name}
                     topic={stream.topic}
-                    isJoinSelectionEnabled={mode === StreamsModes.select}
-                    selectedStreams={selectedStreams}
-                    addStreamsToSelection={addStreamsToSelection}
+                    itemSelected={itemSelected}
+                    setItemSelected={setItemSelected}
                   />
                 );
               })
@@ -130,9 +111,8 @@ const ListMode = (props: ListModeProps) => {
                 key="empty"
                 streamName="No data"
                 topic="No data"
-                isJoinSelectionEnabled={mode === StreamsModes.select}
-                selectedStreams={selectedStreams}
-                addStreamsToSelection={addStreamsToSelection}
+                itemSelected={itemSelected}
+                setItemSelected={setItemSelected}
               />
             )}
           </div>

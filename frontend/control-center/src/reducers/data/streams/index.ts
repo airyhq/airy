@@ -8,6 +8,7 @@ const defaultState = {
   topics: [],
   streams: [],
   schemas: {},
+  streamsInfo: {},
   messages: {},
 };
 
@@ -43,6 +44,16 @@ export default function configReducer(state = defaultState, action: Action): Str
         schemas: {
           ...state.schemas,
           [topicName]: action.payload,
+        },
+      };
+    }
+    case getType(actions.setCurrentStreamInfoAction): {
+      const streamName = action.payload[0]['sourceDescription']['name'];
+      return {
+        ...state,
+        streamsInfo: {
+          ...state.streamsInfo,
+          [streamName]: action.payload[0],
         },
       };
     }

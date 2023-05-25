@@ -1,12 +1,16 @@
 import _typesafe, {createAction} from 'typesafe-actions';
 import {apiHostUrl, HttpClientInstance} from '../../httpClient';
 import {Dispatch} from 'react';
-import {Stream} from 'model';
+import {Stream, StreamInfo} from 'model';
+import {Schema} from 'react-markdown/lib/ast-to-react';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
 const SET_STREAMS = '@@metadata/SET_STREAMS';
 const SET_TOPIC_INFO = '@@metadata/SET_TOPICS_INFO';
+const SET_STREAM_INFO = '@@metadata/SET_STREAM_INFO';
 const SET_LAST_MESSAGE = '@@metadata/SET_LAST_MESSAGRE';
+
+// ------------------------- STREAMS -------------------------
 
 export const getStreams = () => (dispatch: Dispatch<any>) => {
   return HttpClientInstance.getStreams().then((response: Stream[]) => {
@@ -14,6 +18,25 @@ export const getStreams = () => (dispatch: Dispatch<any>) => {
     return Promise.resolve(true);
   });
 };
+
+export const getStreamInfo = (name: string) => (dispatch: Dispatch<any>) => {
+  return HttpClientInstance.getStreamInfo({name}).then((response: any) => {
+    dispatch(setCurrentStreamInfoAction(response));
+    return Promise.resolve(true);
+  });
+};
+
+export const deleteStream = (name: string) => (dispatch: Dispatch<any>) => {
+  return HttpClientInstance.deleteStream({name})
+    .then(() => {
+      return Promise.resolve(true);
+    })
+    .catch(e => {
+      console.error(e);
+    });
+};
+
+// ------------------------- TOPICS -------------------------
 
 export const getTopics = () => async (dispatch: Dispatch<any>) => {
   return getData('subjects').then(response => {
@@ -105,6 +128,8 @@ export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<a
   });
 };
 
+// -------------------------  API -------------------------
+
 async function getData(url: string) {
   const response = await fetch(apiHostUrl + '/' + url, {
     method: 'GET',
@@ -131,18 +156,17 @@ async function postData(url: string, body: any) {
   return response.json();
 }
 
+// -------------------------  ACTIONS -------------------------
+
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
 
 export const setStreamsAction = createAction(SET_STREAMS, (streams: Stream[]) => streams)<Stream[]>();
 
-export const setCurrentTopicInfoAction = createAction(
-  SET_TOPIC_INFO,
-  (topicInfo: {id: number; schema: string; subject: string; version: number}) => topicInfo
-)<{
-  id: number;
-  schema: string;
-  subject: string;
-  version: number;
-}>();
+export const setCurrentTopicInfoAction = createAction(SET_TOPIC_INFO, (topicInfo: Schema) => topicInfo)<Schema>();
+
+export const setCurrentStreamInfoAction = createAction(
+  SET_STREAM_INFO,
+  (streamInfo: StreamInfo) => streamInfo
+)<StreamInfo>();
 
 export const setLastMessage = createAction(SET_LAST_MESSAGE, (message: {}) => message)<{}>();

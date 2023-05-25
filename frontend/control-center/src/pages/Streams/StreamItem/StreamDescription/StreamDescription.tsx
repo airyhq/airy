@@ -1,147 +1,59 @@
-import React, {useState} from 'react';
-import CodeEditor from '@uiw/react-textarea-code-editor';
+import React, {MutableRefObject, useEffect, useState} from 'react';
+import {getStreamInfo} from '../../../../actions';
+import {connect, ConnectedProps} from 'react-redux';
+import {calculateHeightOfCodeString} from '../../../../services';
 import styles from './index.module.scss';
-import {Button, ErrorPopUp} from 'components';
-import {useTranslation} from 'react-i18next';
-import {formatJSON, isJSON} from '../../../../services';
+import {InfoSection} from './InfoSection';
+
+const mapDispatchToProps = {
+  getStreamInfo,
+};
+
+const connector = connect(null, mapDispatchToProps);
 
 type StreamDescriptionProps = {
   streamName: string;
   code: string;
-  setCode: (code: string) => void;
-  resetCode: () => void;
-  hasBeenModified: boolean;
-};
+  wrapperSection: MutableRefObject<any>;
+} & ConnectedProps<typeof connector>;
 
 const StreamDescription = (props: StreamDescriptionProps) => {
-  const {streamName, hasBeenModified, code, setCode, resetCode} = props;
+  const {streamName, code, getStreamInfo, wrapperSection} = props;
 
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [firstTabSelected, setFirstTabSelected] = useState(true);
-  const [showErrorPopUp, setShowErrorPopUp] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const {t} = useTranslation();
+  useEffect(() => {
+    getStreamInfo(streamName);
+  }, []);
 
-  const resetCodeAndEndEdition = () => {
-    resetCode();
-    setIsEditMode(false);
-  };
+  useEffect(() => {
+    window.addEventListener('themeChanged', () => {
+      const theme = localStorage.getItem('theme');
+      setEditorMode(theme ? 'vs-dark' : 'vs');
+    });
+  }, []);
 
-  const SchemaSection = () => {
-    return (
-      <CodeEditor
-        value={code}
-        readOnly={!isEditMode}
-        language="json5"
-        autoFocus={isEditMode}
-        placeholder=""
-        onChange={evn => {
-          if (isEditMode) setCode(evn.target.value);
-        }}
-        padding={15}
-        style={{
-          height: '100%',
-          fontSize: 12,
-          lineHeight: '20px',
-          fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          backgroundColor: 'transparent',
-        }}
-      />
-    );
-  };
+  const [editorMode, setEditorMode] = useState(localStorage.getItem('theme') === 'dark' ? 'vs-dark' : 'vs');
 
-  const MessageSection = () => {
-    return (
-      <CodeEditor
-        value={formatJSON(
-          JSON.stringify({
-            id: 'ad6b6f6b-7ae7-4607-a30f-0e6b6f7f6140',
-            headers: {},
-            isFromContact: false,
-            deliveryState: 'DELIVERED',
-            senderId: 'auth0:Aitor Algorta',
-            sourceRecipientId: null,
-            conversationId: '9bc34959-2993-41cd-9c49-de7d7bca91de',
-            channelId: '91d30fe3-cf14-4045-9448-aea85549b316',
-            source: 'chatplugin',
-            content: '{"text":"496"}',
-            sentAt: 1635499938550,
-            updatedAt: 1635499938575,
-          })
-        )}
-        readOnly={true}
-        language="json5"
-        autoFocus={isEditMode}
-        placeholder=""
-        padding={15}
-        style={{
-          height: '100%',
-          fontSize: 12,
-          lineHeight: '20px',
-          fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          backgroundColor: 'transparent',
-        }}
-      />
-    );
+  useEffect(() => {
+    recalculateContainerHeight(code);
+  }, [code]);
+
+  const recalculateContainerHeight = (code: string) => {
+    const basicHeight = 50;
+    const headerHeight = 32;
+    if (wrapperSection && wrapperSection.current) {
+      wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + headerHeight + basicHeight}px`;
+    } else {
+      wrapperSection.current.style.height = `${basicHeight}px`;
+    }
   };
 
   return (
-    <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
-      <div className={styles.buttonsContainer}>
-        <div className={styles.leftButtonsContainer}>
-          <button
-            className={`${!firstTabSelected ? styles.tabNotSelected : ''}`}
-            onClick={() => {
-              setFirstTabSelected(true);
-            }}
-          >
-            Schema
-          </button>
-          <button
-            className={`${firstTabSelected ? styles.tabNotSelected : ''}`}
-            onClick={() => {
-              setFirstTabSelected(false);
-            }}
-          >
-            Last Message
-          </button>
-        </div>
-        {firstTabSelected && (
-          <div className={styles.rightButtonsContainer}>
-            <Button
-              onClick={() => {
-                if (isJSON(code)) {
-                  setIsEditMode(!isEditMode);
-                  if (isEditMode && hasBeenModified) {
-                  }
-                } else {
-                  setIsEditMode(true);
-                  setErrorMessage('JSON Not Valid');
-                  setShowErrorPopUp(true);
-                  setTimeout(() => setShowErrorPopUp(false), 5000);
-                }
-              }}
-              styleVariant="normal"
-              style={{padding: '8px', margin: '4px', width: '50px', height: '24px', fontSize: 15}}
-            >
-              {isEditMode ? t('save') : t('edit')}
-            </Button>
-            {hasBeenModified && (
-              <Button
-                onClick={() => resetCodeAndEndEdition()}
-                styleVariant="normal"
-                style={{padding: '8px', margin: '4px', width: '50px', height: '24px', fontSize: 15, marginLeft: 4}}
-              >
-                {t('reset')}
-              </Button>
-            )}
-          </div>
-        )}
-      </div>
-      {firstTabSelected ? <SchemaSection /> : <MessageSection />}
-      {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}
+    <div className={styles.containerNoEdit} onClick={e => e.stopPropagation()}>
+      {code && code !== '{}' && (
+        <InfoSection code={code} editorMode={editorMode} recalculateContainerHeight={recalculateContainerHeight} />
+      )}
     </div>
   );
 };
 
-export default StreamDescription;
+export default connector(StreamDescription);

@@ -33,6 +33,7 @@ const TopicItem = (props: TopicItemProps) => {
     itemSelected,
     setItemSelected,
   } = props;
+
   const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
 
   const wrapperSection = useRef(null);

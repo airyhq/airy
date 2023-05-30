@@ -79,6 +79,7 @@ module.exports = {
             'api/endpoints/client-config',
             'api/endpoints/components',
             'api/endpoints/cluster',
+            'api/endpoints/streams',
           ],
         },
         'api/httpClient',

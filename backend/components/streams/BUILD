@@ -11,19 +11,19 @@ go_library(
         "auth.go",
         "cors.go",
         "main.go",
-        "streams_list.go",
         "streams_create.go",
         "streams_delete.go",
         "streams_info.go",
+        "streams_list.go",
     ],
     importpath = "github.com/airyhq/airy/backend/components/streams",
     visibility = ["//visibility:private"],
     deps = [
+        "//lib/go/httpclient",
+        "//lib/go/payloads",
         "@com_github_golang_jwt_jwt//:jwt",
         "@com_github_gorilla_mux//:mux",
         "@io_k8s_klog//:klog",
-        "//lib/go/httpclient",
-        "//lib/go/payloads",
     ],
 )
 

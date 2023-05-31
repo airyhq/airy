@@ -10,7 +10,7 @@ for more information.
 
 `POST /streams.list`
 
-The  list of created streams is returned.
+The list of created streams is returned.
 
 **Sample response**
 
@@ -37,35 +37,40 @@ At the moment the name of the output topic is the same as the name of the stream
 
 ```json5
 {
-    "name": "customapp",
-    "topics": [{
-            "name": "messages",
-            "fields": [{
-                    "name": "source",
-                    "newName": "from"
-                },
-                {
-                    "name": "senderId",
-                    "nawName": "sender"
-                }
-            ]
+  "name": "customapp",
+  "topics": [
+    {
+      "name": "messages",
+      "fields": [
+        {
+          "name": "source",
+          "newName": "from"
         },
         {
-            "name": "channels",
-            "fields": [{
-                    "name": "connectionState",
-                    "newName": "state"
-                }
-            ]
+          "name": "senderId",
+          "nawName": "sender"
         }
-    ],
-    "joins": [{
-        "name": "newSource",
-        "field1": "source",
-        "field2": "source"
-    }],
-    "aggregations": [],
-    "key": "messages.source"
+      ]
+    },
+    {
+      "name": "channels",
+      "fields": [
+        {
+          "name": "connectionState",
+          "newName": "state"
+        }
+      ]
+    }
+  ],
+  "joins": [
+    {
+      "name": "newSource",
+      "field1": "source",
+      "field2": "source"
+    }
+  ],
+  "aggregations": [],
+  "key": "messages.source"
 }
 ```
 
@@ -75,8 +80,8 @@ The name of the created stream is returned, alongside with the output topic.
 
 ```json5
 {
-    "name":"customapp",
-    "outputTopic":"customapp"
+  "name": "customapp",
+  "outputTopic": "customapp"
 }
 ```
 
@@ -98,51 +103,50 @@ Information about the stream is returned.
 
 ```json5
 {
-	"stream": {
-		"name": "CUSTOMAPP",
-		"writeQueries": [{
-			"queryString": "CREATE STREAM CUSTOMAPP WITH (KAFKA_TOPIC='CUSTOMAPP', PARTITIONS=10, REPLICAS=1) AS SELECT\n  A.SOURCE A_SOURCE,\n  A.SENDERID SENDERID,\n  B.CONNECTIONSTATE CONNECTIONSTATE\nFROM MESSAGES A\nINNER JOIN CHANNELS B WITHIN 365 DAYS ON ((B.SOURCE = A.SOURCE))\nEMIT CHANGES;",
-			"sinks": [
-				"CUSTOMAPP"
-			],
-			"sinkKafkaTopics": [
-				"CUSTOMAPP"
-			],
-			"id": "CSAS_CUSTOMAPP_79",
-			"statusCount": {
-				"RUNNING": 1
-			},
-			"queryType": "PERSISTENT",
-			"state": "RUNNING"
-		}],
-		"fields": [{
-				"name": "A_SOURCE",
-				"schema": {
-					"type": "STRING"
-				},
-				"type": "KEY"
-			},
-			{
-				"name": "SENDERID",
-				"schema": {
-					"type": "STRING"
-				}
-			},
-			{
-				"name": "CONNECTIONSTATE",
-				"schema": {
-					"type": "STRING"
-				}
-			}
-		],
-		"type": "STREAM",
-		"keyFormat": "KAFKA",
-		"valueFormat": "AVRO",
-		"topic": "CUSTOMAPP",
-		"partitions": 10,
-		"replication": 1,
-		"statement": "CREATE STREAM CUSTOMAPP WITH (KAFKA_TOPIC='CUSTOMAPP', PARTITIONS=10, REPLICAS=1) AS SELECT\n  A.SOURCE A_SOURCE,\n  A.SENDERID SENDERID,\n  B.CONNECTIONSTATE CONNECTIONSTATE\nFROM MESSAGES A\nINNER JOIN CHANNELS B WITHIN 365 DAYS ON ((B.SOURCE = A.SOURCE))\nEMIT CHANGES;"
-	}
+  "stream": {
+    "name": "CUSTOMAPP",
+    "writeQueries": [
+      {
+        "queryString": "CREATE STREAM CUSTOMAPP WITH (KAFKA_TOPIC='CUSTOMAPP', PARTITIONS=10, REPLICAS=1) AS SELECT\n  A.SOURCE A_SOURCE,\n  A.SENDERID SENDERID,\n  B.CONNECTIONSTATE CONNECTIONSTATE\nFROM MESSAGES A\nINNER JOIN CHANNELS B WITHIN 365 DAYS ON ((B.SOURCE = A.SOURCE))\nEMIT CHANGES;",
+        "sinks": ["CUSTOMAPP"],
+        "sinkKafkaTopics": ["CUSTOMAPP"],
+        "id": "CSAS_CUSTOMAPP_79",
+        "statusCount": {
+          "RUNNING": 1
+        },
+        "queryType": "PERSISTENT",
+        "state": "RUNNING"
+      }
+    ],
+    "fields": [
+      {
+        "name": "A_SOURCE",
+        "schema": {
+          "type": "STRING"
+        },
+        "type": "KEY"
+      },
+      {
+        "name": "SENDERID",
+        "schema": {
+          "type": "STRING"
+        }
+      },
+      {
+        "name": "CONNECTIONSTATE",
+        "schema": {
+          "type": "STRING"
+        }
+      }
+    ],
+    "type": "STREAM",
+    "keyFormat": "KAFKA",
+    "valueFormat": "AVRO",
+    "topic": "CUSTOMAPP",
+    "partitions": 10,
+    "replication": 1,
+    "statement": "CREATE STREAM CUSTOMAPP WITH (KAFKA_TOPIC='CUSTOMAPP', PARTITIONS=10, REPLICAS=1) AS SELECT\n  A.SOURCE A_SOURCE,\n  A.SENDERID SENDERID,\n  B.CONNECTIONSTATE CONNECTIONSTATE\nFROM MESSAGES A\nINNER JOIN CHANNELS B WITHIN 365 DAYS ON ((B.SOURCE = A.SOURCE))\nEMIT CHANGES;"
+  }
 }
 ```
 

@@ -48,7 +48,7 @@ func (c *Client) DeleteStream(expr string) (*payloads.KsqlResponsePayload, error
 	return post[*payloads.KsqlResponsePayload](c, "ksql", payload)
 }
 
-func (c *Client) InfoStream(expr string) (*payloads.KsqlResponsePayload, error) {
+func (c *Client) InfoStream(expr string) (*payloads.SourceDescription, error) {
 	streamingProperties := map[string]string{}
 	payload, err := json.Marshal(payloads.KsqlRequestPayload{
 		Ksql:                expr,
@@ -59,5 +59,10 @@ func (c *Client) InfoStream(expr string) (*payloads.KsqlResponsePayload, error) 
 		return nil, err
 	}
 
-	return post[*payloads.KsqlResponsePayload](c, "ksql", payload)
+	info, err := post[*payloads.KsqlResponsePayload](c, "ksql", payload)
+	if err != nil {
+		return nil, err
+	}
+
+	return &(*info)[0].SourceDescription, nil
 }

@@ -6,49 +6,10 @@ type KsqlRequestPayload struct {
 }
 
 type KsqlResponsePayload []struct {
-	Type              string `json:"@type"`
-	StatementText     string `json:"statementText"`
-	SourceDescription struct {
-		Name         string `json:"name,omitempty"`
-		WindowType   any    `json:"windowType,omitempty"`
-		ReadQueries  []any  `json:"readQueries,omitempty"`
-		WriteQueries []struct {
-			QueryString     string   `json:"queryString,omitempty"`
-			Sinks           []string `json:"sinks,omitempty"`
-			SinkKafkaTopics []string `json:"sinkKafkaTopics,omitempty"`
-			ID              string   `json:"id,omitempty"`
-			StatusCount     struct {
-				Running int `json:"RUNNING,omitempty"`
-			} `json:"statusCount,omitempty"`
-			QueryType string `json:"queryType,omitempty"`
-			State     string `json:"state,omitempty"`
-		} `json:"writeQueries,omitempty"`
-		Fields []struct {
-			Name   string `json:"name,omitempty"`
-			Schema struct {
-				Type         string `json:"type,omitempty"`
-				Fields       any    `json:"fields,omitempty"`
-				MemberSchema any    `json:"memberSchema,omitempty"`
-			} `json:"schema,omitempty"`
-			Type string `json:"type,omitempty"`
-		} `json:"fields,omitempty"`
-		Type                 string `json:"type,omitempty"`
-		Timestamp            string `json:"timestamp,omitempty"`
-		Statistics           string `json:"statistics,omitempty"`
-		ErrorStats           string `json:"errorStats,omitempty"`
-		Extended             bool   `json:"extended,omitempty"`
-		KeyFormat            string `json:"keyFormat,omitempty"`
-		ValueFormat          string `json:"valueFormat,omitempty"`
-		Topic                string `json:"topic,omitempty"`
-		Partitions           int    `json:"partitions,omitempty"`
-		Replication          int    `json:"replication,omitempty"`
-		Statement            string `json:"statement,omitempty"`
-		QueryOffsetSummaries []any  `json:"queryOffsetSummaries,omitempty"`
-		SourceConstraints    []any  `json:"sourceConstraints,omitempty"`
-		ClusterStatistics    []any  `json:"clusterStatistics,omitempty"`
-		ClusterErrorStats    []any  `json:"clusterErrorStats,omitempty"`
-	} `json:"sourceDescription,omitempty"`
-	Streams []struct {
+	Type              string            `json:"@type"`
+	StatementText     string            `json:"statementText"`
+	SourceDescription SourceDescription `json:"sourceDescription,omitempty"`
+	Streams           []struct {
 		Type        string `json:"type"`
 		Name        string `json:"name"`
 		Topic       string `json:"topic"`
@@ -59,6 +20,47 @@ type KsqlResponsePayload []struct {
 	Warnings []struct {
 		Message string `json:"message"`
 	} `json:"warnings"`
+}
+
+type SourceDescription struct {
+	Name         string `json:"name,omitempty"`
+	WindowType   any    `json:"windowType,omitempty"`
+	ReadQueries  []any  `json:"readQueries,omitempty"`
+	WriteQueries []struct {
+		QueryString     string   `json:"queryString,omitempty"`
+		Sinks           []string `json:"sinks,omitempty"`
+		SinkKafkaTopics []string `json:"sinkKafkaTopics,omitempty"`
+		ID              string   `json:"id,omitempty"`
+		StatusCount     struct {
+			Running int `json:"RUNNING,omitempty"`
+		} `json:"statusCount,omitempty"`
+		QueryType string `json:"queryType,omitempty"`
+		State     string `json:"state,omitempty"`
+	} `json:"writeQueries,omitempty"`
+	Fields []struct {
+		Name   string `json:"name,omitempty"`
+		Schema struct {
+			Type         string `json:"type,omitempty"`
+			Fields       any    `json:"fields,omitempty"`
+			MemberSchema any    `json:"memberSchema,omitempty"`
+		} `json:"schema,omitempty"`
+		Type string `json:"type,omitempty"`
+	} `json:"fields,omitempty"`
+	Type                 string `json:"type,omitempty"`
+	Timestamp            string `json:"timestamp,omitempty"`
+	Statistics           string `json:"statistics,omitempty"`
+	ErrorStats           string `json:"errorStats,omitempty"`
+	Extended             bool   `json:"extended,omitempty"`
+	KeyFormat            string `json:"keyFormat,omitempty"`
+	ValueFormat          string `json:"valueFormat,omitempty"`
+	Topic                string `json:"topic,omitempty"`
+	Partitions           int    `json:"partitions,omitempty"`
+	Replication          int    `json:"replication,omitempty"`
+	Statement            string `json:"statement,omitempty"`
+	QueryOffsetSummaries []any  `json:"queryOffsetSummaries,omitempty"`
+	SourceConstraints    []any  `json:"sourceConstraints,omitempty"`
+	ClusterStatistics    []any  `json:"clusterStatistics,omitempty"`
+	ClusterErrorStats    []any  `json:"clusterErrorStats,omitempty"`
 }
 
 type StreamsCreateRequestPayload struct {
@@ -94,16 +96,4 @@ type StreamsDeleteResponsePayload struct {
 
 type StreamsInfoRequestPayload struct {
 	Name string `json:"name"`
-}
-
-type StreamsInfoResponsePayload struct {
-	Name string `json:"name"`
-	// DescribeStream struct {
-	// 	Type        string `json:"type"`
-	// 	Name        string `json:"name"`
-	// 	Topic       string `json:"topic"`
-	// 	KeyFormat   string `json:"keyFormat"`
-	// 	ValueFormat string `json:"valueFormat"`
-	// 	IsWindowed  bool   `json:"isWindowed"`
-	// } `json:"stream"`
 }

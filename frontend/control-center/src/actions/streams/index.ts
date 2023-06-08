@@ -3,6 +3,7 @@ import {apiHostUrl, HttpClientInstance} from '../../httpClient';
 import {Dispatch} from 'react';
 import {Stream, StreamInfo} from 'model';
 import {Schema} from 'react-markdown/lib/ast-to-react';
+import {CreateStreamPayload} from 'httpclient/src';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
 const SET_STREAMS = '@@metadata/SET_STREAMS';
@@ -24,6 +25,16 @@ export const getStreamInfo = (name: string) => (dispatch: Dispatch<any>) => {
     dispatch(setCurrentStreamInfoAction(response));
     return Promise.resolve(true);
   });
+};
+
+export const createStream = (payload: CreateStreamPayload) => (dispatch: Dispatch<any>) => {
+  return HttpClientInstance.createStream(payload)
+    .then(() => {
+      return Promise.resolve(true);
+    })
+    .catch(e => {
+      console.error(e);
+    });
 };
 
 export const deleteStream = (name: string) => (dispatch: Dispatch<any>) => {

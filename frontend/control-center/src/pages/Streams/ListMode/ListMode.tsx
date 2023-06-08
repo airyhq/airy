@@ -23,14 +23,13 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 type ListModeProps = {
-  mode: StreamsModes;
   setMode: (mode: StreamsModes) => void;
 } & ConnectedProps<typeof connector>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ListMode = (props: ListModeProps) => {
-  const {mode, setMode} = props;
+  const {setMode} = props;
   const {streams, getStreams} = props;
   const [spinAnim, setSpinAnim] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,7 +81,7 @@ const ListMode = (props: ListModeProps) => {
               className={styles.listHeaderButton}
               styleVariant="green"
               onClick={() => {
-                setMode(StreamsModes.join);
+                setMode(StreamsModes.creation);
               }}
             >
               JOIN

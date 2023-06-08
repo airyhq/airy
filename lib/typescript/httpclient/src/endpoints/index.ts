@@ -46,3 +46,4 @@ export * from './createTopic';
 export * from './getStreams';
 export * from './getStreamInfo';
 export * from './deleteStream';
+export * from './createStream';

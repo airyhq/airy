@@ -1,0 +1,157 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  padding-bottom: 60px;
+}
+
+.titleSection {
+  @include font-m;
+  font-weight: 700;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.topicSelector {
+  display: flex;
+  width: 75%;
+  div {
+    margin-right: 10px;
+  }
+  margin-bottom: 80px;
+}
+
+.fieldsSection {
+  display: flex;
+  width: 75%;
+  margin-bottom: 80px;
+  p {
+    margin-top: 8px;
+    text-align-last: center;
+  }
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.selectFieldsJoinSection {
+  display: flex;
+  width: 75%;
+  p {
+    margin-top: 8px;
+    text-align-last: center;
+  }
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.fieldCodeSelected {
+  border: 3px solid var(--color-airy-blue);
+  div,
+  textarea {
+    border: none !important;
+  }
+}
+
+.codeSection {
+  width: 50%;
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.fieldCode {
+  margin: 12px 10px 0 0;
+  border-radius: 12px;
+}
+
+.saveButton {
+  width: 75%;
+  padding: 16px;
+  display: flex;
+  place-content: center;
+}
+
+.fieldNameSection {
+  display: flex;
+  width: 75%;
+  padding-right: 8px;
+  button {
+    margin: 21px 0px 0px 12px;
+  }
+  label {
+    width: 100%;
+    width: -moz-available; /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
+  }
+}
+
+.joinsContainer {
+  width: 75%;
+  display: flex;
+  flex-flow: wrap;
+  margin-bottom: 80px;
+}
+
+.joinsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24%;
+  margin: 12px 10px 0 0;
+  border-radius: 12px;
+  border: 3px solid var(--color-airy-blue);
+  svg {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.selectedJoinsSection {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+}
+
+.selectedJoins {
+  @include font-base;
+  border: 1px solid var(--color-airy-blue);
+  height: 52px;
+  width: 50%;
+  padding-top: 12px;
+  text-align-last: center;
+  font-weight: 700;
+}
+
+.selectedJoinsText {
+  @include font-base;
+  margin: 12px;
+  text-align-last: center;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.selectedJoinsName {
+  @include font-base;
+  text-align-last: center;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.inputsContainer {
+  margin-top: 80px;
+  button {
+    margin-top: 16px;
+  }
+}

@@ -36,3 +36,4 @@ export * from './InstallUninstallComponentRequestPayload';
 export * from './CreateTopicPayload';
 export * from './GetStreamInfoPayload';
 export * from './DeleteStreamPayload';
+export * from './CreateStreamPayload';

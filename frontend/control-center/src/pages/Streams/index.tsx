@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {setPageTitle} from '../../services/pageTitle';
 import styles from './index.module.scss';
-// import JoinMode from './JoinMode';
 import ListMode from './ListMode/ListMode';
+import Creation from './Creation';
 
 export enum StreamsModes {
   list = 'list',
   join = 'join',
+  creation = 'creation',
 }
 
 const Streams = () => {
@@ -19,11 +20,11 @@ const Streams = () => {
   const getViewMode = () => {
     switch (mode) {
       case StreamsModes.list:
-        return <ListMode mode={mode} setMode={setMode} />;
-      //   case StreamsModes.join:
-      //     return <JoinMode selectedTopics={selectedTopics} setMode={setMode} />;
+        return <ListMode setMode={setMode} />;
+      case StreamsModes.creation:
+        return <Creation />;
       default:
-        return <ListMode mode={mode} setMode={setMode} />;
+        return <ListMode setMode={setMode} />;
     }
   };
 

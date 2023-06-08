@@ -121,7 +121,7 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               height={32}
               autoComplete="off"
               fontClass="font-base"
-            />            
+            />
             <Button
               styleVariant="small"
               type="button"

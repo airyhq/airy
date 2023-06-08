@@ -27,7 +27,7 @@ export const getStreamInfo = (name: string) => (dispatch: Dispatch<any>) => {
   });
 };
 
-export const createStream = (payload: CreateStreamPayload) => (dispatch: Dispatch<any>) => {
+export const createStream = (payload: CreateStreamPayload) => () => {
   return HttpClientInstance.createStream(payload)
     .then(() => {
       return Promise.resolve(true);
@@ -37,7 +37,7 @@ export const createStream = (payload: CreateStreamPayload) => (dispatch: Dispatc
     });
 };
 
-export const deleteStream = (name: string) => (dispatch: Dispatch<any>) => {
+export const deleteStream = (name: string) => () => {
   return HttpClientInstance.deleteStream({name})
     .then(() => {
       return Promise.resolve(true);

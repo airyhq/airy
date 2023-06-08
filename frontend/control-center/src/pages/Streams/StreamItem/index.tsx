@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import StreamInfo from './StreamInfo';
 import styles from './index.module.scss';
 import {connect, ConnectedProps} from 'react-redux';

@@ -176,6 +176,7 @@ const Creation = (props: ListModeProps) => {
                   {getFieldsOfSchema(topic1).map(field => {
                     return (
                       <div
+                        key={topic1 + (Math.random() + 1).toString(36).substring(7)}
                         className={`${styles.fieldCode} ${isSelected(field) ? styles.fieldCodeSelected : ''}`}
                         onClick={() => selectedFieldFirstTopic(field)}
                       >
@@ -204,6 +205,7 @@ const Creation = (props: ListModeProps) => {
                   {getFieldsOfSchema(topic2).map(field => {
                     return (
                       <div
+                        key={topic2 + (Math.random() + 1).toString(36).substring(7)}
                         className={`${styles.fieldCode} ${isSelected(field) && styles.fieldCodeSelected}`}
                         onClick={() => selectedFieldSecondTopic(field)}
                       >
@@ -247,7 +249,10 @@ const Creation = (props: ListModeProps) => {
                     .filter(field => isSelected(field))
                     .map(field => {
                       return (
-                        <div className={`${styles.fieldCode} ${isSelected(field) ? styles.fieldCodeSelected : ''}`}>
+                        <div
+                          key={topic1 + (Math.random() + 1).toString(36).substring(7)}
+                          className={`${styles.fieldCode} ${isSelected(field) ? styles.fieldCodeSelected : ''}`}
+                        >
                           <CodeEditor
                             value={formatJSON(JSON.stringify(field))}
                             language="json5"
@@ -275,7 +280,10 @@ const Creation = (props: ListModeProps) => {
                     .filter(field => isSelected(field))
                     .map(field => {
                       return (
-                        <div className={`${styles.fieldCode} ${isSelected(field) && styles.fieldCodeSelected}`}>
+                        <div
+                          key={topic2 + (Math.random() + 1).toString(36).substring(7)}
+                          className={`${styles.fieldCode} ${isSelected(field) && styles.fieldCodeSelected}`}
+                        >
                           <CodeEditor
                             value={formatJSON(JSON.stringify(field))}
                             language="json5"
@@ -304,7 +312,10 @@ const Creation = (props: ListModeProps) => {
                   <div className={styles.joinsContainer}>
                     {selectedFieldsForJoins.map(joinObject => {
                       return (
-                        <div className={styles.joinsSection}>
+                        <div
+                          key={'joinObject' + (Math.random() + 1).toString(36).substring(7)}
+                          className={styles.joinsSection}
+                        >
                           <div className={styles.selectedJoinsSection}>
                             <div className={styles.selectedJoins}>{joinObject['field1']}</div>
                             <div className={styles.selectedJoins}>{joinObject['field2']}</div>
@@ -334,6 +345,7 @@ const Creation = (props: ListModeProps) => {
                     .map(field => {
                       return (
                         <div
+                          key={topic1 + (Math.random() + 1).toString(36).substring(7)}
                           className={styles.fieldCode}
                           onClick={() => {
                             if (currentJoinSelection1) {
@@ -376,6 +388,7 @@ const Creation = (props: ListModeProps) => {
                     .map(field => {
                       return (
                         <div
+                          key={topic2 + (Math.random() + 1).toString(36).substring(7)}
                           className={styles.fieldCode}
                           onClick={() => {
                             if (currentJoinSelection2) {

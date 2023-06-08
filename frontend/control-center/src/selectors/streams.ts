@@ -18,7 +18,3 @@ export const getValidTopics = (state: StateModel) => {
     })
     .sort();
 };
-
-export const getStreams = (state: StateModel) => {
-  return [];
-};

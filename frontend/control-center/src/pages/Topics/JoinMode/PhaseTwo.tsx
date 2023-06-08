@@ -25,22 +25,13 @@ const connector = connect(null, mapDispatchToProps);
 const PhaseTwo = (props: PhaseTwoProps) => {
   const {fieldsSelected, fromScratch, setPhase, createTopic, setMode} = props;
 
-  const [aggregationKey, setAggregationKey] = useState('');
   const [topicName, setTopicName] = useState('');
   const [schemaName, setSchemaName] = useState('');
   const [schemaNamespace, setSchemaNamespace] = useState('');
   const [schemaType, setSchemaType] = useState('');
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
   const [finalCode, setFinalCode] = useState('');
-
-  // useEffect(() => {
-  //   try {
-  //     const keys = getAllFieldNames(JSON.parse(finalCode));
-  //     setSuggestions(keys);
-  //   } catch {}
-  // }, [finalCode]);
 
   useEffect(() => {
     const finalJSON = {
@@ -51,30 +42,6 @@ const PhaseTwo = (props: PhaseTwoProps) => {
     };
     setFinalCode(formatJSON(JSON.stringify(finalJSON)));
   }, [fieldsSelected]);
-
-  const Suggestions = () => {
-    return (
-      <div className={styles.suggestionsContainer}>
-        {suggestions
-          .filter((suggestion: string) => {
-            return suggestion.startsWith(aggregationKey);
-          })
-          .map((suggestion: string) => {
-            return (
-              <div
-                key={suggestion}
-                className={styles.suggestion}
-                onClick={() => {
-                  setAggregationKey(suggestion);
-                }}
-              >
-                {suggestion}
-              </div>
-            );
-          })}
-      </div>
-    );
-  };
 
   return (
     <>
@@ -154,21 +121,7 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               height={32}
               autoComplete="off"
               fontClass="font-base"
-            />
-            {/* <Input
-              id="name"
-              label="Aggregation Key"
-              placeholder="userId, orderId, etc."
-              tooltipText="Aggregation Key"
-              value={aggregationKey}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setAggregationKey(event.target.value)}
-              height={32}
-              autoComplete="off"
-              fontClass="font-base"
-            />
-            {!!suggestions.length && !!aggregationKey.length && !suggestions.includes(aggregationKey) && (
-              <Suggestions />
-            )} */}
+            />            
             <Button
               styleVariant="small"
               type="button"

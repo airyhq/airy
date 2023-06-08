@@ -34,7 +34,7 @@ export const calculateHeightOfCodeString = (code: string) => {
 };
 
 export const getValuesFromSchema = (schema: string) => {
-  let values = [];
+  const values = [];
   const schemaJSON = JSON.parse(schema);
   const fields = schemaJSON['fields'];
   if (fields) {

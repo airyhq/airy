@@ -34,7 +34,6 @@ import ExternalView from './components/ExternalView';
 import {getAppExternalURL} from './services/getAppExternalURL';
 import Streams from './pages/Streams';
 import Topics from './pages/Topics';
-import Creation from './pages/Streams/Creation';
 
 const mapDispatchToProps = {
   getClientConfig,

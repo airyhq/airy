@@ -1,0 +1,43 @@
+pull-requests:
+  - dependencies: "com.amazonaws:aws-java-sdk-*"
+    group-id: amazonaws
+  - dependencies: "com.fasterxml.jackson*:*"
+    group-id: jackson
+  - dependencies: "io.confluent:kafka-*"
+    group-id: confluent
+  - dependencies: "io.jsonwebtoken:jjwt-*"
+    group-id: jsonwebtoken
+  - dependencies: "org.apache.logging.log4j:log4j-*"
+    group-id: log4j
+  - dependencies: "org.slf4j:slf4j-*"
+    group-id: slf4j
+  - dependencies: "org.apache.avro:avro*"
+    group-id: avro
+  - dependencies: "org.apache.kafka:*"
+    group-id: kafka
+  - dependencies: "org.apache.lucene:lucene-*"
+    group-id: lucene
+  - dependencies: "org.hamcrest:*"
+    group-id: hamcrest
+  - dependencies: "org.junit.jupiter:junit-jupiter*"
+    group-id: jupiter
+  - dependencies: "org.mockito:mockito-*"
+    group-id: mockito
+  - dependencies: "org.springframework.boot:spring-boot-*"
+    group-id: spring-boot
+  - dependencies: "org.springframework:spring-*"
+    group-id: spring
+  - dependencies: "com.segment.analytics.java:*"
+    group-id: analytics
+  - dependencies: "io.github.openfeign:*"
+    group-id: openfeign
+  - limits:
+      max-open: 10
+
+post-update-hooks:
+  - kinds: maven
+    commands:
+      - "REPIN=1 bazel run @unpinned_maven//:pin"
+    files-to-commit:
+      - "maven_install.json"
+    run-for: commit

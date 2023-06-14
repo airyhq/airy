@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/airyhq/airy/lib/go/httpclient"
 	"github.com/airyhq/airy/lib/go/payloads"
@@ -31,16 +32,34 @@ func (s *StreamsDelete) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ksql := fmt.Sprintf(
-		"DROP STREAM %s ;",
-		expr.Name,
-	)
-	_, err = c.DeleteStream(ksql)
-
+	res, err := c.ListStreams()
 	if err != nil {
 		klog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
+	}
+	streams := []string{expr.Name}
+
+	for _, l := range *res {
+		for _, stream := range l.Streams {
+			if strings.HasPrefix(stream.Name, expr.Name+"_") {
+				streams = append(streams, stream.Name)
+			}
+		}
+	}
+
+	for _, stream := range streams {
+		klog.Info("Deleting stream: ", stream)
+		ksql := fmt.Sprintf(
+			"DROP STREAM IF EXISTS %s ;",
+			stream,
+		)
+		_, err = c.DeleteStream(ksql)
+		if err != nil {
+			klog.Error(err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 
 	response, _ := json.Marshal(payloads.StreamsDeleteResponsePayload{

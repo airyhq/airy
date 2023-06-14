@@ -36,7 +36,6 @@ func post[T any](c *Client, endpoint string, payload []byte) (T, error) {
 	if c.Token != "" {
 		req.Header.Set("Authorization", c.Token)
 	}
-	fmt.Println(string(payload))
 	r, err := c.c.Do(req)
 	if err != nil {
 		return *new(T), err

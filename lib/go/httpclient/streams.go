@@ -66,3 +66,17 @@ func (c *Client) InfoStream(expr string) (*payloads.SourceDescription, error) {
 
 	return &(*info)[0].SourceDescription, nil
 }
+
+func (c *Client) RunKSQL(expr string) (*payloads.KsqlResponsePayload, error) {
+	streamingProperties := map[string]string{}
+	payload, err := json.Marshal(payloads.KsqlRequestPayload{
+		Ksql:                expr,
+		StreamingProperties: streamingProperties,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return post[*payloads.KsqlResponsePayload](c, "ksql", payload)
+}

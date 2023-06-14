@@ -8,7 +8,6 @@ import {useTranslation} from 'react-i18next';
 import {getValidTopics} from '../../../selectors';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import {formatJSON} from '../../../services';
-import {ReactComponent as ArrowDownIcon} from 'assets/images/icons/arrowDown.svg';
 
 import styles from './index.module.scss';
 

@@ -142,9 +142,9 @@ const Creation = (props: ListModeProps) => {
     <div className={styles.container}>
       <p className={styles.titleSection}>Select the two topics you want to join</p>
       <p className={styles.subtitleSection}>
-        As you embark on the stream creation process, you'll be utilizing two Kafka topics. It's crucial to recognize
-        that Topic 1 will assume the role of the persistent topic throughout the stream creation. Additionally, Topic 2
-        will contribute data to enrich and enhance the content of Topic 1.
+        As you embark on the stream creation process, you&apos;ll be utilizing two Kafka topics. It&apos;s crucial to
+        recognize that Topic 1 will assume the role of the persistent topic throughout the stream creation.
+        Additionally, Topic 2 will contribute data to enrich and enhance the content of Topic 1.
       </p>
       <div className={styles.topicSelector}>
         <Dropdown

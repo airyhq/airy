@@ -72,7 +72,7 @@ const JoinMode = (props: TopicInfoProps) => {
   return (
     <>
       <div className={styles.titleArea}>
-        <h1>{t('streams')}</h1>
+        <h1>{t('topics')}</h1>
       </div>
       {getPhaseView()}
     </>

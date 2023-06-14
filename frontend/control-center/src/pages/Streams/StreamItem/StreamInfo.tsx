@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {Button, ListenOutsideClick} from 'components';
 import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
-import styles from './index.module.scss';
+import {ReactComponent as ChevronDown} from 'assets/images/icons/chevronDown.svg';
 import {ConnectedProps, connect} from 'react-redux';
 import {deleteStream, getStreams} from '../../../actions';
+import styles from './index.module.scss';
 
 type StreamInfoProps = {
   streamName: string;
@@ -37,13 +38,20 @@ const StreamInfo = (props: StreamInfoProps) => {
 
   return (
     <div className={`${styles.container} ${itemSelected !== streamName ? styles.expandedContainer : ''}`}>
+      <ChevronDown
+        className={`${styles.chevron} ${itemSelected === streamName ? styles.chevronRotated : ''}`}
+        onClick={() => toggleExpanded(streamName)}
+      />
       <div className={styles.name}>
-        <div className={styles.blankSpace} />
-        <p className={`${styles.componentName}`}>{streamName}</p>
+        <p className={`${styles.componentName}`} onClick={() => toggleExpanded(streamName)}>
+          {streamName}
+        </p>
       </div>
       <div className={styles.topic}>
         <div className={styles.blankSpace} />
-        <p className={`${styles.componentName}`}>{topicName}</p>
+        <p className={`${styles.componentName}`} onClick={() => toggleExpanded(streamName)}>
+          {topicName}
+        </p>
       </div>
       <div className={styles.info} onClick={() => toggleExpanded(streamName)}>
         <div className={styles.blankSpace} />

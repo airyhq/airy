@@ -48,12 +48,12 @@ export default function configReducer(state = defaultState, action: Action): Str
       };
     }
     case getType(actions.setCurrentStreamInfoAction): {
-      const streamName = action.payload[0]['sourceDescription']['name'];
+      const streamName = action.payload['name'];
       return {
         ...state,
         streamsInfo: {
           ...state.streamsInfo,
-          [streamName]: action.payload[0],
+          [streamName]: action.payload,
         },
       };
     }

@@ -71,6 +71,7 @@
   margin-left: 10px;
   @include font-base;
   color: var(--color-text-gray);
+  cursor: pointer;
 }
 
 .info {
@@ -184,4 +185,26 @@
 
 .runningHealthy {
   fill: var(--color-soft-green);
+}
+
+.chevron {
+  width: 14px;
+  margin: 6px 16px 4px 30px;
+  fill: var(--color-text-gray);
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.expandedContainer {
+  input {
+    width: 14px;
+    margin: 6px 16px 4px 30px;
+  }
 }

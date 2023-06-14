@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
+import {ReactComponent as ChevronDown} from 'assets/images/icons/chevronDown.svg';
 import {Button, ListenOutsideClick} from 'components';
 import {ConnectedProps, connect} from 'react-redux';
 import {deleteTopic, getTopics} from '../../../actions';
@@ -54,7 +55,7 @@ const TopicInfo = (props: TopicInfoProps) => {
 
   return (
     <div className={`${styles.container} ${itemSelected !== topicName ? styles.expandedContainer : ''}`}>
-      {isJoinSelectionEnabled && (
+      {isJoinSelectionEnabled ? (
         <input
           type="checkbox"
           checked={isSelected}
@@ -63,10 +64,16 @@ const TopicInfo = (props: TopicInfoProps) => {
           }}
           disabled={selectedTopics.length === 2 && !isSelected}
         />
+      ) : (
+        <ChevronDown
+          className={`${styles.chevron} ${itemSelected === topicName ? styles.chevronRotated : ''}`}
+          onClick={() => toggleExpanded(topicName)}
+        />
       )}
       <div className={styles.name}>
-        <div className={styles.blankSpace} />
-        <p className={`${styles.componentName}`}>{topicName}</p>
+        <p className={`${styles.componentName}`} onClick={() => toggleExpanded(topicName)}>
+          {topicName}
+        </p>
       </div>
       <div className={styles.info} onClick={() => toggleExpanded(topicName)}>
         <div className={styles.blankSpace} />

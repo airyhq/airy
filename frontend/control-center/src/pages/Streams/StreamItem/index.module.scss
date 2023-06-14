@@ -27,15 +27,21 @@
 }
 
 .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   align-items: center;
-  width: 60%;
+  width: 50%;
 }
 
 .topic {
   display: flex;
   align-items: center;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .arrowDownIcon {
@@ -58,9 +64,13 @@
 }
 
 .componentName {
-  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 18px;
   @include font-base;
   color: var(--color-text-gray);
+  cursor: pointer;
 }
 
 .info {
@@ -174,4 +184,19 @@
 
 .runningHealthy {
   fill: var(--color-soft-green);
+}
+
+.chevron {
+  width: 24px;
+  margin: 6px 10px 4px 30px;
+  fill: var(--color-text-gray);
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
 }

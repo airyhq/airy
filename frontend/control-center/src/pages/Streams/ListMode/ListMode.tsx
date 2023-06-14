@@ -84,7 +84,7 @@ const ListMode = (props: ListModeProps) => {
                 setMode(StreamsModes.creation);
               }}
             >
-              JOIN
+              CREATE
             </Button>
             <button onClick={handleRefresh} className={styles.refreshButton}>
               <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>

@@ -44,10 +44,12 @@ At the moment the name of the output topic is the same as the name of the stream
       "fields": [
         {
           "name": "source",
+          "type": "string",
           "newName": "from"
         },
         {
           "name": "senderId",
+          "type": "string",
           "nawName": "sender"
         }
       ]
@@ -57,6 +59,7 @@ At the moment the name of the output topic is the same as the name of the stream
       "fields": [
         {
           "name": "connectionState",
+          "type": "string",
           "newName": "state"
         }
       ]
@@ -65,8 +68,8 @@ At the moment the name of the output topic is the same as the name of the stream
   "joins": [
     {
       "name": "newSource",
-      "field1": "source",
-      "field2": "source"
+      "field1": "source", // From the first topic in the "topics" list
+      "field2": "source" // From the second topic in the "topics" list
     }
   ],
   "aggregations": [],
@@ -84,6 +87,14 @@ The name of the created stream is returned, alongside with the output topic.
   "outputTopic": "customapp"
 }
 ```
+
+:::note
+
+Note that in the `joins` object of the request payload, `field1` should come from the first topic in the "topics" list and `field2` should come from the second one. At the moment only two topics are supported for joining.
+
+Also the field `newName` in the description of the fields supports `_` but support `.` and `-`.
+
+:::
 
 ## Info
 

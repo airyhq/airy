@@ -69,7 +69,8 @@ type StreamsCreateRequestPayload struct {
 		Name   string `json:"name"`
 		Fields []struct {
 			Name    string `json:"name"`
-			NawName string `json:"nawName,omitempty"`
+			Type    string `json:"type",omitempty`
+			NewName string `json:"newName,omitempty"`
 		} `json:"fields"`
 	} `json:"topics"`
 	Joins []struct {

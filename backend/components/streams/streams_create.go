@@ -19,6 +19,13 @@ type StreamsCreate struct {
 	AuthToken string
 }
 
+var fieldTypes = map[string]string{
+	"map":     "map",
+	"boolean": "boolean",
+	"long":    "bigint",
+	"string":  "string",
+}
+
 func (s *StreamsCreate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c := httpclient.NewClient(s.KSqlHost, s.AuthToken)
 	body, err := ioutil.ReadAll(r.Body)
@@ -45,8 +52,20 @@ func (s *StreamsCreate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for i, topic := range expr.Topics {
 		for _, field := range topic.Fields {
-			fields["combined"] = append(fields["combined"], abv[i]+"."+field.Name)
-			fields[topic.Name] = append(fields[topic.Name], field.Name+" "+"VARCHAR")
+			var fieldType string
+			var fieldNewName string
+			if field.NewName == "" {
+				fieldNewName = field.Name
+			} else {
+				fieldNewName = field.NewName
+			}
+			fields["combined"] = append(fields["combined"], abv[i]+"."+field.Name+" as "+fieldNewName)
+			if ft, ok := fieldTypes[field.Type]; ok {
+				fieldType = ft
+			} else {
+				fieldType = "varchar"
+			}
+			fields[topic.Name] = append(fields[topic.Name], field.Name+" "+fieldType)
 		}
 		ksql := fmt.Sprintf(
 			"create stream %s (%s) with (kafka_topic='%s', partitions=10, value_format='avro');",

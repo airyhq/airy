@@ -69,7 +69,7 @@ At the moment the name of the output topic is the same as the name of the stream
     {
       "name": "newSource",
       "field1": "source", // From the first topic in the "topics" list
-      "field2": "source" // From the second topic in the "topics" list
+      "field2": "source"  // From the second topic in the "topics" list
     }
   ],
   "aggregations": [],

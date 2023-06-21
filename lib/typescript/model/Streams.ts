@@ -1,5 +1,9 @@
 export interface Streams {
   topics: string[];
+  topicsInfo: {
+    [topicName: string]: TopicInfo;
+  };
+  topic_schemas: string[];
   streams: Stream[];
   schemas: {
     [topicName: string]: Schema;
@@ -10,6 +14,12 @@ export interface Streams {
   messages: {
     [topicName: string]: {};
   };
+}
+
+export interface TopicInfo {
+  name: string;
+  configs: {};
+  partitions: [];
 }
 
 export interface Schema {

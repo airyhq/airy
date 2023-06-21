@@ -3,7 +3,7 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import {Button, Tooltip} from 'components';
 import {useTranslation} from 'react-i18next';
 import {ReactComponent as ArrowRightIcon} from 'assets/images/icons/arrowRight.svg';
-import {TopicsMode} from '..';
+import {SchemasMode} from '..';
 import styles from './index.module.scss';
 import {SchemaField} from 'model/Streams';
 import {formatJSON, getValuesFromSchema} from '../../../services';
@@ -15,7 +15,7 @@ type PhaseOneProps = {
   fieldsSelected: SchemaField[];
   setFieldsSelected: (fields: SchemaField[]) => void;
   setPhase: (phase: number) => void;
-  setMode: (mode: TopicsMode) => void;
+  setMode: (mode: SchemasMode) => void;
 };
 
 export const PhaseOne = (props: PhaseOneProps) => {
@@ -63,7 +63,7 @@ export const PhaseOne = (props: PhaseOneProps) => {
             styleVariant="link"
             type="button"
             onClick={() => {
-              setMode(TopicsMode.list);
+              setMode(SchemasMode.list);
             }}
             style={{
               backgroundColor: 'transparent',

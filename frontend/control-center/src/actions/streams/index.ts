@@ -6,8 +6,10 @@ import {Schema} from 'react-markdown/lib/ast-to-react';
 import {CreateStreamPayload} from 'httpclient/src';
 
 const SET_TOPICS = '@@metadata/SET_TOPICS';
+const SET_TOPIC_INFO = '@@metadata/SET_TOPIC_INFO';
+const SET_TOPIC_SCHEMAS = '@@metadata/SET_TOPIC_SCHEMAS';
 const SET_STREAMS = '@@metadata/SET_STREAMS';
-const SET_TOPIC_INFO = '@@metadata/SET_TOPICS_INFO';
+const SET_SCHEMAS_INFO = '@@metadata/SET_SCHEMAS_INFO';
 const SET_STREAM_INFO = '@@metadata/SET_STREAM_INFO';
 const SET_LAST_MESSAGE = '@@metadata/SET_LAST_MESSAGRE';
 
@@ -50,24 +52,40 @@ export const deleteStream = (name: string) => () => {
 // ------------------------- TOPICS -------------------------
 
 export const getTopics = () => async (dispatch: Dispatch<any>) => {
-  return getData('subjects').then(response => {
+  return getData('topics').then(response => {
     dispatch(setTopicsAction(response));
     return Promise.resolve(true);
   });
 };
 
 export const getTopicInfo = (topicName: string) => async (dispatch: Dispatch<any>) => {
+  return getData(`topics/${topicName}`).then(response => {
+    dispatch(setTopicInfoAction(response));
+    return Promise.resolve(true);
+  });
+};
+
+// ------------------------- SCHEMAS -------------------------
+
+export const getSchemas = () => async (dispatch: Dispatch<any>) => {
+  return getData('subjects').then(response => {
+    dispatch(setTopicSchemasAction(response));
+    return Promise.resolve(true);
+  });
+};
+
+export const getSchemaInfo = (topicName: string) => async (dispatch: Dispatch<any>) => {
   return getData(`subjects/${topicName}/versions/latest`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     } else {
-      dispatch(setCurrentTopicInfoAction(response));
+      dispatch(setCurrentSchemaInfoAction(response));
     }
     return Promise.resolve(true);
   });
 };
 
-export const setTopicSchema = (topicName: string, schema: string) => async () => {
+export const setSchemaSchema = (topicName: string, schema: string) => async () => {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
@@ -81,7 +99,7 @@ export const setTopicSchema = (topicName: string, schema: string) => async () =>
   });
 };
 
-export const createTopic = (topicName: string, schema: string) => async () => {
+export const createSchema = (topicName: string, schema: string) => async () => {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
@@ -119,7 +137,7 @@ export const checkCompatibilityOfNewSchema = (topicName: string, schema: string,
     });
 };
 
-export const deleteTopic = (topicName: string) => async () => {
+export const deleteSchema = (topicName: string) => async () => {
   return deleteData(`subjects/${topicName}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
@@ -171,9 +189,13 @@ async function postData(url: string, body: any) {
 
 export const setTopicsAction = createAction(SET_TOPICS, (topics: string[]) => topics)<string[]>();
 
+export const setTopicInfoAction = createAction(SET_TOPIC_INFO, (topicInfo: Schema) => topicInfo)<Schema>();
+
+export const setTopicSchemasAction = createAction(SET_TOPIC_SCHEMAS, (topics: string[]) => topics)<string[]>();
+
 export const setStreamsAction = createAction(SET_STREAMS, (streams: Stream[]) => streams)<Stream[]>();
 
-export const setCurrentTopicInfoAction = createAction(SET_TOPIC_INFO, (topicInfo: Schema) => topicInfo)<Schema>();
+export const setCurrentSchemaInfoAction = createAction(SET_SCHEMAS_INFO, (topicInfo: Schema) => topicInfo)<Schema>();
 
 export const setCurrentStreamInfoAction = createAction(
   SET_STREAM_INFO,

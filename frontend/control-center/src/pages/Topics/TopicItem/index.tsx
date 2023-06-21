@@ -1,46 +1,33 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import TopicInfo from './TopicInfo';
-import styles from './index.module.scss';
-import TopicDescription from './TopicDescription/TopicDescription';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
+import TopicDescription from './TopicDescription/TopicDescription';
 import {formatJSON} from '../../../services';
+import {getTopicInfo} from '../../../actions';
+import styles from './index.module.scss';
+
+const mapDispatchToProps = {
+  getTopicInfo,
+};
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    schemas: state.data.streams.schemas,
+    topicsInfo: state.data.streams.topicsInfo,
   };
 };
 
-const connector = connect(mapStateToProps, null);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type TopicItemProps = {
   topicName: string;
-  isJoinSelectionEnabled: boolean;
-  selectedTopics: string[];
-  addTopicsToSelection: (topicName: string) => void;
   itemSelected: string;
   setItemSelected: (item: string) => void;
 } & ConnectedProps<typeof connector>;
 
 const TopicItem = (props: TopicItemProps) => {
-  const {
-    topicName,
-    schemas,
-    isJoinSelectionEnabled,
-    selectedTopics,
-    addTopicsToSelection,
-    itemSelected,
-    setItemSelected,
-  } = props;
-
-  const [code, setCode] = useState(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
-
+  const {topicName, topicsInfo, itemSelected, setItemSelected, getTopicInfo} = props;
   const wrapperSection = useRef(null);
-
-  useEffect(() => {
-    setCode(formatJSON(schemas[topicName] ? schemas[topicName].schema : '{}'));
-  }, [schemas]);
 
   useEffect(() => {
     if (itemSelected !== topicName) wrapperSection.current.style.height = `50px`;
@@ -51,33 +38,19 @@ const TopicItem = (props: TopicItemProps) => {
       setItemSelected('');
     } else {
       setItemSelected(item);
+      getTopicInfo(topicName);
     }
   };
 
-  const getVersion = (): number => {
-    if (schemas[topicName]) return schemas[topicName].version;
-    return 1;
+  const getTopicInfoString = () => {
+    return formatJSON(JSON.stringify(topicsInfo[topicName]));
   };
 
   return (
     <section className={styles.wrapper} ref={wrapperSection}>
-      <TopicInfo
-        topicName={topicName}
-        isJoinSelectionEnabled={isJoinSelectionEnabled}
-        selectedTopics={selectedTopics}
-        addTopicsToSelection={addTopicsToSelection}
-        isSelected={selectedTopics.includes(topicName)}
-        toggleExpanded={toggleExpanded}
-        itemSelected={itemSelected}
-      />
+      <TopicInfo topicName={topicName} toggleExpanded={toggleExpanded} itemSelected={itemSelected} />
       {itemSelected === topicName && (
-        <TopicDescription
-          topicName={topicName}
-          code={code}
-          setCode={setCode}
-          wrapperSection={wrapperSection}
-          version={getVersion()}
-        />
+        <TopicDescription topicName={topicName} code={getTopicInfoString()} wrapperSection={wrapperSection} />
       )}
     </section>
   );

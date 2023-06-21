@@ -1,34 +1,19 @@
 import React, {MutableRefObject, useEffect, useState} from 'react';
-import {getTopicInfo} from '../../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
-import {ErrorPopUp} from 'components';
+import MonacoEditor from '@uiw/react-monacoeditor';
 import {calculateHeightOfCodeString} from '../../../../services';
-import SchemaSection from './SchemaSection';
 import styles from './index.module.scss';
-import {MessageSection, lastMessageMock} from './MessageSection';
 
-const mapDispatchToProps = {
-  getTopicInfo,
-};
-
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(null, null);
 
 type TopicDescriptionProps = {
   topicName: string;
   code: string;
-  setCode: (code: string) => void;
   wrapperSection: MutableRefObject<any>;
-  version: number;
 } & ConnectedProps<typeof connector>;
 
 const TopicDescription = (props: TopicDescriptionProps) => {
-  const {topicName, code, setCode, getTopicInfo, wrapperSection, version} = props;
-
-  useEffect(() => {
-    getTopicInfo(topicName).catch(() => {
-      getTopicInfo(topicName + '-value');
-    });
-  }, []);
+  const {topicName, code, wrapperSection} = props;
 
   useEffect(() => {
     window.addEventListener('themeChanged', () => {
@@ -37,59 +22,86 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     });
   }, []);
 
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [firstTabSelected, setFirstTabSelected] = useState(true);
-  const [showErrorPopUp, setShowErrorPopUp] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [editorMode, setEditorMode] = useState(localStorage.getItem('theme') === 'dark' ? 'vs-dark' : 'vs');
+  const [expanded, setExpanded] = useState(false);
+  const jsonCode = code ? JSON.parse(code) : {};
 
   useEffect(() => {
-    if (firstTabSelected) {
-      recalculateContainerHeight(code);
-    } else {
-      recalculateContainerHeight(lastMessageMock);
-    }
-  }, [firstTabSelected, code]);
+    recalculateContainerHeight(code, expanded);
+  }, [code]);
 
-  const setNewSchemaCode = (text: string) => {
-    setCode(text);
+  const recalculateContainerHeight = (code: string, _expanded: boolean) => {
+    const basicHeight = 160;
+    const headerHeight = 32;
+    if (!_expanded) {
+      wrapperSection.current.style.height = `${basicHeight}px`;
+    } else {
+      console.log('in');
+      if (wrapperSection && wrapperSection.current) {
+        console.log('in in');
+        wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + 100 + headerHeight}px`;
+      } else {
+        wrapperSection.current.style.height = `${basicHeight}px`;
+      }
+    }
   };
 
-  const recalculateContainerHeight = (code: string) => {
-    const basicHeight = 50;
-    const headerHeight = 32;
-    if (wrapperSection && wrapperSection.current) {
-      wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + headerHeight + basicHeight}px`;
-    } else {
-      wrapperSection.current.style.height = `${basicHeight}px`;
-    }
+  const calculateRetentionTime = (_jsonCode): string => {
+    if (!_jsonCode) return 'Unknown';
+    const config = _jsonCode['configs'];
+    if (!config['retention.ms']) return 'Unknown';
+    if (config['retention.ms'] === '-1') return 'Infinite';
+    const ms = config['retention.ms'] as number;
+    return `${(ms / 1000 / 60 / 60 / 24).toString()} day(s)`;
+  };
+
+  const calculateRetentionSize = (_jsonCode): string => {
+    if (!_jsonCode) return 'Unknown';
+    const config = _jsonCode['configs'];
+    if (!config['retention.bytes']) return 'Unknown';
+    if (config['retention.bytes'] === '-1') return 'Infinite';
+    const bytes = config['retention.bytes'] as number;
+    return `${(bytes / 1000).toString()}Mb`;
+  };
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+    recalculateContainerHeight(code, !expanded);
   };
 
   return (
-    <div className={`${isEditMode ? styles.containerEdit : styles.containerNoEdit}`} onClick={e => e.stopPropagation()}>
-      {firstTabSelected ? (
-        <SchemaSection
-          topicName={topicName}
-          code={code}
-          setCode={setNewSchemaCode}
-          isEditMode={isEditMode}
-          setIsEditMode={setIsEditMode}
-          setFirstTabSelected={setFirstTabSelected}
-          editorMode={editorMode}
-          recalculateContainerHeight={recalculateContainerHeight}
-          setErrorMessage={setErrorMessage}
-          setShowErrorPopUp={setShowErrorPopUp}
-          version={version}
-        />
-      ) : (
-        <MessageSection
-          code={code}
-          setFirstTabSelected={setFirstTabSelected}
-          editorMode={editorMode}
-          recalculateContainerHeight={recalculateContainerHeight}
-        />
+    <div className={styles.containerNoEdit} onClick={e => e.stopPropagation()}>
+      {code && code !== '{}' && (
+        <>
+          <div className={styles.topicInfoAttribute}>
+            <div>Number of partitions: </div>
+            <div>{jsonCode['partitions'].length}</div>
+          </div>
+          <div className={styles.topicInfoAttribute}>
+            <div>Retention time: </div>
+            <div>{calculateRetentionTime(jsonCode)}</div>
+          </div>
+          <div className={styles.topicInfoAttribute}>
+            <div>Retention Size: </div>
+            <div>{calculateRetentionSize(jsonCode)}</div>
+          </div>
+          <div className={styles.topicInfoLink} onClick={() => toggleExpanded()}>
+            {expanded ? 'Close Config' : 'Open Config'}
+          </div>
+          {expanded && (
+            <MonacoEditor
+              height={calculateHeightOfCodeString(code)}
+              language="yaml"
+              value={code}
+              options={{
+                scrollBeyondLastLine: false,
+                readOnly: true,
+                theme: editorMode,
+              }}
+            />
+          )}
+        </>
       )}
-      {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}
     </div>
   );
 };

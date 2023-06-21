@@ -4,7 +4,7 @@
 .container {
   width: 100%;
   height: 100%;
-  animation: fadeIn ease 1s;
+  animation: fadeIn ease 0.5s;
   z-index: 0;
 }
 
@@ -41,7 +41,6 @@
   button {
     @include font-s;
     border: none;
-    height: 32px;
     background-color: var(--color-code-no-edit);
     color: var(--color-text-contrast);
     font-weight: 600;
@@ -59,28 +58,4 @@
   justify-content: flex-end;
   flex: auto;
   padding-bottom: 8px;
-}
-
-.topicInfoAttribute {
-  @include font-s;
-  display: flex;
-  border: none;
-  height: 24px;
-  padding: 8px 0px 0px 70px;
-  align-items: center;
-  div {
-    margin-right: 8px;
-  }
-}
-
-.topicInfoLink {
-  @include font-s;
-  display: flex;
-  border: none;
-  height: 32px;
-  padding: 8px;
-  margin-left: 62px;
-  text-decoration: underline;
-  color: var(--color-airy-blue);
-  cursor: pointer;
 }

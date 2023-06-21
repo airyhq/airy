@@ -4,18 +4,18 @@ import {calculateHeightOfCodeString, isJSON} from '../../../../../services';
 import {useTranslation} from 'react-i18next';
 import {Button} from 'components';
 import styles from '../index.module.scss';
-import {checkCompatibilityOfNewSchema, setTopicSchema} from '../../../../../actions';
+import {checkCompatibilityOfNewSchema, setSchemaSchema} from '../../../../../actions';
 import {ConnectedProps, connect} from 'react-redux';
 
 const mapDispatchToProps = {
-  setTopicSchema,
+  setSchemaSchema,
   checkCompatibilityOfNewSchema,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 type SchemaSectionProps = {
-  topicName: string;
+  schemaName: string;
   code: string;
   setCode: (code: string) => void;
   isEditMode: boolean;
@@ -30,7 +30,7 @@ type SchemaSectionProps = {
 
 const SchemaSection = (props: SchemaSectionProps) => {
   const {
-    topicName,
+    schemaName,
     code,
     setCode,
     isEditMode,
@@ -39,7 +39,7 @@ const SchemaSection = (props: SchemaSectionProps) => {
     editorMode,
     recalculateContainerHeight,
     checkCompatibilityOfNewSchema,
-    setTopicSchema,
+    setSchemaSchema,
     setErrorMessage,
     setShowErrorPopUp,
     version,
@@ -60,10 +60,10 @@ const SchemaSection = (props: SchemaSectionProps) => {
     setIsEditMode(!isEditMode);
   };
 
-  const checkCompatibility = (_topicName: string, _code: string, _version: number) => {
-    checkCompatibilityOfNewSchema(_topicName, _code, _version)
+  const checkCompatibility = (_schemaName: string, _code: string, _version: number) => {
+    checkCompatibilityOfNewSchema(_schemaName, _code, _version)
       .then(() => {
-        setTopicSchema(_topicName, _code)
+        setSchemaSchema(_schemaName, _code)
           .then(() => {
             setCode(localCode);
             setHasBeenChanged(false);
@@ -77,7 +77,7 @@ const SchemaSection = (props: SchemaSectionProps) => {
       })
       .catch((e: string) => {
         if (e.includes('404')) {
-          checkCompatibility(_topicName + '-value', _code, _version);
+          checkCompatibility(_schemaName + '-value', _code, _version);
         } else {
           setIsEditMode(true);
           setErrorMessage(e);
@@ -115,7 +115,7 @@ const SchemaSection = (props: SchemaSectionProps) => {
                 if (isJSON(code)) {
                   setIsEditMode(!isEditMode);
                   if (isEditMode && hasBeenChanged) {
-                    checkCompatibility(topicName, code, version);
+                    checkCompatibility(schemaName, code, version);
                   }
                 } else {
                   setIsEditMode(true);

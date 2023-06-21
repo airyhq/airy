@@ -14,6 +14,7 @@ import {
   WEBHOOKS_ROUTE,
   STREAMS_ROUTE,
   TOPICS_ROUTE,
+  SCHEMAS_ROUTE,
 } from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
@@ -95,6 +96,15 @@ const Sidebar = (props: SideBarProps) => {
         >
           <Link to={TOPICS_ROUTE} className={`${styles.sublink} ${isActive(TOPICS_ROUTE) ? styles.active : ''}`}>
             <span className={styles.iconText}>Topics</span>
+          </Link>
+        </div>
+        <div
+          className={`${styles.subalign} ${isActive(TOPICS_ROUTE) ? styles.active : ''} ${
+            !kafkaSectionOpen ? styles.viewClosed : ''
+          }`}
+        >
+          <Link to={SCHEMAS_ROUTE} className={`${styles.sublink} ${isActive(SCHEMAS_ROUTE) ? styles.active : ''}`}>
+            <span className={styles.iconText}>Schemas</span>
           </Link>
         </div>
         <div

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {setPageTitle} from '../../../services/pageTitle';
 import {StateModel} from '../../../reducers';
-import {getTopics, getTopicInfo, createStream} from '../../../actions';
+import {getSchemas, getSchemaInfo, createStream} from '../../../actions';
 import {Button, Dropdown, Input} from 'components';
 import {useTranslation} from 'react-i18next';
 import {getValidTopics} from '../../../selectors';
@@ -12,8 +12,8 @@ import {formatJSON} from '../../../services';
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
-  getTopics,
-  getTopicInfo,
+  getSchemas,
+  getSchemaInfo,
   createStream,
 };
 
@@ -29,7 +29,7 @@ type ListModeProps = {} & ConnectedProps<typeof connector>;
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Creation = (props: ListModeProps) => {
-  const {topics, schemas, getTopics, getTopicInfo, createStream} = props;
+  const {topics, schemas, getSchemas, getSchemaInfo, createStream} = props;
 
   const [topic1, setTopic1] = useState('');
   const [topic2, setTopic2] = useState('');
@@ -47,7 +47,7 @@ const Creation = (props: ListModeProps) => {
 
   useEffect(() => {
     setPageTitle('Stream Creation');
-    getTopics();
+    getSchemas();
   }, []);
 
   const getFieldsOfSchema = (topic: string): [] => {
@@ -153,8 +153,8 @@ const Creation = (props: ListModeProps) => {
           options={topics}
           onClick={(topic: string) => {
             setTopic1(topic);
-            getTopicInfo(topic).catch(() => {
-              getTopicInfo(topic + '-value');
+            getSchemaInfo(topic).catch(() => {
+              getSchemaInfo(topic + '-value');
             });
           }}
         />
@@ -164,8 +164,8 @@ const Creation = (props: ListModeProps) => {
           options={topics}
           onClick={(topic: string) => {
             setTopic2(topic);
-            getTopicInfo(topic).catch(() => {
-              getTopicInfo(topic + '-value');
+            getSchemaInfo(topic).catch(() => {
+              getSchemaInfo(topic + '-value');
             });
           }}
         />

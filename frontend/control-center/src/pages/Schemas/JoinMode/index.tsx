@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {getTopicInfo} from '../../../actions';
+import {getSchemaInfo} from '../../../actions';
 import {StateModel} from '../../../reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {TopicsMode} from '..';
+import {SchemasMode} from '..';
 import {PhaseOne} from './PhaseOne';
 import PhaseTwo from './PhaseTwo';
 import styles from './index.module.scss';
@@ -16,31 +16,31 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 const mapDispatchToProps = {
-  getTopicInfo,
+  getSchemaInfo,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type TopicInfoProps = {
-  selectedTopics: string[];
-  setMode: (mode: TopicsMode) => void;
+  selectedSchemas: string[];
+  setMode: (mode: SchemasMode) => void;
   fromScratch: boolean;
 } & ConnectedProps<typeof connector>;
 
 const JoinMode = (props: TopicInfoProps) => {
-  const {selectedTopics, schemas, fromScratch, getTopicInfo, setMode} = props;
+  const {selectedSchemas, schemas, fromScratch, getSchemaInfo, setMode} = props;
   const {t} = useTranslation();
 
   useEffect(() => {
-    if (selectedTopics.length === 2) {
-      getTopicInfo(selectedTopics[0]).catch(() => {
-        getTopicInfo(selectedTopics[0] + '-value');
+    if (selectedSchemas.length === 2) {
+      getSchemaInfo(selectedSchemas[0]).catch(() => {
+        getSchemaInfo(selectedSchemas[0] + '-value');
       });
-      getTopicInfo(selectedTopics[1]).catch(() => {
-        getTopicInfo(selectedTopics[1] + '-value');
+      getSchemaInfo(selectedSchemas[1]).catch(() => {
+        getSchemaInfo(selectedSchemas[1] + '-value');
       });
     }
-  }, [selectedTopics]);
+  }, [selectedSchemas]);
 
   const [fieldsSelected, setFieldsSelected] = useState<SchemaField[]>([]);
   const [phase, setPhase] = useState(fromScratch ? 2 : 1);
@@ -58,8 +58,8 @@ const JoinMode = (props: TopicInfoProps) => {
       );
     return (
       <PhaseOne
-        nameA={selectedTopics[0]}
-        nameB={selectedTopics[1]}
+        nameA={selectedSchemas[0]}
+        nameB={selectedSchemas[1]}
         schemas={schemas}
         fieldsSelected={fieldsSelected}
         setFieldsSelected={setFieldsSelected}
@@ -72,7 +72,7 @@ const JoinMode = (props: TopicInfoProps) => {
   return (
     <>
       <div className={styles.titleArea}>
-        <h1>{t('topics')}</h1>
+        <h1>{t('schemas')}</h1>
       </div>
       {getPhaseView()}
     </>

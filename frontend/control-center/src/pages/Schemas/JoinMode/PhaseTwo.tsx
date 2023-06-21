@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import {Button, Input, ErrorPopUp} from 'components';
-import {createTopic} from '../../../actions';
+import {createSchema} from '../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
-import {TopicsMode} from '..';
+import {SchemasMode} from '..';
 import {SchemaField} from 'model/Streams';
 import {formatJSON} from '../../../services';
 
@@ -12,18 +12,18 @@ type PhaseTwoProps = {
   fieldsSelected: SchemaField[];
   setFieldsSelected: (fields: SchemaField[]) => void;
   setPhase: (phase: number) => void;
-  setMode: (mode: TopicsMode) => void;
+  setMode: (mode: SchemasMode) => void;
   fromScratch: boolean;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
-  createTopic,
+  createSchema,
 };
 
 const connector = connect(null, mapDispatchToProps);
 
 const PhaseTwo = (props: PhaseTwoProps) => {
-  const {fieldsSelected, fromScratch, setPhase, createTopic, setMode} = props;
+  const {fieldsSelected, fromScratch, setPhase, createSchema, setMode} = props;
 
   const [topicName, setTopicName] = useState('');
   const [schemaName, setSchemaName] = useState('');
@@ -47,13 +47,13 @@ const PhaseTwo = (props: PhaseTwoProps) => {
     <>
       <div className={styles.container}>
         <div className={styles.codeArea}>
-          <div className={styles.createTopicButtons}>
+          <div className={styles.createSchemaButtons}>
             <Input
               id="topicName"
               label="Topic Name"
               placeholder="Name..."
               tooltipText="Aggregation Key"
-              value={topicName}
+              value={schemaName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTopicName(event.target.value)}
               height={32}
               autoComplete="off"
@@ -126,9 +126,9 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               styleVariant="small"
               type="button"
               onClick={() => {
-                createTopic(topicName, finalCode)
+                createSchema(schemaName, finalCode)
                   .then(() => {
-                    setMode(TopicsMode.list);
+                    setMode(SchemasMode.list);
                   })
                   .catch(e => {
                     setErrorMessage(e);
@@ -146,7 +146,7 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               type="button"
               onClick={() => {
                 if (fromScratch) {
-                  setMode(TopicsMode.list);
+                  setMode(SchemasMode.list);
                 }
                 setPhase(1);
               }}

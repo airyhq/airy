@@ -570,6 +570,9 @@ const resources = {
       topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
+      //Schemas
+      schemas: 'Schemas',
+
       //Webhooks
       errorOccurred: 'Error occurred',
       successfullySubscribed: 'Successfully Subscribed!',
@@ -1170,6 +1173,9 @@ const resources = {
       topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
 
+      //Schemas
+      schemas: 'Schemas',
+
       //Webhooks
       errorOccurred: 'Fehler aufgetreten',
       successfullySubscribed: 'Erfolgreich abonniert!',
@@ -1763,6 +1769,9 @@ const resources = {
       topicsName: 'Topics',
       topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: `Une erreur s'est produite`,
@@ -2360,6 +2369,9 @@ const resources = {
       topicsName: 'Topics',
       topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: 'Se ha producido un error',

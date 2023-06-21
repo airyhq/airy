@@ -35,6 +35,7 @@ export default function configReducer(state = defaultState, action: Action): Str
         topics: action.payload,
       };
     case getType(actions.setTopicInfoAction):
+      /*eslint no-case-declarations: "error"*/
       const topicName = action.payload['name'];
       return {
         ...state,

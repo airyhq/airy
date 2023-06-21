@@ -31,6 +31,16 @@
   }
 }
 
+.createSchemaButtons {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  place-items: flex-start;
+  button {
+    margin-left: 0;
+  }
+}
+
 .code {
   background: var(--color-code-no-edit);
   width: 50%;

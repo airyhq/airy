@@ -30,6 +30,9 @@
   display: flex;
   align-items: center;
   width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   button {
     width: 30px;
@@ -68,6 +71,9 @@
 }
 
 .componentName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-left: 10px;
   @include font-base;
   color: var(--color-text-gray);

@@ -4,7 +4,6 @@ import {ReactComponent as RefreshIcon} from 'assets/images/icons/refreshIcon.svg
 import {setPageTitle} from '../../../services/pageTitle';
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import {StateModel} from '../../../reducers';
-import {TopicsModes} from '..';
 import TopicItem from '../TopicItem';
 import {getTopics} from '../../../actions';
 import {useTranslation} from 'react-i18next';
@@ -35,15 +34,16 @@ const ListMode = (props: ListModeProps) => {
 
   useEffect(() => {
     setPageTitle('Topics');
-    getTopics().then(() => {
-      setLastRefresh(new Date().toLocaleString());
-    })
-    .catch((error: Error) => {
-      console.error(error);
-    });
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 2000);
+    getTopics()
+      .then(() => {
+        setLastRefresh(new Date().toLocaleString());
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   const handleRefresh = () => {

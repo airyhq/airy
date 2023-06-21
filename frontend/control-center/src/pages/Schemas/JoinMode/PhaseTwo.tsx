@@ -53,7 +53,7 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               label="Topic Name"
               placeholder="Name..."
               tooltipText="Aggregation Key"
-              value={schemaName}
+              value={topicName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTopicName(event.target.value)}
               height={32}
               autoComplete="off"
@@ -126,7 +126,7 @@ const PhaseTwo = (props: PhaseTwoProps) => {
               styleVariant="small"
               type="button"
               onClick={() => {
-                createSchema(schemaName, finalCode)
+                createSchema(topicName, finalCode)
                   .then(() => {
                     setMode(SchemasMode.list);
                   })

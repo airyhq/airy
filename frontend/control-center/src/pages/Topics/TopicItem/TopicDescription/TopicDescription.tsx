@@ -7,13 +7,12 @@ import styles from './index.module.scss';
 const connector = connect(null, null);
 
 type TopicDescriptionProps = {
-  topicName: string;
   code: string;
   wrapperSection: MutableRefObject<any>;
 } & ConnectedProps<typeof connector>;
 
 const TopicDescription = (props: TopicDescriptionProps) => {
-  const {topicName, code, wrapperSection} = props;
+  const {code, wrapperSection} = props;
 
   useEffect(() => {
     window.addEventListener('themeChanged', () => {

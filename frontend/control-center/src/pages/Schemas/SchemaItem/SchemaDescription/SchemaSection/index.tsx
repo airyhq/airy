@@ -99,14 +99,14 @@ const SchemaSection = (props: SchemaSectionProps) => {
           >
             Schema
           </button>
-          <button
+          {/* <button
             className={styles.tabNotSelected}
             onClick={() => {
               setFirstTabSelected(false);
             }}
           >
             Last Message
-          </button>
+          </button> */}
         </div>
         <div className={styles.rightButtonsContainer}>
           <Button

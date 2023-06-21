@@ -49,9 +49,7 @@ const TopicItem = (props: TopicItemProps) => {
   return (
     <section className={styles.wrapper} ref={wrapperSection}>
       <TopicInfo topicName={topicName} toggleExpanded={toggleExpanded} itemSelected={itemSelected} />
-      {itemSelected === topicName && (
-        <TopicDescription topicName={topicName} code={getTopicInfoString()} wrapperSection={wrapperSection} />
-      )}
+      {itemSelected === topicName && <TopicDescription code={getTopicInfoString()} wrapperSection={wrapperSection} />}
     </section>
   );
 };

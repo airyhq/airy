@@ -8,7 +8,7 @@ export enum TopicsModes {
 }
 
 const Topics = () => {
-  const [mode, setMode] = useState<TopicsModes>(TopicsModes.list);
+  const [mode, _] = useState<TopicsModes>(TopicsModes.list);
 
   useEffect(() => {
     setPageTitle('Streams');
@@ -17,9 +17,9 @@ const Topics = () => {
   const getViewMode = () => {
     switch (mode) {
       case TopicsModes.list:
-        return <ListMode setMode={setMode} />;
+        return <ListMode />;
       default:
-        return <ListMode setMode={setMode} />;
+        return <ListMode />;
     }
   };
 

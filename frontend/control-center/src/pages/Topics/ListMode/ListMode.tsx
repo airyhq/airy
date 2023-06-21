@@ -20,14 +20,12 @@ const mapStateToProps = (state: StateModel) => {
   };
 };
 
-type ListModeProps = {
-  setMode: (mode: TopicsModes) => void;
-} & ConnectedProps<typeof connector>;
+type ListModeProps = {} & ConnectedProps<typeof connector>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ListMode = (props: ListModeProps) => {
-  const {setMode, getTopics} = props;
+  const {getTopics} = props;
   const {topics} = props;
   const [spinAnim, setSpinAnim] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,8 +35,28 @@ const ListMode = (props: ListModeProps) => {
 
   useEffect(() => {
     setPageTitle('Topics');
-    getTopics();
+    getTopics().then(() => {
+      setLastRefresh(new Date().toLocaleString());
+    })
+    .catch((error: Error) => {
+      console.error(error);
+    });
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
   }, []);
+
+  const handleRefresh = () => {
+    props
+      .getTopics()
+      .then(() => {
+        setLastRefresh(new Date().toLocaleString());
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+    setSpinAnim(!spinAnim);
+  };
 
   return (
     <>
@@ -53,7 +71,7 @@ const ListMode = (props: ListModeProps) => {
         <>
           <div className={styles.listHeader}>
             <h2>{t('name')}</h2>
-            <button className={styles.refreshButton}>
+            <button onClick={handleRefresh} className={styles.refreshButton}>
               <div className={spinAnim ? styles.spinAnimationIn : styles.spinAnimationOut}>
                 <RefreshIcon />
               </div>

@@ -34,8 +34,7 @@ export default function configReducer(state = defaultState, action: Action): Str
         ...state,
         topics: action.payload,
       };
-    case getType(actions.setTopicInfoAction):
-      /*eslint no-case-declarations: "error"*/
+    case getType(actions.setTopicInfoAction): {
       const topicName = action.payload['name'];
       return {
         ...state,
@@ -44,6 +43,7 @@ export default function configReducer(state = defaultState, action: Action): Str
           [topicName]: action.payload,
         },
       };
+    }
     case getType(actions.setTopicSchemasAction):
       return {
         ...state,

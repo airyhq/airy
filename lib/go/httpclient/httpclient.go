@@ -26,7 +26,7 @@ func NewClient(baseURL string, authToken string) *Client {
 }
 
 func post[T any](c *Client, endpoint string, payload []byte) (T, error) {
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), bytes.NewReader(payload))
+	req, err := http.NewRequest("POST", fmt.Sprintf("http://%s/%s", c.BaseURL, endpoint), bytes.NewReader(payload))
 	if err != nil {
 		return *new(T), err
 	}
@@ -36,7 +36,6 @@ func post[T any](c *Client, endpoint string, payload []byte) (T, error) {
 	if c.Token != "" {
 		req.Header.Set("Authorization", c.Token)
 	}
-
 	r, err := c.c.Do(req)
 	if err != nil {
 		return *new(T), err

@@ -123,6 +123,10 @@ conversations.
 A source represents a system that generates messaging data that a user wants to
 process with Airy Core.
 
+## Stream
+
+The whole Airy platform is based on Kafka and real-time streaming of messages. In the context of `streams` feature that Airy supports, a `stream` is the process of joining two or multiple Kafka topics, combining the data and creating an outout topic where the result of the streaming operation will be stored. It is based on KSQL.
+
 ### Provider
 
 Source providers are API platforms that allow Airy Core to connect to one or

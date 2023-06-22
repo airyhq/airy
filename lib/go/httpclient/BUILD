@@ -10,6 +10,7 @@ go_library(
         "cluster.go",
         "components.go",
         "httpclient.go",
+        "streams.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/httpclient",
     visibility = ["//visibility:public"],

@@ -54,15 +54,30 @@
   }
 
   h2:first-of-type {
-    width: 100%;
+    width: 60%;
     padding-left: 70px;
+    margin-right: 70px;
+  }
+
+  h2:nth-child(2) {
+    width: 100%;
+    padding-left: 10px;
     margin-right: 70px;
   }
 }
 
-.listHeader h2:nth-child(2) {
-  width: 25%;
+.listHeaderButton {
+  width: 60px;
+  height: 26px;
+  margin-right: 16px;
   text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.listHeaderButtonConfirm {
+  @extend .listHeaderButton;
+  width: 75px;
 }
 
 .listHeaderButtonContainer {
@@ -89,7 +104,7 @@
   height: 20px;
   width: 20px;
   padding: 0px;
-  margin-right: 50px;
+  margin-right: 42px;
   background: transparent;
   cursor: pointer;
   svg {

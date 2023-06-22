@@ -42,6 +42,7 @@ ts_web_library(
         "@npm//react-color",
         "@npm//audio-recorder-polyfill",
         "@npm//@uiw/react-textarea-code-editor",
+        "@npm//@uiw/react-monacoeditor",
     ],
 )
 

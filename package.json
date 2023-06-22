@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^28.1.7",
     "@types/react-lottie": "^1.2.6",
+    "@uiw/react-monacoeditor": "^3.5.8",
     "@uiw/react-textarea-code-editor": "^2.1.1",
     "audio-recorder-polyfill": "^0.4.1",
     "camelcase-keys": "^8.0.2",

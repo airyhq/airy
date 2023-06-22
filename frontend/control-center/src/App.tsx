@@ -15,6 +15,8 @@ import {
   APPS_ROUTE,
   FEAST_ROUTE,
   STREAMS_ROUTE,
+  TOPICS_ROUTE,
+  SCHEMAS_ROUTE,
 } from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
@@ -32,6 +34,8 @@ import Apps from './pages/Apps';
 import ExternalView from './components/ExternalView';
 import {getAppExternalURL} from './services/getAppExternalURL';
 import Streams from './pages/Streams';
+import Topics from './pages/Topics';
+import Schemas from './pages/Schemas';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -99,6 +103,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
               <Route index element={<Catalog />} />
             </Route>
 
+            <Route path={`${TOPICS_ROUTE}/*`} element={<Topics />} />
+            <Route path={`${SCHEMAS_ROUTE}/*`} element={<Schemas />} />
             <Route path={`${STREAMS_ROUTE}/*`} element={<Streams />} />
 
             <Route path={`${INBOX_ROUTE}/*`} element={<Inbox />} />

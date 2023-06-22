@@ -76,6 +76,8 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
       document.documentElement.setAttribute('data-theme', 'dark');
       setDarkTheme(true);
     }
+    const event = new Event('themeChanged');
+    window.dispatchEvent(event);
   };
 
   const handleLanguage = (language: string) => {

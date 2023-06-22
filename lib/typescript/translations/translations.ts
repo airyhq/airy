@@ -564,9 +564,14 @@ const resources = {
       disabled: 'Disabled',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: 'Error occurred',
@@ -1162,9 +1167,14 @@ const resources = {
       disabled: 'Deaktiviert',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: 'Fehler aufgetreten',
@@ -1754,9 +1764,14 @@ const resources = {
       disabled: 'Désactivé',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: `Une erreur s'est produite`,
@@ -2349,9 +2364,14 @@ const resources = {
       disabled: 'Discapacitados',
 
       //Streams
+      topics: 'Topics',
       streams: 'Streams',
       topicsName: 'Topics',
+      topic: 'Topic',
       schemaRegistryName: 'Schema Registry',
+
+      //Schemas
+      schemas: 'Schemas',
 
       //Webhooks
       errorOccurred: 'Se ha producido un error',

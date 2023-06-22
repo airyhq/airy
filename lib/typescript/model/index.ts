@@ -17,3 +17,5 @@ export * from './SuggestedReply';
 export * from './Tag';
 export * from './Template';
 export * from './User';
+export * from './Webhook';
+export * from './Streams';

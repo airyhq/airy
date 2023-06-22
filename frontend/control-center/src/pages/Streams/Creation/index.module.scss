@@ -1,0 +1,187 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  padding-bottom: 60px;
+}
+
+.titleSection {
+  @include font-m;
+  font-weight: 700;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.subtitleSection {
+  @include font-base;
+  width: 75%;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.topicSelector {
+  display: flex;
+  width: 75%;
+  div {
+    margin-right: 10px;
+  }
+  margin-bottom: 60px;
+}
+
+.fieldsSection {
+  display: flex;
+  width: 75%;
+  margin-bottom: 60px;
+  p {
+    margin-top: 8px;
+    text-align-last: center;
+  }
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.selectedJoinsSectionIf {
+  height: 30px;
+  width: 100%;
+  text-align-last: center;
+  padding-top: 3px;
+  color: var(--color-airy-blue);
+}
+
+.selectFieldsJoinSection {
+  display: flex;
+  width: 75%;
+  p {
+    margin-top: 8px;
+    text-align-last: center;
+  }
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.fieldCodeSelected {
+  border: 3px solid var(--color-airy-blue);
+  div,
+  textarea {
+    border: none !important;
+  }
+}
+
+.codeSection {
+  width: 50%;
+  cursor: pointer;
+  div,
+  textarea {
+    cursor: pointer;
+  }
+}
+
+.fieldCode {
+  margin: 12px 10px 0 0;
+  border-radius: 12px;
+}
+
+.saveButton {
+  width: 75%;
+  padding: 16px;
+  display: flex;
+  place-content: center;
+}
+
+.fieldNameSection {
+  display: flex;
+  width: 75%;
+  padding-right: 8px;
+  button {
+    margin: 37px 0px 0px 12px;
+  }
+  label {
+    margin-top: 16px;
+    width: 100%;
+    width: -moz-available; /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
+  }
+}
+
+.joinsContainer {
+  width: 75%;
+  display: flex;
+  flex-flow: wrap;
+  margin-bottom: 60px;
+}
+
+.joinsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  margin: 12px 10px 0 0;
+  border-radius: 12px;
+  border: 3px solid var(--color-airy-blue);
+  svg {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.selectedJoinsSection {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  align-items: center;
+  background-color: var(--color-type-component);
+}
+
+.selectedJoins {
+  @include font-base;
+  height: 52px;
+  width: 45%;
+  padding-top: 14px;
+  text-align-last: center;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 4px;
+}
+
+.selectedJoinsEqual {
+  @include font-base;
+  height: 52px;
+  width: 10%;
+  padding-top: 12px;
+  text-align-last: center;
+  font-weight: 700;
+}
+
+.selectedJoinsText {
+  @include font-base;
+  margin: 8px;
+  text-align-last: center;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.selectedJoinsName {
+  @include font-base;
+  text-align-last: center;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.inputsContainer {
+  margin-top: 80px;
+  width: 75%;
+  button {
+    margin-top: 16px;
+  }
+}

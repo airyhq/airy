@@ -6,7 +6,12 @@ type Action = ActionType<typeof actions>;
 
 const defaultState = {
   topics: [],
+  topicsInfo: {},
+  topic_schemas: [],
+  streams: [],
   schemas: {},
+  streamsInfo: {},
+  messages: {},
 };
 
 const transformTopics = (topics: string[]): string[] => {
@@ -18,7 +23,7 @@ const transformTopics = (topics: string[]): string[] => {
 };
 
 const trimTopicName = (name: string): string => {
-  if (name) return name.replace('-value', '');
+  if (name) return name; //.replace('-value', '');
   return 'Not found';
 };
 
@@ -27,9 +32,29 @@ export default function configReducer(state = defaultState, action: Action): Str
     case getType(actions.setTopicsAction):
       return {
         ...state,
-        topics: transformTopics(action.payload),
+        topics: action.payload,
       };
-    case getType(actions.setCurrentTopicInfoAction): {
+    case getType(actions.setTopicInfoAction): {
+      const topicName = action.payload['name'];
+      return {
+        ...state,
+        topicsInfo: {
+          ...state.topicsInfo,
+          [topicName]: action.payload,
+        },
+      };
+    }
+    case getType(actions.setTopicSchemasAction):
+      return {
+        ...state,
+        topic_schemas: transformTopics(action.payload),
+      };
+    case getType(actions.setStreamsAction):
+      return {
+        ...state,
+        streams: action.payload,
+      };
+    case getType(actions.setCurrentSchemaInfoAction): {
       const topicName = trimTopicName(action.payload['subject']);
       return {
         ...state,
@@ -39,6 +64,23 @@ export default function configReducer(state = defaultState, action: Action): Str
         },
       };
     }
+    case getType(actions.setCurrentStreamInfoAction): {
+      const streamName = action.payload['name'];
+      return {
+        ...state,
+        streamsInfo: {
+          ...state.streamsInfo,
+          [streamName]: action.payload,
+        },
+      };
+    }
+    case getType(actions.setLastMessage):
+      return {
+        ...state,
+        messages: {
+          key: action.payload,
+        },
+      };
     default:
       return state;
   }

@@ -267,6 +267,13 @@ spec:
                 name: api-components-installer
                 port:
                   number: 80
+          - path: /streams
+            pathType: Prefix
+            backend:
+              service:
+                name: api-streams
+                port:
+                  number: 80
 {{- if .Values.global.host }}
       host: {{ .Values.global.host }}
  {{- if .Values.global.ingress.letsencrypt }}

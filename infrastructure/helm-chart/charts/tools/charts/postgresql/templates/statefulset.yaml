@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres
+  name: {{ .Values.name }}
   labels:
-    app: postgres
+    app: {{ .Values.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
-  serviceName: postgres
+      app: {{ .Values.name }}
+  serviceName: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: postgres
+        app: {{ .Values.name }}
     spec:      
       terminationGracePeriodSeconds: 10
       containers:
-        - name: postgres
-          image: "postgres:{{ .Values.version }}"
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}:{{ .Values.version }}
           imagePullPolicy: "IfNotPresent"
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres
-                  key: postgres-password
+                  name: {{ .Values.name }}
+                  key: {{ .Values.name }}-password
           ports:
-            - name: postgres
+            - name: {{ .Values.name }}
               containerPort: {{ .Values.port }}
           livenessProbe:
             tcpSocket:
@@ -40,7 +40,7 @@ spec:
           resources: {{ .Values.resources }}
   volumeClaimTemplates:
     - metadata:
-        name: postgres-data
+        name: {{ .Values.name }}-data
       spec:
         accessModes:
           - "ReadWriteOnce"

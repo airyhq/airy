@@ -113,6 +113,9 @@ module.exports = {
           Testing: ['ui/testing/integration-testing'],
         },
       ],
+      'Apps': [
+        'apps/postgresql',
+      ],
     },
     {
       '⚙️ Concepts': [

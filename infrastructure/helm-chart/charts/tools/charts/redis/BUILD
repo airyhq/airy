@@ -1,5 +1,3 @@
-load("//tools/build:helm.bzl", "helm_ruleset_version")
+load("//tools/build:helm.bzl", "helm_ruleset_core_version")
 
-helm_ruleset_version(
-    version = "7.0.8",
-)
+helm_ruleset_core_version()

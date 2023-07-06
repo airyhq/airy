@@ -33,3 +33,7 @@ export * from './UpdateWebhookRequestPayload';
 export * from './EnableDisableComponentRequestPayload';
 export * from './UpdateComponentConfigurationRequestPayload';
 export * from './InstallUninstallComponentRequestPayload';
+export * from './CreateTopicPayload';
+export * from './GetStreamInfoPayload';
+export * from './DeleteStreamPayload';
+export * from './CreateStreamPayload';

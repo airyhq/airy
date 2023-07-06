@@ -4,3 +4,4 @@ export * from './config';
 export * from './connector';
 export * from './catalog';
 export * from './webhook';
+export * from './streams';

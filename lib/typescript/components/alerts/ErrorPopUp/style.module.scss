@@ -18,30 +18,34 @@
   width: fit-content;
   padding: 8px 12px 8px 12px;
   border-radius: 10px;
-  background-color: var(--color-error-background);
+  background-color: indianred;
   border: 1px solid var(--color-error-border);
   svg {
-    fill: var(--color-error-border);
+    fill: white;
     height: 24px;
     width: 24px;
+    margin-right: 2px;
   }
   button {
-    margin: -1px 0 0 0;
+    margin: 2px 0 0 0;
     background: transparent;
     border: none;
     outline: none;
     cursor: pointer;
+    padding-right: 0;
     svg {
-      fill: var(--color-dark-elements-gray);
+      fill: white;
       height: 12px;
       width: 12px;
     }
   }
   p {
-    max-width: 90%;
+    max-width: 95%;
     line-height: 1.5;
     padding: 0 6px;
     @include font-s;
+    font-weight: 700;
+    color: white;
     white-space: pre-line;
   }
 }

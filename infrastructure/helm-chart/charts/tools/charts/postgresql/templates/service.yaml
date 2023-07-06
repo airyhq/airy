@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: {{ .Values.name }}
+      port: {{ .Values.port }}
+      targetPort: {{ .Values.port }}
+  selector:
+    app: {{ .Values.name }}

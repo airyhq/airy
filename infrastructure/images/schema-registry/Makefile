@@ -1,7 +1,6 @@
 build:
-	docker build -t schema-registry . --build-arg SCHEMA_REGISTRY_VERSION=${SCHEMA_REGISTRY_VERSION}
+	docker build -t schema-registry .
 
 release: build
-	docker tag schema-registry ghcr.io/airyhq/infrastructure/schema-registry:2.0.1
-	docker push ghcr.io/airyhq/infrastructure/schema-registry:2.0.1
-
+	docker tag schema-registry ghcr.io/airyhq/infrastructure/schema-registry:3.4.5
+	docker push ghcr.io/airyhq/infrastructure/schema-registry:3.4.5

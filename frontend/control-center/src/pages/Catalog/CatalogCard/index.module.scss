@@ -51,9 +51,41 @@
 
     svg {
       height: 55px;
-      max-width: 85px;
+      width: 55px;
       fill: var(--color-text-contrast);
     }
+  }
+}
+
+.typeComponent {
+  display: flex;
+  flex: auto;
+  margin-top: -6px;
+  margin-right: -4px;
+  margin-left: 4px;
+  flex-direction: row-reverse;
+
+  p {
+    @include font-xs;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: var(--color-type-component);
+    padding: 2px 8px 2px 8px;
+  }
+}
+
+.typeComponentApp {
+  @extend .typeComponent;
+  p {
+    background-color: var(--color-type-component-app);
+  }
+}
+
+.typeComponentConnector {
+  @extend .typeComponent;
+  p {
+    background-color: var(--color-type-component-connector);
   }
 }
 
@@ -70,19 +102,42 @@
     @include font-s;
     margin: 10px 0 0 0;
     color: var(--color-text-gray);
+    overflow: visible;
+    width: 138%;
 
     span {
       font-weight: bold;
     }
   }
+
+  .category {
+    display: inline;
+    font-size: 12px;
+    margin: 0px 2px 1px 0;
+  }
+
+  button {
+    @include font-xs;
+    color: var(--color-text-gray);
+    background: none;
+    text-decoration: none;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 20px;
+    &:hover {
+      background: var(--color-text-gray);
+      color: white;
+      cursor: pointer;
+    }
+  }
 }
 
 .descriptionInfo {
-  height: 50%;
+  height: 46%;
   margin-top: 10px;
 
   p {
     width: 98%;
+    height: 65px;
     color: var(--color-text-contrast);
   }
 
@@ -92,9 +147,35 @@
     border-radius: 20px;
     background: transparent;
     color: var(--color-airy-blue);
-    padding: 5px;
+    padding: 3px 4px 3px 4px;
     margin-right: 5px;
     margin-top: 8px;
+  }
+}
+
+.description {
+  height: 50px;
+  overflow: hidden;
+}
+
+.availabilityContainer {
+  height: 20px;
+  p {
+    width: 115px;
+    height: 12px;
+    font-size: 12px;
+  }
+  div {
+    @include font-xs;
+    display: flex;
+    flex-direction: row;
+    font-size: 11.5px;
+    padding: 1px 2px 1px 0;
+    margin-top: 2px;
+    height: 16px;
+    color: var(--color-airy-blue);
+    min-width: fit-content;
+    place-self: center;
   }
 }
 
@@ -103,11 +184,12 @@
   align-items: center;
   color: var(--color-airy-blue);
   @include font-s;
-  margin-top: 16px;
+  margin-top: 6px;
+  height: 16px;
   svg {
     fill: var(--color-airy-blue);
     width: 14px;
-    margin-right: 5px;
+    margin-right: 3px;
     display: flex;
     align-items: center;
   }
@@ -158,6 +240,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  button {
+    color: var(--color-hover-blue);
+    border: 1px solid var(--color-hover-blue);
+    &:hover {
+      background: var(--color-airy-blue);
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+.availableList {
+  display: flex;
 }
 
 .soonTag {

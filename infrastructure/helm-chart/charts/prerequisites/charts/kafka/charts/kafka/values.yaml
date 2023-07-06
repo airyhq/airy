@@ -10,6 +10,8 @@ configurationOverrides:
   "log.retention.hours": "-1"
   "listener.security.protocol.map": |-
     PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+  "transaction.state.log.replication.factor": "1"
+  "transaction.state.log.min.isr": "1"
 port: 9092
 firstListenerPort: 31090
 persistence:

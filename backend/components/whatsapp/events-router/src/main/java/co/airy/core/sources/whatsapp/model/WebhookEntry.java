@@ -20,6 +20,16 @@ public class WebhookEntry {
     public static class Change {
         private Value value;
         private String field;
+
+        public Value getValue() {
+            if (value == null) return null;
+
+            if (value.getWhatsappBusinessApiData() != null) {
+                return value.getWhatsappBusinessApiData();
+            }
+
+            return value;
+        }
     }
 }
 

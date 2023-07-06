@@ -14,8 +14,10 @@ spec:
         envFrom:
         - configMapRef:
             name: kafka-config
-       {{ if .Values.provisioning.kafka.namespaceTopics }}
         env:
+        - name: PARTITIONS
+          value: "{{ .Values.provisioning.kafka.partitions }}"
+       {{ if .Values.provisioning.kafka.namespaceTopics }}
         - name: AIRY_CORE_NAMESPACE
           value: {{ .Release.Namespace }}
        {{ end }}

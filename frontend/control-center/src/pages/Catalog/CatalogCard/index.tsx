@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../reducers';
 import {installComponent} from '../../../actions/catalog';
-import {ComponentInfo, ConnectorPrice, InstallationStatus, NotificationModel} from 'model';
+import {ComponentInfo, ConnectorPrice, InstallationStatus, isAiryComponent, NotificationModel} from 'model';
 import {Button, NotificationComponent, SettingsModal, Tooltip} from 'components';
 import {getChannelAvatar} from '../../../components/ChannelAvatar';
 import {
@@ -31,6 +31,7 @@ type CatalogCardProps = {
   showConfigureModal: string;
   blockInstalling: boolean;
   installStatus: InstallationStatus;
+  setAttributeFilter: Dispatch<SetStateAction<string>>;
 } & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => ({
@@ -149,7 +150,13 @@ const CatalogCard = (props: CatalogCardProps) => {
           type="submit"
           onClick={() =>
             navigate(
-              getConnectedRouteForComponent(componentInfo?.source, isChannel, hasConnectedChannels, isConfigured)
+              getConnectedRouteForComponent(
+                componentInfo?.source,
+                isChannel,
+                componentInfo.isApp,
+                hasConnectedChannels,
+                isConfigured
+              )
             )
           }
           buttonRef={installButtonCard}
@@ -221,33 +228,56 @@ const CatalogCard = (props: CatalogCardProps) => {
                 <h1>{componentInfo.displayName}</h1>
                 <p>
                   {' '}
-                  <span className={styles.bolded}>{t('categories')}:</span> {componentInfo.category}{' '}
+                  <span className={styles.bolded}>{t('categories')}: </span>
+                  <div className={styles.category}>
+                    {componentInfo.category.split(', ').map((key: string, index: number) => {
+                      if (index < componentInfo.category.split(', ').length - 1) {
+                        return <>{key + ', '}</>;
+                      }
+                      return <>{key}</>;
+                    })}
+                  </div>
                 </p>
               </div>
+              {componentInfo.isApp ? (
+                <div className={styles.typeComponentApp}>
+                  <p>APP</p>
+                </div>
+              ) : (
+                <>
+                  {isAiryComponent(componentInfo.source) ? (
+                    <div className={styles.typeComponent}>
+                      <p>COMPONENT</p>
+                    </div>
+                  ) : (
+                    <div className={styles.typeComponentConnector}>
+                      <p>CONNECTOR</p>
+                    </div>
+                  )}
+                </>
+              )}
             </section>
             <div className={styles.descriptionInfo}>
               {componentInfo.name && (
-                <p>
-                  <DescriptionComponent description={getDescriptionSourceName(componentInfo.source) + 'Description'} />
+                <p className={styles.description}>
+                  <DescriptionComponent source={getDescriptionSourceName(componentInfo.source)} />
                 </p>
               )}
-
-              <p className={`${styles.availability} ${styles.bolded}`}>
-                <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
-                {t('availableFor')}:
-              </p>
-              <div className={styles.availableForSoonContainer}>
+              <div></div>
+              <div className={styles.availabilityContainer}>
+                <p className={`${styles.availability} ${styles.bolded}`}>
+                  <CheckmarkIcon className={styles.availabilityCheckmarkIcon} />
+                  {t('availableFor')}:
+                </p>
                 <div>
                   {componentInfo?.availableFor &&
-                    availabilityFormatted(componentInfo.availableFor).map((service: string) => (
-                      <button key={service}>{service}</button>
-                    ))}
+                    availabilityFormatted(componentInfo.availableFor).map((service: string, index: number) => {
+                      if (index === availabilityFormatted(componentInfo.availableFor).length - 1) {
+                        return <div key={service}>{service}</div>;
+                      }
+                      return <div key={service}>{service + ', '} </div>;
+                    })}
                 </div>
-                {/* Commented until backend is ready for this!!!
-
-             {componentInfo?.price === ConnectorPrice.requestAccess && (
-              <div className={styles.soonTag}>{t('soon').toUpperCase()}</div>
-            )} */}
               </div>
             </div>
 

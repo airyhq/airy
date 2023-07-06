@@ -19,6 +19,11 @@
   --color-airy-message-outbound: #1578d4;
   --color-elements-blue: #1578d4;
   --color-airy-message-text-inbound: #000000;
+  --color-type-component-app: lightgreen;
+  --color-type-component-connector: lightblue;
+  --color-type-component: lightgray;
+  --color-code-edit: #f1faff;
+  --color-code-no-edit: #f7f7f7;
 
   //colors that do not change with darkmode
   --color-template-border-gray: #ccc;
@@ -78,4 +83,9 @@ html[data-theme='dark'] {
   --color-airy-message-outbound: #1160aa;
   --color-elements-blue: #115fa8;
   --color-airy-message-text-inbound: #ffffff;
+  --color-type-component-app: darkgreen;
+  --color-type-component-connector: #115fa8;
+  --color-type-component: #484848;
+  --color-code-edit: #243037;
+  --color-code-no-edit: #1f201c;
 }

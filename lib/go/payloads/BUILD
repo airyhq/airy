@@ -9,6 +9,7 @@ go_library(
         "client_config_response_payload.go",
         "cluster.go",
         "components.go",
+        "streams.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/payloads",
     visibility = ["//visibility:public"],

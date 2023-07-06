@@ -41,6 +41,8 @@ ts_web_library(
         "@npm//camelcase-keys",
         "@npm//react-color",
         "@npm//audio-recorder-polyfill",
+        "@npm//@uiw/react-textarea-code-editor",
+        "@npm//@uiw/react-monacoeditor",
     ],
 )
 

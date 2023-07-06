@@ -192,9 +192,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                   <div className={styles.descriptionDocs}>
                     {connectorInfo && (
                       <p>
-                        <DescriptionComponent
-                          description={getDescriptionSourceName(connectorInfo.source) + 'Description'}
-                        />
+                        <DescriptionComponent source={getDescriptionSourceName(connectorInfo.source)} />
                       </p>
                     )}
                     <InfoButton

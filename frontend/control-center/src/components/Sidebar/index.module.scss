@@ -28,6 +28,16 @@
   width: 164px;
   height: 42px;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+.subalign {
+  @extend .align;
+  height: 40px;
+  background-color: var(--color-blue-white);
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .link {
@@ -50,6 +60,7 @@
   }
   svg path {
     color: var(--color-text-gray);
+    fill: var(--color-text-gray);
   }
 
   &:hover {
@@ -57,6 +68,13 @@
     svg path {
       fill: var(--color-airy-blue);
     }
+  }
+}
+
+.sublink {
+  @extend .link;
+  span {
+    @include font-xs;
   }
 }
 
@@ -99,4 +117,8 @@
   line-height: 10px;
   font-family: 'Lato', sans-serif;
   color: var(--color-text-gray);
+}
+
+.viewClosed {
+  display: none;
 }

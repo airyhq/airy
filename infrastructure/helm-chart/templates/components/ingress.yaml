@@ -26,7 +26,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: source-api
+                name: integration-source-api
                 port:
                   number: 80
           - path: /conversations
@@ -79,6 +79,13 @@ spec:
                 port:
                   number: 80
           - path: /logout
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /kafka
             pathType: Prefix
             backend:
               service:
@@ -258,6 +265,13 @@ spec:
             backend:
               service:
                 name: api-components-installer
+                port:
+                  number: 80
+          - path: /streams
+            pathType: Prefix
+            backend:
+              service:
+                name: api-streams
                 port:
                   number: 80
 {{- if .Values.global.host }}

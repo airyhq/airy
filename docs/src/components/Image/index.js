@@ -1,9 +1,9 @@
 import React from 'react';
-import useThemeContext from '@theme/hooks/useThemeContext';
+import {useColorMode} from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const Image = ({lightModePath, darkModePath}) => {
-  const {isDarkTheme} = useThemeContext();
+  const {isDarkTheme} = useColorMode();
 
   if (isDarkTheme) {
     return <img alt={darkModePath} src={useBaseUrl(darkModePath)} />;

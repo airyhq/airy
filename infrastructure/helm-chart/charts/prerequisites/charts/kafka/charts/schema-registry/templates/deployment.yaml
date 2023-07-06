@@ -26,6 +26,9 @@ spec:
         - name: schema-registry-server
           image: "{{ .Values.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          args:
+          - /opt/karapace/start.sh
+          - registry
           ports:
             - name: schema-registry
               containerPort: {{ .Values.servicePort }}
@@ -39,6 +42,40 @@ spec:
                 fieldPath: status.podIP
           - name: KARAPACE_BOOTSTRAP_URI
             value: {{ .Values.kafka.bootstrapServers }}
+          - name: KARAPACE_PORT
+            value: "{{ .Values.servicePort }}"
+          - name: KARAPACE_LOG_LEVEL
+            value: WARNING
+          - name: KARAPACE_TOPIC_NAME
+            value: _schemas
+          - name: KARAPACE_HOST
+            value: 0.0.0.0
+{{- if .Values.restEnabled }}
+        - name: rest-api-server
+          image: "{{ .Values.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          args:
+          - /opt/karapace/start.sh
+          - rest
+          ports:
+            - name: rest-api
+              containerPort: {{ .Values.restPort }}
+              protocol: TCP
+          resources:
+          env:
+          - name: KARAPACE_ADVERTISED_HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KARAPACE_BOOTSTRAP_URI
+            value: {{ .Values.kafka.bootstrapServers }}
+          - name: KARAPACE_PORT
+            value: "{{ .Values.restPort }}"
+          - name: KARAPACE_LOG_LEVEL
+            value: WARNING
+          - name: KARAPACE_HOST
+            value: 0.0.0.0
+{{- end }}
       initContainers:
       - name: wait
         image: "{{ .Values.global.busyboxImage }}"

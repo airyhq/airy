@@ -79,6 +79,7 @@ module.exports = {
             'api/endpoints/client-config',
             'api/endpoints/components',
             'api/endpoints/cluster',
+            'api/endpoints/streams',
           ],
         },
         'api/httpClient',
@@ -112,6 +113,7 @@ module.exports = {
           Testing: ['ui/testing/integration-testing'],
         },
       ],
+      Apps: ['apps/postgresql'],
     },
     {
       '⚙️ Concepts': [

@@ -3,6 +3,75 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.54.0
+
+#### 🚀 Features
+
+- [[#4053](https://github.com/airyhq/airy/issues/4053)] Streams backend [[#4089](https://github.com/airyhq/airy/pull/4089)]
+- [[#4053](https://github.com/airyhq/airy/issues/4053)] Topics and Streams Section [[#4067](https://github.com/airyhq/airy/pull/4067)]
+- [[#4057](https://github.com/airyhq/airy/issues/4057)] Expose kafka API in rest proxy [[#4065](https://github.com/airyhq/airy/pull/4065)]
+- [[#4035](https://github.com/airyhq/airy/issues/4035)] Customize number of partitions [[#4036](https://github.com/airyhq/airy/pull/4036)]
+- [[#4057](https://github.com/airyhq/airy/issues/4057)] Optional Kafka REST API in schema-registry [[#4058](https://github.com/airyhq/airy/pull/4058)]
+- [[#4045](https://github.com/airyhq/airy/issues/4045)] Add Streams section [[#4046](https://github.com/airyhq/airy/pull/4046)]
+- [[#4034](https://github.com/airyhq/airy/issues/4034)] Add filter in catalog [[#4041](https://github.com/airyhq/airy/pull/4041)]
+- [[#4030](https://github.com/airyhq/airy/issues/4030)] Remove lint [[#4032](https://github.com/airyhq/airy/pull/4032)]
+- [[#4030](https://github.com/airyhq/airy/issues/4030)] Add external view [[#4031](https://github.com/airyhq/airy/pull/4031)]
+- [[#4026](https://github.com/airyhq/airy/issues/4026)] Add Apps section [[#4027](https://github.com/airyhq/airy/pull/4027)]
+- [[#4020](https://github.com/airyhq/airy/issues/4020)] Add Redis and PostgreSQL optional charts [[#4021](https://github.com/airyhq/airy/pull/4021)]
+
+#### 🐛 Bug Fixes
+
+- [[#4057](https://github.com/airyhq/airy/issues/4057)] Fix env vars for schema-registry [[#4088](https://github.com/airyhq/airy/pull/4088)]
+- [[#4076](https://github.com/airyhq/airy/issues/4076)] Upgrade k8s registry [[#4077](https://github.com/airyhq/airy/pull/4077)]
+- [[#4015](https://github.com/airyhq/airy/issues/4015)] Fix new Whatsapp ingestion payload structure [[#4016](https://github.com/airyhq/airy/pull/4016)]
+- [[#4011](https://github.com/airyhq/airy/issues/4011)] Fix broken links in the docs [[#4012](https://github.com/airyhq/airy/pull/4012)]
+- [[#4006](https://github.com/airyhq/airy/issues/4006)] Update oauth scopes for GCP [[#4007](https://github.com/airyhq/airy/pull/4007)]
+
+#### 📚 Documentation
+
+- [[#4086](https://github.com/airyhq/airy/issues/4086)] Fix link to contributing guide [[#4087](https://github.com/airyhq/airy/pull/4087)]
+- [[#4068](https://github.com/airyhq/airy/issues/4068)] Fix Docs build [[#4069](https://github.com/airyhq/airy/pull/4069)]
+- [[#4023](https://github.com/airyhq/airy/issues/4023)] Improve docs for IBM Watson [[#4024](https://github.com/airyhq/airy/pull/4024)]
+
+#### Changes
+
+- [[#4053](https://github.com/airyhq/airy/issues/4053)] Update Kafka defaults for single broker [[#4070](https://github.com/airyhq/airy/pull/4070)]
+- [[#4017](https://github.com/airyhq/airy/issues/4017)] Whatsapp send message payload updated [[#4018](https://github.com/airyhq/airy/pull/4018)]
+
+#### 🧰 Maintenance
+
+- Bump github.com/docker/distribution from 2.8.1+incompatible to 2.8.2+incompatible [[#4093](https://github.com/airyhq/airy/pull/4093)]
+- Bump github.com/docker/docker from 20.10.17+incompatible to 20.10.24+incompatible [[#4074](https://github.com/airyhq/airy/pull/4074)]
+- Bump prettier from 2.7.1 to 2.8.8 [[#4085](https://github.com/airyhq/airy/pull/4085)]
+- Bump @types/dom-mediacapture-record from 1.0.13 to 1.0.16 [[#4082](https://github.com/airyhq/airy/pull/4082)]
+- Bump @types/react-redux from 7.1.24 to 7.1.25 [[#4060](https://github.com/airyhq/airy/pull/4060)]
+- Bump golang.org/x/net from 0.0.0-20220630215102-69896b714898 to 0.7.0 in /infrastructure/lib/go/k8s/util [[#4047](https://github.com/airyhq/airy/pull/4047)]
+- Bump golang.org/x/net from 0.0.0-20220630215102-69896b714898 to 0.7.0 in /infrastructure/lib/go/k8s/handler [[#4048](https://github.com/airyhq/airy/pull/4048)]
+- Bump golang.org/x/text from 0.3.7 to 0.3.8 in /infrastructure/lib/go/k8s/util [[#4043](https://github.com/airyhq/airy/pull/4043)]
+- Bump golang.org/x/text from 0.3.7 to 0.3.8 in /infrastructure/lib/go/k8s/handler [[#4042](https://github.com/airyhq/airy/pull/4042)]
+- Bump golang.org/x/text from 0.3.7 to 0.3.8 [[#4044](https://github.com/airyhq/airy/pull/4044)]
+- Bump github.com/emicklei/go-restful from 2.15.0+incompatible to 2.16.0+incompatible in /infrastructure/lib/go/k8s/handler [[#4029](https://github.com/airyhq/airy/pull/4029)]
+- Bump @stomp/stompjs from 6.1.2 to 7.0.0 [[#4038](https://github.com/airyhq/airy/pull/4038)]
+- Bump @babel/core from 7.19.3 to 7.21.0 [[#4051](https://github.com/airyhq/airy/pull/4051)]
+- Bump @reduxjs/toolkit from 1.8.6 to 1.9.3 [[#4050](https://github.com/airyhq/airy/pull/4050)]
+- Bump @types/react from 18.0.21 to 18.0.28 [[#4039](https://github.com/airyhq/airy/pull/4039)]
+- Bump http-cache-semantics from 4.1.0 to 4.1.1 in /docs [[#4025](https://github.com/airyhq/airy/pull/4025)]
+- Bump ua-parser-js from 0.7.24 to 0.7.33 in /docs [[#4019](https://github.com/airyhq/airy/pull/4019)]
+- Bump emoji-mart from 5.2.2 to 5.5.2 [[#4033](https://github.com/airyhq/airy/pull/4033)]
+- Bump react-markdown from 8.0.3 to 8.0.5 [[#4014](https://github.com/airyhq/airy/pull/4014)]
+- Bump json5 from 1.0.1 to 1.0.2 [[#4009](https://github.com/airyhq/airy/pull/4009)]
+- Bump json5 from 1.0.1 to 1.0.2 in /docs [[#4008](https://github.com/airyhq/airy/pull/4008)]
+- Bump react-redux from 8.0.4 to 8.0.5 [[#4004](https://github.com/airyhq/airy/pull/4004)]
+- Bump reselect from 4.1.6 to 4.1.7 [[#4002](https://github.com/airyhq/airy/pull/4002)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.54.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.54.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.54.0/windows/amd64/airy.exe)
+
 ## 0.53.0
 
 #### 🚀 Features
@@ -1313,75 +1382,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.34.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.34.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.34.0/windows/amd64/airy.exe)
-
-## 0.33.0
-
-#### 🚀 Features
-
-- [[#2294](https://github.com/airyhq/airy/issues/2294)] Allow creating conversations with Twilio [[#2500](https://github.com/airyhq/airy/pull/2500)]
-- [[#2476](https://github.com/airyhq/airy/issues/2476)] render deleted message instagram  [[#2501](https://github.com/airyhq/airy/pull/2501)]
-- [[#2453](https://github.com/airyhq/airy/issues/2453)] Store chatplugin customization state in the browser [[#2475](https://github.com/airyhq/airy/pull/2475)]
-- [[#2323](https://github.com/airyhq/airy/issues/2323)] Pass Google survey response as message [[#2471](https://github.com/airyhq/airy/pull/2471)]
-- [[#2255](https://github.com/airyhq/airy/issues/2255)] Modular deployment of Airy with helm [[#2341](https://github.com/airyhq/airy/pull/2341)]
-- [[#2437](https://github.com/airyhq/airy/issues/2437)] Add translations to chatplugin [[#2465](https://github.com/airyhq/airy/pull/2465)]
-- [[#2424](https://github.com/airyhq/airy/issues/2424)] track channel connected [[#2447](https://github.com/airyhq/airy/pull/2447)]
-
-#### 🐛 Bug Fixes
-
-- [[#2514](https://github.com/airyhq/airy/issues/2514)] fixed ui bugs [[#2520](https://github.com/airyhq/airy/pull/2520)]
-- [[#2509](https://github.com/airyhq/airy/issues/2509)] attachments facebook and instagram improvement [[#2513](https://github.com/airyhq/airy/pull/2513)]
-- [[#2488](https://github.com/airyhq/airy/issues/2488)] Fix analytics demo apply failure [[#2489](https://github.com/airyhq/airy/pull/2489)]
-- [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix namespace for controller [[#2508](https://github.com/airyhq/airy/pull/2508)]
-- [[#2481](https://github.com/airyhq/airy/issues/2481)] enable send attachments for facebook source [[#2502](https://github.com/airyhq/airy/pull/2502)]
-- [[#2504](https://github.com/airyhq/airy/issues/2504)] fix emoji reaction styling [[#2506](https://github.com/airyhq/airy/pull/2506)]
-- [[#2390](https://github.com/airyhq/airy/issues/2390)] Include used ingress config items [[#2484](https://github.com/airyhq/airy/pull/2484)]
-- [[#2255](https://github.com/airyhq/airy/issues/2255)] Include tracking flag in the helm chart [[#2474](https://github.com/airyhq/airy/pull/2474)]
-- [[#2411](https://github.com/airyhq/airy/issues/2411)] Fix media uploader intermittent crashes [[#2470](https://github.com/airyhq/airy/pull/2470)]
-- [[#2424](https://github.com/airyhq/airy/issues/2424)] Helm typo followup fix [[#2469](https://github.com/airyhq/airy/pull/2469)]
-- [[#2424](https://github.com/airyhq/airy/issues/2424)] Fix Helm chart typo [[#2468](https://github.com/airyhq/airy/pull/2468)]
-- [[#2424](https://github.com/airyhq/airy/issues/2424)] Fix defaulting of the segment variable [[#2467](https://github.com/airyhq/airy/pull/2467)]
-
-#### 🧰 Maintenance
-
-- Bump cypress from 8.5.0 to 8.6.0 [[#2516](https://github.com/airyhq/airy/pull/2516)]
-- Bump @types/react-redux from 7.1.19 to 7.1.20 [[#2515](https://github.com/airyhq/airy/pull/2515)]
-- Bump sass from 1.42.1 to 1.43.2 [[#2496](https://github.com/airyhq/airy/pull/2496)]
-- Bump @babel/preset-env from 7.15.6 to 7.15.8 [[#2498](https://github.com/airyhq/airy/pull/2498)]
-- Bump babel-loader from 8.0.6 to 8.2.2 [[#2499](https://github.com/airyhq/airy/pull/2499)]
-- Bump @reduxjs/toolkit from 1.6.1 to 1.6.2 [[#2494](https://github.com/airyhq/airy/pull/2494)]
-- Bump i18next from 21.3.0 to 21.3.1 [[#2497](https://github.com/airyhq/airy/pull/2497)]
-- Bump preact from 10.5.14 to 10.5.15 [[#2493](https://github.com/airyhq/airy/pull/2493)]
-- Bump @types/lodash-es from 4.17.4 to 4.17.5 [[#2495](https://github.com/airyhq/airy/pull/2495)]
-- Bump @bazel/typescript from 3.6.0 to 4.3.0 [[#2459](https://github.com/airyhq/airy/pull/2459)]
-- Bump webpack-bundle-analyzer from 4.4.2 to 4.5.0 [[#2490](https://github.com/airyhq/airy/pull/2490)]
-- Bump @types/react-router-dom from 5.1.8 to 5.3.1 [[#2492](https://github.com/airyhq/airy/pull/2492)]
-- Bump core-js from 3.18.1 to 3.18.3 [[#2491](https://github.com/airyhq/airy/pull/2491)]
-- [[#2353](https://github.com/airyhq/airy/issues/2353)] Change backend urls to hyphenation [[#2472](https://github.com/airyhq/airy/pull/2472)]
-- Bump typescript from 4.2.4 to 4.3.5 [[#2486](https://github.com/airyhq/airy/pull/2486)]
-- Bump i18next from 21.2.0 to 21.3.0 [[#2487](https://github.com/airyhq/airy/pull/2487)]
-- Bump @typescript-eslint/eslint-plugin from 4.32.0 to 4.33.0 [[#2482](https://github.com/airyhq/airy/pull/2482)]
-- Bump @types/react-redux from 7.1.18 to 7.1.19 [[#2485](https://github.com/airyhq/airy/pull/2485)]
-- Bump @babel/core from 7.15.5 to 7.15.8 [[#2483](https://github.com/airyhq/airy/pull/2483)]
-- Bump eslint-plugin-react from 7.26.0 to 7.26.1 [[#2479](https://github.com/airyhq/airy/pull/2479)]
-- Bump @types/node from 16.9.4 to 16.10.3 [[#2480](https://github.com/airyhq/airy/pull/2480)]
-- Bump linkifyjs from 2.1.9 to 3.0.1 [[#2462](https://github.com/airyhq/airy/pull/2462)]
-- Bump immer from 9.0.5 to 9.0.6 [[#2466](https://github.com/airyhq/airy/pull/2466)]
-- Bump @typescript-eslint/parser from 4.31.2 to 4.32.0 [[#2458](https://github.com/airyhq/airy/pull/2458)]
-- Bump style-loader from 3.2.1 to 3.3.0 [[#2460](https://github.com/airyhq/airy/pull/2460)]
-- Bump prismjs from 1.24.0 to 1.25.0 in /docs [[#2428](https://github.com/airyhq/airy/pull/2428)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.0/windows/amd64/airy.exe)
-
-#### Upgrade notes:
-This release has breaking changes in the structure of the airy.yaml file. When upgrading from an older version, do the following:
-- Remove the `kubernetes:` section, as it is no longer needed. The version is used
-  from the version of the CLI and the - namespace is used from the workspace
-  file cli.yaml
-- Rename the `ingress:` section to `ingress-controller:`
 

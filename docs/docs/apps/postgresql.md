@@ -17,10 +17,10 @@ helm install postgresql airy/postgresql
 
 The default version is `15.1` but this can be modified by overwriting the `--set version` value, when deploying the Helm chart.
 
-To retrieve the administrative Postgresql password run:
+To retrieve the administrative Postgresql password for the `postgres` user run:
 
 ```
 kubectl get secret postgresql -o jsonpath='{.data.postgresql-password}' | base64 -d
 ```
 
-Note that the password changes everytime that the helm chart is updated. Would be best to use it as an environmental variable in the pod, mounted directly from the `postgresql` secret.
+Note that the password changes every time that the helm chart is updated. Would be best to use it as an environmental variable in the pod, mounted directly from the `postgresql` secret.

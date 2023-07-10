@@ -9,6 +9,9 @@ spec:
   ports:
     - name: schema-registry
       port: {{ .Values.servicePort }}
-  selector:
+{{- if .Values.restEnabled }}
+    - name: rest-api
+      port: {{ .Values.restPort }}
+{{- end}}  selector:
     app: schema-registry
     release: {{ .Release.Name }}

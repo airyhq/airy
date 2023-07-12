@@ -14,6 +14,7 @@ go_library(
         "cors.go",
         "server.go",
         "services.go",
+        "proxy.go",
     ],
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],

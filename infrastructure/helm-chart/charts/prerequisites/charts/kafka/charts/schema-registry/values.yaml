@@ -9,4 +9,4 @@ kafka:
   bootstrapServers: kafka-headless:9092
   minBrokers: 1
 resources: {}
-restEnabled: false
+restEnabled: true

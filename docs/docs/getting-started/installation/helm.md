@@ -290,6 +290,16 @@ Run the following command to create the `Airy` platform without the bundled inst
 helm install airy airy/airy --timeout 10m --set prerequisites.kafka.enabled=false --values ./airy.yaml
 ```
 
+### Kafka partitions per topic
+
+Currently all the default topics in the Airy instance are created with 10 partitions. To create these topics with a different number of partitions, add the following to your `airy.yaml` file before running `helm install` (before the initial creation of the topics):
+
+```
+provisioning:
+  kafka:
+    partitions: 2
+```
+
 ### Beanstalkd
 
 The default installation creates its own [Beanstalkd](https://beanstalkd.github.io/) deployment, as it is a prerequisite for using the `integration/webhook` component.

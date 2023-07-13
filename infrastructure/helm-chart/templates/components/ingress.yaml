@@ -82,7 +82,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-admin
+                name: airy-controller
                 port:
                   number: 80
           - path: /kafka

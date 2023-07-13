@@ -12,6 +12,7 @@ spec:
 {{- if .Values.restEnabled }}
     - name: rest-api
       port: {{ .Values.restPort }}
-{{- end}}  selector:
+{{- end}}
+  selector:
     app: schema-registry
     release: {{ .Release.Name }}

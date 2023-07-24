@@ -37,6 +37,7 @@ import {
   GetStreamInfoPayload,
   DeleteStreamPayload,
   CreateStreamPayload,
+  SuggestedRepliesPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -88,6 +89,7 @@ import {
   getStreamInfoDef,
   deleteStreamDef,
   createStreamDef,
+  suggestedRepliesDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -318,6 +320,8 @@ export class HttpClient {
   public deleteStream = this.getRequest<DeleteStreamPayload>(deleteStreamDef);
 
   public createStream = this.getRequest<CreateStreamPayload>(createStreamDef);
+
+  public getSuggestedReplies = this.getRequest<SuggestedRepliesPayload>(suggestedRepliesDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

@@ -47,3 +47,4 @@ export * from './getStreams';
 export * from './getStreamInfo';
 export * from './deleteStream';
 export * from './createStream';
+export * from './suggestedReplies';

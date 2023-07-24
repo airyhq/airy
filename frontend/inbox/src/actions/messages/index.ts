@@ -1,7 +1,12 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {Message} from 'model';
-import {PaginatedResponse, ResendMessageRequestPayload, SendMessagesRequestPayload} from 'httpclient/src';
+import {
+  PaginatedResponse,
+  ResendMessageRequestPayload,
+  SendMessagesRequestPayload,
+  SuggestedRepliesPayload,
+} from 'httpclient/src';
 import {HttpClientInstance} from '../../httpClient';
 import {StateModel} from '../../reducers';
 import {updateMessagesPaginationDataAction, loadingConversationAction} from '../conversations';
@@ -69,6 +74,14 @@ export function resendMessage(messagePayload: ResendMessageRequestPayload) {
           messageId: messagePayload.messageId,
         })
       );
+      return Promise.resolve(true);
+    });
+  };
+}
+
+export function suggestReplies(payload: SuggestedRepliesPayload) {
+  return async () => {
+    return HttpClientInstance.getSuggestedReplies(payload).then(() => {
       return Promise.resolve(true);
     });
   };

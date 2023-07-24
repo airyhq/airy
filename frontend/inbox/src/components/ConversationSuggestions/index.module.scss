@@ -1,0 +1,28 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text-contrast);
+}
+
+.item {
+  @include font-s;
+  font-size: 15px;
+  background-color: var(--color-type-component);
+  border-radius: 10px;
+  margin: 8px 0px 0px 0px;
+  padding: 8px;
+}
+
+.itemTitle {
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.title {
+  @include font-base;
+  font-weight: 700;
+  margin-top: 16px;
+}

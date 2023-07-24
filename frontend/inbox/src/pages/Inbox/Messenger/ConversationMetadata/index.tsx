@@ -32,8 +32,9 @@ import {
   cyCancelEditContactIcon,
 } from 'handles';
 import {difference} from 'lodash-es';
-import {useCurrentConversation} from '../../../../selectors/conversations';
+import {useCurrentConversation, useCurrentMessages} from '../../../../selectors/conversations';
 import {useTranslation} from 'react-i18next';
+import ConversationSuggestion from '../../../../components/ConversationSuggestions';
 
 const mapStateToProps = (state: StateModel) => ({
   tags: state.data.tags.all,
@@ -65,6 +66,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     updateContactDetails,
   } = props;
   const conversation = useCurrentConversation();
+  const messages = useCurrentMessages();
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
@@ -353,6 +355,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
           </div>
         </div>
       )}
+      <ConversationSuggestion conversation={conversation} messages={messages} />
     </div>
   );
 };

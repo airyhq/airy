@@ -37,3 +37,4 @@ export * from './CreateTopicPayload';
 export * from './GetStreamInfoPayload';
 export * from './DeleteStreamPayload';
 export * from './CreateStreamPayload';
+export * from './SuggestedRepliesPayload';

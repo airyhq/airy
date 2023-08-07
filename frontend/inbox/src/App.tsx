@@ -1,6 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Route, Routes, Navigate} from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 import TopBar from './components/TopBar';
 import Inbox from './pages/Inbox';
@@ -14,9 +15,21 @@ import {CONTACTS_ROUTE, INBOX_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/rout
 
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
+import {createChannelForNewUser} from './services';
+import {listChannels} from './actions';
+import {env} from './env';
+import {Channel} from 'model';
+
+declare global {
+  interface Window {
+    google: any;
+    handleCredentialResponse: (response: any) => void;
+  }
+}
 
 const mapDispatchToProps = {
   getClientConfig,
+  listChannels,
 };
 
 const connector = connect(null, mapDispatchToProps);
@@ -30,6 +43,77 @@ const App = (props: ConnectedProps<typeof connector>) => {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
   }, []);
+
+  const [isGoogleLoggedIn, setIsGoogleLoggedIn] = useState(localStorage.getItem('googleUserInfo'));
+
+  useEffect(() => {
+    if (isGoogleLoggedIn) {
+      props.listChannels().then((channelList: Channel[]) => {
+        const userId = JSON.parse(isGoogleLoggedIn)['email'];
+        const existingChannel = channelList.filter(channel => channel.sourceChannelId === userId);
+        if (!!existingChannel.length) {
+          createChannelForNewUser(userId, existingChannel[0]);
+        } else {
+          createChannelForNewUser(userId, null);
+        }
+      });
+    }
+  }, [isGoogleLoggedIn]);
+
+  useEffect(() => {
+    window.google.accounts.id.initialize({
+      client_id: env.GOOGLE_CLIENT_ID,
+      scope:
+        'https://www.googleapis.com/auth/gmail.readonly \
+      https://www.googleapis.com/auth/gmail.send',
+      callback: handleCredentialResponse,
+    });
+
+    window.google.accounts.id.renderButton(document.getElementById('g_id_onload'), {theme: 'outline', size: 'large'});
+  }, []);
+
+  const handleCredentialResponse = response => {
+    localStorage.setItem('googleUserCredentials', JSON.stringify(response));
+    const decoded = jwt_decode(response['credential']);
+    localStorage.setItem('googleUserInfo', JSON.stringify(decoded));
+    getRefreshToken();
+  };
+
+  const getRefreshToken = () => {
+    const client = window.google.accounts.oauth2.initTokenClient({
+      client_id: env.GOOGLE_CLIENT_ID,
+      scope:
+        'https://www.googleapis.com/auth/gmail.readonly \
+      https://www.googleapis.com/auth/gmail.send',
+      callback: tokenResponse => {
+        if (tokenResponse && tokenResponse.access_token) {
+          localStorage.setItem('googleCredentials', JSON.stringify(tokenResponse));
+          setIsGoogleLoggedIn(JSON.stringify(tokenResponse));
+        }
+      },
+    });
+
+    client.requestAccessToken();
+  };
+
+  if (!isGoogleLoggedIn) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <>
+            <TopBar isAdmin={true} />
+          </>
+          <div
+            className={styles.googleButton}
+            id="g_id_onload"
+            data-client_id={env.GOOGLE_CLIENT_ID}
+            data-callback="handleCredentialResponse"
+            data-scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send"
+          ></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AiryWebSocket>

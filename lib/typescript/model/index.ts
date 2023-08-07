@@ -19,3 +19,4 @@ export * from './Template';
 export * from './User';
 export * from './Webhook';
 export * from './Streams';
+export * from './SourceChannel';

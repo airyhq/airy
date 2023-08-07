@@ -111,6 +111,13 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
     }
   };
 
+  const getName = () => {
+    const user = JSON.parse(localStorage.getItem('googleUserInfo'));
+    if (!user) return null;
+    const fullName = user['given_name'] + ' ' + user['family_name'];
+    return fullName;
+  };
+
   return (
     <div className={styles.topBar}>
       <div className={styles.airyLogo}>
@@ -213,7 +220,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
           </div>
         </div>
 
-        {props.user.name && (
+        {/* {props.user.name && (
           <div className={styles.menuItem}>
             <div className={styles.dropDown} onClick={toggleAccountDropdown}>
               <div className={styles.accountDetails}>
@@ -241,6 +248,54 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector>) => {
                       </span>
                       <span>{t('logout')}</span>
                     </a>
+                    <div className={styles.dropDownVersionContainer}>
+                      <a
+                        id={styles.dropDownLink}
+                        href="https://airy.co/docs/core/changelog"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t('releaseNotes')}
+                      </a>
+                      <h1>Version {props.version}</h1>
+                    </div>
+                  </div>
+                </ListenOutsideClick>
+              )}             
+            </div>
+          </div>
+        )} */}
+        {/* ONLY FOR GMAIL DEMO */}
+        {getName() && (
+          <div className={styles.menuItem}>
+            <div className={styles.dropDown} onClick={toggleAccountDropdown}>
+              <div className={styles.accountDetails}>
+                <div className={styles.accountName}>{getName()}</div>
+              </div>
+              <div className={`${styles.dropHint} ${chevronAnim ? styles.dropHintOpen : styles.dropHintClose}`}>
+                <span className={styles.chevronDown}>
+                  <ChevronDownIcon />
+                </span>
+              </div>
+            </div>
+            <div className={animationActionAccount ? styles.animateIn : styles.animateOut}>
+              {isAccountDropdownOn && (
+                <ListenOutsideClick onOuterClick={toggleAccountDropdown}>
+                  <div className={styles.dropdownContainer}>
+                    <div
+                      onClick={() => {
+                        localStorage.removeItem('googleCredentials');
+                        localStorage.removeItem('googleUserCredentials');
+                        localStorage.removeItem('googleUserInfo');
+                        window.location.reload();
+                      }}
+                      className={styles.dropdownLine}
+                    >
+                      <span className={styles.dropdownIcon}>
+                        <LogoutIcon />
+                      </span>
+                      <span>{t('logout')}</span>
+                    </div>
                     <div className={styles.dropDownVersionContainer}>
                       <a
                         id={styles.dropDownLink}

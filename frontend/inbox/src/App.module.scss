@@ -22,3 +22,13 @@
   background-color: var(--color-background-gray);
   transition: all 0.5 ease;
 }
+
+.googleButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 200px;
+  height: 100px;
+}

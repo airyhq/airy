@@ -22,7 +22,7 @@ export const UnknownSourceHtml = ({html, fromContact, sourceName}: HtmlRenderPro
           className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,
         }}
       >
-        <div style={{ overflow: 'auto', height: '100%', width: '100%' }} dangerouslySetInnerHTML={{__html: html}} />
+        <div style={{overflow: 'auto', height: '100%', width: '100%'}} dangerouslySetInnerHTML={{__html: html}} />
       </Linkify>
     </div>
   );

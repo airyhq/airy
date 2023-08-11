@@ -19,12 +19,12 @@ export const createChannelForNewUser = (clientId: string, channel: Channel) => {
 };
 
 const upsertConversations = () => {
-  //loadGmailConversations(getEmail());
+ // loadGmailConversations(getEmail());
 };
 
 export const loadGmailConversations = (userId: string, nextPage?: string) => {
   let uri = `https://gmail.googleapis.com/gmail/v1/users/${userId}/threads?maxResults=500&includeSpamTrash=false`;
-  if (nextPage) uri += `&pageToken`;
+  if (nextPage) uri += `&pageToken=${nextPage}`;
   return getData(uri)
     .then(response => {
       if (response.error && response.error.code === 401) {
@@ -34,13 +34,30 @@ export const loadGmailConversations = (userId: string, nextPage?: string) => {
         window.location.reload();
         return Promise.resolve();
       }
-      response.threads.forEach(thread => {
-        loadGmailConversation(userId, thread.id);
-      });
+      const chunkedConversations = chunkConversations(response.threads, 50);
+      processChunk(chunkedConversations, 0, userId);
+
+      if (response.nextPageToken)
+        setTimeout(() => {
+          loadGmailConversations(userId, response.nextPageToken);
+        }, 60000);
     })
     .catch(error => {
       return Promise.reject(`Error: ${error}`);
     });
+};
+
+const processChunk = (chunks, index, userId) => {
+  if (index < chunks.length) {
+    const chunk = chunks[index];
+    chunk.forEach(thread => {
+      console.log('Call API');
+      loadGmailConversation(userId, thread.id);
+    });
+    setTimeout(() => {
+      processChunk(chunks, index + 1, userId);
+    }, 10000);
+  }
 };
 
 export const loadGmailConversation = (userId: string, threadId: string) => {
@@ -50,9 +67,7 @@ export const loadGmailConversation = (userId: string, threadId: string) => {
 };
 
 const ingestConversation = conversation => {
-  postDataToSourceAPI('sources.webhook', conversation).then(response => {
-    console.log(response);
-  });
+  postDataToSourceAPI('sources.webhook', conversation);
 };
 
 const processMessages = response => {
@@ -176,6 +191,14 @@ const extractFromEmail = (headers: {name: string; value: string}[]) => {
   return 'Not found';
 };
 
+const chunkConversations = (conversations, chunkSize) => {
+  let chunks = [];
+  for (let i = 0; i < conversations.length; i += chunkSize) {
+    chunks.push(conversations.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
 const getEmail = () => {
   return JSON.parse(localStorage.getItem('googleUserInfo'))['email'];
 };
@@ -204,8 +227,7 @@ async function postDataToSourceAPI(url: string, body: any) {
 
   try {
     return await response.json();
-  } catch (e) {
-    console.log(e);
+  } catch {
     return;
   }
 }

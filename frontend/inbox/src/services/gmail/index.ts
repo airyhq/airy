@@ -19,7 +19,7 @@ export const createChannelForNewUser = (clientId: string, channel: Channel) => {
 };
 
 const upsertConversations = () => {
- // loadGmailConversations(getEmail());
+  //loadGmailConversations(getEmail());
 };
 
 export const loadGmailConversations = (userId: string, nextPage?: string) => {
@@ -50,8 +50,7 @@ export const loadGmailConversations = (userId: string, nextPage?: string) => {
 const processChunk = (chunks, index, userId) => {
   if (index < chunks.length) {
     const chunk = chunks[index];
-    chunk.forEach(thread => {
-      console.log('Call API');
+    chunk.forEach(thread => {                  
       loadGmailConversation(userId, thread.id);
     });
     setTimeout(() => {

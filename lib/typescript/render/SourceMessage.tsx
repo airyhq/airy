@@ -3,6 +3,7 @@ import {renderProviders} from './renderProviders';
 import {Text} from './components/Text';
 import {UnknownSourceText} from './components/UnknownSourceText';
 import {RenderPropsUnion} from './props';
+import {UnknownSourceHtml} from './components/UnknownSourceHtml';
 
 type SourceMessageState = {
   hasError: boolean;
@@ -24,6 +25,15 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
 
   unknownSource() {
     let message;
+    if (this.props.message.content.html) {
+      return (
+        <UnknownSourceHtml
+          fromContact={this.props.message.fromContact || false}
+          html={this.props.message.content.html}
+          sourceName={this.props.source}
+        />
+      );
+    }
     if (this.props.message.content.text) {
       message = this.props.message.content.text?.body ?? this.props.message.content.text;
       if (typeof message !== 'string') {

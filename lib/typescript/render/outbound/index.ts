@@ -4,6 +4,7 @@ import {GoogleMapper} from './google';
 import {TwilioMapper} from './twilio';
 import {ViberMapper} from './viber';
 import {WhatsAppMapper} from './whatsapp';
+import {GoogleProfileMapper} from './googleprofile';
 
 export const getOutboundMapper = (source: string) => {
   switch (source) {
@@ -21,6 +22,8 @@ export const getOutboundMapper = (source: string) => {
       return new ViberMapper();
     case 'whatsapp':
       return new WhatsAppMapper();
+    case 'googleprofiles':
+      return new GoogleProfileMapper();
     default: {
       console.error('Unknown source ', source);
     }

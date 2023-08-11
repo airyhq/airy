@@ -21,7 +21,10 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
     props.setConfig(input);
   }, [input]);
 
+  console.log(configurationValues);
+
   source !== Source.chatPlugin &&
+    configurationValues &&
     Object.entries(configurationValues).forEach((item, index) => {
       let key = item[0];
       const keyTyped = key as keyof typeof input;

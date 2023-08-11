@@ -38,3 +38,4 @@ export * from './GetStreamInfoPayload';
 export * from './DeleteStreamPayload';
 export * from './CreateStreamPayload';
 export * from './SourceApiCreateChannelPayload';
+export * from './SuggestedRepliesPayload';

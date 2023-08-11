@@ -48,3 +48,4 @@ export * from './getStreamInfo';
 export * from './deleteStream';
 export * from './createStream';
 export * from './sourceApiCreateChannel';
+export * from './suggestedReplies';

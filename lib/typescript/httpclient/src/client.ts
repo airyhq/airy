@@ -38,6 +38,7 @@ import {
   DeleteStreamPayload,
   CreateStreamPayload,
   SourceApiCreateChannelPayload,
+  SuggestedRepliesPayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -90,6 +91,7 @@ import {
   deleteStreamDef,
   createStreamDef,
   sourceApiCreateChannelDef,
+  suggestedRepliesDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -322,6 +324,8 @@ export class HttpClient {
   public createStream = this.getRequest<CreateStreamPayload>(createStreamDef);
 
   public sourceApiCreateChannel = this.getRequest<SourceApiCreateChannelPayload>(sourceApiCreateChannelDef);
+  
+  public getSuggestedReplies = this.getRequest<SuggestedRepliesPayload>(suggestedRepliesDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

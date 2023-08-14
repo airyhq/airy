@@ -14,6 +14,7 @@ export class ToolkitAI {
   });
 
   private static chat = new ChatOpenAI({
+    openAIApiKey: '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',
     maxTokens: 100,
     streaming: true,
   });

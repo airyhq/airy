@@ -32,11 +32,12 @@ const ConversationSuggestion = (props: ConversationSuggestionProps) => {
   const [actionItemsLoader, setActionItemsLoader] = useState<boolean>(true);
 
   useEffect(() => {
+    if (conversation && conversation.lastMessage) {
     setTopicLoader(true);
     toolkitAI
       .askQuestion(
-        `Analyse the messages of this conversation and give me the top 3 topics (no more than 50 characters per topic) of the conversation: ${JSON.stringify(
-          messages
+        `Analyse these messages of this email thread and give me the top 3 topics being mentioned (no more than 50 characters per topic) in the email: ${JSON.stringify(
+          conversation.lastMessage
         )}`
       )
       .then((value: any) => {
@@ -48,14 +49,16 @@ const ConversationSuggestion = (props: ConversationSuggestionProps) => {
         }, 1000);
       });
       return () => clearTimeout(timeoutTopics);
-  }, [messages]);
+    }
+  }, [conversation.lastMessage]);
 
   useEffect(() => {
+    if (conversation && conversation.lastMessage) {
     setSummaryLoader(true);    
     toolkitAI
       .askQuestion(
-        `Analyse the messages of this conversation give me a summary of the outcome of the conversation (no more than 150 characters): ${JSON.stringify(
-          messages
+        `Analyse these messages of this email give me a summary of the outcome of the email (no more than 150 characters): ${JSON.stringify(
+          conversation.lastMessage
         )}`
       )
       .then((value: any) => {
@@ -67,14 +70,16 @@ const ConversationSuggestion = (props: ConversationSuggestionProps) => {
         }, 1000);
       });
       return () => clearTimeout(timeoutSummary);
-  }, [messages]);
+    }
+  }, [conversation.lastMessage]);
 
   useEffect(() => {
+    if (conversation && conversation.lastMessage) {
     setActionItemsLoader(true);    
     toolkitAI
       .askQuestion(
-        `Analyse the messages of this conversation give me a 3 actions items of this conversation (no more than 30 characters per item): ${JSON.stringify(
-          messages
+        `Analyse the messages of this email give me a 3 actions items to do with this email (no more than 30 characters per item): ${JSON.stringify(
+          conversation.lastMessage
         )}`
       )
       .then((value: any) => {
@@ -86,13 +91,15 @@ const ConversationSuggestion = (props: ConversationSuggestionProps) => {
         }, 1000);
       });
       return () => clearTimeout(actionItemsSummary);
-  }, [messages]);
+    }
+  }, [conversation.lastMessage]);
 
   useEffect(() => {
+    if (conversation && conversation.lastMessage) {      
     toolkitAI
       .askQuestion(
-        `Generate three suggested replies that make sense to this conversation (separate them by /). Keep in mind that we want to get all the info possible about the interested person, such as the company he or she works on, how can we help them and if they are interested in having a call with us. Also, don't add any title or numeration before each suggestion: ${JSON.stringify(
-          messages
+        `Generate three suggested email replies that make sense to this messages of an email thread (separate them by /). Keep in mind that these messages are an email thread and might be spam, marketing email or job opportunities. Also, don't add any title or numeration before each suggestion: ${JSON.stringify(
+          conversation.lastMessage
         )}`
       )
       .then((value: string) => {
@@ -118,7 +125,8 @@ const ConversationSuggestion = (props: ConversationSuggestionProps) => {
           },
         });
       });
-  }, [conversation.lastMessage.id]);
+    }
+  }, [conversation.lastMessage]);
 
   return (
     <div className={styles.container}>

@@ -1,3 +1,5 @@
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { HumanMessage } from "langchain/schema";
 import {OpenAI} from 'langchain/llms/openai';
 // import { Conversation, Message } from 'model';
 // import { FaissStore } from "langchain/vectorstores/faiss";
@@ -9,6 +11,11 @@ export class ToolkitAI {
   private static model = new OpenAI({
     openAIApiKey: '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',
     temperature: 0.9,
+  });
+
+  private static chat = new ChatOpenAI({
+    maxTokens: 100,
+    streaming: true,
   });
 
   private constructor() {}
@@ -31,5 +38,17 @@ export class ToolkitAI {
   public askQuestion = async (question: string): Promise<string> => {
     const res = await ToolkitAI.model.call(question);
     return new Promise(resolve => resolve(res));
+  };
+
+  public chatQuestion = async (question: string) => { 
+    await ToolkitAI.chat.call([new HumanMessage(question)], {
+    callbacks: [
+      {
+        handleLLMNewToken(token: string) {
+          console.log({ token });
+        },
+      },
+    ],
+    })
   };
 }

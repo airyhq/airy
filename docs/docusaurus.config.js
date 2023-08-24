@@ -68,12 +68,6 @@ module.exports = {
         },
         {
           target: '_self',
-          label: 'Solutions',
-          position: 'left',
-          href: 'https://airy.co/solutions',
-        },
-        {
-          target: '_self',
           label: 'Customer Stories',
           position: 'left',
           to: 'https://airy.co/customer-stories',

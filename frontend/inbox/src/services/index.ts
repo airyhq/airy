@@ -5,3 +5,4 @@ export * from './mediaUploader';
 export * from './types';
 export * from './gmail';
 export * from './ai';
+export * from './oauthGoogle';

@@ -324,7 +324,7 @@ export class HttpClient {
   public createStream = this.getRequest<CreateStreamPayload>(createStreamDef);
 
   public sourceApiCreateChannel = this.getRequest<SourceApiCreateChannelPayload>(sourceApiCreateChannelDef);
-  
+
   public getSuggestedReplies = this.getRequest<SuggestedRepliesPayload>(suggestedRepliesDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {

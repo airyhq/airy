@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Route, Routes, Navigate} from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 
 import TopBar from './components/TopBar';
 import Inbox from './pages/Inbox';
@@ -15,7 +14,7 @@ import {CONTACTS_ROUTE, INBOX_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/rout
 
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
-import {createChannelForNewUser} from './services';
+import {createChannelForNewUser, getGmailEmail, getTokens, initializeOauth} from './services';
 import {listChannels} from './actions';
 import {env} from './env';
 import {Channel} from 'model';
@@ -44,12 +43,18 @@ const App = (props: ConnectedProps<typeof connector>) => {
     }
   }, []);
 
-  const [isGoogleLoggedIn, setIsGoogleLoggedIn] = useState(localStorage.getItem('googleUserInfo'));
+  useEffect(() => {
+    const queryParameters = new URLSearchParams(window.location.search);
+    const code = queryParameters.get('code');
+    if (code) getTokens(code, response => setIsGoogleLoggedIn(JSON.stringify(response)));
+  }, []);
+
+  const [isGoogleLoggedIn, setIsGoogleLoggedIn] = useState(localStorage.getItem('googleCredentials'));
 
   useEffect(() => {
     if (isGoogleLoggedIn) {
       props.listChannels().then((channelList: Channel[]) => {
-        const userId = JSON.parse(isGoogleLoggedIn)['email'];
+        const userId = getGmailEmail();        
         const existingChannel = channelList.filter(channel => channel.sourceChannelId === userId);
         if (!!existingChannel.length) {
           createChannelForNewUser(userId, existingChannel[0]);
@@ -61,40 +66,9 @@ const App = (props: ConnectedProps<typeof connector>) => {
   }, [isGoogleLoggedIn]);
 
   useEffect(() => {
-    window.google.accounts.id.initialize({
-      client_id: env.GOOGLE_CLIENT_ID,
-      scope:
-        'https://www.googleapis.com/auth/gmail.readonly \
-      https://www.googleapis.com/auth/gmail.send',
-      callback: handleCredentialResponse,
-    });
-
+    initializeOauth();
     window.google.accounts.id.renderButton(document.getElementById('g_id_onload'), {theme: 'outline', size: 'large'});
   }, []);
-
-  const handleCredentialResponse = response => {
-    localStorage.setItem('googleUserCredentials', JSON.stringify(response));
-    const decoded = jwt_decode(response['credential']);
-    localStorage.setItem('googleUserInfo', JSON.stringify(decoded));
-    getRefreshToken();
-  };
-
-  const getRefreshToken = () => {
-    const client = window.google.accounts.oauth2.initTokenClient({
-      client_id: env.GOOGLE_CLIENT_ID,
-      scope:
-        'https://www.googleapis.com/auth/gmail.readonly \
-      https://www.googleapis.com/auth/gmail.send',
-      callback: tokenResponse => {
-        if (tokenResponse && tokenResponse.access_token) {
-          localStorage.setItem('googleCredentials', JSON.stringify(tokenResponse));
-          setIsGoogleLoggedIn(JSON.stringify(tokenResponse));
-        }
-      },
-    });
-
-    client.requestAccessToken();
-  };
 
   if (!isGoogleLoggedIn) {
     return (

@@ -23,6 +23,7 @@ export enum Source {
   postgresql = 'postgresql',
   feast = 'feast',
   faiss = 'faiss',
+  faissConnector = 'faissConnector',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
   integrationSourceApi = 'integrationSourceApi',

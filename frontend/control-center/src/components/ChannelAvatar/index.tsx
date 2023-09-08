@@ -100,10 +100,13 @@ export const getChannelAvatar = (source: string) => {
     case 'Feast':
       return <FeastAvatar />;
     case Source.faiss:
-    case 'faiss':
+    case 'FAISS':
+      return <MetaAvatar />;
+    case Source.faissConnector:
+    case 'FAISS connector':
       return <MetaAvatar />;
 
-    default:
+      default:
       return <AiryAvatar />;
   }
 };

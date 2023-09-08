@@ -19,6 +19,7 @@ import {ReactComponent as IbmWatsonAssistantAvatar} from 'assets/images/icons/ib
 import {ReactComponent as RedisAvatar} from 'assets/images/icons/redisLogo.svg';
 import {ReactComponent as PostgresAvatar} from 'assets/images/icons/postgresLogo.svg';
 import {ReactComponent as FeastAvatar} from 'assets/images/icons/feastLogo.svg';
+import {ReactComponent as MetaAvatar} from 'assets/images/icons/meta.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -98,6 +99,9 @@ export const getChannelAvatar = (source: string) => {
     case Source.feast:
     case 'Feast':
       return <FeastAvatar />;
+    case Source.faiss:
+    case 'faiss':
+      return <MetaAvatar />;
 
     default:
       return <AiryAvatar />;

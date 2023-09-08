@@ -22,6 +22,7 @@ export enum Source {
   redis = 'redis',
   postgresql = 'postgresql',
   feast = 'feast',
+  faiss = 'faiss',
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
   integrationSourceApi = 'integrationSourceApi',
@@ -30,14 +31,14 @@ export enum Source {
 export enum SourceApps {
   redis = 'redis',
   postgresql = 'postgresql',
-  feast = 'feast',
+  faiss = 'faiss',
 }
 
 export const isApp = (source: string): boolean => {
   switch (source) {
     case SourceApps.postgresql:
     case SourceApps.redis:
-    case SourceApps.feast:
+    case SourceApps.faiss:
       return true;
   }
   return false;

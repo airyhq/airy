@@ -71,7 +71,7 @@ const Creation = (props: ListModeProps) => {
     }
   };
 
-  const selectedFieldFirstTopic = field => {    
+  const selectedFieldFirstTopic = field => {
     if (isSelected(field, true)) {
       setSelectedFieldsFirstTopic(
         selectedFieldsFirstTopic.filter(_field => {
@@ -203,7 +203,7 @@ const Creation = (props: ListModeProps) => {
                             backgroundColor: 'transparent',
                             border: '1px solid gray',
                             borderRadius: '10px',
-                            pointerEvents: 'none'
+                            pointerEvents: 'none',
                           }}
                         />
                       </div>
@@ -233,7 +233,7 @@ const Creation = (props: ListModeProps) => {
                             backgroundColor: 'transparent',
                             border: '1px solid gray',
                             borderRadius: '10px',
-                            pointerEvents: 'none'
+                            pointerEvents: 'none',
                           }}
                         />
                       </div>
@@ -283,7 +283,7 @@ const Creation = (props: ListModeProps) => {
                               backgroundColor: 'transparent',
                               border: '1px solid gray',
                               borderRadius: '10px',
-                              pointerEvents: 'none'
+                              pointerEvents: 'none',
                             }}
                           />
                         </div>
@@ -315,7 +315,7 @@ const Creation = (props: ListModeProps) => {
                               backgroundColor: 'transparent',
                               border: '1px solid gray',
                               borderRadius: '10px',
-                              pointerEvents: 'none'
+                              pointerEvents: 'none',
                             }}
                           />
                         </div>
@@ -398,7 +398,7 @@ const Creation = (props: ListModeProps) => {
                                   backgroundColor: 'transparent',
                                   border: '1px solid gray',
                                   borderRadius: '10px',
-                                  pointerEvents: 'none'
+                                  pointerEvents: 'none',
                                 }}
                               />
                             </div>
@@ -442,7 +442,7 @@ const Creation = (props: ListModeProps) => {
                                   backgroundColor: 'transparent',
                                   border: '1px solid gray',
                                   borderRadius: '10px',
-                                  pointerEvents: 'none'
+                                  pointerEvents: 'none',
                                 }}
                               />
                             </div>

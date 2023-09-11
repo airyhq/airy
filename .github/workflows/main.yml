@@ -64,11 +64,6 @@ jobs:
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
           ./scripts/push-images.sh
 
-      - name: Install aws cli
-        uses: chrislennon/action-aws-cli@v1.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-
       - name: Upload airy binary to S3
         if: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release') || github.ref == 'refs/heads/main' }}
         run: |

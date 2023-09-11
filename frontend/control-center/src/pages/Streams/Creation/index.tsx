@@ -203,6 +203,7 @@ const Creation = (props: ListModeProps) => {
                             backgroundColor: 'transparent',
                             border: '1px solid gray',
                             borderRadius: '10px',
+                            pointerEvents: 'none',
                           }}
                         />
                       </div>
@@ -232,6 +233,7 @@ const Creation = (props: ListModeProps) => {
                             backgroundColor: 'transparent',
                             border: '1px solid gray',
                             borderRadius: '10px',
+                            pointerEvents: 'none',
                           }}
                         />
                       </div>
@@ -281,6 +283,7 @@ const Creation = (props: ListModeProps) => {
                               backgroundColor: 'transparent',
                               border: '1px solid gray',
                               borderRadius: '10px',
+                              pointerEvents: 'none',
                             }}
                           />
                         </div>
@@ -312,6 +315,7 @@ const Creation = (props: ListModeProps) => {
                               backgroundColor: 'transparent',
                               border: '1px solid gray',
                               borderRadius: '10px',
+                              pointerEvents: 'none',
                             }}
                           />
                         </div>
@@ -394,6 +398,7 @@ const Creation = (props: ListModeProps) => {
                                   backgroundColor: 'transparent',
                                   border: '1px solid gray',
                                   borderRadius: '10px',
+                                  pointerEvents: 'none',
                                 }}
                               />
                             </div>
@@ -437,6 +442,7 @@ const Creation = (props: ListModeProps) => {
                                   backgroundColor: 'transparent',
                                   border: '1px solid gray',
                                   borderRadius: '10px',
+                                  pointerEvents: 'none',
                                 }}
                               />
                             </div>

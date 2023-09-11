@@ -133,7 +133,7 @@ export const getChannelAvatar = (source: string) => {
     case 'GMail connector':
       return <GmailAvatar />;
 
-      default:
+    default:
       return <AiryAvatar />;
   }
 };

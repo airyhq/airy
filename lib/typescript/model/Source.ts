@@ -24,7 +24,7 @@ export enum Source {
   feast = 'feast',
   faiss = 'faiss',
   faissConnector = 'faissConnector',
-  llama2 = "llama2",
+  llama2 = 'llama2',
   openaiConnector = 'openaiConnector',
   pineconeConnector = 'pineconeConnector',
   chroma = 'chroma',

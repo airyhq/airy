@@ -112,7 +112,7 @@ const Creation = (props: ListModeProps) => {
     fields.forEach(field => {
       formatedFields.push({
         name: field['name'],
-        newName: field['name'] + '-' + topic,
+        newName: field['name'] + '_' + topic,
       });
     });
     return formatedFields;

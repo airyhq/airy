@@ -10,6 +10,7 @@ const filterAttributes = [
   'Customer Service',
   'Machine Learning',
   'Conversational AI',
+  'LLM',
   'Databases',
   'Marketing',
   'Storage',

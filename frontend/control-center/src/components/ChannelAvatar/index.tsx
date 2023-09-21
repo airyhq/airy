@@ -118,7 +118,7 @@ export const getChannelAvatar = (source: string) => {
     case 'OpenAI connector':
       return <OpenaiAvatar />;
     case Source.pineconeConnector:
-    case 'Pinecone':
+    case 'Pinecone connector':
       return <PineconeAvatar />;
     case Source.chroma:
     case 'Chroma':

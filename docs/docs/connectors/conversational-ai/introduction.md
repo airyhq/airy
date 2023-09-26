@@ -9,7 +9,7 @@ import ButtonBox from "@site/src/components/ButtonBox";
 
 Level up your channels' communication with Airy Core's conversational AI [connectors](/concepts/architecture#components).
 
-Airy Core features conversational AI [connectors](/concepts/architecture#components) that you can easily install and configure on your instance.
+Airy Core features conversational AI [connectors](/concepts/architecture#components) that you can easily install and configure on your instance. For all of the LLM connectors that Airy supports, please refer to our [Enterprise Docs](https://airy.co/docs/enterprise/).
 
 <ButtonBoxList>
     <ButtonBox

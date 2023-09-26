@@ -145,7 +145,7 @@ for the Twilio SMS and WhatsApp sources.
 
 ## App
 
-App definition
+Third party open-source packages that can be installed alongside Airy, in the same Kubernetes cluster, to provide a more robust and powerful application development environment. These `Apps` can vary from databases (ex. PostgreSQL or Redis) to LLM implementations and vector databases (ex. Llama2 or FAISS).
 
 ## Stream
 

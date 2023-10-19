@@ -14,6 +14,11 @@ Run Airy on minikube with one command.
 The goal of this document is to provide an overview of how to run Airy Core on
 your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
+## Requirements
+
+- [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.2.0+
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+
 ## Install
 
 :::note

@@ -15,7 +15,7 @@
 
 ---
 
-![Airy_Explainer_Highlevel_Readme](https://airy.co/docs/core/img/getting-started/introduction-light.png)
+![Airy_Explainer_Highlevel_Readme](https://airy.co/docs/core/img/getting-started/introduction.png)
 
 Airy Core is an is an open-source streaming app framework to train ML models and supply them with historical and real-time data. With Airy you can process data from a variety of
 sources:

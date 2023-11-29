@@ -35,9 +35,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     if (!_expanded) {
       wrapperSection.current.style.height = `${basicHeight}px`;
     } else {
-      console.log('in');
       if (wrapperSection && wrapperSection.current) {
-        console.log('in in');
         wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + 100 + headerHeight}px`;
       } else {
         wrapperSection.current.style.height = `${basicHeight}px`;

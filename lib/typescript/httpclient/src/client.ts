@@ -37,6 +37,12 @@ import {
   GetStreamInfoPayload,
   DeleteStreamPayload,
   CreateStreamPayload,
+  LLMConsumersListPayload,
+  LLMInfoPayload,
+  LLMSStatsPayload,
+  LLMConsumersCreateRequestPayload,
+  LLMConsumersCreateResponsePayload,
+  LLMConsumersDeletePayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -88,6 +94,11 @@ import {
   getStreamInfoDef,
   deleteStreamDef,
   createStreamDef,
+  llmConsumersListDef,
+  llmInfoDef,
+  llmStatsDef,
+  llmConsumersCreateDef,
+  llmConsumersDeleteDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -318,6 +329,18 @@ export class HttpClient {
   public deleteStream = this.getRequest<DeleteStreamPayload>(deleteStreamDef);
 
   public createStream = this.getRequest<CreateStreamPayload>(createStreamDef);
+
+  public getLLMInfo = this.getRequest<void, LLMInfoPayload>(llmInfoDef);
+
+  public getLLMStats = this.getRequest<void, LLMSStatsPayload>(llmStatsDef);
+
+  public listLLMConsumers = this.getRequest<void, LLMConsumersListPayload>(llmConsumersListDef);
+
+  public deleteLLMConsumer = this.getRequest<LLMConsumersDeletePayload>(llmConsumersDeleteDef);
+
+  public createLLMConsumer = this.getRequest<LLMConsumersCreateRequestPayload, LLMConsumersCreateResponsePayload>(
+    llmConsumersCreateDef
+  );
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

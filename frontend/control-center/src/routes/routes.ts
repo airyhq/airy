@@ -19,3 +19,7 @@ export const STREAMS_ROUTE = '/streams';
 export const TOPICS_ROUTE = '/topics';
 
 export const SCHEMAS_ROUTE = '/schemas';
+
+export const LLMS_ROUTE = '/llms';
+
+export const LLM_CONSUMERS_ROUTE = '/llm-consumers';

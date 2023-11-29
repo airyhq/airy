@@ -47,3 +47,8 @@ export * from './getStreams';
 export * from './getStreamInfo';
 export * from './deleteStream';
 export * from './createStream';
+export * from './llmConsumersCreate';
+export * from './llmConsumersList';
+export * from './llmStats';
+export * from './llmInfo';
+export * from './llmConsumersDelete';

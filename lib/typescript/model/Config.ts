@@ -26,12 +26,47 @@ export enum Language {
 
 export const getComponents = (config: Config) => {
   const {services} = config;
+
+  // REMOVE THIS. TESTING ONLY
+  services['faiss'] = {
+    enabled: true,
+    healthy: true,
+    component: 'faiss',
+  };
+
+  services['faiss-connector'] = {
+    enabled: true,
+    healthy: true,
+    component: 'faiss-connector',
+  };
+
+  services['openai-connector'] = {
+    enabled: true,
+    healthy: true,
+    component: 'openai-connector',
+  };
+
   const servicesSorted = Object.fromEntries(
     Object.entries(services).sort((a, b) => a[1].component.localeCompare(b[1].component))
   );
 
   return Object.keys(servicesSorted).reduce((agg, key) => {
     const {healthy, enabled, component} = services[key];
+
+    // REMOVE THIS. TESTING ONLY
+    if (key === 'frontend-copilot') {
+      return {
+        ...agg,
+        [component]: {
+          enabled,
+          // A component is only healthy if all its services are healthy
+          healthy: true,
+          services: agg[component]
+            ? [...agg[component].services, {name: key, healthy: true}]
+            : [{name: key, healthy: true}],
+        },
+      };
+    }
 
     return {
       ...agg,

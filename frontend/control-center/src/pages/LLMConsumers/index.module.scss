@@ -1,0 +1,128 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/animations.scss';
+
+.llmsWrapper {
+  background: var(--color-background-white);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 32px;
+  margin: 88px 1.5em 0 191px;
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.headlineContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.llmsHeadline {
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);
+  margin-bottom: 14px;
+}
+
+.llmsHeadlineText {
+  @include font-xl;
+  font-weight: 900;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+
+  h2 {
+    @include font-base;
+    color: var(--color-text-gray);
+    font-weight: bold;
+    width: 25%;
+  }
+
+  h2:first-child {
+    width: 30%;
+  }
+
+  h2:last-child {
+    width: 10%;
+  }
+}
+
+.successfullySubscribed {
+  @include font-base;
+  color: white;
+}
+
+@keyframes translateYIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(16px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+.translateYAnimIn {
+  animation: translateYIn 4s ease-in-out;
+}
+
+.animateIn {
+  animation: fadeInTranslateXLeft 3000ms ease;
+}
+
+.animateOut {
+  animation: fadeInTranslateXLeft 3000ms ease;
+}
+
+.llmCreateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 32px;
+  button {
+    @include font-base;
+    font-weight: bold;
+    align-self: center;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 16px;
+    width: 60%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background: var(--color-background-blue);
+      color: var(--color-text-contrast);
+    }
+  }
+  label {
+    margin-bottom: 12px;
+  }
+}

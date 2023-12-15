@@ -52,3 +52,4 @@ export * from './llmConsumersList';
 export * from './llmStats';
 export * from './llmInfo';
 export * from './llmConsumersDelete';
+export * from './llmQuery';

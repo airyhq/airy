@@ -43,6 +43,8 @@ import {
   LLMConsumersCreateRequestPayload,
   LLMConsumersCreateResponsePayload,
   LLMConsumersDeletePayload,
+  LLMQueryRequestPayload,
+  LLMQueryResponsePayload,
 } from './payload';
 import {
   listChannelsDef,
@@ -99,6 +101,7 @@ import {
   llmStatsDef,
   llmConsumersCreateDef,
   llmConsumersDeleteDef,
+  llmQueryDef,
 } from './endpoints';
 import 'isomorphic-fetch';
 import FormData from 'form-data';
@@ -341,6 +344,8 @@ export class HttpClient {
   public createLLMConsumer = this.getRequest<LLMConsumersCreateRequestPayload, LLMConsumersCreateResponsePayload>(
     llmConsumersCreateDef
   );
+
+  public llmQuery = this.getRequest<LLMQueryRequestPayload, LLMQueryResponsePayload>(llmQueryDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

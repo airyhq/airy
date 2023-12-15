@@ -10,6 +10,7 @@ const defaultState = {
   topic_schemas: [],
   streams: [],
   schemas: {},
+  schemasVersions: {},
   streamsInfo: {},
   messages: {},
 };
@@ -61,6 +62,16 @@ export default function configReducer(state = defaultState, action: Action): Str
         schemas: {
           ...state.schemas,
           [topicName]: action.payload,
+        },
+      };
+    }
+    case getType(actions.setCurrentSchemaVersionsAction): {
+      const topicName = trimTopicName(action.payload['name']);
+      return {
+        ...state,
+        schemasVersions: {
+          ...state.schemasVersions,
+          [topicName]: action.payload.versions,
         },
       };
     }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Input, NotificationComponent} from 'components';
+import {Dropdown, Input, NotificationComponent} from 'components';
 import {SettingsModal} from 'components/alerts/SettingsModal';
 import {Button} from 'components/cta/Button';
 import {useTranslation} from 'react-i18next';
@@ -7,18 +7,33 @@ import {connect, ConnectedProps} from 'react-redux';
 import {setPageTitle} from '../../services/pageTitle';
 import {NotificationModel} from 'model';
 import {AiryLoader} from 'components/loaders/AiryLoader';
-import styles from './index.module.scss';
 import {EmptyState} from './EmptyState';
 import {HttpClientInstance} from '../../httpClient';
 import {LLMConsumerItem} from './LLMConsumerItem';
+import {getValidTopics} from '../../selectors';
+import {StateModel} from '../../reducers';
+import styles from './index.module.scss';
+import {getSchemaInfo, getSchemas} from '../../actions';
 
 type LLMConsumersProps = {} & ConnectedProps<typeof connector>;
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getSchemas,
+  getSchemaInfo,
+};
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => {
+  return {
+    topics: getValidTopics(state),
+    schemas: state.data.streams.schemas,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const LLMConsumers = (props: LLMConsumersProps) => {
+  const {topics, getSchemas} = props;
+
   const [consumers, setConsumers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOccurred, setErrorOccurred] = useState(false);
@@ -34,6 +49,7 @@ const LLMConsumers = (props: LLMConsumersProps) => {
 
   useEffect(() => {
     setPageTitle('LLM Consumers');
+    getSchemas();
   }, []);
 
   useEffect(() => {
@@ -97,19 +113,19 @@ const LLMConsumers = (props: LLMConsumersProps) => {
               height={32}
               fontClass="font-base"
             />
-            <Input
-              id="topic"
-              label={t('topic')}
-              placeholder="e.g., llm-topic-1, llm-topic-2, etc."
-              showLabelIcon
-              tooltipText={t('llmConsumerTopicNameExplanation')}
-              value={topic}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTopic(event.target.value)}
-              minLength={6}
-              required={true}
-              height={32}
-              fontClass="font-base"
-            />
+            <div className={styles.dropdownContainer}>
+              <Dropdown
+                text={topic !== '' ? topic : 'Select Topic'}
+                variant="normal"
+                options={topics}
+                onClick={(topic: string) => {
+                  setTopic(topic);
+                  // getSchemaInfo(topic).catch(() => {
+                  //   getSchemaInfo(topic + '-value');
+                  // });
+                }}
+              />
+            </div>
             <Input
               id="type"
               label="Type of serialization"

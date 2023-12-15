@@ -10,6 +10,7 @@ const SET_TOPIC_INFO = '@@metadata/SET_TOPIC_INFO';
 const SET_TOPIC_SCHEMAS = '@@metadata/SET_TOPIC_SCHEMAS';
 const SET_STREAMS = '@@metadata/SET_STREAMS';
 const SET_SCHEMAS_INFO = '@@metadata/SET_SCHEMAS_INFO';
+const SET_SCHEMAS_VERSIONS = '@@metadata/SET_SCHEMAS_VERSIONS';
 const SET_STREAM_INFO = '@@metadata/SET_STREAM_INFO';
 const SET_LAST_MESSAGE = '@@metadata/SET_LAST_MESSAGRE';
 
@@ -74,8 +75,23 @@ export const getSchemas = () => async (dispatch: Dispatch<any>) => {
   });
 };
 
-export const getSchemaInfo = (topicName: string) => async (dispatch: Dispatch<any>) => {
-  return getData(`subjects/${topicName}/versions/latest`).then(response => {
+export const getSchemaVersions = (topicName: string) => async (dispatch: Dispatch<any>) => {
+  return getData(`subjects/${topicName}/versions`).then(response => {
+    if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+      return Promise.reject('404 Not Found');
+    } else {
+      dispatch(setCurrentSchemaVersionsAction({name: topicName, versions: response}));
+    }
+    return Promise.resolve(true);
+  });
+};
+
+export const getSchemaInfo = (topicName: string, version?: string) => async (dispatch: Dispatch<any>) => {
+  let v = 'latest';
+  if (version) {
+    v = version;
+  }
+  return getData(`subjects/${topicName}/versions/${v}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     } else {
@@ -196,6 +212,11 @@ export const setTopicSchemasAction = createAction(SET_TOPIC_SCHEMAS, (topics: st
 export const setStreamsAction = createAction(SET_STREAMS, (streams: Stream[]) => streams)<Stream[]>();
 
 export const setCurrentSchemaInfoAction = createAction(SET_SCHEMAS_INFO, (topicInfo: Schema) => topicInfo)<Schema>();
+
+export const setCurrentSchemaVersionsAction = createAction(
+  SET_SCHEMAS_VERSIONS,
+  (topicInfo: {name: string; versions: []}) => topicInfo
+)<{name: string; versions: []}>();
 
 export const setCurrentStreamInfoAction = createAction(
   SET_STREAM_INFO,

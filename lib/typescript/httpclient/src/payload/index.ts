@@ -43,3 +43,5 @@ export * from './LLMConsumerListPayload';
 export * from './LLMInfoPayload';
 export * from './LLMStatsPayload';
 export * from './LLMConsumersDeletePayload';
+export * from './LLMQueryResponsePayload';
+export * from './LLMQueryRequestPayload';

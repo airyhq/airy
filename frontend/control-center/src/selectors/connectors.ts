@@ -54,16 +54,6 @@ export const getMergedConnectors = createSelector(
         connectedChannels: connectedChannels,
       };
 
-      //REMOVE THIS. TESTING ONLY
-      if (name === 'llm-controller') {
-        structuredCatalog = {
-          ...structuredCatalog,
-          isConfigured: true,
-          isHealthy: true,
-          isEnabled: true,
-        };
-      }
-
       if (isApp) {
         structuredCatalog = {
           ...structuredCatalog,
@@ -87,15 +77,6 @@ export const getMergedConnectors = createSelector(
         configureValues: connector[1],
         isConfigured: isConfigured,
       };
-
-      //REMOVE THIS. TESTING ONLY
-      if (connector[0] === 'llm-controller') {
-        structuredCatalog = {
-          name: connector[0],
-          configureValues: connector[1],
-          isConfigured: true,
-        };
-      }
 
       connectorsList[structuredConnector.name] = structuredConnector;
     });

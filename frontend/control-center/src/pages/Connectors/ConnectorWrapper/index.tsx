@@ -183,12 +183,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                 <div className={styles.componentTitle}>
                   <h1 className={styles.headlineText}>{connectorInfo && connectorInfo?.displayName}</h1>
                   <ConfigStatusButton
-                    // REMOVE THIS. TEMPORARY FIX FOR LLM CONNECTOR
-                    componentStatus={
-                      connectorInfo?.name === 'llm-connector'
-                        ? getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)
-                        : getComponentStatus(true, true, true, true)
-                    }
+                    componentStatus={getComponentStatus(isHealthy, isInstalled, isConfigured, isEnabled)}
                     customStyle={styles.configStatusButton}
                   />
                 </div>
@@ -209,14 +204,7 @@ const ConnectorWrapper = (props: ConnectorWrapperProps) => {
                   </div>
                   {isConfigured && (
                     <SmartButton
-                      // REMOVE THIS. TEMPORARY FIX FOR LLM CONNECTOR
-                      title={
-                        connectorInfo?.name !== 'llm-connector'
-                          ? t('disableComponent')
-                          : isEnabled
-                          ? t('disableComponent')
-                          : t('enableComponent')
-                      }
+                      title={isEnabled ? t('disableComponent') : t('enableComponent')}
                       height={40}
                       width={132}
                       pending={isPending}

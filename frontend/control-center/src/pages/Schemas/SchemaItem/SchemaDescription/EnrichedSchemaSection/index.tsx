@@ -72,7 +72,7 @@ const EnrichedSchemaSection = (props: EnrichedSchemaSectionProps) => {
   };
 
   const recalculateContainerHeight = (code: string) => {
-    let basicHeight = 220;
+    const basicHeight = 220;
     if (wrapperSection && wrapperSection.current) {
       wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + basicHeight}px`;
     } else {

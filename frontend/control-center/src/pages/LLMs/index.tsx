@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {NotificationComponent} from 'components';
-import {SettingsModal} from 'components/alerts/SettingsModal';
-import {Button} from 'components/cta/Button';
-import {Webhook} from 'model/Webhook';
 import {useTranslation} from 'react-i18next';
 import {connect, ConnectedProps} from 'react-redux';
-import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
 import {NotificationModel} from 'model';
 import {AiryLoader} from 'components/loaders/AiryLoader';
 import styles from './index.module.scss';
 import {EmptyState} from './EmptyState';
 import {HttpClientInstance} from '../../httpClient';
-import {LLMInfoPayload, LLMSStatsPayload} from 'httpclient/src';
+import {LLMSStatsPayload} from 'httpclient/src';
 import {LLMInfoItem} from './LLMInfoItem';
 
 type LLMsProps = {} & ConnectedProps<typeof connector>;
@@ -24,8 +20,6 @@ const connector = connect(null, mapDispatchToProps);
 const LLMs = (props: LLMsProps) => {
   const [llms, setLlms] = useState([]);
   const [embeddings, setEmbeddings] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorOccurred, setErrorOccurred] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [dataFetched, setDataFetched] = useState(false);
   const {t} = useTranslation();
@@ -35,12 +29,10 @@ const LLMs = (props: LLMsProps) => {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     HttpClientInstance.getLLMInfo()
       .then((response: any) => {
         setLlms(response);
         setDataFetched(true);
-        setIsLoading(false);
       })
       .catch(() => {
         handleNotification(true);
@@ -83,6 +75,7 @@ const LLMs = (props: LLMsProps) => {
             <div className={styles.embeddingsSection}>Embeddings: {embeddings}</div>
             {notification?.show && (
               <NotificationComponent
+                key={'notificationKey'}
                 show={notification.show}
                 successful={notification.successful}
                 text={notification.text}

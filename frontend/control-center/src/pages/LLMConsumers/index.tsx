@@ -35,8 +35,6 @@ const LLMConsumers = (props: LLMConsumersProps) => {
   const {topics, getSchemas} = props;
 
   const [consumers, setConsumers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorOccurred, setErrorOccurred] = useState(false);
   const [notification, setNotification] = useState<NotificationModel>(null);
   const [dataFetched, setDataFetched] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -57,7 +55,6 @@ const LLMConsumers = (props: LLMConsumersProps) => {
       .then((response: any) => {
         setConsumers(response);
         setDataFetched(true);
-        setIsLoading(false);
       })
       .catch(() => {
         handleNotification(true);
@@ -200,6 +197,7 @@ const LLMConsumers = (props: LLMConsumersProps) => {
             </div>
             {notification?.show && (
               <NotificationComponent
+                key={'notificationKey'}
                 show={notification.show}
                 successful={notification.successful}
                 text={notification.text}

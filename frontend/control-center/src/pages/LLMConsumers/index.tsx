@@ -193,7 +193,9 @@ const LLMConsumers = (props: LLMConsumersProps) => {
             </div>
             <div>
               {consumers &&
-                consumers.map((consumer: any) => <LLMConsumerItem item={consumer} setNotification={setNotification} />)}
+                consumers.map((consumer: any) => (
+                  <LLMConsumerItem key={consumer.topic} item={consumer} setNotification={setNotification} />
+                ))}
             </div>
             {notification?.show && (
               <NotificationComponent

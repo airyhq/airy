@@ -4,7 +4,6 @@ import {useTranslation} from 'react-i18next';
 import {HttpClientInstance} from '../../../httpClient';
 import styles from './index.module.scss';
 import {NotificationModel} from 'model';
-import {set} from 'lodash-es';
 
 type EmptyStateProps = {
   item: {name: string; topic: string; status: string; lag: number};

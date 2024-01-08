@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {NotificationComponent} from 'components';
 import {useTranslation} from 'react-i18next';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 import {setPageTitle} from '../../services/pageTitle';
 import {NotificationModel} from 'model';
 import {AiryLoader} from 'components/loaders/AiryLoader';
@@ -11,13 +11,11 @@ import {HttpClientInstance} from '../../httpClient';
 import {LLMSStatsPayload} from 'httpclient/src';
 import {LLMInfoItem} from './LLMInfoItem';
 
-type LLMsProps = {} & ConnectedProps<typeof connector>;
-
 const mapDispatchToProps = {};
 
 const connector = connect(null, mapDispatchToProps);
 
-const LLMs = (props: LLMsProps) => {
+const LLMs = () => {
   const [llms, setLlms] = useState([]);
   const [embeddings, setEmbeddings] = useState(0);
   const [notification, setNotification] = useState<NotificationModel>(null);
@@ -50,7 +48,9 @@ const LLMs = (props: LLMsProps) => {
     setNotification({show: show, successful: false, text: t('errorOccurred')});
   };
 
-  const createNewLLM = () => {};
+  const createNewLLM = () => {
+    console.log('create new LLM');
+  };
 
   return (
     <>
@@ -71,7 +71,7 @@ const LLMs = (props: LLMsProps) => {
               <h2>Vector Database</h2>
               <h2>Model</h2>
             </div>
-            <div>{llms && llms.map((llm: any) => <LLMInfoItem item={llm} />)}</div>
+            <div>{llms && llms.map((llm: any) => <LLMInfoItem key={llm.llm} item={llm} />)}</div>
             <div className={styles.embeddingsSection}>Embeddings: {embeddings}</div>
             {notification?.show && (
               <NotificationComponent

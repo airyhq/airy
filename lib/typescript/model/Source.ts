@@ -34,6 +34,7 @@ export enum Source {
   amazons3 = 'amazons3',
   amazonLexV2 = 'amazonLexV2',
   integrationSourceApi = 'integrationSourceApi',
+  airyCopilot = 'copilot',
 }
 
 export enum SourceApps {
@@ -57,6 +58,7 @@ export const isAiryComponent = (source: string): boolean => {
     case Source.airyContacts:
     case Source.airyMobile:
     case Source.airyWebhooks:
+    case Source.airyCopilot:
     case Source.integrationSourceApi:
       return true;
   }

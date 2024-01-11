@@ -21,7 +21,7 @@ export const isJSON = (string: string): boolean => {
 
 export const formatJSON = (jsonString: string): string => {
   if (jsonString) {
-    return JSON.stringify(JSON.parse(jsonString), null, 4);
+    return JSON.stringify(JSON.parse(jsonString), null, 2);
   }
   return '';
 };

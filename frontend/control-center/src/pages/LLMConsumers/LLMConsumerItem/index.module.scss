@@ -1,0 +1,47 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+
+  p {
+    @include font-base;
+    color: var(--color-text-contrast);
+    font-weight: bold;
+    width: 25%;
+  }
+
+  p:first-child {
+    width: 30%;
+  }
+
+  p:nth-child(4) {
+    width: 15%;
+  }
+}
+
+.actionButton {
+  width: 2%;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.actionSVG {
+  width: 16px;
+  height: 18px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+}

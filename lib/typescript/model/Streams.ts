@@ -8,6 +8,9 @@ export interface Streams {
   schemas: {
     [topicName: string]: Schema;
   };
+  schemasVersions: {
+    [topicName: string]: string[];
+  };
   streamsInfo: {
     [streamName: string]: StreamInfo;
   };

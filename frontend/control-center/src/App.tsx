@@ -17,6 +17,8 @@ import {
   STREAMS_ROUTE,
   TOPICS_ROUTE,
   SCHEMAS_ROUTE,
+  LLMS_ROUTE,
+  LLM_CONSUMERS_ROUTE,
 } from './routes/routes';
 import NotFound from './pages/NotFound';
 import ConnectorsOutlet from './pages/Connectors/ConnectorsOutlet';
@@ -36,6 +38,8 @@ import {getAppExternalURL} from './services/getAppExternalURL';
 import Streams from './pages/Streams';
 import Topics from './pages/Topics';
 import Schemas from './pages/Schemas';
+import LLMs from './pages/LLMs';
+import LLMConsumers from './pages/LLMConsumers';
 
 const mapDispatchToProps = {
   getClientConfig,
@@ -111,6 +115,8 @@ const App = (props: ConnectedProps<typeof connector>) => {
 
             <Route element={<NotFound />} />
             <Route path={`${WEBHOOKS_ROUTE}/*`} element={<Webhooks />} />
+            <Route path={`${LLMS_ROUTE}/*`} element={<LLMs />} />
+            <Route path={`${LLM_CONSUMERS_ROUTE}/*`} element={<LLMConsumers />} />
             <Route path={`${STATUS_ROUTE}`} element={<Status />} />
           </Routes>
         </div>

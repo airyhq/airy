@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {MutableRefObject, useEffect, useRef, useState} from 'react';
 import MonacoEditor from '@uiw/react-monacoeditor';
 import {calculateHeightOfCodeString, isJSON} from '../../../../../services';
 import {useTranslation} from 'react-i18next';
-import {Button} from 'components';
-import styles from '../index.module.scss';
+import {Button, Dropdown} from 'components';
 import {checkCompatibilityOfNewSchema, setSchemaSchema} from '../../../../../actions';
 import {ConnectedProps, connect} from 'react-redux';
+import styles from '../index.module.scss';
 
 const mapDispatchToProps = {
   setSchemaSchema,
@@ -22,10 +22,12 @@ type SchemaSectionProps = {
   setIsEditMode: (flag: boolean) => void;
   setFirstTabSelected: (flag: boolean) => void;
   editorMode: string;
-  recalculateContainerHeight: (text: string) => void;
+  wrapperSection: MutableRefObject<any>;
   setErrorMessage: (error: string) => void;
   setShowErrorPopUp: (flag: boolean) => void;
   version: number;
+  loadSchemaVersion: (version: string) => void;
+  versions: string[];
 } & ConnectedProps<typeof connector>;
 
 const SchemaSection = (props: SchemaSectionProps) => {
@@ -37,12 +39,14 @@ const SchemaSection = (props: SchemaSectionProps) => {
     setIsEditMode,
     setFirstTabSelected,
     editorMode,
-    recalculateContainerHeight,
+    wrapperSection,
     checkCompatibilityOfNewSchema,
     setSchemaSchema,
     setErrorMessage,
     setShowErrorPopUp,
     version,
+    loadSchemaVersion,
+    versions,
   } = props;
 
   const [localCode, setLocalCode] = useState(code);
@@ -58,6 +62,51 @@ const SchemaSection = (props: SchemaSectionProps) => {
   const resetCodeAndEndEdition = () => {
     setLocalCode(code);
     setIsEditMode(!isEditMode);
+  };
+
+  const recalculateContainerHeight = (code: string) => {
+    const basicHeight = 220;
+    if (wrapperSection && wrapperSection.current) {
+      wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + basicHeight}px`;
+    } else {
+      wrapperSection.current.style.height = `${basicHeight}px`;
+    }
+    if (!isEnrichmentAvailable(code)) {
+      if ((wrapperSection.current.style.height.replace('px', '') as number) > 600) {
+        wrapperSection.current.style.height = '600px';
+      }
+    } else {
+      if ((wrapperSection.current.style.height.replace('px', '') as number) > 700) {
+        wrapperSection.current.style.height = '700px';
+      }
+    }
+  };
+
+  const recalculateCodeHeight = (code: string) => {
+    const codeHeight = calculateHeightOfCodeString(code);
+    let height = 478;
+    if (!isEnrichmentAvailable(code)) {
+      height = 510;
+    }
+    if (codeHeight > height) {
+      return height;
+    }
+    return codeHeight;
+  };
+
+  const isEnrichmentAvailable = (code: string): boolean => {
+    let needsEnrichment = false;
+    const parsedCode = JSON.parse(code);
+    (parsedCode.fields || []).map(field => {
+      if (typeof field.type === 'object' && !Array.isArray(field.type)) {
+        if (!field.type.doc) {
+          needsEnrichment = true;
+        }
+      } else if (!field.doc) {
+        needsEnrichment = true;
+      }
+    });
+    return needsEnrichment;
   };
 
   const checkCompatibility = (_schemaName: string, _code: string, _version: number) => {
@@ -99,14 +148,17 @@ const SchemaSection = (props: SchemaSectionProps) => {
           >
             Schema
           </button>
-          {/* <button
-            className={styles.tabNotSelected}
-            onClick={() => {
-              setFirstTabSelected(false);
+        </div>
+        <div className={styles.version}>
+          <p>version</p>
+          <Dropdown
+            text={version.toString()}
+            variant="normal"
+            options={versions}
+            onClick={(option: string) => {
+              loadSchemaVersion(option);
             }}
-          >
-            Last Message
-          </button> */}
+          />
         </div>
         <div className={styles.rightButtonsContainer}>
           <Button
@@ -141,10 +193,29 @@ const SchemaSection = (props: SchemaSectionProps) => {
           )}
         </div>
       </div>
+      {isEnrichmentAvailable(code) && (
+        <>
+          <div>
+            <div className={styles.enrichmentContainer}>
+              <div className={styles.enrichmentText}>
+                This schema can be automatically enriched with documentation and saved as a new version.
+              </div>
+              <Button
+                onClick={() => setFirstTabSelected(false)}
+                styleVariant="normal"
+                style={{padding: '4px', margin: '4px', width: '170px', height: '32px', fontSize: 16, marginLeft: 4}}
+              >
+                Preview Changes
+              </Button>
+            </div>
+            <div className={styles.enrichmentSchemaText}>Current schema: </div>
+          </div>
+        </>
+      )}
       {code && code !== '{}' && (
         <MonacoEditor
           ref={codeRef}
-          height={calculateHeightOfCodeString(code)}
+          height={recalculateCodeHeight(code)}
           language="yaml"
           value={localCode}
           onChange={value => {

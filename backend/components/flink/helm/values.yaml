@@ -1,0 +1,13 @@
+component: flink-connector
+mandatory: false
+enabled: false
+port: 8080
+resources:
+executor:
+  name: statements-executor
+  image: connectors/flink/statements-executor
+  topic: flink.statements
+resultSender:
+  name: result-sender
+  image: connectors/flink/result-sender
+  topic: flink.output

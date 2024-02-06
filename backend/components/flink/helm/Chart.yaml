@@ -1,0 +1,5 @@
+apiVersion: v2
+appVersion: "1.0"
+description: Flink connector
+name: flink-connector
+version: 1.0

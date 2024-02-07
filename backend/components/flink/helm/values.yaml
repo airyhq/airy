@@ -3,6 +3,8 @@ mandatory: false
 enabled: false
 port: 8080
 resources:
+gatewayUrl: "http://flink-jobmanager:8083"
+apiCommunicationUrl: "http://api-communication/messages.send"
 executor:
   name: statements-executor
   image: connectors/flink/statements-executor

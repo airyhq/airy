@@ -36,6 +36,8 @@ spec:
           env:
             - name: KAFKA_TOPIC_NAME
               value: {{ .Values.executor.topic }}
+            - name: FLINK_GATEWAY_URL
+              value: {{ .Values.gatewayUrl }}
           livenessProbe:
             httpGet:
               path: /actuator/health

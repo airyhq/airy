@@ -13,9 +13,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
-// sendFlinkSQL sends an SQL statement to the Flink Gateway
 func sendFlinkSQL(url string, statementSet FlinkStatementSet) (string, error) {
-	// Substitute placeholers with variables
 	timestamp := time.Now().Unix()
 	strTimestamp := fmt.Sprintf("%d", timestamp)
 	replacements := map[string]string{
@@ -91,7 +89,6 @@ func sendFlinkSQL(url string, statementSet FlinkStatementSet) (string, error) {
 		defer resp.Body.Close()
 	}
 
-	// Handle the response (check if the request was successful)
 	return sessionResponse.SessionHandle, nil
 }
 
@@ -99,17 +96,14 @@ func produceFlinkOutput(flinkOutput FlinkOutput, kafkaURL, groupID, authUsername
 
 	kafkaTopic := "flink.outputs"
 
-	// Marshal the query to JSON
 	flinkOutputJSON, err := json.Marshal(flinkOutput)
 	if err != nil {
 		return fmt.Errorf("error marshaling query to JSON: %w", err)
 	}
 
-	// Basic Kafka producer configuration
 	configMap := kafka.ConfigMap{
 		"bootstrap.servers": kafkaURL,
 	}
-	// Conditionally add SASL/SSL configurations if username and password are provided
 	if authUsername != "" && authPassword != "" {
 		configMap.SetKey("security.protocol", "SASL_SSL")
 		configMap.SetKey("sasl.mechanisms", "PLAIN")
@@ -117,14 +111,12 @@ func produceFlinkOutput(flinkOutput FlinkOutput, kafkaURL, groupID, authUsername
 		configMap.SetKey("sasl.password", authPassword)
 	}
 
-	// Create a new Kafka producer
 	producer, err := kafka.NewProducer(&configMap)
 	if err != nil {
 		return fmt.Errorf("failed to create producer: %w", err)
 	}
 	defer producer.Close()
 
-	// Produce the message
 	message := kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &kafkaTopic, Partition: kafka.PartitionAny},
 		Key:            []byte(flinkOutput.SessionID),

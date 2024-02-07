@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -77,6 +78,7 @@ func getFlinkResult(url, sessionID string) (FlinkResult, error) {
 }
 
 func sendMessage(message string, conversationId string, systemToken string) (int, string, error) {
+	apiCommunicationUrl := os.Getenv("API_COMMUNICATION_URL")
 	messageContent := messageContent{
 		Text: message,
 	}
@@ -90,7 +92,7 @@ func sendMessage(message string, conversationId string, systemToken string) (int
 		return 0, "", errors.New("The message could not be encoded to JSON for sending.")
 	}
 
-	req, err := http.NewRequest("POST", "http://api-communication/messages.send", bytes.NewReader(messageJSON))
+	req, err := http.NewRequest("POST", apiCommunicationUrl, bytes.NewReader(messageJSON))
 	if err != nil {
 		fmt.Printf("Error creating request: %v\n", err)
 		return 0, "", errors.New("The message could not be sent.")

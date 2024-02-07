@@ -14,24 +14,21 @@ import (
 
 func main() {
 
-	// Create Kafka consumer to read the statements
 	kafkaURL := os.Getenv("KAFKA_BROKERS")
 	schemaRegistryURL := os.Getenv("KAFKA_SCHEMA_REGISTRY_URL")
 	topicName := os.Getenv("KAFKA_TOPIC_NAME")
-	//systemToken := os.Getenv("systemToken")
 	authUsername := os.Getenv("AUTH_JAAS_USERNAME")
 	authPassword := os.Getenv("AUTH_JAAS_PASSWORD")
 	timestamp := time.Now().Unix()
 	strTimestamp := fmt.Sprintf("%d", timestamp)
 	groupID := "statement-executor-" + strTimestamp
-	//llmEndpoint := "http://llm-controller:5000/llm.proxy"
+	flinkGatewayURL := os.Getenv("FLINK_GATEWAY_URL")
 
 	if kafkaURL == "" || schemaRegistryURL == "" || topicName == "" {
 		fmt.Println("KAFKA_BROKERS, KAFKA_SCHEMA_REGISTRY_URL, and KAFKA_TOPIC_NAME environment variables must be set")
 		return
 	}
 
-	// Healthcheck
 	http.HandleFunc("/actuator/health", func(w http.ResponseWriter, r *http.Request) {
 		response := map[string]string{"status": "UP"}
 		jsonResponse, err := json.Marshal(response)
@@ -52,7 +49,6 @@ func main() {
 
 	fmt.Println("Health-check started")
 
-	// Create Kafka consumer configuration
 	fmt.Println("Creating Kafka consumer for topic: ", topicName)
 
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
@@ -69,7 +65,6 @@ func main() {
 		return
 	}
 	c.SubscribeTopics([]string{topicName}, nil)
-	// Channel for signals
 	signals := make(chan os.Signal, 1)
 	done := make(chan bool, 1)
 
@@ -79,7 +74,6 @@ func main() {
 		for {
 			select {
 			case sig := <-signals:
-				// If an interrupt signal is received, break the loop
 				fmt.Printf("Caught signal %v: terminating\n", sig)
 				done <- true
 				return
@@ -92,10 +86,7 @@ func main() {
 						continue
 					} else {
 						fmt.Printf("Received message: %+v\n", statementSet)
-
-						flinkGatewayURL := "http://flink-jobmanager:8083" //"http://flink.us-east-2.aws.confluent.cloud/v1beta1/sql", Replace with your Flink Gateway URL https://flink.region.provider.confluent.cloud
 						fmt.Println("Flink gateway: ", flinkGatewayURL)
-
 						sessionID, err := sendFlinkSQL(flinkGatewayURL, statementSet)
 						if err != nil {
 							fmt.Println("Error running Flink statement:", err)
@@ -110,11 +101,9 @@ func main() {
 						err = produceFlinkOutput(flinkOutput, kafkaURL, "flink-producer-"+groupID, authUsername, authPassword)
 						if err != nil {
 							fmt.Printf("error producing message to Kafka: %v\n", err)
-							//sendMessage("I am sorry, I am unable to answer that question.", message.ConversationID, systemToken)
 						}
 					}
 				} else {
-					// Log the error and continue
 					fmt.Printf("Consumer error: %v\n", err)
 				}
 			}

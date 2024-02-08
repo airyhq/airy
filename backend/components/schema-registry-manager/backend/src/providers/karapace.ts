@@ -51,7 +51,7 @@ export async function createSchema(topicName: string, schema: string) {
     });
 };
   
-export async function checkCompatibilityOfNewSchema(topicName: string, schema: string, version: number) {
+export async function checkCompatibilityOfNewSchema(topicName: string, schema: string, version: string) {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
@@ -62,7 +62,7 @@ export async function checkCompatibilityOfNewSchema(topicName: string, schema: s
       }
       if (response.is_compatible !== undefined) {
         if (response.is_compatible === true) {
-          return Promise.resolve(true);
+          return response;
         }
         return Promise.reject('Schema Not Compatible');
       }
@@ -74,25 +74,25 @@ export async function checkCompatibilityOfNewSchema(topicName: string, schema: s
     });
 };
   
-//   export const deleteSchema = (topicName: string) => async () => {
-//     return deleteData(`subjects/${topicName}`).then(response => {
-//       if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
-//         return Promise.reject('404 Not Found');
-//       }
-//       return Promise.resolve(true);
-//     });
-//   };
+export async function deleteSchema(topicName: string) {
+  return deleteData(`subjects/${topicName}`).then(response => {
+    if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
+      return Promise.reject('404 Not Found');
+    }
+    return response;
+  });
+};
   
-//   export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<any>) => {
-//     const body = {
-//       ksql: `PRINT '${topicName}' FROM BEGINNING LIMIT 1;`,
-//       streamsProperties: {},
-//     };
-//     return postData('query', body).then(response => {
-//       dispatch(setLastMessage(response));
-//       return Promise.resolve(true);
-//     });
-//   };
+export async function getLastMessage(topicName: string) {
+  const body = {
+    ksql: `PRINT '${topicName}' FROM BEGINNING LIMIT 1;`,
+    streamsProperties: {},
+  };
+  return postData('query', body).then(response => {
+    console.log(response);
+    return response;
+  });
+};
   
   async function getData(url: string) {
     const response = await fetch(process.env.URL + '/' + url, {

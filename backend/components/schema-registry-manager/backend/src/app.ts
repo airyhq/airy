@@ -2,7 +2,7 @@
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import { SchemaProvider } from "./types";
-import { createSchema, getSchemaInfo, getSchemaVersions, getSchemas, updateSchema } from "./providers/karapace";
+import { checkCompatibilityOfNewSchema, createSchema, deleteSchema, getLastMessage, getSchemaInfo, getSchemaVersions, getSchemas, updateSchema } from "./providers/karapace";
 
 dotenv.config();
 
@@ -142,7 +142,48 @@ app.post('/schemas.compatibility', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      createSchema(req.query.topicName as string, req.body.schema as string).then((response: any) => {
+      checkCompatibilityOfNewSchema(req.query.topicName as string, req.body.schema as string, req.query.version as string).then((response: any) => {
+        res.status(200).send(response);
+      }).catch((e: any) => {
+        res.status(500).send(e);
+      });    
+      break;    
+    default:
+      res.status(404).send('Provider Not Found');
+      break;
+  }  
+});
+
+app.post('/schemas.delete', (req: Request, res: Response) => {
+  if (!req.query.topicName) {
+    res.status(400).send('Missing topicName');
+    return;
+  }
+
+  switch (currentProvider) {
+    case SchemaProvider.karapace:
+      deleteSchema(req.query.topicName as string).then((response: any) => {
+        res.status(200).send(response);
+      }).catch((e: any) => {
+        res.status(500).send(e);
+      });    
+      break;    
+    default:
+      res.status(404).send('Provider Not Found');
+      break;
+  }  
+});
+
+app.get('/schemas.lastMessage', (req: Request, res: Response) => {
+  if (!req.query.topicName) {
+    res.status(400).send('Missing topicName');
+    return;
+  }
+
+  switch (currentProvider) {
+    case SchemaProvider.karapace:
+      getLastMessage(req.query.topicName as string).then((response: any) => {
+        console.log(response);
         res.status(200).send(response);
       }).catch((e: any) => {
         res.status(500).send(e);

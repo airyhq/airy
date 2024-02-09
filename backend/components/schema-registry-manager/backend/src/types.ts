@@ -1,8 +1,8 @@
 export enum SchemaProvider {
-  karapace = 'karapace',    
+  karapace = 'karapace',
   confluentCloud = 'confluent-cloud',
 }
 
 module.exports = {
-  SchemaProvider: SchemaProvider
+  SchemaProvider: SchemaProvider,
 };

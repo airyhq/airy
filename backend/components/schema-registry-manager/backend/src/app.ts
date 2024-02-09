@@ -1,8 +1,16 @@
-
-import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
-import { SchemaProvider } from "./types";
-import { checkCompatibilityOfNewSchema, createSchema, deleteSchema, getLastMessage, getSchemaInfo, getSchemaVersions, getSchemas, updateSchema } from "./providers/karapace";
+import dotenv from 'dotenv';
+import express, {Express, Request, Response} from 'express';
+import {SchemaProvider} from './types';
+import {
+  checkCompatibilityOfNewSchema,
+  createSchema,
+  deleteSchema,
+  getLastMessage,
+  getSchemaInfo,
+  getSchemaVersions,
+  getSchemas,
+  updateSchema,
+} from './providers/karapace';
 
 dotenv.config();
 
@@ -15,22 +23,24 @@ const currentProvider: SchemaProvider = SchemaProvider.karapace;
 app.use(bodyParser.json());
 
 app.get('/schemas.provider', (req: Request, res: Response) => {
-  res.status(200).send(currentProvider);  
+  res.status(200).send(currentProvider);
 });
 
 app.get('/schemas.list', (req: Request, res: Response) => {
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemas().then((response: string[]) => {        
-        res.send(response);      
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });      
-      break;    
+      getSchemas()
+        .then((response: string[]) => {
+          res.send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.get('/schemas.versions', (req: Request, res: Response) => {
@@ -41,16 +51,18 @@ app.get('/schemas.versions', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemaVersions(req.query.topicName as string).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      getSchemaVersions(req.query.topicName as string)
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.get('/schemas.info', (req: Request, res: Response) => {
@@ -66,16 +78,18 @@ app.get('/schemas.info', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemaInfo(req.query.topicName as string, version).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      getSchemaInfo(req.query.topicName as string, version)
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.post('/schemas.update', (req: Request, res: Response) => {
@@ -90,16 +104,18 @@ app.post('/schemas.update', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      updateSchema(req.query.topicName as string, req.body.schema as string).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      updateSchema(req.query.topicName as string, req.body.schema as string)
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.post('/schemas.create', (req: Request, res: Response) => {
@@ -114,16 +130,18 @@ app.post('/schemas.create', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      createSchema(req.query.topicName as string, req.body.schema as string).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      createSchema(req.query.topicName as string, req.body.schema as string)
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.post('/schemas.compatibility', (req: Request, res: Response) => {
@@ -142,16 +160,22 @@ app.post('/schemas.compatibility', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      checkCompatibilityOfNewSchema(req.query.topicName as string, req.body.schema as string, req.query.version as string).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      checkCompatibilityOfNewSchema(
+        req.query.topicName as string,
+        req.body.schema as string,
+        req.query.version as string
+      )
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.post('/schemas.delete', (req: Request, res: Response) => {
@@ -162,16 +186,18 @@ app.post('/schemas.delete', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      deleteSchema(req.query.topicName as string).then((response: any) => {
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      deleteSchema(req.query.topicName as string)
+        .then((response: any) => {
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 app.get('/schemas.lastMessage', (req: Request, res: Response) => {
@@ -182,17 +208,19 @@ app.get('/schemas.lastMessage', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getLastMessage(req.query.topicName as string).then((response: any) => {
-        console.log(response);
-        res.status(200).send(response);
-      }).catch((e: any) => {
-        res.status(500).send(e);
-      });    
-      break;    
+      getLastMessage(req.query.topicName as string)
+        .then((response: any) => {
+          console.log(response);
+          res.status(200).send(response);
+        })
+        .catch((e: any) => {
+          res.status(500).send(e);
+        });
+      break;
     default:
       res.status(404).send('Provider Not Found');
       break;
-  }  
+  }
 });
 
 async function main() {

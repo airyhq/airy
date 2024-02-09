@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.component }}
+  labels:
+    app: {{ .Values.component }}
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: {{ .Values.component }}
+spec:
+  replicas: {{ if .Values.enabled }} 1 {{ else }} 0 {{ end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.component }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.component }}
+    spec:
+      containers:
+        - name: app
+          image: "ghcr.io/airyhq/{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: security
+            - configMapRef:
+                name: kafka-config
+            - configMapRef:
+                name: {{ .Values.component }}
+          env:
+            - name: KAFKA_TOPIC_NAME
+              value: {{ .Values.kafka.topic }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.port }}
+              httpHeaders:
+                - name: Health-Check
+                  value: health-check
+            initialDelaySeconds: 43200
+            periodSeconds: 10
+            failureThreshold: 3

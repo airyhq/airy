@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import express, {Express, Request, Response} from 'express';
+import cors from 'cors';
+
 import {SchemaProvider} from './types';
 import {
   checkCompatibilityOfNewSchema,
@@ -21,6 +23,14 @@ const currentProvider: SchemaProvider = SchemaProvider.karapace;
 
 // Middleware
 app.use(bodyParser.json());
+
+// CORS options
+const corsOptions = {
+  origin: 'http://localhost:8080',
+};
+
+// Use cors middleware with the specified options
+app.use(cors(corsOptions));
 
 app.get('/schemas.provider', (req: Request, res: Response) => {
   res.status(200).send(currentProvider);

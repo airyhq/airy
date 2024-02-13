@@ -39,7 +39,7 @@ app.get('/schemas.provider', (req: Request, res: Response) => {
 app.get('/schemas.list', (req: Request, res: Response) => {
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemas()
+      getSchemas(req.get('host') as string)
         .then((response: string[]) => {
           res.send(response);
         })
@@ -61,7 +61,7 @@ app.get('/schemas.versions', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemaVersions(req.query.topicName as string)
+      getSchemaVersions(req.get('host') as string, req.query.topicName as string)
         .then((response: any) => {
           res.status(200).send(response);
         })
@@ -88,7 +88,7 @@ app.get('/schemas.info', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getSchemaInfo(req.query.topicName as string, version)
+      getSchemaInfo(req.get('host') as string, req.query.topicName as string, version)
         .then((response: any) => {
           res.status(200).send(response);
         })

@@ -1,11 +1,11 @@
-export async function getSchemas() {
-  return getData('subjects').then(response => {
+export async function getSchemas(host: string) {
+  return getData(host, 'subjects').then(response => {
     return response;
   });
 }
 
-export async function getSchemaVersions(topicName: string) {
-  return getData(`subjects/${topicName}/versions`).then(response => {
+export async function getSchemaVersions(host: string, topicName: string) {
+  return getData(host, `subjects/${topicName}/versions`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     }
@@ -13,8 +13,8 @@ export async function getSchemaVersions(topicName: string) {
   });
 }
 
-export async function getSchemaInfo(topicName: string, version: string) {
-  return getData(`subjects/${topicName}/versions/${version}`).then(response => {
+export async function getSchemaInfo(host: string, topicName: string, version: string) {
+  return getData(host, `subjects/${topicName}/versions/${version}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     }
@@ -94,8 +94,8 @@ export async function getLastMessage(topicName: string) {
   });
 }
 
-async function getData(url: string) {
-  const response = await fetch(process.env.URL + '/' + url, {
+async function getData(host: string, url: string) {
+  const response = await fetch('https://' + host + '/' + url, {
     method: 'GET',
   });
   return response.json();

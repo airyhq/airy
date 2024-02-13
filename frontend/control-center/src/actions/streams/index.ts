@@ -77,7 +77,7 @@ export const getSchemas = () => async (dispatch: Dispatch<any>) => {
 };
 
 export const getSchemaVersions = (topicName: string) => async (dispatch: Dispatch<any>) => {
-  return getData(`subjects/${topicName}/versions`).then(response => {
+  return getData(`schemas.versions?topicName=${topicName}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     } else {
@@ -92,7 +92,7 @@ export const getSchemaInfo = (topicName: string, version?: string) => async (dis
   if (version) {
     v = version;
   }
-  return getData(`subjects/${topicName}/versions/${v}`).then(response => {
+  return getData(`schemas.info?topicName=${topicName}&version=${v}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     } else {
@@ -106,7 +106,7 @@ export const setSchemaSchema = (topicName: string, schema: string) => async () =
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return postData(`subjects/${topicName}/versions`, body).then(response => {
+  return postData(`schemas.update?topicName=${topicName}`, body).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     }
@@ -120,7 +120,7 @@ export const createSchema = (topicName: string, schema: string) => async () => {
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return postData(`subjects/${topicName}/versions`, body)
+  return postData(`schemas.create?topicName=${topicName}`, body)
     .then(response => {
       if (response.id) return Promise.resolve(true);
       if (response.message) return Promise.reject(response.message);
@@ -135,7 +135,7 @@ export const checkCompatibilityOfNewSchema = (topicName: string, schema: string,
   const body = {
     schema: JSON.stringify({...JSON.parse(schema)}),
   };
-  return postData(`compatibility/subjects/${topicName}/versions/${version}`, body)
+  return postData(`schemas.compatibility?topicName=${topicName}&version=${version}`, body)
     .then(response => {
       if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
         return Promise.reject('404 Not Found');
@@ -155,7 +155,7 @@ export const checkCompatibilityOfNewSchema = (topicName: string, schema: string,
 };
 
 export const deleteSchema = (topicName: string) => async () => {
-  return deleteData(`subjects/${topicName}`).then(response => {
+  return deleteData(`schemas.delete?topicName=${topicName}`).then(response => {
     if (response.error_code && response.error_code.toString().includes('404') && !topicName.includes('-value')) {
       return Promise.reject('404 Not Found');
     }
@@ -164,11 +164,7 @@ export const deleteSchema = (topicName: string) => async () => {
 };
 
 export const getLastMessage = (topicName: string) => async (dispatch: Dispatch<any>) => {
-  const body = {
-    ksql: `PRINT '${topicName}' FROM BEGINNING LIMIT 1;`,
-    streamsProperties: {},
-  };
-  return postData('query', body).then(response => {
+  return getData(`schemas.lastMessage?topicName=${topicName}`).then(response => {
     dispatch(setLastMessage(response));
     return Promise.resolve(true);
   });

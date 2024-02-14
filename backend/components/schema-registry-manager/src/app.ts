@@ -107,9 +107,6 @@ app.post('/schemas.update', (req: Request, res: Response) => {
     res.status(400).send('Missing topicName');
     return;
   }
-
-  console.log(req.body);
-
   if (!req.body.schema) {
     res.status(400).send('Missing schema');
     return;

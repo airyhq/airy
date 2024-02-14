@@ -190,11 +190,10 @@ async function postData(url: string, body: any) {
   const response = await fetch(apiHostUrl + '/' + url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/vnd.schemaregistry.v1+json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
   });
-
   return response.json();
 }
 

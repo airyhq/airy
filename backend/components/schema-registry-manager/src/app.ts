@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-import express, {Express, Request, Response} from 'express';
+import express, {Express, Request as ExpressRequest, Response as ExpressResponse} from 'express';
+import http from 'http';
 import cors from 'cors';
 
 import {SchemaProvider} from './types';
@@ -32,11 +33,11 @@ const corsOptions = {
 // Use cors middleware with the specified options
 app.use(cors(corsOptions));
 
-app.get('/schemas.provider', (req: Request, res: Response) => {
+app.get('/schemas.provider', (req: ExpressRequest, res: ExpressResponse) => {
   res.status(200).send(currentProvider);
 });
 
-app.get('/schemas.list', (req: Request, res: Response) => {
+app.get('/schemas.list', (req: ExpressRequest, res: ExpressResponse) => {
   switch (currentProvider) {
     case SchemaProvider.karapace:
       getSchemas(req.get('host') as string)
@@ -53,7 +54,7 @@ app.get('/schemas.list', (req: Request, res: Response) => {
   }
 });
 
-app.get('/schemas.versions', (req: Request, res: Response) => {
+app.get('/schemas.versions', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -75,7 +76,7 @@ app.get('/schemas.versions', (req: Request, res: Response) => {
   }
 });
 
-app.get('/schemas.info', (req: Request, res: Response) => {
+app.get('/schemas.info', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -102,7 +103,7 @@ app.get('/schemas.info', (req: Request, res: Response) => {
   }
 });
 
-app.post('/schemas.update', (req: Request, res: Response) => {
+app.post('/schemas.update', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -128,7 +129,7 @@ app.post('/schemas.update', (req: Request, res: Response) => {
   }
 });
 
-app.post('/schemas.create', (req: Request, res: Response) => {
+app.post('/schemas.create', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -154,7 +155,7 @@ app.post('/schemas.create', (req: Request, res: Response) => {
   }
 });
 
-app.post('/schemas.compatibility', (req: Request, res: Response) => {
+app.post('/schemas.compatibility', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -189,7 +190,7 @@ app.post('/schemas.compatibility', (req: Request, res: Response) => {
   }
 });
 
-app.post('/schemas.delete', (req: Request, res: Response) => {
+app.post('/schemas.delete', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -211,7 +212,7 @@ app.post('/schemas.delete', (req: Request, res: Response) => {
   }
 });
 
-app.get('/schemas.lastMessage', (req: Request, res: Response) => {
+app.get('/schemas.lastMessage', (req: ExpressRequest, res: ExpressResponse) => {
   if (!req.query.topicName) {
     res.status(400).send('Missing topicName');
     return;
@@ -233,7 +234,27 @@ app.get('/schemas.lastMessage', (req: Request, res: Response) => {
   }
 });
 
+async function startHealthcheck() {
+  const server = http.createServer((req: any, res: any) => {
+    if (req.url === '/actuator/health' && req.method === 'GET') {
+      const response = { status: "UP" };
+      const jsonResponse = JSON.stringify(response);
+  
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(jsonResponse);
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('Not Found');
+    }
+  });
+  
+  server.listen(80, () => {
+    console.log("Health-check started");
+  });
+}
+
 async function main() {
+  startHealthcheck();
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });

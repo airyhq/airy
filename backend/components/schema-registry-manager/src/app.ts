@@ -114,7 +114,7 @@ app.post('/schemas.update', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      updateSchema(req.query.topicName as string, req.body.schema as string)
+      updateSchema(req.get('host') as string, req.query.topicName as string, req.body.schema as string)
         .then((response: any) => {
           res.status(200).send(response);
         })
@@ -140,7 +140,7 @@ app.post('/schemas.create', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      createSchema(req.query.topicName as string, req.body.schema as string)
+      createSchema(req.get('host') as string, req.query.topicName as string, req.body.schema as string)
         .then((response: any) => {
           res.status(200).send(response);
         })
@@ -171,6 +171,7 @@ app.post('/schemas.compatibility', (req: Request, res: Response) => {
   switch (currentProvider) {
     case SchemaProvider.karapace:
       checkCompatibilityOfNewSchema(
+        req.get('host') as string,
         req.query.topicName as string,
         req.body.schema as string,
         req.query.version as string
@@ -196,7 +197,7 @@ app.post('/schemas.delete', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      deleteSchema(req.query.topicName as string)
+      deleteSchema(req.get('host') as string, req.query.topicName as string)
         .then((response: any) => {
           res.status(200).send(response);
         })
@@ -218,7 +219,7 @@ app.get('/schemas.lastMessage', (req: Request, res: Response) => {
 
   switch (currentProvider) {
     case SchemaProvider.karapace:
-      getLastMessage(req.query.topicName as string)
+      getLastMessage(req.get('host') as string, req.query.topicName as string)
         .then((response: any) => {
           res.status(200).send(response);
         })

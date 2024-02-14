@@ -237,19 +237,19 @@ app.get('/schemas.lastMessage', (req: ExpressRequest, res: ExpressResponse) => {
 async function startHealthcheck() {
   const server = http.createServer((req: any, res: any) => {
     if (req.url === '/actuator/health' && req.method === 'GET') {
-      const response = { status: "UP" };
+      const response = {status: 'UP'};
       const jsonResponse = JSON.stringify(response);
-  
-      res.writeHead(200, { 'Content-Type': 'application/json' });
+
+      res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(jsonResponse);
     } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.writeHead(404, {'Content-Type': 'text/plain'});
       res.end('Not Found');
     }
   });
-  
+
   server.listen(80, () => {
-    console.log("Health-check started");
+    console.log('Health-check started');
   });
 }
 

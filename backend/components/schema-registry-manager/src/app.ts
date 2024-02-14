@@ -107,6 +107,9 @@ app.post('/schemas.update', (req: Request, res: Response) => {
     res.status(400).send('Missing topicName');
     return;
   }
+
+  console.log(req.body);
+
   if (!req.body.schema) {
     res.status(400).send('Missing schema');
     return;
@@ -220,7 +223,6 @@ app.get('/schemas.lastMessage', (req: Request, res: Response) => {
     case SchemaProvider.karapace:
       getLastMessage(req.query.topicName as string)
         .then((response: any) => {
-          console.log(response);
           res.status(200).send(response);
         })
         .catch((e: any) => {

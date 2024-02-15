@@ -54,10 +54,15 @@ jobs:
         run: |
           bazel test --test_tag_filters=-lint //...
 
-      - name: Check disk
+      - name: Cleanup space
         run: |
           df -h
-          cd / && du -d 1 -h 2>/dev/null
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          du -d 1 -h /usr/local/share/
+          du -d 1 -h /opt/
+          docker images prune -a
+          df -h
 
       - name: Build all artifacts
         run: |

@@ -54,6 +54,11 @@ jobs:
         run: |
           bazel test --test_tag_filters=-lint //...
 
+      - name: Check disk
+        run: |
+          df -h
+          cd / && du -d 1 -h 2>/dev/null
+
       - name: Build all artifacts
         run: |
           bazel build //...

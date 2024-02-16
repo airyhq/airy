@@ -60,8 +60,8 @@ jobs:
           sudo apt-get autoremove -y
           sudo apt-get clean
           docker images prune -a
-          rm -rf /usr/local/share/powershell
-          rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /opt/hostedtoolcache
           df -h
 
       - name: Build all artifacts

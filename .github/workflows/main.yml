@@ -54,6 +54,16 @@ jobs:
         run: |
           bazel test --test_tag_filters=-lint //...
 
+      - name: Cleanup space
+        run: |
+          df -h
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          docker images prune -a
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /opt/hostedtoolcache
+          df -h
+
       - name: Build all artifacts
         run: |
           bazel build //...

@@ -59,9 +59,9 @@ jobs:
           df -h
           sudo apt-get autoremove -y
           sudo apt-get clean
-          du -d 1 -h /usr/local/share/
-          du -d 1 -h /opt/
           docker images prune -a
+          rm -rf /usr/local/share/powershell
+          rm -rf /opt/hostedtoolcache
           df -h
 
       - name: Build all artifacts

@@ -15,10 +15,10 @@ export const updateConnectorConfigurationAction = createAction(
 export const getComponentsAction = createAction(GET_COMPONENTS, (components: Components) => components)<Components>();
 
 export const getConnectorsConfiguration = () => (dispatch: Dispatch<any>) => {
-  return HttpClientInstance.getComponents().then((response: Components) => {
-    dispatch(getComponentsAction(response));
-    return Promise.resolve(true);
-  });
+  // return HttpClientInstance.getComponents().then((response: Components) => {
+  //   dispatch(getComponentsAction(response));
+  //   return Promise.resolve(true);
+  // });
 };
 
 export const updateConnectorConfiguration =

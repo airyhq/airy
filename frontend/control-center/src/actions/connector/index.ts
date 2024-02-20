@@ -19,6 +19,7 @@ export const getConnectorsConfiguration = () => (dispatch: Dispatch<any>) => {
   //   dispatch(getComponentsAction(response));
   //   return Promise.resolve(true);
   // });
+  return Promise.resolve(true);
 };
 
 export const updateConnectorConfiguration =

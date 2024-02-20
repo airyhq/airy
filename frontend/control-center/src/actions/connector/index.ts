@@ -15,11 +15,14 @@ export const updateConnectorConfigurationAction = createAction(
 export const getComponentsAction = createAction(GET_COMPONENTS, (components: Components) => components)<Components>();
 
 export const getConnectorsConfiguration = () => (dispatch: Dispatch<any>) => {
-  // return HttpClientInstance.getComponents().then((response: Components) => {
-  //   dispatch(getComponentsAction(response));
-  //   return Promise.resolve(true);
-  // });
-  return Promise.resolve(true);
+  return HttpClientInstance.getComponents().then((response: Components) => {
+    console.log('response', response);
+    dispatch(getComponentsAction(response));
+    return Promise.resolve(true);
+  }).catch((error: any) => {
+    console.log('Error: ', error);
+    return Promise.reject(error);
+  });
 };
 
 export const updateConnectorConfiguration =

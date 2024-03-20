@@ -26,6 +26,7 @@ import {ReactComponent as ChromaAvatar} from 'assets/images/icons/chroma.svg';
 import {ReactComponent as MosaicAvatar} from 'assets/images/icons/mosaic.svg';
 import {ReactComponent as WeaviateAvatar} from 'assets/images/icons/weaviate.svg';
 import {ReactComponent as GmailAvatar} from 'assets/images/icons/gmail.svg';
+import {ReactComponent as SlackAvatar} from 'assets/images/icons/slack.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -132,7 +133,9 @@ export const getChannelAvatar = (source: string) => {
     case Source.gmail:
     case 'GMail connector':
       return <GmailAvatar />;
-
+      case 'Slack connector':
+        return <SlackAvatar />;
+  
     default:
       return <AiryAvatar />;
   }

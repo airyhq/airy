@@ -133,9 +133,9 @@ export const getChannelAvatar = (source: string) => {
     case Source.gmail:
     case 'GMail connector':
       return <GmailAvatar />;
-      case 'Slack connector':
-        return <SlackAvatar />;
-  
+    case 'Slack connector':
+      return <SlackAvatar />;
+
     default:
       return <AiryAvatar />;
   }

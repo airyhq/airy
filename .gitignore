@@ -10,6 +10,7 @@ airy_dev
 
 dist/
 bazel-*
+!bazel-steward.yaml
 
 # Emacs backup files
 .\#*

@@ -21,7 +21,7 @@ func main() {
 	systemToken := os.Getenv("systemToken")
 	authUsername := os.Getenv("AUTH_JAAS_USERNAME")
 	authPassword := os.Getenv("AUTH_JAAS_PASSWORD")
-	flinkProvider := os.Getenv("flnkProvider")
+	flinkProvider := os.Getenv("provider")
 	groupID := "result-sender"
 	msgNormal := false
 	msgDebug := true
@@ -32,11 +32,11 @@ func main() {
 	}
 
 	var confluentConnection ConfluentConnection
-	confluentConnection.Token = os.Getenv("CONFLUENT_TOKEN")
-	confluentConnection.ComputePoolID = os.Getenv("CONFLUENT_COMPUTE_POOL_ID")
-	confluentConnection.Principal = os.Getenv("CONFLUENT_PRINCIPAL")
-	confluentConnection.SQLCurrentCatalog = os.Getenv("CONFLUENT_SQL_CURRENT_CATALOG")
-	confluentConnection.SQLCurrentDatabase = os.Getenv("CONFLUENT_SQL_CURRENT_DATABASE")
+	confluentConnection.Token = os.Getenv("confluentToken")
+	confluentConnection.ComputePoolID = os.Getenv("confluentComputePoolID")
+	confluentConnection.Principal = os.Getenv("confluentPrincipal")
+	confluentConnection.SQLCurrentCatalog = os.Getenv("confluentSQLCurrentCatalog")
+	confluentConnection.SQLCurrentDatabase = os.Getenv("confluentSQLCurrentDatabase")
 
 	// Healthcheck
 	http.HandleFunc("/actuator/health", func(w http.ResponseWriter, r *http.Request) {

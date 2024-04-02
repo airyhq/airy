@@ -96,5 +96,6 @@ Here is a list of the open source components which can be added to `Airy Core`:
 - sources-twilio
 - sources-viber
 - sources-whatsapp
+- flink-connector
 
 More information about the components API can be found [here](/api/endpoints/components).

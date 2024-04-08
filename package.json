@@ -5,7 +5,7 @@
   "dependencies": {
     "@emoji-mart/data": "^1.0.6",
     "@emoji-mart/react": "^1.0.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.8",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@reduxjs/toolkit": "^1.9.3",
     "@stomp/stompjs": "^7.0.0",
     "@testing-library/jest-dom": "^5.16.5",

@@ -1046,20 +1046,20 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@bazel/typescript@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.6.0.tgz#4fa0fce58ff23391a93819a329e5513978830df7"
-  integrity sha512-XIi9whWnG3ky3aWz2+w1GLbjKjVdMttsEHi7kqlE2H6KL6Ujq+bvYPUQyNtDVmJOwY4vUJ2TtdebDzfP7H+r2w==
+"@bazel/typescript@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-5.8.1.tgz#74a76af434fad7930893cf3e98b4cc201e52dc65"
+  integrity sha512-NAJ8WQHZL1WE1YmRoCrq/1hhG15Mvy/viWh6TkvFnBeEhNUiQUsA5GYyhU1ztnBIYW03nATO3vwhAEfO7Q0U5g==
   dependencies:
-    "@bazel/worker" "5.6.0"
+    "@bazel/worker" "5.8.1"
     semver "5.6.0"
     source-map-support "0.5.9"
     tsutils "3.21.0"
 
-"@bazel/worker@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.6.0.tgz#9ad631a0c7429baeaeb800f03ef1e79630e4f8d9"
-  integrity sha512-3U//HQSeTu6kp6e1k/ncPodTj2IZfJCTNH7dL5VzBzXOodyWivudDMCss3X+LRL8KfjiPqPukysRvwzK/INxhg==
+"@bazel/worker@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-5.8.1.tgz#65af7a70dd2f1aaedd6c19330abd9a198f96e7b2"
+  integrity sha512-GMyZSNW3F34f9GjbJqvs1aHyed5BNrNeiDzNJhC1fIizo/UeBM21oBBONIYLBDoBtq936U85VyPZ76JaP/83hw==
   dependencies:
     google-protobuf "^3.6.1"
 

@@ -13,3 +13,7 @@ data:
 {{- end }}
   KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.config.kafka.schemaRegistryUrl }}
   KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.config.kafka.commitInterval }}"
+  KAFKA_SASL_CA: |-
+    {{ .Values.config.kafka.saslCaCertificate | nindent 4 | trim }}
+  KAFKA_SASL_USERNAME: {{ .Values.config.kafka.saslUsername }}
+  KAFKA_SASL_PASSWORD: {{ .Values.config.kafka.saslPassword }}

@@ -29,6 +29,9 @@ data:
     REPLICAS=${KAFKA_MINIMUM_REPLICAS:-1}
     AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}
     AUTH_JAAS=${AUTH_JAAS:-}
+    KAFKA_SASL_USERNAME=${KAFKA_SASL_USERNAME:-}
+    KAFKA_SASL_PASSWORD=${KAFKA_SASL_PASSWORD:-}
+    KAFKA_SASL_CA=${KAFKA_SASL_CA:-}
 
     if [ -n "${AIRY_CORE_NAMESPACE}" ]; then
       AIRY_CORE_NAMESPACE="${AIRY_CORE_NAMESPACE}."
@@ -40,6 +43,18 @@ data:
     security.protocol=SASL_SSL
     sasl.jaas.config=$AUTH_JAAS
     sasl.mechanism=PLAIN
+    EOF
+      CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
+      echo "Using jaas authentication for connecting to Kafka"
+    fi
+
+    if [ -n "${KAFKA_SASL_CA}" ]; then
+      cat <<EOF > /opt/kafka/jaas.config
+    security.protocol=SASL_SSL
+    sasl.mechanism=PLAIN
+    sasl.username=$KAFKA_SASL_USERNAME
+    sasl.password=$KAFKA_SASL_PASSWORD
+    sasl.ca.location=/opt/kafka/ca.pem
     EOF
       CONNECTION_OPTS+=(--command-config /opt/kafka/jaas.config)
       echo "Using jaas authentication for connecting to Kafka"

@@ -24,9 +24,6 @@ spec:
         volumeMounts:
         - name: kafka-create-topics
           mountPath: /opt/provisioning
-        - name: kafka-config
-          mountPath: /opt/kafka/ca.pem
-          subPath: KAFKA_SASL_CA
       initContainers:
       - name: wait
         image: "{{ .Values.global.busyboxImage }}"

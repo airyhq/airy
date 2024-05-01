@@ -30,6 +30,10 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.common.config.SslConfigs;
+import java.util.HashMap;
+
 
 public class KafkaStreamsWrapper {
     private static final Logger log = AiryLoggerFactory.getLogger(KafkaStreamsWrapper.class);
@@ -37,6 +41,7 @@ public class KafkaStreamsWrapper {
     private final String brokers;
     private final String schemaRegistryUrl;
     private String jaasConfig;
+    private String kafkaKeyTrustSecret;
     private long commitIntervalInMs;
     private long suppressIntervalInMs;
     private int threadCount;
@@ -70,8 +75,9 @@ public class KafkaStreamsWrapper {
         healthCheckRunnerThread = new HealthCheckRunner(testMode);
     }
 
-    public KafkaStreamsWrapper withJaasConfig(String jaasConfig) {
+    public KafkaStreamsWrapper withJaasConfig(String jaasConfig, String kafkaKeyTrustSecret) {
         this.jaasConfig = jaasConfig;
+        this.kafkaKeyTrustSecret = kafkaKeyTrustSecret;
         return this;
     }
 
@@ -226,6 +232,17 @@ public class KafkaStreamsWrapper {
             props.put("sasl.mechanism", "PLAIN");
             props.put("sasl.jaas.config", jaasConfig);
         }
+
+        if (this.kafkaKeyTrustSecret != null) {
+            props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+            props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/opt/kafka/certs/client.truststore.jks");
+            props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, kafkaKeyTrustSecret);
+            props.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, "PKCS12");
+            props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/opt/kafka/certs/client.keystore.p12");
+            props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, kafkaKeyTrustSecret);
+            props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, kafkaKeyTrustSecret);
+        }
+
 
         props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, this.maxRequestSize);
         props.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, this.fetchMaxBytes);

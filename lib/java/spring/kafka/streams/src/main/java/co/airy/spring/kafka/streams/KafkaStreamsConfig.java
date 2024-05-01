@@ -30,6 +30,9 @@ public class KafkaStreamsConfig {
     @Value("${AUTH_JAAS:#{null}}")
     private String jaasConfig;
 
+    @Value("${KAFKA_KEY_TRUST_SECRET:#{null}}")
+    private String kafkaKeyTrustSecret;
+
     @Value("${kafka.rpc-port:0}")
     private int rpcPort;
 
@@ -68,7 +71,7 @@ public class KafkaStreamsConfig {
     public KafkaStreamsWrapper airyKafkaStreams(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl) {
         return new KafkaStreamsWrapper(brokers, schemaRegistryUrl)
                 .withCommitIntervalInMs(commitIntervalMs)
-                .withJaasConfig(jaasConfig)
+                .withJaasConfig(jaasConfig, kafkaKeyTrustSecret)
                 .withSuppressIntervalInMs(suppressIntervalMs)
                 .withThreadCount(streamsThreadCount)
                 .withAppServerHost(rpcHost)

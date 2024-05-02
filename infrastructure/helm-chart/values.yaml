@@ -13,6 +13,7 @@ config:
     brokers: "kafka-headless:9092"
     zookeepers: "zookeeper:2181"
     authJaas: ""
+    keyTrustSecret: ""
     minimumReplicas: 1
     schemaRegistryUrl: "http://schema-registry:8081"
     commitInterval: 1000

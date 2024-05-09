@@ -19,6 +19,15 @@ import {ReactComponent as IbmWatsonAssistantAvatar} from 'assets/images/icons/ib
 import {ReactComponent as RedisAvatar} from 'assets/images/icons/redisLogo.svg';
 import {ReactComponent as PostgresAvatar} from 'assets/images/icons/postgresLogo.svg';
 import {ReactComponent as FeastAvatar} from 'assets/images/icons/feastLogo.svg';
+import {ReactComponent as MetaAvatar} from 'assets/images/icons/meta.svg';
+import {ReactComponent as OpenaiAvatar} from 'assets/images/icons/openai.svg';
+import {ReactComponent as PineconeAvatar} from 'assets/images/icons/pinecone.svg';
+import {ReactComponent as ChromaAvatar} from 'assets/images/icons/chroma.svg';
+import {ReactComponent as MosaicAvatar} from 'assets/images/icons/mosaic.svg';
+import {ReactComponent as WeaviateAvatar} from 'assets/images/icons/weaviate.svg';
+import {ReactComponent as GmailAvatar} from 'assets/images/icons/gmail.svg';
+import {ReactComponent as SlackAvatar} from 'assets/images/icons/slack.svg';
+import {ReactComponent as FlinkAvatar} from 'assets/images/icons/flink.svg';
 
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
@@ -98,6 +107,37 @@ export const getChannelAvatar = (source: string) => {
     case Source.feast:
     case 'Feast':
       return <FeastAvatar />;
+    case Source.faiss:
+    case 'FAISS':
+      return <MetaAvatar />;
+    case Source.faissConnector:
+    case 'FAISS connector':
+      return <MetaAvatar />;
+    case Source.llama2:
+    case 'LLama2':
+      return <MetaAvatar />;
+    case Source.openaiConnector:
+    case 'OpenAI connector':
+      return <OpenaiAvatar />;
+    case Source.pineconeConnector:
+    case 'Pinecone connector':
+      return <PineconeAvatar />;
+    case Source.chroma:
+    case 'Chroma':
+      return <ChromaAvatar />;
+    case Source.mosaic:
+    case 'Mosaic':
+      return <MosaicAvatar />;
+    case Source.weaviate:
+    case 'Weaviate':
+      return <WeaviateAvatar />;
+    case Source.gmail:
+    case 'GMail connector':
+      return <GmailAvatar />;
+    case 'Slack connector':
+      return <SlackAvatar />;
+    case 'Flink connector':
+      return <FlinkAvatar />;
 
     default:
       return <AiryAvatar />;

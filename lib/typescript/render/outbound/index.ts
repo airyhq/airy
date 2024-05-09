@@ -13,6 +13,7 @@ export const getOutboundMapper = (source: string) => {
     case 'google':
       return new GoogleMapper();
     case 'chatplugin':
+    case 'copilot':
       return new ChatpluginMapper();
     case 'twilio.sms':
     case 'twilio.whatsapp':

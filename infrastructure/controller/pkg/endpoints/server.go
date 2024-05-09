@@ -70,6 +70,12 @@ func Serve(clientSet *kubernetes.Clientset, namespace string, kubeConfig *rest.C
 	componentsList := ComponentsList{ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
 	r.Handle("/components.list", &componentsList)
 
+	kafkaSubjects := KafkaSubjects{ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
+	r.Handle("/kafka/subjects", &kafkaSubjects)
+
+	kafkaTopics := KafkaTopics{ClientSet: clientSet, Namespace: namespace, Index: helmIndex}
+	r.Handle("/kafka/topics", &kafkaTopics)
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 

@@ -1,14 +1,14 @@
 import React, {MutableRefObject, useEffect, useState} from 'react';
-import {getSchemaInfo} from '../../../../actions';
+import {getSchemaInfo, getSchemaVersions} from '../../../../actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {ErrorPopUp} from 'components';
-import {calculateHeightOfCodeString} from '../../../../services';
 import SchemaSection from './SchemaSection';
 import styles from './index.module.scss';
-import {MessageSection, lastMessageMock} from './MessageSection';
+import EnrichedSchemaSection from './EnrichedSchemaSection';
 
 const mapDispatchToProps = {
   getSchemaInfo,
+  getSchemaVersions,
 };
 
 const connector = connect(null, mapDispatchToProps);
@@ -19,15 +19,17 @@ type SchemaDescriptionProps = {
   setCode: (code: string) => void;
   wrapperSection: MutableRefObject<any>;
   version: number;
+  versions: string[];
 } & ConnectedProps<typeof connector>;
 
 const SchemaDescription = (props: SchemaDescriptionProps) => {
-  const {schemaName, code, setCode, getSchemaInfo, wrapperSection, version} = props;
+  const {schemaName, code, setCode, getSchemaInfo, getSchemaVersions, wrapperSection, version, versions} = props;
 
   useEffect(() => {
     getSchemaInfo(schemaName).catch(() => {
       getSchemaInfo(schemaName + '-value');
     });
+    getSchemaVersions(schemaName);
   }, []);
 
   useEffect(() => {
@@ -43,26 +45,14 @@ const SchemaDescription = (props: SchemaDescriptionProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [editorMode, setEditorMode] = useState(localStorage.getItem('theme') === 'dark' ? 'vs-dark' : 'vs');
 
-  useEffect(() => {
-    if (firstTabSelected) {
-      recalculateContainerHeight(code);
-    } else {
-      recalculateContainerHeight(lastMessageMock);
-    }
-  }, [firstTabSelected, code]);
-
   const setNewSchemaCode = (text: string) => {
     setCode(text);
   };
 
-  const recalculateContainerHeight = (code: string) => {
-    const basicHeight = 50;
-    const headerHeight = 32;
-    if (wrapperSection && wrapperSection.current) {
-      wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + headerHeight + basicHeight}px`;
-    } else {
-      wrapperSection.current.style.height = `${basicHeight}px`;
-    }
+  const loadSchemaVersion = (version: string) => {
+    getSchemaInfo(schemaName, version).catch(() => {
+      getSchemaInfo(schemaName + '-value', version);
+    });
   };
 
   return (
@@ -76,17 +66,26 @@ const SchemaDescription = (props: SchemaDescriptionProps) => {
           setIsEditMode={setIsEditMode}
           setFirstTabSelected={setFirstTabSelected}
           editorMode={editorMode}
-          recalculateContainerHeight={recalculateContainerHeight}
+          wrapperSection={wrapperSection}
           setErrorMessage={setErrorMessage}
           setShowErrorPopUp={setShowErrorPopUp}
           version={version}
+          versions={versions}
+          loadSchemaVersion={loadSchemaVersion}
         />
       ) : (
-        <MessageSection
+        <EnrichedSchemaSection
+          schemaName={schemaName}
           code={code}
           setFirstTabSelected={setFirstTabSelected}
           editorMode={editorMode}
-          recalculateContainerHeight={recalculateContainerHeight}
+          wrapperSection={wrapperSection}
+          setCode={setNewSchemaCode}
+          isEditMode={isEditMode}
+          setIsEditMode={setIsEditMode}
+          setErrorMessage={setErrorMessage}
+          setShowErrorPopUp={setShowErrorPopUp}
+          version={version}
         />
       )}
       {showErrorPopUp && <ErrorPopUp message={errorMessage} closeHandler={() => setShowErrorPopUp(false)} />}

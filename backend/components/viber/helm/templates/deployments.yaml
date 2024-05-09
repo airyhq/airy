@@ -49,6 +49,11 @@ spec:
                 - name: Health-Check
                   value: health-check
             initialDelaySeconds: 120
+{{ if .Values.global.kafkaCertAuth }}
+          volumeMounts:
+          - name: kafka-config-certs
+            mountPath: /opt/kafka/certs
+{{ end }}
           resources:
 {{ toYaml .Values.connector.resources | indent 12 }}
       initContainers:
@@ -66,3 +71,8 @@ spec:
         - name: provisioning-scripts
           configMap:
             name: provisioning-scripts
+{{ if .Values.global.kafkaCertAuth }}
+        - name: kafka-config-certs
+          configMap:
+            name: kafka-config-certs
+{{ end }}

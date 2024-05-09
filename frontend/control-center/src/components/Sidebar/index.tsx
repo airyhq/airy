@@ -15,6 +15,8 @@ import {
   STREAMS_ROUTE,
   TOPICS_ROUTE,
   SCHEMAS_ROUTE,
+  LLMS_ROUTE,
+  LLM_CONSUMERS_ROUTE,
 } from '../../routes/routes';
 
 import {ReactComponent as ConnectorsIcon} from 'assets/images/icons/gitMerge.svg';
@@ -31,18 +33,18 @@ type SideBarProps = {} & ConnectedProps<typeof connector>;
 const mapStateToProps = (state: StateModel) => ({
   version: state.data.config.clusterVersion,
   components: state.data.config.components,
+  connectors: state.data.catalog,
 });
 
 const connector = connect(mapStateToProps);
 
 const Sidebar = (props: SideBarProps) => {
-  const {version, components} = props;
+  const {version, components, connectors} = props;
   const componentInfo = useCurrentComponentForSource(Source.airyWebhooks);
-
   const webhooksEnabled = componentInfo.installationStatus === InstallationStatus.installed;
   const inboxEnabled = components[Source.frontendInbox]?.enabled || false;
-  const showLine = inboxEnabled || webhooksEnabled;
-
+  const llmsEnabled = connectors['llm-controller']?.installationStatus === 'installed' || false;
+  const showLine = inboxEnabled || webhooksEnabled || llmsEnabled;
   const isActive = (route: string) => {
     return useMatch(`${route}/*`);
   };
@@ -50,6 +52,9 @@ const Sidebar = (props: SideBarProps) => {
   const href = window.location.href;
   const [kafkaSectionOpen, setKafkaSectionOpen] = useState<boolean>(
     href.includes(TOPICS_ROUTE) || href.includes(STREAMS_ROUTE)
+  );
+  const [llmSectionOpen, setLlmSectionOpen] = useState<boolean>(
+    href.includes(LLMS_ROUTE) || href.includes(LLM_CONSUMERS_ROUTE)
   );
 
   return (
@@ -82,8 +87,8 @@ const Sidebar = (props: SideBarProps) => {
         <div className={styles.align} onClick={() => setKafkaSectionOpen(!kafkaSectionOpen)}>
           <div
             className={`${styles.link} ${isActive(TOPICS_ROUTE) ? styles.active : ''} ${
-              isActive(STREAMS_ROUTE) ? styles.active : ''
-            }`}
+              isActive(SCHEMAS_ROUTE) ? styles.active : ''
+            } ${isActive(STREAMS_ROUTE) ? styles.active : ''}`}
           >
             <StreamsIcon width={18} height={18} />
             <span className={styles.iconText}>Kafka</span>
@@ -141,6 +146,37 @@ const Sidebar = (props: SideBarProps) => {
             </Link>
           </div>
         </>
+        <div className={styles.align} onClick={() => setLlmSectionOpen(!llmSectionOpen)}>
+          <div
+            className={`${styles.link} ${isActive(LLMS_ROUTE) ? styles.active : ''} ${
+              isActive(LLM_CONSUMERS_ROUTE) ? styles.active : ''
+            }`}
+          >
+            <WebhooksIcon width={20} height={20} />
+            <span className={styles.iconText}>LLMs</span>
+          </div>
+        </div>
+        <div
+          className={`${styles.subalign} ${isActive(LLMS_ROUTE) ? styles.active : ''} ${
+            !llmSectionOpen ? styles.viewClosed : ''
+          }`}
+        >
+          <Link to={LLMS_ROUTE} className={`${styles.sublink} ${isActive(LLMS_ROUTE) ? styles.active : ''}`}>
+            <span className={styles.iconText}>LLM Controller</span>
+          </Link>
+        </div>
+        <div
+          className={`${styles.subalign} ${isActive(LLM_CONSUMERS_ROUTE) ? styles.active : ''} ${
+            !llmSectionOpen ? styles.viewClosed : ''
+          }`}
+        >
+          <Link
+            to={LLM_CONSUMERS_ROUTE}
+            className={`${styles.sublink} ${isActive(LLM_CONSUMERS_ROUTE) ? styles.active : ''}`}
+          >
+            <span className={styles.iconText}>LLM Consumers</span>
+          </Link>
+        </div>
       </div>
       <span className={styles.version}>Version {version}</span>
     </nav>

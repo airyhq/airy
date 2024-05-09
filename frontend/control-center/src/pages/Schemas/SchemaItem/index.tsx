@@ -9,6 +9,7 @@ import SchemaDescription from './SchemaDescription/SchemaDescription';
 const mapStateToProps = (state: StateModel) => {
   return {
     schemas: state.data.streams.schemas,
+    schemasVersions: state.data.streams.schemasVersions,
   };
 };
 
@@ -32,6 +33,7 @@ const SchemaItem = (props: SchemaItemProps) => {
     addSchemasToSelection,
     itemSelected,
     setItemSelected,
+    schemasVersions,
   } = props;
 
   const [code, setCode] = useState(formatJSON(schemas[schemaName] ? schemas[schemaName].schema : '{}'));
@@ -59,6 +61,10 @@ const SchemaItem = (props: SchemaItemProps) => {
     return 1;
   };
 
+  const getVersions = (): string[] => {
+    return schemasVersions[schemaName] || [];
+  };
+
   return (
     <section className={styles.wrapper} ref={wrapperSection}>
       <SchemaInfo
@@ -77,6 +83,7 @@ const SchemaItem = (props: SchemaItemProps) => {
           setCode={setCode}
           wrapperSection={wrapperSection}
           version={getVersion()}
+          versions={getVersions()}
         />
       )}
     </section>

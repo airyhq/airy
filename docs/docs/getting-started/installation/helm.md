@@ -290,6 +290,49 @@ Run the following command to create the `Airy` platform without the bundled inst
 helm install airy airy/airy --timeout 10m --set prerequisites.kafka.enabled=false --values ./airy.yaml
 ```
 
+#### Confluent
+
+To connect to a Kafka instance in Confluent cloud, settings the `config.kafka.brokers` and `config.kafka.aurhJaas` is enough, prior to deploying the Helm chart.
+
+#### Aiven
+
+Aiven cloud uses a keystore and truststore certificates that need to be loaded on the workloads that are connecting to Kafka. Get the necessary certificates and connection files from Aiven using the `avn` CLI and place them in a separate directory.
+
+```
+avn service user-kafka-java-creds {KAFKA_INSTANCE} --username {USERNAME} -d ./aiven/ --password {PASSWORD}
+```
+
+Create a Kubernetes ConfigMap that contains the contents of the created directory:
+
+```
+kubectl create configmap kafka-config-certs --from-file aiven/
+```
+
+Set the connection appropriate parameters in your `airy.yaml` file:
+
+```yaml
+config:
+  kafka:
+    brokers: "the-aiven-kafka-broker-url"
+    keyTrustSecret: "the-key-trust-secret"
+```
+
+Then install Airy with the following command:
+
+```sh
+helm install airy airy/airy --timeout 10m --set prerequisites.kafka.enabled=false --set global.kafkaCertAuth=true --values ./airy.yaml
+```
+
+### Kafka partitions per topic
+
+Currently all the default topics in the Airy instance are created with 10 partitions. To create these topics with a different number of partitions, add the following to your `airy.yaml` file before running `helm install` (before the initial creation of the topics):
+
+```
+provisioning:
+  kafka:
+    partitions: 2
+```
+
 ### Beanstalkd
 
 The default installation creates its own [Beanstalkd](https://beanstalkd.github.io/) deployment, as it is a prerequisite for using the `integration/webhook` component.

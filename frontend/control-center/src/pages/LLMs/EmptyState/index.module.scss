@@ -1,0 +1,52 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 88px);
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    @include font-m;
+    font-weight: 800;
+    color: var(--color-text-contrast);
+    margin: 31px 0;
+  }
+
+  span {
+    @include font-base;
+    color: var(--color-text-gray);
+  }
+
+  .subscribeButton {
+    color: var(--color-airy-blue);
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-background-gray);
+  height: 95px;
+  width: 105px;
+}
+
+.searchIcon {
+  height: 45px;
+  width: 45px;
+  color: var(--color-airy-blue);
+}

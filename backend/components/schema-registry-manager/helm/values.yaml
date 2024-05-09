@@ -1,0 +1,9 @@
+component: schema-registry-manager
+mandatory: false
+enabled: false
+image: backend/schema-registry-manager
+imageTag: release
+port: 3000
+resources:
+kafka:
+  topic: application.communication.messages

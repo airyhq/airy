@@ -113,6 +113,11 @@ spec:
           initialDelaySeconds: 120
           periodSeconds: 10
           failureThreshold: 3
+{{ if .Values.global.kafkaCertAuth }}
+        volumeMounts:
+        - name: kafka-config-certs
+          mountPath: /opt/kafka/certs
+{{ end }}
         resources:
 {{ toYaml .Values.eventsRouter.resources | indent 10 }}
       initContainers:
@@ -130,3 +135,8 @@ spec:
         - name: provisioning-scripts
           configMap:
             name: provisioning-scripts
+{{ if .Values.global.kafkaCertAuth }}
+        - name: kafka-config-certs
+          configMap:
+            name: kafka-config-certs
+{{ end }}

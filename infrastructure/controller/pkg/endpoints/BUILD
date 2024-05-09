@@ -12,6 +12,7 @@ go_library(
         "components_list.go",
         "components_update.go",
         "cors.go",
+        "proxy.go",
         "server.go",
         "services.go",
     ],

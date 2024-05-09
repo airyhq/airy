@@ -54,6 +54,16 @@ jobs:
         run: |
           bazel test --test_tag_filters=-lint //...
 
+      - name: Cleanup space
+        run: |
+          df -h
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          docker images prune -a
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /opt/hostedtoolcache
+          df -h
+
       - name: Build all artifacts
         run: |
           bazel build //...
@@ -64,11 +74,6 @@ jobs:
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
           ./scripts/push-images.sh
 
-      - name: Install aws cli
-        uses: chrislennon/action-aws-cli@v1.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-
       - name: Upload airy binary to S3
         if: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release') || github.ref == 'refs/heads/main' }}
         run: |
@@ -76,6 +81,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           GITHUB_BRANCH: ${{ github.ref }}
 
       - name: Publish helm charts

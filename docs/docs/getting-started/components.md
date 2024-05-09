@@ -50,7 +50,7 @@ Airy Core contains the following components:
     icon={<ElectricPlugSVG />}
     iconInvertible={true}
     title='WebSockets to power real-time applications'
-    description="A WebSocket server that allows clients to receive near real-time updates about data flowing through the system."
+    description="A WebSocket server that allows clients to receive near real-time updates about data flowing through the system. Particularly useful in combination with our LLM connectors and apps, that can send real-time data to enrich the interaction your customers."
     link='/api/websocket'
 />
 <ButtonBox
@@ -64,7 +64,7 @@ Airy Core contains the following components:
     icon={<DiamondSVG />}
     iconInvertible={true}
     title='UI: From a control center to dashboards'
-    description="No-code interfaces to manage and control Airy, your connectors and your streams."
+    description="No-code interfaces to manage and control Airy, your connectors, your LLM integrations  and your streams. "
     link='/ui/inbox/introduction'
 />
 </ButtonBoxList>
@@ -96,5 +96,6 @@ Here is a list of the open source components which can be added to `Airy Core`:
 - sources-twilio
 - sources-viber
 - sources-whatsapp
+- flink-connector
 
 More information about the components API can be found [here](/api/endpoints/components).

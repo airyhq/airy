@@ -59,3 +59,70 @@
   flex: auto;
   padding-bottom: 8px;
 }
+
+.enrichmentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.enrichmentText {
+  padding: 8px;
+}
+
+.enrichmentButton {
+  @include font-s;
+  border: none;
+  background-color: var(--color-code-no-edit);
+  color: var(--color-text-contrast);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.enrichmentSchemaText {
+  padding: 8px;
+  @include font-s;
+  font-size: 12;
+  font-weight: 800;
+}
+
+.codeContainer {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  padding: 8px;
+}
+
+.version {
+  display: flex;
+  p {
+    @include font-s;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 0;
+    margin-left: 16px;
+    color: var(--color-text-contrast);
+  }
+  button {
+    margin: 4px;
+    height: 24px;
+    width: 44px;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+  svg {
+    margin: 0 0 0 6px;
+    width: 11px;
+    height: 11px;
+  }
+  div {
+    font-size: 12px;
+  }
+}
+
+.infoContainer {
+  display: flex;
+  background: transparent;
+}

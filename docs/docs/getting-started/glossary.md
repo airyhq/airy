@@ -118,20 +118,38 @@ A tag is a special use case of metadata, which is used to tag
 common, Airy Core provides specialized endpoints and filters for tagging
 conversations.
 
+## AI & ML
+
+## Large language model
+
+A type of artificial intelligence model designed to understand and generate human-like text based on vast amounts of data. It's trained on diverse internet text to predict the next word in a sequence, enabling it to answer questions, generate content, and assist with various tasks. Airy allows a plug-able interface into different LLMs.
+
+## Vector database
+
+A high-dimensional database store which is suitable for persistent storage for natural language processing or images. The data is represented as vectors and retrieval is based on similarity, allowing for efficient similarity searches and context creation. Vector databases are very convenient for storing vector representations of streaming data that can be queried and add context to questions that are sent to LLMs, in real time.
+
+## Automation
+
+The ability of a an Airy component to react and simulate human-like conversations and automate specific tasks, in real time. It aims to provide users with immediate, consistent responses, reducing the need for human intervention in customer support, inquiries, and other conversational scenarios.
+
 ## Source
 
 A source represents a system that generates messaging data that a user wants to
 process with Airy Core.
-
-## Stream
-
-The whole Airy platform is based on Kafka and real-time streaming of messages. In the context of `streams` feature that Airy supports, a `stream` is the process of joining two or multiple Kafka topics, combining the data and creating an outout topic where the result of the streaming operation will be stored. It is based on KSQL.
 
 ### Provider
 
 Source providers are API platforms that allow Airy Core to connect to one or
 more of their sources typically via a webhook. E.g. Twilio is a source provider
 for the Twilio SMS and WhatsApp sources.
+
+## App
+
+Third party open-source packages that can be installed alongside Airy, in the same Kubernetes cluster, to provide a more robust and powerful application development environment. These `Apps` can vary from databases (ex. PostgreSQL or Redis) to LLM implementations and vector databases (ex. Llama2 or FAISS).
+
+## Stream
+
+The whole Airy platform is based on Kafka and real-time streaming of messages. In the context of `streams` feature that Airy supports, a `stream` is the process of joining two or multiple Kafka topics, combining the data and creating an outout topic where the result of the streaming operation will be stored. It is based on KSQL.
 
 ## User
 

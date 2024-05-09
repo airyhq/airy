@@ -1,0 +1,21 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+
+  p {
+    @include font-base;
+    color: var(--color-text-contrast);
+    font-weight: bold;
+    width: 25%;
+  }
+
+  p:first-child {
+    width: 30%;
+  }
+}

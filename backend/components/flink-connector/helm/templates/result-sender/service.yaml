@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.component }}-{{ .Values.resultSender.name }}
+  labels:
+    app: {{ .Values.component }}-{{ .Values.resultSender.name }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: {{ .Values.component }}-{{ .Values.resultSender.name }}
+      port: 80
+      targetPort: {{ .Values.port }}
+  selector:
+    app: {{ .Values.component }}-{{ .Values.resultSender.name }}

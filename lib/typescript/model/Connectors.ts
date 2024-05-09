@@ -24,6 +24,7 @@ export enum ConnectorName {
   sourcesViber = 'sources-viber',
   rasaConnector = 'rasa-connector',
   zendenkConnector = 'zendesk-connector',
+  faissConnector = 'faiss-connector',
 }
 
 export enum InstallationStatus {

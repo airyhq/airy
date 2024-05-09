@@ -35,14 +35,23 @@ const TopicDescription = (props: TopicDescriptionProps) => {
     if (!_expanded) {
       wrapperSection.current.style.height = `${basicHeight}px`;
     } else {
-      console.log('in');
       if (wrapperSection && wrapperSection.current) {
-        console.log('in in');
         wrapperSection.current.style.height = `${calculateHeightOfCodeString(code) + 100 + headerHeight}px`;
       } else {
         wrapperSection.current.style.height = `${basicHeight}px`;
       }
+      if ((wrapperSection.current.style.height.replace('px', '') as number) > 700) {
+        wrapperSection.current.style.height = '640px';
+      }
     }
+  };
+
+  const recalculateCodeHeight = (code: string) => {
+    const codeHeight = calculateHeightOfCodeString(code);
+    if (codeHeight > 478) {
+      return 478;
+    }
+    return codeHeight;
   };
 
   const calculateRetentionTime = (_jsonCode): string => {
@@ -89,7 +98,7 @@ const TopicDescription = (props: TopicDescriptionProps) => {
           </div>
           {expanded && (
             <MonacoEditor
-              height={calculateHeightOfCodeString(code)}
+              height={recalculateCodeHeight(code)}
               language="yaml"
               value={code}
               options={{

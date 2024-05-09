@@ -12,6 +12,10 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Properties;
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.common.config.SslConfigs;
+import java.util.HashMap;
+
 
 
 public class KafkaConsumerWrapper<K, V> {
@@ -22,6 +26,7 @@ public class KafkaConsumerWrapper<K, V> {
     private KafkaConsumer<K, V> consumer;
 
     private String jaasConfig;
+    private String kafkaKeyTrustSecret;
 
     public KafkaConsumerWrapper(final String brokers, final String schemaRegistryUrl) {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
@@ -33,12 +38,21 @@ public class KafkaConsumerWrapper<K, V> {
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
     }
 
-    public KafkaConsumerWrapper<K,V> withAuthJaas(String jaasConfig) {
+    public KafkaConsumerWrapper<K,V> withAuthJaas(String jaasConfig, String kafkaKeyTrustSecret) {
         this.jaasConfig = jaasConfig;
         if(jaasConfig != null) {
             props.put("security.protocol", "SASL_SSL");
             props.put("sasl.mechanism", "PLAIN");
             props.put("sasl.jaas.config", jaasConfig);
+        }
+        if (kafkaKeyTrustSecret != null) {
+            props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+            props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/opt/kafka/certs/client.truststore.jks");
+            props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, kafkaKeyTrustSecret);
+            props.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, "PKCS12");
+            props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/opt/kafka/certs/client.keystore.p12");
+            props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, kafkaKeyTrustSecret);
+            props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, kafkaKeyTrustSecret);
         }
         return this;
     }

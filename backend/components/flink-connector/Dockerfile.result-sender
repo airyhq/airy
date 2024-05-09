@@ -1,0 +1,16 @@
+FROM golang:1.17
+
+WORKDIR /app
+
+COPY ./src/types.go ./src/tools.go ./src/result-sender.go ./
+
+RUN go mod init main && \
+    go get github.com/confluentinc/confluent-kafka-go/v2/kafka && \
+    go get github.com/confluentinc/confluent-kafka-go/v2/schemaregistry && \
+    go get github.com/confluentinc/confluent-kafka-go/v2/schemaregistry/serde && \
+    go get github.com/confluentinc/confluent-kafka-go/v2/schemaregistry/serde/avro && \
+    go get golang.org/x/net
+
+RUN go build -o app
+
+CMD ["./app"]

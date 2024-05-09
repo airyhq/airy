@@ -3,6 +3,64 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.55.0
+
+#### Changes
+
+- [[#4167](https://github.com/airyhq/airy/issues/4167)] Kafka certificate authentication [[#4168](https://github.com/airyhq/airy/pull/4168)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Change name for Pinecone connector [[#4127](https://github.com/airyhq/airy/pull/4127)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Add description for components [[#4126](https://github.com/airyhq/airy/pull/4126)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Add LLM filter in Catalog [[#4125](https://github.com/airyhq/airy/pull/4125)]
+
+#### 🚀 Features
+
+- [[#4139](https://github.com/airyhq/airy/issues/4139)] Add Flink connector [[#4147](https://github.com/airyhq/airy/pull/4147)]
+- [[#3945](https://github.com/airyhq/airy/issues/3945)] Slack connector [[#4146](https://github.com/airyhq/airy/pull/4146)]
+- [[#4144](https://github.com/airyhq/airy/issues/4144)] Adapt Frontend with Schema Manager  [[#4145](https://github.com/airyhq/airy/pull/4145)]
+- [[#4141](https://github.com/airyhq/airy/issues/4141)] Schema Registry Manager [[#4143](https://github.com/airyhq/airy/pull/4143)]
+- [[#4137](https://github.com/airyhq/airy/issues/4137)] Improve Kafka Sections  [[#4138](https://github.com/airyhq/airy/pull/4138)]
+- [[#4132](https://github.com/airyhq/airy/issues/4132)] Added Copilot source to libs and apps [[#4133](https://github.com/airyhq/airy/pull/4133)]
+
+#### 🐛 Bug Fixes
+
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Fix selecting fields in streams [[#4123](https://github.com/airyhq/airy/pull/4123)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Fix symbol [[#4122](https://github.com/airyhq/airy/pull/4122)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Update icons for LLM components [[#4120](https://github.com/airyhq/airy/pull/4120)]
+- [[#4108](https://github.com/airyhq/airy/issues/4108)] Fix schemas and topics screens [[#4109](https://github.com/airyhq/airy/pull/4109)]
+
+#### 📚 Documentation
+
+- [[#4134](https://github.com/airyhq/airy/issues/4134)] Update the diagram in the README file [[#4136](https://github.com/airyhq/airy/pull/4136)]
+- [[#4134](https://github.com/airyhq/airy/issues/4134)] Update main diagram [[#4135](https://github.com/airyhq/airy/pull/4135)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Improve docs [[#4131](https://github.com/airyhq/airy/pull/4131)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Improve docs [[#4128](https://github.com/airyhq/airy/pull/4128)]
+- [[#4156](https://github.com/airyhq/airy/issues/4156)] Docs - Remove Solutions link [[#4115](https://github.com/airyhq/airy/pull/4115)]
+
+#### 🧰 Maintenance
+
+- Bump google.golang.org/protobuf from 1.28.0 to 1.33.0 [[#4155](https://github.com/airyhq/airy/pull/4155)]
+- Bump webpack-dev-middleware from 5.3.3 to 5.3.4 in /docs [[#4154](https://github.com/airyhq/airy/pull/4154)]
+- Bump google.golang.org/protobuf from 1.28.0 to 1.33.0 in /infrastructure/lib/go/k8s/handler [[#4152](https://github.com/airyhq/airy/pull/4152)]
+- Bump webpack-dev-middleware from 5.3.3 to 5.3.4 [[#4153](https://github.com/airyhq/airy/pull/4153)]
+- Bump express from 4.18.2 to 4.19.2 [[#4151](https://github.com/airyhq/airy/pull/4151)]
+- Bump express from 4.18.2 to 4.19.2 in /docs [[#4150](https://github.com/airyhq/airy/pull/4150)]
+- Bump follow-redirects from 1.15.2 to 1.15.6 [[#4149](https://github.com/airyhq/airy/pull/4149)]
+- Bump follow-redirects from 1.15.2 to 1.15.6 in /docs [[#4148](https://github.com/airyhq/airy/pull/4148)]
+- Bump github.com/cyphar/filepath-securejoin from 0.2.3 to 0.2.4 [[#4118](https://github.com/airyhq/airy/pull/4118)]
+- Bump @adobe/css-tools from 4.0.1 to 4.3.1 [[#4116](https://github.com/airyhq/airy/pull/4116)]
+- Bump @svgr/plugin-svgo from 6.5.1 to 8.1.0 [[#4114](https://github.com/airyhq/airy/pull/4114)]
+- Bump semver from 5.7.1 to 5.7.2 in /docs [[#4110](https://github.com/airyhq/airy/pull/4110)]
+- Bump sass-loader from 13.1.0 to 13.3.2 [[#4103](https://github.com/airyhq/airy/pull/4103)]
+- Bump word-wrap from 1.2.3 to 1.2.4 [[#4112](https://github.com/airyhq/airy/pull/4112)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.55.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.55.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.55.0/windows/amd64/airy.exe)
+
 ## 0.54.0
 
 #### 🚀 Features
@@ -1347,39 +1405,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.35.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.35.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.35.0/windows/amd64/airy.exe)
-
-## 0.34.0
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#2518](https://github.com/airyhq/airy/issues/2518)] Add fargate annotation [[#2540](https://github.com/airyhq/airy/pull/2540)]
-- [[#2305](https://github.com/airyhq/airy/issues/2305)] Add CLI outdated version warning [[#2529](https://github.com/airyhq/airy/pull/2529)]
-
-#### 🐛 Bug Fixes
-
-- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix broken instagram Facebook inbox ingestion [[#2535](https://github.com/airyhq/airy/pull/2535)]
-- [[#2457](https://github.com/airyhq/airy/issues/2457)] Fix upgrade to same version [[#2538](https://github.com/airyhq/airy/pull/2538)]
-- [[#2510](https://github.com/airyhq/airy/issues/2510)] Improve error logging for helm install [[#2522](https://github.com/airyhq/airy/pull/2522)]
-- [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix helm chart url [[#2525](https://github.com/airyhq/airy/pull/2525)]
-- [[#2523](https://github.com/airyhq/airy/issues/2523)] Fix VERSION and add changelog [[#2524](https://github.com/airyhq/airy/pull/2524)]
-- [[#2473](https://github.com/airyhq/airy/issues/2473)] fix failing cypress test [[#2507](https://github.com/airyhq/airy/pull/2507)]
-
-#### 🧰 Maintenance
-
-- Bump react-redux from 7.2.5 to 7.2.6 [[#2539](https://github.com/airyhq/airy/pull/2539)]
-- Bump reselect from 4.0.0 to 4.1.1 [[#2533](https://github.com/airyhq/airy/pull/2533)]
-- Bump sass-loader from 12.1.0 to 12.3.0 [[#2534](https://github.com/airyhq/airy/pull/2534)]
-- Bump @types/react-dom from 17.0.9 to 17.0.10 [[#2526](https://github.com/airyhq/airy/pull/2526)]
-- Bump react-markdown from 7.0.1 to 7.1.0 [[#2527](https://github.com/airyhq/airy/pull/2527)]
-- Bump webpack from 5.54.0 to 5.59.1 [[#2517](https://github.com/airyhq/airy/pull/2517)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.34.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.34.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.34.0/windows/amd64/airy.exe)
 

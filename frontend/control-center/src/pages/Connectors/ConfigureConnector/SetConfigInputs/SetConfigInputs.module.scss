@@ -14,3 +14,15 @@
   height: 80px;
   margin-right: 24px;
 }
+
+.dropdownTitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  color: var(--color-text-contrast);
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}

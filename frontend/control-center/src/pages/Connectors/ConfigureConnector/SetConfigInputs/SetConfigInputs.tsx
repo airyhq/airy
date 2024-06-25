@@ -1,4 +1,4 @@
-import {Input} from 'components';
+import {Dropdown, Input} from 'components';
 import {Source} from 'model';
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -59,26 +59,44 @@ export const SetConfigInputs = (props: SetConfigInputsProps) => {
       const sensitive = label.includes('Token') || label.includes('Password') || label.includes('Secret');
       const placeholder = source === 'rasa' ? t(`rasaPlaceholder`) : hasSteps ? stepPlaceholder : defaultPlaceholder;
 
-      inputArr.push(
-        <div key={index} className={styles.input}>
-          <Input
-            type={sensitive ? 'password' : isUrl ? 'url' : hasSteps ? 'number' : 'text'}
-            step={hasSteps ? 0.01 : undefined}
-            min={hasSteps ? 0.1 : undefined}
-            max={hasSteps ? 0.9 : undefined}
-            name={key}
-            value={valueTyped === 'string' || valueTyped === 'optionalString' ? '' : valueTyped}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput({...input, [keyTyped]: e.target.value})}
-            label={label}
-            placeholder={placeholder}
-            showLabelIcon
-            tooltipText={t(`inputTooltip${capitalSource}${toolTip}`)}
-            required={valueTyped !== 'optionalString'}
-            height={32}
-            fontClass="font-base"
-          />
-        </div>
-      );
+      if (configurationValues[key].split('/')[0] === 'dropdown') {
+        const dropdownOptions = configurationValues[key].replace('dropdown/', '').split('/');
+        const [option, setOption] = useState(dropdownOptions[0]);
+        inputArr.push(
+          <div key={index} className={styles.input}>
+            <div className={styles.dropdownTitle}>{key}</div>
+            <Dropdown
+              text={option}
+              variant="normal"
+              options={dropdownOptions}
+              onClick={(option: string) => {
+                setOption(option);
+              }}
+            />
+          </div>
+        );
+      } else {
+        inputArr.push(
+          <div key={index} className={styles.input}>
+            <Input
+              type={sensitive ? 'password' : isUrl ? 'url' : hasSteps ? 'number' : 'text'}
+              step={hasSteps ? 0.01 : undefined}
+              min={hasSteps ? 0.1 : undefined}
+              max={hasSteps ? 0.9 : undefined}
+              name={key}
+              value={valueTyped === 'string' || valueTyped === 'optionalString' ? '' : valueTyped}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput({...input, [keyTyped]: e.target.value})}
+              label={label}
+              placeholder={placeholder}
+              showLabelIcon
+              tooltipText={t(`inputTooltip${capitalSource}${toolTip}`)}
+              required={valueTyped !== 'optionalString'}
+              height={32}
+              fontClass="font-base"
+            />
+          </div>
+        );
+      }
     });
 
   return (

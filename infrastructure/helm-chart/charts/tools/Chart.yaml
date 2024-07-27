@@ -8,3 +8,7 @@ dependencies:
     condition: akhq.enabled
   - name: kafka-connect
     condition: kafka-connect.enabled
+  - name: postgresql
+    condition: postgresql.enabled
+  - name: redis
+    condition: redis.enabled

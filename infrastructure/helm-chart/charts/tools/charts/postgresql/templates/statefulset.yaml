@@ -16,6 +16,18 @@ spec:
         app: {{ .Values.name }}
     spec:      
       terminationGracePeriodSeconds: 10
+      initContainers:
+        - command:
+          - sh
+          - -c
+          - rmdir /var/lib/postgresql/data/lost+found
+          image: ghcr.io/airyhq/infrastructure/busybox:latest
+          imagePullPolicy: IfNotPresent
+          name: fix-new-directory
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: {{ .Values.name }}-data
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}:{{ .Values.version }}
@@ -38,6 +50,9 @@ spec:
             successThreshold: 1
             failureThreshold: 5
           resources: {{ .Values.resources }}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: {{ .Values.name }}-data
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.name }}-data

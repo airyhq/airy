@@ -1,6 +1,6 @@
 name: postgresql
 mandatory: false
-enabled: true
+enabled: false
 image: postgres
 version: 15.1
 port: 5432

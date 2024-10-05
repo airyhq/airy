@@ -36,7 +36,7 @@
     "react-redux": "8.0.5",
     "react-refresh": "^0.14.0",
     "react-router-dom": "6.4.1",
-    "redux": "^4.2.0",
+    "redux": "^5.0.1",
     "regenerator-runtime": "^0.13.9",
     "reselect": "4.1.7",
     "ts-jest": "^28.0.8",

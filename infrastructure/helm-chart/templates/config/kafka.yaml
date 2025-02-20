@@ -13,4 +13,6 @@ data:
 {{- end }}
   KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.config.kafka.schemaRegistryUrl }}
   KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.config.kafka.commitInterval }}"
+{{- if .Values.config.kafka.keyTrustSecret }}
   KAFKA_KEY_TRUST_SECRET: {{ .Values.config.kafka.keyTrustSecret }}
+{{- end }}

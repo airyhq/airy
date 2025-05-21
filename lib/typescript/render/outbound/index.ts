@@ -14,6 +14,7 @@ export const getOutboundMapper = (source: string) => {
       return new GoogleMapper();
     case 'chatplugin':
     case 'copilot':
+    case 'gmailIngestion':
       return new ChatpluginMapper();
     case 'twilio.sms':
     case 'twilio.whatsapp':

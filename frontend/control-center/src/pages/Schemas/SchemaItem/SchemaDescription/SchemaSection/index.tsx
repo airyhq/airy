@@ -124,15 +124,15 @@ const SchemaSection = (props: SchemaSectionProps) => {
             setTimeout(() => setShowErrorPopUp(false), 5000);
           });
       })
-      .catch((e: string) => {
-        if (e.includes('404')) {
-          checkCompatibility(_schemaName + '-value', _code, _version);
-        } else {
+      .catch((e: string) => {        
+        // if (e.includes('404')) {
+        //   checkCompatibility(_schemaName + '-value', _code, _version);
+        // } else {
           setIsEditMode(true);
           setErrorMessage(e);
           setShowErrorPopUp(true);
           setTimeout(() => setShowErrorPopUp(false), 5000);
-        }
+        // }
       });
   };
 
@@ -164,10 +164,10 @@ const SchemaSection = (props: SchemaSectionProps) => {
           <Button
             onClick={() => {
               setTimeout(() => {
-                if (isJSON(code)) {
+                if (isJSON(localCode)) {
                   setIsEditMode(!isEditMode);
                   if (isEditMode && hasBeenChanged) {
-                    checkCompatibility(schemaName, code, version);
+                    checkCompatibility(schemaName, localCode, version);
                   }
                 } else {
                   setIsEditMode(true);

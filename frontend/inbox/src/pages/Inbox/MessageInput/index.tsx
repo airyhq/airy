@@ -289,6 +289,9 @@ const MessageInput = (props: Props) => {
         case Source.airyCopilot:
           message.message = outboundMapper.getTextPayload(input);
           break;
+        case Source.gmailIngestion:
+          message.message = outboundMapper.getTextPayload(input);
+          break;
       }
 
       sendMessages(message).then(() => {

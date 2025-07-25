@@ -50,7 +50,7 @@ jobs:
           sudo apt-get install -y shellcheck
           ./scripts/lint.sh
 
-      - name: Setup tests
+      - name: Install Terraform
         run: |
           wget https://releases.hashicorp.com/terraform/1.8.5/terraform_1.8.5_linux_amd64.zip
           unzip terraform_1.8.5_linux_amd64.zip

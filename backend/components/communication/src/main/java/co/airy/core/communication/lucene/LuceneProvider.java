@@ -45,8 +45,10 @@ public class LuceneProvider implements LuceneStore {
 
     @Override
     public void put(ConversationIndex conversation) throws IOException {
-        final Document document = this.documentMapper.fromConversationIndex(conversation);
-        writer.updateDocument(new Term("id", conversation.getId()), document);
+        if (conversation != null) {
+            final Document document = this.documentMapper.fromConversationIndex(conversation);
+            writer.updateDocument(new Term("id", conversation.getId()), document);
+        }        
     }
 
     @Override

@@ -50,6 +50,13 @@ jobs:
           sudo apt-get install -y shellcheck
           ./scripts/lint.sh
 
+      - name: Install Terraform
+        run: |
+          wget https://releases.hashicorp.com/terraform/1.8.5/terraform_1.8.5_linux_amd64.zip
+          unzip terraform_1.8.5_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          chmod +x /usr/local/bin/terraform
+
       - name: Test
         run: |
           bazel test --test_tag_filters=-lint //...

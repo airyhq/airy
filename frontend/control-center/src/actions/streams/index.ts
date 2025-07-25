@@ -70,7 +70,6 @@ export const getTopicInfo = (topicName: string) => async (dispatch: Dispatch<any
 
 export const getSchemas = () => async (dispatch: Dispatch<any>) => {
   return getData('schemas.list').then(response => {
-    console.log(response);
     dispatch(setTopicSchemasAction(response));
     return Promise.resolve(true);
   });

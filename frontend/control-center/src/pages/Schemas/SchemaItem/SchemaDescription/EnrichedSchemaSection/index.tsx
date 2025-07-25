@@ -114,7 +114,6 @@ const EnrichedSchemaSection = (props: EnrichedSchemaSectionProps) => {
 
       // Use map to create an array of promises
       const promises = (enrichedCode.fields || []).map(async field => {
-        console.log(typeof field.type);
         if (typeof field.type === 'object' && !Array.isArray(field.type)) {
           if (!field.type.doc) {
             const doc = await generateDocForField(field);

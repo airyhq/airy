@@ -47,7 +47,7 @@ jobs:
 
       - name: Lint
         run: |
-          sudo apt-get install -y shellcheck
+          sudo apt-get install -y shellcheck terraform
           ./scripts/lint.sh
 
       - name: Test

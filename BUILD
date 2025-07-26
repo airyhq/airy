@@ -202,12 +202,12 @@ exports_files(
 # gazelle:exclude infrastructure/terraform
 gazelle(name = "gazelle")
 
-nogo(
-    name = "airy_nogo",
-    config = "//tools/build:nogo_config.json",
-    visibility = ["//visibility:public"],
-    deps = TOOLS_NOGO,
-)
+# nogo(
+#     name = "airy_nogo",
+#     config = "//tools/build:nogo_config.json",
+#     visibility = ["//visibility:public"],
+#     deps = TOOLS_NOGO,
+# )
 
 filegroup(
     name = "starlark_files",

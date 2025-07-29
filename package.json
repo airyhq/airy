@@ -22,7 +22,7 @@
     "i18next": "^21.10.0",
     "isomorphic-fetch": "^3.0.0",
     "linkify-react": "^3.0.4",
-    "linkifyjs": "^3.0.5",
+    "linkifyjs": "^4.3.2",
     "lodash-es": "^4.17.21",
     "preact": "^10.11.2",
     "react": "18.2.0",

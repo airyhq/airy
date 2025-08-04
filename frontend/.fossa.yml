@@ -1,0 +1,5 @@
+version: 3
+
+project:
+  id: airy-frontend
+  name: Airy Frontend

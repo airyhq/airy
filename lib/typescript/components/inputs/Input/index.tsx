@@ -244,7 +244,7 @@ class InputComponent extends Component<InputProps, IState> {
   };
 
   emojiDrawer = () => {
-    const Picker = () => this.props.renderEmojiPicker(this.addEmoji);
+    const Picker: React.FC = () => this.props.renderEmojiPicker(this.addEmoji);
     return (
       <div
         ref={node => {

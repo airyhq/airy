@@ -12,6 +12,7 @@
 [![Commit Frequency](https://img.shields.io/github/commit-activity/m/airyhq/airy)](https://github.com/airyhq/airy/pulse)
 [![License](https://img.shields.io/github/license/airyhq/airy)](https://github.com/airyhq/airy/blob/develop/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fairyhq%2Fairy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fairyhq%2Fairy?ref=badge_shield)
 
 ---
 
@@ -112,3 +113,7 @@ started.
 To ensure a safe experience and a welcoming community, Airy Core project adheres
 to the [contributor convenant](https://www.contributor-covenant.org/) [code of
 conduct](/code_of_conduct.md).
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fairyhq%2Fairy.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fairyhq%2Fairy?ref=badge_large)

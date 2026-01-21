@@ -23,7 +23,7 @@
     "isomorphic-fetch": "^3.0.0",
     "linkify-react": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "preact": "^10.27.0",
     "react": "19.1.1",
     "react-autosize-textarea": "^7.1.0",

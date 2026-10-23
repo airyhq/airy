@@ -9,6 +9,11 @@ import java.util.TreeSet;
 public class MessagesTreeSet extends TreeSet<Message> {
     @JsonCreator
     public MessagesTreeSet() {
-        super(Comparator.comparing(Message::getSentAt));
+        super(Comparator.comparing(Message::getSentAt).thenComparing(Message::getId));
+    }
+
+    public void update(Message message) {
+        remove(message);
+        add(message);
     }
 }
